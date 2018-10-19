@@ -1,0 +1,383 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+@*<div class="container">
+            <div class="col-sm-6 col-sm-offset-3">
+               <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                Create new quotation
+                            </div>
+                            <div class="col-sm-6">
+                                <text class="pull-right" style="color:skyblue" title="Choose which client you want to make in offer for.">Explination</text>
+                            </div>
+                        </div>
+                    </div>
+                         <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h4>Select a client</h4>
+                            </div>
+                            <div class="col-sm-8">
+                                <select id="SelectContacts" class="form-control"></select>
+                            </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+    </div>*@
+
+  
+<button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle"></i>Create New</button>
+
+
+<table class="table" id="ContactListTable">
+    <thead style="background-color:black;color:white">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Address
+            </th>
+
+            <th>
+                Type
+            </th>
+            <th>
+                BillingPersonName
+            </th>
+            <th>
+                Company Name
+            </th>
+            <th>
+                Billing TRN
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+
+
+
+@section scripts{
+    <script>
+
+
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+
+            if (successMessage != '') {
+                alertify.success(successMessage);
+
+
+            }
+
+            if (successMessage != '') {
+                successMessage = '';
+                delete ('@TempData["SuccessMessage"]');
+            }
+
+        });
+
+
+
+    </script>
+
+}
+
+
+
+<input type="hidden" id="ContactsId" />
+<div class="modal fade bs-example-modal-lg" id="CreateNewContactModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Add New Contact</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="floating-labels">
+                   
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="ContactName" data-toggle="tooltip" data-placement="bottom" title="Contact Name!!">
+                                <span class="bar"></span>
+                                <label for="input5">Contact Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="ContactAddress" data-toggle="tooltip" data-placement="bottom" title="Contact Address!!">
+                                <span class="bar"></span>
+                                <label for="input5">Contact Address</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="BillingPersonName" data-toggle="tooltip" data-placement="bottom" title="Billing Person Name!!">
+                                <span class="bar"></span>
+                                <label for="input5">Billing Person Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="ShippingPersonName" data-toggle="tooltip" data-placement="bottom" title="Shipping Person Name!!">
+                                <span class="bar"></span>
+                                <label for="input5">Shipping Person Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="BillingAddress" data-toggle="tooltip" data-placement="bottom" title="Billing Address!!">
+                                <span class="bar"></span>
+                                <label for="input5">Billing Address</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="ShippingAddress" data-toggle="tooltip" data-placement="bottom" title="Shipping Address!!">
+                                <span class="bar"></span>
+                                <label for="input5">Shipping Address</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="BillingCity" data-toggle="tooltip" data-placement="bottom" title="Billing City!!">
+                                <span class="bar"></span>
+                                <label for="input5">Billing City</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="BillingState" data-toggle="tooltip" data-placement="bottom" title="Billing State!!">
+                                <span class="bar"></span>
+                                <label for="input5">Billing State</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="BillingCountry" data-toggle="tooltip" data-placement="bottom" title="Billing Country!!">
+                                <span class="bar"></span>
+                                <label for="input5">Billing Country</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="BillingCompanyName" data-toggle="tooltip" data-placement="bottom" title="Billing Company Name!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Billing Company Name</label>
+                                    </div>                                   
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="BillingZibCode" data-toggle="tooltip" data-placement="bottom" title="Billing Zip Code!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Billing Zip Code</label>
+                                    </div>     
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="ShippingCompanyName" data-toggle="tooltip" data-placement="bottom" title="Shipping Company Name!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Shipping Company Name</label>
+                                    </div>                                     
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="ShippingZIP" data-toggle="tooltip" data-placement="bottom" title="Shipping ZIP!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Shipping ZIP</label>
+                                    </div>                                       
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="BillingMobile" data-toggle="tooltip" data-placement="bottom" title="Billing Mobile!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Billing Mobile</label>
+                                    </div>  
+                                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="BillingEmail" data-toggle="tooltip" data-placement="bottom" title="Billing Email!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Billing Email</label>
+                                    </div>  
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="ShippingMobile" data-toggle="tooltip" data-placement="bottom" title="Shipping Mobile!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Shipping Mobile</label>
+                                    </div>  
+                                   
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="ShippingEmail" data-toggle="tooltip" data-placement="bottom" title="Shipping Email!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Shipping Email</label>
+                                    </div>  
+                                   
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="BillingVatTRN" data-toggle="tooltip" data-placement="bottom" title="Billing Vat TRN!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Billing Vat TRN</label>
+                                    </div>                                     
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="BillingFax" data-toggle="tooltip" data-placement="bottom" title="Billing Fax!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Billing Fax</label>
+                                    </div>    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="ShippingVatTRN" data-toggle="tooltip" data-placement="bottom" title="Shipping Vat TRN No!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Shipping Vat TRN</label>
+                                    </div>   
+                                  
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group m-b-40">
+                                        <input type="text" class="form-control " id="ShippingFax" data-toggle="tooltip" data-placement="bottom" title="Shipping Fax!!">
+                                        <span class="bar"></span>
+                                        <label for="input5">Shipping Fax</label>
+                                    </div>                                     
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="BillingPhone" data-toggle="tooltip" data-placement="bottom" title="Billing Phone!!">
+                                <span class="bar"></span>
+                                <label for="input5">Billing Phone</label>
+                            </div>  
+                           
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="ShippingPhone" data-toggle="tooltip" data-placement="bottom" title="Shipping Phone!!">
+                                <span class="bar"></span>
+                                <label for="input5">Shipping Phone</label>
+                            </div>  
+                            
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <select class="form-control p-0" id="TypeContacts">
+                                <option value="Customer" selected>Customer</option>
+                                <option value="Vender">Vender</option>
+                            </select><span class="bar"></span>
+                            <label for="input6">Type</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control p-0" id="Status">
+                                <option value="True" selected>True</option>
+                                <option value="False">False</option>
+                            </select><span class="bar"></span>
+                            <label for="input6">Status</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group m-b-40">
+                                @*<input type="text" class="form-control " id="ShippingPhone" data-toggle="tooltip" data-placement="bottom" title="Shipping Phone!!">*@
+                                <textarea class="form-control" id="Remarks" rows="1" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
+                                <span class="bar"></span>
+                                <label for="input5">Remarks</label>
+                            </div>                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewContacts" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Save Contact</button>
+                <button type="button" id="UpdateContacts" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Update Contact</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelContacts" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+

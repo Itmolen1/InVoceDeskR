@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="APIcompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ComapnyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyAddress" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="CompanyCell" Type="nvarchar" MaxLength="20" />
+          <Property Name="CompanyEmail" Type="nvarchar" MaxLength="25" />
+          <Property Name="CompanyLogo" Type="nvarchar" MaxLength="200" />
+          <Property Name="CompanyTRN" Type="nvarchar" MaxLength="50" />
+          <Property Name="ComapnyFax" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanySubTitile" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyCity" Type="varchar" MaxLength="30" />
+          <Property Name="CompanyState" Type="varchar" MaxLength="30" />
+          <Property Name="CompanyCountry" Type="varchar" MaxLength="30" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="AddedDate" Type="date" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContactsTable">
+          <Key>
+            <PropertyRef Name="ContactsId" />
+          </Key>
+          <Property Name="ContactsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContactName" Type="varchar" MaxLength="100" />
+          <Property Name="ContactAddress" Type="nvarchar" MaxLength="400" />
+          <Property Name="Company_Id" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Type" Type="varchar" MaxLength="10" />
+          <Property Name="BillingPersonName" Type="varchar" MaxLength="70" />
+          <Property Name="BillingCompanyName" Type="nvarchar" MaxLength="100" />
+          <Property Name="BillingAddress" Type="nvarchar" MaxLength="300" />
+          <Property Name="BillingCity" Type="varchar" MaxLength="50" />
+          <Property Name="BillingState" Type="varchar" MaxLength="50" />
+          <Property Name="BillingCountry" Type="varchar" MaxLength="50" />
+          <Property Name="BillingZibCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="BillingEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="BillingVatTRN" Type="nvarchar" MaxLength="40" />
+          <Property Name="BillingPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="BillingMobile" Type="nvarchar" MaxLength="20" />
+          <Property Name="BillingFax" Type="nvarchar" MaxLength="20" />
+          <Property Name="ShippingPersonName" Type="varchar" MaxLength="70" />
+          <Property Name="ShippingAddress" Type="nvarchar" MaxLength="300" />
+          <Property Name="ShippingCompanyName" Type="nvarchar" MaxLength="100" />
+          <Property Name="ShippingCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShippingState" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShippingCountry" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShippingZIP" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShippingEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="ShippingVatTRN" Type="nvarchar" MaxLength="40" />
+          <Property Name="ShippingMobile" Type="nvarchar" MaxLength="20" />
+          <Property Name="ShippingPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="ShippingFax" Type="nvarchar" MaxLength="20" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="350" />
+          <Property Name="Addeddate" Type="date" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductTable">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="SalePrice" Type="float" />
+          <Property Name="PurchasePrice" Type="float" />
+          <Property Name="Type" Type="nvarchar" MaxLength="7" />
+          <Property Name="OpeningQuantity" Type="int" />
+          <Property Name="AddedBy" Type="int" />
+          <Property Name="Company_ID" Type="int" />
+          <Property Name="AddedDate" Type="date" />
+        </EntityType>
+        <EntityType Name="QutationDetailsTable">
+          <Key>
+            <PropertyRef Name="QutationDetailId" />
+          </Key>
+          <Property Name="QutationDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemId" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Rate" Type="float" />
+          <Property Name="Total" Type="float" />
+          <Property Name="Vat" Type="float" />
+          <Property Name="QutationID" Type="int" />
+        </EntityType>
+        <EntityType Name="QutationTable">
+          <Key>
+            <PropertyRef Name="QutationID" />
+          </Key>
+          <Property Name="QutationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Qutation_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="RefNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="QutationDate" Type="date" />
+          <Property Name="DueDate" Type="date" />
+          <Property Name="SubTotal" Type="float" />
+          <Property Name="TotalVat6" Type="float" />
+          <Property Name="TotalVat21" Type="float" />
+          <Property Name="DiscountAmount" Type="float" />
+          <Property Name="TotalAmount" Type="float" />
+          <Property Name="CustomerNote" Type="nvarchar" MaxLength="300" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="ContactId" Type="int" />
+        </EntityType>
+        <Association Name="FK_QutationDetailsTable_QutationTable">
+          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="0..1" />
+          <End Role="QutationDetailsTable" Type="Self.QutationDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QutationTable">
+              <PropertyRef Name="QutationID" />
+            </Principal>
+            <Dependent Role="QutationDetailsTable">
+              <PropertyRef Name="QutationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APIcompanyModelStoreContainer">
+          <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QutationDetailsTable" EntityType="Self.QutationDetailsTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QutationTable" EntityType="Self.QutationTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="Self.FK_QutationDetailsTable_QutationTable">
+            <End Role="QutationTable" EntitySet="QutationTable" />
+            <End Role="QutationDetailsTable" EntitySet="QutationDetailsTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APIcompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ComapnyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCell" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyEmail" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyTRN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ComapnyFax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanySubTitile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCity" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyState" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyCountry" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
+          <EntitySet Name="ContactsTables" EntityType="APIcompanyModel.ContactsTable" />
+          <EntitySet Name="QutationDetailsTables" EntityType="APIcompanyModel.QutationDetailsTable" />
+          <EntitySet Name="QutationTables" EntityType="APIcompanyModel.QutationTable" />
+          <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="APIcompanyModel.FK_QutationDetailsTable_QutationTable">
+            <End Role="QutationTable" EntitySet="QutationTables" />
+            <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
+          </AssociationSet>
+          <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
+        </EntityContainer>
+        <EntityType Name="ContactsTable">
+          <Key>
+            <PropertyRef Name="ContactsId" />
+          </Key>
+          <Property Name="ContactsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ContactAddress" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Company_Id" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BillingPersonName" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="BillingCompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BillingAddress" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="BillingCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BillingState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BillingCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BillingZibCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="BillingEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BillingVatTRN" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BillingPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="BillingMobile" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="BillingFax" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingPersonName" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddress" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingCompanyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingZIP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingVatTRN" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingMobile" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingFax" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Addeddate" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="QutationDetailsTable">
+          <Key>
+            <PropertyRef Name="QutationDetailId" />
+          </Key>
+          <Property Name="QutationDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Rate" Type="Double" />
+          <Property Name="Total" Type="Double" />
+          <Property Name="Vat" Type="Double" />
+          <Property Name="QutationID" Type="Int32" />
+          <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationDetailsTable" ToRole="QutationTable" />
+        </EntityType>
+        <EntityType Name="QutationTable">
+          <Key>
+            <PropertyRef Name="QutationID" />
+          </Key>
+          <Property Name="QutationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Qutation_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QutationDate" Type="DateTime" Precision="0" />
+          <Property Name="DueDate" Type="DateTime" Precision="0" />
+          <Property Name="SubTotal" Type="Double" />
+          <Property Name="TotalVat6" Type="Double" />
+          <Property Name="TotalVat21" Type="Double" />
+          <Property Name="DiscountAmount" Type="Double" />
+          <Property Name="TotalAmount" Type="Double" />
+          <Property Name="CustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="ContactId" Type="Int32" />
+          <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationTable" ToRole="QutationDetailsTable" />
+        </EntityType>
+        <Association Name="FK_QutationDetailsTable_QutationTable">
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationDetailsTable" Role="QutationDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QutationTable">
+              <PropertyRef Name="QutationID" />
+            </Principal>
+            <Dependent Role="QutationDetailsTable">
+              <PropertyRef Name="QutationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ProductTable">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="PurchasePrice" Type="Double" />
+          <Property Name="Type" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="OpeningQuantity" Type="Int32" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="Company_ID" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APIcompanyModelStoreContainer" CdmEntityContainer="DBEntities">
+          <EntitySetMapping Name="ComapnyInfoes">
+            <EntityTypeMapping TypeName="APIcompanyModel.ComapnyInfo">
+              <MappingFragment StoreEntitySet="ComapnyInfo">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
+                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
+                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyTRN" ColumnName="CompanyTRN" />
+                <ScalarProperty Name="ComapnyFax" ColumnName="ComapnyFax" />
+                <ScalarProperty Name="CompanySubTitile" ColumnName="CompanySubTitile" />
+                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
+                <ScalarProperty Name="CompanyState" ColumnName="CompanyState" />
+                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactsTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.ContactsTable">
+              <MappingFragment StoreEntitySet="ContactsTable">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ShippingFax" ColumnName="ShippingFax" />
+                <ScalarProperty Name="ShippingPhone" ColumnName="ShippingPhone" />
+                <ScalarProperty Name="ShippingMobile" ColumnName="ShippingMobile" />
+                <ScalarProperty Name="ShippingVatTRN" ColumnName="ShippingVatTRN" />
+                <ScalarProperty Name="ShippingEmail" ColumnName="ShippingEmail" />
+                <ScalarProperty Name="ShippingZIP" ColumnName="ShippingZIP" />
+                <ScalarProperty Name="ShippingCountry" ColumnName="ShippingCountry" />
+                <ScalarProperty Name="ShippingState" ColumnName="ShippingState" />
+                <ScalarProperty Name="ShippingCity" ColumnName="ShippingCity" />
+                <ScalarProperty Name="ShippingCompanyName" ColumnName="ShippingCompanyName" />
+                <ScalarProperty Name="ShippingAddress" ColumnName="ShippingAddress" />
+                <ScalarProperty Name="ShippingPersonName" ColumnName="ShippingPersonName" />
+                <ScalarProperty Name="BillingFax" ColumnName="BillingFax" />
+                <ScalarProperty Name="BillingMobile" ColumnName="BillingMobile" />
+                <ScalarProperty Name="BillingPhone" ColumnName="BillingPhone" />
+                <ScalarProperty Name="BillingVatTRN" ColumnName="BillingVatTRN" />
+                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
+                <ScalarProperty Name="BillingZibCode" ColumnName="BillingZibCode" />
+                <ScalarProperty Name="BillingCountry" ColumnName="BillingCountry" />
+                <ScalarProperty Name="BillingState" ColumnName="BillingState" />
+                <ScalarProperty Name="BillingCity" ColumnName="BillingCity" />
+                <ScalarProperty Name="BillingAddress" ColumnName="BillingAddress" />
+                <ScalarProperty Name="BillingCompanyName" ColumnName="BillingCompanyName" />
+                <ScalarProperty Name="BillingPersonName" ColumnName="BillingPersonName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactsId" ColumnName="ContactsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QutationDetailsTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.QutationDetailsTable">
+              <MappingFragment StoreEntitySet="QutationDetailsTable">
+                <ScalarProperty Name="QutationID" ColumnName="QutationID" />
+                <ScalarProperty Name="Vat" ColumnName="Vat" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="QutationDetailId" ColumnName="QutationDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QutationTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.QutationTable">
+              <MappingFragment StoreEntitySet="QutationTable">
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
+                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+                <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
+                <ScalarProperty Name="QutationID" ColumnName="QutationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
+              <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="OpeningQuantity" ColumnName="OpeningQuantity" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,97 @@
+﻿@model InvoiceDiskLast.Models.MVCProductModel
+
+@{
+    ViewBag.Title = "AddOrEdit";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(Model => Model.ProductId)
+
+        <div class="shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="panel panel-default">
+                <div style="color:white;font-weight:bold;background-color:skyblue">Product Info</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-2">Product Name:</div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-2">Description</div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-2">Sale Price:</div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.SalePrice, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SalePrice, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-sm-2">Purchase Price:</div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.PurchasePrice, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PurchasePrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-2">Type:</div>
+                        <div class="col-sm-4">
+                            @*@Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })*@
+                            @*@Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })*@
+                            @Html.DropDownList("Type", new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "Good", Value = "Good", Selected=true},
+                                    new SelectListItem { Text = "Services", Value = "Services"}
+                                }, "Select Type", new { @class = "form-control" })
+
+                        </div>
+                        <div class="col-sm-2">Opening Quantity:</div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.OpeningQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.OpeningQuantity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-footer pull-right">
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-success">
+                            <i class="glyphicon glyphicon-floppy-saved"></i>
+                        </button>
+                        <button type="submit" value="Submit" class="btn btn-success">Submit</button>
+
+                        <button type="reset" value="Reset" class="btn btn-default">Reset</button>
+                    </div>
+                    <div class="input-group-btn">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+    </div>
+}
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval");
+}

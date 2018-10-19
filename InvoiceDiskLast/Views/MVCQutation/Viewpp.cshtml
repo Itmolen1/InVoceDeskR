@@ -1,0 +1,189 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model InvoiceDiskLast.Models.MVCQutationViewModel
+
+@{
+
+    var Contectdatas = ViewBag.Contentdata;
+    var CompanyDatas = ViewBag.Companydata;
+    var QutationModel = ViewBag.QutationDat;
+
+}
+
+<html>
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</head>
+<body>
+   
+    <div style="margin-top:10px;border: 1px solid #CECECE;">
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px;">
+            <img src="@Url.Content(CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+        </div>
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+            <div class="col-xs-4">
+                <label>@CompanyDatas.CompanyName</label>
+                <br />
+                <label>@CompanyDatas.CompanyCity</label>
+                <br />
+                <label>T:@CompanyDatas.CompanyPhone</label>
+                <br />
+                <label>@CompanyDatas.CompanyEmail</label>
+            </div>
+            <div class="col-xs-4">
+                <img src="https://www.factuurdesk.nl/images/layout/offerte_concept.png" />
+            </div>
+            <div class="col-xs-4">
+                <label>@CompanyDatas.CompanyName</label><br />
+                <label> @Contectdatas.ContactName</label>
+            </div>
+
+         
+        </div>
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px;">
+            <p><b style="margin-left:10px">Quation</b></p>
+            <div class="col-xs-2">
+                <label>offer Date</label>
+                <label>offer number</label>
+                <label>valid untill</label>
+            </div>
+            <div class="col-xs-3">
+                <label>@QutationModel.QutationDate</label><br />
+                <label>@QutationModel.RefNumber</label><br />
+                <label>@QutationModel.DueDate</label>
+            </div>
+        </div>
+        <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+            will receive the quotation from us for the services below.
+
+            <table id="mytable" class="table table-bordred table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th class="col-xs-4">
+                            Decription
+                        </th>
+                        <th class="col-xs-2">
+                            Quantity
+                        </th>
+                        <th class="col-xs-2">
+                            Price
+                        </th>
+                        <th class="col-xs-2">
+                            Total
+                        </th>
+                        <th class="col-xs-1">
+                            Vat
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (ViewBag.QutationDatailsList != null)
+                    {
+                        foreach (var item in ViewBag.QutationDatailsList)
+                        {
+                            <tr id="mainrow">
+                                <td>
+                                    @item.ItemName
+                                </td>
+                                <td>
+                                    @item.Quantity
+                                </td>
+                                <td>
+                                    @item.Rate
+                                </td>
+                                <td>
+                                    @item.Total
+                                </td>
+                                <td>
+                                    @item.Vat
+                                </td>
+
+                                <td>
+                                    <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+            <div class="col-xs-8"></div>
+            <div class="col-xs-4">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="tex">Total excl. VAT:	€</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <label class="tex">@QutationModel.SubTotal</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="tex">VAT 6%:€</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <label class="tex">@QutationModel.TotalVat6</label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="tex">VAT 21%:	€</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <label class="tex">@QutationModel.TotalVat21</label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="tex">Total:€</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <label class="tex">@QutationModel.TotalAmount</label>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        @*<div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                <div class="col-xs-4 col-xs-offset-4 text-center">
+                    <p>Total: &euro;:0.00</p>
+                </div>
+            </div>*@
+
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+            We hope that everything is clear. If you have any questions, please let us know.
+        </div>
+
+
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+            With kind regards,
+        </div>
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+            <h4>@Contectdatas.ContactName</h4>
+            <h4>@CompanyDatas.CompanyName </h4>
+        </div>
+        <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
+    </div>
+</body>
+</html>
+
+
+ 
+
+
+

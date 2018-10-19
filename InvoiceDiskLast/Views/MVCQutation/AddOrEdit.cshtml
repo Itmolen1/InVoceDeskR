@@ -1,0 +1,673 @@
+﻿@model InvoiceDiskLast.Models.MVCQutationViewModel
+
+@{
+    ViewBag.Title = "AddOrEdit";
+}
+
+<body class="well">
+
+
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-danger">
+            <strong>Error!</strong> @ViewBag.Message
+        </div>
+    }
+
+
+
+
+    @{
+
+        var Contectdatas = ViewBag.Contentdata;
+        var CompanyDatas = ViewBag.Companydata;
+        // var qutation = ViewBag.QutationDat;
+        //ViewBag.QutationDate =qutation.QutationDate;
+
+    }
+    @if (ViewBag.edit != null)
+    {
+        <div class="container">
+
+
+            @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { style = "width:300px", id = "qutationId" } })
+
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10" style="background-color:white;margin-top:50px">
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11" style="margin-top:20px">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <h5>@CompanyDatas.CompanyName</h5>
+                            <h5>@CompanyDatas.CompanyAddress</h5>
+                            <h5>@CompanyDatas.CompanyPhone</h5>
+                            <h5>@CompanyDatas.CompanyEmail</h5>
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4" style="margin-top:10px">
+                            <h5>@Contectdatas.ContactName</h5>
+                            <h5>@Contectdatas.ContactAddress</h5>
+                            <h5>@Contectdatas.BillingEmail</h5>
+                            <h5>@Contectdatas.BillingVatTRN</h5>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11">
+                            <h4 style="color:skyblue">Qutation Invoice</h4>
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-2">Invoice Date:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { style = "width:300px", id = "QutationDate" } })
+                                        @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Invoice Number:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { style = "width:300px", id = "Qutation_ID" } })
+                                        @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-4">Invoice period:</div>
+                                            <div class="col-sm-4">
+
+                                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { style = "font-size:small;width:150px", id = "QutationDate", title = "Invoice Date" } })
+                                                @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { style = "font-size:small;width:150px", id = "DueDate", title = "Due Date" } })
+                                                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Refrence Number:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { style = "width:300px", id = "RefNumber" } })
+                                        @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add Discount:</a></div>
+                                    <div class="col-sm-4">
+                                        <input type="text" value="Discount" />
+                                        @Html.EditorFor(model => model.DiscountAmount, new { htmlAttributes = new { style = "width:300px", id = "DiscountAmount" } })
+                                        @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add VAT:</a></div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { style = "width:300px", id = "AddVat" } })
+                                        @Html.ValidationMessageFor(model => model.Vat, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div id="loadingDiv">
+                                 <img src="~/images/XtaS.gif" />
+                                 </div>
+                                @*<div id="loadingDiv">Please wait while this page loads.</div>*@
+                                <div class="row">
+                                    <table class="table" id="orderdetailsitems">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="col-sm-4">
+                                                    Decription
+                                                </th>
+                                                <th class="col-sm-2">
+                                                    Quantity
+                                                </th>
+                                                <th class="col-sm-2">
+                                                    Price
+                                                </th>
+                                                <th class="col-sm-2">
+                                                    Total
+                                                </th>
+                                                <th class="col-sm-1">
+                                                    Vat
+                                                </th>
+                                                <th class="col-sm-1">
+                                                    Action
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbody">
+                                            <tr id="mainrow">
+                                                <td>
+                                                    <select id="SelectProductQutation" class="product form-control"></select>
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "quantity form-control", id = "Quantity" } })
+                                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
+                                                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate form-control", id = "Rate" } })
+                                                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                   
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new {@class = " FTotal form-control", id = "FTotal" } })
+                                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    <div class="form-control">
+                                                        <select id="SelectVAT" class="VAT">
+                                                            <option>0</option>
+                                                            <option>6</option>
+                                                            <option>21</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+
+                                                    <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+
+                                            </tr>
+
+                                            @if (ViewBag.QutationDatailsList != null)
+                                            {
+                                                foreach (var item in ViewBag.QutationDatailsList)
+                                                {
+
+                                                    <tr id="@item.QutationDetailId">
+
+                                                        <td>
+
+                                                            <select Id="SelectProductQutation" class="product form-control">
+                                                                <option value="0">Select Item..</option>
+                                                                @foreach (var product in ViewBag.Product)
+                                                                {
+                                                                    <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="quantity form-control" id="Quantity" value="@item.Quantity" />
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" class="rate form-control" id="Rate" value="@item.Rate" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="FTotal form-control" id="FTotal" value="@item.Total"  readonly/>
+
+                                                        </td>
+                                                        <td>
+                                                            <select id="SelectVAT" name="NewsCategoriesID" class="VAT form-control">
+
+                                                                @foreach (var item1 in ViewBag.VatDrop)
+                                                                {
+                                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                                }
+                                                            </select>
+
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" id="RemoveEdit" style="width:80px" class="btn btn-danger">Remome</button>
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" class="QutationID" value="@item.QutationID" />
+
+                                                        </td>
+                                                    
+
+                                                    </tr>
+                                                }
+                                            }
+
+
+
+                                        </tbody>
+
+                                    </table>
+
+                                    <div id="OrderItems">
+                                        <table class="table table-responsive" id="orderdetailsitems"></table>
+                                        <span id="orderItemError" style="color:red"></span>
+                                    </div>
+
+                                </div>
+
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">Sub Total:</div>
+                                    <div class="col-sm-2">
+                                        <label id="SubTotal">@Model.SubTotal</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">Totaal excel BTW:</div>
+                                    <div class="col-sm-2">
+                                        <label id="TotalBTW">@Model.SubTotal</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW0%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="btwo">0.00</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW 6%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="BTW6">@Model.TotalVat6</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW 21%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="BTW21">@Model.TotalVat21</label>
+
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-2">Customer Note:</div>
+                                    <div class="col-sm-6">
+                                        @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new { @class = "form-control", id = "CustomerNote" } })
+                                        @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-2">Total:</div>
+                                    <div class="col-sm-2">
+                                        <span class="form-inline">&euro;</span><label id="gtotal">@Model.TotalAmount</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-6">
+
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-2">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <div style="padding:10px 0;text-align:right">
+                                    <input id="SubmitEdit" type="button" value="Save draft" class="btn btn-primary" style="padding:10px 20px" />
+                                    <input id="saveEmailedit" type="button" value="Save + email" class="btn btn-primary" style="padding:10px 20px" />
+                                    <input id="savesendbyemail" type="button" value="Save + send by email " class="btn btn-primary" style="padding:10px 20px" />
+                                    <input id="saveprintandsendtoyourself" type="button" value="Save + print and send and send ot yourself" class="btn btn-primary" style="padding:10px 20px" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-10" style="background-color:white;margin-top:50px">
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11" style="margin-top:20px">
+                            <img src="@Url.Content("~/Images/"+CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <h5>@CompanyDatas.CompanyName</h5>
+                            <h5>@CompanyDatas.CompanyAddress</h5>
+                            <h5>@CompanyDatas.CompanyPhone</h5>
+                            <h5>@CompanyDatas.CompanyEmail</h5>
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4" style="margin-top:10px">
+                            <h5>@Contectdatas.ContactName</h5>
+                            <h5>@Contectdatas.ContactAddress</h5>
+                            <h5>@Contectdatas.BillingEmail</h5>
+                            <h5>@Contectdatas.BillingVatTRN</h5>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11">
+                            <h4 style="color:skyblue">Qutation Invoice</h4>
+
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+
+
+                                <div class="row">
+                                    <div class="col-sm-2">Invoice Date:</div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { style = "width:300px", id = "QutationDate" } })
+                                        @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Invoice Number:</div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { style = "width:300px", id = "Qutation_ID" } })
+                                        @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-4">Invoice period:</div>
+                                            <div class="col-sm-4">
+                                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { style = "font-size:small;width:150px", id = "QutationDate", title = "Invoice Date" } })
+                                                @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { style = "font-size:small;width:150px", id = "DueDate", title = "Due Date" } })
+                                                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Refrence Number:</div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.RefNumber, new { htmlAttributes = new { style = "width:300px", id = "RefNumber" } })
+                                        @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add Discount:</a></div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.DiscountAmount, new { htmlAttributes = new { style = "width:300px", id = "DiscountAmount" } })
+                                        @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add VAT:</a></div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { style = "width:300px", id = "AddVat" } })
+                                        @Html.ValidationMessageFor(model => model.Vat, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row">
+                                    <table class="table" id="maintableQutation">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th class="col-sm-4">
+                                                    Decription
+                                                </th>
+                                                <th class="col-sm-2">
+                                                    Quantity
+                                                </th>
+                                                <th class="col-sm-2">
+                                                    Price
+                                                </th>
+                                                <th class="col-sm-2">
+                                                    Total
+                                                </th>
+                                                <th class="col-sm-1">
+                                                    Vat
+                                                </th>
+                                                <th class="col-sm-1">
+                                                    Action
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="tbody">
+                                            <tr id="mainrow">
+                                                <td>
+                                                    <select id="SelectProductQutation" class="product form-control"></select>
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "quantity form-control", id = "Quantity" } })
+                                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
+                                                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate form-control", id = "Rate" } })
+                                                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+                                                    </div>
+                                                </td>
+                                                <td>
+
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @readonly = "readonly", @class = " FTotal form-control", id = "FTotal" } })
+                                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    <div class="form-control">
+                                                        <select id="SelectVAT" class="VAT">
+                                                            <option>0</option>
+                                                            <option>6</option>
+                                                            <option>21</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+
+
+                                                    <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+
+                                            </tr>
+                                        </tbody>                                   
+                                    </table>
+
+                                    <div id="OrderItems">
+                                        <table class="table table-responsive" id="orderdetailsitems"></table>
+                                        <span id="orderItemError" style="color:red"></span>
+                                    </div>
+
+
+                                </div>
+
+                                <hr />
+
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">Sub Total:</div>
+                                    <div class="col-sm-2">
+                                        <label id="SubTotal"></label>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">Totaal excel BTW:</div>
+                                    <div class="col-sm-2">
+                                        <label id="TotalBTW"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW0%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="btwo"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW 6%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="BTW6"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW 21%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="BTW21"></label>
+
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-2">Customer Note:</div>
+                                    <div class="col-sm-6">
+                                        @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new { @class = "form-control", id = "CustomerNote" } })
+                                        @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-2">Total:</div>
+                                    <div class="col-sm-2">
+                                        <span class="form-inline">&euro;</span><label id="gtotal"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-6">
+
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-2">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <div style="padding:10px 0;text-align:right">
+                                    <input id="Submit" type="button" value="Save draft" class="btn btn-primary" style="padding:10px 20px" />
+                                    <input id="saveEmail" type="button" value="Save + email" class="btn btn-primary" style="padding:10px 20px" />
+                                    <input id="savesendbyemail" type="button" value="Save +send by email " class="btn btn-primary" style="padding:10px 20px" />
+                                    <input id="saveprintandsendtoyourselfsave" type="button" value="Save + print and send and send ot yourself" class="btn btn-primary" style="padding:10px 20px" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    }
+</body>
+
+<script type="text/javascript">
+
+    @*var qutatiionDate = '@ViewBag.QutationDate';
+    alert(qutatiionDate);*@
+
+    //function delTableRow() {
+    //
+    //}
+</script>

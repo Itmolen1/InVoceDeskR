@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "RegisterNew";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from www.wrappixel.com/demos/admin-templates/elegant-admin/horizontal/pages-register2.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Sep 2018 18:36:05 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
+    <title>Elegant Admin Template - The Ultimate Multipurpose admin template</title>
+    <!-- page css -->
+    <link href="~/dist/css/pages/login-register-lock.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/dist/css/style.min.css" rel="stylesheet">
+    <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="horizontal-nav ">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Elegant admin</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <section id="wrapper" class="login-register login-sidebar" style="background-image:url(../assets/images/background/login-register.jpg);">
+        <div class="login-box card">
+            <div class="card-body">
+                <form class="form-horizontal form-material" id="loginform">
+                    <a href="javascript:void(0)" class="text-center db"><img src="~/assets/images/logo-icon.png" alt="Home" /><br />
+                    <img src="~/assets/images/logo-text.png" alt="Home" /></a>
+                    <h3 class="box-title m-t-40 m-b-0">Register Now</h3><small>Create your account and enjoy</small>
+                    <div class="form-group m-t-20">
+                        <div class="col-xs-12">                            
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="email" id="txtemail" required="" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="password" id="txtPassword" required="" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="password" id="txtConformPassword" required="" placeholder="Confirm Password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                <label class="custom-control-label" for="customCheck1">I agree to all <a href="javascript:void(0)">Terms</a></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <input type="button" class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" id="btnRegister" value="Sign Up" />
+                        </div>
+                    </div>
+                    <div class="form-group m-b-0">
+                        <div class="col-sm-12 text-center">
+                            <p>Already have an account? <a href="/login/Index" class="text-info m-l-5"><b>Sign In</b></a></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/assets/node_modules/popper/popper.min.js"></script>
+    <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
+    <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
+    <script>
+    $(function() {
+        $(".preloader").fadeOut();
+    });
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    // ==============================================================
+    // Login and Recover Password
+    // ==============================================================
+    $('#to-recover').on("click", function() {
+        $("#loginform").slideUp();
+        $("#recoverform").fadeIn();
+    });
+    </script>
+</body>
+
+
+<!-- Mirrored from www.wrappixel.com/demos/admin-templates/elegant-admin/horizontal/pages-register2.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Sep 2018 18:36:05 GMT -->
+</html>
+<script>
+    $(document).ready(function () {
+        $('#btnRegister').click(function () {
+
+            $.ajax({
+
+                url: '/api/account/register',
+                method: 'POST',
+                data: {
+                    email: $('#txtemail').val(),
+                    password: $('#txtPassword').val(),
+                    confirmpassword: $('#txtConformPassword').val(),
+
+                },
+                success: function () {
+                    SuccessRegistration();
+                },
+                error: function (jqHXR) {
+                    if(jqHXR.status == '400')
+                    {
+
+                    }
+                   
+                }
+            });
+
+        });
+
+
+
+       
+
+    });
+</script>
+
+<script>
+    function SuccessRegistration() {
+        swal({
+            title: "Congratulations!!!!",
+            text: "Your account has been created successfully",
+            type: "success",
+
+        },
+          function (isConfirm) {
+              if (isConfirm) {
+                  window.location = "/Login/Index";
+                 
+              }             
+          });
+    }
+</script>
+
