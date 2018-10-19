@@ -17,7 +17,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult IndexTest()
         {
-            ViewBag.Title = "Home Page summer test changes";
+            ViewBag.Title = "Home Page Rukhsar Test Repo";
 
             return View();
         }
