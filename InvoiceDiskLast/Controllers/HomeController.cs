@@ -15,5 +15,12 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+        public ActionResult IndexTest()
+        {
+            ViewBag.Title = "Home Page summer test changes";
+
+            return View();
+        }
+
     }
 }
