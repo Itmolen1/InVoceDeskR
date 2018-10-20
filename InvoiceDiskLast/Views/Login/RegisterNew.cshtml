@@ -58,17 +58,17 @@
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="email" id="txtemail" required="" placeholder="Email">
+                            <input class="form-control" type="email" id="txtemail" required placeholder="Email">
                         </div>
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="password" id="txtPassword" required="" placeholder="Password">
+                            <input class="form-control" type="password" id="txtPassword" required placeholder="Password">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input class="form-control" type="password" id="txtConformPassword" required="" placeholder="Confirm Password">
+                            <input class="form-control" type="password" id="txtConformPassword" required placeholder="Confirm Password">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -134,26 +134,28 @@
         else {
 
             $('#btnRegister').click(function () {
-                $.ajax({
+               
+                    $.ajax({
 
-                    url: '/api/account/register',
-                    method: 'POST',
-                    data: {
-                        email: $('#txtemail').val(),
-                        password: $('#txtPassword').val(),
-                        confirmpassword: $('#txtConformPassword').val(),
+                        url: '/api/account/register',
+                        method: 'POST',
+                        data: {
+                            email: $('#txtemail').val(),
+                            password: $('#txtPassword').val(),
+                            confirmpassword: $('#txtConformPassword').val(),
 
-                    },
-                    success: function () {
-                        SuccessRegistration();
-                    },
-                    error: function (jqHXR) {
-                        if (jqHXR.status == '400') {
-                            FailRegistration();
+                        },
+                        success: function () {
+                            SuccessRegistration();
+                        },
+                        error: function (jqHXR) {
+                            if (jqHXR.status == '400') {
+                                FailRegistration();
+                            }
+
                         }
-
-                    }
-                });
+                    });
+               
 
             });
 
@@ -190,5 +192,32 @@
         });
     }
     
+    //function validateRegistration() {
+    //    var isValid = true;
+    //    if ($('#txtemail').val().trim() == "") {
+    //        $('#txtemail').css('border-color', 'Red');
+    //        isValid = false;
+    //    }
+    //    else {
+    //        $('#txtemail').css('border-color', 'lightgrey');
+    //    }
+    //    if ($('#txtPassword').val().trim() == "") {
+    //        $('#txtPassword').css('border-color', 'Red');
+    //        isValid = false;
+    //    }
+    //    else {
+    //        $('#txtPassword').css('border-color', 'lightgrey');
+    //    }
+    //    if ($('#txtConformPassword').val().trim() == "") {
+    //        $('#txtConformPassword').css('border-color', 'Red');
+    //        isValid = false;
+    //    }
+    //    else {
+    //        $('#txtConformPassword').css('border-color', 'lightgrey');
+    //    }
+    //    return isValid;
+    //}
+
+
 </script>
 

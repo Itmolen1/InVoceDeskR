@@ -14,6 +14,15 @@ namespace InvoiceDiskLast.Models
     
     public partial class ComapnyInfo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ComapnyInfo()
+        {
+            this.ContactsTables = new HashSet<ContactsTable>();
+            this.ProductTables = new HashSet<ProductTable>();
+            this.QutationTables = new HashSet<QutationTable>();
+            this.PurchaseOrderTables = new HashSet<PurchaseOrderTable>();
+        }
+    
         public int CompanyID { get; set; }
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
@@ -30,5 +39,14 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> AddedBy { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
         public string UserName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactsTable> ContactsTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProductTable> ProductTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationTable> QutationTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseOrderTable> PurchaseOrderTables { get; set; }
     }
 }

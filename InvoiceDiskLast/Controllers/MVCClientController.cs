@@ -25,7 +25,6 @@ namespace InvoiceDiskLast.Controllers
 
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-            
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts").Result;
             var ProductList = response.Content.ReadAsAsync<IEnumerable<MVCContactModel>>().Result;
 

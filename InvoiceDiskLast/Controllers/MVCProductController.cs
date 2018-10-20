@@ -18,6 +18,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult GetProductlist()
         {
+            
 
 
             IEnumerable<MVCProductModel> ProductList;
@@ -35,6 +36,11 @@ namespace InvoiceDiskLast.Controllers
                 string search = Request.Form.GetValues("search[value]")[0];
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
+
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
                 ProductList = response.Content.ReadAsAsync<IEnumerable<MVCProductModel>>().Result;
 
@@ -107,8 +113,12 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetProduct()
         {
 
+            int CompanyId = Convert.ToInt32(Session["CompayID"]);
+
+            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
-            var ProductList = response.Content.ReadAsAsync<IEnumerable<MVCProductModel>>().Result;
+            List<MVCProductModel>  ProductList= response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -144,8 +154,11 @@ namespace InvoiceDiskLast.Controllers
             {
                 if (ProductModel.ProductId == null)
                 {
-                    ProductModel.Company_ID = 2;
+                    int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
                     ProductModel.AddedBy = 1;
+                    ProductModel.Company_ID = CompanyId;
                     ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
 
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIProduct", ProductModel).Result;
