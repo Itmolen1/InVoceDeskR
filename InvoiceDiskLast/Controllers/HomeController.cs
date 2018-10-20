@@ -16,13 +16,17 @@ namespace InvoiceDiskLast.Controllers
         }
               
 
-
         public ActionResult IndexTest()
         {
             ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar";
 
             return View();
         }
+        public ActionResult IndexTestSamar()
+        {
+            ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar";
 
+            return View();
+        }
     }
 }
