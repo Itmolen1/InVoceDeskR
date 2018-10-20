@@ -6,9 +6,25 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 
 namespace InvoiceDiskLast
 {
+
+    public class CustomJsonFormatter : JsonMediaTypeFormatter
+    {
+        public CustomJsonFormatter()
+        {
+            this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+        }
+
+        public override void SetDefaultContentHeaders(Type type, HttpContentHeaders headers, MediaTypeHeaderValue mediaType)
+        {
+            base.SetDefaultContentHeaders(type, headers, mediaType);
+            headers.ContentType = new MediaTypeHeaderValue("application/json");
+        }
+    }
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
@@ -26,11 +42,12 @@ namespace InvoiceDiskLast
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
-            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //config.Formatters.JsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+            //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            GlobalConfiguration.Configuration.Formatters.Clear();
-            GlobalConfiguration.Configuration.Formatters.Add(new JsonMediaTypeFormatter());
+            //GlobalConfiguration.Configuration.Formatters.Clear();
+            //GlobalConfiguration.Configuration.Formatters.Add(new JsonMediaTypeFormatter());
+            config.Formatters.Add(new CustomJsonFormatter());
         }
     }
 }
