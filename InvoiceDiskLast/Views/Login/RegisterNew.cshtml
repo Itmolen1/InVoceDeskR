@@ -127,35 +127,39 @@
 </html>
 <script>
     $(document).ready(function () {
-        $('#btnRegister').click(function () {
-            debugger;
-            $.ajax({
 
-                url: '/api/account/register',
-                method: 'POST',
-                data: {
-                    email: $('#txtemail').val(),
-                    password: $('#txtPassword').val(),
-                    confirmpassword: $('#txtConformPassword').val(),
+        if (sessionStorage.getItem('accessToken') != null && '@Session["CompayID"]' != null) {
+            window.location.href = "/Home/Index";
+        }
+        else {
 
-                },
-                success: function () {
-                    SuccessRegistration();
-                },
-                error: function (jqHXR) {
-                    if(jqHXR.status == '400')
-                    {
+            $('#btnRegister').click(function () {
+                $.ajax({
+
+                    url: '/api/account/register',
+                    method: 'POST',
+                    data: {
+                        email: $('#txtemail').val(),
+                        password: $('#txtPassword').val(),
+                        confirmpassword: $('#txtConformPassword').val(),
+
+                    },
+                    success: function () {
+                        SuccessRegistration();
+                    },
+                    error: function (jqHXR) {
+                        if (jqHXR.status == '400') {
+                            FailRegistration();
+                        }
 
                     }
-                   
-                }
+                });
+
             });
 
-        });
+        }
 
 
-
-       
 
     });
 </script>
@@ -163,7 +167,7 @@
 <script>
     function SuccessRegistration() {
         swal({
-            title: "Congratulations!!!!",
+            title: "Congratulations!",
             text: "Your account has been created successfully",
             type: "success",
 
@@ -175,5 +179,16 @@
               }             
           });
     }
+
+
+    function FailRegistration(erro) {
+        swal({
+            title: "Failed!",
+            text: "Problem in account creation, Password must have 7 character long with Number, Capital, Small Character, Try again",
+            type: "info",
+
+        });
+    }
+    
 </script>
 

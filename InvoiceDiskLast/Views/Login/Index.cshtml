@@ -204,7 +204,14 @@
     <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <!--Custom JavaScript -->
     <script>
-            $(document).ready(function () {
+        $(document).ready(function () {
+
+            if (sessionStorage.getItem('accessToken') != null && '@Session["CompayID"]' != null) {
+                window.location.href = "/Home/Index";
+            }
+            else {
+
+
                 $('#btnLogin').click(function () {
                     $.ajax({
                         url: '/token',
@@ -218,7 +225,7 @@
                         },
                         success: function (response) {
                             sessionStorage.setItem('accessToken', response.access_token);
-                            localStorage.setItem('Username', response.userName);                            
+                            localStorage.setItem('Username', response.userName);
                             //..........
                             $.ajax({
                                 url: 'http://localhost:63861/api/ApiCompanyStatus/',
@@ -227,7 +234,7 @@
                                 data: {
                                     id: $('#txtUsername').val()
                                 },
-                                success: function (CompanyStatus) {                                 
+                                success: function (CompanyStatus) {
                                     if (CompanyStatus > 0) {
                                         $.ajax({
                                             url: '/MVCComapny/GetCompanyInfo',
@@ -238,7 +245,7 @@
                                             },
                                             success: function (CompanyInfo) {
                                                 localStorage.setItem('CompanyID', CompanyInfo.CompanyID);
-                                                localStorage.setItem('CompanyName', CompanyInfo.CompanyName);                                               ;
+                                                localStorage.setItem('CompanyName', CompanyInfo.CompanyName);;
                                                 localStorage.setItem('CompanyLogo', CompanyInfo.CompanyLogo);
                                                 window.location.href = '/Home/Index';
                                             },
@@ -255,7 +262,7 @@
                                 error: function (jqerr) {
                                     alert('Errr' + JSON.stringify(jqerr));
                                 }
-                                });
+                            });
 
                             //..........
 
@@ -268,7 +275,7 @@
 
 
                 });
-
+            }
             });
     </script>
 
