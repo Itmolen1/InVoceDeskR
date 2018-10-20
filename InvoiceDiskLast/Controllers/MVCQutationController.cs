@@ -76,7 +76,12 @@ namespace InvoiceDiskLast.Controllers
         {
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
             try
-            {               
+            {
+
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
                     Contectid = Convert.ToInt32(Session["ClientID"]);
