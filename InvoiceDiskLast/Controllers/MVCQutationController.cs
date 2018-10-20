@@ -67,6 +67,8 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+        int Contectid = 0;
+        int CompanyID = 0;
         //MVCQutation/AddOrEdit
 
         [HttpGet]
@@ -74,24 +76,22 @@ namespace InvoiceDiskLast.Controllers
         {
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
             try
-            {
-                var ContactID = 0.ToString();
-                var CompanyID = 0.ToString();
+            {               
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
-                    ContactID = Session["ClientID"].ToString();
-                    CompanyID = Session["CompayID"].ToString();
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID =  Convert.ToInt32(Session["CompayID"]);
                 }
                 else
                 {
                     return RedirectToAction("Index","Login");
                 }
 
-                int Contectid = Convert.ToInt32(ContactID);
+               
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-                int companyId = Convert.ToInt32(CompanyID);
+               
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
@@ -327,13 +327,11 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult Print(int? QutationID)
         {
 
-            int contectId = 3;
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + contectId.ToString()).Result;
-            MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+         
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+            MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;     
 
-            int companyId = 2;
-
-            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
+            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
             MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
             HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationID.ToString()).Result;
@@ -359,12 +357,11 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-
-                int contectId = 3;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + contectId.ToString()).Result;
+               
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-                int companyId = 2;
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
+             
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quautionId.ToString()).Result;
@@ -399,13 +396,13 @@ namespace InvoiceDiskLast.Controllers
             int card = rnd.Next(52);     // creates a number between 0 and 51
 
 
-            int contectId = 3;
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + contectId.ToString()).Result;
+         
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
             MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-            int companyId = 2;
+         
 
-            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
+            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
             MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
             HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quttationId.ToString()).Result;
@@ -857,8 +854,9 @@ namespace InvoiceDiskLast.Controllers
 
         public string SetPdfName(string FilePath)
         {
-            int companyId = 2;
-            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
+         
+           
+            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
             MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
             string[] arrya = FilePath.Split('-');
@@ -1057,14 +1055,14 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult p()
         {
-           
+          
 
-            int contectId = 3;
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + contectId.ToString()).Result;
+          
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
             MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-            int companyId = 2;
-            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
+         
+            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
             MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
             int quttationId = 2118;

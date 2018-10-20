@@ -19,6 +19,7 @@
     <link href="~/assets/node_modules/c3-master/c3.min.css" rel="stylesheet">
     <link href="~/dist/css/style.min.css" rel="stylesheet" />
     <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
 
     
     <!-- page css -->
@@ -652,7 +653,7 @@
     <script src="~/assets/node_modules/datatables/dataTables.bootstrap.js"></script>
     <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
     <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
-
+    <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
 
 
     @RenderSection("scripts", required: false)
@@ -708,7 +709,7 @@
                     { "data": "Status", "name": "Status", "autoWidth": true },
                     {
                         render: function (data, type, row) {
-                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<a href="" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></a>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></a>'
+                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<button type="button" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></button>'
                         }
                     }
 
@@ -743,8 +744,7 @@
           
         });
 
-        $('#QutationClientNext').click(function () {
-            debugger;
+        $('#QutationClientNext').click(function () {           
            
             var value =  $('#SelectContacts1').val();           
          
@@ -754,17 +754,24 @@
                     type: 'GET',
                     data: {
                         id: value
-                    },
+                    },                  
                     success: function (data) {
-                        $('#AddNewContactModel').modal('hide');
-                        LoadContacts();
-                        $('#QutationContactModel').modal('show');
+                        window.location.href = "/MVCQutation/AddOrEdit"
                     },
                     error: function () {
                         alert("error");
                     }
                 });
-
+            }
+            else
+            {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Please select client to continue',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
             }
         });
 
@@ -855,8 +862,7 @@
 
 
 
-        function calculatevat() {
-            debugger;
+        function calculatevat() {           
             if ($('#orderdetailsitems tr').length == 0) {
                 $('#btwo').text('0.00');
                 $('#BTW6').text('0.00');
@@ -1961,7 +1967,7 @@
 
                     {
                   render: function (data, type, row) {
-                      return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
+                      return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
                   }
               }
 
@@ -2385,8 +2391,7 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function (data) {
-                console.log(data);
+            success: function (data) {              
 
                 $.each(data, function (key, item) {
 
@@ -2473,6 +2478,18 @@
         return isValid;
     }
 
-    
+    function EditQuatation(id) {
+        window.location.href = "/MVCQutation/AddOrEdit/" + id;
+    }
+
+    var $loading = $('#loadingDiv').hide();
+
+    $(document)
+      .ajaxStart(function () {
+          $loading.show();
+      })
+      .ajaxStop(function () {
+          $loading.hide();
+      });
 
 </script>
