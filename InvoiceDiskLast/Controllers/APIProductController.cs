@@ -14,13 +14,14 @@ namespace InvoiceDiskLast.Controllers
     public class APIProductController : ApiController
     {
         private DBEntities db = new DBEntities();
+        // GET: api/APIProduct
         public IQueryable<ProductTable> GetProductTables()
         {
             return db.ProductTables;
         }
 
 
-        // GET: api/Product/5
+        // GET: api/APIProduct/5
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult GetProductTable(int id)
         {
@@ -33,7 +34,7 @@ namespace InvoiceDiskLast.Controllers
             return Ok(productTable);
         }
 
-        // PUT: api/Product/5
+        // PUT: api/APIProduct/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProductTable(int id, ProductTable productTable)
         {
@@ -68,7 +69,7 @@ namespace InvoiceDiskLast.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Product
+        // POST: api/APIProduct
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult PostProductTable(ProductTable productTable)
         {
@@ -83,7 +84,7 @@ namespace InvoiceDiskLast.Controllers
             return CreatedAtRoute("DefaultApi", new { id = productTable.ProductId }, productTable);
         }
 
-        // DELETE: api/Product/5
+        // DELETE: api/APIProduct/5
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult DeleteProductTable(int id)
         {
