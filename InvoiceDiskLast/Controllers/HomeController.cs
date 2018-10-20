@@ -14,8 +14,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-        
+              
 
 
         public ActionResult IndexTest()

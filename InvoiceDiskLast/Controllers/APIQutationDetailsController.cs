@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Controllers
             return db.QutationDetailsTables;
         }
 
-        // GET: api/QutationDetail/5
+        // GET: api/APIQutationDetail/5
         [ResponseType(typeof(List<MVCQutationViewModel>))]
         public IHttpActionResult GetQutationDetailsTable(int id)
         {
@@ -72,7 +72,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        // GET: api/QutationDetail
+        // GET: api/APIQutationDetail
         [ResponseType(typeof(List<MVCQutationDetailsModel>))]
         public IHttpActionResult GetQutationDetailsTable(int id, string id1)
         {
@@ -98,7 +98,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        // PUT: api/QutationDetail/5
+        // PUT: api/APIQutationDetail/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutQutationDetailsTable(int id, QutationDetailsTable qutationDetailsTable)
         {
@@ -134,7 +134,7 @@ namespace InvoiceDiskLast.Controllers
           
         }
 
-        // POST: api/QutationDetail
+        // POST: api/APIQutationDetail
         [ResponseType(typeof(QutationDetailsTable))]
         public IHttpActionResult PostQutationDetailsTable(QutationDetailsTable qutationDetailsTable)
         {
@@ -149,7 +149,7 @@ namespace InvoiceDiskLast.Controllers
             return CreatedAtRoute("DefaultApi", new { id = qutationDetailsTable.QutationDetailId }, qutationDetailsTable);
         }
 
-        // DELETE: api/QutationDetail/5
+        // DELETE: api/APIQutationDetail/5
         [ResponseType(typeof(QutationDetailsTable))]
         public IHttpActionResult DeleteQutationDetailsTable(int id)
         {

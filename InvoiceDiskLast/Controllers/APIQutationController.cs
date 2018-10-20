@@ -23,7 +23,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        // GET: api/Qutation/5
+        // GET: api/APIQutation/5
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult GetQutationTable(int id)
         {
@@ -36,7 +36,7 @@ namespace InvoiceDiskLast.Controllers
             return Ok(qutationTable);
         }
 
-        // PUT: api/Qutation/5
+        // PUT: api/APIQutation/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutQutationTable(int id, QutationTable qutationTable)
         {
@@ -72,7 +72,7 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        // POST: api/Qutation
+        // POST: api/APIQutation
         [ResponseType(typeof(QutationTable))]
         public HttpResponseMessage PostQutationTable([FromBody] QutationTable qutationtable)
         {
@@ -114,7 +114,7 @@ namespace InvoiceDiskLast.Controllers
         //    }
         //}
 
-        // DELETE: api/Qutation/5
+        // DELETE: api/APIQutation/5
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult DeleteQutationTable(int id)
         {

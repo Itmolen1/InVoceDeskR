@@ -130,6 +130,8 @@ namespace InvoiceDiskLast.Controllers
             {
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                Session["CliientID"]= mvcContactModel.ContactsId;
                 return Json(mvcContactModel,JsonRequestBehavior.AllowGet);
             }
         }

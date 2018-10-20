@@ -749,13 +749,11 @@
             var value =  $('#SelectContacts1').val();           
          
             if (value > 0) {
-
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
-                    type: 'POST',
+                    type: 'GET',
                     data: {
-                        ContactName: $('#ContactName').val(),
-                        ContactAddress: $('#ContactAddress').val()
+                        id: value
                     },
                     success: function (data) {
                         $('#AddNewContactModel').modal('hide');
