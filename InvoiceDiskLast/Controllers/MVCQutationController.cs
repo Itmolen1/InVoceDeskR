@@ -85,14 +85,14 @@ namespace InvoiceDiskLast.Controllers
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
                     Contectid = Convert.ToInt32(Session["ClientID"]);
-                    CompanyID =  Convert.ToInt32(Session["CompayID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
                 else
                 {
-                    return RedirectToAction("Index","Login");
+                    return RedirectToAction("Index", "Login");
                 }
 
-               
+
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
