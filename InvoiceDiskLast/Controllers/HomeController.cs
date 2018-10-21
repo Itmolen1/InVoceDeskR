@@ -31,5 +31,12 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
+
+        public ActionResult IndexTestRukhsar()
+        {
+            ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar changes";
+
+            return View();
+        }
     }
 }
