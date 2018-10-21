@@ -8,16 +8,6 @@
 
 
 
-    @if (ViewBag.Message != null)
-    {
-        <div class="alert alert-danger">
-            <strong>Error!</strong> @ViewBag.Message
-        </div>
-    }
-
-
-
-
     @{
 
         var Contectdatas = ViewBag.Contentdata;
@@ -72,7 +62,7 @@
                                     <div class="col-sm-2">Invoice Date:</div>
                                     <div class="col-sm-4">
 
-                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { style = "width:300px", id = "QutationDate" } })
+                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "form-control", style = "width:150px;", id = "QutationDate" } })
                                         @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
                                     </div>
@@ -83,7 +73,7 @@
                                     <div class="col-sm-2">Invoice Number:</div>
                                     <div class="col-sm-4">
 
-                                        @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { style = "width:300px", id = "Qutation_ID" } })
+                                        @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control", style = "width:150px;", id = "Qutation_ID" } })
                                         @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
 
                                     </div>
@@ -96,13 +86,13 @@
                                             <div class="col-sm-4">Invoice period:</div>
                                             <div class="col-sm-4">
 
-                                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { style = "font-size:small;width:150px", id = "QutationDate", title = "Invoice Date" } })
+                                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "form-control", style = "font-size:small;width:150px", id = "QutationDate", title = "Invoice Date" } })
                                                 @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
                                             </div>
 
                                             <div class="col-sm-4">
-                                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { style = "font-size:small;width:150px", id = "DueDate", title = "Due Date" } })
+                                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", style = "font-size:small;width:150px", id = "DueDate", title = "Due Date" } })
                                                 @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
 
                                             </div>
@@ -115,7 +105,7 @@
                                     <div class="col-sm-2">Refrence Number:</div>
                                     <div class="col-sm-4">
 
-                                        @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { style = "width:300px", id = "RefNumber" } })
+                                        @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @class = "form-control", style = "width:300px", id = "RefNumber" } })
                                         @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-sm-6"></div>
@@ -124,8 +114,8 @@
                                 <div class="row" style="margin-top:3px">
                                     <div class="col-sm-2"><a href="#"> Add Discount:</a></div>
                                     <div class="col-sm-4">
-                                        <input type="text" value="Discount" />
-                                        @Html.EditorFor(model => model.DiscountAmount, new { htmlAttributes = new { style = "width:300px", id = "DiscountAmount" } })
+
+                                        @Html.EditorFor(model => model.DiscountAmount, new { htmlAttributes = new { @class = "form-control", style = "width:300px", id = "DiscountAmount" } })
                                         @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-sm-6"></div>
@@ -134,15 +124,15 @@
                                 <div class="row" style="margin-top:3px">
                                     <div class="col-sm-2"><a href="#"> Add VAT:</a></div>
                                     <div class="col-sm-4">
-                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { id = "AddVat" } })
+                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { @class = "form-control", id = "AddVat" } })
                                         @Html.ValidationMessageFor(model => model.Vat, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-sm-6"></div>
                                 </div>
 
                                 <div id="loadingDiv">
-                                 <img src="~/images/XtaS.gif" />
-                                 </div>
+                                    <img src="~/images/XtaS.gif" />
+                                </div>
                                 @*<div id="loadingDiv">Please wait while this page loads.</div>*@
                                 <div class="row">
                                     <table class="table" id="orderdetailsitems">
@@ -172,33 +162,33 @@
                                         <tbody class="tbody">
                                             <tr id="mainrow">
                                                 <td>
-                                                    <select id="SelectProductQutation" class="product"></select>
+                                                    <select id="SelectProductQutation" class="product form-control" style="width:150px;"></select>
                                                 </td>
                                                 <td>
-                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "quantity", id = "Quantity" } })
+                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "quantity form-control", style = "width:150px;", id = "Quantity" } })
                                                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
-                                                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate", id = "Rate" } })
+                                                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate form-control", style = "width:150px;", id = "Rate" } })
                                                         @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
 
                                                     </div>
                                                 </td>
                                                 <td>
 
-                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new {@class = " FTotal", id = "FTotal" } })
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "FTotal form-control", id = "FTotal", style = "width:150px;" } })
                                                     @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
-                                                    
-                                                        <select id="SelectVAT" class="VAT">
-                                                            <option>0</option>
-                                                            <option>6</option>
-                                                            <option>21</option>
-                                                        </select>
-                                                    
+
+                                                    <select id="SelectVAT" class="VAT form-control" style="width:150px;">
+                                                        <option>0</option>
+                                                        <option>6</option>
+                                                        <option>21</option>
+                                                    </select>
+
                                                 </td>
                                                 <td>
 
@@ -215,7 +205,7 @@
 
                                                         <td>
 
-                                                            <select Id="SelectProductQutation" class="product">
+                                                            <select Id="SelectProductQutation" class="product form-control" style="width:150px;">
                                                                 <option value="0">Select Item..</option>
                                                                 @foreach (var product in ViewBag.Product)
                                                                 {
@@ -224,18 +214,18 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="quantity" id="Quantity" value="@item.Quantity" />
+                                                            <input type="text" class="quantity form-control" id="Quantity" value="@item.Quantity" style="width:150px;" />
                                                         </td>
 
                                                         <td>
-                                                            <input type="text" class="rate" id="Rate" value="@item.Rate" />
+                                                            <input type="text" class="rate form-control" id="Rate" value="@item.Rate" style="width:150px;" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="FTotal" id="FTotal" value="@item.Total" readonly />
+                                                            <input type="text" class="FTotal form-control" id="FTotal" value="@item.Total" readonly="readonly" style="width:150px;" />
 
                                                         </td>
                                                         <td>
-                                                            <select id="SelectVAT" name="NewsCategoriesID" class="VAT">
+                                                            <select id="SelectVAT" name="NewsCategoriesID" class="VAT  form-control" style="width:150px;">
 
                                                                 @foreach (var item1 in ViewBag.VatDrop)
                                                                 {
@@ -329,7 +319,7 @@
                                 <div class="row">
                                     <div class="col-sm-2">Customer Note:</div>
                                     <div class="col-sm-6">
-                                        @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new {  id = "CustomerNote" } })
+                                        @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new {@class="form-control", id = "CustomerNote" } })
                                         @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-sm-2">Total:</div>
@@ -477,88 +467,88 @@
                                 <div class="row" style="margin-top:3px">
                                     <div class="col-sm-2"><a href="#"> Add VAT:</a></div>
                                     <div class="col-sm-4">
-                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { @class = "form-control",  id = "AddVat" } })
+                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { @class = "form-control", id = "AddVat" } })
                                         @Html.ValidationMessageFor(model => model.Vat, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-sm-6"></div>
                                 </div>
 
-                               
-                                    <table class="table" id="maintableQutation">
-                                       
-                                   
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th class="col-sm-5">
-                                                        Decriptio
-                                                    </th>
-                                                    <th class="col-sm-1">
-                                                        Quantity
-                                                    </th>
-                                                    <th class="col-sm-2">
-                                                        Price
-                                                    </th>
-                                                    <th class="col-sm-2">
-                                                        Total
-                                                    </th>
-                                                    <th class="col-sm-1">
-                                                        Vat
-                                                    </th>
-                                                    <th class="col-sm-1">
-                                                        Action
-                                                    </th>
 
-                                                </tr>
-                                            </thead>
-                                           
-                                            <tbody class="tbody">
-                                                <tr id="mainrow">
-                                                    <td>
-                                                        <select id="SelectProductQutation" class="product form-control" style="width:250px;"></select>
-                                                      
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { style = "width:120px;", @class = "quantity form-control", id = "Quantity" } })
-                                                        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
-                                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate form-control", style = "width:120px;", id = "Rate" } })
-                                                            @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-
-                                                        </div>
-                                                    </td>
-                                                    <td>
-
-                                                        @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "FTotal form-control", style = "width:150px;", @readonly = "readonly", id = "FTotal" } })
-                                                        @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                                                    </td>
-                                                    <td>
-                                                        <div>
-                                                            <select id="SelectVAT" class="VAT form-control" style="width:150px;">
-                                                                <option>0</option>
-                                                                <option>6</option>
-                                                                <option>21</option>
-                                                            </select>
-                                                        </div>
-                                                    </td>
-                                                    <td>
+                                <table class="table" id="maintableQutation">
 
 
-                                                        <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th class="col-sm-5">
+                                                Decriptio
+                                            </th>
+                                            <th class="col-sm-1">
+                                                Quantity
+                                            </th>
+                                            <th class="col-sm-2">
+                                                Price
+                                            </th>
+                                            <th class="col-sm-2">
+                                                Total
+                                            </th>
+                                            <th class="col-sm-1">
+                                                Vat
+                                            </th>
+                                            <th class="col-sm-1">
+                                                Action
+                                            </th>
 
-                                                </tr>
-                                            </tbody>
-</table>
+                                        </tr>
+                                    </thead>
 
-                                    <div id="OrderItems">
-                                        <table class="table table-responsive" id="orderdetailsitems"></table>
-                                        <span id="orderItemError" style="color:red"></span>
-                                    </div>
+                                    <tbody class="tbody">
+                                        <tr id="mainrow">
+                                            <td>
+                                                <select id="SelectProductQutation" class="product form-control" style="width:250px;"></select>
+
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { style = "width:120px;", @class = "quantity form-control", id = "Quantity" } })
+                                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
+                                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate form-control", style = "width:120px;", id = "Rate" } })
+                                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </td>
+                                            <td>
+
+                                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "FTotal form-control", style = "width:150px;", @readonly = "readonly", id = "FTotal" } })
+                                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <select id="SelectVAT" class="VAT form-control" style="width:150px;">
+                                                        <option>0</option>
+                                                        <option>6</option>
+                                                        <option>21</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
 
 
-                            
+                                                <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div id="OrderItems">
+                                    <table class="table table-responsive" id="orderdetailsitems"></table>
+                                    <span id="orderItemError" style="color:red"></span>
+                                </div>
+
+
+
 
                                 <hr />
 
@@ -618,7 +608,7 @@
                                 <div class="row">
                                     <div class="col-sm-2">Customer Note:</div>
                                     <div class="col-sm-6">
-                                        @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new { id = "CustomerNote" } })
+                                        @Html.TextAreaFor(model => model.CustomerNote, new { @class="form-control", htmlAttributes = new { id = "CustomerNote" } })
                                         @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="col-sm-2">Total:</div>

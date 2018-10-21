@@ -125,8 +125,8 @@ namespace InvoiceDiskLast.Controllers
                     List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                     ViewBag.Product = productModel;
 
-                    HttpResponseMessage responseQutation2 = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + id.ToString()).Result;
-                    MVCQutationModel ob = responseQutation2.Content.ReadAsAsync<MVCQutationModel>().Result;
+                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + id.ToString()).Result;
+                    MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
 
                     quutionviewModel.QutationID = ob.QutationID;
                     quutionviewModel.QutationDate = ob.QutationDate;
@@ -657,7 +657,7 @@ namespace InvoiceDiskLast.Controllers
                     QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                     QtDetails.Total = Convert.ToDouble(QDTList.Total);
                     QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                    HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetail", QtDetails).Result;
+                    HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                 }
 
                 List<MVCVatDetailsModel> mvcVatDetailsList = new List<MVCVatDetailsModel>();

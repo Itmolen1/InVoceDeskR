@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class ProductTable
     {
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
         public Nullable<double> SalePrice { get; set; }
@@ -24,5 +24,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> Company_ID { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
+    
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

@@ -79,6 +79,39 @@
           <Property Name="Company_ID" Type="int" />
           <Property Name="AddedDate" Type="date" />
         </EntityType>
+        <EntityType Name="PurchaseOrderDetailsTable">
+          <Key>
+            <PropertyRef Name="PurchaseOrderDetailsId" />
+          </Key>
+          <Property Name="PurchaseOrderDetailsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseItemId" Type="int" />
+          <Property Name="PurchaseDescription" Type="nvarchar" MaxLength="300" />
+          <Property Name="PurchaseQuantity" Type="int" />
+          <Property Name="PurchaseItemRate" Type="float" />
+          <Property Name="PurchaseTotal" Type="float" />
+          <Property Name="PurchaseVatPercentage" Type="float" />
+          <Property Name="PurchaseId" Type="int" />
+        </EntityType>
+        <EntityType Name="PurchaseOrderTable">
+          <Key>
+            <PropertyRef Name="PurchaseOrderID" />
+          </Key>
+          <Property Name="PurchaseOrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseID" Type="nvarchar" MaxLength="50" />
+          <Property Name="PurchaseDate" Type="date" />
+          <Property Name="PurchaseDueDate" Type="date" />
+          <Property Name="PurchaseRefNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="PurchaseSubTotal" Type="float" />
+          <Property Name="PurchaseDiscountPercenteage" Type="float" />
+          <Property Name="PurchaseDiscountAmount" Type="float" />
+          <Property Name="PurchaseVatPercentage" Type="float" />
+          <Property Name="PurchaseTotoalAmount" Type="float" />
+          <Property Name="PurchaseVenderNote" Type="nvarchar" MaxLength="300" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="AddedDate" Type="date" />
+        </EntityType>
         <EntityType Name="QutationDetailsTable">
           <Key>
             <PropertyRef Name="QutationDetailId" />
@@ -112,6 +145,54 @@
           <Property Name="CompanyId" Type="int" />
           <Property Name="ContactId" Type="int" />
         </EntityType>
+        <Association Name="FK_ContactsTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ContactsTable">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="Company_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
+          <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="0..1" />
+          <End Role="PurchaseOrderDetailsTable" Type="Self.PurchaseOrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseOrderTable">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Principal>
+            <Dependent Role="PurchaseOrderDetailsTable">
+              <PropertyRef Name="PurchaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="0..1" />
           <End Role="QutationDetailsTable" Type="Self.QutationDetailsTable" Multiplicity="*" />
@@ -124,15 +205,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QutationTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="APIcompanyModelStoreContainer">
           <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseOrderDetailsTable" EntityType="Self.PurchaseOrderDetailsTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseOrderTable" EntityType="Self.PurchaseOrderTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QutationDetailsTable" EntityType="Self.QutationDetailsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QutationTable" EntityType="Self.QutationTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="Self.FK_ContactsTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTable_ComapnyInfo" Association="Self.FK_ProductTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="ProductTable" EntitySet="ProductTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="Self.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
+            <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ComapnyInfo" Association="Self.FK_PurchaseOrderTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="Self.FK_QutationDetailsTable_QutationTable">
             <End Role="QutationTable" EntitySet="QutationTable" />
             <End Role="QutationDetailsTable" EntitySet="QutationDetailsTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="Self.FK_QutationTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -159,6 +274,10 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
+          <NavigationProperty Name="ProductTables" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ProductTable" />
+          <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
         </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
@@ -170,6 +289,28 @@
             <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
           </AssociationSet>
           <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
+          <EntitySet Name="PurchaseOrderDetailsTables" EntityType="APIcompanyModel.PurchaseOrderDetailsTable" />
+          <EntitySet Name="PurchaseOrderTables" EntityType="APIcompanyModel.PurchaseOrderTable" />
+          <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="APIcompanyModel.FK_ContactsTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTable_ComapnyInfo" Association="APIcompanyModel.FK_ProductTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="ProductTable" EntitySet="ProductTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ComapnyInfo" Association="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+            <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ContactsTable">
           <Key>
@@ -208,6 +349,7 @@
           <Property Name="Remarks" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="Addeddate" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
         </EntityType>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -243,6 +385,7 @@
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="ContactId" Type="Int32" />
           <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationTable" ToRole="QutationDetailsTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
         </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -270,7 +413,104 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="Company_ID" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ProductTable" ToRole="ComapnyInfo" />
         </EntityType>
+        <EntityType Name="PurchaseOrderDetailsTable">
+          <Key>
+            <PropertyRef Name="PurchaseOrderDetailsId" />
+          </Key>
+          <Property Name="PurchaseOrderDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseItemId" Type="Int32" />
+          <Property Name="PurchaseDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseQuantity" Type="Int32" />
+          <Property Name="PurchaseItemRate" Type="Double" />
+          <Property Name="PurchaseTotal" Type="Double" />
+          <Property Name="PurchaseVatPercentage" Type="Double" />
+          <Property Name="PurchaseId" Type="Int32" />
+          <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderDetailsTable" ToRole="PurchaseOrderTable" />
+        </EntityType>
+        <EntityType Name="PurchaseOrderTable">
+          <Key>
+            <PropertyRef Name="PurchaseOrderID" />
+          </Key>
+          <Property Name="PurchaseOrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
+          <Property Name="PurchaseDueDate" Type="DateTime" Precision="0" />
+          <Property Name="PurchaseRefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseSubTotal" Type="Double" />
+          <Property Name="PurchaseDiscountPercenteage" Type="Double" />
+          <Property Name="PurchaseDiscountAmount" Type="Double" />
+          <Property Name="PurchaseVatPercentage" Type="Double" />
+          <Property Name="PurchaseTotoalAmount" Type="Double" />
+          <Property Name="PurchaseVenderNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="PurchaseOrderTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="PurchaseOrderDetailsTables" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderTable" ToRole="PurchaseOrderDetailsTable" />
+        </EntityType>
+        <Association Name="FK_ContactsTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ContactsTable">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="Company_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderDetailsTable" Role="PurchaseOrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseOrderTable">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Principal>
+            <Dependent Role="PurchaseOrderDetailsTable">
+              <PropertyRef Name="PurchaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -386,6 +626,41 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseOrderDetailsTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderDetailsTable">
+              <MappingFragment StoreEntitySet="PurchaseOrderDetailsTable">
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+                <ScalarProperty Name="PurchaseVatPercentage" ColumnName="PurchaseVatPercentage" />
+                <ScalarProperty Name="PurchaseTotal" ColumnName="PurchaseTotal" />
+                <ScalarProperty Name="PurchaseItemRate" ColumnName="PurchaseItemRate" />
+                <ScalarProperty Name="PurchaseQuantity" ColumnName="PurchaseQuantity" />
+                <ScalarProperty Name="PurchaseDescription" ColumnName="PurchaseDescription" />
+                <ScalarProperty Name="PurchaseItemId" ColumnName="PurchaseItemId" />
+                <ScalarProperty Name="PurchaseOrderDetailsId" ColumnName="PurchaseOrderDetailsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PurchaseOrderTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderTable">
+              <MappingFragment StoreEntitySet="PurchaseOrderTable">
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PurchaseVenderNote" ColumnName="PurchaseVenderNote" />
+                <ScalarProperty Name="PurchaseTotoalAmount" ColumnName="PurchaseTotoalAmount" />
+                <ScalarProperty Name="PurchaseVatPercentage" ColumnName="PurchaseVatPercentage" />
+                <ScalarProperty Name="PurchaseDiscountAmount" ColumnName="PurchaseDiscountAmount" />
+                <ScalarProperty Name="PurchaseDiscountPercenteage" ColumnName="PurchaseDiscountPercenteage" />
+                <ScalarProperty Name="PurchaseSubTotal" ColumnName="PurchaseSubTotal" />
+                <ScalarProperty Name="PurchaseRefNumber" ColumnName="PurchaseRefNumber" />
+                <ScalarProperty Name="PurchaseDueDate" ColumnName="PurchaseDueDate" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="PurchaseID" ColumnName="PurchaseID" />
+                <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

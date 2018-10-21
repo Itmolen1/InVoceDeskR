@@ -38,5 +38,6 @@ namespace InvoiceDiskLast.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationDetailsTable> QutationDetailsTables { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

@@ -107,6 +107,8 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetProduct()
         {
 
+           
+
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
             var ProductList = response.Content.ReadAsAsync<IEnumerable<MVCProductModel>>().Result;
 
