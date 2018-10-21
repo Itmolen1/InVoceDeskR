@@ -2615,3 +2615,180 @@
       });
 
 </script>
+
+
+
+
+@*  samar purchase *@
+
+<script>
+    $(document).ready(function () {
+
+        $('#btn-InvoiceNew').click(function () {
+            LoadVernder();
+            $('#VenderSelectModel').modal('show');
+        });
+
+        $('#venderSelect').change(function () {
+
+            var value = $(this).val();
+            if (value == "AddNewVenderSelect") {
+
+                $('#VenderSelectModel').modal('hide');
+                $('#AddNewVenderModel').modal('show');
+
+            }
+
+        });
+
+
+
+        $('#VenderClientNext').click(function () {
+
+            var value = $('#venderSelect').val();
+            alert(value);
+            if (value > 0) {
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'GET',
+                    data: {
+                        id: value
+                    },
+                    success: function (data) {
+                        window.location.href = "/Purchase/AddOrEdit"
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+            else {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Please select client to continue',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            }
+        });
+
+        $('#SaveVender').click(function () {
+            $.ajax({
+                url: '/MVCClient/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ContactName: $('#VenderName').val(),
+                    Type: "Vender",
+                    ContactAddress: $('#VenderAddress').val()
+                },
+                success: function (data) {
+                    $('#AddNewVenderModel').modal('hide');
+                    LoadVernder();
+                    $('#VenderSelectModel').modal('show');
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+
+
+        });
+    });
+
+
+
+    function LoadVernder() {
+
+        $("#venderSelect").find("option").remove();
+
+        $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
+        $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
+
+        $.ajax({
+            url: "/Purchase/GetVender",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+</script>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#PurchaseDetailTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/Purchase/GetPurchaseList",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                   { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
+                     {
+                         "data": "PurchaseDate", "type": "date ",
+                         "render": function (value) {
+                             if (value === null) return "";
+                             var pattern = /Date\(([^)]+)\)/;//date format from server side
+                             var results = pattern.exec(value);
+                             var dt = new Date(parseFloat(results[1]));
+
+                             return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
+                         }, "autoWidth": true
+                     },
+                    {
+                        "data": "PurchaseDueDate", "type": "date ",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var pattern = /Date\(([^)]+)\)/;//date format from server side
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+
+                            return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
+                        }, "autoWidth": true
+                    },
+
+                   { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+
+                 { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
+                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+
+                    { "data": "Status", "name": "Status", "autoWidth": true },
+
+                   {
+                       render: function (data, type, row) {
+                           return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
+                       }
+                   }
+
+            ]
+        });
+
+
+    });
+</script>
