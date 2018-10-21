@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(List<MVCProductModel>))]
         public IHttpActionResult GetProductTables()
         {
-            var on = "";
+           
             List<MVCProductModel> i = new List<MVCProductModel>();
             IEnumerable<string> headerValues;
             //var DBLIST = "";
