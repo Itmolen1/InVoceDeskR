@@ -16,9 +16,11 @@ namespace InvoiceDiskLast.Controllers
 
         private DBEntities db = new DBEntities();
         // GET: api/APIQutation
-        public IQueryable<QutationTable> GetQutationTables()
+        public IHttpActionResult GetQutationTables()
         {
+            List<QutationTable> QutationModelObj = new List<QutationTable>();
             IEnumerable<string> headerValues;
+            //var DBLIST = "";
             var IDS = "";
             if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
@@ -26,7 +28,32 @@ namespace InvoiceDiskLast.Controllers
             }
             int id = Convert.ToInt32(IDS);
 
-            return db.QutationTables.Where(x => x.CompanyId == id);
+
+            var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new QutationTable
+            {
+
+               QutationID = c.QutationID,
+                Qutation_ID = c.Qutation_ID,
+                RefNumber = c.RefNumber,
+                QutationDate = c.QutationDate,
+                 DueDate = c.DueDate,
+                 SubTotal = c.SubTotal,
+                  TotalVat6 = c.TotalVat6,
+                TotalVat21 = c.TotalVat21,
+                 DiscountAmount = c.DiscountAmount,
+                 TotalAmount = c.TotalAmount,
+                 CustomerNote = c.CustomerNote,
+                 Status = c.Status,
+                 UserId = c.UserId,
+                 CompanyId = c.CompanyId,
+                 ContactId = c.ContactId
+
+
+    }).ToList();
+
+            return Ok(Qutationob);
+
+
         }
 
 

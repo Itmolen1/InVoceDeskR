@@ -22,17 +22,64 @@ namespace InvoiceDiskLast.Controllers
 
         // GET: api/ApiConatacts
         public IHttpActionResult GetContactsTables()    
-        {            
+        {
+            List<ContactsTable> ContactModel = new List<ContactsTable>();
             IEnumerable<string> headerValues;
-          
+            //var DBLIST = "";
             var IDS = "";
             if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
                 IDS = headerValues.FirstOrDefault();
-            }            
-           int id = Convert.ToInt32(IDS);
-            
-            return Ok(db.ContactsTables.Where(c => c.Company_Id == id).ToList());
+            }
+            int id = Convert.ToInt32(IDS);
+            // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
+
+            try
+            {
+                var obContact = db.ContactsTables.Where(x => x.Company_Id == id).Select(c => new MVCContactModel
+                {
+
+                    ContactsId = c.ContactsId,
+                    ContactName = c.ContactName,
+                    ContactAddress = c.ContactAddress,
+                    Company_Id = c.Company_Id,
+                    UserId = c.UserId,
+                    Type = c.Type,
+                    BillingPersonName = c.BillingPersonName,
+                    BillingCompanyName = c.BillingCompanyName,
+                    BillingAddress = c.BillingAddress,
+                    BillingCity = c.BillingCity,
+                    BillingState = c.BillingState,
+                    BillingCountry = c.BillingCountry,
+                    BillingZibCode = c.BillingZibCode,
+                    BillingEmail = c.BillingEmail,
+                    BillingVatTRN = c.BillingVatTRN,
+                    BillingPhone = c.BillingPhone,
+                    BillingMobile = c.BillingMobile,
+                    BillingFax = c.BillingFax,
+                    ShippingPersonName = c.ShippingPersonName,
+                    ShippingAddress = c.ShippingAddress,
+                    ShippingCompanyName = c.ShippingCompanyName,
+                    ShippingCity = c.ShippingCity,
+                    ShippingState = c.ShippingState,
+                    ShippingCountry = c.ShippingCountry,
+                    ShippingZIP = c.ShippingZIP,
+                    ShippingEmail = c.ShippingEmail,
+                    ShippingVatTRN = c.ShippingVatTRN,
+                    ShippingMobile = c.ShippingMobile,
+                    ShippingPhone = c.ShippingPhone,
+                    ShippingFax = c.ShippingFax,
+                    Remarks = c.Remarks,
+                    Addeddate = c.Addeddate,
+                    Status = c.Status,
+                }).ToList();
+
+                return Ok(obContact);
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
 
         }
 
