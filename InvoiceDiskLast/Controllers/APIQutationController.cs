@@ -29,7 +29,7 @@ namespace InvoiceDiskLast.Controllers
             int id = Convert.ToInt32(IDS);
 
 
-            var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new QutationTable
+            var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new MVCQutationModel
             {
 
                QutationID = c.QutationID,
@@ -44,12 +44,10 @@ namespace InvoiceDiskLast.Controllers
                  TotalAmount = c.TotalAmount,
                  CustomerNote = c.CustomerNote,
                  Status = c.Status,
-                 UserId = c.UserId,
-                 CompanyId = c.CompanyId,
+                 UserId = c.UserId,               
                  ContactId = c.ContactId
 
-
-    }).ToList();
+             }).ToList();
 
             return Ok(Qutationob);
 

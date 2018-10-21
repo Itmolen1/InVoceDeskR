@@ -97,7 +97,8 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound();
+                return null;
+
             }
 
         }
@@ -106,13 +107,61 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ContactsTable))]
         public IHttpActionResult GetContactsTable(int id)
         {
-            ContactsTable contactsTable = db.ContactsTables.Find(id);
-            if (contactsTable == null)
+            //var Contactmodel = new MVCContactModel(); 
+
+            try
+            {
+
+                MVCContactModel Contactmodel = db.ContactsTables.Where(x => x.ContactsId == id).Select(c => new MVCContactModel
+                {
+                    ContactsId = c.ContactsId,
+                    ContactName = c.ContactName,
+                    ContactAddress = c.ContactAddress,
+                    Company_Id = c.Company_Id,
+                    UserId = c.UserId,
+                    Type = c.Type,
+                    BillingPersonName = c.BillingPersonName,
+                    BillingCompanyName = c.BillingCompanyName,
+                    BillingAddress = c.BillingAddress,
+                    BillingCity = c.BillingCity,
+                    BillingState = c.BillingState,
+                    BillingCountry = c.BillingCountry,
+                    BillingZibCode = c.BillingZibCode,
+                    BillingEmail = c.BillingEmail,
+                    BillingVatTRN = c.BillingVatTRN,
+                    BillingPhone = c.BillingPhone,
+                    BillingMobile = c.BillingMobile,
+                    BillingFax = c.BillingFax,
+                    ShippingPersonName = c.ShippingPersonName,
+                    ShippingAddress = c.ShippingAddress,
+                    ShippingCompanyName = c.ShippingCompanyName,
+                    ShippingCity = c.ShippingCity,
+                    ShippingState = c.ShippingState,
+                    ShippingCountry = c.ShippingCountry,
+                    ShippingZIP = c.ShippingZIP,
+                    ShippingEmail = c.ShippingEmail,
+                    ShippingVatTRN = c.ShippingVatTRN,
+                    ShippingMobile = c.ShippingMobile,
+                    ShippingPhone = c.ShippingPhone,
+                    ShippingFax = c.ShippingFax,
+                    Remarks = c.Remarks,
+                    Addeddate = c.Addeddate,
+                    Status = c.Status,
+                }).FirstOrDefault();
+                             
+
+                if (Contactmodel == null)
+                {
+                    return NotFound();
+                }
+                return Ok(Contactmodel);
+            }
+            catch (Exception ex)
             {
                 return NotFound();
-            }
-
-            return Ok(contactsTable);
+            }          
+            
+           
         }
 
         // PUT: api/ApiConatacts/5

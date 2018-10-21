@@ -28,15 +28,47 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ComapnyInfo))]
         public IHttpActionResult GetComapnyInfo(int id)
         {
-            ComapnyInfo comapnyInfo = db.ComapnyInfoes.Find(id);
-            if (comapnyInfo == null)
+            try
             {
-                return NotFound();
+                MVCCompanyInfoModel comapnyInfo = db.ComapnyInfoes.Where(x => x.CompanyID == id).Select(c => new MVCCompanyInfoModel
+                {
+
+                    CompanyID = c.CompanyID,
+                    CompanyName = c.CompanyName,
+                    CompanyAddress = c.CompanyAddress,
+                    CompanyPhone = c.CompanyPhone,
+                    CompanyCell = c.CompanyCell,
+                    CompanyEmail = c.CompanyEmail,
+                    CompanyLogo = c.CompanyLogo,
+                    CompanyTRN = c.CompanyTRN,
+                    ComapnyFax = c.ComapnyFax,
+                    CompanySubTitile = c.CompanySubTitile,
+                    CompanyCity = c.CompanyCity,
+                    CompanyState = c.CompanyState,
+                    CompanyCountry = c.CompanyCountry,
+                    AddedBy = c.AddedBy,
+                    AddedDate = c.AddedDate,
+                    UserName = c.UserName
+
+                }).FirstOrDefault();
+
+                if (comapnyInfo != null)
+                {
+                    Request.Content.Headers.Add("CompayID", comapnyInfo.CompanyID.ToString());
+                    Request.Headers.Add("CompayID", comapnyInfo.CompanyID.ToString());
+                    return Ok(comapnyInfo);
+                }
+                else
+                {
+                    return null;
+                }
             }
-                       
-            Request.Content.Headers.Add("CompayID", comapnyInfo.CompanyID.ToString());
-            Request.Headers.Add("CompayID", comapnyInfo.CompanyID.ToString());
-            return Ok(comapnyInfo);
+            catch(Exception ex)
+            {
+                return null;
+            }
+                   
+           
         }
 
         // PUT: api/APIComapny/5
