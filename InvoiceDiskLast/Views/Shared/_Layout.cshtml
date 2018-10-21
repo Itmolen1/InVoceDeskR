@@ -2522,3 +2522,115 @@
       });
 
 </script>
+
+
+@*  samar purchase *@
+
+<script>
+    $(document).ready(function () {
+
+         $('#btn-InvoiceNew').click(function () {
+              LoadVernder();
+              $('#VenderSelectModel').modal('show');
+         });
+
+         $('#venderSelect').change(function () {
+
+            var value = $(this).val();
+            if (value == "AddNewVenderSelect") {
+
+                $('#VenderSelectModel').modal('hide');
+                $('#AddNewVenderModel').modal('show');
+
+            }
+
+        });
+
+
+
+         $('#VenderClientNext').click(function () {
+
+            var value = $('#venderSelect').val();
+
+            if (value > 0) {
+                $.ajax({
+                    url: '/Purchase/AddOrEdit',
+                    type: 'GET',
+                    data: {
+                        id: value
+                    },
+                    success: function (data) {
+                        window.location.href = "/MVCQutation/AddOrEdit"
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+            else
+            {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Please select client to continue',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            }
+        });
+
+        $('#SaveVender').click(function () {
+            $.ajax({
+                url: '/MVCClient/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ContactName: $('#VenderName').val(),
+                    Type:"Vender",
+                    ContactAddress: $('#VenderAddress').val()
+                },
+                success: function (data) {
+                    $('#AddNewVenderModel').modal('hide');
+                    LoadVernder();
+                    $('#VenderSelectModel').modal('show');
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+
+
+        });
+    });
+
+
+
+    function LoadVernder() {
+
+        $("#venderSelect").find("option").remove();
+
+        $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
+        $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
+
+        $.ajax({
+            url: "/Purchase/GetVender",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {           
+                $.each(data, function (key, item) {               
+                    $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+</script>
+
+

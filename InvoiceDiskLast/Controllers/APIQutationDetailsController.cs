@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // GET: api/APIQutationDetail/5
-        [ResponseType(typeof(List<MVCQutationViewModel>))]
+        [ResponseType(typeof(List<MvcPurchaseViewModel>))]
         public IHttpActionResult GetQutationDetailsTable(int id)
         {
 
@@ -48,7 +48,7 @@ namespace InvoiceDiskLast.Controllers
                 var query = (from pd in db.QutationDetailsTables
                              join p in db.ProductTables on pd.ItemId equals p.ProductId
                              where pd.QutationID == id
-                             select new MVCQutationViewModel
+                             select new MvcPurchaseViewModel
                              {
                                  ItemId = pd.ItemId,
                                  QutationID = pd.QutationID,

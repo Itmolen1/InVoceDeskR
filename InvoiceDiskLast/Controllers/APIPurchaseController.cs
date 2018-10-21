@@ -1,10 +1,13 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -13,6 +16,7 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
 
 
+    
         //get list
         public IHttpActionResult GetPurchaseOrder()
         {
@@ -40,11 +44,109 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
-             
+
             }
 
             return Ok(ob);
 
+        }
+        // GET: api/APIQutation/5
+        [ResponseType(typeof(PurchaseOrderTable))]
+        public IHttpActionResult GetPurchaseTable(int id)
+        {
+            PurchaseOrderTable PurchaseTable = db.PurchaseOrderTables.Find(id);
+            if (PurchaseTable == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(PurchaseTable);
+        }
+
+        // PUT: api/APIQutation/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutPurchaseTable(int id, PurchaseOrderTable PurchaseTable)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != PurchaseTable.PurchaseOrderID)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(PurchaseTable).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return StatusCode(HttpStatusCode.OK);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PurchaseTableExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+
+        }
+
+
+        private bool PurchaseTableExists(int id)
+        {
+            return db.PurchaseOrderTables.Count(e => e.PurchaseOrderID == id) > 0;
+        }
+
+
+        // POST: api/APIQutation
+        [ResponseType(typeof(PurchaseOrderTable))]
+        public HttpResponseMessage PostQutationTable([FromBody] PurchaseOrderTable Purchasetable)
+        {
+            using (DBEntities entities = new DBEntities())
+            {
+                entities.PurchaseOrderTables.Add(Purchasetable);
+                entities.SaveChanges();
+
+                var massage = Request.CreateResponse(HttpStatusCode.Created, Purchasetable);
+                massage.Headers.Location = new Uri(Request.RequestUri + Purchasetable.PurchaseOrderID.ToString());
+                massage.Content.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
+                massage.RequestMessage.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
+                return massage;
+
+            }
+        }
+
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+
+        [ResponseType(typeof(PurchaseOrderTable))]
+        public IHttpActionResult DeleteQutationTable(int id)
+        {
+            PurchaseOrderTable PurchaseTable = db.PurchaseOrderTables.Find(id);
+            if (PurchaseTable == null)
+            {
+                return NotFound();
+            }
+            db.PurchaseOrderTables.Remove(PurchaseTable);
+            db.SaveChanges();
+
+            return Ok(PurchaseTable);
         }
 
     }

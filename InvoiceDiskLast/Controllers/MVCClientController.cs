@@ -22,7 +22,6 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetContacts()
         {
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
-
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 

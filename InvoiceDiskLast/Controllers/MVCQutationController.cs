@@ -79,7 +79,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
         {
-            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
+            MvcPurchaseViewModel quutionviewModel = new MvcPurchaseViewModel();
             try
             {
 
@@ -111,7 +111,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (id == 0)
                 {
-                    return View(new MVCQutationViewModel());
+                    return View(new MvcPurchaseViewModel());
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddOrEdit(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult AddOrEdit(MvcPurchaseViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
@@ -361,7 +361,7 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
 
             HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationID.ToString()).Result;
-            List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+            List<MvcPurchaseViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
             ViewBag.Contentdata = contectmodel;
             ViewBag.Companydata = companyModel;
@@ -390,14 +390,9 @@ namespace InvoiceDiskLast.Controllers
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
 
-
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-             
-
-
-
+           
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
@@ -408,7 +403,7 @@ namespace InvoiceDiskLast.Controllers
 
 
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quautionId.ToString()).Result;
-                List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+                List<MvcPurchaseViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
@@ -447,7 +442,7 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
 
             HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetail/" + quttationId.ToString()).Result;
-            List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+            List<MvcPurchaseViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
             ViewBag.Contentdata = contectmodel;
             ViewBag.Companydata = companyModel;
@@ -496,7 +491,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-                MVCQutationViewModel viewModel = new MVCQutationViewModel();
+                MvcPurchaseViewModel viewModel = new MvcPurchaseViewModel();
 
                 
                 viewModel.QutationDetailId = QutationDetailID;
@@ -612,7 +607,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult Save(MVCQutationViewModel mvcQutationViewModel)
+        public ActionResult Save(MvcPurchaseViewModel mvcQutationViewModel)
         {
             bool Status = false;
             var Qutationid = "";
@@ -724,7 +719,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult SaveEmail(MvcPurchaseViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
@@ -804,7 +799,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveEmailAdd(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult SaveEmailAdd(MvcPurchaseViewModel MVCQutationViewModel)
         {
             var Qutationid = "";
             int Qid = 0;
@@ -925,7 +920,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult savePrintAndSentItToYourSenf(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult savePrintAndSentItToYourSenf(MvcPurchaseViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
@@ -1004,7 +999,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult savePrintAndSentItToYouronsave(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult savePrintAndSentItToYouronsave(MvcPurchaseViewModel MVCQutationViewModel)
         {
             var Qutationid = "";
             int Qid = 0;
