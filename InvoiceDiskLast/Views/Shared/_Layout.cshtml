@@ -757,6 +757,20 @@
           
         });
 
+
+        $('#SelectProductQutation').change(function () {
+
+            var value = $(this).val();
+            if (value == "AddNewProductSelect") {
+
+                $('#CreateNewProductModalAdd').modal('show');
+
+            }
+
+        });
+
+
+
         $('#QutationClientNext').click(function () {           
            
             var value =  $('#SelectContacts1').val();           
@@ -1592,13 +1606,16 @@
     });
 
     function LoadProduct() {
-        debugger;
+
+      
+
         if ($('#SelectProductQutation').has('option').length > 0) {
             return;
         }
         else {
             $("#SelectProductQutation").find("option").remove();
             $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
+            $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
             $.ajax({
                 url: "/MVCProduct/GetProduct",
@@ -1625,6 +1642,49 @@
 
 
     }
+
+
+
+
+
+    function LoadProductAdding() {
+       
+            $("#SelectProductQutation").find("option").remove();
+            $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
+            $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+            $.ajax({
+                url: "/MVCProduct/GetProduct",
+                type: "Get",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $.each(data, function (key, item) {
+
+                        $('#SelectProductQutation').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+
+                    });
+
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
+        }
+
+
+
+    
+
+
+
+
+
+
+
 
     $('#Rate').keyup(function () {
         currentRow1 = $(this).closest("tr");
@@ -2084,6 +2144,39 @@
                 }
             });
 
+        });
+
+        $('#SaveNewProductModel').click(function () {
+            $.ajax({
+                url: '/MVCProduct/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ProductName: $('#ProductName').val(),
+                    Description: $('#Description').val(),
+                    SalePrice: $('#SalePrice').val(),
+                    PurchasePrice: $('#PurchasePrice').val(),
+                    Type: $('#Type').val(),
+                    OpeningQuantity: $('#OpeningQuantity').val()
+
+                },
+                success: function (data) {
+                    $('#CreateNewProductModalAdd').modal('hide');
+                    LoadProductAdding();
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Your opration has been successfuly completed `loader`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                   
+                    //$("#productTable").ajax.reload();
+                    //SuccessInsert();
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
         });
 
         $('#UpdateProduct').click(function () {
