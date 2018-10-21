@@ -21,5 +21,15 @@ namespace InvoiceDiskLast.Controllers
             var id = Session["id"];
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Logut()
+        {
+            Session.Clear();
+            Session.Abandon();
+
+            //return RedirectToAction("Index","Login");
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
     }
 }

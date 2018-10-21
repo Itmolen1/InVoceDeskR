@@ -1,5 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
+
+ 
+   @*@if(Session["CompayID"] == null)
+   {
+       Response.Redirect("/Login/Index");   
+   }*@
+
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -334,9 +342,10 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                                @*<a class="dropdown-item"><i href="javascript:void(0)" class="fa fa-power-off" id="Logouts"></i> Logout</a>*@
+                                <div class="p-l-30 p-10"><a href="javascript:void(0)" id="Logout" class="btn btn-sm btn-warning  btn-rounded"><i class="fa fa-power-off"></i>        LogOut</a></div>
                                 <div class="dropdown-divider"></div>
-                                <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
+                                <div class="p-l-30 p-10"><a href="javascript:void(0)" id="Logout1" class="btn btn-sm btn-success  btn-rounded">View Profile</a></div>
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -416,9 +425,9 @@
                                 <li><a href="pages-animation.html">Animation</a></li>
                                 <li><a href="pages-fix-innersidebar.html">Sticky Left sidebar</a></li>
                                 <li><a href="pages-fix-inner-right-sidebar.html">Sticky Right sidebar</a></li>
-                                <li><a href="/MVCProduct/Index">Invoice</a></li>
-                                <li><a href="/MVCClient/Index">Contacts</a></li>
-                                <li><a href="pages-utility-classes.html">Helper Classes</a></li>
+                                <li><a href="/MVCProduct/Index">Product</a></li>
+                                <li><a href="/MVCClient/Index">Clients</a></li>
+                                <li><a href="/MVCQutation/Index">Qutation</a></li>
                                 <li><a href="pages-search-result.html">Search result</a></li>
                                 <li><a href="pages-scroll.html">Scrollbar</a></li>
                                 <li><a href="pages-pricing.html">Pricing</a></li>
@@ -675,7 +684,11 @@
     });
 
     
-
+    @*$(window).load(function () {
+        if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null) {
+            window.location.href = "/Login/Index";
+        }
+    });*@
 
 
 </script>
@@ -2218,6 +2231,23 @@
                 });
             }
         });
+
+        $('#Logout').click(function () {
+            debugger;
+            $.ajax({
+                url: "/Login/Logut",
+                type: "POST",
+                dataType: "json",
+                success: function (resultData) {
+                    sessionStorage.removeItem('accessToken');
+                    window.location.href = "/Login/Index";
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        });
         
     });
 
@@ -2249,7 +2279,6 @@
             }
         });       
     }
-
 
     function EditContact(ContactsId)    {
         $.ajax({

@@ -15,9 +15,41 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
         // GET: api/APIProduct
-        public IQueryable<ProductTable> GetProductTables()
+
+
+
+        [ResponseType(typeof(List<MVCProductModel>))]
+        public IHttpActionResult GetProductTables()
         {
-            return db.ProductTables;
+           
+            List<MVCProductModel> i = new List<MVCProductModel>();
+            IEnumerable<string> headerValues;
+            //var DBLIST = "";
+            var IDS = "";
+            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+            {
+                IDS = headerValues.FirstOrDefault();
+            }
+            int id = Convert.ToInt32(IDS);
+            // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
+            
+
+          var ob=   db.ProductTables.Where(x => x.Company_ID == id).Select(c => new MVCProductModel
+            {
+
+                ProductId = c.ProductId,
+                ProductName = c.ProductName,
+                Description = c.Description,
+                SalePrice = c.SalePrice,
+                PurchasePrice = c.PurchasePrice,
+                Type = c.Type,
+                OpeningQuantity = c.OpeningQuantity,
+                AddedBy = c.AddedBy,
+                Company_ID = c.Company_ID,
+                AddedDate = c.AddedDate,
+            }).ToList();
+
+            return Ok(ob);
         }
 
 

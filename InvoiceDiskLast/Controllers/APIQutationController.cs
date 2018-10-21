@@ -18,7 +18,15 @@ namespace InvoiceDiskLast.Controllers
         // GET: api/APIQutation
         public IQueryable<QutationTable> GetQutationTables()
         {
-            return db.QutationTables;
+            IEnumerable<string> headerValues;
+            var IDS = "";
+            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+            {
+                IDS = headerValues.FirstOrDefault();
+            }
+            int id = Convert.ToInt32(IDS);
+
+            return db.QutationTables.Where(x => x.CompanyId == id);
         }
 
 

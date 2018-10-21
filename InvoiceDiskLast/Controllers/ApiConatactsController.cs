@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
 
         // GET: api/ApiConatacts
-        public List<ContactsTable> GetContactsTables()    
+        public IHttpActionResult GetContactsTables()    
         {            
             IEnumerable<string> headerValues;
           
@@ -32,7 +32,7 @@ namespace InvoiceDiskLast.Controllers
             }            
            int id = Convert.ToInt32(IDS);
             
-            return db.ContactsTables.Where(c => c.Company_Id == id).ToList();
+            return Ok(db.ContactsTables.Where(c => c.Company_Id == id).ToList());
 
         }
 

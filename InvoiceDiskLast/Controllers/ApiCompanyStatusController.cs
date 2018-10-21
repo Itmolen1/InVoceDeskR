@@ -22,7 +22,7 @@ namespace InvoiceDiskLast.Controllers
             int companyId = 0;
             if (Result == true)
             {
-                companyId = db.ComapnyInfoes.Where(u => u.UserName == id.ToString()).Select(c => c.CompanyID).FirstOrDefault();
+                companyId = db.ComapnyInfoes.Where(u => u.UserName == id.ToString()).Select(c =>(int) c.CompanyID).FirstOrDefault();
    
                 return companyId;
                 

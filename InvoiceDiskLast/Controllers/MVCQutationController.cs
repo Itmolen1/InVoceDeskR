@@ -39,6 +39,11 @@ namespace InvoiceDiskLast.Controllers
                 string search = Request.Form.GetValues("search[value]")[0];
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
+                int companyId = Convert.ToInt32(Session["CompayID"]);
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
+
                 HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("APIQutation").Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationModel>>().Result;
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
