@@ -22,7 +22,7 @@ namespace InvoiceDiskLast.Controllers
         public IHttpActionResult GetProductTables()
         {
            
-            List<MVCProductModel> i = new List<MVCProductModel>();
+            List<ProductTable> i = new List<ProductTable>();
             IEnumerable<string> headerValues;
             //var DBLIST = "";
             var IDS = "";
