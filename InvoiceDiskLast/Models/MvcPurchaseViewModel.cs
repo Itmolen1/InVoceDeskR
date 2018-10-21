@@ -15,7 +15,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> PurchaseItemRate { get; set; }
         public Nullable<double> PurchaseTotal { get; set; }
         public Nullable<double> PurchaseVatPercentage { get; set; }
-        public Nullable<int> PurchaseId { get; set; }
+        public int ? PurchaseId { get; set; }
 
 
         public int PurchaseOrderID { get; set; }
@@ -34,6 +34,10 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> UserId { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
 
+
+        public string PurchaseItemName { get; set; }
+        
+        public List<MVCPurchaseDetailsModel> PurchaseDetailslist { get; set; }
 
     }
 }

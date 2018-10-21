@@ -79,7 +79,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
         {
-            MvcPurchaseViewModel quutionviewModel = new MvcPurchaseViewModel();
+            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
             try
             {
 
@@ -168,7 +168,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddOrEdit(MvcPurchaseViewModel MVCQutationViewModel)
+        public ActionResult AddOrEdit(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
@@ -491,7 +491,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-                MvcPurchaseViewModel viewModel = new MvcPurchaseViewModel();
+                MVCQutationViewModel viewModel = new MVCQutationViewModel();
 
                 
                 viewModel.QutationDetailId = QutationDetailID;
@@ -607,7 +607,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult Save(MvcPurchaseViewModel mvcQutationViewModel)
+        public ActionResult Save(MVCQutationViewModel mvcQutationViewModel)
         {
             bool Status = false;
             var Qutationid = "";
@@ -719,7 +719,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveEmail(MvcPurchaseViewModel MVCQutationViewModel)
+        public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
@@ -799,7 +799,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveEmailAdd(MvcPurchaseViewModel MVCQutationViewModel)
+        public ActionResult SaveEmailAdd(MVCQutationViewModel MVCQutationViewModel)
         {
             var Qutationid = "";
             int Qid = 0;
@@ -920,7 +920,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult savePrintAndSentItToYourSenf(MvcPurchaseViewModel MVCQutationViewModel)
+        public ActionResult savePrintAndSentItToYourSenf(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
@@ -999,7 +999,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult savePrintAndSentItToYouronsave(MvcPurchaseViewModel MVCQutationViewModel)
+        public ActionResult savePrintAndSentItToYouronsave(MVCQutationViewModel MVCQutationViewModel)
         {
             var Qutationid = "";
             int Qid = 0;

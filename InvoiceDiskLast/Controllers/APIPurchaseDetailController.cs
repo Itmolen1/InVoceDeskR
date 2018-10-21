@@ -1,6 +1,8 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -48,14 +50,14 @@ namespace InvoiceDiskLast.Controllers
                              where pd.PurchaseId == id
                              select new MvcPurchaseViewModel
                              {
-                                 ItemId = pd.PurchaseItemId,
-                                 pur = pd.pu,
-                                 Rate = pd.Rate,
-                                 Quantity = pd.Quantity,
-                                 Vat = pd.Vat,
-                                 ItemName = p.ProductName,
-                                 Total = pd.Total,
-                                 QutationDetailId = pd.QutationDetailId
+                                 PurchaseItemId = pd.PurchaseItemId,
+                                // PurchaseID = pd.PurchaseID,
+                                 PurchaseItemRate = pd.PurchaseItemRate,
+                                 PurchaseQuantity = pd.PurchaseQuantity,
+                                 PurchaseVatPercentage = pd.PurchaseVatPercentage,
+                                 PurchaseItemName = p.ProductName,
+                                 PurchaseTotal = pd.PurchaseTotal,
+                                 PurchaseOrderDetailsId = pd.PurchaseOrderDetailsId
                              }).ToList();
 
 

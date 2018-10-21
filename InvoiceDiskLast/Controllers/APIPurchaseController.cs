@@ -23,7 +23,17 @@ namespace InvoiceDiskLast.Controllers
             object ob = new object();
             try
             {
-                ob = db.PurchaseOrderTables.ToList().Select(p => new MvcPurchaseModel
+
+                IEnumerable<string> headerValues;
+                //var DBLIST = "";
+                var IDS = "";
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                }
+                int id = Convert.ToInt32(IDS);
+
+                ob = db.PurchaseOrderTables.Where(p=>p.CompanyId== id).ToList().Select(p => new MvcPurchaseModel
                 {
                     PurchaseOrderID = p.PurchaseOrderID,
                     PurchaseID = p.PurchaseID,
@@ -50,18 +60,18 @@ namespace InvoiceDiskLast.Controllers
             return Ok(ob);
 
         }
-        // GET: api/APIQutation/5
-        [ResponseType(typeof(PurchaseOrderTable))]
-        public IHttpActionResult GetPurchaseTable(int id)
-        {
-            PurchaseOrderTable PurchaseTable = db.PurchaseOrderTables.Find(id);
-            if (PurchaseTable == null)
-            {
-                return NotFound();
-            }
+        //// GET: api/APIQutation/5
+        //[ResponseType(typeof(PurchaseOrderTable))]
+        //public IHttpActionResult GetPurchaseTable(int id)
+        //{
+        //    PurchaseOrderTable PurchaseTable = db.PurchaseOrderTables.Find(id);
+        //    if (PurchaseTable == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(PurchaseTable);
-        }
+        //    return Ok(PurchaseTable);
+        //}
 
         // PUT: api/APIQutation/5
         [ResponseType(typeof(void))]

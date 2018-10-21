@@ -48,7 +48,7 @@ namespace InvoiceDiskLast.Controllers
                 var query = (from pd in db.QutationDetailsTables
                              join p in db.ProductTables on pd.ItemId equals p.ProductId
                              where pd.QutationID == id
-                             select new MvcPurchaseViewModel
+                             select new MVCQutationViewModel
                              {
                                  ItemId = pd.ItemId,
                                  QutationID = pd.QutationID,
