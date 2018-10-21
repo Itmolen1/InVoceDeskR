@@ -87,7 +87,7 @@ namespace InvoiceDiskLast.Controllers
                 var cdd = Session["CompayID"];
 
 
-                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                 if (Session["ClientID"]  != null && Session["CompayID"] != null)
                 {
                     Contectid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);

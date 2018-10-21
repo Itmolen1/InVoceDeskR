@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class ContactsTable
     {
-        public int ContactsId { get; set; }
+        public int? ContactsId { get; set; }
         public string ContactName { get; set; }
         public string ContactAddress { get; set; }
         public Nullable<int> Company_Id { get; set; }
