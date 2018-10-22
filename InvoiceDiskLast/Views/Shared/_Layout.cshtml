@@ -806,7 +806,8 @@
                 type: 'POST',
                 data: {
                     ContactName: $('#ContactName').val(),
-                    ContactAddress: $('#ContactAddress').val()
+                    ContactAddress: $('#ContactAddress').val(),
+                    Type:"Customer"
                 },
                 success: function (data) {
                     $('#AddNewContactModel').modal('hide');
@@ -1333,6 +1334,7 @@
                     QutationIdd = result.QutationId;
                     localStorage.setItem('path', result.path);
                     if (result.Status == "Success") {
+
                         swal({
                             title: 'Qutation!',
                             text: 'Qutation save successfully!',

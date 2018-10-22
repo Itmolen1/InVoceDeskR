@@ -24,8 +24,14 @@ namespace InvoiceDiskLast.Controllers
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
+            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CustomerStatus");
 
+            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CustomerStatus", "Customer");
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts").Result;
+
+
+         
+        
             var ProductList = response.Content.ReadAsAsync<IEnumerable<MVCContactModel>>().Result;
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -167,7 +173,7 @@ namespace InvoiceDiskLast.Controllers
                     mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]);
                     mvcContactModel.UserId = 1;
                     mvcContactModel.Addeddate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
-
+                    mvcContactModel.Type = mvcContactModel.Type;
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("ApiConatacts", mvcContactModel).Result;
 
                     return Json(response.StatusCode, JsonRequestBehavior.AllowGet);

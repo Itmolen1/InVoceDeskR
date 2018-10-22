@@ -41,9 +41,9 @@ namespace InvoiceDiskLast.Controllers
             // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
             try
             {
-                if (status != "" && status == "Vender")
+                if (status != "")
                 {
-                    var obvender = db.ContactsTables.Where(x => x.Company_Id == id && x.Type== "Vender" && x.ContactsId!=null).Select(c => new MVCContactModel
+                    var obvender = db.ContactsTables.Where(x => x.Company_Id == id && x.Type == status && x.ContactsId != null).Select(c => new MVCContactModel
                     {
                         ContactsId = c.ContactsId,
                         ContactName = c.ContactName,
@@ -52,6 +52,7 @@ namespace InvoiceDiskLast.Controllers
 
                     return Ok(obvender);
                 }
+               
                 else
                 {
 
