@@ -10,25 +10,18 @@ namespace InvoiceDiskLast.Controllers
     {
         public ActionResult Index()
         {
-            string AlreadCheck = "";
-         
-            if (Session["CompayID"] == null )
+            if (Session["CompayID"] == null)
             {
-                if (AlreadCheck == "")
-                {
-                    AlreadCheck = "true";
-
-                    return RedirectToAction("Index", "Login");
-                }
-                else
-                {
-                   // return RedirectToAction("Index", "Login");
-                }  
+                return RedirectToAction("Index", "Login");        
             }
-           
+            else
+            {
+
+                ViewBag.Title = "Home Page";
+
                 return View();
             }
-        
+        }
               
 
        
