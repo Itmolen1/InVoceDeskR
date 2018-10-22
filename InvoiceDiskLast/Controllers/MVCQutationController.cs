@@ -91,11 +91,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     Contectid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Login");
-                }
+              
 
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
@@ -111,7 +107,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (id == 0)
                 {
-                    return View(new MvcPurchaseViewModel());
+                    return View(new MVCQutationViewModel());
                 }
                 else
                 {
@@ -155,6 +151,11 @@ namespace InvoiceDiskLast.Controllers
 
 
                     return View(quutionviewModel);
+                }
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
                 }
 
             }
