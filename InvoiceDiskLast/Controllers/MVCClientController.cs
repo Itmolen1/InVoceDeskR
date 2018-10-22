@@ -136,6 +136,20 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        public JsonResult AddOrEditQutation(int Qutationid)
+        {
+
+            MVCQutationModel m = new Models.MVCQutationModel();
+
+                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + Qutationid.ToString()).Result;
+               m = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                Session["ClientID"] = m.ContactId;
+            return Json("", JsonRequestBehavior.AllowGet);
+            
+        }
+
+
         [HttpPost]
         public ActionResult AddOrEdit(MVCContactModel mvcContactModel)
         {

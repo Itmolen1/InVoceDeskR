@@ -32,22 +32,22 @@ namespace InvoiceDiskLast.Controllers
             var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new MVCQutationModel
             {
 
-               QutationID = c.QutationID,
+                QutationID = c.QutationID,
                 Qutation_ID = c.Qutation_ID,
                 RefNumber = c.RefNumber,
                 QutationDate = c.QutationDate,
-                 DueDate = c.DueDate,
-                 SubTotal = c.SubTotal,
-                  TotalVat6 = c.TotalVat6,
+                DueDate = c.DueDate,
+                SubTotal = c.SubTotal,
+                TotalVat6 = c.TotalVat6,
                 TotalVat21 = c.TotalVat21,
-                 DiscountAmount = c.DiscountAmount,
-                 TotalAmount = c.TotalAmount,
-                 CustomerNote = c.CustomerNote,
-                 Status = c.Status,
-                 UserId = c.UserId,               
-                 ContactId = c.ContactId
+                DiscountAmount = c.DiscountAmount,
+                TotalAmount = c.TotalAmount,
+                CustomerNote = c.CustomerNote,
+                Status = c.Status,
+                UserId = c.UserId,
+                ContactId = c.ContactId
 
-             }).ToList();
+            }).ToList();
 
             return Ok(Qutationob);
 
@@ -60,13 +60,31 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult GetQutationTable(int id)
         {
-            QutationTable qutationTable = db.QutationTables.Find(id);
-            if (qutationTable == null)
+            MVCQutationModel qutationmodel = new MVCQutationModel();
+
+            var ob = db.QutationTables.Find(id);
+            qutationmodel.QutationID = ob.QutationID;
+            qutationmodel.Qutation_ID = ob.Qutation_ID;
+            qutationmodel.RefNumber = ob.RefNumber;
+            qutationmodel.QutationDate = ob.QutationDate;
+            qutationmodel.DueDate = ob.DueDate;
+            qutationmodel.SubTotal = ob.SubTotal;
+            qutationmodel.TotalVat6 = ob.TotalVat6;
+            qutationmodel.TotalVat21 = ob.TotalVat21;
+            qutationmodel.DiscountAmount = ob.DiscountAmount;
+            qutationmodel.TotalAmount = ob.TotalAmount;
+            qutationmodel.CustomerNote = ob.CustomerNote;
+            qutationmodel.Status = ob.Status;
+            qutationmodel.UserId = ob.UserId;
+            qutationmodel.CompanyId = ob.CompanyId;
+            qutationmodel.ContactId = ob.ContactId;
+
+            if (qutationmodel == null)
             {
                 return NotFound();
             }
 
-            return Ok(qutationTable);
+            return Ok(qutationmodel);
         }
 
         // PUT: api/APIQutation/5

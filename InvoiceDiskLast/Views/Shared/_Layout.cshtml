@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
 
- 
-   @*@if(Session["CompayID"] == null)
-   {
-       Response.Redirect("/Login/Index");   
-   }*@
+
+@*@if(Session["CompayID"] == null)
+    {
+        Response.Redirect("/Login/Index");
+    }*@
 
 
 <head>
@@ -19,7 +19,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
     <title>Elegant Admin Template - The Ultimate Multipurpose admin template</title>
     <!-- Custom CSS -->
-    
+
     <link href="~/assets/node_modules/morrisjs/morris.css" rel="stylesheet">
     <!--Toaster Popup message CSS -->
     <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
@@ -29,10 +29,10 @@
     <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
     <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
 
-    
+
     <!-- page css -->
     <link href="~/dist/css/pages/floating-label.css" rel="stylesheet">
-   
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -674,16 +674,15 @@
 
 
 <script>
-    $(window).ready(function () {    
+    $(window).ready(function () {
 
-        if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null)
-        {
+        if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null) {
             window.location.href = "/Login/Index";
         }
-       
+
     });
 
-    
+
     @*$(window).load(function () {
         if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null) {
             window.location.href = "/Login/Index";
@@ -728,9 +727,9 @@
 
 
             ]
-        
+
         });
-    
+
 
 
     });
@@ -746,15 +745,15 @@
         });
 
         $('#SelectContacts1').change(function () {
-            
+
             var value = $(this).val();
             if (value == "AddNewClientSelect") {
 
                 $('#QutationContactModel').modal('hide');
                 $('#AddNewContactModel').modal('show');
-              
+
             }
-          
+
         });
 
 
@@ -771,17 +770,17 @@
 
 
 
-        $('#QutationClientNext').click(function () {           
-           
-            var value =  $('#SelectContacts1').val();           
-         
+        $('#QutationClientNext').click(function () {
+
+            var value = $('#SelectContacts1').val();
+
             if (value > 0) {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
                     type: 'GET',
                     data: {
                         id: value
-                    },                  
+                    },
                     success: function (data) {
                         window.location.href = "/MVCQutation/AddOrEdit"
                     },
@@ -790,8 +789,7 @@
                     }
                 });
             }
-            else
-            {
+            else {
                 $.toast({
                     heading: 'Information',
                     text: 'Please select client to continue',
@@ -802,14 +800,14 @@
             }
         });
 
-        $('#SaveClinetQutation').click(function () {           
+        $('#SaveClinetQutation').click(function () {
             $.ajax({
                 url: '/MVCClient/AddOrEdit',
                 type: 'POST',
                 data: {
                     ContactName: $('#ContactName').val(),
-                    ContactAddress: $('#ContactAddress').val()                  
-                },               
+                    ContactAddress: $('#ContactAddress').val()
+                },
                 success: function (data) {
                     $('#AddNewContactModel').modal('hide');
                     LoadContacts();
@@ -889,7 +887,7 @@
 
 
 
-        function calculatevat() {           
+        function calculatevat() {
             if ($('#orderdetailsitems tr').length == 0) {
                 $('#btwo').text('0.00');
                 $('#BTW6').text('0.00');
@@ -953,7 +951,7 @@
                 }
 
             })
-             RowCounte();
+            RowCounte();
         }
         $(document).ready(function () {
 
@@ -1087,7 +1085,7 @@
         });
 
         $("#Submit").click(function () {
-            debugger;
+
             var isAllValid = true;
             $('#orderItemError').text('');
 
@@ -1150,7 +1148,12 @@
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (result) {
-                        if (result.Status = "Success") {
+
+                        console.log(result);
+                        
+                        if (result.Status == "Success") {
+                            alert('4343');
+
                             list = [];
                             $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
                             $('#orderdetailsitems').empty();
@@ -1166,7 +1169,7 @@
                       });
                         }
 
-                        else if (result.Status = "Fail") {
+                        else if (result.Status == "Fail") {
                             swal(
                                  'Qutation!',
                                    result.message,
@@ -1252,7 +1255,7 @@
                             window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
                         }
                         else if (result.Status == "Fail") {
-                            alert(result.messa)
+                            //alert(result.messa)
                         }
 
 
@@ -1264,8 +1267,6 @@
             }
         });
     });
-
-
 
 
 
@@ -1335,9 +1336,7 @@
                             window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
                         });
                     }
-                    else if(result.Status == "Fail")
-
-                    {
+                    else if (result.Status == "Fail") {
 
                     }
                 },
@@ -1423,22 +1422,22 @@
                 dataType: "json",
                 success: function (result) {
 
-                        if (result.Status == "Success") {
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            },
-                            function (isconform) {
-                                window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
-                            });
+                    if (result.Status == "Success") {
+                        swal({
+                            title: 'Qutation!',
+                            text: 'Qutation save successfully!',
+                            type: 'success'
+                        },
+                        function (isconform) {
+                            window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                        });
 
-                        }
-                        else if (result.Status == "Fail") {
+                    }
+                    else if (result.Status == "Fail") {
 
 
 
-                        }
+                    }
 
                 },
                 error: function (errormessage) {
@@ -1508,7 +1507,7 @@
                         window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
                     }
                     else if (result.Status == "Fail") {
-
+                        alert('fail to edit record');
                     }
                     // $("#genratePdf").submit();
                     list = [];
@@ -1607,7 +1606,7 @@
 
     function LoadProduct() {
 
-      
+
 
         if ($('#SelectProductQutation').has('option').length > 0) {
             return;
@@ -1644,44 +1643,33 @@
     }
 
 
-
-
-
     function LoadProductAdding() {
-       
-            $("#SelectProductQutation").find("option").remove();
-            $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
-            $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
-            $.ajax({
-                url: "/MVCProduct/GetProduct",
-                type: "Get",
-                async: false,
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (data) {
+        $("#SelectProductQutation").find("option").remove();
+        $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
-                    $.each(data, function (key, item) {
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
 
-                        $('#SelectProductQutation').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                $.each(data, function (key, item) {
 
-                    });
+                    $('#SelectProductQutation').append($('<option></option>').val(item.ProductId).html(item.ProductName));
 
-                },
-                Error: function (errormessage) {
-                    alert(errormessage);
-                }
+                });
 
-            });
-        }
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
 
-
-
-    
-
-
-
-
+        });
+    }
 
 
 
@@ -1923,14 +1911,14 @@
                     { "data": "CompanyEmail", "name": "CompanyEmail", "autoWidth": true },
                     { "data": "CompanyTRN", "name": "CompanyTRN", "autoWidth": true },
                     {
-                       'data': 'CompanyLogo',
-                       render: function (logo) {
-                           if (logo) {
-                               return '<img height="25px" width="25px" src="' + logo + '" />'
-                           }
-                           else { return 'No Image'; }
-                       }
-                   },
+                        'data': 'CompanyLogo',
+                        render: function (logo) {
+                            if (logo) {
+                                return '<img height="25px" width="25px" src="' + logo + '" />'
+                            }
+                            else { return 'No Image'; }
+                        }
+                    },
                   {
                       render: function (data, type, row) {
                           return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="glyphicon glyphicon-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye-open"></i></a>'
@@ -2039,10 +2027,10 @@
                     { "data": "Status", "name": "Status", "autoWidth": true },
 
                     {
-                  render: function (data, type, row) {
-                      return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
-                  }
-              }
+                        render: function (data, type, row) {
+                            return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
+                        }
+                    }
 
             ]
         });
@@ -2078,7 +2066,7 @@
 
                    {
                        "data": "AddedDate", "type": "date ",
-                       "render": function (value) {                     
+                       "render": function (value) {
                            if (value === null) return "";
                            var pattern = /Date\(([^)]+)\)/;//date format from server side
                            var results = pattern.exec(value);
@@ -2105,22 +2093,26 @@
 
 
     function EditQuatation(id) {
-        window.location.href = "/MvcQutation/AddOrEdit/" + id;
-    }
+      
+      
+               window.location.href = "/MvcQutation/AddOrEdit/" + id;
+           }
+     
+    
 
 </script>
 
 
 <script>
     $(document).ready(function () {
-    @*product Script*@
+        @*product Script*@
 
         $('#CreateNewProduct').click(function () {
             $('#UpdateProduct').hide();
             $('#SaveNewProduct').show();
             $('#CreateNewProductModal').modal('show');
         });
-        
+
         $('#SaveNewProduct').click(function () {
             $.ajax({
                 url: '/MVCProduct/AddOrEdit',
@@ -2131,8 +2123,8 @@
                     SalePrice: $('#SalePrice').val(),
                     PurchasePrice: $('#PurchasePrice').val(),
                     Type: $('#Type').val(),
-                    OpeningQuantity: $('#OpeningQuantity').val()               
-                  
+                    OpeningQuantity: $('#OpeningQuantity').val()
+
                 },
                 success: function (data) {
                     $('#CreateNewProductModal').modal('hide');
@@ -2169,7 +2161,7 @@
                         loader: true,        // Change it to false to disable loader
                         loaderBg: '#9EC600'  // To change the background
                     });
-                   
+
                     //$("#productTable").ajax.reload();
                     //SuccessInsert();
                 },
@@ -2185,7 +2177,7 @@
                 url: '/MVCProduct/AddOrEdit',
                 type: 'POST',
                 data: {
-                    ProductId:  $('#ProductId').val(),
+                    ProductId: $('#ProductId').val(),
                     ProductName: $('#ProductName').val(),
                     Description: $('#Description').val(),
                     SalePrice: $('#SalePrice').val(),
@@ -2215,7 +2207,7 @@
             $('#SaveNewContacts').show();
             $('#CreateNewContactModal').modal('show');
         });
-        
+
         @*Contact or client Script*@
 
         $('#SaveNewContacts').click(function () {
@@ -2341,7 +2333,7 @@
             });
 
         });
-        
+
     });
 
 
@@ -2349,10 +2341,10 @@
         //$('#ProductName').css('border-color', 'lightgrey');
         //$('#Description').css('border-color', 'lightgrey');
         //$('#PurchasePrice').css('border-color', 'lightgrey');
-        //$('#SalePrice').css('border-color', 'lightgrey');        
-        $.ajax({            
+        //$('#SalePrice').css('border-color', 'lightgrey');
+        $.ajax({
             url: "/MVCProduct/AddOrEdit/" + ProductId,
-            type: "GET",           
+            type: "GET",
             dataType: "json",
             success: function (resultData) {
                 $('#ProductId').val(resultData.ProductId);
@@ -2370,16 +2362,16 @@
             error: function (errormessage) {
                 alert(errormessage.responseText);
             }
-        });       
+        });
     }
 
-    function EditContact(ContactsId)    {
+    function EditContact(ContactsId) {
         $.ajax({
             url: "/MVCClient/AddOrEdit/" + ContactsId,
             type: "GET",
             dataType: "json",
-            success: function (resultContactData) {          
-                       
+            success: function (resultContactData) {
+
                 $('#ContactsId').val(resultContactData.ContactsId);
                 $('#ContactName').val(resultContactData.ContactName);
                 $('#ContactAddress').val(resultContactData.ContactAddress);
@@ -2414,7 +2406,7 @@
                 $('#ShippingFax').val(resultContactData.ShippingFax);
 
                 //$("#myselect").val(resultContactData.Status);
-              // $("#Status option[value=" + status + "]").attr("selected", "selected");
+                // $("#Status option[value=" + status + "]").attr("selected", "selected");
                 //$('#Status').val.(resultContactData.Status);
                 $('#Remarks').val(resultContactData.Remarks);
                 //$("#Status").val(resultContactData.Status);
@@ -2450,22 +2442,22 @@
                     url: "/MVCProduct/Delete/" + ProductId,
                     typr: "GET",
                     dataType: "json",
-                    success: function (resultData) {                       
+                    success: function (resultData) {
                         swal("Deleted Success!", "Product deleted successfully!", "success");
                     },
                     error: function (errormessage) {
                         alert(errormessage.responseText);
                     }
-                });      
+                });
 
-                }
-        else {
+            }
+            else {
                 swal(" Deleted Cancelled", "Your data is safe :)", "error");
-              }
-        }); 
+            }
+        });
 
     }
-    
+
     function SuccessInsert() {
         swal({
             title: "Congratulations!!!!",
@@ -2513,7 +2505,7 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function (data) {              
+            success: function (data) {
 
                 $.each(data, function (key, item) {
 
@@ -2564,7 +2556,7 @@
         $('#ShippingFax').val("");
 
         $('#Remarks').val("");
-   
+
 
         $('#UpdateContacts').hide();
         $('#SaveNewContacts').show();
@@ -2573,7 +2565,7 @@
         //$('#State').css('border-color', 'lightgrey');
         //$('#Country').css('border-color', 'lightgrey');
     }
-    
+
     function validateContact() {
         var isValid = true;
         if ($('#ContactName').val().trim() == "") {
@@ -2596,12 +2588,24 @@
         }
         else {
             $('#BillingPersonName').css('border-color', 'lightgrey');
-        }      
+        }
         return isValid;
     }
 
     function EditQuatation(id) {
-        window.location.href = "/MVCQutation/AddOrEdit/" + id;
+        debugger;
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: id
+            },
+            success: function (data) {
+
+                window.location.href = "/MVCQutation/AddOrEdit/" + id;
+            }
+            });
+    
     }
 
     var $loading = $('#loadingDiv').hide();
@@ -2692,16 +2696,13 @@
                 }
             });
 
-
         });
     });
 
 
 
     function LoadVernder() {
-
         $("#venderSelect").find("option").remove();
-
         $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
         $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
 
@@ -2727,7 +2728,19 @@
 
 </script>
 
+<script>
 
+    $(document).ready(function () {
+        var patth = localStorage.getItem('path');
+        $("#FilePath").val(patth);
+
+        if ($("#FilePath").val().length > 0) {
+            $('#DownloadFile1').submit();
+        }
+        $("#FilePath").val('');
+        localStorage.removeItem('path');
+    })
+</script>
 
 <script>
 

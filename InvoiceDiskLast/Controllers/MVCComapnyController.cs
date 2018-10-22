@@ -89,7 +89,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpGet]
-        public MVCCompanyInfoModel GetCompanyInfo(string ID)
+        public ActionResult GetCompanyInfo(string ID)
         {
             MVCCompanyInfoModel cominfo = new MVCCompanyInfoModel();
             if (ID != null)
@@ -97,12 +97,12 @@ namespace InvoiceDiskLast.Controllers
                 Session["CompayID"] = ID;
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + ID.ToString()).Result;
-                cominfo = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;                
-                return cominfo;               
+                cominfo = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                return Json(cominfo, JsonRequestBehavior.AllowGet);            
             }
             else
             {
-                return cominfo;
+                return Json(cominfo);
             }
            
         }

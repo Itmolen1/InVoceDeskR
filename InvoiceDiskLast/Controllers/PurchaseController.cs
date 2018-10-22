@@ -18,10 +18,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
-
-
         [HttpPost]
         public JsonResult GetPurchaseList()
         {
@@ -148,7 +144,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 if (purchaseViewModel.PurchaseId == null)
                 {
-                   purchaseModel.CompanyId = 2;
+                    purchaseModel.CompanyId = 2;
                     purchaseModel.UserId = 1;
                     purchaseModel.PurchaseID = purchaseViewModel.PurchaseID;
                     purchaseModel.PurchaseOrderID = purchaseViewModel.PurchaseOrderID;

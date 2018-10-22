@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // GET: api/APIQutationDetail/5
-        [ResponseType(typeof(List<MvcPurchaseViewModel>))]
+        [ResponseType(typeof(List<MVCQutationViewModel>))]
         public IHttpActionResult GetQutationDetailsTable(int id)
         {
 
