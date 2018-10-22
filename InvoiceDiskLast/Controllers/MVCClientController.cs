@@ -9,7 +9,7 @@ using InvoiceDiskLast.Models;
 namespace InvoiceDiskLast.Controllers
 {
 
-   
+
     public class MVCClientController : Controller
     {
         // GET: MVCClient
@@ -59,7 +59,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts").Result;
                 ContactsList = response.Content.ReadAsAsync<IEnumerable<MVCContactModel>>().Result;
-                
+
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
@@ -115,7 +115,7 @@ namespace InvoiceDiskLast.Controllers
             }
             return Json(null, JsonRequestBehavior.AllowGet);
 
-        }        
+        }
 
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
@@ -131,7 +131,9 @@ namespace InvoiceDiskLast.Controllers
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 Session["ClientID"] = mvcContactModel.ContactsId;
-                return Json(mvcContactModel,JsonRequestBehavior.AllowGet);
+   
+
+                return Json(mvcContactModel, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -141,12 +143,13 @@ namespace InvoiceDiskLast.Controllers
 
             MVCQutationModel m = new Models.MVCQutationModel();
 
-                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + Qutationid.ToString()).Result;
-               m = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
+            HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + Qutationid.ToString()).Result;
+            m = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
 
-                Session["ClientID"] = m.ContactId;
+            Session["ClientID"] = m.ContactId;
+           
             return Json("", JsonRequestBehavior.AllowGet);
-            
+
         }
 
 
@@ -161,7 +164,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 if (mvcContactModel.ContactsId == null)
                 {
-                    mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]); 
+                    mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]);
                     mvcContactModel.UserId = 1;
                     mvcContactModel.Addeddate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
 

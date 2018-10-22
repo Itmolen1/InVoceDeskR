@@ -7,8 +7,7 @@ using InvoiceDiskLast.Models;
 using System.Net.Http;
 using System.IO;
 using Rotativa.Options;
-
-
+using System.Text;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -137,18 +136,12 @@ namespace InvoiceDiskLast.Controllers
                         quutionviewModel.TotalAmount = ob.TotalAmount;
                         quutionviewModel.TotalVat21 = (ob.TotalVat21 != null ? (float)(ob.TotalVat21) : (float)0.00);
                         quutionviewModel.TotalVat6 = (ob.TotalVat6 != null ? (float)(ob.TotalVat6) : (float)0.00);
-
-
-
+                        quutionviewModel.ConatctId = (int)ob.ContactId;
                         HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + id.ToString()).Result;
                         List<MVCQutationDetailsModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationDetailsModel>>().Result;
                         ViewBag.Contentdata = contectmodel;
                         ViewBag.Companydata = companyModel;
                         ViewBag.QutationDatailsList = QutationModelDetailsList;
-
-
-
-
                         return View(quutionviewModel);
                     }
                 }
@@ -187,6 +180,8 @@ namespace InvoiceDiskLast.Controllers
 
                     mvcQutationModel.CompanyId = companyId;
                     mvcQutationModel.UserId = 1;
+
+                    mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                     mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                     mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                     mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -252,22 +247,61 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult InvoicebyEmail(int? QutationId)
         {
             EmailModel email = new EmailModel();
-            //email.Attachment
+            var CompanyName = Session["CompanyName"];
+            var contact = Session["CompanyContact"];
+            var companyEmail = Session["CompanyEmail"];
+            if (contact == null)
+            {
+                contact = "Company Contact";
+            }
+            if (companyEmail == null)
+            {
+                companyEmail = "Company Email";
+            }
 
-            email.EmailText = @"Geachte heer samar gul,
+            int id = 0;
+            if (Session["ClientID"] != null)
+            {
+                id = Convert.ToInt32(Session["ClientID"]);
+            }
 
-            Hierbij ontvangt u onze offerte 10 zoals besproken.
-            Graag horen we of u hiermee akkoord gaat.
 
-            De offerte vindt u als bijlage bij deze email.
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
+            MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-            Met vriendelijke groet,
+            StringBuilder sb = new StringBuilder();
 
-         samar gul
-         It Molen
 
-         345465
-         fuygk @yahoo.com";
+
+            email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
+
+
+            ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
+
+            "." + "Graag horen we of u hiermee akkoord gaat." +
+
+            "." + "De offerte vindt u als bijlage bij deze email." +
+
+
+            "..Met vriendelijke groet." +
+
+            mvcContactModel.ContactName + "." +
+
+            CompanyName.ToString() + "." +
+
+            contact.ToString() + "." +
+
+            companyEmail.ToString();
+
+
+
+
+            string strToProcess = email.EmailText;
+
+
+            string result = strToProcess.Replace(".", " \r\n");
+
+            email.EmailText = result;
 
 
             email.invoiceId = (int)QutationId;
@@ -638,6 +672,7 @@ namespace InvoiceDiskLast.Controllers
                 MVCQutationModel mvcQutationModel = new MVCQutationModel();
                 mvcQutationModel.Qutation_ID = mvcQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
+                mvcQutationModel.ContactId = mvcQutationViewModel.ConatctId;
                 mvcQutationModel.UserId = 1;
                 mvcQutationModel.RefNumber = mvcQutationViewModel.RefNumber;
                 mvcQutationModel.QutationDate = Convert.ToDateTime(mvcQutationViewModel.QutationDate);
@@ -755,6 +790,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.CompanyId = compnayId;
                     mvcQutationModel.UserId = 1;
+
+                    mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                     mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                     mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                     mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -845,6 +882,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.CompanyId = companyId;
                     mvcQutationModel.UserId = 1;
+                    mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
+
                     mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                     mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                     mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -970,6 +1009,9 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.CompanyId = companyId;
                     mvcQutationModel.UserId = 1;
+
+                    mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
+
                     mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                     mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                     mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -1049,6 +1091,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.CompanyId = (int)Session["CompayID"];
                     mvcQutationModel.UserId = 1;
+                    mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
+
                     mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                     mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                     mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -1124,32 +1168,32 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", QutationId = Qid } };
         }
 
-        public ActionResult p()
-        {
+        //public ActionResult p()
+        //{
 
 
 
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
-            MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+        //    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+        //    MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
 
-            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-            MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+        //    HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+        //    MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-            int quttationId = 2118;
+        //    int quttationId = 2118;
 
-            HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quttationId.ToString()).Result;
-            MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
+        //    HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quttationId.ToString()).Result;
+        //    MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
 
-            HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quttationId.ToString()).Result;
-            List<MVCQutationDetailsModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationDetailsModel>>().Result;
+        //    HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quttationId.ToString()).Result;
+        //    List<MVCQutationDetailsModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationDetailsModel>>().Result;
 
-            ViewBag.Contentdata = contectmodel;
-            ViewBag.Companydata = companyModel;
-            ViewBag.QutationDat = QutationModel;
-            ViewBag.QutationDatailsList = QutationModelDetailsList;
-            return View();
-        }
+        //    ViewBag.Contentdata = contectmodel;
+        //    ViewBag.Companydata = companyModel;
+        //    ViewBag.QutationDat = QutationModel;
+        //    ViewBag.QutationDatailsList = QutationModelDetailsList;
+        //    return View();
+        //}
 
 
         public class VatModel
