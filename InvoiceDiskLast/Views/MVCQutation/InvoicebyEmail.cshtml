@@ -4,12 +4,12 @@
     ViewBag.Title = "InvoicebyEmail";
 }
 
-    <h2>InvoicebyEmail</h2>
+<h2>InvoicebyEmail</h2>
 
 
 <div class="container">
 
-     
+
     @if (TempData["Error"] != null)
     {
         <div>
@@ -18,78 +18,95 @@
     }
 
 
-    @using(Html.BeginForm("InvoiceByEmail","MvcQutation", FormMethod.Post,new {id="frmSendEmail" }))
-    {
 
-        <div class="panel panel-default">
-            <div class="panel-heading"><p><b>Send Invoice By Email</b></p> </div>
-            <div class="panel-body">
-                <div class="row text-center">
-                    <h2 id="">Invoice-@Model.invoiceId</h2>
-                    @Html.HiddenFor(Model => Model.invoiceId)
-                </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            @using (Html.BeginForm("InvoiceByEmail", "MvcQutation", FormMethod.Post, new { id = "frmSendEmail" }))
+            {
 
-                <div class="col-md-6 col-lg-offset-3" style="margin-top:5px">
-                    <div class="col-md-2 pull-left">From:</div>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><p><b>Send Invoice By Email</b></p> </div>
+                    <div class="panel-body">
+                        <div class="row text-center">
+                            <div class="col-md-6 col-lg-offset-3">
+                                <h2 id="">Invoice-@Model.invoiceId</h2>
+                                @Html.HiddenFor(Model => Model.invoiceId)
+                            </div>
+                        </div>
 
-                    @*@Html.TextBoxFor(Model => Model.From, new { @class="fom-control", @value= "samarbudhni@gmail.com" })*@
-                  
-                    <div class="col-md-10"> 
-                        @Html.TextBoxFor(Model => Model.From, new { @class = "form-control", value="samarbudhni@gmail.com",@readonly="readonly"})
+                        <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
+                            <div class="col-md-2 pull-left">From:</div>
+
+                            @*@Html.TextBoxFor(Model => Model.From, new { @class="fom-control", @value= "samarbudhni@gmail.com" })*@
+
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(Model => Model.From, new { @class = "form-control", value = "samarbudhni@gmail.com", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
+                            <div class="col-md-2 pull-left">To:</div>
+
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(Model => Model.ToEmail, new { @class = "form-control", @required = "required" })
+                                @*<input type="text" class="form-control" value="samarbudhni@gmail.com" />*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
+                            <div class="col-md-2 pull-left">AttachFiles:</div>
+                            <div class="col-md-10">
+                                @if (TempData["path"] == null)
+                                {
+                                    <label>@Model.Attachment</label>
+                                    <input type="hidden" name="Attachment" value="@Model.Attachment" />
+                                }
+                                else
+                                {
+                                    <label>@TempData["path"]</label>
+                                    <input type="hidden" name="Attachment" value="@TempData["path"]" />
+
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
+                            <div class="col-md-2 pull-left">Topic:</div>
+
+                            <div class="col-md-10">
+
+                                @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control" })
+
+
+                                @*<input type="text" class="form-control" />*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
+                            <div class="col-md-2 pull-left">Text e-Email:</div>
+
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(Model => Model.EmailText, new { @class = "form-control", @rows = "10", @cols = "50" })
+                                @*<textarea rows="10" cols="50">@Model.EmailText</textarea>*@
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+
+                        <button type="submit" class="btn btn-primary">Send by e-mail</button>
+
+                        <a href="/MvcQutation/AddOrEdit/@Model.invoiceId" class="btn btn-primary">Cancel</a>
+
+
                     </div>
                 </div>
-
-                <div class="col-md-6 col-lg-offset-3" style="margin-top:5px">
-                    <div class="col-md-2 pull-left">To:</div>
-
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(Model => Model.ToEmail, new { @class="form-control",@required="required"})
-                        @*<input type="text" class="form-control" value="samarbudhni@gmail.com" />*@
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-offset-3" style="margin-top:5px">
-                    <div class="col-md-2 pull-left">AttachFiles:</div>
-                    <div class="col-md-10">
-                        <label>@TempData["path"]</label>
-                         <input type="hidden" name="Attachment" value="@TempData["path"]"/>
-                      
-
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-offset-3" style="margin-top:5px">
-                    <div class="col-md-2 pull-left">Topic:</div>
-
-                    <div class="col-md-10">
-
-                        @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control" })
-
-                        
-                        @*<input type="text" class="form-control" />*@
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-offset-3" style="margin-top:5px">
-                    <div class="col-md-2 pull-left">Text e-Email:</div>
-
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(Model => Model.EmailText, new { @class="form-control", @rows="10", @cols="50"})
-                        @*<textarea rows="10" cols="50">@Model.EmailText</textarea>*@
-                    </div>
-                </div>
-
-            </div>
-            <div class="panel-footer">
-
-                <button type="submit" class="btn btn-primary">Send by e-mail</button>
-
-                <a href="/MvcQutation/AddOrEdit/@Model.invoiceId" class="btn btn-primary">Cancel</a>
-
-
-            </div>
+            }
         </div>
-    }
+        <div class="col-sm-1"></div>
+    </div>
+
 
 
 </div>

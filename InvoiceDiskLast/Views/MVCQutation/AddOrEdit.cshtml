@@ -22,11 +22,17 @@
 
 
             @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { style = "width:300px", id = "qutationId" } })
-
+            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
             <div class="row">
                 <div class="col-sm-1">
                 </div>
                 <div class="col-sm-10" style="background-color:white;margin-top:50px">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11" style="margin-top:20px">
+                            <img src="@Url.Content("~/Images/"+CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-sm-1"></div>
@@ -86,7 +92,7 @@
                                             <div class="col-sm-4">Invoice period:</div>
                                             <div class="col-sm-4">
 
-                                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "form-control", style = "font-size:small;width:150px", id = "QutationDate", title = "Invoice Date" } })
+                                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "form-control", style = "font-size:small;width:150px", id = "QutationDate1", title = "Invoice Date" } })
                                                 @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
                                             </div>
@@ -130,9 +136,7 @@
                                     <div class="col-sm-6"></div>
                                 </div>
 
-                                <div id="loadingDiv">
-                                    <img src="~/images/XtaS.gif" />
-                                </div>
+                              
                                 @*<div id="loadingDiv">Please wait while this page loads.</div>*@
                                 <div class="row">
                                     <table class="table" id="orderdetailsitems">
@@ -258,7 +262,31 @@
                                     </table>
 
                                     <div id="OrderItems">
-                                        <table class="table" id="orderdetailsitems"></table>
+                                        <table class="table" id="orderdetailsitems">
+                                          
+                                                <tr>
+                                                    <th class="col-sm-4">
+                                                       
+                                                    </th>
+                                                    <th class="col-sm-2">
+                                                       
+                                                    </th>
+                                                    <th class="col-sm-2">
+                                                      
+                                                    </th>
+                                                    <th class="col-sm-2">
+                                                      
+                                                    </th>
+                                                    <th class="col-sm-1">
+                                                      
+                                                    </th>
+                                                    <th class="col-sm-1">
+                                                      
+                                                    </th>
+
+                                                </tr>
+                                            
+                                        </table>
                                         <span id="orderItemError" style="color:red"></span>
                                     </div>
 
@@ -364,7 +392,7 @@
     }
     else
     {
-
+        <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
         <div class="container">
             <div class="row">
                 <div class="col-sm-1">

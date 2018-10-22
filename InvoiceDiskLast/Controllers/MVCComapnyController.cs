@@ -98,6 +98,9 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + ID.ToString()).Result;
                 cominfo = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                Session["CompanyName"] = cominfo.CompanyName;
+                Session["CompanyEmail"] = cominfo.CompanyEmail;
+                Session["CompanyContact"]=cominfo.CompanyPhone;
                 return Json(cominfo, JsonRequestBehavior.AllowGet);            
             }
             else
