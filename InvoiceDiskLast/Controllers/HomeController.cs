@@ -12,7 +12,7 @@ namespace InvoiceDiskLast.Controllers
         {
             if (Session["CompayID"] == null)
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Login");        
             }
             else
             {

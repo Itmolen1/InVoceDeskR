@@ -57,13 +57,36 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult GetProductTable(int id)
         {
-            ProductTable productTable = db.ProductTables.Find(id);
-            if (productTable == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(productTable);
+            try
+            {
+                MVCProductModel productTable = db.ProductTables.Where(x => x.ProductId == id).Select(c => new MVCProductModel
+                {
+
+                    ProductId = c.ProductId,
+                    ProductName = c.ProductName,
+                    Description = c.Description,
+                    SalePrice = c.SalePrice,
+                    PurchasePrice = c.PurchasePrice,
+                    Type = c.Type,
+                    OpeningQuantity = c.OpeningQuantity,
+                    AddedBy = c.AddedBy,
+                    Company_ID = c.Company_ID,
+                    AddedDate = c.AddedDate,
+                }).FirstOrDefault();
+                if (productTable != null)
+                {
+                    return Ok(productTable);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch(Exception EX)
+            {
+                throw EX;
+            }
         }
 
         // PUT: api/APIProduct/5
