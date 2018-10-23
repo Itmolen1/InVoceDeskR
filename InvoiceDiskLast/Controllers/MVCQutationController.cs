@@ -1217,7 +1217,7 @@ namespace InvoiceDiskLast.Controllers
         //    return View();
         //}
 
-            //rffffffffffffffffffffr4gtjk
+         
         public class VatModel
         {
             public int Vat1 { get; set; }
