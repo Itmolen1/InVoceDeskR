@@ -22,5 +22,8 @@ namespace InvoiceDiskLast.Models
         public string Topic { get; set; }
 
         public int invoiceId { get; set; }
+
+
+        
     }
 }

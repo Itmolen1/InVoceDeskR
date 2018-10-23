@@ -246,6 +246,12 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult InvoicebyEmail(int? QutationId)
         {
+
+            if (Session["CompayID"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             EmailModel email = new EmailModel();
             var CompanyName = Session["CompanyName"];
             var contact = Session["CompanyContact"];
@@ -306,6 +312,9 @@ namespace InvoiceDiskLast.Controllers
 
             email.invoiceId = (int)QutationId;
             email.From = "samarbudhni@gmail.com";
+
+
+
             return View(email);
         }
 
@@ -355,6 +364,9 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.EmailBody = email.EmailText;
                     bool result = EmailController.email(emailModel);
                 }
+                //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
+                return RedirectToAction("ViewQuation",new { quautionId = email.invoiceId });
+
 
             }
             catch (Exception ex)
@@ -1083,13 +1095,23 @@ namespace InvoiceDiskLast.Controllers
         {
             var Qutationid = "";
             int Qid = 0;
+
+            int companyId = 0;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
+                if (Session["CompayID"] != null)
+                {
+                    companyId = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                
+
+
                 if (MVCQutationViewModel.QutationID == null)
                 {
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.CompanyId = (int)Session["CompayID"];
+                    mvcQutationModel.CompanyId = companyId;
                     mvcQutationModel.UserId = 1;
                     mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
 
