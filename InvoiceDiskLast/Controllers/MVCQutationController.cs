@@ -840,7 +840,7 @@ namespace InvoiceDiskLast.Controllers
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetail/s" + QtDetails.QutationDetailId, QtDetails).Result;
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
                             }
                         }
 
@@ -1058,7 +1058,7 @@ namespace InvoiceDiskLast.Controllers
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetail/s" + QtDetails.QutationDetailId, QtDetails).Result;
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
                             }
                         }
 
