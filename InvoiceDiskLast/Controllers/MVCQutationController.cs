@@ -1081,6 +1081,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult savePrintAndSentItToYouronsave(MVCQutationViewModel MVCQutationViewModel)
         {
+
+
             var Qutationid = "";
             int Qid = 0;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
@@ -1088,8 +1090,11 @@ namespace InvoiceDiskLast.Controllers
             {
                 if (MVCQutationViewModel.QutationID == null)
                 {
+
+
+
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.CompanyId = (int)Session["CompayID"];
+                    mvcQutationModel.CompanyId =Convert.ToInt32(Session["CompayID"]);
                     mvcQutationModel.UserId = 1;
                     mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
 
