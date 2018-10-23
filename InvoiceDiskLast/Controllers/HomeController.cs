@@ -16,7 +16,6 @@ namespace InvoiceDiskLast.Controllers
             }
             else
             {
-
                 ViewBag.Title = "Home Page";
 
                 return View();

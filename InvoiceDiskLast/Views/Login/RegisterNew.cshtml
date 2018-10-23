@@ -39,7 +39,7 @@
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
-            <p class="loader__label">Elegant admin</p>
+            <p class="loader__label">Please wait creating account...</p>
         </div>
     </div>
     <!-- ============================================================== -->
@@ -217,7 +217,15 @@
     //    }
     //    return isValid;
     //}
+    var $loading = $('.preloader').hide();
 
+    $(document)
+      .ajaxStart(function () {
+          $loading.show();
+      })
+      .ajaxStop(function () {
+          $loading.hide();
+      });
 
 </script>
 
