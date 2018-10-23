@@ -1025,7 +1025,7 @@
                 //    alert('');
                     $('#orderdetailsitems > tbody  > tr:not(:first)').each(function (index, ele)
                     {
-                        alert('dcwe');
+                       
 
                     if ($('#SelectProductQutation', this).val() == '0' ||
                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
@@ -1478,7 +1478,7 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-                alert('dwe');
+             
 
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
@@ -2340,7 +2340,16 @@
                 $('#Description').val(resultData.Description);
                 $('#SalePrice').val(resultData.SalePrice);
                 $('#PurchasePrice').val(resultData.PurchasePrice);
-                $('#Type').val(resultData.type);
+
+                $('select#Type option').each(function () {
+                    if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase()) {
+                        this.selected = true;
+                        return;
+                    }
+                });
+
+                //$('#').val(resultData.type);
+
                 $('#OpeningQuantity').val(resultData.OpeningQuantity);
 
                 $('#CreateNewProductModal').modal('show');
@@ -2591,7 +2600,7 @@
                 Qutationid: id
             },
             success: function (data) {
-                alert('success');
+             
                 window.location.href = "/MVCQutation/AddOrEdit/" + id;
             }
         });
@@ -2640,7 +2649,7 @@
         $('#VenderClientNext').click(function () {
 
             var value = $('#venderSelect').val();
-            alert(value);
+           
             if (value > 0) {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
