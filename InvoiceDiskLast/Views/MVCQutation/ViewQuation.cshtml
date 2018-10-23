@@ -54,7 +54,15 @@
             <br />
             <label>@CompanyDatas.CompanyCity</label>
             <br />
-            <label>T:@CompanyDatas.CompanyPhone</label>
+            @{
+                string value = CompanyDatas.CompanyPhone;
+                if (value != "" && value != "undefined")
+                { <label>T:@CompanyDatas.CompanyPhone</label> }
+                else
+                { <label>T:</label>  }
+            }
+
+          
             <br />
             <label>@CompanyDatas.CompanyEmail</label>
         </div>
@@ -75,7 +83,7 @@
             <label>valid untill</label>
         </div>
         <div class="col-md-3">
-            <label>@QutationModel.QutationDate</label><br />
+            <label>@QutationModel.QutationDate</label>
             <label>@QutationModel.RefNumber</label><br />
             <label>@QutationModel.DueDate</label>
         </div>
