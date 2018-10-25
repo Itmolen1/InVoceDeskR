@@ -18,11 +18,11 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult GetProductlist()
         {
-            
 
 
-            IEnumerable<MVCProductModel> ProductList;
 
+            List<MVCProductModel> ProductList = new List<MVCProductModel>() ;
+            List<MVCProductModel> ProductList1 = new List<MVCProductModel>();
             try
             {
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -39,55 +39,77 @@ namespace InvoiceDiskLast.Controllers
 
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
+              //  IEnumerable<string> token;
+             //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);
+
+
+
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
-                ProductList = response.Content.ReadAsAsync<IEnumerable<MVCProductModel>>().Result;
+                ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
-                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+               if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
                     // Apply search  on multiple field  
-                    ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search) ||
-                     p.ProductName.ToLower().Contains(search.ToLower()) ||
-                     p.Description.ToString().ToLower().Contains(search.ToLower()) ||
-                     p.SalePrice.ToString().Contains(search.ToLower()) ||
-                     p.PurchasePrice.ToString().Contains(search) ||
-                     p.Type.ToString().ToLower().Contains(search.ToLower()) ||
-                     p.OpeningQuantity.ToString().Contains(search.ToLower())).ToList();
+
+                    ProductList = ProductList.Where(c => c.ProductId.ToString().Contains(search.ToLower().ToString()) ||
+
+                    c.ProductName.ToLower().Contains(search.ToLower().ToString()) ||
+                    c.Description.ToLower().Contains(search.ToLower().ToString()) ||
+                    c.SalePrice.ToString().Contains(search.ToString()) ||
+                    c.PurchasePrice.ToString().Contains(search.ToString()) ||
+                    c.OpeningQuantity.ToString().Contains(search.ToString()) //||
+                                        
+                    //c.Type == null ? c.Type == "":  c.Type.ToLower().ToString().Contains(search.ToLower())
+
+
+
+
+
+                    ).ToList();
+
+                    //ProductList1 = ProductList.Where(p => p.ProductId.ToString().ToLower().Contains(search.ToLower().ToString()) ||
+                    // p.ProductName.ToLower().ToString().Contains(search.ToLower().ToString()) ||
+                    // p.Description.ToString().ToLower().Contains(search.ToLower().ToString()) ||
+                    // p.SalePrice.ToString().Contains(search.ToLower().ToString()) ||
+                    // p.PurchasePrice.ToString().Contains(search.ToString()) ||
+                    // p.Type.ToString().ToLower().Contains(search.ToLower()) ||
+                    // p.OpeningQuantity.ToString().Contains(search.ToLower().ToString())).ToList();
                 }
                 switch (sortColumn)
                 {
                     case "ProductId":
-                        ProductList = ProductList.OrderBy(c => c.ProductId);
+                        ProductList = ProductList.OrderBy(c => c.ProductId).ToList();
                         break;
                     case "ProductName":
-                        ProductList = ProductList.OrderBy(c => c.ProductName);
+                        ProductList = ProductList.OrderBy(c => c.ProductName).ToList();
                         break;
                     case "Description":
-                        ProductList = ProductList.OrderBy(c => c.Description);
+                        ProductList = ProductList.OrderBy(c => c.Description).ToList();
                         break;
 
                     case "SalePrice":
-                        ProductList = ProductList.OrderBy(c => c.SalePrice);
+                        ProductList = ProductList.OrderBy(c => c.SalePrice).ToList();
                         break;
 
                     case "PurchasePrice":
-                        ProductList = ProductList.OrderBy(c => c.PurchasePrice);
+                        ProductList = ProductList.OrderBy(c => c.PurchasePrice).ToList();
                         break;
 
                     case "Type":
 
-                        ProductList = ProductList.OrderBy(c => c.Type);
+                        ProductList = ProductList.OrderBy(c => c.Type).ToList();
                         break;
 
                     case "OpeningQuantity":
 
-                        ProductList = ProductList.OrderBy(c => c.OpeningQuantity);
+                        ProductList = ProductList.OrderBy(c => c.OpeningQuantity).ToList();
                         break;
 
 
                     default:
-                        ProductList = ProductList.OrderByDescending(c => c.ProductId);
+                        ProductList = ProductList.OrderByDescending(c => c.ProductId).ToList();
                         break;
                 }
 
@@ -96,7 +118,7 @@ namespace InvoiceDiskLast.Controllers
                 //    var v = CompanyList.OrderBy(c=>c.);
 
                 //}
-                int recordsTotal = recordsTotal = ProductList.Count();
+                int recordsTotal = recordsTotal = ProductList1.Count();
                 var data = ProductList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
 

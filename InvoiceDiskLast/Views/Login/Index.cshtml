@@ -1,4 +1,4 @@
-﻿
+﻿@using CaptchaMvc.HtmlHelpers
 @{
     Layout = null;
 }
@@ -20,6 +20,7 @@
     <!-- Custom CSS -->
     <link href="~/dist/css/style.min.css" rel="stylesheet">
     <link href="../dist/css/pages/floating-label.css" rel="stylesheet">
+    <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -51,6 +52,13 @@
                                 <input class="form-control" type="password" required id="txtPassword" placeholder="Password">
                             </div>
                         </div>
+                        @*<div class="form-group">
+                            <div class="col-xs-12 ti-align-center">
+                                @Html.Captcha(5)@ViewBag.ErrorMessage
+                            </div>
+                        </div>*@
+
+
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="custom-control custom-checkbox">
@@ -113,11 +121,9 @@
                     <div class="modal-body">
                         <form class="floating-labels">
                             <div class="row">
-                                <div class="col-sm-6">                                   
-                                    <div class="form-group m-b-40">
-                                        <input type="text" class="form-control" id="CompanyName" required>
-                                        <span class="bar"></span>
-                                        <label for="input1">Company Name</label>
+                                <div class="col-sm-6">                                    
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" required id="CompanyName" placeholder="Company Name">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12">
@@ -141,7 +147,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="ComapnyFax" placeholder="Company Address">
+                                            <input class="form-control" type="text" required id="ComapnyFax" placeholder="Company Fax">
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +175,6 @@
 
                                     <div class="form-group">
                                         <input type="file" name="file" id="FileUpload1" />
-
                                         <img class="img-responsive" id="targetImg" style="height:40px;width:40px" />
 
                                     </div>
@@ -207,80 +212,120 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src="~/assets/node_modules/popper/popper.min.js"></script>
     <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
+    <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
+    @*<script src="https://www.google.com/recaptcha/api.js" async defer></script>*@
     <!--Custom JavaScript -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function () 
+        {
 
-            if (sessionStorage.getItem('accessToken') != null && '@Session["CompayID"]' != null) {
+            $('#CaptchaInputText').addClass('form-control');            
+           // $('#CaptchaImage').addClass('form-control');
+            function validateLogin() {
+                var isValid = true;
+                if ($('#CaptchaInputText').val().trim() == "") {
+                    $('#CaptchaInputText').css('border-color', 'Red');
+                    isValid = false;
+                }
+                //else if ($('#CaptchaImage').val() != $('#CaptchaInputText').val())
+                //{
+                //    isValid = false;
+                //}
+                return isValid;
+            }
+            if (sessionStorage.getItem('accessToken') != null) 
+            {
                 window.location.href = "/Home/Index";
             }
             else {
 
-
                 $('#btnLogin').click(function () {
-                    $.ajax({
-                        url: '/token',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: {
-                            username: $('#txtUsername').val(),
-                            password: $('#txtPassword').val(),
-                            grant_type: 'password'
 
-                        },
-                        success: function (response) {
-                            sessionStorage.setItem('accessToken', response.access_token);                           
-                            localStorage.setItem('Username', response.userName);
-                            //..........
-                            $.ajax({
-                                //url: 'http://localhost:63861/api/ApiCompanyStatus/',
-                                 url: '/api/ApiCompanyStatus/',
-                                //url: 'http://itmolen-001-site4.htempurl.com/api/ApiCompanyStatus/',
-                                method: 'GET',
-                                contentType: 'application/json',
-                                data: {
-                                    id: $('#txtUsername').val()
-                                },
-                                success: function (CompanyStatus) {
-                                    if (CompanyStatus > 0) {
-                                        $.ajax({
-                                            url: '/MVCComapny/GetCompanyInfo',
-                                            method: 'GET',
-                                            contentType: 'application/json',
-                                            data: {
-                                                ID: CompanyStatus
-                                            },
-                                            success: function (CompanyInfo) {                                               
-                                                localStorage.setItem('CompanyID', CompanyInfo.CompanyID);                                               
-                                                localStorage.setItem('CompanyName', CompanyInfo.CompanyName);;
-                                                localStorage.setItem('CompanyLogo', CompanyInfo.CompanyLogo);
-                                                window.location.href = '/Home/Index';
-                                            },
-                                            error: function (jqerr) {
-                                                alert('Errr' + JSON.stringify(jqerr));
-                                            }
-                                        });
+                        //-----------
+                        //$.ajax({
+                        //    url: '/Captcha/IndexPostCaptcha',
+                        //    type: 'POST',
+                        //    data: {
+                        //        ContactName: $('#ContactName').val(),
+                        //        ContactAddress: $('#ContactAddress').val(),
+                        //        Type: "Customer"
+                        //    },
+                        //    success: function (data) {
+                        //        $('#AddNewContactModel').modal('hide');
+                        //        LoadContacts();
+                        //        $('#QutationContactModel').modal('show');
+                        //    },
+                        //    error: function () {
+                        //        alert("error");
+                        //    }
+                        //});
+                        //------------
 
+                        $.ajax({
+                            url: '/token',
+                            method: 'POST',
+                            contentType: 'application/json',                         
+                            data: {
+                                username: $('#txtUsername').val(),
+                                password: $('#txtPassword').val(),
+                               
+                               grant_type: 'password'
+
+                            },
+                            success: function (response) {
+                                sessionStorage.setItem('accessToken', response.access_token);
+                                localStorage.setItem('Username', response.userName);
+                                //..........
+                                $.ajax({
+                                    //url: 'http://localhost:63861/api/ApiCompanyStatus/',
+                                    url: '/api/ApiCompanyStatus/',
+                                    //url: 'http://itmolen-001-site4.htempurl.com/api/ApiCompanyStatus/',
+                                    method: 'GET',
+                                    contentType: 'application/json',
+
+                                    data: {
+                                        id: $('#txtUsername').val()
+                                    },
+                                    success: function (CompanyStatus) {
+                                        if (CompanyStatus > 0) {
+                                            $.ajax({
+                                                url: '/MVCComapny/GetCompanyInfo',
+                                                method: 'GET',
+                                                contentType: 'application/json',                                              
+                                                data: {
+                                                    ID: CompanyStatus
+
+                                                },
+                                                success: function (CompanyInfo) {
+                                                    localStorage.setItem('CompanyID', CompanyInfo.CompanyID);
+                                                    localStorage.setItem('CompanyName', CompanyInfo.CompanyName);;
+                                                    localStorage.setItem('CompanyLogo', CompanyInfo.CompanyLogo);
+                                                    window.location.href = '/Home/Index';
+                                                },
+                                                error: function (jqerr) {
+                                                    alert('Some thing went wrong Try aganin later' + JSON.stringify(jqerr));
+                                                }
+                                            });
+
+                                        }
+                                        else {
+                                            $('#CompanyModal').modal('show');
+                                        }
+                                    },
+                                    error: function (jqerr) {
+                                        alert('Errr' + JSON.stringify(jqerr));
                                     }
-                                    else {
-                                        $('#CompanyModal').modal('show');
-                                    }
-                                },
-                                error: function (jqerr) {
-                                    alert('Errr' + JSON.stringify(jqerr));
-                                }
-                            });
+                                });
 
-                            //..........
+                                //..........
 
-                        },
-                        error: function (jqHXR) {
-                            alert('Incorrect username or password');
-                        }
-                    });
-
-
-
+                            },
+                            error: function (jqHXR) {
+                                alert('Incorrect username or password');
+                            }
+                        });
+                   
                 });
             }
             });
@@ -302,7 +347,11 @@
             $("#loginform").slideUp();
             $("#recoverform").fadeIn();
         });
+
+      
     </script>
+
+  
 
     <script>
         $(document).ready(function () {
@@ -344,7 +393,8 @@
                         processData: false,
                         contentType: false,
                         success: function (ReturnStatus) {
-                            if (ReturnStatus == 201) {                               
+                            if (ReturnStatus == 201) {
+                                SuccessInsert();
                                 window.location.href = '/Home/Index';
                             }
                         },
@@ -412,6 +462,14 @@
           });
 
 
+
+        function SuccessInsert() {
+            swal({
+                title: "Congratulations!",
+                text: "Your data has been saved successfully",
+                type: "success",
+            });
+        }
     </script>
 
 </body>

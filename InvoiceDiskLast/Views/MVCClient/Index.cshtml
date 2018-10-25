@@ -1,9 +1,8 @@
 ﻿
-
-
 @{
     ViewBag.Title = "Index";
 }
+
 @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
 @*<div class="container">
             <div class="col-sm-6 col-sm-offset-3">
@@ -30,13 +29,11 @@
 
                     </div>
                 </div>
-            </div>
-
+            </div>                      
     </div>*@
 
   
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle"></i>Create New</button>
-
 
 <table class="table" id="ContactListTable">
     <thead style="background-color:black;color:white">
@@ -75,36 +72,23 @@
 
 </table>
 
-
-
-
 @section scripts{
     <script>
-
-
         $(function () {
             var successMessage = '@TempData["SuccessMessage"]'
 
             if (successMessage != '') {
                 alertify.success(successMessage);
-
-
             }
-
             if (successMessage != '') {
                 successMessage = '';
                 delete ('@TempData["SuccessMessage"]');
             }
-
         });
-
-
 
     </script>
 
 }
-
-
 
 <input type="hidden" id="ContactsId" />
 <div class="modal fade bs-example-modal-lg" id="CreateNewContactModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
@@ -115,211 +99,220 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-              
-                    <div class="row">
-                        <div class="col-sm-6">                          
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="ContactName" placeholder="Contact Name" />
-                            </div>
-                        </div>
-                        <div class="col-sm-6">                          
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="ContactAddress" placeholder="Contact Address" />
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-sm-6">                          
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="BillingPersonName" placeholder="Billing Person Name" />
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="ShippingPersonName" placeholder="Shipping Person Name" />
-                            </div>                          
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-sm-6">                          
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="BillingAddress" placeholder="Billing Address" />
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="ShippingAddress" placeholder="Shipping Address" />
-                            </div>                          
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="BillingCity" placeholder="Billing City" />
-                            </div>                            
-                        </div>
-                        <div class="col-sm-4">                           
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="BillingState" placeholder="Billing State" />
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="BillingCountry" placeholder="Billing Country" />
-                            </div>                           
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ContactName" placeholder="Client Name" />
                         </div>
                     </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ContactAddress" placeholder="Contact Address" />
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="BillingCompanyName" placeholder="Billing Company Name" />
-                                    </div>                                                                  
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="success">
+                            <th>
+                                <div class="row">
+                                    <div class="col-sm-6">Billing Address</div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-7" style="color:skyblue">
+                                                <input type="checkbox" id="SameAsBilling" name="sameasbilling" value="sameAsBilling" /> Same as billing Address
+                                            </div>
+                                            <div class="col-sm-5 pull-right">
+                                                Shipping Address
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="BillingZibCode" placeholder="Billing Zip Code" />
-                                    </div>        
+                            </th>                         
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="BillingCompanyName" placeholder="Billing Company Name" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingCompanyName" placeholder="Shipping Company Name" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="BillingPersonName" placeholder="Billing Person Name" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingPersonName" placeholder="Shipping Person Name" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="BillingAddress" placeholder="Street name and number" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingAddress" placeholder="Street name and number" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="BillingCity" placeholder="Postal Code and City" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingCity" placeholder="Postal Code and City" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="BillingCountry" placeholder="Billing Country" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingCountry" placeholder="Shipping Country" />
+                                        </div>
+                                    </div>
+                                </div>
+                                       <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group ">
+                                                <input class="form-control" type="text" required id="BillingVatTRN" placeholder="Billing BTW" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group ">
+                                                <input class="form-control" type="text" required id="ShippingVatTRN" placeholder="Shipping BTW" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group ">
+                                                <input class="form-control" type="text" required id="BillingMobile" placeholder="Billing Mobile" />
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group ">
+                                                <input class="form-control" type="text" required id="ShippingMobile" placeholder="Shipping Mobile" />
+                                            </div>
+
+                                        </div>
+                                        </div>
                                     
-                                </div>
-                            </div>
+                                
 
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="ShippingCompanyName" placeholder="Shipping Company Name" />
-                                    </div>                                                                     
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="email" required id="BillingEmail" placeholder="Billing Email" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingEmail" placeholder="Shipping Email" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="ShippingZIP" placeholder="Shipping ZIP" />
-                                    </div>                                                                        
-                                </div>
-                            </div>
+                                <div class="row">                                  
+                                        <div class="col-sm-6">
+                                            <div class="form-group ">
+                                                <input class="form-control" type="text" required id="BillingFax" placeholder="Billing Fax" />
+                                            </div>
+                                        </div>
 
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingFax" placeholder="Shipping Fax" />
+                                        </div>
+                                    </div>
+                                    </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="BillingZibCode" placeholder="Billing ZIP" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <input class="form-control" type="text" required id="ShippingZIP" placeholder="Shipping ZIP" />
+                                        </div>
+                                    </div>
+                                </div>
+
+</td>
+            </tr>
+            </tbody>
+            </table>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-4" style="margin-top:7px">Type</div>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="TypeContacts">
+                                    <option value="Customer" selected>Customer</option>
+                                    <option value="Vender">Vender</option>
+                              </select>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="BillingMobile" placeholder="Billing Mobile" />
-                                    </div>      
-                                    
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="BillingEmail" placeholder="Billing Email" />
-                                    </div>                                    
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="ShippingMobile" placeholder="Shipping Mobile" />
-                                    </div>                                                                        
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="ShippingEmail" placeholder="Shipping Email" />
-                                    </div>                                   
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="BillingVatTRN" placeholder="Billing Vat TRN" />
-                                    </div>                                                                      
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="BillingFax" placeholder="Billing Fax" />
-                                    </div>   
-                                </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-4" style="margin-top:7px">Status</div>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="Status">
+                                    <option value="1" selected>True</option>
+                                    <option value="0">False</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="ShippingVatTRN" placeholder="Shipping Vat TRN" />
-                                    </div>                                   
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group ">
-                                        <input class="form-control" type="text" required id="ShippingFax" placeholder="Shipping Fax" />
-                                    </div>                                                                  
-                                </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-4" style="margin-top:7px">Remarks</div>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" id="Remarks" rows="1" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
                             </div>
-
                         </div>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="BillingPhone" placeholder="Billing Phone" />
-                            </div>  
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="ShippingPhone" placeholder="Shipping Phone" />
-                            </div>                              
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <div class="col-sm-4">Type</div>
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="TypeContacts">
-                                        <option value="Customer" selected>Customer</option>
-                                        <option value="Vender">Vender</option>
-                                    </select><span class="bar"></span>
-                                </div>
-                            </div>         
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <div class="col-sm-4">Status</div>
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="Status">
-                                        <option value="1" selected>True</option>
-                                        <option value="0">False</option>
-                                    </select><span class="bar"></span>
-                                </div>
-                            </div>                           
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <div class="col-sm-4">Remarks</div>
-                                <div class="col-sm-8">
-                                    <textarea class="form-control" id="Remarks" rows="1" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
-                                </div>
-                            </div>                                                   
-                        </div>
-                    </div>
-               
-            </div>
+          
+
+        </div>
             <div class="modal-footer">
                 <button type="button" id="SaveNewContacts" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Save Contact</button>
                 <button type="button" id="UpdateContacts" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Update Contact</button>

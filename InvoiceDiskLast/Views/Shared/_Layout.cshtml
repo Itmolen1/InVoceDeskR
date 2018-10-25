@@ -376,9 +376,9 @@
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard <span class="badge badge-pill badge-cyan">4</span></span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="/Home/Index">Home</a></li>                              
+                                <li><a href="/Home/Index">Home</a></li>
                             </ul>
-                        </li>                     
+                        </li>
 
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-clipboard"></i><span class="hide-menu">Qutation Invoices</span></a>
@@ -391,17 +391,17 @@
                         <li class="nav-small-cap"></li>
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-files"></i><span class="hide-menu">Pages <span class="badge badge-pill badge-info">25</span></span></a>
-                            <ul aria-expanded="false" class="collapse">                              
+                            <ul aria-expanded="false" class="collapse">
                                 <li><a href="/MVCProduct/Index">Product</a></li>
                                 <li><a href="/MVCClient/Index">Clients</a></li>
                                 <li><a href="/MVCQutation/Index">Qutation</a></li>
-                              
+
                             </ul>
                         </li>
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-light-bulb"></i><span class="hide-menu">Extras</span></a>
                             <ul aria-expanded="false" class="collapse">
-                             
+
                                 <li> <a class="waves-effect waves-dark" href="http://www.wrappixel.com/demos/admin-templates/elegant-admin/documentation/documentation.html" aria-expanded="false"><span class="hide-menu">Documentation</span></a></li>
                                 <li> <a class="waves-effect waves-dark" href="pages-login.html" aria-expanded="false"><span class="hide-menu">Log Out</span></a></li>
                                 <li> <a class="waves-effect waves-dark" href="pages-faq.html" aria-expanded="false"><span class="hide-menu">FAQs</span></a></li>
@@ -600,7 +600,6 @@
         if (sessionStorage.getItem('accessToken') == null) {
             window.location.href = "/Login/Index"
         }
-
     });
 
 
@@ -611,9 +610,7 @@
     });*@
 
 
-</script>
 
-<script>
     $(document).ready(function () {
 
         $("#ContactListTable").DataTable({
@@ -654,9 +651,7 @@
 
 
     });
-</script>
 
-<script>
     $(document).ready(function () {
 
         $('#btn-QutationNew').click(function () {
@@ -743,9 +738,7 @@
 
         });
     });
-</script>
 
-<script>
     var currentRow1 = "";
     var r = "";
     $(document).ready(function () {
@@ -810,7 +803,8 @@
 
 
         function calculatevat() {
-            if ($('#orderdetailsitems tr').length == 0) {
+            alert('Row Length : ' + $('#orderdetailsitems tr').length);
+            if (0 == $('#orderdetailsitems tr').length) {
                 $('#btwo').text('0.00');
                 $('#BTW6').text('0.00');
                 $('#BTW21').text('0.00');
@@ -900,7 +894,7 @@
                     data: data,
                     success: function (data) {
                         if (data == "Success") {
-                           
+
                             $("#" + QIDId).remove();
                             calculatevat();
                             SUMOFALLPRODUCT();
@@ -1020,12 +1014,11 @@
                 var errorItemCount = 0;
 
 
-               
+
                 //$("#orderdetailsitems > .tbody  > tr:not(:first)')").each(function (index, ele) {
                 //    alert('');
-                    $('#orderdetailsitems > tbody  > tr:not(:first)').each(function (index, ele)
-                    {
-                       
+                $('#orderdetailsitems > tbody  > tr:not(:first)').each(function (index, ele) {
+
                     if ($('#SelectProductQutation', this).val() == '0' ||
                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
                         $('.rate', this).val() == "" ||
@@ -1084,7 +1077,7 @@
                         dataType: "json",
                         success: function (result) {
 
-                            console.log(result);
+
 
                             if (result.Status == "Success") {
 
@@ -1397,7 +1390,7 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-               
+
 
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
@@ -1450,6 +1443,7 @@
                         window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
                     }
                     else if (result.Status == "Fail") {
+                        alert(result.Message);
                         alert('fail to edit record');
                     }
                     // $("#genratePdf").submit();
@@ -1823,9 +1817,6 @@
         currentRow.find('td:eq(3)').find('input').val(total);
     })
 
-</script>
-
-<script>
     $(document).ready(function () {
         $("#CompanyListTable").DataTable({
             // "processing": true, // for show progress bar
@@ -1922,6 +1913,46 @@
     //        ]
     //    });
     //});
+
+   
+    $("#SameAsBilling").change(function () {
+        // If change is confirmed this checks if the checkbox is checked
+        if (this.checked) {          
+           
+            $("#ShippingPersonName").val(($("#BillingPersonName").val()));
+            $("#ShippingAddress").val(($("#BillingCompanyName").val()));
+            $("#ShippingCompanyName").val(($("#BillingAddress").val()));
+            $("#ShippingCity").val(($("#BillingCity").val()));
+            $("#ShippingState").val(($("#BillingState").val()));
+            $("#ShippingCountry").val(($("#BillingCountry").val()));
+            $("#ShippingZIP").val(($("#BillingZibCode").val()));
+            $("#ShippingEmail").val(($("#BillingEmail").val()));
+            $("#ShippingVatTRN").val(($("#BillingVatTRN").val()));
+            $("#ShippingMobile").val(($("#BillingMobile").val()));
+            $("#ShippingPhone").val(($("#ShippingPhone").val()));
+            $("#ShippingFax").val(($("#BillingFax").val()));
+         
+        }
+        else
+        {
+
+            $("#ShippingPersonName").val("");
+            $("#ShippingAddress").val("");
+            $("#ShippingCompanyName").val("");
+            $("#ShippingCity").val("");
+            $("#ShippingState").val("");
+            $("#ShippingCountry").val("");
+            $("#ShippingZIP").val("");
+            $("#ShippingEmail").val("");
+            $("#ShippingVatTRN").val("");
+            $("#ShippingMobile").val("");
+            $("#ShippingPhone").val("");
+            $("#ShippingFax").val("");
+        }
+    });
+
+    //$('#ShippingPersonName')[0].checkValidity();
+   
 
     function Edit(companyId) {
         window.location.href = "Company/AddOrEdit/" + companyId;
@@ -2041,11 +2072,12 @@
 
 
 
-</script>
-
-
-<script>
     $(document).ready(function () {
+
+
+       
+  
+
         @*product Script*@
 
         $('#CreateNewProduct').click(function () {
@@ -2156,6 +2188,7 @@
             if (res == false) {
                 return false;
             }
+
             else {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
@@ -2589,7 +2622,7 @@
                 Qutationid: id
             },
             success: function (data) {
-              
+
                 window.location.href = "/MVCQutation/AddOrEdit/" + id;
             }
         });
@@ -2606,14 +2639,13 @@
           $loading.hide();
       });
 
-</script>
 
 
 
 
-@*  samar purchase *@
 
-<script>
+    @*  samar purchase *@
+
     $(document).ready(function () {
 
         $('#btn-InvoiceNew').click(function () {
@@ -2638,7 +2670,7 @@
         $('#VenderClientNext').click(function () {
 
             var value = $('#venderSelect').val();
-         
+
             if (value > 0) {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
@@ -2714,11 +2746,7 @@
         });
     }
 
-</script>
 
-
-
-<script>
 
     $(document).ready(function () {
 
@@ -2782,28 +2810,24 @@
     });
 
     function EditPurchase(PurchaseId) {
-        
- 
-            debugger;
-            $.ajax({
-                url: '/MVCClient/AddOrEditQutation',
-                type: 'GET',
-                data: {
-                    Qutationid: PurchaseId
-                },
-                success: function (data) {
-                    
-                    window.location.href ="/Purchase/AddOrEdit/" + id;
-                }
-            });
 
-        
+
+        debugger;
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: PurchaseId
+            },
+            success: function (data) {
+
+                window.location.href = "/Purchase/AddOrEdit/" + id;
+            }
+        });
+
+
     }
 
-</script>a
-
-
-<script>
 
     $(document).ready(function () {
         var patth = localStorage.getItem('path');
@@ -2815,4 +2839,7 @@
         $("#FilePath").val('');
         localStorage.removeItem('path');
     })
+
+
 </script>
+

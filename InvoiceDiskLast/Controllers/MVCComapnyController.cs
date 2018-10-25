@@ -69,6 +69,8 @@ namespace InvoiceDiskLast.Controllers
                     {
                        
                         HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIComapny", CompnayViewModel).Result;
+                        MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                        Session["CompayID"] = CompanyModel.CompanyID;
                         return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                     }
                    

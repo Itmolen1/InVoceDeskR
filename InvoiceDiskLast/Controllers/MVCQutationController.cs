@@ -211,7 +211,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
                             if (QtDetails.QutationDetailId == 0)
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetail", QtDetails).Result;
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
                             else
                             {
@@ -1078,6 +1078,7 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
             }
+
             catch (Exception ex)
             {
 

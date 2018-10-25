@@ -30,6 +30,8 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
+               
+              
                 MVCCompanyInfoModel comapnyInfo = db.ComapnyInfoes.Where(x => x.CompanyID == id).Select(c => new MVCCompanyInfoModel
                 {
 

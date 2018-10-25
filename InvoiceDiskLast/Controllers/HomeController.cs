@@ -10,16 +10,9 @@ namespace InvoiceDiskLast.Controllers
     {
         public ActionResult Index()
         {
-            if (Session["CompayID"] == null)
-            {
-                return RedirectToAction("Index", "Login");        
-            }
-            else
-            {
-                ViewBag.Title = "Home Page";
 
-                return View();
-            }
+            return View();
+           
         }
               
 

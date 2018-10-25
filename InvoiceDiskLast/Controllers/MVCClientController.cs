@@ -72,8 +72,8 @@ namespace InvoiceDiskLast.Controllers
                     // Apply search  on multiple field  
                     ContactsList = ContactsList.Where(p => p.ContactsId.ToString().Contains(search) ||
                     p.ContactName.ToLower().Contains(search.ToLower()) ||
-                    p.BillingCountry.ToLower().ToString().ToLower().Contains(search.ToLower()) ||
-                    p.BillingCity.ToLower().Contains(search.ToLower()) ||
+                    p.BillingCountry.ToLower().ToLower().Contains(search.ToLower()) ||
+                    //p.BillingCity.ToLower().Contains(search.ToLower()) ||
                     p.Type.ToLower().Contains(search.ToLower()) ||
                     p.ContactAddress.ToLower().ToString().Contains(search.ToLower()) ||
                     p.BillingCompanyName.ToLower().ToString().ToLower().Contains(search.ToLower()) ||
@@ -162,12 +162,13 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddOrEdit(MVCContactModel mvcContactModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(mvcContactModel);
-            }
-            else
-            {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(mvcContactModel);
+            //}
+            mvcContactModel.Addeddate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+
+          
                 if (mvcContactModel.ContactsId == null)
                 {
                     mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]);
@@ -186,7 +187,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("ApiConatacts/" + mvcContactModel.ContactsId, mvcContactModel).Result;
                     TempData["SuccessMessage"] = "Updated Successfully";
                 }
-            }
+            
             return RedirectToAction("Index");
         }
 
