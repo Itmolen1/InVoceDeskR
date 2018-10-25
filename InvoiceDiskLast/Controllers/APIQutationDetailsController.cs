@@ -35,7 +35,20 @@ namespace InvoiceDiskLast.Controllers
 
             if (QTIDs != 0)
             {
-                var query = db.QutationDetailsTables.ToList().Where(c => c.QutationID == QTIDs).ToList();
+                var query = db.QutationDetailsTables.ToList().Where(c => c.QutationID == QTIDs).Select(pd => new {
+
+                    ItemId = pd.ItemId,
+                    QutationID = pd.QutationID,
+                    Rate = pd.Rate,
+                    Quantity = pd.Quantity,
+                    Vat = pd.Vat,                 
+                    Total = pd.Total,
+                    QutationDetailId = pd.QutationDetailId
+                }).ToList();
+
+
+               
+
 
                 return Ok(query);
             }

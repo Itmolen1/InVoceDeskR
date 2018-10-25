@@ -15,6 +15,12 @@ namespace InvoiceDiskLast.Controllers
     {
 
         private DBEntities db = new DBEntities();
+
+        //Get: api/GetQutationCount
+
+       
+
+        
         // GET: api/APIQutation
         public IHttpActionResult GetQutationTables()
         {
@@ -22,11 +28,12 @@ namespace InvoiceDiskLast.Controllers
             IEnumerable<string> headerValues;
             //var DBLIST = "";
             var IDS = "";
+            int id = 0;
             if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
                 IDS = headerValues.FirstOrDefault();
-            }
-            int id = Convert.ToInt32(IDS);
+                 id = Convert.ToInt32(IDS);
+            }        
 
 
             var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new MVCQutationModel

@@ -51,14 +51,18 @@
                 <label>@CompanyDatas.CompanyName</label><br />
                 <label> @Contectdatas.ContactName</label>
             </div>
-
-
         </div>
-        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px;">
-            <p><b style="margin-left:10px">Quation</b></p>
+
+        <div class="row" style="margin-right: 0px;margin-left: 50px;">
+
+           <label><b>Qutation</b></label>
+           
+        </div>
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+
             <div class="col-xs-2">
-                <label>offer Date</label>
-                <label>offer number</label>
+                <label>offer Date</label><br />
+                <label>offer number</label><br />
                 <label>valid untill</label>
             </div>
             <div class="col-xs-3">
@@ -74,7 +78,7 @@
                 <thead>
                     <tr>
                         <th class="col-xs-4">
-                            Decription
+                            Product Name
                         </th>
                         <th class="col-xs-2">
                             Quantity
@@ -124,40 +128,54 @@
 
             </table>
             <div class="col-xs-8"></div>
-            <div class="col-xs-4">
+            <div class="col-sm-4">
                 <div class="row">
-                    <div class="col-xs-8">
-                        <label class="tex">Total excl. VAT:	€</label>
+                    <div class="col-xs-6"></div>
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">Total excl. VAT:€</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">@QutationModel.SubTotal</label>
+                        </div>
                     </div>
-                    <div class="col-xs-4">
-                        <label class="tex">@QutationModel.SubTotal</label>
-                    </div>
+
+                <div class="row">
+                    <div class="col-xs-6"></div>
+                    @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                    {
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">VAT 6%:	€	</label>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <label class="tex pull-right">@QutationModel.TotalVat6</label>
+                        </div>
+                    }
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-8">
-                        <label class="tex">VAT 6%:€</label>
-                    </div>
-                    <div class="col-xs-4">
-                        <label class="tex">@QutationModel.TotalVat6</label>
-                    </div>
+                    <div class="col-xs-6"></div>
+                    @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                    {
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">VAT 21%:	€</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">@QutationModel.TotalVat21</label>
+
+                        </div>
+                    }
+
+
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col-xs-8">
-                        <label class="tex">VAT 21%:	€</label>
+                    <div class="col-xs-6"></div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">Grand Total:€</label>
                     </div>
-                    <div class="col-xs-4">
-                        <label class="tex">@QutationModel.TotalVat21</label>
-                    </div>
-                </div>
-                <hr />
-                <div class="row">
-                    <div class="col-xs-8">
-                        <label class="tex">Total:€</label>
-                    </div>
-                    <div class="col-xs-4">
-                        <label class="tex">@QutationModel.TotalAmount</label>
+
+                    <div class="col-xs-3">
+                        <label class="tex  pull-right">@QutationModel.TotalAmount</label>
 
                     </div>
                 </div>

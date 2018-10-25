@@ -376,9 +376,9 @@
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard <span class="badge badge-pill badge-cyan">4</span></span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="/Home/Index">Home</a></li>                              
+                                <li><a href="/Home/Index">Home</a></li>
                             </ul>
-                        </li>                     
+                        </li>
 
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-clipboard"></i><span class="hide-menu">Qutation Invoices</span></a>
@@ -391,17 +391,17 @@
                         <li class="nav-small-cap"></li>
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-files"></i><span class="hide-menu">Pages <span class="badge badge-pill badge-info">25</span></span></a>
-                            <ul aria-expanded="false" class="collapse">                              
+                            <ul aria-expanded="false" class="collapse">
                                 <li><a href="/MVCProduct/Index">Product</a></li>
                                 <li><a href="/MVCClient/Index">Clients</a></li>
                                 <li><a href="/MVCQutation/Index">Qutation</a></li>
-                              
+
                             </ul>
                         </li>
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-light-bulb"></i><span class="hide-menu">Extras</span></a>
                             <ul aria-expanded="false" class="collapse">
-                             
+
                                 <li> <a class="waves-effect waves-dark" href="http://www.wrappixel.com/demos/admin-templates/elegant-admin/documentation/documentation.html" aria-expanded="false"><span class="hide-menu">Documentation</span></a></li>
                                 <li> <a class="waves-effect waves-dark" href="pages-login.html" aria-expanded="false"><span class="hide-menu">Log Out</span></a></li>
                                 <li> <a class="waves-effect waves-dark" href="pages-faq.html" aria-expanded="false"><span class="hide-menu">FAQs</span></a></li>
@@ -899,23 +899,31 @@
                     dataType: "json",
                     data: data,
                     success: function (data) {
-                        if (data == "Success") {
-                           
+                        if (data.Status == "Success") {
+                            swal({
+                                title: 'Qutation!',
+                                text: 'Qutation save successfully!',
+                                type: 'success'
+                            });
+
+
                             $("#" + QIDId).remove();
                             calculatevat();
                             SUMOFALLPRODUCT();
                             sumofGrandModel();
                         }
-                        else {
-                            swal(
-                              'Delete!',
-                              'fail to delete record!',
-                              'danger'
-                            )
+                        else if (data.Status == "Fail") {
+
+                            swal({
+                                title: 'Qutation!',
+                                text: 'fail to remove qutation!',
+                                type: 'danger'
+                            });
+
                         }
                     },
                     Error: function (errormessage) {
-                        //alert(errormessage);
+                        alert(errormessage);
                     }
 
                 });
@@ -1020,12 +1028,11 @@
                 var errorItemCount = 0;
 
 
-               
+
                 //$("#orderdetailsitems > .tbody  > tr:not(:first)')").each(function (index, ele) {
                 //    alert('');
-                    $('#orderdetailsitems > tbody  > tr:not(:first)').each(function (index, ele)
-                    {
-                       
+                $('#orderdetailsitems > .tbody  > tr:not(:first)').each(function (index, ele) {
+
                     if ($('#SelectProductQutation', this).val() == '0' ||
                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
                         $('.rate', this).val() == "" ||
@@ -1397,7 +1404,7 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-               
+
 
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
@@ -1450,7 +1457,8 @@
                         window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
                     }
                     else if (result.Status == "Fail") {
-                        alert('fail to edit record');
+                        alert(result.Message);
+
                     }
                     // $("#genratePdf").submit();
                     list = [];
@@ -1823,9 +1831,7 @@
         currentRow.find('td:eq(3)').find('input').val(total);
     })
 
-</script>
 
-<script>
     $(document).ready(function () {
         $("#CompanyListTable").DataTable({
             // "processing": true, // for show progress bar
@@ -2033,18 +2039,9 @@
     })
 
 
-    //function EditQuatation(id) {
-
-
-    //           window.location.href = "/MvcQutation/AddOrEdit/" + id;
-    //       }
 
 
 
-</script>
-
-
-<script>
     $(document).ready(function () {
         @*product Script*@
 
@@ -2589,31 +2586,24 @@
                 Qutationid: id
             },
             success: function (data) {
-              
+
                 window.location.href = "/MVCQutation/AddOrEdit/" + id;
             }
         });
 
     }
 
-    var $loading = $('.preloader').hide();
+   // var $loading = $('.preloader').hide();
 
-    $(document)
-      .ajaxStart(function () {
-          $loading.show();
-      })
-      .ajaxStop(function () {
-          $loading.hide();
-      });
-
-</script>
+    //$(document)
+    //  .ajaxStart(function () {
+    //      $loading.show();
+    //  })
+    //  .ajaxStop(function () {
+    //      $loading.hide();
+    //  });
 
 
-
-
-@*  samar purchase *@
-
-<script>
     $(document).ready(function () {
 
         $('#btn-InvoiceNew').click(function () {
@@ -2638,7 +2628,7 @@
         $('#VenderClientNext').click(function () {
 
             var value = $('#venderSelect').val();
-         
+
             if (value > 0) {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
@@ -2714,11 +2704,7 @@
         });
     }
 
-</script>
 
-
-
-<script>
 
     $(document).ready(function () {
 
@@ -2782,37 +2768,89 @@
     });
 
     function EditPurchase(PurchaseId) {
-        
- 
-            debugger;
-            $.ajax({
-                url: '/MVCClient/AddOrEditQutation',
-                type: 'GET',
-                data: {
-                    Qutationid: PurchaseId
-                },
-                success: function (data) {
-                    
-                    window.location.href ="/Purchase/AddOrEdit/" + id;
-                }
-            });
 
-        
+
+        debugger;
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: PurchaseId
+            },
+            success: function (data) {
+
+                window.location.href = "/Purchase/AddOrEdit/" + id;
+            }
+        });
+
+
     }
 
-</script>a
 
-
-<script>
 
     $(document).ready(function () {
         var patth = localStorage.getItem('path');
         $("#FilePath").val(patth);
 
-        if ($("#FilePath").val().length > 0) {
-            $('#DownloadFile1').submit();
+        if ($('input#FilePath').val() == "") {
+
         }
-        $("#FilePath").val('');
-        localStorage.removeItem('path');
+        else {
+            $('#DownloadFile1').submit();
+            $("#FilePath").val('');
+            localStorage.removeItem('path');
+        }
     })
+
+
+
+    $('.pClass').change(function () {
+        var productId = $(this).val();
+        { }
+        $.ajax({
+            url: "/MVCQutation/ProductPricebyId",
+            type: "POST",
+
+            cache: false,
+            data: { 'ProductId': productId },
+            success: function (resultData) {
+                $('#Rate').val(resultData);
+            },
+            error: function (errormessage) {
+                alert(errormessage)
+            }
+        });
+    })
+
+
+    function GetProductPriceById(ProductId) {
+        debugger;
+
+    }
+
+
+
+
+    /// numver validatio for input 
+
+
+
+    $(".quantity ").on("keypress keyup blur", function (event) {
+        //this.value = this.value.replace(/[^0-9\.]/g,'');
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+
+    $("#Rate").on("keypress keyup blur", function (event) {
+        //this.value = this.value.replace(/[^0-9\.]/g,'');
+        $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+
+    
+
 </script>

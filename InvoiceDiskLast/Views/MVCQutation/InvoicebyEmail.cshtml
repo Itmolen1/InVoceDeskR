@@ -25,15 +25,14 @@
             @using (Html.BeginForm("InvoiceByEmail", "MvcQutation", FormMethod.Post, new { id = "frmSendEmail" }))
             {
 
-
-
+                
 
                 <div class="panel panel-default">
-                    <div class="panel-heading"><p><b>Send Invoice By Email</b></p> </div>
+                    <div class="panel-heading"><p><b>Send qutation by email</b></p> </div>
                     <div class="panel-body">
                         <div class="row text-center">
                             <div class="col-md-6 col-lg-offset-3">
-                                <h2 id="">Invoice-@Model.invoiceId</h2>
+                                <h2 id="">Qutation-@Model.invoiceId</h2>
                                 @Html.HiddenFor(Model => Model.invoiceId)
                             </div>
                         </div>
@@ -59,28 +58,16 @@
 
                         <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
                             <div class="col-md-2 pull-left">AttachFiles:</div>
-                            <div class="col-md-10">
-                                @if (TempData["path"] == null)
-                                {
-                                    <label>@Model.Attachment</label>
-                                    <input type="hidden" name="Attachment" value="@Model.Attachment" />
-                                }
-                                else
-                                {
-                                    <label>@TempData["path"]</label>
-                                    <input type="hidden" name="Attachment" value="@TempData["path"]" />
-
-                                }
+                            <div class="col-md-10">                                                                                                                          
+                              <label>@Model.Attachment</label>
+                                @Html.HiddenFor(Model => Model.Attachment);                                                              
                             </div>
                         </div>
 
                         <div class="col-md-8 col-lg-offset-2" style="margin-top:5px">
                             <div class="col-md-2 pull-left">Topic:</div>
-
                             <div class="col-md-10">
-
                                 @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control" })
-
 
                                 @*<input type="text" class="form-control" />*@
                             </div>
