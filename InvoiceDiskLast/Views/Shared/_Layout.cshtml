@@ -600,6 +600,7 @@
         if (sessionStorage.getItem('accessToken') == null) {
             window.location.href = "/Login/Index"
         }
+
     });
 
 
@@ -610,7 +611,9 @@
     });*@
 
 
+</script>
 
+<script>
     $(document).ready(function () {
 
         $("#ContactListTable").DataTable({
@@ -651,7 +654,9 @@
 
 
     });
+</script>
 
+<script>
     $(document).ready(function () {
 
         $('#btn-QutationNew').click(function () {
@@ -738,7 +743,9 @@
 
         });
     });
+</script>
 
+<script>
     var currentRow1 = "";
     var r = "";
     $(document).ready(function () {
@@ -803,8 +810,7 @@
 
 
         function calculatevat() {
-            alert('Row Length : ' + $('#orderdetailsitems tr').length);
-            if (0 == $('#orderdetailsitems tr').length) {
+            if ($('#orderdetailsitems tr').length == 0) {
                 $('#btwo').text('0.00');
                 $('#BTW6').text('0.00');
                 $('#BTW21').text('0.00');
@@ -893,23 +899,31 @@
                     dataType: "json",
                     data: data,
                     success: function (data) {
-                        if (data == "Success") {
+                        if (data.Status == "Success") {
+                            swal({
+                                title: 'Qutation!',
+                                text: 'Qutation save successfully!',
+                                type: 'success'
+                            });
+
 
                             $("#" + QIDId).remove();
                             calculatevat();
                             SUMOFALLPRODUCT();
                             sumofGrandModel();
                         }
-                        else {
-                            swal(
-                              'Delete!',
-                              'fail to delete record!',
-                              'danger'
-                            )
+                        else if (data.Status == "Fail") {
+
+                            swal({
+                                title: 'Qutation!',
+                                text: 'fail to remove qutation!',
+                                type: 'danger'
+                            });
+
                         }
                     },
                     Error: function (errormessage) {
-                        //alert(errormessage);
+                        alert(errormessage);
                     }
 
                 });
@@ -1017,7 +1031,7 @@
 
                 //$("#orderdetailsitems > .tbody  > tr:not(:first)')").each(function (index, ele) {
                 //    alert('');
-                $('#orderdetailsitems > tbody  > tr:not(:first)').each(function (index, ele) {
+                $('#orderdetailsitems > .tbody  > tr:not(:first)').each(function (index, ele) {
 
                     if ($('#SelectProductQutation', this).val() == '0' ||
                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
@@ -1077,7 +1091,7 @@
                         dataType: "json",
                         success: function (result) {
 
-
+                            console.log(result);
 
                             if (result.Status == "Success") {
 
@@ -1444,7 +1458,7 @@
                     }
                     else if (result.Status == "Fail") {
                         alert(result.Message);
-                        alert('fail to edit record');
+
                     }
                     // $("#genratePdf").submit();
                     list = [];
@@ -1817,6 +1831,7 @@
         currentRow.find('td:eq(3)').find('input').val(total);
     })
 
+
     $(document).ready(function () {
         $("#CompanyListTable").DataTable({
             // "processing": true, // for show progress bar
@@ -1913,46 +1928,6 @@
     //        ]
     //    });
     //});
-
-   
-    $("#SameAsBilling").change(function () {
-        // If change is confirmed this checks if the checkbox is checked
-        if (this.checked) {          
-           
-            $("#ShippingPersonName").val(($("#BillingPersonName").val()));
-            $("#ShippingAddress").val(($("#BillingCompanyName").val()));
-            $("#ShippingCompanyName").val(($("#BillingAddress").val()));
-            $("#ShippingCity").val(($("#BillingCity").val()));
-            $("#ShippingState").val(($("#BillingState").val()));
-            $("#ShippingCountry").val(($("#BillingCountry").val()));
-            $("#ShippingZIP").val(($("#BillingZibCode").val()));
-            $("#ShippingEmail").val(($("#BillingEmail").val()));
-            $("#ShippingVatTRN").val(($("#BillingVatTRN").val()));
-            $("#ShippingMobile").val(($("#BillingMobile").val()));
-            $("#ShippingPhone").val(($("#ShippingPhone").val()));
-            $("#ShippingFax").val(($("#BillingFax").val()));
-         
-        }
-        else
-        {
-
-            $("#ShippingPersonName").val("");
-            $("#ShippingAddress").val("");
-            $("#ShippingCompanyName").val("");
-            $("#ShippingCity").val("");
-            $("#ShippingState").val("");
-            $("#ShippingCountry").val("");
-            $("#ShippingZIP").val("");
-            $("#ShippingEmail").val("");
-            $("#ShippingVatTRN").val("");
-            $("#ShippingMobile").val("");
-            $("#ShippingPhone").val("");
-            $("#ShippingFax").val("");
-        }
-    });
-
-    //$('#ShippingPersonName')[0].checkValidity();
-   
 
     function Edit(companyId) {
         window.location.href = "Company/AddOrEdit/" + companyId;
@@ -2064,20 +2039,10 @@
     })
 
 
-    //function EditQuatation(id) {
-
-
-    //           window.location.href = "/MvcQutation/AddOrEdit/" + id;
-    //       }
 
 
 
     $(document).ready(function () {
-
-
-       
-  
-
         @*product Script*@
 
         $('#CreateNewProduct').click(function () {
@@ -2188,7 +2153,6 @@
             if (res == false) {
                 return false;
             }
-
             else {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
@@ -2629,22 +2593,16 @@
 
     }
 
-    var $loading = $('.preloader').hide();
+   // var $loading = $('.preloader').hide();
 
-    $(document)
-      .ajaxStart(function () {
-          $loading.show();
-      })
-      .ajaxStop(function () {
-          $loading.hide();
-      });
+    //$(document)
+    //  .ajaxStart(function () {
+    //      $loading.show();
+    //  })
+    //  .ajaxStop(function () {
+    //      $loading.hide();
+    //  });
 
-
-
-
-
-
-    @*  samar purchase *@
 
     $(document).ready(function () {
 
@@ -2829,17 +2787,70 @@
     }
 
 
+
     $(document).ready(function () {
         var patth = localStorage.getItem('path');
         $("#FilePath").val(patth);
 
-        if ($("#FilePath").val().length > 0) {
-            $('#DownloadFile1').submit();
+        if ($('input#FilePath').val() == "") {
+
         }
-        $("#FilePath").val('');
-        localStorage.removeItem('path');
+        else {
+            $('#DownloadFile1').submit();
+            $("#FilePath").val('');
+            localStorage.removeItem('path');
+        }
     })
 
 
-</script>
 
+    $('.pClass').change(function () {
+        var productId = $(this).val();
+        { }
+        $.ajax({
+            url: "/MVCQutation/ProductPricebyId",
+            type: "POST",
+
+            cache: false,
+            data: { 'ProductId': productId },
+            success: function (resultData) {
+                $('#Rate').val(resultData);
+            },
+            error: function (errormessage) {
+                alert(errormessage)
+            }
+        });
+    })
+
+
+    function GetProductPriceById(ProductId) {
+        debugger;
+
+    }
+
+
+
+
+    /// numver validatio for input 
+
+
+
+    $(".quantity ").on("keypress keyup blur", function (event) {
+        //this.value = this.value.replace(/[^0-9\.]/g,'');
+        $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+
+    $("#Rate").on("keypress keyup blur", function (event) {
+        //this.value = this.value.replace(/[^0-9\.]/g,'');
+        $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
+
+    
+
+</script>

@@ -26,11 +26,14 @@ namespace InvoiceDiskLast.Controllers
             IEnumerable<string> headerValues;
             //var DBLIST = "";
             var IDS = "";
+
+            int id = 0;
             if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
                 IDS = headerValues.FirstOrDefault();
+                id = Convert.ToInt32(IDS);
             }
-            int id = Convert.ToInt32(IDS);
+            
             // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
             
 

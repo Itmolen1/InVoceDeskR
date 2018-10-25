@@ -1,6 +1,7 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
@@ -15,6 +16,13 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
+
+        public static void DeleteFiles(string path)
+        {
+            //string filePath = s.MapPath("~/Content/attachments");
+            //Array.ForEach(Directory.GetFiles("~/PDF/10161 - My Company.pdf"), System.IO.File.Delete);
+        }
+
 
 
         public static bool email(EmailModel emailmodel)
@@ -39,7 +47,8 @@ namespace InvoiceDiskLast.Controllers
                 SmtpServer.EnableSsl = true;
                 SmtpServer.Send(mail);
                 emailstatus = true;
-
+                mail.Dispose();
+               // DeleteFiles(emailmodel.Attachment);
             }
 
             catch (Exception)
