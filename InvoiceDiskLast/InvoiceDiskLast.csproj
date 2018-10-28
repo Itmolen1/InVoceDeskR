@@ -98,7 +98,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -258,6 +257,7 @@
     <Compile Include="Controllers\APIQutationDetailsController.cs" />
     <Compile Include="Controllers\CaptchaController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\GenrateInvoiceController.cs" />
     <Compile Include="Controllers\GetQuationCountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -267,8 +267,6 @@
     <Compile Include="Controllers\MVCQutationController.cs" />
     <Compile Include="Controllers\PurchaseController.cs" />
     <Compile Include="Controllers\PurchaseDetailController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DeleteFileClass.cs" />
     <Compile Include="Global.asax.cs">
@@ -292,15 +290,36 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiCompanyInfoModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\AspNetRole.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUser.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserClaim.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogin.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ComapnyInfo.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CompanyInformation.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\ContactsTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\C__MigrationHistory.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\Feedback.cs" />
+    <Compile Include="Models\GenderTable.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MVCCompanyInfoModel.cs" />
@@ -328,9 +347,23 @@
     <Compile Include="Models\QutationTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SalesDetailsTable.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalesTable.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Token.cs" />
-    <Compile Include="Models\UserModels.cs" />
+    <Compile Include="Models\UserAuthorityTable.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserTable.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VatDetailsTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1052,20 +1085,20 @@
     <Content Include="Views\MVCQutation\AddOrEdit.cshtml" />
     <Content Include="Views\MVCQutation\Index.cshtml" />
     <Content Include="Views\MVCQutation\InvoicebyEmail.cshtml" />
-    <Content Include="Views\MVCQutation\p.cshtml" />
     <Content Include="Views\MVCQutation\PrintView.cshtml" />
     <Content Include="Views\MVCQutation\Viewpp.cshtml" />
     <Content Include="Views\MVCQutation\ViewQuation.cshtml" />
     <Content Include="Views\Purchase\Index.cshtml" />
     <Content Include="Views\Purchase\AddOrEdit.cshtml" />
     <Content Include="Views\Captcha\Index.cshtml" />
-    <Content Include="Views\MVCComapny\Index.cshtml" />
+    <Content Include="Views\Purchase\Viewinvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CustomClasses\" />
     <Folder Include="images\" />
     <Folder Include="Views\Email\" />
+    <Folder Include="Views\GenrateInvoice\" />
     <Folder Include="Views\MVCCompany\" />
     <Folder Include="Views\PurchaseDetail\" />
   </ItemGroup>

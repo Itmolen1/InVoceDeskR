@@ -346,8 +346,6 @@
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
                                 <div class="dropdown-divider"></div>
                                 @*<a class="dropdown-item"><i href="javascript:void(0)" class="fa fa-power-off" id="Logouts"></i> Logout</a>*@
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5" id="CompanySittingEdit"></i> Company Setting</a>
-
                                 <div class="p-l-30 p-10"><a href="javascript:void(0)" id="Logout" class="btn btn-sm btn-warning  btn-rounded"><i class="fa fa-power-off"></i>        LogOut</a></div>
                                 <div class="dropdown-divider"></div>
                                 <div class="p-l-30 p-10"><a href="javascript:void(0)" id="Logout1" class="btn btn-sm btn-success  btn-rounded">View Profile</a></div>
@@ -553,6 +551,7 @@
         <!-- footer -->
         <!-- ============================================================== -->
 
+
         <footer class="footer">
             © 2018 invoice Disk
         </footer>
@@ -589,6 +588,8 @@
     <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
     <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
 
+
+
 </body>
 </html>
 
@@ -613,11 +614,48 @@
     });*@
 
 
-</script>
+    $(document).ready(function () {
+
+        $("#ContactListTable").DataTable({
+            //"processing": true, // for show progress bar
+            processing: true,
+            "language": {
+                "processing": $('#loaderMvcConatc').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            searching: true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/MVCClient/GetContactList",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                    { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
+                    { "data": "ContactName", "name": "ContactName", "autoWidth": true },
+                    { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
+                    { "data": "Type", "name": "Type", "autoWidth": true },
+                    { "data": "BillingPersonName", "name": "BillingPersonName", "autoWidth": true },
+                    { "data": "BillingCompanyName", "name": "BillingCompanyName", "autoWidth": true },
+                    { "data": "BillingVatTRN", "name": "BillingVatTRN", "autoWidth": true },
+                    { "data": "Status", "name": "Status", "autoWidth": true },
+                    {
+                        render: function (data, type, row) {
+                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<button type="button" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></button>'
+                        }
+                    }
+
+
+            ]
+
+        });
 
 
 
-<script>
+    });
+
+
     $(document).ready(function () {
 
         $('#btn-QutationNew').click(function () {
@@ -704,9 +742,7 @@
 
         });
     });
-</script>
 
-<script>
     var currentRow1 = "";
     var r = "";
     $(document).ready(function () {
@@ -720,8 +756,6 @@
             calculatevat();
             SUMOFALLPRODUCT();
             sumofGrandModel();
-
-
         });
 
         LoadProduct();
@@ -764,78 +798,13 @@
                 calculatevat();
                 SUMOFALLPRODUCT();
                 sumofGrandModel();
-
+                $('#SelectVAT').val(0);
             }
         });
 
 
 
-        function calculatevat() {
-            if ($('#orderdetailsitems tr').length == 0) {
-                $('#btwo').text('0.00');
-                $('#BTW6').text('0.00');
-                $('#BTW21').text('0.00');
-            }
-            else {
 
-                var sum0 = 0;
-                var total0 = 0;
-                $('#orderdetailsitems tr').each(function () {
-                    $('#BTW0').text();
-
-                    r = $(this).closest('tr');
-                    var value = r.find('.VAT  option:selected').val();
-                    if (r.find('.VAT  option:selected').val() == 0) {
-                        total0 = r.find('td:eq(3)').find('input').val();
-                        if (!isNaN(total0) && total0.length != 0) {
-                            sum0 += parseInt(total0);
-                        }
-                        var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
-                        var totalr = Math.round(totalvat0, 2);
-                        $('#BTW0').text(totalvat0.toFixed(2));
-                    }
-                    else {
-                        $('#BTW0').text('0.00');
-                    }
-                })
-            }
-
-            var sum6 = 0;
-            var total6 = 0;
-            $('#orderdetailsitems tr').each(function () {
-                var r = $(this).closest('tr');
-                var value = r.find('.VAT  option:selected').val();
-                if (r.find('.VAT  option:selected').val() == 6) {
-                    total6 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total6) && total6.length != 0) {
-                        sum6 += parseInt(total6);
-                    }
-                    var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
-                    var totalr = Math.round(totalvat6, 2);
-                    $('#BTW6').text(totalvat6.toFixed(2));
-                }
-            })
-
-            var sum21 = 0;
-            var total21 = 0;
-            $('#orderdetailsitems tr').each(function () {
-                //$('#BTW21').text();
-                var r = $(this).closest('tr');
-                var value = r.find('.VAT  option:selected').val();
-                if (r.find('.VAT  option:selected').val() == 21) {
-
-                    total21 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total21) && total21.length != 0) {
-                        sum21 += parseInt(total21);
-                    }
-                    var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
-
-                    $('#BTW21').text(totalvat21);
-                }
-
-            })
-            RowCounte();
-        }
         $(document).ready(function () {
 
             $(document).on('click', '#RemoveEdit', function () {
@@ -891,49 +860,8 @@
             });
         });
 
-        //SUMOFALLPRODUCT();
-        /// sumofGrandModel();
-
-        function RowCounte() {
-
-            var rowCount6 = 0;
-            var rowCount21 = 0;
-            var rowCount0 = 0;
-
-            $('#orderdetailsitems tr td').each(function () {
 
 
-                var EquationResult = $(this).find('.VAT').val();
-
-                if (EquationResult == 6) {
-                    rowCount6++;
-
-                }
-                else if (EquationResult == 21) {
-                    rowCount21++;
-                }
-                else if (EquationResult == 0) {
-                    rowCount0++
-                }
-            })
-
-            if (rowCount0 == 0) {
-                $("#btwo").text('0.00');
-            }
-            if (rowCount6 == 0) {
-                $("#BTW6").text('0.00');
-            }
-            if (rowCount21 == 0) {
-                $("#BTW21").text('0.00');
-            }
-
-            if ($('#orderdetailsitems tr').length == 0) {
-
-                $('#SubTotal').text();
-                $('#TotalBTW').text();
-                $('#gtotal').text();
-            }
-        }
 
         $('#orderdetailsitems').on('click', '.remove', function () {
 
@@ -945,7 +873,7 @@
 
                 var BTW6 = $('#BTW6').text();
                 $('#BTW6').text();
-                $('#BTW6').text(parseInt(BTW6 - totalvat6));
+                $('#BTW6').text(parseInt(BTW6 - totalvat6.toFixed(2)));
 
             }
             if (vat == 21) {
@@ -957,21 +885,22 @@
 
                     var BTW21 = $('#BTW21').text();
                     $('#BTW21').text();
-                    $('#BTW21').text(parseFloat(BTW21 - totalvat21));
+                    $('#BTW21').text(parseFloat(BTW21 - totalvat21.toFixed(2)));
 
                 }
             }
             $(this).parents('tr').remove();
             SUMOFALLPRODUCT();
             sumofGrandModel();
-            //reset all totals
+
             if ($('#orderdetailsitems tr').length == 0) {
-                $('#SubTotal').text('');
-                $('#TotalBTW').text('');
-                $('#gtotal').text('');
-                $('#BTW6').text('');
-                $('#BTW21').text('');
-                $('#btwo').text('');
+                $('#SubTotal').text('0.0');
+                $('#TotalBTW').text('0.0');
+                $('#gtotal').text('0.0');
+                $('#BTW6').text('0.0');
+                $('#BTW21').text('0.0');
+                $('#btwo').text('0.0');
+                $('#SelectVAT').val(0);
             }
         });
 
@@ -990,8 +919,7 @@
 
 
 
-                //$("#orderdetailsitems > .tbody  > tr:not(:first)')").each(function (index, ele) {
-                //    alert('');
+
                 $('#orderdetailsitems > .tbody  > tr:not(:first)').each(function (index, ele) {
 
                     if ($('#SelectProductQutation', this).val() == '0' ||
@@ -1056,8 +984,6 @@
 
                             if (result.Status == "Success") {
 
-
-                                list = [];
                                 $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
                                 $('#orderdetailsitems').empty();
                                 $("#Submit").val('Save');
@@ -1365,8 +1291,6 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-
-
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
                     Quantity: parseInt($('.quantity', this).val()),
@@ -1438,7 +1362,7 @@
     });
 
     $('#saveprintandsendtoyourselfsave').click(function () {
-        
+        debugger;
         var QutationIdd;
         var isAllValid = true;
         $('#orderItemError').text('');
@@ -1446,7 +1370,6 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
                     Quantity: parseInt($('.quantity', this).val()),
@@ -1550,14 +1473,10 @@
 
             });
         }
-
-
-
     }
 
 
     function LoadProductAdding() {
-
         $("#SelectProductQutation").find("option").remove();
         $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
         $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
@@ -1784,6 +1703,114 @@
         calculatevat();
     });
 
+
+    function calculatevat() {
+        if ($('#orderdetailsitems tr').length == 0) {
+            $('#btwo').text('0.00');
+            $('#BTW6').text('0.00');
+            $('#BTW21').text('0.00');
+        }
+        else {
+
+            var sum0 = 0;
+            var total0 = 0;
+            $('#orderdetailsitems tr').each(function () {
+                $('#BTW0').text();
+
+                r = $(this).closest('tr');
+                var value = r.find('.VAT  option:selected').val();
+                if (r.find('.VAT  option:selected').val() == 0) {
+                    total0 = r.find('td:eq(3)').find('input').val();
+                    if (!isNaN(total0) && total0.length != 0) {
+                        sum0 += parseInt(total0);
+                    }
+                    var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
+                    var totalr = Math.round(totalvat0, 2);
+                    $('#BTW0').text(totalvat0.toFixed(2));
+                }
+                else {
+                    $('#BTW0').text('0.00');
+                }
+            })
+        }
+
+        var sum6 = 0;
+        var total6 = 0;
+        $('#orderdetailsitems tr').each(function () {
+            var r = $(this).closest('tr');
+            var value = r.find('.VAT  option:selected').val();
+            if (r.find('.VAT  option:selected').val() == 6) {
+                total6 = r.find('td:eq(3)').find('input').val();
+                if (!isNaN(total6) && total6.length != 0) {
+                    sum6 += parseInt(total6);
+                }
+                var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
+                var totalr = Math.round(totalvat6, 2);
+                $('#BTW6').text(totalvat6.toFixed(2));
+            }
+        })
+
+        var sum21 = 0;
+        var total21 = 0;
+        $('#orderdetailsitems tr').each(function () {
+            //$('#BTW21').text();
+            var r = $(this).closest('tr');
+            var value = r.find('.VAT  option:selected').val();
+            if (r.find('.VAT  option:selected').val() == 21) {
+
+                total21 = r.find('td:eq(3)').find('input').val();
+                if (!isNaN(total21) && total21.length != 0) {
+                    sum21 += parseInt(total21);
+                }
+                var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
+
+                $('#BTW21').text(totalvat21.toFixed(2));
+            }
+
+        })
+        RowCounte();
+    }
+    function RowCounte() {
+
+        var rowCount6 = 0;
+        var rowCount21 = 0;
+        var rowCount0 = 0;
+
+        $('#orderdetailsitems tr td').each(function () {
+
+
+            var EquationResult = $(this).find('.VAT').val();
+
+            if (EquationResult == 6) {
+                rowCount6++;
+
+            }
+            else if (EquationResult == 21) {
+                rowCount21++;
+            }
+            else if (EquationResult == 0) {
+                rowCount0++
+            }
+        })
+
+        if (rowCount0 == 0) {
+            $("#btwo").text('0.00');
+        }
+        if (rowCount6 == 0) {
+            $("#BTW6").text('0.00');
+        }
+        if (rowCount21 == 0) {
+            $("#BTW21").text('0.00');
+        }
+
+        if ($('#orderdetailsitems tr').length == 0) {
+
+            $('#SubTotal').text();
+            $('#TotalBTW').text();
+            $('#gtotal').text();
+        }
+    }
+
     $('#Quantity').keyup(function () {
         var currentRow = $(this).closest("tr");
         var quantity = $(this).val();  // get current row 1st TD value
@@ -1839,56 +1866,6 @@
 
 
 
-    //$(document).ready(function () {
-
-    //    $("#ContactListTable").DataTable({
-    //        //"processing": true, // for show progress bar
-    //        processing: true,
-    //        "language": {
-    //            "processing": $('#loaderMvcConatc').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-    //        },
-    //        searching: true,
-    //        "serverSide": true, // for process server side
-    //        "filter": false, // this is for disable filter (search box)
-    //        "orderMulti": false, // for disable multiple column at once
-    //        "ajax": {
-    //            "url": "/MVCContacts/GetContactList",
-    //            "type": "POST",
-    //            "datatype": "json"
-    //        },
-    //        "columns": [
-    //                { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
-    //                { "data": "ContactName", "name": "ContactName", "autoWidth": true },
-    //                { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
-    //                { "data": "Type", "name": "Type", "autoWidth": true },
-    //                { "data": "BillingPersonName", "name": "BillingPersonName", "autoWidth": true },
-    //                { "data": "BillingCompanyName", "name": "BillingCompanyName", "autoWidth": true },
-    //                { "data": "BillingVatTRN", "name": "BillingVatTRN", "autoWidth": true },
-    //                { "data": "Status", "name": "Status", "autoWidth": true },
-    //                {
-    //                    render: function (data, type, row) {
-    //                        return '<a href="" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.ContactsId + ')"><i class="glyphicon glyphicon-pencil "></i></a>|<a href="" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="glyphicon glyphicon-eye-open"></i></a>'
-    //                    }
-    //                }
-
-    //               //{
-    //               //    'data': 'CompanyLogo',
-    //               //    render: function (logo) {
-    //               //        if (logo) {
-    //               //            return '<img height="25px" width="25px" src="' + logo + '" />'
-    //               //        }
-    //               //        else { return 'No Image'; }
-    //               //    }
-    //               //},
-    //              //{
-    //              //    render: function (data, type, row) {
-    //              //        return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="glyphicon glyphicon-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye-open"></i></a>'
-    //              //    }
-    //              //}
-
-    //        ]
-    //    });
-    //});
 
     function Edit(companyId) {
         window.location.href = "Company/AddOrEdit/" + companyId;
@@ -2101,9 +2078,120 @@
             clearProductTextBox();
         });
 
-      
+        $('#CreateNewContacts').click(function () {
+            $('#UpdateContacts').hide();
+            $('#SaveNewContacts').show();
+            $('#CreateNewContactModal').modal('show');
+        });
 
-      
+        @*Contact or client Script*@
+
+        $('#SaveNewContacts').click(function () {
+            var res = validateContact();
+            if (res == false) {
+                return false;
+            }
+            else {
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'POST',
+                    data: {
+                        ContactName: $('#ContactName').val(),
+                        ContactAddress: $('#ContactAddress').val(),
+                        Type: $('#TypeContacts').val(),
+                        BillingPersonName: $('#BillingPersonName').val(),
+                        BillingCompanyName: $('#BillingCompanyName').val(),
+                        BillingAddress: $('#BillingAddress').val(),
+                        BillingCity: $('#BillingCity').val(),
+                        BillingCountry: $('#BillingCountry').val(),
+                        BillingZibCode: $('#BillingZibCode').val(),
+                        BillingEmail: $('#BillingEmail').val(),
+                        BillingVatTRN: $('#BillingVatTRN').val(),
+                        BillingPhone: $('#BillingPhone').val(),
+                        BillingMobile: $('#BillingMobile').val(),
+                        BillingFax: $('#BillingFax').val(),
+                        ShippingPersonName: $('#ShippingPersonName').val(),
+                        ShippingCompanyName: $('#ShippingCompanyName').val(),
+                        ShippingCountry: $('#ShippingCountry').val(),
+                        ShippingZIP: $('#ShippingZIP').val(),
+                        ShippingEmail: $('#ShippingEmail').val(),
+                        ShippingVatTRN: $('#ShippingVatTRN').val(),
+                        ShippingMobile: $('#ShippingMobile').val(),
+                        ShippingPhone: $('#ShippingPhone').val(),
+                        ShippingFax: $('#ShippingFax').val(),
+                        Remarks: $('#Remarks').val(),
+                        Status: $('#Status').val()
+
+                    },
+                    success: function (response) {
+                        if (response == '201') {
+                            $('#CreateNewContactModal').modal('hide');
+                            //$("#productTable").ajax.reload();
+                            clearContectTextBox();
+                            SuccessInsert();
+                        }
+                        else {
+                            alert(response);
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+
+        });
+
+        $('#UpdateContacts').click(function () {
+            var res = validateContact();
+            if (res == false) {
+                return false;
+            }
+            else {
+
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'POST',
+                    data: {
+                        ContactsId: $('#ContactsId').val(),
+                        ContactName: $('#ContactName').val(),
+                        ContactAddress: $('#ContactAddress').val(),
+                        Type: $('#TypeContacts').val(),
+                        BillingPersonName: $('#BillingPersonName').val(),
+                        BillingCompanyName: $('#BillingCompanyName').val(),
+                        BillingAddress: $('#BillingAddress').val(),
+                        BillingCity: $('#BillingCity').val(),
+                        BillingCountry: $('#BillingCountry').val(),
+                        BillingZibCode: $('#BillingZibCode').val(),
+                        BillingEmail: $('#BillingEmail').val(),
+                        BillingVatTRN: $('#BillingVatTRN').val(),
+                        BillingPhone: $('#BillingPhone').val(),
+                        BillingMobile: $('#BillingMobile').val(),
+                        BillingFax: $('#BillingFax').val(),
+                        ShippingPersonName: $('#ShippingPersonName').val(),
+                        ShippingCompanyName: $('#ShippingCompanyName').val(),
+                        ShippingCountry: $('#ShippingCountry').val(),
+                        ShippingZIP: $('#ShippingZIP').val(),
+                        ShippingEmail: $('#ShippingEmail').val(),
+                        ShippingVatTRN: $('#ShippingVatTRN').val(),
+                        ShippingMobile: $('#ShippingMobile').val(),
+                        ShippingPhone: $('#ShippingPhone').val(),
+                        ShippingFax: $('#ShippingFax').val(),
+                        Remarks: $('#Remarks').val(),
+                        Status: $('#Status').val()
+                    },
+                    success: function (data) {
+                        $('#CreateNewContactModal').modal('hide');
+                        //$("#productTable").ajax.reload();
+                        SuccessUpdate();
+                        clearContectTextBox();
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        });
 
         $('#Logout').click(function () {
             debugger;
@@ -2198,7 +2286,63 @@
         });
     }
 
-   
+    function EditContact(ContactsId) {
+        $.ajax({
+            url: "/MVCClient/AddOrEdit/" + ContactsId,
+            type: "GET",
+            dataType: "json",
+            success: function (resultContactData) {
+
+                $('#ContactsId').val(resultContactData.ContactsId);
+                $('#ContactName').val(resultContactData.ContactName);
+                $('#ContactAddress').val(resultContactData.ContactAddress);
+                $('select#TypeContacts option').each(function () {
+                    if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase()) {
+                        this.selected = true;
+                        return;
+                    }
+                });
+                if (resultContactData.Status == true) {
+                    $('#Status').val("1");
+                }
+                else {
+                    $('#Status').val("0");
+                }
+
+                $('#BillingPersonName').val(resultContactData.BillingPersonName);
+                $('#BillingCompanyName').val(resultContactData.BillingCompanyName);
+                $('#BillingAddress').val(resultContactData.BillingAddress);
+                $('#BillingCity').val(resultContactData.BillingCity);
+                $('#BillingState').val(resultContactData.BillingState);
+                $('#BillingCountry').val(resultContactData.BillingCountry);
+                $('#BillingZibCode').val(resultContactData.BillingZibCode);
+                $('#BillingEmail').val(resultContactData.BillingEmail);
+                $('#BillingVatTRN').val(resultContactData.BillingVatTRN);
+                $('#BillingPhone').val(resultContactData.BillingPhone);
+                $('#BillingMobile').val(resultContactData.BillingMobile);
+                $('#BillingFax').val(resultContactData.BillingFax);
+                $('#ShippingPersonName').val(resultContactData.ShippingPersonName);
+                $('#ShippingAddress').val(resultContactData.ShippingAddress);
+                $('#ShippingCompanyName').val(resultContactData.ShippingCompanyName);
+                $('#ShippingCity').val(resultContactData.ShippingCity);
+                $('#ShippingState').val(resultContactData.ShippingState);
+                $('#ShippingCountry').val(resultContactData.ShippingCountry);
+                $('#ShippingZIP').val(resultContactData.ShippingZIP);
+                $('#ShippingEmail').val(resultContactData.ShippingEmail);
+                $('#ShippingVatTRN').val(resultContactData.ShippingVatTRN);
+                $('#ShippingMobile').val(resultContactData.ShippingMobile);
+                $('#ShippingPhone').val(resultContactData.ShippingPhone);
+                $('#ShippingFax').val(resultContactData.ShippingFax);
+                $('#Remarks').val(resultContactData.Remarks);
+                $('#UpdateContacts').show();
+                $('#SaveNewContacts').hide();
+                $('#CreateNewContactModal').modal('show');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
 
     function DeleteProduct(ProductId) {
 
@@ -2300,12 +2444,79 @@
         });
     }
 
-  
+    function clearContectTextBox() {
+        $('#ContactsId').val("");
+        $('#ContactName').val("");
+        $('#ContactAddress').val("");
+        $('#Type').val("");
+        $('#BillingPersonName').val("");
+        $('#BillingCompanyName').val("");
+        $('#BillingAddress').val("");
 
-    
+        $('#BillingCity').val("");
+        $('#BillingState').val("");
+        $('#BillingCountry').val("");
+        $('#BillingZibCode').val("");
+        $('#BillingEmail').val("");
+        $('#BillingVatTRN').val("");
+        $('#BillingPhone').val("");
+
+
+        $('#BillingMobile').val("");
+        $('#BillingFax').val("");
+        $('#ShippingPersonName').val("");
+        $('#ShippingAddress').val("");
+        $('#ShippingCompanyName').val("");
+        $('#ShippingCity').val("");
+        $('#ShippingState').val("");
+
+        $('#ShippingCountry').val("");
+        $('#ShippingZIP').val("");
+        $('#ShippingEmail').val("");
+        $('#ShippingVatTRN').val("");
+        $('#ShippingMobile').val("");
+        $('#ShippingPhone').val("");
+        $('#ShippingFax').val("");
+
+        $('#Remarks').val("");
+
+
+        $('#UpdateContacts').hide();
+        $('#SaveNewContacts').show();
+        //$('#Name').css('border-color', 'lightgrey');
+        //$('#Age').css('border-color', 'lightgrey');
+        //$('#State').css('border-color', 'lightgrey');
+        //$('#Country').css('border-color', 'lightgrey');
+    }
+
+    function validateContact() {
+        var isValid = true;
+        if ($('#ContactName').val().trim() == "") {
+            $('#ContactName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ContactName').css('border-color', 'lightgrey');
+        }
+        if ($('#ContactAddress').val().trim() == "") {
+            $('#ContactAddress').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ContactAddress').css('border-color', 'lightgrey');
+        }
+        if ($('#BillingPersonName').val().trim() == "") {
+            $('#BillingPersonName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#BillingPersonName').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
 
     function EditQuatation(id) {
-       
+        debugger;
         $.ajax({
             url: '/MVCClient/AddOrEditQutation',
             type: 'GET',
@@ -2320,7 +2531,7 @@
 
     }
 
-   // var $loading = $('.preloader').hide();
+    // var $loading = $('.preloader').hide();
 
     //$(document)
     //  .ajaxStart(function () {
@@ -2433,68 +2644,12 @@
 
 
 
-    $(document).ready(function () {
-
-        $("#PurchaseDetailTable").DataTable({
-            //"processing": true, // for show progress bar
-            "processing": true,
-            "language": {
-                "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-            },
-            "searching": true,
-            "serverSide": true, // for process server side
-            "filter": false, // this is for disable filter (search box)
-            "orderMulti": false, // for disable multiple column at once
-            "ajax": {
-                "url": "/Purchase/GetPurchaseList",
-                "type": "POST",
-                "datatype": "json"
-            },
-            "columns": [
-                   { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
-                     {
-                         "data": "PurchaseDate", "type": "date ",
-                         "render": function (value) {
-                             if (value === null) return "";
-                             var pattern = /Date\(([^)]+)\)/;//date format from server side
-                             var results = pattern.exec(value);
-                             var dt = new Date(parseFloat(results[1]));
-
-                             return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
-                         }, "autoWidth": true
-                     },
-                    {
-                        "data": "PurchaseDueDate", "type": "date ",
-                        "render": function (value) {
-                            if (value === null) return "";
-                            var pattern = /Date\(([^)]+)\)/;//date format from server side
-                            var results = pattern.exec(value);
-                            var dt = new Date(parseFloat(results[1]));
-
-                            return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
-                        }, "autoWidth": true
-                    },
-
-                   { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
-
-                 { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
-
-                    { "data": "Status", "name": "Status", "autoWidth": true },
-
-                   {
-                       render: function (data, type, row) {
-                           return '<a href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
-                       }
-                   }
-
-            ]
-        });
 
 
-    });
+    @*function EditPurchase(PurchaseId) {
 
-    function EditPurchase(PurchaseId) {
+
+        debugger;
         $.ajax({
             url: '/MVCClient/AddOrEditQutation',
             type: 'GET',
@@ -2508,7 +2663,7 @@
         });
 
 
-    }
+    }*@
 
 
 
@@ -2530,7 +2685,7 @@
 
     $('.pClass').change(function () {
         var productId = $(this).val();
-       
+        { }
         $.ajax({
             url: "/MVCQutation/ProductPricebyId",
             type: "POST",
@@ -2547,13 +2702,15 @@
     })
 
 
-    
+    function GetProductPriceById(ProductId) {
+        debugger;
+
+    }
 
 
 
-    /// numver validatio for input 
 
-
+    /// numver validatio for input
 
     $(".quantity ").on("keypress keyup blur", function (event) {
         //this.value = this.value.replace(/[^0-9\.]/g,'');
@@ -2571,10 +2728,6 @@
         }
     });
 
-    $('#CompanySittingEdit').click(function () {      
 
-        window.location.href = "/MVCComapny/Index";
-
-    });
 
 </script>

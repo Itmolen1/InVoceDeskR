@@ -12,20 +12,15 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class UserTable
+    public partial class VatDetailsTable
     {
-        public int UserId { get; set; }
-        public string UserFname { get; set; }
-        public string Insertion { get; set; }
-        public string UserLname { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public Nullable<bool> RememberMe { get; set; }
-        public Nullable<int> Gender { get; set; }
-        public string DOB { get; set; }
+        public int VatID { get; set; }
+        public Nullable<double> VatPercentage { get; set; }
+        public Nullable<double> Amount { get; set; }
+        public Nullable<int> QutationId { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<int> AddedBy { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
-        public Nullable<int> UserAuthorityID { get; set; }
-    
-        public virtual UserAuthorityTable UserAuthorityTable { get; set; }
+        public Nullable<int> ClientId { get; set; }
     }
 }

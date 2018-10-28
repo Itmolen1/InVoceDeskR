@@ -15,8 +15,36 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
 
+        [ResponseType(typeof(MvcPurchaseModel))]
+        public IHttpActionResult GetQutationTable(int id)
+        {
+            MvcPurchaseModel puchaseorder = new MvcPurchaseModel();
 
-    
+            var ob = db.PurchaseOrderTables.Find(id);
+            puchaseorder.PurchaseID = ob.PurchaseID;
+            puchaseorder.PurchaseOrderID = ob.PurchaseOrderID;
+            puchaseorder.PurchaseRefNumber = ob.PurchaseRefNumber;
+            puchaseorder.PurchaseDate = ob.PurchaseDate;
+            puchaseorder.PurchaseDueDate = ob.PurchaseDueDate;
+            puchaseorder.PurchaseSubTotal = ob.PurchaseSubTotal;
+            puchaseorder.Vat6 = ob.Vat6;
+            puchaseorder.Vat21 = ob.Vat21;
+            puchaseorder.PurchaseDiscountAmount = ob.PurchaseDiscountAmount;
+            puchaseorder.PurchaseTotoalAmount = ob.PurchaseTotoalAmount;
+            puchaseorder.PurchaseVenderNote = ob.PurchaseVenderNote;
+            puchaseorder.Status = ob.Status;
+            puchaseorder.UserId = ob.UserId;
+            puchaseorder.CompanyId = ob.CompanyId;
+            puchaseorder.VenderId = ob.VenderId;
+
+            if (puchaseorder == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(puchaseorder);
+        }
+
         //get list
         public IHttpActionResult GetPurchaseOrder()
         {
@@ -37,7 +65,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
-                    PurchaseDate = p.PurchaseDate,
+                    PurchaseDate =(DateTime)p.PurchaseDate,
                     PurchaseDueDate = p.PurchaseDueDate,
                     PurchaseRefNumber = p.PurchaseRefNumber,
                     PurchaseSubTotal = p.PurchaseSubTotal,

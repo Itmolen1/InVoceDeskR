@@ -51,13 +51,14 @@ namespace InvoiceDiskLast.Controllers
                              select new MvcPurchaseViewModel
                              {
                                  PurchaseItemId = pd.PurchaseItemId,
-                                // PurchaseID = pd.PurchaseID,
+                                 PurchaseId = pd.PurchaseId,
                                  PurchaseItemRate = pd.PurchaseItemRate,
                                  PurchaseQuantity = pd.PurchaseQuantity,
                                  PurchaseVatPercentage = pd.PurchaseVatPercentage,
                                  PurchaseItemName = p.ProductName,
                                  PurchaseTotal = pd.PurchaseTotal,
-                                 PurchaseOrderDetailsId = Convert.ToInt32(pd.PurchaseOrderDetailsId)
+                                 PurchaseOrderID=(int)pd.PurchaseId,
+                                 PurchaseOrderDetailsId = pd.PurchaseOrderDetailsId
                              }).ToList();
 
 
@@ -98,22 +99,20 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        // PUT: api/APIQutationDetail/5
+       
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutQutationDetailsTable(int id, QutationDetailsTable qutationDetailsTable)
+        public IHttpActionResult PutPurchaseDetailsTable(int id, PurchaseOrderDetailsTable purchasedetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != qutationDetailsTable.QutationDetailId)
+            if (id != purchasedetail.PurchaseOrderDetailsId)
             {
                 return BadRequest();
             }
-
-            db.Entry(qutationDetailsTable).State = EntityState.Modified;
-
+            db.Entry(purchasedetail).State = EntityState.Modified;
             try
             {
                 db.SaveChanges();
@@ -121,7 +120,7 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!QutationDetailsTableExists(id))
+                if (!PurchaseTableExists(id))
                 {
                     return NotFound();
                 }
@@ -135,18 +134,28 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // POST: api/APIQutationDetail
-        [ResponseType(typeof(QutationDetailsTable))]
-        public IHttpActionResult PostQutationDetailsTable(QutationDetailsTable qutationDetailsTable)
+        [ResponseType(typeof(PurchaseOrderDetailsTable))]
+        public IHttpActionResult PostPurchaseDetailsTable(PurchaseOrderDetailsTable purchaseOrderDetail)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                db.PurchaseOrderDetailsTables.Add(purchaseOrderDetail);
+                db.SaveChanges();
+
+                return Ok();
             }
+            catch (Exception)
+            {
+                return BadRequest();
 
-            db.QutationDetailsTables.Add(qutationDetailsTable);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = qutationDetailsTable.QutationDetailId }, qutationDetailsTable);
+            }
+            
         }
 
         // DELETE: api/APIQutationDetail/5
@@ -174,9 +183,9 @@ namespace InvoiceDiskLast.Controllers
             base.Dispose(disposing);
         }
 
-        private bool QutationDetailsTableExists(int id)
+        private bool PurchaseTableExists(int id)
         {
-            return db.QutationDetailsTables.Count(e => e.QutationDetailId == id) > 0;
+            return db.PurchaseOrderDetailsTables.Count(P => P.PurchaseOrderDetailsId == id) > 0;
         }
     }
 }

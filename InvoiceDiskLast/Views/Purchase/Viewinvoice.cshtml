@@ -1,29 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "ViewQuation";
-}
-@model InvoiceDiskLast.Models.MVCQutationViewModel
-
-@{
 
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
-    var QutationModel = ViewBag.QutationDat;
+    var purchaseModel = ViewBag.Purchase; 
 }
-
-
-
-            <div class="row">
-                @if (TempData["EmailMessge"] != null)
-                {
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Success!</strong>@TempData["EmailMessge"]
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
-            </div>
 
 
 <div class="row" style="margin-top:100px;margin-left:0px;margin-right:0px;">
@@ -33,8 +14,6 @@
         <input type="hidden" name="FilePath" id="FilePath" />
         <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
     }
-
-
 
 
     <div class="row" style="margin-left:0px;margin-right:0px;">
@@ -48,17 +27,17 @@
                 </button>
                 <ul class="dropdown-menu">
 
-                    <li>@Html.ActionLink(" Send qutation by Email", "InvoicebyEmail", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    @*<li>@Html.ActionLink(" Send qutation by Email", "InvoicebyEmail", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                     <li class="divider"></li>
                     <li>@Html.ActionLink(" Send qutation by Email", "ActionResult", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "     fa fa-download" })</li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>*@
                 </ul>
             </div>
 
-            @Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-primary", style = "margin:0px 10px;" })
+            @*@Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-primary", style = "margin:0px 10px;" })*@
 
-            <a href="/MVCQutation/AddOrEdit/@QutationModel.QutationID" class="btn btn-primary">Change</a>
+            @*<a href="/MVCQutation/AddOrEdit/@QutationModel.QutationID" class="btn btn-primary">Change</a>*@
 
 
 
@@ -91,8 +70,25 @@
             <img src="https://www.factuurdesk.nl/images/layout/offerte_concept.png" />
         </div>
         <div class="col-md-4">
-            <label>@CompanyDatas.CompanyName</label><br />
-            <label>@(Contectdatas.ContactName != "" ? Contectdatas.ContactName : "No Conatatc" )</label>
+            <div class="row">
+                <div class="col-sm-5">                  
+                </div>
+                <div class="col-sm-7">
+                    <label>@CompanyDatas.CompanyName</label><br />                   
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    Kvk nr:
+                </div>
+                <div class="col-sm-7">
+                    <label>@CompanyDatas.CompanyName</label><br />
+                </div>
+            </div>
+          
+            <label>@CompanyDatas.CompanyAddress</label><br />
+            @*<label>@(Contectdatas.ContactName != "" ? Contectdatas.ContactName : "No Conatatc" )</label>*@
         </div>
 
     </div>
@@ -104,9 +100,9 @@
             <label>valid untill</label>
         </div>
         <div class="col-xs-3">
-            <label>@QutationModel.QutationDate</label><br />
-            <label>@QutationModel.RefNumber</label><br />
-            <label>@QutationModel.DueDate</label>
+            <label>@purchaseModel.PurchaseDate</label><br />
+            <label>@purchaseModel.PurchaseRefNumber</label><br />
+            <label>@purchaseModel.PurchaseDueDate</label>
         </div>
     </div>
     <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
@@ -134,38 +130,35 @@
             </thead>
             <tbody>
 
-                @if (ViewBag.QutationDatailsList != null)
-                {
-                    foreach (var item in ViewBag.QutationDatailsList)
+               
+                    @if (ViewBag.PurchaseDatailsList != null)
                     {
-                        <tr id="mainrow">
-                            <td>
-                                @item.ItemName
-                            </td>
-                            <td>
-                                @item.Quantity
-                            </td>
-                            <td>
-                                @item.Rate
-                            </td>
-                            <td>
-                                @item.Total
-                            </td>
-                            <td>
-                                @item.Vat
-                            </td>
+                        foreach (var item in ViewBag.PurchaseDatailsList)
+                        {
+                            <tr>
+                                <td>
+                                 @item.PurchaseItemName
+                                </td>
+                                <td>
+                                   @item.PurchaseQuantity
+                                </td>
 
-                           
-                        </tr>
-                    }
-                }
+                                <td>
+                                   @item.PurchaseItemRate
+                                </td>
+                                <td>
+                                    @item.PurchaseTotal
 
+                                </td>
+                             
+          
+                            </tr>
+                        }
+                    }             
             </tbody>
 
         </table>
         <div class="col-md-8"></div>
-
-
 
 
 
@@ -175,13 +168,13 @@
                     <label class="tex pull-right">Total excl. VAT:	€	</label>
                 </div>
                 <div class="col-sm-5">
-                    <label class="tex pull-right">@QutationModel.SubTotal</label>
+                    <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
                 </div>
             </div>
 
             <div class="row">
 
-                @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
                 {
 
 
@@ -189,20 +182,20 @@
                         <label class="tex pull-right">VAT 6%:	€	</label>
                     </div>
                     <div class="col-sm-5 ">
-                        <label class="tex pull-right">@QutationModel.TotalVat6</label>
+                        <label class="tex pull-right">@purchaseModel.Vat6</label>
                     </div>
                 }
             </div>
 
             <div class="row">
 
-                @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
                 {
                     <div class="col-sm-6">
                         <label class="tex pull-right">VAT 21%:	€</label>
                     </div>
                     <div class="col-sm-5">
-                        <label class="tex pull-right">@QutationModel.TotalVat21</label>
+                        <label class="tex pull-right">@purchaseModel.Vat21</label>
 
                     </div>
                 }
@@ -216,7 +209,7 @@
                 </div>
 
                 <div class="col-sm-5">
-                    <label class="tex  pull-right">€:@QutationModel.TotalAmount</label>
+                    <label class="tex  pull-right">€:@purchaseModel.PurchaseTotoalAmount</label>
 
                 </div>
             </div>
@@ -242,8 +235,6 @@
     </div>
     <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
         <label><b>@Contectdatas.ContactName</b></label>
-
-
     </div>
 
     <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
@@ -254,7 +245,7 @@
 
 
 
-<script>
+@*<script>
 
     $(document).ready(function () {
         var patth = localStorage.getItem('path');
@@ -265,8 +256,5 @@
         }
         $("#FilePath").val('');
         localStorage.removeItem('path');
-
-
-
     })
-</script>
+</script>*@
