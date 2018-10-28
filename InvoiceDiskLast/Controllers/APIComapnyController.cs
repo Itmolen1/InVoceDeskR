@@ -42,11 +42,10 @@ namespace InvoiceDiskLast.Controllers
                     CompanyCell = c.CompanyCell,
                     CompanyEmail = c.CompanyEmail,
                     CompanyLogo = c.CompanyLogo,
-                    CompanyTRN = c.CompanyTRN,
-                    ComapnyFax = c.ComapnyFax,
-                    CompanySubTitile = c.CompanySubTitile,
+                  
+                 
                     CompanyCity = c.CompanyCity,
-                    CompanyState = c.CompanyState,
+                  
                     CompanyCountry = c.CompanyCountry,
                     AddedBy = c.AddedBy,
                     AddedDate = c.AddedDate,
@@ -65,7 +64,7 @@ namespace InvoiceDiskLast.Controllers
                     return null;
                 }
             }
-            catch(Exception ex)
+            catch(Exception )
             {
                 return null;
             }

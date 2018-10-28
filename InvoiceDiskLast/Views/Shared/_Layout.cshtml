@@ -586,7 +586,7 @@
     <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
 
 
-    @RenderSection("scripts", required: false)
+
 </body>
 </html>
 
@@ -611,9 +611,6 @@
     });*@
 
 
-</script>
-
-<script>
     $(document).ready(function () {
 
         $("#ContactListTable").DataTable({
@@ -654,9 +651,8 @@
 
 
     });
-</script>
 
-<script>
+
     $(document).ready(function () {
 
         $('#btn-QutationNew').click(function () {
@@ -743,9 +739,7 @@
 
         });
     });
-</script>
 
-<script>
     var currentRow1 = "";
     var r = "";
     $(document).ready(function () {
@@ -759,8 +753,6 @@
             calculatevat();
             SUMOFALLPRODUCT();
             sumofGrandModel();
-
-
         });
 
         LoadProduct();
@@ -803,78 +795,13 @@
                 calculatevat();
                 SUMOFALLPRODUCT();
                 sumofGrandModel();
-
+                $('#SelectVAT').val(0);
             }
         });
 
 
 
-        function calculatevat() {
-            if ($('#orderdetailsitems tr').length == 0) {
-                $('#btwo').text('0.00');
-                $('#BTW6').text('0.00');
-                $('#BTW21').text('0.00');
-            }
-            else {
 
-                var sum0 = 0;
-                var total0 = 0;
-                $('#orderdetailsitems tr').each(function () {
-                    $('#BTW0').text();
-
-                    r = $(this).closest('tr');
-                    var value = r.find('.VAT  option:selected').val();
-                    if (r.find('.VAT  option:selected').val() == 0) {
-                        total0 = r.find('td:eq(3)').find('input').val();
-                        if (!isNaN(total0) && total0.length != 0) {
-                            sum0 += parseInt(total0);
-                        }
-                        var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
-                        var totalr = Math.round(totalvat0, 2);
-                        $('#BTW0').text(totalvat0.toFixed(2));
-                    }
-                    else {
-                        $('#BTW0').text('0.00');
-                    }
-                })
-            }
-
-            var sum6 = 0;
-            var total6 = 0;
-            $('#orderdetailsitems tr').each(function () {
-                var r = $(this).closest('tr');
-                var value = r.find('.VAT  option:selected').val();
-                if (r.find('.VAT  option:selected').val() == 6) {
-                    total6 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total6) && total6.length != 0) {
-                        sum6 += parseInt(total6);
-                    }
-                    var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
-                    var totalr = Math.round(totalvat6, 2);
-                    $('#BTW6').text(totalvat6.toFixed(2));
-                }
-            })
-
-            var sum21 = 0;
-            var total21 = 0;
-            $('#orderdetailsitems tr').each(function () {
-                //$('#BTW21').text();
-                var r = $(this).closest('tr');
-                var value = r.find('.VAT  option:selected').val();
-                if (r.find('.VAT  option:selected').val() == 21) {
-
-                    total21 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total21) && total21.length != 0) {
-                        sum21 += parseInt(total21);
-                    }
-                    var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
-
-                    $('#BTW21').text(totalvat21);
-                }
-
-            })
-            RowCounte();
-        }
         $(document).ready(function () {
 
             $(document).on('click', '#RemoveEdit', function () {
@@ -930,49 +857,8 @@
             });
         });
 
-        //SUMOFALLPRODUCT();
-        /// sumofGrandModel();
-
-        function RowCounte() {
-
-            var rowCount6 = 0;
-            var rowCount21 = 0;
-            var rowCount0 = 0;
-
-            $('#orderdetailsitems tr td').each(function () {
 
 
-                var EquationResult = $(this).find('.VAT').val();
-
-                if (EquationResult == 6) {
-                    rowCount6++;
-
-                }
-                else if (EquationResult == 21) {
-                    rowCount21++;
-                }
-                else if (EquationResult == 0) {
-                    rowCount0++
-                }
-            })
-
-            if (rowCount0 == 0) {
-                $("#btwo").text('0.00');
-            }
-            if (rowCount6 == 0) {
-                $("#BTW6").text('0.00');
-            }
-            if (rowCount21 == 0) {
-                $("#BTW21").text('0.00');
-            }
-
-            if ($('#orderdetailsitems tr').length == 0) {
-
-                $('#SubTotal').text();
-                $('#TotalBTW').text();
-                $('#gtotal').text();
-            }
-        }
 
         $('#orderdetailsitems').on('click', '.remove', function () {
 
@@ -984,7 +870,7 @@
 
                 var BTW6 = $('#BTW6').text();
                 $('#BTW6').text();
-                $('#BTW6').text(parseInt(BTW6 - totalvat6));
+                $('#BTW6').text(parseInt(BTW6 - totalvat6.toFixed(2)));
 
             }
             if (vat == 21) {
@@ -996,21 +882,22 @@
 
                     var BTW21 = $('#BTW21').text();
                     $('#BTW21').text();
-                    $('#BTW21').text(parseFloat(BTW21 - totalvat21));
+                    $('#BTW21').text(parseFloat(BTW21 - totalvat21.toFixed(2)));
 
                 }
             }
             $(this).parents('tr').remove();
             SUMOFALLPRODUCT();
             sumofGrandModel();
-            //reset all totals
+
             if ($('#orderdetailsitems tr').length == 0) {
-                $('#SubTotal').text('');
-                $('#TotalBTW').text('');
-                $('#gtotal').text('');
-                $('#BTW6').text('');
-                $('#BTW21').text('');
-                $('#btwo').text('');
+                $('#SubTotal').text('0.0');
+                $('#TotalBTW').text('0.0');
+                $('#gtotal').text('0.0');
+                $('#BTW6').text('0.0');
+                $('#BTW21').text('0.0');
+                $('#btwo').text('0.0');
+                $('#SelectVAT').val(0);
             }
         });
 
@@ -1029,8 +916,7 @@
 
 
 
-                //$("#orderdetailsitems > .tbody  > tr:not(:first)')").each(function (index, ele) {
-                //    alert('');
+
                 $('#orderdetailsitems > .tbody  > tr:not(:first)').each(function (index, ele) {
 
                     if ($('#SelectProductQutation', this).val() == '0' ||
@@ -1095,8 +981,6 @@
 
                             if (result.Status == "Success") {
 
-
-                                list = [];
                                 $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
                                 $('#orderdetailsitems').empty();
                                 $("#Submit").val('Save');
@@ -1404,8 +1288,6 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-
-
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
                     Quantity: parseInt($('.quantity', this).val()),
@@ -1485,7 +1367,6 @@
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
             {
-
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
                     Quantity: parseInt($('.quantity', this).val()),
@@ -1589,14 +1470,10 @@
 
             });
         }
-
-
-
     }
 
 
     function LoadProductAdding() {
-
         $("#SelectProductQutation").find("option").remove();
         $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
         $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
@@ -1823,6 +1700,114 @@
         calculatevat();
     });
 
+
+    function calculatevat() {
+        if ($('#orderdetailsitems tr').length == 0) {
+            $('#btwo').text('0.00');
+            $('#BTW6').text('0.00');
+            $('#BTW21').text('0.00');
+        }
+        else {
+
+            var sum0 = 0;
+            var total0 = 0;
+            $('#orderdetailsitems tr').each(function () {
+                $('#BTW0').text();
+
+                r = $(this).closest('tr');
+                var value = r.find('.VAT  option:selected').val();
+                if (r.find('.VAT  option:selected').val() == 0) {
+                    total0 = r.find('td:eq(3)').find('input').val();
+                    if (!isNaN(total0) && total0.length != 0) {
+                        sum0 += parseInt(total0);
+                    }
+                    var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
+                    var totalr = Math.round(totalvat0, 2);
+                    $('#BTW0').text(totalvat0.toFixed(2));
+                }
+                else {
+                    $('#BTW0').text('0.00');
+                }
+            })
+        }
+
+        var sum6 = 0;
+        var total6 = 0;
+        $('#orderdetailsitems tr').each(function () {
+            var r = $(this).closest('tr');
+            var value = r.find('.VAT  option:selected').val();
+            if (r.find('.VAT  option:selected').val() == 6) {
+                total6 = r.find('td:eq(3)').find('input').val();
+                if (!isNaN(total6) && total6.length != 0) {
+                    sum6 += parseInt(total6);
+                }
+                var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
+                var totalr = Math.round(totalvat6, 2);
+                $('#BTW6').text(totalvat6.toFixed(2));
+            }
+        })
+
+        var sum21 = 0;
+        var total21 = 0;
+        $('#orderdetailsitems tr').each(function () {
+            //$('#BTW21').text();
+            var r = $(this).closest('tr');
+            var value = r.find('.VAT  option:selected').val();
+            if (r.find('.VAT  option:selected').val() == 21) {
+
+                total21 = r.find('td:eq(3)').find('input').val();
+                if (!isNaN(total21) && total21.length != 0) {
+                    sum21 += parseInt(total21);
+                }
+                var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
+
+                $('#BTW21').text(totalvat21.toFixed(2));
+            }
+
+        })
+        RowCounte();
+    }
+    function RowCounte() {
+
+        var rowCount6 = 0;
+        var rowCount21 = 0;
+        var rowCount0 = 0;
+
+        $('#orderdetailsitems tr td').each(function () {
+
+
+            var EquationResult = $(this).find('.VAT').val();
+
+            if (EquationResult == 6) {
+                rowCount6++;
+
+            }
+            else if (EquationResult == 21) {
+                rowCount21++;
+            }
+            else if (EquationResult == 0) {
+                rowCount0++
+            }
+        })
+
+        if (rowCount0 == 0) {
+            $("#btwo").text('0.00');
+        }
+        if (rowCount6 == 0) {
+            $("#BTW6").text('0.00');
+        }
+        if (rowCount21 == 0) {
+            $("#BTW21").text('0.00');
+        }
+
+        if ($('#orderdetailsitems tr').length == 0) {
+
+            $('#SubTotal').text();
+            $('#TotalBTW').text();
+            $('#gtotal').text();
+        }
+    }
+
     $('#Quantity').keyup(function () {
         var currentRow = $(this).closest("tr");
         var quantity = $(this).val();  // get current row 1st TD value
@@ -1878,56 +1863,6 @@
 
 
 
-    //$(document).ready(function () {
-
-    //    $("#ContactListTable").DataTable({
-    //        //"processing": true, // for show progress bar
-    //        processing: true,
-    //        "language": {
-    //            "processing": $('#loaderMvcConatc').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-    //        },
-    //        searching: true,
-    //        "serverSide": true, // for process server side
-    //        "filter": false, // this is for disable filter (search box)
-    //        "orderMulti": false, // for disable multiple column at once
-    //        "ajax": {
-    //            "url": "/MVCContacts/GetContactList",
-    //            "type": "POST",
-    //            "datatype": "json"
-    //        },
-    //        "columns": [
-    //                { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
-    //                { "data": "ContactName", "name": "ContactName", "autoWidth": true },
-    //                { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
-    //                { "data": "Type", "name": "Type", "autoWidth": true },
-    //                { "data": "BillingPersonName", "name": "BillingPersonName", "autoWidth": true },
-    //                { "data": "BillingCompanyName", "name": "BillingCompanyName", "autoWidth": true },
-    //                { "data": "BillingVatTRN", "name": "BillingVatTRN", "autoWidth": true },
-    //                { "data": "Status", "name": "Status", "autoWidth": true },
-    //                {
-    //                    render: function (data, type, row) {
-    //                        return '<a href="" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.ContactsId + ')"><i class="glyphicon glyphicon-pencil "></i></a>|<a href="" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="glyphicon glyphicon-eye-open"></i></a>'
-    //                    }
-    //                }
-
-    //               //{
-    //               //    'data': 'CompanyLogo',
-    //               //    render: function (logo) {
-    //               //        if (logo) {
-    //               //            return '<img height="25px" width="25px" src="' + logo + '" />'
-    //               //        }
-    //               //        else { return 'No Image'; }
-    //               //    }
-    //               //},
-    //              //{
-    //              //    render: function (data, type, row) {
-    //              //        return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="glyphicon glyphicon-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye-open"></i></a>'
-    //              //    }
-    //              //}
-
-    //        ]
-    //    });
-    //});
 
     function Edit(companyId) {
         window.location.href = "Company/AddOrEdit/" + companyId;
@@ -2593,7 +2528,7 @@
 
     }
 
-   // var $loading = $('.preloader').hide();
+    // var $loading = $('.preloader').hide();
 
     //$(document)
     //  .ajaxStart(function () {
@@ -2706,68 +2641,9 @@
 
 
 
-    $(document).ready(function () {
-
-        $("#PurchaseDetailTable").DataTable({
-            //"processing": true, // for show progress bar
-            "processing": true,
-            "language": {
-                "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-            },
-            "searching": true,
-            "serverSide": true, // for process server side
-            "filter": false, // this is for disable filter (search box)
-            "orderMulti": false, // for disable multiple column at once
-            "ajax": {
-                "url": "/Purchase/GetPurchaseList",
-                "type": "POST",
-                "datatype": "json"
-            },
-            "columns": [
-                   { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
-                     {
-                         "data": "PurchaseDate", "type": "date ",
-                         "render": function (value) {
-                             if (value === null) return "";
-                             var pattern = /Date\(([^)]+)\)/;//date format from server side
-                             var results = pattern.exec(value);
-                             var dt = new Date(parseFloat(results[1]));
-
-                             return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
-                         }, "autoWidth": true
-                     },
-                    {
-                        "data": "PurchaseDueDate", "type": "date ",
-                        "render": function (value) {
-                            if (value === null) return "";
-                            var pattern = /Date\(([^)]+)\)/;//date format from server side
-                            var results = pattern.exec(value);
-                            var dt = new Date(parseFloat(results[1]));
-
-                            return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
-                        }, "autoWidth": true
-                    },
-
-                   { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
-
-                 { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
-
-                    { "data": "Status", "name": "Status", "autoWidth": true },
-
-                   {
-                       render: function (data, type, row) {
-                           return '<a href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
-                       }
-                   }
-
-            ]
-        });
 
 
-    });
-
-    function EditPurchase(PurchaseId) {
+    @*function EditPurchase(PurchaseId) {
 
 
         debugger;
@@ -2784,7 +2660,7 @@
         });
 
 
-    }
+    }*@
 
 
 
@@ -2831,9 +2707,7 @@
 
 
 
-    /// numver validatio for input 
-
-
+    /// numver validatio for input
 
     $(".quantity ").on("keypress keyup blur", function (event) {
         //this.value = this.value.replace(/[^0-9\.]/g,'');
@@ -2851,6 +2725,6 @@
         }
     });
 
-    
+
 
 </script>

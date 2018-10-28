@@ -7,9 +7,9 @@ namespace InvoiceDiskLast.Models
 {
     public class MvcPurchaseModel
     {
-        public int PurchaseOrderID { get; set; }
+        public int? PurchaseOrderID { get; set; }
         public string PurchaseID { get; set; }
-        public Nullable<System.DateTime> PurchaseDate { get; set; }
+        public Nullable<DateTime> PurchaseDate { get; set; }
         public Nullable<System.DateTime> PurchaseDueDate { get; set; }
         public string PurchaseRefNumber { get; set; }
         public Nullable<double> PurchaseSubTotal { get; set; }
@@ -22,5 +22,11 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
+
+        public int ? VenderId { get; set; }
+
+        public Nullable<double> Vat6 { get; set; }
+        public Nullable<double> Vat21 { get; set; }
+
     }
 }

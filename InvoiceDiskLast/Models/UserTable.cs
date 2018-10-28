@@ -12,19 +12,20 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductTable
+    public partial class UserTable
     {
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string Description { get; set; }
-        public Nullable<double> SalePrice { get; set; }
-        public Nullable<double> PurchasePrice { get; set; }
-        public string Type { get; set; }
-        public Nullable<int> OpeningQuantity { get; set; }
-        public Nullable<int> AddedBy { get; set; }
-        public Nullable<int> Company_ID { get; set; }
+        public int UserId { get; set; }
+        public string UserFname { get; set; }
+        public string Insertion { get; set; }
+        public string UserLname { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public Nullable<bool> RememberMe { get; set; }
+        public Nullable<int> Gender { get; set; }
+        public string DOB { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
+        public Nullable<int> UserAuthorityID { get; set; }
     
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public virtual UserAuthorityTable UserAuthorityTable { get; set; }
     }
 }

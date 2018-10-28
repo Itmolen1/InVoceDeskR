@@ -12,19 +12,15 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductTable
+    public partial class VatDetailsTable
     {
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string Description { get; set; }
-        public Nullable<double> SalePrice { get; set; }
-        public Nullable<double> PurchasePrice { get; set; }
-        public string Type { get; set; }
-        public Nullable<int> OpeningQuantity { get; set; }
+        public int VatID { get; set; }
+        public Nullable<double> VatPercentage { get; set; }
+        public Nullable<double> Amount { get; set; }
+        public Nullable<int> QutationId { get; set; }
+        public Nullable<int> CompanyId { get; set; }
         public Nullable<int> AddedBy { get; set; }
-        public Nullable<int> Company_ID { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
-    
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public Nullable<int> ClientId { get; set; }
     }
 }
