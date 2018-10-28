@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
             this.PurchaseOrderDetailsTables = new HashSet<PurchaseOrderDetailsTable>();
         }
     
-        public int ? PurchaseOrderID { get; set; }
+        public int PurchaseOrderID { get; set; }
         public string PurchaseID { get; set; }
         public Nullable<System.DateTime> PurchaseDate { get; set; }
         public Nullable<System.DateTime> PurchaseDueDate { get; set; }

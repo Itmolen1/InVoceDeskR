@@ -36,7 +36,7 @@ namespace InvoiceDiskLast.Controllers
                 userInfo.username = user.Username;
                 userInfo.password = user.Password;
                 userInfo.grant_type = "password";
-               // var jsonInput = new JavaScriptSerializer().Serialize(userInfo);
+               var jsonInput = new JavaScriptSerializer().Serialize(userInfo);
 
                 BearerToken token;
                 using (var httpClient = new HttpClient())

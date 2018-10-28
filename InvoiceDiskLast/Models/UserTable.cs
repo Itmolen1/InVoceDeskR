@@ -25,7 +25,5 @@ namespace InvoiceDiskLast.Models
         public string DOB { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> UserAuthorityID { get; set; }
-    
-        public virtual UserAuthorityTable UserAuthorityTable { get; set; }
     }
 }
