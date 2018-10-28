@@ -5,67 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="APIcompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetRoles">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetUserClaims">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ClaimType" Type="nvarchar(max)" />
-          <Property Name="ClaimValue" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="AspNetUserLogins">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetUserRoles">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetUsers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="256" />
-          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
-          <Property Name="PasswordHash" Type="nvarchar(max)" />
-          <Property Name="SecurityStamp" Type="nvarchar(max)" />
-          <Property Name="PhoneNumber" Type="nvarchar(max)" />
-          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="datetime" />
-          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
-        </EntityType>
         <EntityType Name="ComapnyInfo">
           <Key>
             <PropertyRef Name="CompanyID" />
@@ -92,26 +31,6 @@
           <Property Name="AddedDate" Type="date" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <EntityType Name="CompanyInformation">
-          <Key>
-            <PropertyRef Name="CompanyId" />
-          </Key>
-          <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ComapanyName" Type="nvarchar" MaxLength="200" />
-          <Property Name="CompanyAddress" Type="nvarchar" MaxLength="250" />
-          <Property Name="CompanyPhone" Type="nvarchar" MaxLength="20" />
-          <Property Name="CompanyCell" Type="nvarchar" MaxLength="20" />
-          <Property Name="CompanyEmail" Type="nvarchar" MaxLength="25" />
-          <Property Name="CompanyLogo" Type="nvarchar" MaxLength="200" />
-          <Property Name="CompanyTRN" Type="nvarchar" MaxLength="50" />
-          <Property Name="ComapnyFax" Type="nvarchar" MaxLength="50" />
-          <Property Name="CompanySubTitile" Type="nvarchar" MaxLength="50" />
-          <Property Name="CompanyCity" Type="varchar" MaxLength="30" />
-          <Property Name="CompanyState" Type="varchar" MaxLength="30" />
-          <Property Name="CompanyCountry" Type="varchar" MaxLength="30" />
-          <Property Name="AddedBy" Type="int" />
-          <Property Name="AddedDate" Type="date" />
-        </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
             <PropertyRef Name="ContactsId" />
@@ -132,13 +51,6 @@
           <Property Name="Website" Type="nvarchar" MaxLength="50" />
           <Property Name="Addeddate" Type="date" />
           <Property Name="Status" Type="bit" />
-        </EntityType>
-        <EntityType Name="GenderTable">
-          <Key>
-            <PropertyRef Name="GenderID" />
-          </Key>
-          <Property Name="GenderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="GenderName" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="ProductTable">
           <Key>
@@ -224,58 +136,6 @@
           <Property Name="CompanyId" Type="int" />
           <Property Name="ContactId" Type="int" />
         </EntityType>
-        <EntityType Name="SalesDetailsTable">
-          <Key>
-            <PropertyRef Name="SalesDetailsId" />
-          </Key>
-          <Property Name="SalesDetailsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SalesItemId" Type="int" />
-          <Property Name="SalesDescription" Type="nvarchar" MaxLength="300" />
-          <Property Name="SalesQunatity" Type="int" />
-          <Property Name="SalesItemRate" Type="float" />
-          <Property Name="SalesTotal" Type="float" />
-          <Property Name="SalesVat" Type="float" />
-          <Property Name="SalesInvoiceId" Type="int" />
-        </EntityType>
-        <EntityType Name="SalesTable">
-          <Key>
-            <PropertyRef Name="SalesInvoiceId" />
-          </Key>
-          <Property Name="SalesInvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SalesInvoiceNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="SalesRefNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="ISalesnvoiceDate" Type="date" />
-          <Property Name="SalesDueDate" Type="date" />
-          <Property Name="SalesPayementTerm" Type="int" />
-          <Property Name="SalesSubtotal" Type="float" />
-          <Property Name="SalesDiscount" Type="float" />
-          <Property Name="SalesDiscountAmount" Type="float" />
-          <Property Name="SalesTotalAmount" Type="float" />
-          <Property Name="SalesCustomerNote" Type="nvarchar" MaxLength="300" />
-          <Property Name="Status" Type="nvarchar" MaxLength="10" />
-          <Property Name="AddedDate" Type="date" />
-          <Property Name="UserId" Type="int" />
-          <Property Name="CompanyId" Type="int" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
-        <EntityType Name="UserAuthorityTable">
-          <Key>
-            <PropertyRef Name="UserAuthorityId" />
-          </Key>
-          <Property Name="UserAuthorityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Authority" Type="varchar" MaxLength="20" />
-          <Property Name="AddedDate" Type="date" />
-          <Property Name="CompanyId" Type="int" />
-        </EntityType>
         <EntityType Name="UserTable">
           <Key>
             <PropertyRef Name="UserId" />
@@ -292,19 +152,6 @@
           <Property Name="AddedDate" Type="date" />
           <Property Name="UserAuthorityID" Type="int" />
         </EntityType>
-        <EntityType Name="VatDetailsTable">
-          <Key>
-            <PropertyRef Name="VatID" />
-          </Key>
-          <Property Name="VatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="VatPercentage" Type="float" />
-          <Property Name="Amount" Type="float" />
-          <Property Name="QutationId" Type="int" />
-          <Property Name="CompanyId" Type="int" />
-          <Property Name="AddedBy" Type="int" />
-          <Property Name="AddedDate" Type="date" />
-          <Property Name="ClientId" Type="int" />
-        </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="*" />
@@ -314,62 +161,6 @@
             </Principal>
             <Dependent Role="ContactsTable">
               <PropertyRef Name="Company_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetRoles">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -421,59 +212,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserTable_UserAuthorityTable">
-          <End Role="UserAuthorityTable" Type="Self.UserAuthorityTable" Multiplicity="0..1" />
-          <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAuthorityTable">
-              <PropertyRef Name="UserAuthorityId" />
-            </Principal>
-            <Dependent Role="UserTable">
-              <PropertyRef Name="UserAuthorityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="APIcompanyModelStoreContainer">
-          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CompanyInformation" EntityType="Self.CompanyInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="GenderTable" EntityType="Self.GenderTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrderDetailsTable" EntityType="Self.PurchaseOrderDetailsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrderTable" EntityType="Self.PurchaseOrderTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QutationDetailsTable" EntityType="Self.QutationDetailsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QutationTable" EntityType="Self.QutationTable" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SalesDetailsTable" EntityType="Self.SalesDetailsTable" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SalesTable" EntityType="Self.SalesTable" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserAuthorityTable" EntityType="Self.UserAuthorityTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VatDetailsTable" EntityType="Self.VatDetailsTable" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="Self.FK_ContactsTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="ContactsTable" EntitySet="ContactsTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="Self.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
@@ -491,10 +241,6 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserTable_UserAuthorityTable" Association="Self.FK_UserTable_UserAuthorityTable">
-            <End Role="UserAuthorityTable" EntitySet="UserAuthorityTable" />
-            <End Role="UserTable" EntitySet="UserTable" />
-          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -511,12 +257,12 @@
           <Property Name="CompanyCell" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CompanyEmail" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="CompanyLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyTRN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CompanyCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="CompanyCountry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
           <NavigationProperty Name="ProductTables" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ProductTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
           <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
@@ -528,20 +274,16 @@
           <Property Name="BIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="KVK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BTW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
         </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
-          <EntitySet Name="ContactsTables" EntityType="APIcompanyModel.ContactsTable" />
           <EntitySet Name="QutationDetailsTables" EntityType="APIcompanyModel.QutationDetailsTable" />
           <EntitySet Name="QutationTables" EntityType="APIcompanyModel.QutationTable" />
           <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
           <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="APIcompanyModel.FK_QutationDetailsTable_QutationTable">
             <End Role="QutationTable" EntitySet="QutationTables" />
             <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="APIcompanyModel.FK_ContactsTable_ComapnyInfo">
-            <End EntitySet="ComapnyInfoes" Role="ComapnyInfo" />
-            <End EntitySet="ContactsTables" Role="ContactsTable" />
           </AssociationSet>
           <AssociationSet Name="FK_ProductTable_ComapnyInfo" Association="APIcompanyModel.FK_ProductTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
@@ -561,57 +303,13 @@
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
             <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
           </AssociationSet>
-          <EntitySet Name="C__MigrationHistory" EntityType="APIcompanyModel.C__MigrationHistory" />
-          <EntitySet Name="AspNetRoles" EntityType="APIcompanyModel.AspNetRole" />
-          <EntitySet Name="AspNetUserClaims" EntityType="APIcompanyModel.AspNetUserClaim" />
-          <EntitySet Name="AspNetUserLogins" EntityType="APIcompanyModel.AspNetUserLogin" />
-          <EntitySet Name="AspNetUsers" EntityType="APIcompanyModel.AspNetUser" />
-          <EntitySet Name="CompanyInformations" EntityType="APIcompanyModel.CompanyInformation" />
-          <EntitySet Name="GenderTables" EntityType="APIcompanyModel.GenderTable" />
-          <EntitySet Name="SalesDetailsTables" EntityType="APIcompanyModel.SalesDetailsTable" />
-          <EntitySet Name="SalesTables" EntityType="APIcompanyModel.SalesTable" />
-          <EntitySet Name="sysdiagrams" EntityType="APIcompanyModel.sysdiagram" />
-          <EntitySet Name="UserAuthorityTables" EntityType="APIcompanyModel.UserAuthorityTable" />
           <EntitySet Name="UserTables" EntityType="APIcompanyModel.UserTable" />
-          <EntitySet Name="VatDetailsTables" EntityType="APIcompanyModel.VatDetailsTable" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="APIcompanyModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="APIcompanyModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserTable_UserAuthorityTable" Association="APIcompanyModel.FK_UserTable_UserAuthorityTable">
-            <End Role="UserAuthorityTable" EntitySet="UserAuthorityTables" />
-            <End Role="UserTable" EntitySet="UserTables" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="APIcompanyModel.AspNetUserRoles">
-            <End Role="AspNetRole" EntitySet="AspNetRoles" />
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          <EntitySet Name="ContactsTables" EntityType="APIcompanyModel.ContactsTable" />
+          <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="APIcompanyModel.FK_ContactsTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="ContactsTable">
-          <Key>
-            <PropertyRef Name="ContactsId" />
-          </Key>
-          <Property Name="ContactsId" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
-          <Property Name="ContactName" MaxLength="100" FixedLength="false" Unicode="false" Type="String" />
-          <Property Name="ContactAddress" MaxLength="400" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="Company_Id" Type="Int32" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="Type" MaxLength="10" FixedLength="false" Unicode="false" Type="String" />
-          <Property Name="Addeddate" Precision="0" Type="DateTime" />
-          <Property Name="Status" Type="Boolean" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
-          <Property Name="StreetNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
-          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LandLine" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="QutationDetailsTable">
           <Key>
             <PropertyRef Name="QutationDetailId" />
@@ -673,18 +371,6 @@
             </Principal>
             <Dependent Role="QutationDetailsTable">
               <PropertyRef Name="QutationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ContactsTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Multiplicity="0..1" Role="ComapnyInfo" />
-          <End Type="APIcompanyModel.ContactsTable" Multiplicity="*" Role="ContactsTable" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="ContactsTable">
-              <PropertyRef Name="Company_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -775,145 +461,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="AspNetRole">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="APIcompanyModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
-        </EntityType>
-        <EntityType Name="AspNetUserClaim">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="APIcompanyModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
-        </EntityType>
-        <EntityType Name="AspNetUserLogin">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="APIcompanyModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
-        </EntityType>
-        <EntityType Name="AspNetUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="APIcompanyModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="APIcompanyModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
-          <NavigationProperty Name="AspNetRoles" Relationship="APIcompanyModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
-        </EntityType>
-        <EntityType Name="CompanyInformation">
-          <Key>
-            <PropertyRef Name="CompanyId" />
-          </Key>
-          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ComapanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCell" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyEmail" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyTRN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ComapnyFax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanySubTitile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCity" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="CompanyState" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="CompanyCountry" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="GenderTable">
-          <Key>
-            <PropertyRef Name="GenderID" />
-          </Key>
-          <Property Name="GenderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="GenderName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="SalesDetailsTable">
-          <Key>
-            <PropertyRef Name="SalesDetailsId" />
-          </Key>
-          <Property Name="SalesDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SalesItemId" Type="Int32" />
-          <Property Name="SalesDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="SalesQunatity" Type="Int32" />
-          <Property Name="SalesItemRate" Type="Double" />
-          <Property Name="SalesTotal" Type="Double" />
-          <Property Name="SalesVat" Type="Double" />
-          <Property Name="SalesInvoiceId" Type="Int32" />
-        </EntityType>
-        <EntityType Name="SalesTable">
-          <Key>
-            <PropertyRef Name="SalesInvoiceId" />
-          </Key>
-          <Property Name="SalesInvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SalesInvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SalesRefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ISalesnvoiceDate" Type="DateTime" Precision="0" />
-          <Property Name="SalesDueDate" Type="DateTime" Precision="0" />
-          <Property Name="SalesPayementTerm" Type="Int32" />
-          <Property Name="SalesSubtotal" Type="Double" />
-          <Property Name="SalesDiscount" Type="Double" />
-          <Property Name="SalesDiscountAmount" Type="Double" />
-          <Property Name="SalesTotalAmount" Type="Double" />
-          <Property Name="SalesCustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="UserAuthorityTable">
-          <Key>
-            <PropertyRef Name="UserAuthorityId" />
-          </Key>
-          <Property Name="UserAuthorityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Authority" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="CompanyId" Type="Int32" />
-          <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_UserAuthorityTable" FromRole="UserAuthorityTable" ToRole="UserTable" />
-        </EntityType>
         <EntityType Name="UserTable">
           <Key>
             <PropertyRef Name="UserId" />
@@ -929,64 +476,40 @@
           <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="UserAuthorityID" Type="Int32" />
-          <NavigationProperty Name="UserAuthorityTable" Relationship="APIcompanyModel.FK_UserTable_UserAuthorityTable" FromRole="UserTable" ToRole="UserAuthorityTable" />
         </EntityType>
-        <EntityType Name="VatDetailsTable">
+        <EntityType Name="ContactsTable">
           <Key>
-            <PropertyRef Name="VatID" />
+            <PropertyRef Name="ContactsId" />
           </Key>
-          <Property Name="VatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="VatPercentage" Type="Double" />
-          <Property Name="Amount" Type="Double" />
-          <Property Name="QutationId" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="ClientId" Type="Int32" />
+          <Property Name="ContactsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ContactAddress" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="Company_Id" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="StreetNumber" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LandLine" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BillingEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Addeddate" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
         </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="APIcompanyModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="APIcompanyModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+        <Association Name="FK_ContactsTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
             </Principal>
-            <Dependent Role="AspNetUserClaim">
-              <PropertyRef Name="UserId" />
+            <Dependent Role="ContactsTable">
+              <PropertyRef Name="Company_Id" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="APIcompanyModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="APIcompanyModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogin">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserTable_UserAuthorityTable">
-          <End Type="APIcompanyModel.UserAuthorityTable" Role="UserAuthorityTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAuthorityTable">
-              <PropertyRef Name="UserAuthorityId" />
-            </Principal>
-            <Dependent Role="UserTable">
-              <PropertyRef Name="UserAuthorityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Type="APIcompanyModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
-          <End Type="APIcompanyModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1012,32 +535,12 @@
                 <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
                 <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
                 <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyTRN" ColumnName="CompanyTRN" />
                 <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
                 <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
                 <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ContactsTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.ContactsTable">
-              <MappingFragment StoreEntitySet="ContactsTable">
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="telephone" ColumnName="telephone" />
-                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
-                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="ContactsId" ColumnName="ContactsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1130,146 +633,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="APIcompanyModel.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="APIcompanyModel.AspNetRole">
-              <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="APIcompanyModel.AspNetUserClaim">
-              <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="APIcompanyModel.AspNetUserLogin">
-              <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="APIcompanyModel.AspNetUser">
-              <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CompanyInformations">
-            <EntityTypeMapping TypeName="APIcompanyModel.CompanyInformation">
-              <MappingFragment StoreEntitySet="CompanyInformation">
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
-                <ScalarProperty Name="CompanyState" ColumnName="CompanyState" />
-                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
-                <ScalarProperty Name="CompanySubTitile" ColumnName="CompanySubTitile" />
-                <ScalarProperty Name="ComapnyFax" ColumnName="ComapnyFax" />
-                <ScalarProperty Name="CompanyTRN" ColumnName="CompanyTRN" />
-                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
-                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
-                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
-                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
-                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
-                <ScalarProperty Name="ComapanyName" ColumnName="ComapanyName" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="GenderTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.GenderTable">
-              <MappingFragment StoreEntitySet="GenderTable">
-                <ScalarProperty Name="GenderName" ColumnName="GenderName" />
-                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SalesDetailsTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.SalesDetailsTable">
-              <MappingFragment StoreEntitySet="SalesDetailsTable">
-                <ScalarProperty Name="SalesInvoiceId" ColumnName="SalesInvoiceId" />
-                <ScalarProperty Name="SalesVat" ColumnName="SalesVat" />
-                <ScalarProperty Name="SalesTotal" ColumnName="SalesTotal" />
-                <ScalarProperty Name="SalesItemRate" ColumnName="SalesItemRate" />
-                <ScalarProperty Name="SalesQunatity" ColumnName="SalesQunatity" />
-                <ScalarProperty Name="SalesDescription" ColumnName="SalesDescription" />
-                <ScalarProperty Name="SalesItemId" ColumnName="SalesItemId" />
-                <ScalarProperty Name="SalesDetailsId" ColumnName="SalesDetailsId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SalesTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.SalesTable">
-              <MappingFragment StoreEntitySet="SalesTable">
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="SalesCustomerNote" ColumnName="SalesCustomerNote" />
-                <ScalarProperty Name="SalesTotalAmount" ColumnName="SalesTotalAmount" />
-                <ScalarProperty Name="SalesDiscountAmount" ColumnName="SalesDiscountAmount" />
-                <ScalarProperty Name="SalesDiscount" ColumnName="SalesDiscount" />
-                <ScalarProperty Name="SalesSubtotal" ColumnName="SalesSubtotal" />
-                <ScalarProperty Name="SalesPayementTerm" ColumnName="SalesPayementTerm" />
-                <ScalarProperty Name="SalesDueDate" ColumnName="SalesDueDate" />
-                <ScalarProperty Name="ISalesnvoiceDate" ColumnName="ISalesnvoiceDate" />
-                <ScalarProperty Name="SalesRefNumber" ColumnName="SalesRefNumber" />
-                <ScalarProperty Name="SalesInvoiceNumber" ColumnName="SalesInvoiceNumber" />
-                <ScalarProperty Name="SalesInvoiceId" ColumnName="SalesInvoiceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="APIcompanyModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserAuthorityTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.UserAuthorityTable">
-              <MappingFragment StoreEntitySet="UserAuthorityTable">
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="Authority" ColumnName="Authority" />
-                <ScalarProperty Name="UserAuthorityId" ColumnName="UserAuthorityId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserTables">
             <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
               <MappingFragment StoreEntitySet="UserTable">
@@ -1287,28 +650,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VatDetailsTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.VatDetailsTable">
-              <MappingFragment StoreEntitySet="VatDetailsTable">
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="QutationId" ColumnName="QutationId" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="VatPercentage" ColumnName="VatPercentage" />
-                <ScalarProperty Name="VatID" ColumnName="VatID" />
+          <EntitySetMapping Name="ContactsTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.ContactsTable">
+              <MappingFragment StoreEntitySet="ContactsTable">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="telephone" ColumnName="telephone" />
+                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactsId" ColumnName="ContactsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="APIcompanyModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetUser">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-            <EndProperty Name="AspNetRole">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-          </AssociationSetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

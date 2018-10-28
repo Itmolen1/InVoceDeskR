@@ -44,10 +44,7 @@ namespace InvoiceDiskLast.Controllers
                     Vat = pd.Vat,                 
                     Total = pd.Total,
                     QutationDetailId = pd.QutationDetailId
-                }).ToList();
-
-
-               
+                }).ToList();      
 
 
                 return Ok(query);

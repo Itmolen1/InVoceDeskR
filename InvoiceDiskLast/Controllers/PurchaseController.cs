@@ -18,7 +18,6 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
         [HttpPost]
         public JsonResult GetPurchaseList()
         {
@@ -357,7 +356,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
                     
-                purchasemodel.PurchaseOrderID = (purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0);
+                purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
                 purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
                 purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
@@ -475,7 +474,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
 
-                purchasemodel.PurchaseOrderID = (purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0);
+                purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
                 purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
                 purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
@@ -592,7 +591,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
 
-                purchasemodel.PurchaseOrderID = (purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0);
+                purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
                 purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
                 purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;

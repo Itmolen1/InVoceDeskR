@@ -7,7 +7,6 @@ namespace InvoiceDiskLast.Models
 {
     public class Feedback
     {
-       
             public int Id
             {
                 get; set;

@@ -63,7 +63,7 @@ namespace InvoiceDiskLast.Controllers
 
                 ob = db.PurchaseOrderTables.Where(p=>p.CompanyId== id).ToList().Select(p => new MvcPurchaseModel
                 {
-                    PurchaseOrderID = p.PurchaseOrderID,
+                    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
                     PurchaseDate =(DateTime)p.PurchaseDate,
                     PurchaseDueDate = p.PurchaseDueDate,

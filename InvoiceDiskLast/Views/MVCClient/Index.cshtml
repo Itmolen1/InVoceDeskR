@@ -2,41 +2,13 @@
 @{
     ViewBag.Title = "Index";
 }
-
-@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
-@*<div class="container">
-            <div class="col-sm-6 col-sm-offset-3">
-               <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                Create new quotation
-                            </div>
-                            <div class="col-sm-6">
-                                <text class="pull-right" style="color:skyblue" title="Choose which client you want to make in offer for.">Explination</text>
-                            </div>
-                        </div>
-                    </div>
-                         <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <h4>Select a client</h4>
-                            </div>
-                            <div class="col-sm-8">
-                                <select id="SelectContacts" class="form-control"></select>
-                            </div>
-                            </div>
-
-                    </div>
-                </div>
-            </div>                      
-    </div>*@
-
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
   
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle"></i>Create New</button>
 
 <table class="table" id="ContactListTable">
-    <thead style="background-color:black;color:white">
+    <thead style="background-color:black;color:white">    
         <tr>
             <th>
                 Id
@@ -49,16 +21,16 @@
             </th>
 
             <th>
+                City
+            </th>
+            <th>
+                PostalCode
+            </th>
+            <th>
+                Mobile
+            </th>
+            <th>
                 Type
-            </th>
-            <th>
-                BillingPersonName
-            </th>
-            <th>
-                Company Name
-            </th>
-            <th>
-                Billing TRN
             </th>
 
             <th>
@@ -72,7 +44,7 @@
 
 </table>
 
-@section scripts{
+
     <script>
         $(function () {
             var successMessage = '@TempData["SuccessMessage"]'
@@ -88,7 +60,7 @@
 
     </script>
 
-}
+
 
 <input type="hidden" id="ContactsId" />
 <div class="modal fade bs-example-modal-lg" id="CreateNewContactModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
@@ -98,221 +70,137 @@
                 <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Add New Contact</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="height: auto !important">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="ClientType" value="CompanyClient" checked> Company<br>
+                    </div>   
+                    <div class="col-sm-2">
+                        <input type="radio" name="ClientType" value="Private"> Person<br>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <hr />
 
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="form-group ">
                             <input class="form-control" type="text" required id="ContactName" placeholder="Client Name" />
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="ContactAddress" placeholder="Contact Address" />
-                        </div>
-                    </div>
+                  
                 </div>
 
-                <table class="table table-bordered">
-                    <thead>
-                        <tr class="success">
-                            <th>
-                                <div class="row">
-                                    <div class="col-sm-6">Billing Address</div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-7" style="color:skyblue">
-                                                <input type="checkbox" id="SameAsBilling" name="sameasbilling" value="sameAsBilling" /> Same as billing Address
-                                            </div>
-                                            <div class="col-sm-5 pull-right">
-                                                Shipping Address
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th>                         
-                           
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="BillingCompanyName" placeholder="Billing Company Name" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingCompanyName" placeholder="Shipping Company Name" />
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="BillingPersonName" placeholder="Billing Person Name" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingPersonName" placeholder="Shipping Person Name" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="BillingAddress" placeholder="Street name and number" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingAddress" placeholder="Street name and number" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="BillingCity" placeholder="Postal Code and City" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingCity" placeholder="Postal Code and City" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="BillingCountry" placeholder="Billing Country" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingCountry" placeholder="Shipping Country" />
-                                        </div>
-                                    </div>
-                                </div>
-                                       <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group ">
-                                                <input class="form-control" type="text" required id="BillingVatTRN" placeholder="Billing BTW" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group ">
-                                                <input class="form-control" type="text" required id="ShippingVatTRN" placeholder="Shipping BTW" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group ">
-                                                <input class="form-control" type="text" required id="BillingMobile" placeholder="Billing Mobile" />
-                                            </div>
-
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group ">
-                                                <input class="form-control" type="text" required id="ShippingMobile" placeholder="Shipping Mobile" />
-                                            </div>
-
-                                        </div>
-                                        </div>
-                                    
-                                
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="email" required id="BillingEmail" placeholder="Billing Email" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingEmail" placeholder="Shipping Email" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">                                  
-                                        <div class="col-sm-6">
-                                            <div class="form-group ">
-                                                <input class="form-control" type="text" required id="BillingFax" placeholder="Billing Fax" />
-                                            </div>
-                                        </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingFax" placeholder="Shipping Fax" />
-                                        </div>
-                                    </div>
-                                    </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="BillingZibCode" placeholder="Billing ZIP" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group ">
-                                            <input class="form-control" type="text" required id="ShippingZIP" placeholder="Shipping ZIP" />
-                                        </div>
-                                    </div>
-                                </div>
-
-</td>
-            </tr>
-            </tbody>
-            </table>
 
                 <div class="row">
-                    <div class="col-sm-4">
+
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ContactAddress" placeholder="Address(Street Name)" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="StreetNumber" placeholder="Street Number" />
+                        </div>
+                    </div>                  
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-sm-4" style="margin-top:7px">Type</div>
-                            <div class="col-sm-8">
-                                <select class="form-control" id="TypeContacts">
-                                    <option value="Customer" selected>Customer</option>
-                                    <option value="Vender">Vender</option>
-                              </select>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="PostalCode" placeholder="Postal Code" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="City" placeholder="City" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="row">
-                            <div class="col-sm-4" style="margin-top:7px">Status</div>
-                            <div class="col-sm-8">
-                                <select class="form-control" id="Status">
-                                    <option value="1" selected>True</option>
-                                    <option value="0">False</option>
-                                </select>
-                            </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="LandLine" placeholder="Country" />
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="row">
-                            <div class="col-sm-4" style="margin-top:7px">Remarks</div>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="Remarks" rows="1" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
-                            </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="telephone" placeholder="Telephone" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="Mobile" placeholder="Mobile" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="rowiddd">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="BillingEmail" placeholder="Emial" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="Website" placeholder="Website" />
                         </div>
                     </div>
                 </div>
 
 
-          
+                <div class="row" id="rowiddd2">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="BillingEmail" placeholder="Emial" />
+                        </div>
+                    </div>
+                   
+                </div>
 
-        </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-2" style="margin-top:7px">Type</div>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="TypeContacts">
+                                        <option value="Customer" selected>Customer</option>
+                                        <option value="Vender">Vender</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-2" style="margin-top:7px">Status</div>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="Status">
+                                        <option value="1" selected>True</option>
+                                        <option value="0">False</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+               
+                    <div class="row">                       
+                            <div class="col-sm-1">Rem:</div>
+                            <div class="col-sm-11">
+                                <textarea class="form-control" id="Remarks" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
+                            </div>                       
+                    </div>
+          </div>
             <div class="modal-footer">
                 <button type="button" id="SaveNewContacts" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Save Contact</button>
                 <button type="button" id="UpdateContacts" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Update Contact</button>
@@ -335,3 +223,263 @@
       overflow-y: auto;
     }
     </style>
+
+
+<script>
+   
+
+    $(document).ready(function () {
+
+        $("#ContactListTable").DataTable({
+            //"processing": true, // for show progress bar
+            processing: true,
+            "language": {
+                "processing": $('#loaderMvcConatc').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            searching: true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/MVCClient/GetContactList",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                    { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
+                    { "data": "ContactName", "name": "ContactName", "autoWidth": true },
+                    { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
+                    { "data": "City", "name": "City", "autoWidth": true },                   
+                    { "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
+                    { "data": "Mobile", "name": "Mobile", "autoWidth": true },
+                     { "data": "Type", "name": "Type", "autoWidth": true },
+                    { "data": "Status", "name": "Status", "autoWidth": true },
+                    {
+                        render: function (data, type, row) {
+                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<button type="button" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></button>'
+                        }
+                    }
+            ]
+
+        });
+
+
+
+    });
+
+
+    $('#CreateNewContacts').click(function () {     
+        $('#UpdateContacts').hide();
+        $('#SaveNewContacts').show();
+        $('#CreateNewContactModal').modal('show');
+       
+    });
+
+
+    function SuccessInsertConatct() {
+        swal({
+            title: "Congratulations!!!!",
+            text: "Your data has been saved successfully",
+            type: "success",
+
+        });
+    }
+      @*Contact or client Script*@
+
+        $('#SaveNewContacts').click(function () {
+            var res = validateContact();
+            if (res == false) {
+                return false;
+            }
+            else {
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'POST',
+                    data: {
+                        ContactName: $('#ContactName').val(),
+                        ContactAddress: $('#ContactAddress').val(),
+                        Type: $('#TypeContacts option:selected').val(),
+                        StreetNumber: $('#StreetNumber').val(),
+                        PostalCode: $('#PostalCode').val(),
+                        City: $('#City').val(),
+                        LandLine: $('#LandLine').val(),
+                        telephone: $('#telephone').val(),
+                        Mobile: $('#Mobile').val(),
+                        Website: $('#Website').val(),
+                        BillingEmail: $('#BillingEmail').val(),
+                        Remarks: $('#Remarks').val(),
+                        Status: $('#Status option:selected').text(),
+                        Company_Id: localStorage.getItem('CompanyID')
+                    },
+                    success: function (response) {
+                        if (response == '201') {
+                            $('#CreateNewContactModal').modal('hide');
+                            //$("#productTable").ajax.reload();
+                            clearContectTextBox();
+                            SuccessInsertConatct();
+                        }
+                        else {
+                            alert(response);
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+
+        });
+
+    $('#UpdateContacts').click(function () {
+        var res = validateContact();
+        if (res == false) {
+            return false;
+        }
+        else {
+
+            $.ajax({
+                url: '/MVCClient/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ContactsId: $('#ContactsId').val(),
+                    ContactName: $('#ContactName').val(),
+                    ContactAddress: $('#ContactAddress').val(),
+                    Type: $('#TypeContacts').val(),
+                    StreetNumber: $('#StreetNumber').val(),
+                    PostalCode: $('#PostalCode').val(),
+                    City: $('#City').val(),
+                    LandLine: $('#LandLine').val(),
+                    telephone: $('#telephone').val(),
+                    Mobile: $('#Mobile').val(),
+                    Website: $('#Website').val(),
+                    BillingEmail: $('#BillingEmail').val(),
+                    Remarks: $('#Remarks').val(),
+                    Status: $('#Status option:selected').text(),
+                    Company_Id: localStorage.getItem('CompanyID')     
+                },
+                success: function (data) {
+                    $('#CreateNewContactModal').modal('hide');
+                    //$("#productTable").ajax.reload();
+                    SuccessUpdate();
+                    clearContectTextBox();
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+    });
+
+
+    function validateContact() {
+        var isValid = true;
+        if ($('#ContactName').val().trim() == "") {
+            $('#ContactName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ContactName').css('border-color', 'lightgrey');
+        }
+        if ($('#ContactAddress').val().trim() == "") {
+            $('#ContactAddress').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ContactAddress').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function clearContectTextBox() {
+        $('#ContactsId').val("");
+        $('#ContactName').val("");
+        $('#ContactAddress').val("");
+        $('#Type').val("");
+        $('#StreetNumber').val("");
+        $('#PostalCode').val("");
+        $('#City').val("");
+
+        $('#LandLine').val("");
+        $('#telephone').val("");
+        $('#Mobile').val("");
+        $('#Website').val("");
+        $('#BillingEmail').val("");      
+        $('#BillingEmail').val("");
+
+        $('#UpdateContacts').hide();
+        $('#SaveNewContacts').show();
+        //$('#Name').css('border-color', 'lightgrey');
+        //$('#Age').css('border-color', 'lightgrey');
+        //$('#State').css('border-color', 'lightgrey');
+        //$('#Country').css('border-color', 'lightgrey');
+    }
+
+
+
+    function EditContact(ContactsId) {
+        $.ajax({
+            url: "/MVCClient/AddOrEdit/" + ContactsId,
+            type: "GET",
+            dataType: "json",
+            success: function (resultContactData) {
+
+                console.log(resultContactData);
+
+                $('#ContactsId').val(resultContactData.ContactsId);
+                $('#ContactName').val(resultContactData.ContactName);
+                $('#ContactAddress').val(resultContactData.ContactAddress);
+                $('select#TypeContacts option').each(function () {
+                    if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase()) {
+                        this.selected = true;
+                        return;
+                    }
+                });
+                if (resultContactData.Status == true) {
+                    $('#Status').val("1");
+                }
+                else {
+                    $('#Status').val("0");
+                }
+
+                $('#Company_Id').val(resultContactData.Company_Id);
+                $('#UserId').val(resultContactData.UserId);
+                $('#StreetNumber').val(resultContactData.StreetNumber);
+                $('#PostalCode').val(resultContactData.PostalCode);
+                $('#City').val(resultContactData.City);
+                $('#LandLine').val(resultContactData.LandLine);
+                $('#telephone').val(resultContactData.telephone);
+                $('#Mobile').val(resultContactData.Mobile);
+                $('#Website').val(resultContactData.Website);
+                $('#BillingEmail').val(resultContactData.BillingEmail);              
+                $('#Remarks').val(resultContactData.Remarks);
+                $('#UpdateContacts').show();
+                $('#SaveNewContacts').hide();
+                $('#CreateNewContactModal').modal('show');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        $("input[type='radio']").click(function () {
+            var radioValue = $("input[name='ClientType']:checked").val();
+            if (radioValue == "Private") {                              
+                $('#rowiddd').hide(1000);
+                $('#rowiddd2').show(1000);
+                
+            }
+            else
+            {
+                $('#rowiddd2').hide(1000);
+                $('#rowiddd').show(1000);
+               
+               
+            }
+        });
+
+    });
+</script>

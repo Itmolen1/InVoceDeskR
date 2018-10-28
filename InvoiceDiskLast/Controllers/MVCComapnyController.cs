@@ -26,7 +26,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult AddOrEdit(CompanyViewModel CompnayViewModel)
+        public ActionResult AddOrEdit(MVCCompanyInfoModel CompnayViewModel)
         {
             if (Request.Files.Count > 0)
             {
@@ -65,12 +65,18 @@ namespace InvoiceDiskLast.Controllers
                         file.SaveAs(fname);
                     }
                     // Returns message that successfully uploaded  
-                    if (CompnayViewModel.CompanyID == 0)
+                    if (CompnayViewModel.CompanyID == null)
                     {
                        
                         HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIComapny", CompnayViewModel).Result;
                         MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
                         Session["CompayID"] = CompanyModel.CompanyID;
+                        return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny", CompnayViewModel).Result;
+                        MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;                          
                         return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                     }
                    
@@ -87,6 +93,21 @@ namespace InvoiceDiskLast.Controllers
             }
             return null;
             
+        }
+
+
+        [HttpGet]
+        public ActionResult CompanyEdit(int id = 0)
+        {
+            if (id == 0)
+            {
+                return Json("Not found", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + id.ToString()).Result;
+                return Json(response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

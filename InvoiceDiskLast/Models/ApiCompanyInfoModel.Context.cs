@@ -26,24 +26,12 @@ namespace InvoiceDiskLast.Models
         }
     
         public virtual DbSet<ComapnyInfo> ComapnyInfoes { get; set; }
-        public virtual DbSet<ContactsTable> ContactsTables { get; set; }
         public virtual DbSet<QutationDetailsTable> QutationDetailsTables { get; set; }
         public virtual DbSet<QutationTable> QutationTables { get; set; }
         public virtual DbSet<ProductTable> ProductTables { get; set; }
         public virtual DbSet<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
         public virtual DbSet<PurchaseOrderTable> PurchaseOrderTables { get; set; }
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<CompanyInformation> CompanyInformations { get; set; }
-        public virtual DbSet<GenderTable> GenderTables { get; set; }
-        public virtual DbSet<SalesDetailsTable> SalesDetailsTables { get; set; }
-        public virtual DbSet<SalesTable> SalesTables { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-        public virtual DbSet<UserAuthorityTable> UserAuthorityTables { get; set; }
         public virtual DbSet<UserTable> UserTables { get; set; }
-        public virtual DbSet<VatDetailsTable> VatDetailsTables { get; set; }
+        public virtual DbSet<ContactsTable> ContactsTables { get; set; }
     }
 }

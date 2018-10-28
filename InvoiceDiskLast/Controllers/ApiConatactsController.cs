@@ -20,6 +20,7 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
 
+     
         // GET: api/ApiConatacts
         public IHttpActionResult GetContactsTables()
         {
@@ -61,10 +62,12 @@ namespace InvoiceDiskLast.Controllers
                         ContactsId = c.ContactsId,
                         ContactName = c.ContactName,
                         ContactAddress = c.ContactAddress,
+                        City = c.City,
+                        PostalCode = c.PostalCode,
+                        Mobile = c.Mobile,
                         Company_Id = c.Company_Id,
                         UserId = c.UserId,
-                        Type = c.Type,                      
-                     
+                        Type = c.Type,                     
                         Addeddate = c.Addeddate,
                         Status = c.Status,
                     }).ToList();
@@ -94,9 +97,17 @@ namespace InvoiceDiskLast.Controllers
                     ContactsId = c.ContactsId,
                     ContactName = c.ContactName,
                     ContactAddress = c.ContactAddress,
+                    City = c.City,
+                    StreetNumber = c.StreetNumber,
+                    PostalCode = c.PostalCode,
+                    LandLine = c.LandLine,
+                    telephone = c.telephone,
+                    Mobile = c.Mobile,
+                    Website = c.Website,
+                    BillingEmail = c.BillingEmail,
                     Company_Id = c.Company_Id,
                     UserId = c.UserId,
-                    Type = c.Type,                   
+                    Type = c.Type,                  
                    
                     Addeddate = c.Addeddate,
                     Status = c.Status,

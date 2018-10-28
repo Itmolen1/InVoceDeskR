@@ -72,12 +72,10 @@ namespace InvoiceDiskLast.Controllers
                     // Apply search  on multiple field  
                     ContactsList = ContactsList.Where(p => p.ContactsId.ToString().Contains(search) ||
                     p.ContactName.ToLower().Contains(search.ToLower()) ||
-                    p.BillingCountry.ToLower().ToLower().Contains(search.ToLower()) ||
+
                     //p.BillingCity.ToLower().Contains(search.ToLower()) ||
                     p.Type.ToLower().Contains(search.ToLower()) ||
-                    p.ContactAddress.ToLower().ToString().Contains(search.ToLower()) ||
-                    p.BillingCompanyName.ToLower().ToString().ToLower().Contains(search.ToLower()) ||
-                    p.BillingVatTRN.Contains(search.ToLower())).ToList();
+                    p.ContactAddress.ToLower().ToString().Contains(search.ToLower())).ToList();
                 }
 
 
@@ -91,18 +89,7 @@ namespace InvoiceDiskLast.Controllers
                         break;
 
 
-                    case "BillingPersonName":
-                        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
-                        break;
-
-                    case "BillingCompanyName":
-                        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
-                        break;
-
-                    case "BillingVatTRN":
-
-                        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
-                        break;
+                
 
                     default:
                         ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
