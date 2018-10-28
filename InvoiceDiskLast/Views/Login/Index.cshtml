@@ -72,7 +72,7 @@
                             <div class="col-xs-12 p-b-20">
 
                                 <input id="btnLogin" class="btn btn-block btn-lg btn-info btn-rounded" type="button" value="Login" />
-                                @*<input id="ShowModel" class="btn btn-block btn-lg btn-info btn-rounded" type="button" value="Model" />*@
+                                <input id="ShowModel" class="btn btn-block btn-lg btn-info btn-rounded" type="button" value="Model" />
                             </div>
                         </div>
                         <div class="row">
@@ -119,22 +119,34 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">
-                        <form class="floating-labels">
+                     
                             <div class="row">
-                                <div class="col-sm-6">                                    
-                                    <div class="col-xs-12">
-                                        <input class="form-control" type="text" required id="CompanyName" placeholder="Company Name">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input class="form-control" type="text" required id="CompanyName" placeholder="Company Name">
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12">
                                             <input class="form-control" type="text" required id="CompanyAddress" placeholder="Company Address">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="CompanyCell" placeholder="Company Cell">
+                                    <div class="row" style="margin-top:5px">
+                                        <div class="col-sm-6">
+                                            <input class="form-control" type="text" required id="PostalCode" placeholder="Postal Code">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input class="form-control" type="text" required id="CompanyCity" placeholder="City">
                                         </div>
                                     </div>
+
+                                    <div class="form-group" style="margin-top:25px">
+                                        <div class="col-xs-12">
+                                            <input class="form-control" type="text" required id="CompanyPhone" placeholder="Company Phone landline">
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <div class="col-xs-12">
                                             <input class="form-control" type="text" required id="CompanyEmail" placeholder="Company Email">
@@ -142,29 +154,30 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="CompanyTRN" placeholder="Company TRN">
+                                            <input class="form-control" type="text" required id="BankName" placeholder="Bank Name">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="ComapnyFax" placeholder="Company Fax">
+                                            <input class="form-control" type="text" required id="BIC" placeholder="BIC">
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input class="form-control" type="text" required id="BTW" placeholder="BTW">
+                                        </div>
+                                    </div>                            
+                                      
+                                    </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="CompanySubTitile" placeholder="Company Sub Title">
-                                        </div>
+                                        <input type="file" name="file"  id="FileUpload1" />
+                                        <img class="img-responsive" id="targetImg" style="height:38px;width:38px" />
                                     </div>
-                                    <div class="form-group">
+
+                                    <div class="form-group" style="margin-top:5px">
                                         <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="CompanyCity" placeholder="Company City">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-xs-12">
-                                            <input class="form-control" type="text" required id="CompanyState" placeholder="Company State">
+                                            <input class="form-control" type="text" required id="StreetNumber" placeholder="Street Number">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -172,21 +185,29 @@
                                             <input class="form-control" type="text" required id="CompanyCountry" placeholder="Company Country">
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <input type="file" name="file" id="FileUpload1" />
-                                        <img class="img-responsive" id="targetImg" style="height:40px;width:40px" />
-
-                                    </div>
-
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <input class="form-control" type="date" required id="AddedDate" placeholder="Current Date">
+                                            <input class="form-control" type="text" required id="CompanyCell" placeholder="Company Cell or mobile">
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input class="form-control" type="text" required id="Website" placeholder="Company Website">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input class="form-control" type="text" required id="IBANNumber" placeholder="IBAN Number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <input class="form-control" type="text" required id="KVK" placeholder="KVK">
+                                        </div>
+                                    </div>                                
                                 </div>
                             </div>
-                        </form>
+                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="SaveCompanyInformation">Submit</button>
@@ -375,12 +396,21 @@
                     fileData.append('CompanyPhone', $('#CompanyPhone').val());
                     fileData.append('CompanyCell', $('#CompanyCell').val());
                     fileData.append('CompanyEmail', $('#CompanyEmail').val());
-                    fileData.append('CompanyLogo', $('#CompanyLogo').val());
-                    fileData.append('CompanyTRN', $('#CompanyTRN').val());
-                    fileData.append('CompanySubTitile', $('#CompanySubTitile').val());
+                    fileData.append('CompanyLogo', $('#CompanyLogo').val());                
                     fileData.append('CompanyCity', $('#CompanyCity').val());
-                    fileData.append('CompanyState', $('#CompanyState').val());
                     fileData.append('CompanyCountry', $('#CompanyCountry').val());
+                    fileData.append('StreetNumber', $('#StreetNumber').val());
+                 
+                    fileData.append('PostalCode', $('#PostalCode').val());
+                    fileData.append('Website', $('#Website').val());
+                    fileData.append('BankName', $('#BankName').val());
+
+                    fileData.append('IBANNumber', $('#IBANNumber').val());
+                    fileData.append('BIC', $('#BIC').val());
+                    fileData.append('KVK', $('#KVK').val());
+
+                    fileData.append('BTW', $('#BTW').val());
+
                     fileData.append('AddedDate', $('#AddedDate').val());
                     fileData.append('UserName', localStorage.getItem('Username'));
 

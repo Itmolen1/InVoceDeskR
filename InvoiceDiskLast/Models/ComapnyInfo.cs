@@ -17,10 +17,10 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ComapnyInfo()
         {
-            this.ContactsTables = new HashSet<ContactsTable>();
             this.ProductTables = new HashSet<ProductTable>();
             this.QutationTables = new HashSet<QutationTable>();
             this.PurchaseOrderTables = new HashSet<PurchaseOrderTable>();
+            this.ContactsTables = new HashSet<ContactsTable>();
         }
     
         public int CompanyID { get; set; }
@@ -31,22 +31,27 @@ namespace InvoiceDiskLast.Models
         public string CompanyEmail { get; set; }
         public string CompanyLogo { get; set; }
         public string CompanyTRN { get; set; }
-        public string ComapnyFax { get; set; }
-        public string CompanySubTitile { get; set; }
         public string CompanyCity { get; set; }
-        public string CompanyState { get; set; }
         public string CompanyCountry { get; set; }
         public Nullable<int> AddedBy { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
         public string UserName { get; set; }
+        public string StreetNumber { get; set; }
+        public string PostalCode { get; set; }
+        public string Website { get; set; }
+        public string BankName { get; set; }
+        public string IBANNumber { get; set; }
+        public string BIC { get; set; }
+        public string KVK { get; set; }
+        public string BTW { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ContactsTable> ContactsTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductTable> ProductTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationTable> QutationTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseOrderTable> PurchaseOrderTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ContactsTable> ContactsTables { get; set; }
     }
 }

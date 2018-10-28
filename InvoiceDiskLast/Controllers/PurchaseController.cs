@@ -17,7 +17,6 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
         [HttpPost]
         public JsonResult GetPurchaseList()
         {

@@ -35,7 +35,6 @@ namespace InvoiceDiskLast.Controllers
                  id = Convert.ToInt32(IDS);
             }        
 
-
             var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new MVCQutationModel
             {
 

@@ -13,8 +13,5 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
-
-
-
     }
 }
