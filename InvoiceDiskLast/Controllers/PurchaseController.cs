@@ -1,6 +1,7 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -720,6 +721,290 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
+
+
+
+        public ActionResult InvoicebyEmail(int? purchaseOrderId)
+        {
+
+
+
+            EmailModel email = new EmailModel();
+            try
+            {
+
+                email.Attachment = PrintView((int)purchaseOrderId);
+
+                if (Session["CompayID"] == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+                var CompanyName = Session["CompanyName"];
+                var contact = Session["CompanyContact"];
+                var companyEmail = Session["CompanyEmail"];
+                if (contact == null)
+                {
+                    contact = "Company Contact";
+                }
+                if (companyEmail == null)
+                {
+                    companyEmail = "Company Email";
+                }
+
+                int id = 0;
+                if (Session["ClientID"] != null)
+                {
+                    id = Convert.ToInt32(Session["ClientID"]);
+                }
+
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
+                MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+            
+                email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
+
+
+                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
+
+                "." + "Graag horen we of u hiermee akkoord gaat." +
+
+                "." + "De offerte vindt u als bijlage bij deze email." +
+
+
+                "..Met vriendelijke groet." +
+
+                mvcContactModel.ContactName + "." +
+
+                CompanyName.ToString() + "." +
+
+                contact.ToString() + "." +
+
+                companyEmail.ToString();
+
+                string strToProcess = email.EmailText;
+                string result = strToProcess.Replace(".", " \r\n");
+
+                email.EmailText = result;
+
+
+                email.invoiceId = (int)purchaseOrderId;
+                email.From = "samarbudhni@gmail.com";
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+
+
+            return View(email);
+        }
+
+
+        [HttpPost]
+        public ActionResult InvoicebyEmail(EmailModel email)
+        {
+
+            TempData["EmailMessge"] = "";
+
+            EmailModel emailModel = new EmailModel();
+            var fileName = email.Attachment;
+            try
+            {
+                if (email.Attachment.Contains(".pdf"))
+                {
+                    email.Attachment = email.Attachment.Replace(".pdf", "");
+                }
+
+                if (email.ToEmail.Contains(','))
+                {
+                    var p = email.Attachment.Split('.');
+
+                    var root = Server.MapPath("~/PDF/");
+                    var pdfname = String.Format("{0}.pdf", p);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+
+                    string[] EmailArray = email.ToEmail.Split(',');
+                    if (EmailArray.Count() > 0)
+                    {
+                        foreach (var item in EmailArray)
+                        {
+                            emailModel.From = email.From;
+                            emailModel.ToEmail = item;
+                            emailModel.Attachment = email.Attachment;
+                            emailModel.EmailBody = email.EmailText;
+                            bool result = EmailController.email(emailModel);
+                        }
+                    }
+                }
+                else
+                {
+                    var root = Server.MapPath("~/PDF/");
+                    var pdfname = String.Format("{0}.pdf", email.Attachment);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    emailModel.From = email.From;
+                    emailModel.ToEmail = email.ToEmail;
+                    emailModel.Attachment = email.Attachment;
+                    emailModel.EmailBody = email.EmailText;
+                    bool result = EmailController.email(emailModel);
+
+                    TempData["EmailMessge"] = "Email Send successfully";
+
+                }
+                //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
+                return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
+
+
+            }
+            catch (Exception ex)
+            {
+                TempData["EmailMessge"] = ex.Message.ToString();
+                TempData["Error"] = ex.Message.ToString();
+            }
+
+            if (TempData["Path"] == null)
+            {
+                TempData["Path"] = fileName;
+            }
+
+            TempData["Message"] = "Email Send Succssfully";
+
+
+            return View(email);
+        }
+
+
+
+        public string PrintView(int purchaseOrderId)
+        {
+            string pdfname;
+            try
+            {
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+               
+
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
+                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = ob;
+                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+
+
+                string companyName = purchaseOrderId + "-" + companyModel.CompanyName;
+                var root = Server.MapPath("~/PDF/");
+                pdfname = String.Format("{0}.pdf", companyName);
+                var path = Path.Combine(root, pdfname);
+                path = Path.GetFullPath(path);
+
+                string subPath = "~/PDF"; // your code goes here
+                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
+
+                if (!exists)
+                {
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    try
+                    {
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            FileInfo info = new FileInfo(path);
+
+                            if (!IsFileLocked(info)) info.Delete();
+
+                        }
+                    }
+                    catch (System.IO.IOException e)
+                    {
+
+                    }
+                }
+
+                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
+                {
+                    SaveOnServerPath = path, // Save your place
+                    PageWidth = 200,
+                    PageHeight = 350,
+                };
+                // This section allows you to save without downloading 
+                pdfResult.BuildPdf(this.ControllerContext);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return pdfname;
+        }
+
+
+        public static Boolean IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                //Don't change FileAccess to ReadWrite, 
+                //because if a file is in readOnly, it fails.
+                stream = file.Open
+                (
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.None
+                );
+            }
+            catch (IOException ex)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
+
+
 
         public class VatModel
         {

@@ -6,7 +6,7 @@
 
                         var Contectdatas = ViewBag.Contentdata;
                         var CompanyDatas = ViewBag.Companydata;
-                        var quation = ViewBag.QutationDat;
+                        var purchaseModel = ViewBag.Purchase;
                     }
 
 
@@ -58,13 +58,13 @@
                                 <div class="row">
                                     <div class="col-sm-2" style="font-size:10px;">Invoice Date:</div>
                                     <div class="col-sm-4">
-                                        <label style="font-size:10px;">@quation.QutationDate</label>
+                                        <label style="font-size:10px;">@purchaseModel.PurchaseDate</label>
                                     </div>
                                 </div>
                                 <div class="row" style="margin-top:3px">
                                     <div class="col-sm-2" style="font-size:10px;">Invoice Number:</div>
                                     <div class="col-sm-4">
-                                        <label style="font-size:10px;">@quation.Qutation_ID</label>
+                                        <label style="font-size:10px;">@purchaseModel.PurchaseRefNumber</label>
                                     </div>
                                     <div class="col-sm-6"></div>
                                 </div>
@@ -73,11 +73,11 @@
                                         <div class="row">
                                             <div class="col-sm-4">Invoice period:</div>
                                             <div class="col-sm-4" style="font-size:10px;">
-                                                <label>@quation.QutationDate</label>
+                                                <label>@purchaseModel.PurchaseDate</label>
                                             </div>
 
                                             <div class="col-sm-4" style="font-size:10px;">
-                                                <label>@quation.DueDate</label>
+                                                <label>@purchaseModel.PurchaseDueDate</label>
                                             </div>
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@
                                 <div class="row" style="margin-top:3px">
                                     <div class="col-sm-3" style="font-size:10px;">Refrence Number:</div>
                                     <div class="col-sm-4">
-                                        <label style="font-size:10px;">@quation.RefNumber</label>
+                                        <label style="font-size:10px;">@purchaseModel.PurchaseRefNumber</label>
 
                                     </div>
                                     <div class="col-sm-6"></div>
@@ -127,21 +127,36 @@
                                         </thead>
                                         <tbody>
 
-                                            @foreach (var item in ViewBag.QutationDatailsList)
+                                            @if (ViewBag.PurchaseDatailsList != null)
                                             {
-                                                <tr>
-                                                    <td>@item.Description</td>
-                                                    <td>@item.Quantity</td>
-                                                    <td>@item.Rate</td>
-                                                    <td>@item.Total</td>
-                                                    <td>@item.Vat</td>
+                                                foreach (var item in ViewBag.PurchaseDatailsList)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.PurchaseItemName
+                                                        </td>
+                                                        <td>
+                                                            @item.PurchaseQuantity
+                                                        </td>
 
-                                                </tr>
+                                                        <td>
+                                                            @item.PurchaseItemRate
+                                                        </td>
+                                                        <td>
+                                                            @item.PurchaseTotal
+
+                                                        </td>
+                                                        <td>
+                                                            @item.PurchaseVatPercentage
+
+                                                        </td>
+
+                                                    </tr>
+                                                }
                                             }
                                         </tbody>
 
                                     </table>
-
 
 
                                     <div id="OrderItems">
@@ -161,7 +176,7 @@
                                     </div>
                                     <div class="col-sm-2">Sub Total:</div>
                                     <div class="col-sm-2">
-                                        <label id="SubTotal">@quation.SubTotal</label>
+                                        <label id="SubTotal">@purchaseModel.PurchaseSubTotal</label>
                                     </div>
                                 </div>
 
@@ -178,11 +193,11 @@
                                 <div class="row">
                                     <div class="col-sm-2">Customer Note:</div>
                                     <div class="col-sm-6">
-                                        <label>@quation.CustomerNote</label>
+                                        <label>@purchaseModel.PurchaseVenderNote</label>
                                     </div>
                                     <div class="col-sm-2">Total:</div>
                                     <div class="col-sm-2">
-                                        <span class="form-inline">&euro;</span><label id="gtotal">@quation.TotalAmount</label>
+                                        <span class="form-inline">&euro;</span><label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label>
 
                                     </div>
                                 </div>
@@ -192,6 +207,8 @@
                     </div>
 
                 </div>
-                <div class="col-sm-1"></div>
+                <div class="col-sm-1">
+
+                </div>
 
              

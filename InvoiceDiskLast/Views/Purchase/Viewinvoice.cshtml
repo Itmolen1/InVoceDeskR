@@ -26,18 +26,17 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-
-                    @*<li>@Html.ActionLink(" Send qutation by Email", "InvoicebyEmail", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Send qutation by Email", "InvoicebyEmail", "Purchase", new { purchaseOrderId= purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Send qutation by Email", "ActionResult", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "     fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Send qutation by Email", "ActionResult", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "     fa fa-download" })</li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>*@
+                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
 
-            @*@Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-primary", style = "margin:0px 10px;" })*@
+            @Html.ActionLink("print concept", "Print", "Purchase", new {}, new { @class = "btn btn-primary", style = "margin:0px 10px;" })
 
-            @*<a href="/MVCQutation/AddOrEdit/@QutationModel.QutationID" class="btn btn-primary">Change</a>*@
+            <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-primary">Change</a>
 
 
 
@@ -61,8 +60,6 @@
                 else
                 { <label>T:</label>  }
             }
-
-
             <br />
             <label>@CompanyDatas.CompanyEmail</label>
         </div>
@@ -129,8 +126,7 @@
                 </tr>
             </thead>
             <tbody>
-
-               
+              
                     @if (ViewBag.PurchaseDatailsList != null)
                     {
                         foreach (var item in ViewBag.PurchaseDatailsList)
@@ -150,7 +146,10 @@
                                     @item.PurchaseTotal
 
                                 </td>
-                             
+                                <td>
+                                    @item.PurchaseVatPercentage
+
+                                </td>
           
                             </tr>
                         }

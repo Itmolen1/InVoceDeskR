@@ -195,7 +195,7 @@ namespace InvoiceDiskLast.Controllers
 
                     mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                     mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
-                   
+
                     mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                     mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
                     mvcQutationModel.DueDate = MVCQutationViewModel.DueDate;
@@ -254,6 +254,40 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+        public static Boolean IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                //Don't change FileAccess to ReadWrite, 
+                //because if a file is in readOnly, it fails.
+                stream = file.Open
+                (
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.None
+                );
+            }
+            catch (IOException ex)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
         public ActionResult InvoicebyEmail(int? QutationId)
         {
 
@@ -327,49 +361,11 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception)
             {
-
-                throw;
             }
-
-
-
-
 
             return View(email);
         }
 
-        public static Boolean IsFileLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                //Don't change FileAccess to ReadWrite, 
-                //because if a file is in readOnly, it fails.
-                stream = file.Open
-                (
-                    FileMode.Open,
-                    FileAccess.Read,
-                    FileShare.None
-                );
-            }
-            catch (IOException ex)
-            {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            }
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-
-            //file is not locked
-            return false;
-        }
 
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
@@ -653,10 +649,10 @@ namespace InvoiceDiskLast.Controllers
                         CMODEL.Total = QutationModelDetailsList[0].Total;
                         QutationModel.SubTotal = QutationModel.SubTotal - CMODEL.Total;
                         QutationModel.TotalAmount = QutationModel.TotalAmount - (CMODEL.Vat + CMODEL.Total);
-                       
+
                         QutationModel.QutationID = QutationModel.QutationID;
 
-                      
+
 
                         QutationModel.QutationDate = QutationModel.QutationDate;
                         QutationModel.CustomerNote = QutationModel.CustomerNote;
@@ -1225,21 +1221,21 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", QutationId = Qid } };
         }
 
-       
+
 
 
         [HttpPost]
         public JsonResult ProductPricebyId(int ProductId)
         {
-            HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+ ProductId.ToString()).Result;
+            HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ProductId.ToString()).Result;
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;
-            float price =(float)productModel.SalePrice;
+            float price = (float)productModel.SalePrice;
             return Json(price, JsonRequestBehavior.AllowGet);
         }
 
 
 
-        
+
         public class VatModel
         {
             public int Vat1 { get; set; }
