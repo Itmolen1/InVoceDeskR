@@ -28,6 +28,8 @@
     @*<input type="hidden"  value=" " id="PurchaseOrderID"/>*@
     <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
 
+    <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
+
     <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
     <div class="row">
 
@@ -52,7 +54,7 @@
                     <h5>@Contectdatas.ContactName</h5>
                     <h5>@Contectdatas.ContactAddress</h5>
                     <h5>@Contectdatas.BillingEmail</h5>
-                    <h5>@Contectdatas.BillingVatTRN</h5>
+
                 </div>
             </div>
 
@@ -65,7 +67,7 @@
                         <div class="row">
                             <div class="col-sm-2">Invoice Date:</div>
                             <div class="col-sm-4">
-                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDate" } })
+                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDate", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
 
                             </div>
@@ -76,7 +78,7 @@
                             <div class="col-sm-2">Invoice Number:</div>
                             <div class="col-sm-4">
 
-                                @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @class = "form-control", id = "PurchaseID" } })
+                                @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @class = "form-control", id = "PurchaseID", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
 
                             </div>
@@ -87,7 +89,7 @@
                             <div class="col-sm-2">Invoice DueDate:</div>
                             <div class="col-sm-4">
 
-                                @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDueDate", title = "Due Date" } })
+                                @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "form-control", id = "PurchaseDueDate", title = "Due Date", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.PurchaseDueDate, "", new { @class = "text-danger" })
 
                             </div>
@@ -99,34 +101,13 @@
                             <div class="col-sm-2">Refrence Number:</div>
                             <div class="col-sm-4">
 
-                                @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @class = "form-control", id = "PurchaseRefNumber" } })
+                                @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @class = "form-control", id = "PurchaseRefNumber", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.PurchaseRefNumber, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-sm-6"></div>
                         </div>
 
-                        @*<div class="row" style="margin-top:3px">
-                                <div class="col-sm-2">
-                                    <a href="#"> Add Discount:</a>
-                                </div>
-                                <div class="col-sm-4">
 
-                                    @Html.EditorFor(model => model.PurchaseDiscountAmount, new { htmlAttributes = new { @class = "form-control", id = "DiscountAmount" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseDiscountAmount, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-sm-6"></div>
-                            </div>*@
-
-                        @*<div class="row" style="margin-top:3px">
-                                <div class="col-sm-2">
-                                    <a href="#"> Add VAT:</a>
-                                </div>
-                                <div class="col-sm-4">
-                                    @Html.EditorFor(model => model.PurchaseVatPercentage, new { htmlAttributes = new { @class = "form-control", id = "PurchaseVatPercentage" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseVatPercentage, "", new { @class = "text-danger" })
-                                </div>
-                                <div class="col-sm-6"></div>
-                            </div>*@
 
                         <div class="row">
                             <table class="table" id="orderdetailsitemsp">
@@ -204,7 +185,7 @@
                                         foreach (var item in ViewBag.PurchaseDatailsList)
                                         {
 
-                                            <tr id="@item.PurchaseOrderDetailsId">
+                                            <tr id="@item.PurchaseOrderDetailsId" class="PurchaseOrderDetailsId">
 
                                                 <td>
 
@@ -238,7 +219,7 @@
 
                                                 </td>
                                                 <td>
-                                                    <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
+                                                    <button type="button" id="RemoveEdit1" class="btn btn-danger">Remove</button>
                                                 </td>
                                                 <td>
                                                     <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
@@ -273,7 +254,17 @@
                             </div>
                             <div class="col-sm-2">Sub Total:</div>
                             <div class="col-sm-2">
-                                <label id="SubTotalp">@Model.PurchaseSubTotal</label>
+
+                                @if (Model.PurchaseSubTotal != 0)
+                                {
+                                    <label id="SubTotalp">@Model.PurchaseSubTotal</label>
+                                }
+                                else
+                                {
+                                    <label id="SubTotalp"></label>
+                                }
+                            
+
                             </div>
                         </div>
                         <div class="row">
@@ -281,8 +272,16 @@
                             </div>
                             <div class="col-sm-2">Totaal excel BTW:</div>
                             <div class="col-sm-2">
-                                <label id="TotalBTWp">@Model.PurchaseSubTotal</label>
+                                @if (Model.PurchaseSubTotal != 0)
+                                {
+                                    <label id="TotalBTWp">@Model.PurchaseSubTotal</label>
+                                }
+                                else
+                                {
+                                    <label id="TotalBTWp">0.00</label>
+                                }
 
+                                
                             </div>
                         </div>
                         <div class="row">
@@ -290,7 +289,7 @@
                             </div>
                             <div class="col-sm-2">BTW0%:</div>
                             <div class="col-sm-2">
-                                <label id="btwop">0.00</label>
+                                <label id="btwop"></label>
 
                             </div>
                         </div>
@@ -299,7 +298,16 @@
                             </div>
                             <div class="col-sm-2">BTW 6%:</div>
                             <div class="col-sm-2">
-                                <label id="BTW6p">@Model.Vat6</label>
+
+                                @if (Model.Vat6 != 0)
+                                {
+                                    <label id="BTW6p">@Model.Vat6</label>
+                                }
+                                else
+                                {
+
+                                <label id="BTW6p">0.00</label>
+                                }
 
                             </div>
                         </div>
@@ -308,7 +316,16 @@
                             </div>
                             <div class="col-sm-2">BTW 21%:</div>
                             <div class="col-sm-2">
-                                <label id="BTW21p">@Model.Vat21</label>
+                                @if (Model.Vat21 != 0)
+                                {
+                                    <label id="BTW21p">@Model.Vat21</label>
+                                }
+                                else
+                                {
+                                    <label id="BTW21p">0.00</label>
+                                }
+
+                               
 
                             </div>
                         </div>
@@ -322,7 +339,16 @@
                             <div class="col-sm-2">Grand Total:</div>
                             <div class="col-sm-2">
                                 <span class=""><b>&euro;:</b></span>
-                                <label id="gtotalp">@Model.PurchaseTotoalAmount</label>
+
+                                @if (Model.PurchaseTotoalAmount != 0)
+                                {
+                                    <label id="gtotalp">@Model.PurchaseTotoalAmount</label>
+                                }
+                                else
+                                {
+                                    <label id="gtotalp">0.00</label>
+                                }
+                               
 
                             </div>
                         </div>
@@ -486,10 +512,15 @@
         //if (!isNaN(grandtotal) && grandtotal.length != 0) {
     }
     function calculatevatp() {
-        if ($('#orderdetailsitemsp tr').length == 0) {
+        if ($('#orderdetailsitemsp tbody tr').length == 0) {
             $('#btwop').text('0.00');
             $('#BTW6p').text('0.00');
             $('#BTW21p').text('0.00');
+            $('#gtotalp').val('0.00');
+            $('#TotalBTWp').text('0.00');
+            $('#TotalBTWp').text('0.00');
+            $('#SubTotalp').text('0.00');
+
         }
         else {
 
@@ -871,12 +902,9 @@
     $("#Submitp").click(function () {
         var isAllValid = true;
         $('#orderItemError').text('');
-
         var list = [];
         var errorItemCount = 0;
-
         $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
-
             if ($('#SelectProductQutationp', this).val() == '0' ||
                 (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
                 $('.ratep', this).val() == "" ||
@@ -927,9 +955,8 @@
                 PurchaseVenderNote: $('#PurchaseVenderNote').val(),
                 Vat6: $('#BTW6p').text(),
                 Vat21: $('#BTW21p').text(),
-                //ConatctId: $('#contactId').val(),
+                Purchase_ID: $('.Purchase_ID').val(),
                 PurchaseDetailslist: list
-
             };
             $.ajax({
                 url: "/Purchase/save",
@@ -939,8 +966,8 @@
                 dataType: "json",
                 success: function (result) {
 
-                    if (result.Status == "Success") {                       
-                        list = [];                      
+                    if (result.Status == "Success") {
+                        list = [];
                         $('#orderdetailsitems').empty();
                         $("#Submit").val('Save');
                         swal({
@@ -1027,7 +1054,8 @@
                 PurchaseVenderNote: $('#PurchaseVenderNote').val(),
                 Vat6: $('#BTW6p').text(),
                 Vat21: $('#BTW21p').text(),
-                //ConatctId: $('#contactId').val(),
+                Purchase_ID: $('.Purchase_ID').val(),
+
                 PurchaseDetailslist: list
 
             };
@@ -1040,9 +1068,16 @@
                 success: function (result) {
 
                     if (result.Status == "Success") {
-                        alert('eddw');
 
-                        $("#Submitp").val('Save Draft');
+                        swal({
+                            title: 'Qutation!',
+                            text: 'Qutation save successfully!',
+                            type: 'success'
+                        },
+                        function (isconform) {
+                            window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.PurchaseOrderId;
+                        });
+                        $("#saveEmailp").val('Save + Email');
                         list = [];
 
                     }
@@ -1121,34 +1156,95 @@
                 PurchaseVenderNote: $('#PurchaseVenderNote').val(),
                 Vat6: $('#BTW6p').text(),
                 Vat21: $('#BTW21p').text(),
-                //ConatctId: $('#contactId').val(),
+                Purchase_ID: $('.Purchase_ID').val(),
                 PurchaseDetailslist: list
-
             };
             $.ajax({
-                url: "/Purchase/saveEmailPrint",
+                url: "/Purchase/savePrintAndSentItToYouronsave",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
+                    localStorage.setItem('path1', result.path);
+
                     if (result.Status == "Success") {
-                        $("#Submitp").val('Save Draft');
-                        list = [];
+
+                        swal({
+                            title: 'Invoice!',
+                            text: 'Invoice save successfully!',
+                            type: 'success'
+                        },
+                        function (isconform) {
+                            window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.PurchaseOrderId;
+                        });
                     }
                     else if (result.Status == "Fail") {
-
+                        alert("Fail to Process")
                     }
                 },
                 error: function (errormessage) {
 
                 }
-
             });
-
         }
-
     });
 
+
+
+    $(document).ready(function () {
+
+        $(document).on('click', '#RemoveEdit1', function () {
+            debugger;
+
+            var row = $(this).closest('tr');
+
+            var PurchaseOrderId = $('#PurchaseOrderID').val();
+            var purchaseTotal = row.find('td').find('.PurchaseTotal').val();
+            var vat = row.find('td').find('#SelectVATp').val();
+            var PurchaseOrderDetailId = row.find('td').find('.PurchaseOrderDetailsId').val();
+
+            var purchase = JSON.stringify({
+                PurchaseOrderId: PurchaseOrderId,
+                purchaseOrderDetailId: PurchaseOrderDetailId,
+                vat: vat,
+                total: purchaseTotal
+            })
+            $.ajax({
+                url: "/Purchase/DeleteInvoice",
+                type: "POST",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: purchase,
+                success: function (data) {
+                    if (data.Status == "Success") {
+                        $("#" + PurchaseOrderDetailId).remove();
+                        calculatevatp();
+                        SUMOFALLPRODUCTp();
+                        SUMOFALLPRODUCTp();
+                        swal({
+                            title: 'Invoice!',
+                            text: 'Invoice save successfully!',
+                            type: 'success'
+                        });
+
+                    }
+                    else if (data.Status == "Fail") {
+
+                        swal({
+                            title: 'Invoice!',
+                            text: 'fail to remove Invoice!',
+                            type: 'danger'
+                        });
+                    }
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
+        });
+    });
 
 </script>

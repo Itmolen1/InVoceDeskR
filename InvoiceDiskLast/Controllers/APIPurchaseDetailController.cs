@@ -35,7 +35,18 @@ namespace InvoiceDiskLast.Controllers
 
             if (PDIDs != 0)
             {
-                var query = db.PurchaseOrderDetailsTables.ToList().Where(c => c.PurchaseOrderDetailsId == PDIDs).ToList();
+                var query = db.PurchaseOrderDetailsTables.ToList().Where(c => c.PurchaseId == PDIDs).Select(pd => new MvcPurchaseViewModel
+                {
+
+                    PurchaseOrderDetailsId = pd.PurchaseOrderDetailsId,
+                    PurchaseItemId = pd.PurchaseOrderDetailsId,
+                    PurchaseDescription = pd.PurchaseDescription,
+                    PurchaseQuantity = pd.PurchaseQuantity,
+                    PurchaseItemRate = pd.PurchaseItemRate,
+                    PurchaseTotal = pd.PurchaseTotal,
+                    PurchaseVatPercentage = pd.PurchaseVatPercentage,
+                    PurchaseId = pd.PurchaseId,
+                }).ToList();
 
                 return Ok(query);
             }
@@ -57,7 +68,8 @@ namespace InvoiceDiskLast.Controllers
                                  PurchaseVatPercentage = pd.PurchaseVatPercentage,
                                  PurchaseItemName = p.ProductName,
                                  PurchaseTotal = pd.PurchaseTotal,
-                                 PurchaseOrderID=(int)pd.PurchaseId,
+                                 PurchaseOrderID = (int)pd.PurchaseId,
+
                                  PurchaseOrderDetailsId = pd.PurchaseOrderDetailsId
                              }).ToList();
 
@@ -99,7 +111,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-       
+
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPurchaseDetailsTable(int id, PurchaseOrderDetailsTable purchasedetail)
         {
@@ -155,23 +167,23 @@ namespace InvoiceDiskLast.Controllers
                 return BadRequest();
 
             }
-            
+
         }
 
         // DELETE: api/APIQutationDetail/5
-        [ResponseType(typeof(QutationDetailsTable))]
+        [ResponseType(typeof(PurchaseOrderDetailsTable))]
         public IHttpActionResult DeleteQutationDetailsTable(int id)
         {
-            QutationDetailsTable qutationDetailsTable = db.QutationDetailsTables.Find(id);
-            if (qutationDetailsTable == null)
+            PurchaseOrderDetailsTable purchaseOrderDetailsTable = db.PurchaseOrderDetailsTables.Find(id);
+            if (purchaseOrderDetailsTable == null)
             {
                 return NotFound();
             }
 
-            db.QutationDetailsTables.Remove(qutationDetailsTable);
+            db.PurchaseOrderDetailsTables.Remove(purchaseOrderDetailsTable);
             db.SaveChanges();
 
-            return Ok(qutationDetailsTable);
+            return Ok(purchaseOrderDetailsTable);
         }
 
         protected override void Dispose(bool disposing)
@@ -190,4 +202,3 @@ namespace InvoiceDiskLast.Controllers
     }
 }
 
-   

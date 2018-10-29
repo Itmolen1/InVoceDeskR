@@ -1000,10 +1000,18 @@ namespace InvoiceDiskLast.Controllers
 
         public string SetPdfName(string FilePath)
         {
-
+            int CompanyId = 0;
             try
             {
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+
+                if (Session["CompayID"] != null)
+                {
+                    CompanyId = Convert.ToInt32(Session["CompayID"]);
+                }
+                
+
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
                 string[] arrya = FilePath.Split('-');
