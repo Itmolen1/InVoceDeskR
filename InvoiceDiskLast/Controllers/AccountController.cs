@@ -336,7 +336,6 @@ namespace InvoiceDiskLast.Controllers
             {
                 return GetErrorResult(result);
             }
-
             return Ok();
         }
 

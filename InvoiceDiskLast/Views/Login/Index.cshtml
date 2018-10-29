@@ -21,6 +21,7 @@
     <link href="~/dist/css/style.min.css" rel="stylesheet">
     <link href="../dist/css/pages/floating-label.css" rel="stylesheet">
     <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -35,7 +36,7 @@
             <p class="loader__label">Please wait...</p>
         </div>
     </div>
-
+                 
     <section id="wrapper">
         <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
             <div class="login-box card">
@@ -235,6 +236,7 @@
     <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
     <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
+    <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
     @*<script src="https://www.google.com/recaptcha/api.js" async defer></script>*@
     <!--Custom JavaScript -->
     <script>
@@ -500,7 +502,38 @@
                 type: "success",
             });
         }
+
+        $(document).ready(function(){
+
+            var temp = '@TempData["Success"]';
+        if(temp != null)
+        {
+            $.toast({
+                heading:'Verified',
+                text: 'Email Verified successfully',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+            temp = null;
+        }
+        else
+        {
+            $.toast({
+                heading:'Failed verification',
+                text: 'Email verifaication failed',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            })
+        }
+        });
+
+
+
     </script>
+
+    
 
 </body>
 </html>
