@@ -97,6 +97,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 db.SaveChanges();
+                return StatusCode(HttpStatusCode.OK);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -110,7 +111,7 @@ namespace InvoiceDiskLast.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+           
         }
 
         // POST: api/APIComapny
