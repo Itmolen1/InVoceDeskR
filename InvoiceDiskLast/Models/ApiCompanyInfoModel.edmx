@@ -66,6 +66,16 @@
           <Property Name="AddedBy" Type="int" />
           <Property Name="Company_ID" Type="int" />
           <Property Name="AddedDate" Type="date" />
+          <Property Name="ProductUnit" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductUnitTable">
+          <Key>
+            <PropertyRef Name="ProductUnitID" />
+          </Key>
+          <Property Name="ProductUnitID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductUnit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="CompanyId" Type="int" />
         </EntityType>
         <EntityType Name="PurchaseOrderDetailsTable">
           <Key>
@@ -216,6 +226,7 @@
           <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductUnitTable" EntityType="Self.ProductUnitTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrderDetailsTable" EntityType="Self.PurchaseOrderDetailsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrderTable" EntityType="Self.PurchaseOrderTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QutationDetailsTable" EntityType="Self.QutationDetailsTable" Schema="dbo" store:Type="Tables" />
@@ -309,6 +320,7 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="ContactsTable" EntitySet="ContactsTables" />
           </AssociationSet>
+          <EntitySet Name="ProductUnitTables" EntityType="APIcompanyModel.ProductUnitTable" />
         </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -361,6 +373,7 @@
           <Property Name="Company_ID" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ProductTable" ToRole="ComapnyInfo" />
+          <Property Name="ProductUnit" Type="Int32" />
         </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -511,6 +524,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ProductUnitTable">
+          <Key>
+            <PropertyRef Name="ProductUnitID" />
+          </Key>
+          <Property Name="ProductUnitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <Property Name="CompanyId" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -582,6 +604,7 @@
           <EntitySetMapping Name="ProductTables">
             <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
               <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
                 <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
@@ -669,6 +692,16 @@
                 <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
                 <ScalarProperty Name="ContactsId" ColumnName="ContactsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductUnitTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.ProductUnitTable">
+              <MappingFragment StoreEntitySet="ProductUnitTable">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
+                <ScalarProperty Name="ProductUnitID" ColumnName="ProductUnitID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

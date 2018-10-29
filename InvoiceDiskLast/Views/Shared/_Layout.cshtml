@@ -1988,11 +1988,7 @@
     $(document).ready(function () {
         @*product Script*@
 
-        $('#CreateNewProduct').click(function () {
-            $('#UpdateProduct').hide();
-            $('#SaveNewProduct').show();
-            $('#CreateNewProductModal').modal('show');
-        });
+      
 
         $('#SaveNewProduct').click(function () {
             $.ajax({
@@ -2291,63 +2287,63 @@
         });
     }
 
-    function EditContact(ContactsId) {
-        $.ajax({
-            url: "/MVCClient/AddOrEdit/" + ContactsId,
-            type: "GET",
-            dataType: "json",
-            success: function (resultContactData) {
+    //function EditContact(ContactsId) {
+    //    $.ajax({
+    //        url: "/MVCClient/AddOrEdit/" + ContactsId,
+    //        type: "GET",
+    //        dataType: "json",
+    //        success: function (resultContactData) {
 
-                $('#ContactsId').val(resultContactData.ContactsId);
-                $('#ContactName').val(resultContactData.ContactName);
-                $('#ContactAddress').val(resultContactData.ContactAddress);
-                $('select#TypeContacts option').each(function () {
-                    if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase()) {
-                        this.selected = true;
-                        return;
-                    }
-                });
-                if (resultContactData.Status == true) {
-                    $('#Status').val("1");
-                }
-                else {
-                    $('#Status').val("0");
-                }
+    //            $('#ContactsId').val(resultContactData.ContactsId);
+    //            $('#ContactName').val(resultContactData.ContactName);
+    //            $('#ContactAddress').val(resultContactData.ContactAddress);
+    //            $('select#TypeContacts option').each(function () {
+    //                if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase()) {
+    //                    this.selected = true;
+    //                    return;
+    //                }
+    //            });
+    //            if (resultContactData.Status == true) {
+    //                $('#Status').val("1");
+    //            }
+    //            else {
+    //                $('#Status').val("0");
+    //            }
 
-                $('#BillingPersonName').val(resultContactData.BillingPersonName);
-                $('#BillingCompanyName').val(resultContactData.BillingCompanyName);
-                $('#BillingAddress').val(resultContactData.BillingAddress);
-                $('#BillingCity').val(resultContactData.BillingCity);
-                $('#BillingState').val(resultContactData.BillingState);
-                $('#BillingCountry').val(resultContactData.BillingCountry);
-                $('#BillingZibCode').val(resultContactData.BillingZibCode);
-                $('#BillingEmail').val(resultContactData.BillingEmail);
-                $('#BillingVatTRN').val(resultContactData.BillingVatTRN);
-                $('#BillingPhone').val(resultContactData.BillingPhone);
-                $('#BillingMobile').val(resultContactData.BillingMobile);
-                $('#BillingFax').val(resultContactData.BillingFax);
-                $('#ShippingPersonName').val(resultContactData.ShippingPersonName);
-                $('#ShippingAddress').val(resultContactData.ShippingAddress);
-                $('#ShippingCompanyName').val(resultContactData.ShippingCompanyName);
-                $('#ShippingCity').val(resultContactData.ShippingCity);
-                $('#ShippingState').val(resultContactData.ShippingState);
-                $('#ShippingCountry').val(resultContactData.ShippingCountry);
-                $('#ShippingZIP').val(resultContactData.ShippingZIP);
-                $('#ShippingEmail').val(resultContactData.ShippingEmail);
-                $('#ShippingVatTRN').val(resultContactData.ShippingVatTRN);
-                $('#ShippingMobile').val(resultContactData.ShippingMobile);
-                $('#ShippingPhone').val(resultContactData.ShippingPhone);
-                $('#ShippingFax').val(resultContactData.ShippingFax);
-                $('#Remarks').val(resultContactData.Remarks);
-                $('#UpdateContacts').show();
-                $('#SaveNewContacts').hide();
-                $('#CreateNewContactModal').modal('show');
-            },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
-        });
-    }
+    //            $('#BillingPersonName').val(resultContactData.BillingPersonName);
+    //            $('#BillingCompanyName').val(resultContactData.BillingCompanyName);
+    //            $('#BillingAddress').val(resultContactData.BillingAddress);
+    //            $('#BillingCity').val(resultContactData.BillingCity);
+    //            $('#BillingState').val(resultContactData.BillingState);
+    //            $('#BillingCountry').val(resultContactData.BillingCountry);
+    //            $('#BillingZibCode').val(resultContactData.BillingZibCode);
+    //            $('#BillingEmail').val(resultContactData.BillingEmail);
+    //            $('#BillingVatTRN').val(resultContactData.BillingVatTRN);
+    //            $('#BillingPhone').val(resultContactData.BillingPhone);
+    //            $('#BillingMobile').val(resultContactData.BillingMobile);
+    //            $('#BillingFax').val(resultContactData.BillingFax);
+    //            $('#ShippingPersonName').val(resultContactData.ShippingPersonName);
+    //            $('#ShippingAddress').val(resultContactData.ShippingAddress);
+    //            $('#ShippingCompanyName').val(resultContactData.ShippingCompanyName);
+    //            $('#ShippingCity').val(resultContactData.ShippingCity);
+    //            $('#ShippingState').val(resultContactData.ShippingState);
+    //            $('#ShippingCountry').val(resultContactData.ShippingCountry);
+    //            $('#ShippingZIP').val(resultContactData.ShippingZIP);
+    //            $('#ShippingEmail').val(resultContactData.ShippingEmail);
+    //            $('#ShippingVatTRN').val(resultContactData.ShippingVatTRN);
+    //            $('#ShippingMobile').val(resultContactData.ShippingMobile);
+    //            $('#ShippingPhone').val(resultContactData.ShippingPhone);
+    //            $('#ShippingFax').val(resultContactData.ShippingFax);
+    //            $('#Remarks').val(resultContactData.Remarks);
+    //            $('#UpdateContacts').show();
+    //            $('#SaveNewContacts').hide();
+    //            $('#CreateNewContactModal').modal('show');
+    //        },
+    //        error: function (errormessage) {
+    //            alert(errormessage.responseText);
+    //        }
+    //    });
+    //}
 
     function DeleteProduct(ProductId) {
 
@@ -2449,79 +2445,11 @@
         });
     }
 
-    function clearContectTextBox() {
-        $('#ContactsId').val("");
-        $('#ContactName').val("");
-        $('#ContactAddress').val("");
-        $('#Type').val("");
-        $('#BillingPersonName').val("");
-        $('#BillingCompanyName').val("");
-        $('#BillingAddress').val("");
-
-        $('#BillingCity').val("");
-        $('#BillingState').val("");
-        $('#BillingCountry').val("");
-        $('#BillingZibCode').val("");
-        $('#BillingEmail').val("");
-        $('#BillingVatTRN').val("");
-        $('#BillingPhone').val("");
-
-
-        $('#BillingMobile').val("");
-        $('#BillingFax').val("");
-        $('#ShippingPersonName').val("");
-        $('#ShippingAddress').val("");
-        $('#ShippingCompanyName').val("");
-        $('#ShippingCity').val("");
-        $('#ShippingState').val("");
-
-        $('#ShippingCountry').val("");
-        $('#ShippingZIP').val("");
-        $('#ShippingEmail').val("");
-        $('#ShippingVatTRN').val("");
-        $('#ShippingMobile').val("");
-        $('#ShippingPhone').val("");
-        $('#ShippingFax').val("");
-
-        $('#Remarks').val("");
-
-
-        $('#UpdateContacts').hide();
-        $('#SaveNewContacts').show();
-        //$('#Name').css('border-color', 'lightgrey');
-        //$('#Age').css('border-color', 'lightgrey');
-        //$('#State').css('border-color', 'lightgrey');
-        //$('#Country').css('border-color', 'lightgrey');
-    }
-
-    function validateContact() {
-        var isValid = true;
-        if ($('#ContactName').val().trim() == "") {
-            $('#ContactName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ContactName').css('border-color', 'lightgrey');
-        }
-        if ($('#ContactAddress').val().trim() == "") {
-            $('#ContactAddress').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ContactAddress').css('border-color', 'lightgrey');
-        }
-        if ($('#BillingPersonName').val().trim() == "") {
-            $('#BillingPersonName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#BillingPersonName').css('border-color', 'lightgrey');
-        }
-        return isValid;
-    }
+    
+   
 
     function EditQuatation(id) {
-        debugger;
+      
         $.ajax({
             url: '/MVCClient/AddOrEditQutation',
             type: 'GET',

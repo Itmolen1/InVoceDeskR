@@ -87,7 +87,7 @@
     <div class="col-sm-2"></div>
 </div>
 
-<input type="hidden" id="companyid" />
+<input type="hidden" id="companyiddd" />
 
 <div class="modal fade bs-example-modal-lg" id="CCompanyModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
@@ -149,7 +149,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <input type="file" name="file" id="FileUpload1" />
+                            <input type="file" name="file" id="CFileUpload1" />
                             <img class="img-responsive" id="targetImg" style="height:38px;width:38px" />
                         </div>
 
@@ -188,8 +188,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="UpdateCompanyInformation">Update</button>
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="UpdateCompanyInformation"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -202,40 +202,48 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <script>
-            $(document).ready(function () {
-                var companyid = parseInt(localStorage.getItem('CompanyID'));
-                $.ajax({
-                    url: "/MVCComapny/CompanyEdit",
-                    type: "GET",
-                    cache: false,
-                    data: { 'id': companyid },
-                    success: function (resultCompany) {
-                        $('#companyid').val(resultCompany.companyid);
-                        $('#ccompanyname').val(resultCompany.CompanyName);
-                        $('#CAddress').val(resultCompany.CompanyAddress);
-                        $('#CPsotalCode').val(resultCompany.PostalCode);
-                        $('#CCity').val(resultCompany.CompanyCity);
-                        $('#CCountry').val(resultCompany.CompanyCountry);
-                        $('#CLandline').val(resultCompany.CompanyPhone);
-                        $('#CMobile').val(resultCompany.CompanyCell);
-                        $('#CEmail').val(resultCompany.CompanyEmail);
-                        $('#websitecc').text(resultCompany.Website);
-                        $('#cwebist').attr("href", resultCompany.Website);
-                        $("#main-logo a").attr("href", "http://" + resultCompany.Website);
-                        $('#logourl').val(resultCompany.CompanyLogo);
-                        $('#CBank').val(resultCompany.BankName);
-                        $('#CIBN').val(resultCompany.IBANNumber);
-                        $('#cBIC').val(resultCompany.BIC);
-                        $('#cKVK').val(resultCompany.KVK);
-                        $('#cBTW').val(resultCompany.BTW);
-                        $('#cStreetNumber').val(resultCompany.StreetNumber);
 
-                        $('#CtargetImg').attr('src', '/images/' + resultCompany.CompanyLogo);
-                    },
-                    error: function (errormessage) {
-                        alert(errormessage)
-                    }
-                });
+    function LoadCompanyInfo()
+    {
+        var companyid = parseInt(localStorage.getItem('CompanyID'));
+        $.ajax({
+            url: "/MVCComapny/CompanyEdit",
+            type: "GET",
+            cache: false,
+            data: { 'id': companyid },
+            success: function (resultCompany) {
+                $('#companyiddd').val(resultCompany.companyid);
+                $('#ccompanyname').val(resultCompany.CompanyName);
+                $('#CAddress').val(resultCompany.CompanyAddress);
+                $('#CPsotalCode').val(resultCompany.PostalCode);
+                $('#CCity').val(resultCompany.CompanyCity);
+                $('#CCountry').val(resultCompany.CompanyCountry);
+                $('#CLandline').val(resultCompany.CompanyPhone);
+                $('#CMobile').val(resultCompany.CompanyCell);
+                $('#CEmail').val(resultCompany.CompanyEmail);
+                $('#websitecc').text(resultCompany.Website);
+                $('#cwebist').attr("href", resultCompany.Website);
+                $("#main-logo a").attr("href", "http://" + resultCompany.Website);
+                $('#logourl').val(resultCompany.CompanyLogo);
+                $('#CBank').val(resultCompany.BankName);
+                $('#CIBN').val(resultCompany.IBANNumber);
+                $('#cBIC').val(resultCompany.BIC);
+                $('#cKVK').val(resultCompany.KVK);
+                $('#cBTW').val(resultCompany.BTW);
+                $('#cStreetNumber').val(resultCompany.StreetNumber);
+
+                $('#CtargetImg').attr('src', '/images/' + resultCompany.CompanyLogo);
+            },
+            error: function (errormessage) {
+                alert(errormessage)
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        LoadCompanyInfo();
+
 
                 $('#EditCompanyInfo').click(function ()
                 {
@@ -277,73 +285,95 @@
                     }
                 }
 
-                $("#FileUpload1").change(function () {
+                $("#CFileUpload1").change(function () {
                     readURL(this);
                 });
 
+                data = {
+                    ccompanyname: "New company here"
+                }
 
-
-        $(document).ready(function () {
-            $("#UpdateCompanyInformation").click(function (e) {
-                if (window.FormData !== undefined) {
-
-                    var fileUpload = $("#FileUpload1").get(0);
-                    var files = fileUpload.files;
-
-                    // Create FormData object
-                    var fileData = new FormData();
-
-                    // Looping over all files and add it to FormData object
-                    for (var i = 0; i < files.length; i++) {
-                        fileData.append(files[i].name, files[i]);
-                    }
-
-                    // Adding one more key to FormData object
-                    fileData.append('companyid', $('#companyid').val());
-                    fileData.append('CompanyName', $('#CompanyName').val());
-                    fileData.append('CompanyAddress', $('#CompanyAddress').val());
-                    fileData.append('CompanyPhone', $('#CompanyPhone').val());
-                    fileData.append('CompanyCell', $('#CompanyCell').val());
-                    fileData.append('CompanyEmail', $('#CompanyEmail').val());
-                    fileData.append('CompanyLogo', $('#CompanyLogo').val());
-                    fileData.append('CompanyCity', $('#CompanyCity').val());
-                    fileData.append('CompanyCountry', $('#CompanyCountry').val());
-                    fileData.append('StreetNumber', $('#StreetNumber').val());
-
-                    fileData.append('PostalCode', $('#PostalCode').val());
-                    fileData.append('Website', $('#Website').val());
-                    fileData.append('BankName', $('#BankName').val());
-
-                    fileData.append('IBANNumber', $('#IBANNumber').val());
-                    fileData.append('BIC', $('#BIC').val());
-                    fileData.append('KVK', $('#KVK').val());
-
-                    fileData.append('BTW', $('#BTW').val());
-
-                    fileData.append('AddedDate', $('#AddedDate').val());
-                    fileData.append('UserName', localStorage.getItem('Username'));
-
-                    var apiurl = "/MVCComapny/AddOrEdit";
-
-                    $.ajax({
-                        url: apiurl,
-                        type: 'POST',
-                        data: fileData,
-                        processData: false,
-                        contentType: false,
-                        success: function (ReturnStatus) {
-                            if (ReturnStatus == 201) {
-                                SuccessInsert();
-                                window.location.href = '/Home/Index';
-                            }
-                        },
-                        error: function () {
-                            alert("Error please try again");
-                        }
+                function SuccessUpdated() {
+                    swal({
+                        title: "Congratulations!",
+                        text: "Your data has been updated successfully",
+                        type: "success",
+                       
                     });
                 }
-            });
-        });
+
+
+                $(document).ready(function () {
+                    $("#UpdateCompanyInformation").click(function (e) {
+
+                        if (window.FormData != undefined) {
+                            var fileData = new FormData();
+
+                            if ($("#CFileUpload1").val() != "") {
+                                var fileUpload = $("#CFileUpload1").get(0);
+                                var files = fileUpload.files;
+
+
+                                for (var i = 0; i < files.length; i++) {
+                                    fileData.append(files[i].name, files[i]);
+                                }
+                            }
+
+                            fileData.append('CompanyID', parseInt(localStorage.getItem('CompanyID')));
+                            fileData.append('CompanyName', $('#CompanyName').val());
+                            fileData.append('CompanyAddress', $('#CompanyAddress').val());
+                            fileData.append('CompanyPhone', $('#CompanyPhone').val());
+                            fileData.append('CompanyCell', $('#CompanyCell').val());
+                            fileData.append('CompanyEmail', $('#CompanyEmail').val());
+                            if ($("#CFileUpload1").val() != "")
+                            {
+                                fileData.append('CompanyLogo', $('#CFileUpload1').val());
+                            }
+
+                            fileData.append('CompanyLogo', $('#logourl').val());
+                            fileData.append('CompanyCity', $('#CompanyCity').val());
+                            fileData.append('CompanyCountry', $('#CompanyCountry').val());
+                            fileData.append('StreetNumber', $('#StreetNumber').val());
+
+                            fileData.append('PostalCode', $('#PostalCode').val());
+                            fileData.append('Website', $('#Website').val());
+                            fileData.append('BankName', $('#BankName').val());
+
+                            fileData.append('IBANNumber', $('#IBANNumber').val());
+                            fileData.append('BIC', $('#BIC').val());
+                            fileData.append('KVK', $('#KVK').val());
+
+                            fileData.append('BTW', $('#BTW').val());
+
+                            fileData.append('AddedDate', $('#AddedDate').val());
+                            fileData.append('UserName', localStorage.getItem('Username'));
+
+
+
+                            var url = "/MVCComapny/UpdateCompany";
+                          
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                data: fileData,
+                                processData: false,
+                                contentType: false,
+                                success: function (ReturnStatus) {
+                                 
+                                    if (ReturnStatus == 200) {
+                                        $('#CCompanyModal').modal('hide');
+                                        SuccessUpdated();
+                                        LoadCompanyInfo();
+                                    }
+                                },
+                                error: function () {
+                                    alert("Error please try again");
+                                }
+                            });
+                        }
+                        });
+                   
+                });
 
             });
 

@@ -26,12 +26,11 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult AddOrEdit(MVCCompanyInfoModel CompnayViewModel)
+        public ActionResult AddOrEdit(MVCCompanyInfoModel compnayViewModel)
         {
+           
             if (Request.Files.Count > 0)
             {
-                
-
                 #region
                 try
                 {
@@ -57,7 +56,7 @@ namespace InvoiceDiskLast.Controllers
                             string Extention = Path.GetExtension(file.FileName);
                          
                             fname = file.FileName + DateTime.Now.ToString("yymmssfff") + Extention;
-                            CompnayViewModel.CompanyLogo = fname;
+                            compnayViewModel.CompanyLogo = fname;
                         }
 
                         // Get the complete folder path and store the file inside it.  
@@ -65,17 +64,17 @@ namespace InvoiceDiskLast.Controllers
                         file.SaveAs(fname);
                     }
                     // Returns message that successfully uploaded  
-                    if (CompnayViewModel.CompanyID == null)
+                    if (compnayViewModel.CompanyID == null)
                     {
                        
-                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIComapny", CompnayViewModel).Result;
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIComapny", compnayViewModel).Result;
                         MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
                         Session["CompayID"] = CompanyModel.CompanyID;
                         return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny", CompnayViewModel).Result;
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny", compnayViewModel).Result;
                         MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;                          
                         return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                     }
@@ -83,7 +82,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json("Error occurred. Error details: " + ex.Message);
+                    return Json("Please select logo: " + ex.Message);
                 }
                 #endregion
             }
@@ -91,10 +90,65 @@ namespace InvoiceDiskLast.Controllers
             {
                 return Json(false,JsonRequestBehavior.AllowGet);
             }
-            return null;
+           
             
         }
 
+
+
+        [HttpPost]
+        public ActionResult UpdateCompany(MVCCompanyInfoModel compnayViewModel)
+        {
+            if(compnayViewModel.CompanyID > 0)
+            {
+                try
+                {
+
+                    if (Request.Files.Count > 0)
+                    {
+                        HttpFileCollectionBase files = Request.Files;
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            string fname;
+                            //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
+                            //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                            HttpPostedFileBase file = files[i];
+
+                            // Checking for Internet Explorer  
+                            if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                            {
+                                string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                                fname = testfiles[testfiles.Length - 1];
+                            }
+                            else
+                            {
+                                string filename = Path.GetFileNameWithoutExtension(file.FileName);
+                                string Extention = Path.GetExtension(file.FileName);
+
+                                fname = file.FileName + DateTime.Now.ToString("yymmssfff") + Extention;
+                                compnayViewModel.CompanyLogo = fname;
+                            }
+
+                            // Get the complete folder path and store the file inside it.  
+                            fname = Path.Combine(Server.MapPath("~/images/"), fname);
+                            file.SaveAs(fname);
+                        }
+                    }
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny/"+ compnayViewModel.CompanyID, compnayViewModel).Result;
+                    MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                    return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
+                
+            }            
+            
+            return null;
+        }
 
         [HttpGet]
         public ActionResult CompanyEdit(int id = 0)

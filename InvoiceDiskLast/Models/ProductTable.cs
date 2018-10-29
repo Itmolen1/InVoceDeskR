@@ -24,6 +24,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> Company_ID { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
+        public Nullable<int> ProductUnit { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
