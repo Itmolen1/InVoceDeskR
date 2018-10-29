@@ -241,48 +241,22 @@
         $(document).ready(function () 
         {
 
-            $('#CaptchaInputText').addClass('form-control');            
-           // $('#CaptchaImage').addClass('form-control');
-            function validateLogin() {
-                var isValid = true;
-                if ($('#CaptchaInputText').val().trim() == "") {
-                    $('#CaptchaInputText').css('border-color', 'Red');
-                    isValid = false;
-                }
-                //else if ($('#CaptchaImage').val() != $('#CaptchaInputText').val())
-                //{
-                //    isValid = false;
-                //}
-                return isValid;
-            }
+            //$('#CaptchaInputText').addClass('form-control');            
+         
+            //function validateLogin() {
+            //    var isValid = true;
+            //    if ($('#CaptchaInputText').val().trim() == "") {
+            //        $('#CaptchaInputText').css('border-color', 'Red');
+            //        isValid = false;
+            //    }              
+            //    return isValid;
+            //}
             if (sessionStorage.getItem('accessToken') != null) 
             {
                 window.location.href = "/Home/Index";
             }
             else {
-
                 $('#btnLogin').click(function () {
-
-                        //-----------
-                        //$.ajax({
-                        //    url: '/Captcha/IndexPostCaptcha',
-                        //    type: 'POST',
-                        //    data: {
-                        //        ContactName: $('#ContactName').val(),
-                        //        ContactAddress: $('#ContactAddress').val(),
-                        //        Type: "Customer"
-                        //    },
-                        //    success: function (data) {
-                        //        $('#AddNewContactModel').modal('hide');
-                        //        LoadContacts();
-                        //        $('#QutationContactModel').modal('show');
-                        //    },
-                        //    error: function () {
-                        //        alert("error");
-                        //    }
-                        //});
-                        //------------
-
                         $.ajax({
                             url: '/token',
                             method: 'POST',

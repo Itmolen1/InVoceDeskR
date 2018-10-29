@@ -58,36 +58,17 @@ namespace InvoiceDiskLast.Controllers
                     Session["ApiAccessToken"] = token.AccessToken;
                 }
 
-                // HttpClient client = new HttpClient();
-                // request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
-                // HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "ApiConatacts");
-
-                //var client = new HttpClient
-                //{
-                //    BaseAddress = new Uri(GlobalVeriables.WebApiClient.GetAsync("apicontact").Result);
-                //};
-                //client.DefaultRequestHeaders.Add("access_token", "YWtoaWw6YWtoaWw=");
-
-                //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Accept.Authorization = "Authorization", "Bearer " + token.AccessToken);
-
-
-
-                HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("apicontact").Result;
-                respons.Headers.Add("Authorization", "Bearer " + token.AccessToken);
-
-               
-               
+                //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("apicontact").Result;
+                //respons.Headers.Add("Authorization", "Bearer " + token.AccessToken);              
                 //respons.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
+
+                return RedirectToAction("Index", "Home");
             }
 
             ViewBag.ErrMessage = "Error: captcha is not valid upto now.";
 
-
-            return View(user);
-            // Code for validating the CAPTCHA 
-
-
+            return View(user);          
         }
 
         public string ThankYouPage()

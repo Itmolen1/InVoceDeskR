@@ -908,7 +908,7 @@
 
         $("#Submit").click(function () {
 
-            debugger;
+           
 
             var con = validateQutationAddOrEdit();
             if (con == true) {
@@ -2049,6 +2049,116 @@
             });
         });
 
+      
+    $(document).ready(function () {
+        LoadProductUnit();
+    });
+
+    function LoadProductUnit() {
+
+        $("#ProductUnitSelectQutation").find("option").remove();
+
+        $("#ProductUnitSelectQutation").prepend("<option value=0>" + 'Select Unit' + "</option>");
+        $("#ProductUnitSelectQutation").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+
+        $.ajax({
+            url: "/MVCProductUnit/GetProductUnit",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $.each(data, function (key, item) {
+                    $('#ProductUnitSelectQutation').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+    $('#ProductUnitSelectQutation').change(function () {
+
+        var value = $(this).val();
+        if (value == "AddNewPUnitSelect") {
+
+            $('#CreateNewProductModalAdd').modal('hide');
+            $('#UnitModelQutation').modal('show');
+        }
+
+    });
+
+    $('#CancelProductUnitQutation').click(function () {
+        CleartUnitTextBoxqt();
+        $('#CreateNewProductModalAdd').modal('show');
+        $('#UnitModelQutation').modal('hide');
+    });
+
+    $('#SaveNewProductUnitQutation').click(function () {
+
+        $.ajax({
+            url: "/MVCProductUnit/CheckUnitStatus",
+            type: "POST",
+            data: { name: $('#ProductUnit').val() },
+            success: function (Resultdat) {
+              
+                console.log(Resultdat);
+                if (Resultdat == "Found") {
+                    $.toast({
+                        heading: 'Already exist',
+                        text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                }
+                else {
+                    var dataUnit = {
+
+                        ProductUnit: $('#ProductUnit').val(),
+                        Status: "true"
+                    }
+                    $.ajax({
+                        url: "/MVCProductUnit/AddorEdit",
+                        type: "POST",
+                        data: dataUnit,
+                        success: function (dat) {
+                            CleartUnitTextBoxqt();
+                            $('#UnitModelQutation').modal('hide');
+                            LoadProductUnit();
+                            $('#CreateNewProductModalAdd').modal('show');
+                            $.toast({
+                                heading: 'Success',
+                                text: 'Your opration has been successfuly completed `Thank you`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                        },
+                        Error: function (err) {
+                            alert("erro");
+                        }
+
+                    });
+                }
+
+            },
+            Error: function (err) {
+                alert("erro");
+            }
+
+        });
+
+    });
+
+    function CleartUnitTextBoxqt() {
+        $('#ProductUnit').val("")
+    }
+
         $('#UpdateProduct').click(function () {
 
             $.ajax({
@@ -2216,8 +2326,6 @@
 
 
     function validateQutationAddOrEdit() {
-        debugger;
-
         var isValid = true;
 
         if ($('#Qutation_ID').val().trim() == "") {
@@ -2236,6 +2344,7 @@
         }
         if ($('#RefNumber').val().trim() == "") {
             $('#RefNumber').css('border-color', 'Red');
+            $('#RefNumber').focus();
             isValid = false;
         }
         else {

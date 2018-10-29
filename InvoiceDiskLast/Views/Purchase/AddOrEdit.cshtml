@@ -456,10 +456,8 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="AddedDate" data-toggle="tooltip" data-placement="bottom" title="Current Date!!">
-                                <span class="bar"></span>
-                                <label for="input5">Added Date</label>
+                            <div class="col-sm-12">
+                                <select class="form-control p-0" id="ProductUnitSelectPurchase"></select>
                             </div>
                         </div>
                     </div>
@@ -476,7 +474,31 @@
     <!-- /.modal-dialog -->
 </div>
 
-
+<div id="UnitModelPurchase" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add new unit</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewProductUnitPurchase" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnitPurchase" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 
 <script type="text/javascript">
@@ -789,8 +811,11 @@
     $(document).on('keyup', "#orderdetailsitemsp tbody .PurchaseQuantity ", function () {
         currentRow1 = $(this).closest("tr");
         var currentRow = $(this).closest("tr");
-        var quantity = $(this).val();  // get current row 1st TD value
-        var Price = currentRow.find("td:eq(1)").find('input').val();
+        var quantity = $(this).val();
+       
+        // get current row 1st TD value
+        var Price = currentRow.find("td:eq(2)").find('input').val();
+      
         var total = quantity * Price;
         currentRow.find('td:eq(3)').find('input').val(total);
         var sum = 0;
@@ -850,6 +875,14 @@
 
     $(document).ready(function () {
 
+        LoadProductSelect();
+
+    });
+
+
+    function LoadProductSelect()
+    {
+        LoadProductUnitPurchase();
         $("#SelectProductQutationp").find("option").remove();
         $("#SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
         $("#SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
@@ -869,14 +902,15 @@
                 alert(errormessage);
             }
         });
-    });
+    }
 
     // product price by id
     $('thead .pClassp').change(function () {
-        debugger;
+       
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
+            LoadProductUnitPurchase();
           //  $('#VenderSelectModel').modal('hide');
             $('#CreateNewProductModalAdd').modal('show');
         }
@@ -1219,7 +1253,7 @@
     $(document).ready(function () {
 
         $(document).on('click', '#RemoveEdit1', function () {
-            debugger;
+           
 
             var row = $(this).closest('tr');
 
@@ -1306,6 +1340,109 @@
         });
     });
 
+    $('#ProductUnitSelectPurchase').change(function () {
+
+        var value = $(this).val();
+        if (value == "AddNewPUnitSelect") {
+
+            $('#CreateNewProductModalAdd').modal('hide');
+            $('#UnitModelPurchase').modal('show');
+        }
+
+    });
+
+    function LoadProductUnitPurchase() {
+
+        $("#ProductUnitSelectPurchase").find("option").remove();
+
+        $("#ProductUnitSelectPurchase").prepend("<option value=0>" + 'Select Unit' + "</option>");
+        $("#ProductUnitSelectPurchase").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+
+        $.ajax({
+            url: "/MVCProductUnit/GetProductUnit",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $.each(data, function (key, item) {
+                    $('#ProductUnitSelectPurchase').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+    $('#SaveNewProductUnitPurchase').click(function () {
+
+        $.ajax({
+            url: "/MVCProductUnit/CheckUnitStatus",
+            type: "POST",
+            data: { name: $('#ProductUnit').val() },
+            success: function (Resultdat) {
+              
+                console.log(Resultdat);
+                if (Resultdat == "Found") {
+                    $.toast({
+                        heading: 'Already exist',
+                        text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                }
+                else {
+                    var dataUnit = {
+
+                        ProductUnit: $('#ProductUnit').val(),
+                        Status: "true"
+                    }
+                    $.ajax({
+                        url: "/MVCProductUnit/AddorEdit",
+                        type: "POST",
+                        data: dataUnit,
+                        success: function (dat) {
+                            CleartUnitTextBoxPurchase();
+                            $('#UnitModelPurchase').modal('hide');
+                            LoadProductSelect();
+                            $('#CreateNewProductModalAdd').modal('show');
+                            $.toast({
+                                heading: 'Success',
+                                text: 'Your opration has been successfuly completed `Thank you`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                        },
+                        Error: function (err) {
+                            alert("erro");
+                        }
+
+                    });
+                }
+
+            },
+            Error: function (err) {
+                alert("erro");
+            }
+
+        });
 
 
+    });
+
+    function CleartUnitTextBoxPurchase() {
+        $('#ProductUnit').val("")
+    }
+
+    $('#CancelProductUnitPurchase').click(function () {
+        CleartUnitTextBoxPurchase();
+        $('#CreateNewProductModalAdd').modal('show');
+        $('#UnitModelPurchase').modal('hide');
+    });
 </script>

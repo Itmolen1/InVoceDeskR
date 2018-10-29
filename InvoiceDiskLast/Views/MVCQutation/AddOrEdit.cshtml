@@ -52,7 +52,7 @@
                             <h5>@Contectdatas.ContactName</h5>
                             <h5>@Contectdatas.ContactAddress</h5>
                             <h5>@Contectdatas.BillingEmail</h5>
-                            <h5>@Contectdatas.BillingVatTRN</h5>
+                           
                         </div>
                     </div>
 
@@ -787,7 +787,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="col-sm-12">
-                                <select class="form-control p-0" id="ProductUnitSelect"></select>
+                                <select class="form-control p-0" id="ProductUnitSelectQutation"></select>
                             </div>
                         </div>
                     </div>
@@ -806,6 +806,31 @@
 </div>
 
 
+<div id="UnitModelQutation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add new unit</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewProductUnitQutation" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnitQutation" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 <script type="text/javascript">
 
@@ -818,36 +843,3 @@
 </script>
 
 
-<script>
-    $(document).ready(function () {
-        LoadProductUnit();
-    });
-
-    function LoadProductUnit() {
-
-        $("#ProductUnitSelect").find("option").remove();
-
-        $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
-        $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
-
-        $.ajax({
-            url: "/MVCProductUnit/GetProductUnit",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-                $.each(data, function (key, item) {
-                    $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
-                });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
-   
-</script>
