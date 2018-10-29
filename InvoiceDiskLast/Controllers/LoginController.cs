@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
@@ -74,8 +75,10 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ConfirmEmail/" + "ss").Result;
                 mvcuserModel=response.Content.ReadAsAsync<MvcUserModel>().Result;
 
-           
-                 string link = "http://localhost:63861/Login/Verifiy?Code=" + mvcuserModel.Id;
+                string url = System.Configuration.ConfigurationManager.AppSettings["url"];
+          
+                string link = url + mvcuserModel.Id;
+
                 sendMail(Email, mvcuserModel.Id, link);
 
                 return Json("Success", JsonRequestBehavior.AllowGet);
