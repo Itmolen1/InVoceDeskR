@@ -7,11 +7,26 @@
 }
 
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="row">
+    @if (TempData["EmailMessge"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong>@TempData["EmailMessge"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+</div>
+
 <div class="row" style="margin-top:100px;margin-left:0px;margin-right:0px;">
 
-    @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
+    @using (Html.BeginForm("DownloadFile", "Purchase", FormMethod.Post, new { id = "DownloadFileInvoice" }))
     {
-        <input type="hidden" name="FilePath" id="FilePath" />
+        <input type="hidden" name="FilePath1" id="FilePath1" />
         <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
     }
 
@@ -26,19 +41,17 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink(" Send qutation by Email", "InvoicebyEmail", "Purchase", new { purchaseOrderId= purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Send Invoice by Email", "InvoicebyEmail", "Purchase", new { purchaseOrderId= purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Send qutation by Email", "ActionResult", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "     fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Send Invoice by Email", "ActionResult", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "     fa fa-download" })</li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
 
-            @Html.ActionLink("print concept", "Print", "Purchase", new {}, new { @class = "btn btn-primary", style = "margin:0px 10px;" })
+            @Html.ActionLink("print concept", "Print", "Purchase", new { purchaseOrderId= purchaseModel.PurchaseOrderID }, new { @class = "btn btn-primary", style = "margin:0px 10px;" })
 
             <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-primary">Change</a>
-
-
 
         </div>
     </div>
@@ -95,6 +108,9 @@
             <label>offer Date</label><br />
             <label>offer number</label><br />
             <label>valid untill</label>
+            @{
+                <p>@Convert.ToInt32((purchaseModel.PurchaseDueDate - purchaseModel.PurchaseDate).TotalDays)</p>
+            }
         </div>
         <div class="col-xs-3">
             <label>@purchaseModel.PurchaseDate</label><br />
@@ -103,7 +119,7 @@
         </div>
     </div>
     <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
-        will receive the quotation from us for the services below.
+        will receive the invoice from us for the services below.
 
         <table id="mytable" class="table table-bordred table-striped table-responsive">
             <thead>
@@ -218,11 +234,7 @@
 
 
 
-    @*<div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
-            <div class="col-md-4 col-md-offset-4 text-center">
-                <p>Total: &euro;:0.00</p>
-            </div>
-        </div>*@
+  
 
     <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
         We hope that everything is clear. If you have any questions, please let us know.
@@ -243,17 +255,16 @@
 </div>
 
 
-
-@*<script>
-
+<script type="text/javascript">
     $(document).ready(function () {
-        var patth = localStorage.getItem('path');
-        $("#FilePath").val(patth);
-
-        if ($("#FilePath").val().length > 0) {
-            $('#DownloadFile1').submit();
+        var patth = localStorage.getItem('path1');
+        $("#FilePath1").val(patth);
+        if ($('input#FilePath1').val() == "") {
         }
-        $("#FilePath").val('');
-        localStorage.removeItem('path');
+        else {
+            $('#DownloadFileInvoice').submit();
+            $("#FilePath1").val('');
+            localStorage.removeItem('path1');
+        }
     })
-</script>*@
+</script>
