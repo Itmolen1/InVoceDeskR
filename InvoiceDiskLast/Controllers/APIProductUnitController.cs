@@ -54,17 +54,26 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [Route("{name:alpha}")]
-        public int GetProductUnitTable(string name)
+        public object GetProductUnitTable(string name)
         {
-            int result = 0;
-            if (name != "")
+            IEnumerable<string> headerValues;
+            object ob = new object();
+            var IDS = "";
+            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
-                result = (db.ProductUnitTables.Count(x => x.ProductUnit.ToLower() == name.ToLower()));
-                return result
+                IDS = headerValues.FirstOrDefault();
+            }
+            int id = Convert.ToInt32(IDS);
+
+
+            if (name != "")
+            {                
+                ob = (db.ProductUnitTables.Count(x => x.ProductUnit.ToLower() == name.ToLower() && x.CompanyId == id));
+                return ob;
             }
             else
             {
-                return result;
+                return ob;
             }
         }
 

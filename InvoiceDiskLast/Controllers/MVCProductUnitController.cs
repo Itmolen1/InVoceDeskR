@@ -1,4 +1,5 @@
 ﻿using InvoiceDiskLast.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,16 +76,35 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        //[HttpGet]
-        //public ActionResult AddorEdit1()
-        //{
-        //    string name = "kg";
-        //   HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit/" + name.ToString()).Result;
-           
+        [HttpPost]
+        public ActionResult CheckUnitStatus(string name)
+        {
+            if (name != null)
+            {
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit/" + name.ToString()).Result;
 
-         
-          
-        //}
-       
+
+                var apiresut = response.Content.ReadAsAsync<object>().Result;
+
+                int result = Convert.ToInt32(apiresut);
+                if (result > 0)
+                {
+                    return Json("Found", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("NotFound", JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json("NotFound Name", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
     }
 }

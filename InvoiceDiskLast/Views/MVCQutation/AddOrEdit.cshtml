@@ -401,7 +401,7 @@
                             <h5>@Contectdatas.ContactName</h5>
                             <h5>@Contectdatas.ContactAddress</h5>
                             <h5>@Contectdatas.BillingEmail</h5>
-                            <h5>@Contectdatas.BillingVatTRN</h5>
+                          
                         </div>
                     </div>
 
@@ -786,13 +786,12 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="AddedDate" data-toggle="tooltip" data-placement="bottom" title="Current Date!!">
-                                <span class="bar"></span>
-                                <label for="input5">Added Date</label>
+                            <div class="col-sm-12">
+                                <select class="form-control p-0" id="ProductUnitSelect"></select>
                             </div>
                         </div>
                     </div>
+                  
 
                 </form>
             </div>
@@ -816,4 +815,39 @@
     //function delTableRow() {
     //
     //}
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        LoadProductUnit();
+    });
+
+    function LoadProductUnit() {
+
+        $("#ProductUnitSelect").find("option").remove();
+
+        $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
+        $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+
+        $.ajax({
+            url: "/MVCProductUnit/GetProductUnit",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $.each(data, function (key, item) {
+                    $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+   
 </script>

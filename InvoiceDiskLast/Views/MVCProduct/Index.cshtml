@@ -211,37 +211,61 @@
      
         $('#SaveNewProductUnit').click(function () {
 
-            var dataUnit = {
-
-                ProductUnit: $('#ProductUnit').val(),
-                Status: "true"
-            }
-
             $.ajax({
-                url: "/MVCProductUnit/AddorEdit",
+                url: "/MVCProductUnit/CheckUnitStatus",
                 type: "POST",
-                data: dataUnit,
-                success: function(dat)
-                {
-                    CleartUnitTextBox();
-                    $('#UnitModel').modal('hide');
-                    LoadProductUnit();
-                    $('#CreateNewProductModal').modal('show');
+                data: { name: $('#ProductUnit').val() },
+                success: function (Resultdat) {
+                    debugger;
+                    console.log(Resultdat);
+                    if (Resultdat == "Found")
+                    {
+                        $.toast({
+                            heading: 'Already exist',
+                            text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#FF0000'  // To change the background
+                        });
+                    }
+                    else
+                    {
+                        var dataUnit = {
 
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Your opration has been successfuly completed `loader`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#9EC600'  // To change the background
-                    });
+                            ProductUnit: $('#ProductUnit').val(),
+                            Status: "true"
+                        }
+                        $.ajax({
+                            url: "/MVCProductUnit/AddorEdit",
+                            type: "POST",
+                            data: dataUnit,
+                            success: function (dat) {
+                                CleartUnitTextBox();
+                                $('#UnitModel').modal('hide');
+                                LoadProductUnit();
+                                $('#CreateNewProductModal').modal('show');
+                                $.toast({
+                                    heading: 'Success',
+                                    text: 'Your opration has been successfuly completed `Thank you`',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                            },
+                            Error: function (err) {
+                                alert("erro");
+                            }
+
+                        });
+                    }
+                  
                 },
-                Error: function(err)
-                {
+                Error: function (err) {
                     alert("erro");
-                }           
+                }
 
             });
+
 
         });
 
@@ -268,8 +292,7 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            success: function (data) {
-                console.log(data);
+            success: function (data) {              
 
                 $.each(data, function (key, item) {
                     $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
