@@ -613,19 +613,15 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteQuatation(int QutationId, int QutationDetailID, int vat, int total)
+        public ActionResult DeleteQuatation(int QutationId, int QutationDetailID, int vat, decimal total)
         {
             try
             {
 
                 MVCQutationViewModel viewModel = new MVCQutationViewModel();
-
-
                 viewModel.QutationDetailId = QutationDetailID;
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
-
-
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 
@@ -710,7 +706,7 @@ namespace InvoiceDiskLast.Controllers
                         if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                            return Json("Success", JsonRequestBehavior.AllowGet);
+                            return new JsonResult { Data = new { Status = "Success" } };
                         }
                     }
                     else
@@ -1235,6 +1231,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult ProductPricebyId(int ProductId)
         {
+            
+
             HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ProductId.ToString()).Result;
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;
             float price = (float)productModel.SalePrice;

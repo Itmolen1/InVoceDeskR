@@ -60,7 +60,7 @@ namespace InvoiceDiskLast.Controllers
             if (name != "")
             {
                 result = (db.ProductUnitTables.Count(x => x.ProductUnit.ToLower() == name.ToLower()));
-                return result
+                return result;
             }
             else
             {

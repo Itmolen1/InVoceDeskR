@@ -263,7 +263,7 @@
                                 {
                                     <label id="SubTotalp"></label>
                                 }
-                            
+
 
                             </div>
                         </div>
@@ -281,7 +281,7 @@
                                     <label id="TotalBTWp">0.00</label>
                                 }
 
-                                
+
                             </div>
                         </div>
                         <div class="row">
@@ -306,7 +306,7 @@
                                 else
                                 {
 
-                                <label id="BTW6p">0.00</label>
+                                    <label id="BTW6p">0.00</label>
                                 }
 
                             </div>
@@ -325,7 +325,7 @@
                                     <label id="BTW21p">0.00</label>
                                 }
 
-                               
+
 
                             </div>
                         </div>
@@ -348,7 +348,7 @@
                                 {
                                     <label id="gtotalp">0.00</label>
                                 }
-                               
+
 
                             </div>
                         </div>
@@ -375,9 +375,9 @@
                             <div class="col-xs-2">
                                 <input id="saveEmailp" type="button" value="Save + email" class="btn btn-primary" style="margin:0px 5px" />
                             </div>
-                            <div class="col-xs-3">
-                                <input id="savesendbyemail" type="button" value="Save + send by email " class="btn btn-primary" style="margin:0px 5px" />
-                            </div>
+                            @*<div class="col-xs-3">
+                                    <input id="savesendbyemail" type="button" value="Save + send by email " class="btn btn-primary" style="margin:0px 5px" />
+                                </div>*@
                             <div class="col-xs-3">
                                 <input id="SaveEmailPrintPrintp" type="button" value="Save + print and send and send ot yourself" class="btn btn-primary" style="margin:0px 5px" />
                             </div>
@@ -398,7 +398,6 @@
 
 
 </div>
-
 
 
 
@@ -517,6 +516,7 @@
             $('#BTW6p').text('0.00');
             $('#BTW21p').text('0.00');
             $('#gtotalp').val('0.00');
+
             $('#TotalBTWp').text('0.00');
             $('#TotalBTWp').text('0.00');
             $('#SubTotalp').text('0.00');
@@ -615,11 +615,20 @@
             $("#BTW21p").text('0.00');
         }
 
-        if ($('#orderdetailsitemsp tr').length == 0) {
+        if ($('#orderdetailsitemsp tbody tr').length == 0) {
 
             $('#SubTotalp').text();
             $('#TotalBTWp').text();
-            $('#gtotalp').text();
+            $('#gtotalp').text('');
+            $('#gtotalp').val('');
+            $('#btwop').text('0.00');
+            $('#BTW6p').text('0.00');
+            $('#BTW21p').text('0.00');
+            $('#gtotalp').val('0.00');
+
+            $('#TotalBTWp').text('0.00');
+            $('#TotalBTWp').text('0.00');
+            $('#SubTotalp').text('0.00');
         }
     }
 
@@ -697,12 +706,12 @@
         sumofGrandModelp();
 
         if ($('#orderdetailsitemsp tbody tr').length == 0) {
-            $('#SubTotalp').text('0.0');
-            $('#TotalBTWp').text('0.0');
-            $('#gtotalp').text('0.0');
-            $('#BTW6p').text('0.0');
-            $('#BTW21p').text('0.0');
-            $('#btwop').text('0.0');
+            $('#SubTotalp').text('0.00');
+            $('#TotalBTWp').text('0.00');
+            $('#gtotalp').text('0.00');
+            $('#BTW6p').text('0.00');
+            $('#BTW21p').text('0.00');
+            $('#btwop').text('0.00');
             $('#SelectVATp').val(0);
         }
     });
@@ -864,20 +873,35 @@
 
     // product price by id
     $('thead .pClassp').change(function () {
-        var productId = $(this).val();
-        $.ajax({
-            url: "/MVCQutation/ProductPricebyId",
-            type: "POST",
-            cache: false,
-            data: { 'ProductId': productId },
-            success: function (resultData) {
-                $('thead #PurchaseItemRate ').val(resultData);
-            },
-            error: function (errormessage) {
-                alert(errormessage)
-            }
-        });
+        debugger;
+
+        var value = $(this).val();
+        if (value == "AddNewProductSelect") {
+          //  $('#VenderSelectModel').modal('hide');
+            $('#CreateNewProductModalAdd').modal('show');
+        }
+        else if (value == "0") {
+
+            return;
+        }
+        else {
+
+            var productId = $(this).val();
+            $.ajax({
+                url: "/MVCQutation/ProductPricebyId",
+                type: "POST",
+                cache: false,
+                data: { 'ProductId': productId },
+                success: function (resultData) {
+                    $('thead #PurchaseItemRate ').val(resultData);
+                },
+                error: function (errormessage) {
+                   // alert(errormessage)
+                }
+            });
+        }
     })
+
     //end
 
     //number validation
@@ -1246,5 +1270,42 @@
             });
         });
     });
+
+
+
+    $('#SaveNewProductModel').click(function () {
+        $.ajax({
+            url: '/MVCProduct/AddOrEdit',
+            type: 'POST',
+            data: {
+                ProductName: $('#ProductName').val(),
+                Description: $('#Description').val(),
+                SalePrice: $('#SalePrice').val(),
+                PurchasePrice: $('#PurchasePrice').val(),
+                Type: $('#Type').val(),
+                OpeningQuantity: $('#OpeningQuantity').val()
+
+            },
+            success: function (data) {
+                $('#CreateNewProductModalAdd').modal('hide');
+                LoadProductAdding();
+                $.toast({
+                    heading: 'Success',
+                    text: 'Your opration has been successfuly completed `loader`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+
+                //$("#productTable").ajax.reload();
+                //SuccessInsert();
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    });
+
+
 
 </script>

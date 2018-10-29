@@ -149,8 +149,8 @@
                             </div>
                         </li>
                         @*<li>
-                            <a href="#"></a>
-                        </li>*@
+                                <a href="#"></a>
+                            </li>*@
                         <!-- ============================================================== -->
                         <!-- End Comment -->
                         <!-- ============================================================== -->
@@ -831,23 +831,24 @@
                     data: data,
                     success: function (data) {
                         if (data.Status == "Success") {
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            });
-
-
                             $("#" + QIDId).remove();
                             calculatevat();
                             SUMOFALLPRODUCT();
                             sumofGrandModel();
+                            swal({
+                                title: 'Qutation!',
+                                text: 'Qutation delete successfully!',
+                                type: 'success'
+                            });
+
+
+
                         }
                         else if (data.Status == "Fail") {
 
                             swal({
                                 title: 'Qutation!',
-                                text: 'fail to remove qutation!',
+                                text: 'fail to delete qutation!',
                                 type: 'danger'
                             });
 
@@ -1988,7 +1989,7 @@
     $(document).ready(function () {
         @*product Script*@
 
-      
+
 
         $('#SaveNewProduct').click(function () {
             $.ajax({
@@ -2445,11 +2446,11 @@
         });
     }
 
-    
-   
+
+
 
     function EditQuatation(id) {
-      
+
         $.ajax({
             url: '/MVCClient/AddOrEditQutation',
             type: 'GET',
@@ -2620,22 +2621,36 @@
 
 
     $('.pClass').change(function () {
-        var productId = $(this).val();
-        { }
-        $.ajax({
-            url: "/MVCQutation/ProductPricebyId",
-            type: "POST",
 
-            cache: false,
-            data: { 'ProductId': productId },
-            success: function (resultData) {
-                $('#Rate').val(resultData);
-            },
-            error: function (errormessage) {
-                alert(errormessage)
-            }
-        });
+
+        var value = $(this).val();
+        if (value == "AddNewProductSelect") {
+            return;
+        }
+        else if (value == "0") {
+
+            return;
+        }
+        else {
+
+            var productId = $(this).val();
+         
+            $.ajax({
+                url: "/MVCQutation/ProductPricebyId",
+                type: "POST",
+
+                cache: false,
+                data: { 'ProductId': productId },
+                success: function (resultData) {
+                    $('#Rate').val(resultData);
+                },
+                error: function (errormessage) {
+                    //alert(errormessage)
+                }
+            });
+        }
     })
+
 
 
     function GetProductPriceById(ProductId) {
