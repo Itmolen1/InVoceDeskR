@@ -46,17 +46,36 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("APIQutation").Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationModel>>().Result;
+               
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
-                    // Apply search  on multiple field  
-                    quationList = quationList.Where(p => p.QutationDate.ToString().Contains(search) ||
-                    p.Qutation_ID.ToString().Contains(search) ||
-                    p.RefNumber.ToString().Contains(search) ||
-                    p.QutationDate.ToString().Contains(search) ||
-                    p.QutationID.ToString().Contains(search)).ToList();
+                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+
+                quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
+               || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
+               || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+               || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+               || p.DiscountAmount != null && p.DiscountAmount.ToString().ToLower().Contains(search.ToLower())
+               || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())            
+
+              ).ToList();
 
                 }
+                  
+
+                }
+
+
+
+
+               
+
+
+
+
+
 
                 recordsTotal = recordsTotal = quationList.Count();
                 var data = quationList.Skip(skip).Take(pageSize).ToList();
