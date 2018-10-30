@@ -54,10 +54,12 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [Route("{name:alpha}")]
-        public object GetProductUnitTable(string name)
+        public IHttpActionResult GetProductUnitTable(string name)
         {
+            CheckUnit1 onj = new CheckUnit1();
             IEnumerable<string> headerValues;
             object ob = new object();
+            ob = 0;
             var IDS = "";
             if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
@@ -67,13 +69,13 @@ namespace InvoiceDiskLast.Controllers
 
 
             if (name != "")
-            {                
-                ob = (db.ProductUnitTables.Count(x => x.ProductUnit.ToLower() == name.ToLower() && x.CompanyId == id));
-                return ob;
+            {
+                onj.count = (db.ProductUnitTables.Count(x => x.ProductUnit.ToLower() == name.ToLower() && x.CompanyId == id));
+                return Ok(onj);
             }
             else
             {
-                return ob;
+                return Ok(onj);
             }
         }
 
@@ -173,5 +175,10 @@ namespace InvoiceDiskLast.Controllers
         {
             return db.ProductUnitTables.Count(e => e.ProductUnitID == id) > 0;
         }
+    }
+
+    public class CheckUnit1
+    {
+        public int count { get; set; }
     }
 }

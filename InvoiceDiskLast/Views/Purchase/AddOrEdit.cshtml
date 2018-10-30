@@ -33,27 +33,98 @@
     <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
     <div class="row">
 
-        <div class="col-sm-12" style="background-color:white;margin-top:50px">
-            <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-11" style="margin-top:20px">
-                    <img src="@Url.Content("~/Images/"+CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
-                </div>
-            </div>
-
+        <div class="col-sm-12" style="background-color:white;margin-top:40px">
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-3">
-                    <h5>@CompanyDatas.CompanyName</h5>
-                    <h5>@CompanyDatas.CompanyAddress</h5>
-                    <h5>@CompanyDatas.CompanyPhone</h5>
-                    <h5>@CompanyDatas.CompanyEmail</h5>
+                    <img src="@Url.Content("~/Images/"+@CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+
+
+                    @Contectdatas.ContactName
+                    <br />
+                    @Contectdatas.ContactAddress
+                    <br />
+                    @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                    <br />
+                    @Contectdatas.PostalCode
+
+
+
                 </div>
                 <div class="col-sm-4"></div>
-                <div class="col-sm-4" style="margin-top:10px">
-                    <h5>@Contectdatas.ContactName</h5>
-                    <h5>@Contectdatas.ContactAddress</h5>
-                    <h5>@Contectdatas.BillingEmail</h5>
+                <div class="col-sm-4">
+                    <br />
+                    <br />
+                    <br />
+                    <h5 style="margin-left:125px">@CompanyDatas.CompanyName</h5>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2 pull-left">Kvk nr:</div>
+                        <div class="col-sm-8">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3"><div class="pull-right"> BTW nr:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2 pull-right"><div class="pull-right">IBAN:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2 pull-right"><div class="pull-right">BIC:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"><div class="pull-right">Tel:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"><div class="pull-right">Cel:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3 pull-right"><div class="pull-right">E-mail:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3 pull-right"><div class="pull-right">Website:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.Website</div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-4 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                        <div class="col-sm-8">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                            @CompanyDatas.CompanyCountry
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -370,16 +441,16 @@
                         <hr />
                         <div class="row">
                             <div class="col-xs-2">
-                                <input id="Submitp" type="button" value="Save draft" class="btn btn-primary" style="margin:0px 5px" />
+                                <input id="Submitp" type="button" value="Save draft" class="btn btn-success" style="margin:0px 5px" />
                             </div>
                             <div class="col-xs-2">
-                                <input id="saveEmailp" type="button" value="Save + email" class="btn btn-primary" style="margin:0px 5px" />
+                                <input id="saveEmailp" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px" />
                             </div>
                             @*<div class="col-xs-3">
                                     <input id="savesendbyemail" type="button" value="Save + send by email " class="btn btn-primary" style="margin:0px 5px" />
                                 </div>*@
                             <div class="col-xs-3">
-                                <input id="SaveEmailPrintPrintp" type="button" value="Save + print and send and send ot yourself" class="btn btn-primary" style="margin:0px 5px" />
+                                <input id="SaveEmailPrintPrintp" type="button" value="Save + print and send and send ot yourself" class="btn btn-success" style="margin:0px 5px" />
                             </div>
 
                             <div class="col-sm-2"></div>
@@ -883,9 +954,9 @@
     function LoadProductSelect()
     {
         LoadProductUnitPurchase();
-        $("#SelectProductQutationp").find("option").remove();
-        $("#SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $("thead #SelectProductQutationp").find("option").remove();
+        $("thead #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("thead #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
         $.ajax({
             url: "/MVCProduct/GetProduct",
@@ -895,7 +966,7 @@
             dataType: "json",
             success: function (data) {
                 $.each(data, function (key, item) {
-                    $('#SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                    $('thead #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
                 });
             },
             Error: function (errormessage) {
