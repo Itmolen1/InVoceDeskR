@@ -880,7 +880,7 @@ namespace InvoiceDiskLast.Controllers
 
                     CustomSwitches =
             "--footer-center \"  Created Date: " +
-               "Wilt u zo vriendelik zijn om het verschuldigde bedrag binnen Convert.ToInt32((purchaseModel.PurchaseDueDate - purchaseModel.PurchaseDate).TotalDays) dagen over to maken naai IBAN:"+
+               "Wilt u zo vriendelik zijn om het verschuldigde bedrag binnen Convert.ToInt32 dagen over to maken naai IBAN:"+
                     "NL07ABNA0812436350 ten name Van IT Molen o.v.v bovenstaande factuurnumber"+
                   "(Op al diensten en producten zijn onze algemene voorwaaren toepassing Deze Kunt u downloden vanze website) +   Page: [page]/[toPage]\"" +
           " --footer-line --footer-font-size \"12\" --footer-spacing 1 --footer-font-name \"Segoe UI\""
