@@ -79,6 +79,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult CheckUnitStatus(string name)
         {
+            CheckUnit objectcount = new CheckUnit();
+
             if (name != null)
             {
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
@@ -87,10 +89,10 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit/" + name.ToString()).Result;
 
 
-                var apiresut = response.Content.ReadAsAsync<object>().Result;
+                objectcount = response.Content.ReadAsAsync<CheckUnit>().Result;
 
-                int result = Convert.ToInt32(apiresut);
-                if (result > 0)
+                
+                if (objectcount.count > 0)
                 {
                     return Json("Found", JsonRequestBehavior.AllowGet);
                 }
@@ -106,5 +108,10 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+    }
+
+    public class CheckUnit
+    {
+        public int count{ get; set; }
     }
 }

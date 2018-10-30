@@ -600,7 +600,7 @@
 
 
 <script>
-   
+
 
     @*$(window).load(function () {
         if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null) {
@@ -609,7 +609,7 @@
     });*@
 
 
- 
+
 
 
     $(document).ready(function () {
@@ -863,7 +863,7 @@
 
         $("#Submit").click(function () {
 
-           
+
 
             var con = validateQutationAddOrEdit();
             if (con == true) {
@@ -944,7 +944,6 @@
                                 $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
                                 $('#orderdetailsitems').empty();
                                 $("#Submit").val('Save');
-
                                 swal({
                                     title: 'Qutation!',
                                     text: 'Qutation save successfully!',
@@ -1040,7 +1039,15 @@
                             $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
                             $('#orderdetailsitems').empty();
                             $("#SubmitEdit").val('Save Draft');
-                            window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                            swal({
+                                title: 'Invoice!',
+                                text: 'Invoice save successfully!',
+                                type: 'success'
+                            },
+                             function (isconform) {
+                                 window.location.href = window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                            });
+
                         }
                         else if (result.Status == "Fail") {
                             //alert(result.messa)
@@ -1222,12 +1229,9 @@
                         function (isconform) {
                             window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
                         });
-
                     }
                     else if (result.Status == "Fail") {
-
-
-
+                       alert(result.Message);
                     }
 
                 },
@@ -1295,8 +1299,16 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.Status == "Success") {
+                        swal({
+                            title: 'Invoice!',
+                            text: 'Invoice save successfully!',
+                            type: 'success'
+                        },
+                             function (isconform) {
+                                 window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                             });
 
-                        window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                        
                     }
                     else if (result.Status == "Fail") {
                         alert(result.Message);
@@ -1864,7 +1876,7 @@
                            var results = pattern.exec(value);
                            var dt = new Date(parseFloat(results[1]));
 
-                           return  (dt.getMonth() + 1) + "/" + dt.getDate()  + "/" + dt.getFullYear();
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
                        }, "autoWidth": true
                    },
 
@@ -2002,115 +2014,115 @@
             });
         });
 
-      
-    $(document).ready(function () {
-        LoadProductUnit();
-    });
 
-    function LoadProductUnit() {
-
-        $("#ProductUnitSelectQutation").find("option").remove();
-
-        $("#ProductUnitSelectQutation").prepend("<option value=0>" + 'Select Unit' + "</option>");
-        $("#ProductUnitSelectQutation").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
-
-        $.ajax({
-            url: "/MVCProductUnit/GetProductUnit",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-                $.each(data, function (key, item) {
-                    $('#ProductUnitSelectQutation').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
-                });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
+        $(document).ready(function () {
+            LoadProductUnit();
         });
-    }
 
-    $('#ProductUnitSelectQutation').change(function () {
+        function LoadProductUnit() {
 
-        var value = $(this).val();
-        if (value == "AddNewPUnitSelect") {
+            $("#ProductUnitSelectQutation").find("option").remove();
 
-            $('#CreateNewProductModalAdd').modal('hide');
-            $('#UnitModelQutation').modal('show');
+            $("#ProductUnitSelectQutation").prepend("<option value=0>" + 'Select Unit' + "</option>");
+            $("#ProductUnitSelectQutation").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+
+            $.ajax({
+                url: "/MVCProductUnit/GetProductUnit",
+                type: "Get",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $.each(data, function (key, item) {
+                        $('#ProductUnitSelectQutation').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                    });
+
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
         }
 
-    });
+        $('#ProductUnitSelectQutation').change(function () {
 
-    $('#CancelProductUnitQutation').click(function () {
-        CleartUnitTextBoxqt();
-        $('#CreateNewProductModalAdd').modal('show');
-        $('#UnitModelQutation').modal('hide');
-    });
+            var value = $(this).val();
+            if (value == "AddNewPUnitSelect") {
 
-    $('#SaveNewProductUnitQutation').click(function () {
-
-        $.ajax({
-            url: "/MVCProductUnit/CheckUnitStatus",
-            type: "POST",
-            data: { name: $('#ProductUnit').val() },
-            success: function (Resultdat) {
-              
-                console.log(Resultdat);
-                if (Resultdat == "Found") {
-                    $.toast({
-                        heading: 'Already exist',
-                        text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#FF0000'  // To change the background
-                    });
-                }
-                else {
-                    var dataUnit = {
-
-                        ProductUnit: $('#ProductUnit').val(),
-                        Status: "true"
-                    }
-                    $.ajax({
-                        url: "/MVCProductUnit/AddorEdit",
-                        type: "POST",
-                        data: dataUnit,
-                        success: function (dat) {
-                            CleartUnitTextBoxqt();
-                            $('#UnitModelQutation').modal('hide');
-                            LoadProductUnit();
-                            $('#CreateNewProductModalAdd').modal('show');
-                            $.toast({
-                                heading: 'Success',
-                                text: 'Your opration has been successfuly completed `Thank you`',
-                                icon: 'info',
-                                loader: true,        // Change it to false to disable loader
-                                loaderBg: '#9EC600'  // To change the background
-                            });
-                        },
-                        Error: function (err) {
-                            alert("erro");
-                        }
-
-                    });
-                }
-
-            },
-            Error: function (err) {
-                alert("erro");
+                $('#CreateNewProductModalAdd').modal('hide');
+                $('#UnitModelQutation').modal('show');
             }
 
         });
 
-    });
+        $('#CancelProductUnitQutation').click(function () {
+            CleartUnitTextBoxqt();
+            $('#CreateNewProductModalAdd').modal('show');
+            $('#UnitModelQutation').modal('hide');
+        });
 
-    function CleartUnitTextBoxqt() {
-        $('#ProductUnit').val("")
-    }
+        $('#SaveNewProductUnitQutation').click(function () {
+
+            $.ajax({
+                url: "/MVCProductUnit/CheckUnitStatus",
+                type: "POST",
+                data: { name: $('#ProductUnit').val() },
+                success: function (Resultdat) {
+
+                    console.log(Resultdat);
+                    if (Resultdat == "Found") {
+                        $.toast({
+                            heading: 'Already exist',
+                            text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#FF0000'  // To change the background
+                        });
+                    }
+                    else {
+                        var dataUnit = {
+
+                            ProductUnit: $('#ProductUnit').val(),
+                            Status: "true"
+                        }
+                        $.ajax({
+                            url: "/MVCProductUnit/AddorEdit",
+                            type: "POST",
+                            data: dataUnit,
+                            success: function (dat) {
+                                CleartUnitTextBoxqt();
+                                $('#UnitModelQutation').modal('hide');
+                                LoadProductUnit();
+                                $('#CreateNewProductModalAdd').modal('show');
+                                $.toast({
+                                    heading: 'Success',
+                                    text: 'Your opration has been successfuly completed `Thank you`',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                            },
+                            Error: function (err) {
+                                alert("erro");
+                            }
+
+                        });
+                    }
+
+                },
+                Error: function (err) {
+                    alert("erro");
+                }
+
+            });
+
+        });
+
+        function CleartUnitTextBoxqt() {
+            $('#ProductUnit').val("")
+        }
 
         $('#UpdateProduct').click(function () {
 
@@ -2696,7 +2708,7 @@
         else {
 
             var productId = $(this).val();
-         
+
             $.ajax({
                 url: "/MVCQutation/ProductPricebyId",
                 type: "POST",
