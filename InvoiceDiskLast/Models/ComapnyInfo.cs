@@ -23,7 +23,7 @@ namespace InvoiceDiskLast.Models
             this.ContactsTables = new HashSet<ContactsTable>();
         }
     
-        public int CompanyID { get; set; }
+        public int? CompanyID { get; set; }
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string CompanyPhone { get; set; }

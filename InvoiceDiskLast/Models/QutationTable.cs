@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
             this.QutationDetailsTables = new HashSet<QutationDetailsTable>();
         }
     
-        public int QutationID { get; set; }
+        public int? QutationID { get; set; }
         public string Qutation_ID { get; set; }
         public string RefNumber { get; set; }
         public Nullable<System.DateTime> QutationDate { get; set; }
