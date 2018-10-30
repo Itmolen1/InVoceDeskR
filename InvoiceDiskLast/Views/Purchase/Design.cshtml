@@ -1,23 +1,715 @@
-﻿
+﻿@model InvoiceDiskLast.Models.MVCQutationViewModel
+
 @{
-    ViewBag.Title = "Design";
+    ViewBag.Title = "AddOrEdit";
 }
 
-<h2>Design</h2>
+<style>
+    .pt-3-half {
+        padding-top: 1.4rem;
+    }
+</style>
+
+<body class="well">
+
+
+
+   
+  
+        <div class="container">
+           
+            <div class="row">
+
+                <div class="col-sm-12" style="background-color:white;margin-top:40px">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <img src="@Url.Content("~/Images/")" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                           
+                           
+                     Client Name
+                            <br />
+                            client Addrss
+                            <br />
+                            City zip code 
+                            <br />
+                            country
+                          
+                          
+                           
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            <br />
+                            <br />
+                            <br />
+                            <h5 style="margin-left:125px">CompanyName</h5>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2 pull-left">Kvk nr:</div>
+                                <div class="col-sm-8">4646466464</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3"><div class="pull-right"> nr:</div></div>
+                                <div class="col-sm-8">BTW4646466464</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                                <div class="col-sm-8">HBL</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2 pull-right"><div class="pull-right">IBAN:</div></div>
+                                <div class="col-sm-8">ibn4646466464</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2 pull-right"><div class="pull-right">BIC:</div></div>
+                                <div class="col-sm-8">bic4646466464</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2"><div class="pull-right">Tel:</div></div>
+                                <div class="col-sm-8">tel4646466464</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3 pull-right"><div class="pull-right">E-mail:</div></div>
+                                <div class="col-sm-8">companyemail@yahoo.com</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-3 pull-right"><div class="pull-right">Website:</div></div>
+                                <div class="col-sm-8">www.mycompany.com</div>
+                            </div>
+
+                            <div class="row">
+                              
+                                <div class="col-sm-4 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                                <div class="col-sm-8">Peshawar Pakistan<br />
+                               POstal code  Company city <br />
+                                Company country
+                                </div>
+                            </div>
+                           
+                           
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11">
+                            <h4 style="color:skyblue">Qutation</h4>
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-2">Qutation Date:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "form-control", id = "QutationDate" } })
+                                        @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Qutation Number:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control", id = "Qutation_ID" } })
+                                        @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Qutation DueDate:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", id = "DueDate", title = "Due Date" } })
+                                        @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                               
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Refrence Number:</div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @class = "form-control", id = "RefNumber" } })
+                                        @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add Discount:</a></div>
+                                    <div class="col-sm-4">
+
+                                        @Html.EditorFor(model => model.DiscountAmount, new { htmlAttributes = new { @class = "form-control", id = "DiscountAmount" } })
+                                        @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add VAT:</a></div>
+                                    <div class="col-sm-4">
+                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { @class = "form-control", id = "AddVat" } })
+                                        @Html.ValidationMessageFor(model => model.Vat, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6"></div>
+                                </div>
 
 
 
 
-<div class="container">
-    <div class="row">     
-       <div class="col-sm-6">
-           <img src="~/assets/images/logo-icon.png" />
-       </div>  
+                                <div class="row">
+                                    <table class="table" id="orderdetailsitems">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>
+                                                    Product Name
+                                                </th>
+                                                <th>
+                                                    Quantity
+                                                </th>
+                                                <th>
+                                                    Price
+                                                </th>
+                                                <th>
+                                                    Total
+                                                </th>
+                                                <th>
+                                                    Vat
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        
+
+                                    </table>
+                                </div>
+                               
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-xs-2"><input id="SubmitEdit" type="button" value="Save draft" class="btn btn-primary" style="margin:0px 5px" /></div>
+                                    <div class="col-xs-2"><input id="saveEmailedit" type="button" value="Save + email" class="btn btn-primary" style="margin:0px 5px" /></div>
+                                    <div class="col-xs-3"><input id="savesendbyemail" type="button" value="Save + send by email " class="btn btn-primary" style="margin:0px 5px" /></div>
+                                    <div class="col-xs-3"><input id="saveprintandsendtoyourself" type="button" value="Save + print and send and send ot yourself" class="btn btn-primary" style="margin:0px 5px" /></div>
+
+                                    <div class="col-sm-2"></div>
+                                    @*<div class="col-sm-1"></div>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-2"></div>*@
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    }
+    else
+    {
+
+        <div class="container">
+            @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { id = "qutationId" } })
+            <input type="hidden" value=" id="contactId" />
+            <div class="row">
+
+                <div class="col-sm-12" style="background-color:white;margin-top:50px">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11" style="margin-top:20px">
+                            <img src="@Url.Content("~/Images/")" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <h5></h5>
+                            <h5></h5>
+                            <h5></h5>
+                            <h5></h5>
+                        </div>
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4" style="margin-top:10px">
+                            <h5></h5>
+                            <h5></h5>
+                            <h5></h5>
+                          
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-11">
+                            <h4 style="color:skyblue">Qutation</h4>
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-2">Qutation Date:</div>
+                                    <div class="col-sm-3">
+
+                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "form-control", id = "QutationDate" } })
+                                        @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-7"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Qutation Number:</div>
+                                    <div class="col-sm-3">
+
+                                        @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control", id = "Qutation_ID" } })
+                                        @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-7"></div>
+                                </div>
+
+
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Qutation period:</div>
+                                    <div class="col-sm-3">
+
+                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", id = "DueDate", title = "Due Date" } })
+                                        @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                    <div class="col-sm-7"></div>
+                                </div>
+
+                                
+
+
+
+
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2">Refrence Number:</div>
+                                    <div class="col-sm-3">
+
+                                        @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @class = "form-control", id = "RefNumber" } })
+                                        @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-7"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add Discount:</a></div>
+                                    <div class="col-sm-3">
+
+                                        @Html.EditorFor(model => model.DiscountAmount, new { htmlAttributes = new { @class = "form-control", id = "DiscountAmount" } })
+                                        @Html.ValidationMessageFor(model => model.DiscountAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-7"></div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"><a href="#"> Add VAT:</a></div>
+                                    <div class="col-sm-3">
+                                        @Html.EditorFor(model => model.Vat, new { htmlAttributes = new { @class = "form-control", id = "AddVat" } })
+                                        @Html.ValidationMessageFor(model => model.Vat, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-7"></div>
+                                </div>
+
+
+
+
+                                <div class="row">
+                                    <table class="table" id="orderdetailsitems">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>
+                                                    Product Name
+                                                </th>
+                                                <th>
+                                                    Quantity
+                                                </th>
+                                                <th>
+                                                    Price
+                                                </th>
+                                                <th>
+                                                    Total
+                                                </th>
+                                                <th>
+                                                    Vat
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                                <th>
+
+                                                </th>
+                                                <th>
+
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbody">
+                                            <tr id="mainrow">
+                                                <td>
+                                                    <select id="SelectProductQutation" class="product form-control pClass" style="width: 235px;"></select>
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new {@type="text", @class = "quantity form-control", id = "Quantity" } })
+                                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+
+
+                                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "rate form-control", id = "Rate" } })
+                                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+
+                                                </td>
+                                                <td>
+
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "FTotal form-control", id = "FTotal" } })
+                                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+
+                                                    <select id="SelectVAT" class="VAT form-control" style="width:80px" ;>
+                                                        <option>0</option>
+                                                        <option>6</option>
+                                                        <option>21</option>
+                                                    </select>
+
+                                                </td>
+                                                <td>
+
+                                                    <input type="button" id="add" value="add" class="btn btn-success" style="width:80px" />
+
+                                            </tr>
+
+                                            @if (ViewBag.QutationDatailsList != null)
+                                            {
+                                                foreach (var item in ViewBag.QutationDatailsList)
+                                                {
+
+                                                    <tr id="@item.QutationDetailId">
+
+                                                        <td>
+
+                                                            <select Id="SelectProductQutation" class="product form-control" style="width:216px !important">
+                                                                <option value="0">Select Item..</option>
+                                                                @foreach (var product in ViewBag.Product)
+                                                                {
+                                                                    <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="quantity form-control" id="Quantity" value="@item.Quantity" />
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" class="rate form-control" id="Rate" value="@item.Rate" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="FTotal form-control" id="FTotal" value="@item.Total" readonly="readonly" />
+
+                                                        </td>
+                                                        <td>
+                                                            <select id="SelectVAT" name="NewsCategoriesID" class="VAT  form-control" style="width:80px">
+
+                                                                @foreach (var item1 in ViewBag.VatDrop)
+                                                                {
+                                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                                }
+                                                            </select>
+
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+
+                                                        </td>
+                                                        <td>
+                                                            <input type="hidden" class="QutationID" value="@item.QutationID" />
+
+                                                        </td>
+
+
+                                                    </tr>
+                                                }
+                                            }
+
+
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div id="OrderItems">
+                                        <table class="table" id="orderdetailsitems"></table>
+                                        <span id="orderItemError" style="color:red"></span>
+                                    </div>
+
+                                </div>
+
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">Sub Total:</div>
+                                    <div class="col-sm-2">
+                                        <label id="SubTotal"></label>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">Totaal excel BTW:</div>
+                                    <div class="col-sm-2">
+                                        <label id="TotalBTW"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW0%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="btwo">0.00</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW 6%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="BTW6"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-2">BTW 21%:</div>
+                                    <div class="col-sm-2">
+                                        <label id="BTW21"></label>
+
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-2">Customer Note:</div>
+                                    <div class="col-sm-6">
+                                       
+                                    </div>
+                                    <div class="col-sm-2">Grand Total:</div>
+                                    <div class="col-sm-2">
+                                        <span class=""><b>&euro;</b></span><label id="gtotal"></label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top:3px">
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-6">
+
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-2">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <hr />
+
+                                <div class="row">
+                                    <div class="col-xs-2"><input id="Submit" type="button" value="Save draft" class="btn btn-primary" style="margin:0px 5px" /></div>
+                                    <div class="col-xs-2"><input id="saveEmail" type="button" value="Save + email" class="btn btn-primary" style="margin:0px 5px" /></div>
+                                    <div class="col-xs-3"><input id="savesendbyemail" type="button" value="Save +send by email " class="btn btn-primary" style="margin:0px 5px" /></div>
+                                    <div class="col-xs-3"><input id="saveprintandsendtoyourselfsave" type="button" value="Save + print and send and send ot yourself" class="btn btn-primary" style="margin:0px 5px" /></div>
+
+                                    <div class="col-xs-2"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+     
+
+
+    }
+</body>
+
+
+
+
+<div class="modal fade bs-example-modal-lg" id="CreateNewProductModalAdd" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1lPur" style="color:skyblue">Add New Product</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="floating-labels">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="ProductName" data-toggle="tooltip" data-placement="bottom" title="Product Name!!">
+                                <span class="bar"></span>
+                                <label for="input5">Product Name</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="Description" data-toggle="tooltip" data-placement="bottom" title="Product Description!!">
+                                <span class="bar"></span>
+                                <label for="input5"> Product Description</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="SalePrice" data-toggle="tooltip" data-placement="bottom" title="Sale Price!!">
+                                <span class="bar"></span>
+                                <label for="input5">Sale Price</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="PurchasePrice" data-toggle="tooltip" data-placement="bottom" title="Purchase Price!!">
+                                <span class="bar"></span>
+                                <label for="input5">Purchase Price</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control " id="OpeningQuantity" data-toggle="tooltip" data-placement="bottom" title="Opening Quantity!!">
+                                <span class="bar"></span>
+                                <label for="input5">Opening Quantity</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="col-sm-12">
+                                <select class="form-control p-0" id="ProductUnitSelectQutation"></select>
+                            </div>
+                        </div>
+                    </div>
+                  
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewProductModel" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Save Product</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductModel" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
     </div>
-        
-    <div class="row">
-       <div class="col-sm-4"><h4>4</h4></div>
-        <div class="col-sm-4"><h4>4</h4></div>
-        <div class="col-sm-4"><h4>4</h4></div>
-    </div>
+    <!-- /.modal-dialog -->
 </div>
+
+
+<div id="UnitModelQutation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add new unit</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewProductUnitQutation" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnitQutation" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+
+    @*var qutatiionDate = '@ViewBag.QutationDate';
+    alert(qutatiionDate);*@
+
+    //function delTableRow() {
+    //
+    //}
+</script>
+
+
