@@ -51,31 +51,17 @@ namespace InvoiceDiskLast.Controllers
 
                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
-                    // Apply search  on multiple field  
-
-                    ProductList = ProductList.Where(c => c.ProductId.ToString().Contains(search.ToLower().ToString()) ||
-
-                    c.ProductName.ToLower().Contains(search.ToLower().ToString()) ||
-                    c.Description.ToLower().Contains(search.ToLower().ToString()) ||
-                    c.SalePrice.ToString().Contains(search.ToString()) ||
-                    c.PurchasePrice.ToString().Contains(search.ToString()) ||
-                    c.OpeningQuantity.ToString().Contains(search.ToString()) //||
-                                        
-                    //c.Type == null ? c.Type == "":  c.Type.ToLower().ToString().Contains(search.ToLower())
-
-
-
-
-
-                    ).ToList();
-
-                    //ProductList1 = ProductList.Where(p => p.ProductId.ToString().ToLower().Contains(search.ToLower().ToString()) ||
-                    // p.ProductName.ToLower().ToString().Contains(search.ToLower().ToString()) ||
-                    // p.Description.ToString().ToLower().Contains(search.ToLower().ToString()) ||
-                    // p.SalePrice.ToString().Contains(search.ToLower().ToString()) ||
-                    // p.PurchasePrice.ToString().Contains(search.ToString()) ||
-                    // p.Type.ToString().ToLower().Contains(search.ToLower()) ||
-                    // p.OpeningQuantity.ToString().Contains(search.ToLower().ToString())).ToList();
+                   
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                    {                       
+                       ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search)
+                      || p.Description != null && p.Description.ToLower().Contains(search.ToLower())
+                      || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
+                       || p.AddedDate != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
+                      || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
+                      || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
+                      || p.OpeningQuantity != null && p.OpeningQuantity.ToString().ToLower().Contains(search.ToLower()) ).ToList();                        
+                    }
                 }
                 switch (sortColumn)
                 {
