@@ -155,12 +155,9 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddOrEdit(MVCProductModel ProductModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(ProductModel);
-            }
-            else
-            {
+
                 if (ProductModel.ProductId == null)
                 {
                     int CompanyId = Convert.ToInt32(Session["CompayID"]);
@@ -178,8 +175,13 @@ namespace InvoiceDiskLast.Controllers
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIProduct/" + ProductModel.ProductId, ProductModel).Result;
                     TempData["SuccessMessage"] = "Updated Successfully";
                 }
+
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet]
