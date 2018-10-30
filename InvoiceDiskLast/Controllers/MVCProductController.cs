@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-            List<MVCProductModel> ProductList = new List<MVCProductModel>() ;
+            List<MVCProductModel> ProductList = new List<MVCProductModel>();
             List<MVCProductModel> ProductList1 = new List<MVCProductModel>();
             try
             {
@@ -39,8 +39,8 @@ namespace InvoiceDiskLast.Controllers
 
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
-              //  IEnumerable<string> token;
-             //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);
+                //  IEnumerable<string> token;
+                //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);
 
 
 
@@ -49,18 +49,19 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
-               if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
-                   
+
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-                    {                       
-                       ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search)
-                      || p.Description != null && p.Description.ToLower().Contains(search.ToLower())
-                      || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
-                       || p.AddedDate != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
-                      || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
-                      || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
-                      || p.OpeningQuantity != null && p.OpeningQuantity.ToString().ToLower().Contains(search.ToLower()) ).ToList();                        
+                    {
+                        ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search)
+                         || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())
+                       || p.Description != null && p.Description.ToLower().Contains(search.ToLower())
+                       || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
+                        || p.AddedDate != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
+                       || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
+                       || p.OpeningQuantity != null && p.OpeningQuantity.ToString().ToLower().Contains(search.ToLower())).ToList();
                     }
                 }
                 switch (sortColumn)
@@ -126,7 +127,7 @@ namespace InvoiceDiskLast.Controllers
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
-            List<MVCProductModel>  ProductList= response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
+            List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -147,7 +148,7 @@ namespace InvoiceDiskLast.Controllers
             else
             {
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + id.ToString()).Result;
-                return Json(response.Content.ReadAsAsync<MVCProductModel>().Result,JsonRequestBehavior.AllowGet);
+                return Json(response.Content.ReadAsAsync<MVCProductModel>().Result, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -189,7 +190,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("APIProduct/" + id.ToString()).Result;
                 TempData["SuccessMessage"] = "Delete Successfully";
-                return Json("Delete",JsonRequestBehavior.AllowGet);
+                return Json("Delete", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

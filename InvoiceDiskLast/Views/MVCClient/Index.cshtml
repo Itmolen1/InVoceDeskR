@@ -4,11 +4,11 @@
 }
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-  
+
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New</button>
 
 <table class="table" id="ContactListTable">
-    <thead style="background-color:black;color:white">    
+    <thead style="background-color:black;color:white">
         <tr>
             <th>
                 Id
@@ -45,20 +45,20 @@
 </table>
 
 
-    <script>
-        $(function () {
-            var successMessage = '@TempData["SuccessMessage"]'
+<script>
+    $(function () {
+        var successMessage = '@TempData["SuccessMessage"]'
 
-            if (successMessage != '') {
-                alertify.success(successMessage);
-            }
-            if (successMessage != '') {
-                successMessage = '';
-                delete ('@TempData["SuccessMessage"]');
-            }
-        });
+        if (successMessage != '') {
+            alertify.success(successMessage);
+        }
+        if (successMessage != '') {
+            successMessage = '';
+            delete ('@TempData["SuccessMessage"]');
+        }
+    });
 
-    </script>
+</script>
 
 
 
@@ -75,7 +75,7 @@
                     <div class="col-sm-4"></div>
                     <div class="col-sm-2">
                         <input type="radio" name="ClientType" value="CompanyClient" checked> Company<br>
-                    </div>   
+                    </div>
                     <div class="col-sm-2">
                         <input type="radio" name="ClientType" value="Private"> Person<br>
                     </div>
@@ -89,7 +89,7 @@
                             <input class="form-control" type="text" required id="ContactName" placeholder="Client Name" />
                         </div>
                     </div>
-                  
+
                 </div>
 
 
@@ -104,7 +104,7 @@
                         <div class="form-group ">
                             <input class="form-control" type="text" required id="StreetNumber" placeholder="Street Number" />
                         </div>
-                    </div>                  
+                    </div>
                 </div>
 
                 <div class="row">
@@ -128,7 +128,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group ">
@@ -162,7 +162,7 @@
                             <input class="form-control" type="text" required id="BillingEmail" placeholder="Emial" />
                         </div>
                     </div>
-                   
+
                 </div>
 
                 <div class="row">
@@ -191,16 +191,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                    
-                </div>
-               
-                    <div class="row">                       
-                            <div class="col-sm-1">Rem:</div>
-                            <div class="col-sm-11">
-                                <textarea class="form-control" id="Remarks" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
-                            </div>                       
                     </div>
-          </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-1">Rem:</div>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" id="Remarks" rows="2" data-toggle="tooltip" data-placement="bottom" title="Remarks!!"></textarea>
+                    </div>
+                </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" id="SaveNewContacts" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save Contact</button>
                 <button type="button" id="UpdateContacts" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Contact</button>
@@ -214,19 +214,19 @@
 
 
 <style>
-      
-    .modal-dialog{
-          overflow-y: initial !important
+    .modal-dialog {
+        overflow-y: initial !important;
     }
-    .modal-body{
-      height: 550px;
-      overflow-y: auto;
+
+    .modal-body {
+        height: 550px;
+        overflow-y: auto;
     }
-    </style>
+</style>
 
 
 <script>
-   
+
 
     $(document).ready(function () {
 
@@ -249,16 +249,22 @@
                     { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
                     { "data": "ContactName", "name": "ContactName", "autoWidth": true },
                     { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
-                    { "data": "City", "name": "City", "autoWidth": true },                   
-                    { "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
-                    { "data": "Mobile", "name": "Mobile", "autoWidth": true },
-                     { "data": "Type", "name": "Type", "autoWidth": true },
+                      { "data": "City", "name": "City", "autoWidth": true },
+                     { "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
+                       { "data": "Mobile", "name": "Mobile", "autoWidth": true },
+
+                  { "data": "Type", "name": "Type", "autoWidth": true },
+                    //{ "data": "StreetNumber", "name": "StreetNumber", "autoWidth": true },
+
+
                     { "data": "Status", "name": "Status", "autoWidth": true },
                     {
                         render: function (data, type, row) {
                             return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<button type="button" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></button>'
                         }
                     }
+
+
             ]
 
         });
@@ -268,11 +274,13 @@
     });
 
 
-    $('#CreateNewContacts').click(function () {     
+
+
+    $('#CreateNewContacts').click(function () {
         $('#UpdateContacts').hide();
         $('#SaveNewContacts').show();
         $('#CreateNewContactModal').modal('show');
-       
+
     });
 
 
@@ -284,51 +292,51 @@
 
         });
     }
-      @*Contact or client Script*@
+    @*Contact or client Script*@
 
-        $('#SaveNewContacts').click(function () {
-            var res = validateContact();
-            if (res == false) {
-                return false;
-            }
-            else {
-                $.ajax({
-                    url: '/MVCClient/AddOrEdit',
-                    type: 'POST',
-                    data: {
-                        ContactName: $('#ContactName').val(),
-                        ContactAddress: $('#ContactAddress').val(),
-                        Type: $('#TypeContacts option:selected').val(),
-                        StreetNumber: $('#StreetNumber').val(),
-                        PostalCode: $('#PostalCode').val(),
-                        City: $('#City').val(),
-                        LandLine: $('#LandLine').val(),
-                        telephone: $('#telephone').val(),
-                        Mobile: $('#Mobile').val(),
-                        Website: $('#Website').val(),
-                        BillingEmail: $('#BillingEmail').val(),
-                        Remarks: $('#Remarks').val(),
-                        Status: $('#Status option:selected').text(),
-                        Company_Id: localStorage.getItem('CompanyID')
-                    },
-                    success: function (response) {
-                        if (response == '201') {
-                            $('#CreateNewContactModal').modal('hide');
-                            //$("#productTable").ajax.reload();
-                            clearContectTextBox();
-                            SuccessInsertConatct();
-                        }
-                        else {
-                            alert(response);
-                        }
-                    },
-                    error: function () {
-                        alert("error");
+    $('#SaveNewContacts').click(function () {
+        var res = validateContact();
+        if (res == false) {
+            return false;
+        }
+        else {
+            $.ajax({
+                url: '/MVCClient/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ContactName: $('#ContactName').val(),
+                    ContactAddress: $('#ContactAddress').val(),
+                    Type: $('#TypeContacts option:selected').val(),
+                    StreetNumber: $('#StreetNumber').val(),
+                    PostalCode: $('#PostalCode').val(),
+                    City: $('#City').val(),
+                    LandLine: $('#LandLine').val(),
+                    telephone: $('#telephone').val(),
+                    Mobile: $('#Mobile').val(),
+                    Website: $('#Website').val(),
+                    BillingEmail: $('#BillingEmail').val(),
+                    Remarks: $('#Remarks').val(),
+                    Status: $('#Status option:selected').text(),
+                    Company_Id: localStorage.getItem('CompanyID')
+                },
+                success: function (response) {
+                    if (response == '201') {
+                        $('#CreateNewContactModal').modal('hide');                        
+                       $('#ContactListTable').DataTable().ajax.reload();
+                        clearContectTextBox();
+                        SuccessInsertConatct();
                     }
-                });
-            }
+                    else {
+                        alert(response);
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
 
-        });
+    });
 
     $('#UpdateContacts').click(function () {
         var res = validateContact();
@@ -355,11 +363,11 @@
                     BillingEmail: $('#BillingEmail').val(),
                     Remarks: $('#Remarks').val(),
                     Status: $('#Status option:selected').text(),
-                    Company_Id: localStorage.getItem('CompanyID')     
+                    Company_Id: localStorage.getItem('CompanyID')
                 },
                 success: function (data) {
                     $('#CreateNewContactModal').modal('hide');
-                    //$("#productTable").ajax.reload();
+                    $('#ContactListTable').DataTable().ajax.reload();
                     SuccessUpdate();
                     clearContectTextBox();
                 },
@@ -404,7 +412,7 @@
         $('#telephone').val("");
         $('#Mobile').val("");
         $('#Website').val("");
-        $('#BillingEmail').val("");      
+        $('#BillingEmail').val("");
         $('#BillingEmail').val("");
 
         $('#UpdateContacts').hide();
@@ -451,7 +459,7 @@
                 $('#telephone').val(resultContactData.telephone);
                 $('#Mobile').val(resultContactData.Mobile);
                 $('#Website').val(resultContactData.Website);
-                $('#BillingEmail').val(resultContactData.BillingEmail);              
+                $('#BillingEmail').val(resultContactData.BillingEmail);
                 $('#Remarks').val(resultContactData.Remarks);
                 $('#UpdateContacts').show();
                 $('#SaveNewContacts').hide();
@@ -467,17 +475,16 @@
     $(document).ready(function () {
         $("input[type='radio']").click(function () {
             var radioValue = $("input[name='ClientType']:checked").val();
-            if (radioValue == "Private") {                              
+            if (radioValue == "Private") {
                 $('#rowiddd').hide(1000);
                 $('#rowiddd2').show(1000);
-                
+
             }
-            else
-            {
+            else {
                 $('#rowiddd2').hide(1000);
                 $('#rowiddd').show(1000);
-               
-               
+
+
             }
         });
 

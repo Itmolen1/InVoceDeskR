@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
 
-     
+
         // GET: api/ApiConatacts
         public IHttpActionResult GetContactsTables()
         {
@@ -53,7 +53,7 @@ namespace InvoiceDiskLast.Controllers
 
                     return Ok(obvender);
                 }
-               
+
                 else
                 {
 
@@ -67,7 +67,9 @@ namespace InvoiceDiskLast.Controllers
                         Mobile = c.Mobile,
                         Company_Id = c.Company_Id,
                         UserId = c.UserId,
-                        Type = c.Type,                     
+                        telephone=c.telephone,                    
+                        Type = c.Type,
+                        StreetNumber = c.StreetNumber,                      
                         Addeddate = c.Addeddate,
                         Status = c.Status,
                     }).ToList();
@@ -107,12 +109,12 @@ namespace InvoiceDiskLast.Controllers
                     BillingEmail = c.BillingEmail,
                     Company_Id = c.Company_Id,
                     UserId = c.UserId,
-                    Type = c.Type,                  
-                   
+                    Type = c.Type,
+
                     Addeddate = c.Addeddate,
                     Status = c.Status,
                 }).FirstOrDefault();
-                             
+
 
                 if (Contactmodel == null)
                 {
@@ -123,11 +125,11 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception ex)
             {
                 return NotFound();
-            }          
-            
-           
+            }
+
+
         }
-        
+
 
         // PUT: api/ApiConatacts/5
         [ResponseType(typeof(void))]

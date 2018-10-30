@@ -399,6 +399,7 @@
                                 <li><a href="/MVCProduct/Index">Product</a></li>
                                 <li><a href="/MVCClient/Index">Clients</a></li>
                                 <li><a href="/MVCQutation/Index">Qutation</a></li>
+                                <li><a href="/Purchase/Index">Purchase</a></li>
 
                             </ul>
                         </li>
@@ -599,14 +600,7 @@
 
 
 <script>
-    $(window).ready(function () {
-
-        if (sessionStorage.getItem('accessToken') == null) {
-            window.location.href = "/Login/Index"
-        }
-
-    });
-
+   
 
     @*$(window).load(function () {
         if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null) {
@@ -615,46 +609,7 @@
     });*@
 
 
-    $(document).ready(function () {
-
-        $("#ContactListTable").DataTable({
-            //"processing": true, // for show progress bar
-            processing: true,
-            "language": {
-                "processing": $('#loaderMvcConatc').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-            },
-            searching: true,
-            "serverSide": true, // for process server side
-            "filter": false, // this is for disable filter (search box)
-            "orderMulti": false, // for disable multiple column at once
-            "ajax": {
-                "url": "/MVCClient/GetContactList",
-                "type": "POST",
-                "datatype": "json"
-            },
-            "columns": [
-                    { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
-                    { "data": "ContactName", "name": "ContactName", "autoWidth": true },
-                    { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
-                    { "data": "Type", "name": "Type", "autoWidth": true },
-                    { "data": "BillingPersonName", "name": "BillingPersonName", "autoWidth": true },
-                    { "data": "BillingCompanyName", "name": "BillingCompanyName", "autoWidth": true },
-                    { "data": "BillingVatTRN", "name": "BillingVatTRN", "autoWidth": true },
-                    { "data": "Status", "name": "Status", "autoWidth": true },
-                    {
-                        render: function (data, type, row) {
-                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<button type="button" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></button>'
-                        }
-                    }
-
-
-            ]
-
-        });
-
-
-
-    });
+ 
 
 
     $(document).ready(function () {
