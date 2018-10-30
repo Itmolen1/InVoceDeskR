@@ -38,7 +38,7 @@ namespace InvoiceDiskLast.Controllers
                 var query = db.PurchaseOrderDetailsTables.ToList().Where(c => c.PurchaseId == PDIDs).Select(pd => new MvcPurchaseViewModel
                 {
 
-                    PurchaseOrderDetailsId = pd.PurchaseOrderDetailsId,
+                    PurchaseOrderDetailsId = Convert.ToInt32(pd.PurchaseOrderDetailsId),
                     PurchaseItemId = pd.PurchaseOrderDetailsId,
                     PurchaseDescription = pd.PurchaseDescription,
                     PurchaseQuantity = pd.PurchaseQuantity,
@@ -70,7 +70,7 @@ namespace InvoiceDiskLast.Controllers
                                  PurchaseTotal = pd.PurchaseTotal,
                                  PurchaseOrderID = (int)pd.PurchaseId,
 
-                                 PurchaseOrderDetailsId = pd.PurchaseOrderDetailsId
+                                 PurchaseOrderDetailsId = Convert.ToInt32(pd.PurchaseOrderDetailsId)
                              }).ToList();
 
 

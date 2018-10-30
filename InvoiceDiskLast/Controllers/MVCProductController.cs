@@ -180,7 +180,7 @@ namespace InvoiceDiskLast.Controllers
             }
             catch(Exception ex)
             {
-                throw ex;
+                throw ex;        
             }
         }
 
