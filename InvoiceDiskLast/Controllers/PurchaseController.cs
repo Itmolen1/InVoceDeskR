@@ -23,7 +23,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult GetPurchaseList()
         {
-            IEnumerable<MvcPurchaseModel> ContactsList;
+            IEnumerable<MvcPurchaseModel> PurchaseList;
             try
             {
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -42,54 +42,52 @@ namespace InvoiceDiskLast.Controllers
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIPurchase").Result;
-                ContactsList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
+                PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
 
 
-                //if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-                //{
-                //    // Apply search  on multiple field  
-                //    ContactsList = ContactsList.Where(p => p.ContactsId.ToString().Contains(search) ||
-                //    p.ContactName.ToLower().Contains(search.ToLower()) ||
-                //    p.BillingCountry.ToLower().ToString().ToLower().Contains(search.ToLower()) ||
-                //    p.BillingCity.ToLower().Contains(search.ToLower()) ||
-                //    p.Type.ToLower().Contains(search.ToLower()) ||
-                //    p.ContactAddress.ToLower().ToString().Contains(search.ToLower()) ||
-                //    p.BillingCompanyName.ToLower().ToString().ToLower().Contains(search.ToLower()) ||
-                //    p.BillingVatTRN.Contains(search.ToLower())).ToList();
-                //}
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {                  
+                    PurchaseList = PurchaseList.Where(p => p.PurchaseOrderID.ToString().Contains(search)
+                  || p.PurchaseRefNumber != null && p.PurchaseRefNumber.ToLower().Contains(search.ToLower())
+                  || p.PurchaseDate != null && p.PurchaseDate.ToString().ToLower().Contains(search.ToLower())
+                  || p.PurchaseDueDate != null && p.PurchaseDueDate.ToString().ToLower().Contains(search.ToLower())
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+                  || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower()) ).ToList();
+                }
 
 
-                //switch (sortColumn)
-                //{
-                //    case "ContactName":
-                //        ContactsList = ContactsList.OrderBy(c => c.ContactName);
-                //        break;
-                //    case "Type":
-                //        ContactsList = ContactsList.OrderBy(c => c.Type);
-                //        break;
+            //    switch (sortColumn)
+            //{
+            //    case "ContactName":
+            //        ContactsList = ContactsList.OrderBy(c => c.ContactName);
+            //        break;
+            //    case "Type":
+            //        ContactsList = ContactsList.OrderBy(c => c.Type);
+            //        break;
 
 
-                //    case "BillingPersonName":
-                //        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
-                //        break;
+            //    case "BillingPersonName":
+            //        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
+            //        break;
 
-                //    case "BillingCompanyName":
-                //        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
-                //        break;
+            //    case "BillingCompanyName":
+            //        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
+            //        break;
 
-                //    case "BillingVatTRN":
+            //    case "BillingVatTRN":
 
-                //        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
-                //        break;
+            //        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
+            //        break;
 
-                //    default:
-                //        ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
-                //        break;
-                //}
+            //    default:
+            //        ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
+            //        break;
+            //}
 
 
-                int recordsTotal = recordsTotal = ContactsList.Count();
-                var data = ContactsList.Skip(skip).Take(pageSize).ToList();
+            int recordsTotal = recordsTotal = PurchaseList.Count();
+                var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
