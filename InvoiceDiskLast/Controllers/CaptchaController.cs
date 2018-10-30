@@ -25,6 +25,12 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+        public ActionResult NewCompany()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public ActionResult Index(UserModels user)
         {
@@ -62,8 +68,37 @@ namespace InvoiceDiskLast.Controllers
                 //respons.Headers.Add("Authorization", "Bearer " + token.AccessToken);              
                 //respons.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
+                if(Session["ApiAccessToken"] != null)
+                {
 
-                return RedirectToAction("Index", "Home");
+                    //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
+                    string name = userInfo.username.ToString();
+                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("name", name);
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiCompanyStatus/" + "ss").Result;
+                    var apiresut = response.Content.ReadAsAsync<object>().Result;
+
+                    int compnyID = Convert.ToInt32(apiresut);
+                    if (compnyID > 0)
+                    {
+                        MVCCompanyInfoModel cominfo = new MVCCompanyInfoModel();
+                       
+                            Session["CompayID"] = compnyID;
+
+                            HttpResponseMessage responses = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + compnyID.ToString()).Result;
+                            cominfo = responses.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                            Session["CompanyName"] = cominfo.CompanyName;
+                            Session["CompanyEmail"] = cominfo.CompanyEmail;
+                            Session["CompanyContact"] = cominfo.CompanyPhone;
+
+                        return RedirectToAction("Index","Home");
+                       
+                    }
+                    else
+                    {
+                        return RedirectToAction("NewCompany");
+                    }
+
+                }
             }
 
             ViewBag.ErrMessage = "Error: captcha is not valid upto now.";
