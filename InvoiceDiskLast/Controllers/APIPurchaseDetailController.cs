@@ -70,9 +70,8 @@ namespace InvoiceDiskLast.Controllers
                                  PurchaseTotal = pd.PurchaseTotal,
                                  PurchaseOrderID = (int)pd.PurchaseId,
 
-                                 PurchaseOrderDetailsId = Convert.ToInt32(pd.PurchaseOrderDetailsId)
+                                 PurchaseOrderDetailsId = (int)pd.PurchaseOrderDetailsId
                              }).ToList();
-
 
                 if (query == null)
                 {
