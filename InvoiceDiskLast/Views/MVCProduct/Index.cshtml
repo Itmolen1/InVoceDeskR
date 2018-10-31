@@ -176,10 +176,6 @@
     <!-- /.modal-dialog -->
 </div>
 
-
-
-
-
 <script>
 
     $(document).ready(function () {
@@ -191,6 +187,33 @@
             $('#CreateNewProductModal').modal('show');
         });
 
+
+        $('#UpdateProduct').click(function () {
+
+            $.ajax({
+                url: '/MVCProduct/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ProductId: $('#ProductId').val(),
+                    ProductName: $('#ProductName').val(),
+                    Description: $('#Description').val(),
+                    SalePrice: $('#SalePrice').val(),
+                    PurchasePrice: $('#PurchasePrice').val(),
+                    Type: $('#Type').val(),
+                    OpeningQuantity: $('#OpeningQuantity').val(),
+                    ProductUnit: $('#ProductUnitSelect').val()
+                },
+                success: function (data) {
+                    $('#CreateNewProductModal').modal('hide');
+                    //$("#productTable").ajax.reload();
+                    SuccessUpdate();
+                    clearProductTextBox();
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        });
 
         $('#ProductUnitSelect').change(function () {
 
@@ -276,8 +299,47 @@
         $('#ProductUnit').val("")
     }
 
+    function CleartProdctTextBox() {
+        $('#ProductName').val(""),
+         $('#Description').val(""),
+         $('#SalePrice').val(""),
+         $('#PurchasePrice').val(""),
+         $('#OpeningQuantity').val(""),
+         $('#ProductUnitSelect').val("0")
+        
+    }
 
+    function EditProduct(ProductId) {
+        LoadProductUnit();
+        $.ajax({
+            url: "/MVCProduct/AddOrEdit/" + ProductId,
+            type: "GET",
+            dataType: "json",
+            success: function (resultData) {
+                $('#ProductId').val(resultData.ProductId);
+                $('#ProductName').val(resultData.ProductName);
+                $('#Description').val(resultData.Description);
+                $('#SalePrice').val(resultData.SalePrice);
+                $('#PurchasePrice').val(resultData.PurchasePrice);
+                $('#Type').val(resultData.type);
+                $('#OpeningQuantity').val(resultData.OpeningQuantity);
 
+                $('select#ProductUnitSelect option').each(function () {
+                    if ($(this).val() == resultData.ProductUnit) {
+                        this.selected = true;
+                        return;
+                    }
+                });
+
+                $('#CreateNewProductModal').modal('show');
+                $('#UpdateProduct').show();
+                $('#SaveNewProduct').hide();
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
     function LoadProductUnit() {
 
         $("#ProductUnitSelect").find("option").remove();
@@ -301,6 +363,43 @@
             Error: function (errormessage) {
                 alert(errormessage);
             }
+
+        });
+    }
+
+    $('#SaveNewProduct').click(function () {
+       alert($('#ProductUnitSelect').val())
+        $.ajax({
+            url: '/MVCProduct/AddOrEdit',
+            type: 'POST',
+            data: {
+                ProductName: $('#ProductName').val(),
+                Description: $('#Description').val(),
+                SalePrice: $('#SalePrice').val(),
+                PurchasePrice: $('#PurchasePrice').val(),
+                Type: $('#Type').val(),
+                OpeningQuantity: $('#OpeningQuantity').val(),
+                ProductUnit: $('#ProductUnitSelect').val()
+
+            },
+            success: function (data) {
+                CleartProdctTextBox();
+                $('#CreateNewProductModal').modal('hide');               
+                SuccessInsertProduct();
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+    });
+
+
+    function SuccessInsertProduct() {
+        swal({
+            title: "Congratulations!!!!",
+            text: "Your data has been saved successfully",
+            type: "success",
 
         });
     }

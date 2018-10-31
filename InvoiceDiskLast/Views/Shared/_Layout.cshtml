@@ -602,16 +602,6 @@
 <script>
 
 
-    @*$(window).load(function () {
-        if (sessionStorage.getItem('accessToken') == null || '@Session["CompayID"]' == null) {
-            window.location.href = "/Login/Index";
-        }
-    });*@
-
-
-
-
-
     $(document).ready(function () {
 
         $('#btn-QutationNew').click(function () {
@@ -676,27 +666,6 @@
             }
         });
 
-        $('#SaveClinetQutation').click(function () {
-            $.ajax({
-                url: '/MVCClient/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ContactName: $('#ContactName').val(),
-                    ContactAddress: $('#ContactAddress').val(),
-                    Type: "Customer"
-                },
-                success: function (data) {
-                    $('#AddNewContactModel').modal('hide');
-                    LoadContacts();
-                    $('#QutationContactModel').modal('show');
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-
-
-        });
     });
 
     var currentRow1 = "";
@@ -1151,7 +1120,7 @@
     });
 
     function DownloadFile(filepath) {
-        debugger;
+       
         $.ajax({
             url: "/MVCQutation/DownloadFile",
             data: JSON.stringify({ FilePath: filepath }),
@@ -1959,32 +1928,10 @@
 
 
 
-        $('#SaveNewProduct').click(function () {
-            $.ajax({
-                url: '/MVCProduct/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ProductName: $('#ProductName').val(),
-                    Description: $('#Description').val(),
-                    SalePrice: $('#SalePrice').val(),
-                    PurchasePrice: $('#PurchasePrice').val(),
-                    Type: $('#Type').val(),
-                    OpeningQuantity: $('#OpeningQuantity').val()
-
-                },
-                success: function (data) {
-                    $('#CreateNewProductModal').modal('hide');
-                    //$("#productTable").ajax.reload();
-                    SuccessInsert();
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-
-        });
+      
 
         $('#SaveNewProductModel').click(function () {
+            debugger;
             $.ajax({
                 url: '/MVCProduct/AddOrEdit',
                 type: 'POST',
@@ -1994,8 +1941,8 @@
                     SalePrice: $('#SalePrice').val(),
                     PurchasePrice: $('#PurchasePrice').val(),
                     Type: $('#Type').val(),
-                    OpeningQuantity: $('#OpeningQuantity').val()
-
+                    OpeningQuantity: $('#OpeningQuantity').val(),
+                    ProductUnit: $('#ProductUnitSelect').val()
                 },
                 success: function (data) {
                     $('#CreateNewProductModalAdd').modal('hide');
@@ -2127,32 +2074,7 @@
             $('#ProductUnit').val("")
         }
 
-        $('#UpdateProduct').click(function () {
-
-            $.ajax({
-                url: '/MVCProduct/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ProductId: $('#ProductId').val(),
-                    ProductName: $('#ProductName').val(),
-                    Description: $('#Description').val(),
-                    SalePrice: $('#SalePrice').val(),
-                    PurchasePrice: $('#PurchasePrice').val(),
-                    Type: $('#Type').val(),
-                    OpeningQuantity: $('#OpeningQuantity').val()
-
-                },
-                success: function (data) {
-                    $('#CreateNewProductModal').modal('hide');
-                    //$("#productTable").ajax.reload();
-                    SuccessUpdate();
-                    clearProductTextBox();
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        });
+       
 
         $('#CancelProduct').click(function () {
             clearProductTextBox();
@@ -2166,122 +2088,18 @@
 
         @*Contact or client Script*@
 
-        $('#SaveNewContacts').click(function () {
-            var res = validateContact();
-            if (res == false) {
-                return false;
-            }
-            else {
-                $.ajax({
-                    url: '/MVCClient/AddOrEdit',
-                    type: 'POST',
-                    data: {
-                        ContactName: $('#ContactName').val(),
-                        ContactAddress: $('#ContactAddress').val(),
-                        Type: $('#TypeContacts').val(),
-                        BillingPersonName: $('#BillingPersonName').val(),
-                        BillingCompanyName: $('#BillingCompanyName').val(),
-                        BillingAddress: $('#BillingAddress').val(),
-                        BillingCity: $('#BillingCity').val(),
-                        BillingCountry: $('#BillingCountry').val(),
-                        BillingZibCode: $('#BillingZibCode').val(),
-                        BillingEmail: $('#BillingEmail').val(),
-                        BillingVatTRN: $('#BillingVatTRN').val(),
-                        BillingPhone: $('#BillingPhone').val(),
-                        BillingMobile: $('#BillingMobile').val(),
-                        BillingFax: $('#BillingFax').val(),
-                        ShippingPersonName: $('#ShippingPersonName').val(),
-                        ShippingCompanyName: $('#ShippingCompanyName').val(),
-                        ShippingCountry: $('#ShippingCountry').val(),
-                        ShippingZIP: $('#ShippingZIP').val(),
-                        ShippingEmail: $('#ShippingEmail').val(),
-                        ShippingVatTRN: $('#ShippingVatTRN').val(),
-                        ShippingMobile: $('#ShippingMobile').val(),
-                        ShippingPhone: $('#ShippingPhone').val(),
-                        ShippingFax: $('#ShippingFax').val(),
-                        Remarks: $('#Remarks').val(),
-                        Status: $('#Status').val()
+       
 
-                    },
-                    success: function (response) {
-                        if (response == '201') {
-                            $('#CreateNewContactModal').modal('hide');
-                            //$("#productTable").ajax.reload();
-                            clearContectTextBox();
-                            SuccessInsert();
-                        }
-                        else {
-                            alert(response);
-                        }
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-            }
-
-        });
-
-        $('#UpdateContacts').click(function () {
-            var res = validateContact();
-            if (res == false) {
-                return false;
-            }
-            else {
-
-                $.ajax({
-                    url: '/MVCClient/AddOrEdit',
-                    type: 'POST',
-                    data: {
-                        ContactsId: $('#ContactsId').val(),
-                        ContactName: $('#ContactName').val(),
-                        ContactAddress: $('#ContactAddress').val(),
-                        Type: $('#TypeContacts').val(),
-                        BillingPersonName: $('#BillingPersonName').val(),
-                        BillingCompanyName: $('#BillingCompanyName').val(),
-                        BillingAddress: $('#BillingAddress').val(),
-                        BillingCity: $('#BillingCity').val(),
-                        BillingCountry: $('#BillingCountry').val(),
-                        BillingZibCode: $('#BillingZibCode').val(),
-                        BillingEmail: $('#BillingEmail').val(),
-                        BillingVatTRN: $('#BillingVatTRN').val(),
-                        BillingPhone: $('#BillingPhone').val(),
-                        BillingMobile: $('#BillingMobile').val(),
-                        BillingFax: $('#BillingFax').val(),
-                        ShippingPersonName: $('#ShippingPersonName').val(),
-                        ShippingCompanyName: $('#ShippingCompanyName').val(),
-                        ShippingCountry: $('#ShippingCountry').val(),
-                        ShippingZIP: $('#ShippingZIP').val(),
-                        ShippingEmail: $('#ShippingEmail').val(),
-                        ShippingVatTRN: $('#ShippingVatTRN').val(),
-                        ShippingMobile: $('#ShippingMobile').val(),
-                        ShippingPhone: $('#ShippingPhone').val(),
-                        ShippingFax: $('#ShippingFax').val(),
-                        Remarks: $('#Remarks').val(),
-                        Status: $('#Status').val()
-                    },
-                    success: function (data) {
-                        $('#CreateNewContactModal').modal('hide');
-                        //$("#productTable").ajax.reload();
-                        SuccessUpdate();
-                        clearContectTextBox();
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-            }
-        });
+      
 
         $('#Logout').click(function () {
-            debugger;
             $.ajax({
                 url: "/Login/Logut",
                 type: "POST",
                 dataType: "json",
                 success: function (resultData) {
                     sessionStorage.removeItem('accessToken');
-                    window.location.href = "/Login/Index";
+                    window.location.href = "/Captcha/Index";
                 },
                 error: function (errormessage) {
                     alert(errormessage.responseText);
@@ -2337,92 +2155,9 @@
     }
 
 
-    function EditProduct(ProductId) {
-        //$('#ProductName').css('border-color', 'lightgrey');
-        //$('#Description').css('border-color', 'lightgrey');
-        //$('#PurchasePrice').css('border-color', 'lightgrey');
-        //$('#SalePrice').css('border-color', 'lightgrey');
-        $.ajax({
-            url: "/MVCProduct/AddOrEdit/" + ProductId,
-            type: "GET",
-            dataType: "json",
-            success: function (resultData) {
-                $('#ProductId').val(resultData.ProductId);
-                $('#ProductName').val(resultData.ProductName);
-                $('#Description').val(resultData.Description);
-                $('#SalePrice').val(resultData.SalePrice);
-                $('#PurchasePrice').val(resultData.PurchasePrice);
-                $('#Type').val(resultData.type);
-                $('#OpeningQuantity').val(resultData.OpeningQuantity);
+   
 
-                $('#CreateNewProductModal').modal('show');
-                $('#UpdateProduct').show();
-                $('#SaveNewProduct').hide();
-            },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
-        });
-    }
-
-    //function EditContact(ContactsId) {
-    //    $.ajax({
-    //        url: "/MVCClient/AddOrEdit/" + ContactsId,
-    //        type: "GET",
-    //        dataType: "json",
-    //        success: function (resultContactData) {
-
-    //            $('#ContactsId').val(resultContactData.ContactsId);
-    //            $('#ContactName').val(resultContactData.ContactName);
-    //            $('#ContactAddress').val(resultContactData.ContactAddress);
-    //            $('select#TypeContacts option').each(function () {
-    //                if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase()) {
-    //                    this.selected = true;
-    //                    return;
-    //                }
-    //            });
-    //            if (resultContactData.Status == true) {
-    //                $('#Status').val("1");
-    //            }
-    //            else {
-    //                $('#Status').val("0");
-    //            }
-
-    //            $('#BillingPersonName').val(resultContactData.BillingPersonName);
-    //            $('#BillingCompanyName').val(resultContactData.BillingCompanyName);
-    //            $('#BillingAddress').val(resultContactData.BillingAddress);
-    //            $('#BillingCity').val(resultContactData.BillingCity);
-    //            $('#BillingState').val(resultContactData.BillingState);
-    //            $('#BillingCountry').val(resultContactData.BillingCountry);
-    //            $('#BillingZibCode').val(resultContactData.BillingZibCode);
-    //            $('#BillingEmail').val(resultContactData.BillingEmail);
-    //            $('#BillingVatTRN').val(resultContactData.BillingVatTRN);
-    //            $('#BillingPhone').val(resultContactData.BillingPhone);
-    //            $('#BillingMobile').val(resultContactData.BillingMobile);
-    //            $('#BillingFax').val(resultContactData.BillingFax);
-    //            $('#ShippingPersonName').val(resultContactData.ShippingPersonName);
-    //            $('#ShippingAddress').val(resultContactData.ShippingAddress);
-    //            $('#ShippingCompanyName').val(resultContactData.ShippingCompanyName);
-    //            $('#ShippingCity').val(resultContactData.ShippingCity);
-    //            $('#ShippingState').val(resultContactData.ShippingState);
-    //            $('#ShippingCountry').val(resultContactData.ShippingCountry);
-    //            $('#ShippingZIP').val(resultContactData.ShippingZIP);
-    //            $('#ShippingEmail').val(resultContactData.ShippingEmail);
-    //            $('#ShippingVatTRN').val(resultContactData.ShippingVatTRN);
-    //            $('#ShippingMobile').val(resultContactData.ShippingMobile);
-    //            $('#ShippingPhone').val(resultContactData.ShippingPhone);
-    //            $('#ShippingFax').val(resultContactData.ShippingFax);
-    //            $('#Remarks').val(resultContactData.Remarks);
-    //            $('#UpdateContacts').show();
-    //            $('#SaveNewContacts').hide();
-    //            $('#CreateNewContactModal').modal('show');
-    //        },
-    //        error: function (errormessage) {
-    //            alert(errormessage.responseText);
-    //        }
-    //    });
-    //}
-
+ 
     function DeleteProduct(ProductId) {
 
         swal({
@@ -2604,26 +2339,7 @@
             }
         });
 
-        $('#SaveVender').click(function () {
-            $.ajax({
-                url: '/MVCClient/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ContactName: $('#VenderName').val(),
-                    Type: "Vender",
-                    ContactAddress: $('#VenderAddress').val()
-                },
-                success: function (data) {
-                    $('#AddNewVenderModel').modal('hide');
-                    LoadVernder();
-                    $('#VenderSelectModel').modal('show');
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-
-        });
+       
     });
 
 
@@ -2654,7 +2370,32 @@
     }
 
 
+    
 
+
+
+
+
+    //$('#SaveVender').click(function () {
+    //    $.ajax({
+    //        url: '/MVCClient/AddOrEdit',
+    //        type: 'POST',
+    //        data: {
+    //            ContactName: $('#VenderName').val(),
+    //            Type: "Vender",
+    //            ContactAddress: $('#VenderAddress').val()
+    //        },
+    //        success: function (data) {
+    //            $('#AddNewVenderModel').modal('hide');
+    //            LoadVernder();
+    //            $('#VenderSelectModel').modal('show');
+    //        },
+    //        error: function () {
+    //            alert("error");
+    //        }
+    //    });
+
+    //});
 
 
     @*function EditPurchase(PurchaseId) {
@@ -2756,6 +2497,24 @@
         }
     });
 
-
+    //$('#SaveClinetQutation').click(function () {
+    //    $.ajax({
+    //        url: '/MVCClient/AddOrEdit',
+    //        type: 'POST',
+    //        data: {
+    //            ContactName: $('#ContactName').val(),
+    //            ContactAddress: $('#ContactAddress').val(),
+    //            Type: "Customer"
+    //        },
+    //        success: function (data) {
+    //            $('#AddNewContactModel').modal('hide');
+    //            LoadContacts();
+    //            $('#QutationContactModel').modal('show');
+    //        },
+    //        error: function () {
+    //            alert("error");
+    //        }
+    //    });
+    //});
 
 </script>

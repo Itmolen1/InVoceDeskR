@@ -76,6 +76,7 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
+                    ProductUnit = c.ProductUnit
                 }).FirstOrDefault();
                 if (productTable != null)
                 {
