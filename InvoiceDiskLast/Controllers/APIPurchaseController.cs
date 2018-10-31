@@ -20,29 +20,39 @@ namespace InvoiceDiskLast.Controllers
         {
             MvcPurchaseModel puchaseorder = new MvcPurchaseModel();
 
-            var ob = db.PurchaseOrderTables.Find(id);
-            puchaseorder.PurchaseID = ob.PurchaseID;
-            puchaseorder.PurchaseOrderID = ob.PurchaseOrderID;
-            puchaseorder.PurchaseRefNumber = ob.PurchaseRefNumber;
-            puchaseorder.PurchaseDate = ob.PurchaseDate;
-            puchaseorder.PurchaseDueDate = ob.PurchaseDueDate;
-            puchaseorder.PurchaseSubTotal = ob.PurchaseSubTotal;
-            puchaseorder.Vat6 = ob.Vat6;
-            puchaseorder.Vat21 = ob.Vat21;
-            puchaseorder.PurchaseDiscountAmount = ob.PurchaseDiscountAmount;
-            puchaseorder.PurchaseTotoalAmount = ob.PurchaseTotoalAmount;
-            puchaseorder.PurchaseVenderNote = ob.PurchaseVenderNote;
-            puchaseorder.Status = ob.Status;
-            puchaseorder.UserId = ob.UserId;
-            puchaseorder.CompanyId = ob.CompanyId;
-            puchaseorder.VenderId = ob.VenderId;
+            try
+            {
+                var ob = db.PurchaseOrderTables.Find(id);
+                puchaseorder.PurchaseID = ob.PurchaseID;
+                puchaseorder.PurchaseOrderID = ob.PurchaseOrderID;
+                puchaseorder.PurchaseRefNumber = ob.PurchaseRefNumber;
+                puchaseorder.PurchaseDate = ob.PurchaseDate;
+                puchaseorder.PurchaseDueDate = ob.PurchaseDueDate;
+                puchaseorder.PurchaseSubTotal = ob.PurchaseSubTotal;
+                puchaseorder.Vat6 = ob.Vat6;
+                puchaseorder.Vat21 = ob.Vat21;
+                puchaseorder.PurchaseDiscountAmount = ob.PurchaseDiscountAmount;
+                puchaseorder.PurchaseTotoalAmount = ob.PurchaseTotoalAmount;
+                puchaseorder.PurchaseVenderNote = ob.PurchaseVenderNote;
+                puchaseorder.Status = ob.Status;
+                puchaseorder.UserId = ob.UserId;
+                puchaseorder.CompanyId = ob.CompanyId;
+                puchaseorder.VenderId = ob.VenderId;
 
-            if (puchaseorder == null)
+                if (puchaseorder == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(puchaseorder);
+            }
+            catch (Exception)
             {
                 return NotFound();
+               
             }
 
-            return Ok(puchaseorder);
+           
         }
 
         //get list

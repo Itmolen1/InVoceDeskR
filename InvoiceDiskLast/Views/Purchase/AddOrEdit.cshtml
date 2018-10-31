@@ -729,12 +729,20 @@
     //adding Row
     $("#addpuchase").click(function () {
 
+        debugger;
+
         currentRow1 = $(this).closest("tr");
 
         var isAllValid = true;
         if ($("#SelectProductQutationp").val() == "0") {
             isAllValid = false;
             alert("Please select Item");
+            return;
+        }
+
+        if ($(".PurchaseQuantity").val() == 0) {
+            isAllValid = false;
+            alert("Please select quantity");
         }
 
         if (isAllValid) {
@@ -769,7 +777,7 @@
     $('#orderdetailsitemsp').on('click', '.remove', function () {
 
         debugger;
-
+        var isAllValid = true;
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VATp   option:selected').val();
         var Total = currentRow.find('.PurchaseTotal').val();
@@ -1109,11 +1117,20 @@
                   });
                     }
                     else if (result.Status == "Fail") {
-                        alert(result.Message);
+                        swal({
+                            title: "Fail!",
+                            text: result.Message,
+                            icon: "danger",
+                        });
+                        
                     }
                 },
                 error: function (errormessage) {
-
+                    swal({
+                        title: "Fail!",
+                        text: errormessage,
+                        icon: "danger",
+                    });
                 }
 
             });
@@ -1126,6 +1143,8 @@
     //Save Email
     $("#saveEmailp").click(function () {
         var isAllValid = true;
+        debugger;
+
         $('#orderItemError').text('');
 
         var list = [];
@@ -1199,8 +1218,8 @@
                     if (result.Status == "Success") {
 
                         swal({
-                            title: 'Qutation!',
-                            text: 'Qutation save successfully!',
+                            title: 'Invoice!',
+                            text: 'Invoice save successfully!',
                             type: 'success'
                         },
                         function (isconform) {
@@ -1211,10 +1230,19 @@
 
                     }
                     else if (result.Status == "Fail") {
+                        swal({
+                            title: "Fail!",
+                            text: result.Message,
+                            icon: "danger",
+                        });
                     }
                 },
                 error: function (errormessage) {
-
+                    swal({
+                        title: "Fail!",
+                        text: errormessage,
+                        icon: "danger",
+                    });
                 }
 
             });
@@ -1309,11 +1337,19 @@
                         });
                     }
                     else if (result.Status == "Fail") {
-                        alert("Fail to Process")
+                        swal({
+                            title: "Fail!",
+                            text: result.Message,
+                            icon: "danger",
+                        });
                     }
                 },
                 error: function (errormessage) {
-
+                    swal({
+                        title: "Fail!",
+                        text: errormessage,
+                        icon: "danger",
+                    });
                 }
             });
         }
@@ -1369,6 +1405,11 @@
                     }
                 },
                 Error: function (errormessage) {
+                    swal({
+                        title: "Fail!",
+                        text: errormessage,
+                        icon: "danger",
+                    });
                     alert(errormessage);
                 }
 

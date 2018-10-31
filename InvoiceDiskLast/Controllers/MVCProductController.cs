@@ -105,7 +105,7 @@ namespace InvoiceDiskLast.Controllers
                 //    var v = CompanyList.OrderBy(c=>c.);
 
                 //}
-                int recordsTotal = recordsTotal = ProductList1.Count();
+                int recordsTotal = recordsTotal = ProductList.Count();
                 var data = ProductList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
 
