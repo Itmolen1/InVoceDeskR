@@ -70,7 +70,7 @@ namespace InvoiceDiskLast.Controllers
                     return null;
                 }
             }
-            catch(Exception ex)
+            catch(Exception )
             {
                 return null;
             }

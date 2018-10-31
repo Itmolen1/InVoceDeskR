@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [SessionExpireAttribute]
     public class EmailController : Controller
     {
         // GET: Email

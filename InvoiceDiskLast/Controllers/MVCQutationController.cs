@@ -12,6 +12,8 @@ using System.Diagnostics;
 
 namespace InvoiceDiskLast.Controllers
 {
+
+     [SessionExpireAttribute]
     public class MVCQutationController : Controller
     {
         // GET: MVCQutation
@@ -213,7 +215,22 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.CustomerNote = MVCQutationViewModel.CustomerNote;
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
+
+
+                    if (mvcQutationModel.TotalVat6 != null)
+                    {
+                        double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat6 = vat61;
+                    }
+
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
+
+                    if (mvcQutationModel.TotalVat21 != null)
+                    {
+                      double  vat21= Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                       mvcQutationModel.TotalVat21 =vat21;
+                    }
+
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.Status = MVCQutationViewModel.Status;
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
@@ -230,7 +247,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                            if (QtDetails.QutationDetailId == 0)
+                              if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -749,9 +766,6 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult Save(MVCQutationViewModel mvcQutationViewModel)
         {
-
-
-
             bool Status = false;
             var Qutationid = "";
             #region             
@@ -779,6 +793,24 @@ namespace InvoiceDiskLast.Controllers
                 mvcQutationModel.CustomerNote = mvcQutationViewModel.CustomerNote;
                 mvcQutationModel.TotalVat21 = mvcQutationViewModel.TotalVat21;
                 mvcQutationModel.TotalVat6 = mvcQutationViewModel.TotalVat6;
+
+
+
+                if (mvcQutationModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcQutationModel.TotalVat6 = vat61;
+                }
+
+               
+
+                if (mvcQutationModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcQutationModel.TotalVat21 = vat21;
+                }
+
+
                 mvcQutationModel.Status = "Open";
 
 
@@ -860,6 +892,23 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
+
+
+                    if (mvcQutationModel.TotalVat6 != null)
+                    {
+                        double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat6 = vat61;
+                    }
+
+
+
+                    if (mvcQutationModel.TotalVat21 != null)
+                    {
+                        double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat21 = vat21;
+                    }
+
+
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.Status = "Open";
 
@@ -877,7 +926,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                            if (QtDetails.QutationDetailId == 0)
+                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -940,6 +989,20 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
+
+                    if (mvcQutationModel.TotalVat6 != null)
+                    {
+                        double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat6 = vat61;
+                    }
+
+
+
+                    if (mvcQutationModel.TotalVat21 != null)
+                    {
+                        double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat21 = vat21;
+                    }
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.Status = "Open";
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
@@ -967,7 +1030,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                            if (QtDetails.QutationDetailId == 0)
+                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -1082,6 +1145,21 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
+
+                    if (mvcQutationModel.TotalVat6 != null)
+                    {
+                        double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat6 = vat61;
+                    }
+
+
+
+                    if (mvcQutationModel.TotalVat21 != null)
+                    {
+                        double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat21 = vat21;
+                    }
+
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.Status = "Open";
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
@@ -1099,7 +1177,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
 
-                            if (QtDetails.QutationDetailId == 0)
+                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId==null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -1169,6 +1247,21 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
+
+                    if (mvcQutationModel.TotalVat6 != null)
+                    {
+                        double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat6 = vat61;
+                    }
+
+
+
+                    if (mvcQutationModel.TotalVat21 != null)
+                    {
+                        double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat21 = vat21;
+                    }
+
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.Status = "Open";
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
@@ -1197,7 +1290,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
 
-                            if (QtDetails.QutationDetailId == 0)
+                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }

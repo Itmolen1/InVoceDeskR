@@ -9,6 +9,7 @@ using System.Web.Http.Description;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [SessionExpireAttribute]
     public class GetQuationCountController : ApiController
     {
         private DBEntities db = new DBEntities();

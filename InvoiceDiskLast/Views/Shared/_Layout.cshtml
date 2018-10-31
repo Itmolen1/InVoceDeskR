@@ -693,7 +693,23 @@
             if ($("#SelectProductQutation").val() == "0") {
                 isAllValid = false;
                 alert("Please select Item");
+                return;
             }
+
+            var isAllValid = true;
+            if ($(".quantity").val() ==0) {
+                isAllValid = false;
+                
+                alert("Please provide quantity");
+                return;
+            }
+            var isAllValid = true;
+            if ($(".rate").val() ==0) {
+                isAllValid = false;
+                alert("Please select provide rate");
+                return;
+            }
+            
 
             if (isAllValid) {
                 var $newRow = $("#mainrow").clone().removeAttr('id');
@@ -710,6 +726,9 @@
                 $('span.error', $newRow).remove();
 
                 $('#orderdetailsitems').append($newRow);
+
+      
+                $(".FTotal").prop('disabled', true);
 
                 $('#SelectProductQutation').val('0');
                 $('#Quantity').val('');
@@ -799,7 +818,7 @@
 
                 var BTW6 = $('#BTW6').text();
                 $('#BTW6').text();
-                $('#BTW6').text(parseInt(BTW6 - totalvat6).toFixed(2));
+                $('#BTW6').text(parseFloat(BTW6 - totalvat6).toFixed(2));
 
             }
             if (vat == 21) {
@@ -955,6 +974,9 @@
 
         //Edit functionality
         $("#SubmitEdit").click(function () {
+
+            alert($('#BTW6').text());
+
             var isAllValid = true;
             $('#orderItemError').text('');
             var list = [];

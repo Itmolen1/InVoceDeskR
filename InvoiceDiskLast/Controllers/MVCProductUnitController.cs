@@ -9,6 +9,8 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+
+    [SessionExpireAttribute]
     public class MVCProductUnitController : Controller
     {
         // GET: MVCProductUnit
