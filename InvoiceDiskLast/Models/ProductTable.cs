@@ -11,7 +11,8 @@ namespace InvoiceDiskLast.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class ProductTable
     {
         public int? ProductId { get; set; }
@@ -19,6 +20,8 @@ namespace InvoiceDiskLast.Models
         public string Description { get; set; }
         public Nullable<double> SalePrice { get; set; }
         public Nullable<double> PurchasePrice { get; set; }
+
+        [MaxLength(10),MinLength(2)]
         public string Type { get; set; }
         public Nullable<int> OpeningQuantity { get; set; }
         public Nullable<int> AddedBy { get; set; }
@@ -26,8 +29,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> ProductUnit { get; set; }
     
-          public string telephone { get; set; }
-        public string Mobile { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+
     }
 }

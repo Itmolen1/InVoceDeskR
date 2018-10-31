@@ -38,7 +38,7 @@
                 </th>
 
                 <th>
-                    Date
+                    Unit
                 </th>
                 <th>Action</th>
             </tr>
@@ -187,9 +187,11 @@
             $('#CreateNewProductModal').modal('show');
         });
 
+   
+
 
         $('#UpdateProduct').click(function () {
-
+            debugger;
             $.ajax({
                 url: '/MVCProduct/AddOrEdit',
                 type: 'POST',
@@ -238,8 +240,7 @@
                 url: "/MVCProductUnit/CheckUnitStatus",
                 type: "POST",
                 data: { name: $('#ProductUnit').val() },
-                success: function (Resultdat) {                   
-                    console.log(Resultdat);
+                success: function (Resultdat) {  
                     if (Resultdat == "Found")
                     {
                         $.toast({
@@ -316,12 +317,20 @@
             type: "GET",
             dataType: "json",
             success: function (resultData) {
+                console.log(resultData);
                 $('#ProductId').val(resultData.ProductId);
                 $('#ProductName').val(resultData.ProductName);
                 $('#Description').val(resultData.Description);
                 $('#SalePrice').val(resultData.SalePrice);
                 $('#PurchasePrice').val(resultData.PurchasePrice);
-                $('#Type').val(resultData.type);
+
+
+                $('select#Type option').each(function () {
+                    if ($(this).text().toLowerCase() == resultData.Type.toLowerCase()) {
+                        this.selected = true;
+                        return;
+                    }
+                });
                 $('#OpeningQuantity').val(resultData.OpeningQuantity);
 
                 $('select#ProductUnitSelect option').each(function () {

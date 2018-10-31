@@ -59,7 +59,7 @@ namespace InvoiceDiskLast.Controllers
                          || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())
                        || p.Description != null && p.Description.ToLower().Contains(search.ToLower())
                        || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
-                        || p.AddedDate != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
+                        //|| p.Prod != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
                        || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
                        || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
                        || p.OpeningQuantity != null && p.OpeningQuantity.ToString().ToLower().Contains(search.ToLower())).ToList();
@@ -158,21 +158,22 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                ProductModel.AddedBy = 1;
+                ProductModel.Company_ID = CompanyId;
+                ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                 if (ProductModel.ProductId == null)
-                {
-                    int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                {                   
                     GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                     GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-                    ProductModel.AddedBy = 1;
-                    ProductModel.Company_ID = CompanyId;
-                    ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
+                  
 
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIProduct", ProductModel).Result;
                     TempData["SuccessMessage"] = "Saved Successfully";
                 }
                 else
                 {
+                   
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIProduct/" + ProductModel.ProductId, ProductModel).Result;
                     TempData["SuccessMessage"] = "Updated Successfully";
                 }
