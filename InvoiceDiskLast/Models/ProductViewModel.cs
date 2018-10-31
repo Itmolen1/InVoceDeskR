@@ -5,7 +5,7 @@ using System.Web;
 
 namespace InvoiceDiskLast.Models
 {
-    public class MVCProductModel
+    public class ProductViewModel
     {
         public int? ProductId { get; set; }
         public string ProductName { get; set; }
@@ -18,6 +18,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> Company_ID { get; set; }
         public Nullable<int> ProductUnit { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
-        public Nullable<int> ProductUnits { get; set; }
+        public string ProductUnits { get; set; }
     }
 }
