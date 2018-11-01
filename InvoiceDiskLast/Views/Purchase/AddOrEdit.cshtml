@@ -23,6 +23,9 @@
 
 }
 
+
+
+
 <div class="container">
 
     @*<input type="hidden"  value=" " id="PurchaseOrderID"/>*@
@@ -137,10 +140,10 @@
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-sm-2">Invoice Date:</div>
-                            <div class="col-sm-4">
-                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseDate", required = "required" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
-
+                            <div class="col-sm-4"> 
+                                                             
+                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseDate"} })
+                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })                              
                             </div>
                             <div class="col-sm-6"></div>
                         </div>
@@ -148,7 +151,6 @@
                         <div class="row" style="margin-top:3px">
                             <div class="col-sm-2">Invoice Number:</div>
                             <div class="col-sm-4">
-
                                 @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseID", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
 
@@ -260,7 +262,7 @@
 
                                                 <td>
 
-                                                    <select Id="SelectProductQutationp" class="productp form-control pClassp" style="width:216px !important; font-size:12px" >
+                                                    <select Id="SelectProductQutationp" class="productp form-control pClassp" style="width:216px !important; font-size:12px">
                                                         <option value="0">Select Item..</option>
                                                         @foreach (var product in ViewBag.Product)
                                                         {
@@ -269,14 +271,14 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="PurchaseQuantity form-control" id="Quantityp" value="@item.PurchaseQuantity" `style="font-size:12px"/>
+                                                    <input type="text" class="PurchaseQuantity form-control" id="Quantityp" value="@item.PurchaseQuantity" `style="font-size:12px" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="PurchaseItemRate  form-control" id="Ratep" value="@item.PurchaseItemRate" style="font-size:12px"/>
+                                                    <input type="text" class="PurchaseItemRate  form-control" id="Ratep" value="@item.PurchaseItemRate" style="font-size:12px" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="PurchaseTotal  form-control" id="FTotalp" value="@item.PurchaseTotal" readonly="readonly" style="font-size:12px"/>
+                                                    <input type="text" class="PurchaseTotal  form-control" id="FTotalp" value="@item.PurchaseTotal" readonly="readonly" style="font-size:12px" />
 
                                                 </td>
                                                 <td>
@@ -891,10 +893,10 @@
         currentRow1 = $(this).closest("tr");
         var currentRow = $(this).closest("tr");
         var quantity = $(this).val();
-       
+
         // get current row 1st TD value
         var Price = currentRow.find("td:eq(2)").find('input').val();
-      
+
         var total = quantity * Price;
         currentRow.find('td:eq(3)').find('input').val(total.toFixed(2));
         var sum = 0;
@@ -985,7 +987,7 @@
 
     // product price by id
     $('thead .pClassp').change(function () {
-       
+
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
@@ -1122,7 +1124,7 @@
                             text: result.Message,
                             icon: "danger",
                         });
-                        
+
                     }
                 },
                 error: function (errormessage) {
@@ -1338,7 +1340,7 @@
                     }
                     else if (result.Status == "Fail") {
                         $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
-                        alert(result.Message);
+                      
 
                         swal({
                             title: "Fail!",
@@ -1364,7 +1366,7 @@
     $(document).ready(function () {
 
         $(document).on('click', '#RemoveEdit1', function () {
-           
+
 
             var row = $(this).closest('tr');
 
@@ -1414,7 +1416,7 @@
                         text: errormessage,
                         icon: "danger",
                     });
-                    alert(errormessage);
+                   
                 }
 
             });
@@ -1456,7 +1458,7 @@
         });
     });
 
-   
+
     function LoadProductAdding1() {
         debugger;
         $("thead #SelectProductQutationp").find("option").remove();
@@ -1531,7 +1533,7 @@
             type: "POST",
             data: { name: $('#ProductUnit').val() },
             success: function (Resultdat) {
-              
+
                 console.log(Resultdat);
                 if (Resultdat == "Found") {
                     $.toast({
@@ -1591,4 +1593,18 @@
         $('#CreateNewProductModalAdd').modal('show');
         $('#UnitModelPurchase').modal('hide');
     });
+
+
+
+    $(document).ready(function () {
+
+        var PurchaseDate=@Html.Raw(Json.Encode(Model.PurchaseDate));
+        var PurchaseDueDate=@Html.Raw(Json.Encode(Model.PurchaseDueDate));
+
+
+
+    });
+
+
+
 </script>

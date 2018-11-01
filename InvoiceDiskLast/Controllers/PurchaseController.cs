@@ -315,6 +315,8 @@ namespace InvoiceDiskLast.Controllers
                     MvcPurchaseModel q = new MvcPurchaseModel();
                     HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
                     q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                    purchaseviewModel.PurchaseDate = InvoiceDate;
+                    purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
                     purchaseviewModel.Purchase_ID = q.PurchaseID;
                     return View(purchaseviewModel);
                 }
@@ -341,7 +343,7 @@ namespace InvoiceDiskLast.Controllers
 
                     purchaseviewModel.PurchaseOrderID = ob.PurchaseOrderID;
                     purchaseviewModel.Purchase_ID = ob.PurchaseID;
-                    purchaseviewModel.PurchaseDate = ob.PurchaseDate;
+                    purchaseviewModel.PurchaseDate =Convert.ToDateTime(ob.PurchaseDate);
                     purchaseviewModel.PurchaseDueDate = (DateTime)ob.PurchaseDueDate;
                     purchaseviewModel.PurchaseRefNumber = ob.PurchaseRefNumber;
                     purchaseviewModel.PurchaseSubTotal = ob.PurchaseSubTotal;
