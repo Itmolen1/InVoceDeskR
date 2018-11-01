@@ -203,9 +203,6 @@
 
                     fileData.append('BTW', $('#BTW').val());
 
-                    fileData.append('AddedDate', $('#AddedDate').val());
-                    fileData.append('UserName', localStorage.getItem('Username'));
-
                     var apiurl = "/MVCComapny/AddOrEdit";
 
                     $.ajax({
@@ -218,6 +215,10 @@
                             if (ReturnStatus == 201) {
                                 SuccessInsert();
                                 window.location.href = '/Home/Index';
+                            }
+                            else
+                            {
+                                alert("No Username found!");
                             }
                         },
                         error: function () {

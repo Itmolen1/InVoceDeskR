@@ -19,7 +19,7 @@ namespace InvoiceDiskLast.Controllers
 
     public class CaptchaController : Controller
     {
-
+        
         public ActionResult Index()
         {
             return View();
@@ -57,8 +57,8 @@ namespace InvoiceDiskLast.Controllers
 
                     HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
 
-                    // HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
-                     HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
+                    HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
+                     //HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
                     token = response.Content.ReadAsAsync<BearerToken>().Result;
 
                     // Store token in ASP.NET Session State for later use
@@ -74,6 +74,7 @@ namespace InvoiceDiskLast.Controllers
 
                     //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
                     string name = userInfo.username.ToString();
+                    Session["username"] = userInfo.username.ToString();
                     GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("name", name);
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiCompanyStatus/" + "ss").Result;
                     var apiresut = response.Content.ReadAsAsync<object>().Result;

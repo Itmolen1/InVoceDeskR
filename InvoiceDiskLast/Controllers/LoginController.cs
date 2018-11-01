@@ -18,7 +18,7 @@ namespace InvoiceDiskLast.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Captcha");
         }
 
         [HttpPost]
@@ -102,7 +102,7 @@ namespace InvoiceDiskLast.Controllers
             #endregion
 
             MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("joe@contoso.com");
+            msg.From = new MailAddress("samarbudhni@gmail.com");
             msg.To.Add(new MailAddress(ToEmail));
             msg.Subject = "Email Verification";
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));

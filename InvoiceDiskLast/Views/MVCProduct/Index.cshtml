@@ -187,34 +187,33 @@
             $('#CreateNewProductModal').modal('show');
         });
 
-   
-
-
         $('#UpdateProduct').click(function () {
-            debugger;
-            $.ajax({
-                url: '/MVCProduct/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ProductId: $('#ProductId').val(),
-                    ProductName: $('#ProductName').val(),
-                    Description: $('#Description').val(),
-                    SalePrice: $('#SalePrice').val(),
-                    PurchasePrice: $('#PurchasePrice').val(),
-                    Type: $('#Type').val(),
-                    OpeningQuantity: $('#OpeningQuantity').val(),
-                    ProductUnit: $('#ProductUnitSelect').val()
-                },
-                success: function (data) {
-                    $('#CreateNewProductModal').modal('hide');
-                    //$("#productTable").ajax.reload();
-                    SuccessUpdate();
-                    clearProductTextBox();
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
+            var validdatep = validateProduct();
+            if (validdatep == true) {
+                $.ajax({
+                    url: '/MVCProduct/AddOrEdit',
+                    type: 'POST',
+                    data: {
+                        ProductId: $('#ProductId').val(),
+                        ProductName: $('#ProductName').val(),
+                        Description: $('#Description').val(),
+                        SalePrice: $('#SalePrice').val(),
+                        PurchasePrice: $('#PurchasePrice').val(),
+                        Type: $('#Type').val(),
+                        OpeningQuantity: $('#OpeningQuantity').val(),
+                        ProductUnit: $('#ProductUnitSelect').val()
+                    },
+                    success: function (data) {
+                        $('#CreateNewProductModal').modal('hide');
+                        $('#productTable').DataTable().ajax.reload();
+                        SuccessUpdate();
+                        clearProductTextBox();
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
         });
 
         $('#ProductUnitSelect').change(function () {
@@ -316,15 +315,12 @@
             url: "/MVCProduct/AddOrEdit/" + ProductId,
             type: "GET",
             dataType: "json",
-            success: function (resultData) {
-                console.log(resultData);
+            success: function (resultData) {              
                 $('#ProductId').val(resultData.ProductId);
                 $('#ProductName').val(resultData.ProductName);
                 $('#Description').val(resultData.Description);
                 $('#SalePrice').val(resultData.SalePrice);
                 $('#PurchasePrice').val(resultData.PurchasePrice);
-
-
                 $('select#Type option').each(function () {
                     if ($(this).text().toLowerCase() == resultData.Type.toLowerCase()) {
                         this.selected = true;
@@ -377,32 +373,35 @@
     }
 
     $('#SaveNewProduct').click(function () {
-       alert($('#ProductUnitSelect').val())
-        $.ajax({
-            url: '/MVCProduct/AddOrEdit',
-            type: 'POST',
-            data: {
-                ProductName: $('#ProductName').val(),
-                Description: $('#Description').val(),
-                SalePrice: $('#SalePrice').val(),
-                PurchasePrice: $('#PurchasePrice').val(),
-                Type: $('#Type').val(),
-                OpeningQuantity: $('#OpeningQuantity').val(),
-                ProductUnit: $('#ProductUnitSelect').val()
+        var validdatep = validateProduct();
+        if (validdatep == true) {
 
-            },
-            success: function (data) {
-                CleartProdctTextBox();
-                $('#CreateNewProductModal').modal('hide');               
-                SuccessInsertProduct();
-            },
-            error: function () {
-                alert("error");
-            }
+            $.ajax({
+                url: '/MVCProduct/AddOrEdit',
+                type: 'POST',
+                data: {
+                    ProductName: $('#ProductName').val(),
+                    Description: $('#Description').val(),
+                    SalePrice: $('#SalePrice').val(),
+                    PurchasePrice: $('#PurchasePrice').val(),
+                    Type: $('#Type').val(),
+                    OpeningQuantity: $('#OpeningQuantity').val(),
+                    ProductUnit: $('#ProductUnitSelect').val()
+
+                },
+                success: function (data) {
+                    $('#productTable').DataTable().ajax.reload();
+                    CleartProdctTextBox();
+                    $('#CreateNewProductModal').modal('hide');
+                    SuccessInsertProduct();
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
         });
-
-    });
-
+    
 
     function SuccessInsertProduct() {
         swal({
@@ -412,4 +411,49 @@
 
         });
     }
+
+    function validateProduct() {
+        var isValid = true;
+
+        if ($('#ProductName').val().trim() == "") {
+            $('#ProductName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductName').css('border-color', 'lightgrey');
+        }
+        if ($('#SalePrice').val().trim() == "") {
+            $('#SalePrice').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePrice').val().trim() == "") {
+            $('#PurchasePrice').css('border-color', 'Red');
+            $('#PurchasePrice').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#OpeningQuantity').val() == "") {
+            $('#OpeningQuantity').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+        }
+
+        if ($('#ProductUnitSelect').val() == 0) {
+            $('#ProductUnitSelect').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
+
+
 </script>
