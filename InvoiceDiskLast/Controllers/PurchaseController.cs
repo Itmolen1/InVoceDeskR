@@ -258,7 +258,7 @@ namespace InvoiceDiskLast.Controllers
 
             //calling printing option
             string path1 = PrintView(intpurchaseorderId);
-            var root = Server.MapPath("~/PDF/");
+            var root = Server.MapPath("/PDF/");
             var pdfname = String.Format("{0}", path1);
             var path = Path.Combine(root, pdfname);
             path = Path.GetFullPath(path);

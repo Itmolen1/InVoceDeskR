@@ -29,7 +29,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddOrEdit(MVCCompanyInfoModel compnayViewModel)
         {
-            if (Session["username"] != null)
+            var se = Session["username"].ToString();
+            if (Session["username"].ToString() != null)
             {
                 compnayViewModel.UserName = Session["username"].ToString();
 
@@ -63,9 +64,27 @@ namespace InvoiceDiskLast.Controllers
                                 compnayViewModel.CompanyLogo = fname;
                             }
 
-                            // Get the complete folder path and store the file inside it.  
-                            fname = Path.Combine(Server.MapPath("~/images/"), fname);
-                            file.SaveAs(fname);
+
+                            var path = Server.MapPath("/images/");
+
+
+
+                            try
+                            {
+                                if (!System.IO.Directory.Exists(path))
+                                {
+                                    System.IO.Directory.CreateDirectory(path);
+                                }
+
+                                // Get the complete folder path and store the file inside it.  
+                                fname = Path.Combine(Server.MapPath("/images/"), fname);
+                                file.SaveAs(fname);
+                            }
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
                         }
 
                         // Returns message that successfully uploaded  
@@ -94,14 +113,14 @@ namespace InvoiceDiskLast.Controllers
                 }
                 else
                 {
-                    return Json("404", JsonRequestBehavior.AllowGet);
+                    return Json(se, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
                 return RedirectToAction("Index", "Captcha");
             }
-            
+
         }
 
 
@@ -142,40 +161,34 @@ namespace InvoiceDiskLast.Controllers
                             }
 
                             // Get the complete folder path and store the file inside it.  
-                            fname = Path.Combine(Server.MapPath("~/images/"), fname);
+                            fname = Path.Combine(Server.MapPath("/images/"), fname);
                             file.SaveAs(fname);
                         }
                     }
 
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny/"+ compnayViewModel.CompanyID, compnayViewModel).Result;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny/" + compnayViewModel.CompanyID, compnayViewModel).Result;
                     MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
                     return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw ex;
                 }
-                
-            }            
-            
+
+            }
+
             return null;
         }
 
         [HttpGet]
         public ActionResult CompanyEdit(int id = 0)
         {
-            if (id == 0)
-            {
-                return Json("Not found", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
 
-                id = Convert.ToInt32(Session["CompayID"]);
+            id = Convert.ToInt32(Session["CompayID"]);
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + id.ToString()).Result;
-                return Json(response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result, JsonRequestBehavior.AllowGet);
-            }
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + id.ToString()).Result;
+            return Json(response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result, JsonRequestBehavior.AllowGet);
+
         }
 
 
@@ -191,15 +204,15 @@ namespace InvoiceDiskLast.Controllers
                 cominfo = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
                 Session["CompanyName"] = cominfo.CompanyName;
                 Session["CompanyEmail"] = cominfo.CompanyEmail;
-                Session["CompanyContact"]=cominfo.CompanyPhone;
-                return Json(cominfo, JsonRequestBehavior.AllowGet);            
+                Session["CompanyContact"] = cominfo.CompanyPhone;
+                return Json(cominfo, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 return Json(cominfo);
             }
-           
+
         }
-       
+
     }
 }
