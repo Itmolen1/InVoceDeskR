@@ -29,8 +29,10 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddOrEdit(MVCCompanyInfoModel compnayViewModel)
         {
-            if (Session["username"] != null)
+            if (Session["username"].ToString() != "")
             {
+
+
                 compnayViewModel.UserName = Session["username"].ToString();
 
                 if (Request.Files.Count > 0)
@@ -164,18 +166,13 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult CompanyEdit(int id = 0)
         {
-            if (id == 0)
-            {
-                return Json("Not found", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
+           
 
                 id = Convert.ToInt32(Session["CompayID"]);
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + id.ToString()).Result;
                 return Json(response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result, JsonRequestBehavior.AllowGet);
-            }
+            
         }
 
 
