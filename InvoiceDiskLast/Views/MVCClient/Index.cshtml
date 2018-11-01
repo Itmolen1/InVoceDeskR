@@ -43,7 +43,14 @@
     <tbody></tbody>
 
 </table>
+@*<div id="loadingDiv">Please wait while this page loads.</div>*@
 
+<div class="preloader" id="loadingDiv">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">loading...</p>
+    </div>
+</div>
 
 <script>
     $(function () {
@@ -420,8 +427,6 @@
         //$('#Country').css('border-color', 'lightgrey');
     }
 
-
-
     function EditContact(ContactsId) {
         $.ajax({
             url: "/MVCClient/AddOrEdit/" + ContactsId,
@@ -466,7 +471,6 @@
         });
     }
 
-
     $(document).ready(function () {
         $("input[type='radio']").click(function () {
             var radioValue = $("input[name='ClientType']:checked").val();
@@ -485,4 +489,16 @@
         
         $('#rowiddd2').hide();
     });
+
+
+ 
+var $loading = $('#loadingDiv').hide();
+$(document)
+  .ajaxStart(function () {
+    $loading.show();
+  })
+  .ajaxStop(function () {
+    $loading.hide();
+  });
+
 </script>
