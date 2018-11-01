@@ -32,6 +32,9 @@ namespace InvoiceDiskLast.Controllers
            
             if (Request.Files.Count > 0)
             {
+
+                compnayViewModel.UserName = Session["username"].ToString();
+
                 #region
                 try
                 {
@@ -153,16 +156,11 @@ namespace InvoiceDiskLast.Controllers
 
         [HttpGet]
         public ActionResult CompanyEdit(int id = 0)
-        {
-            if (id == 0)
-            {
-                return Json("Not found", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
+        {          
+                id = Convert.ToInt32(Session["CompayID"]);
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + id.ToString()).Result;
                 return Json(response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result, JsonRequestBehavior.AllowGet);
-            }
+            
         }
 
 
