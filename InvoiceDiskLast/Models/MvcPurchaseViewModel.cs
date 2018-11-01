@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,8 +11,17 @@ namespace InvoiceDiskLast.Models
 
         public int ?  PurchaseOrderID { get; set; }
         public string Purchase_ID { get; set; }
-        public Nullable<DateTime> PurchaseDate { get; set; }
+
+  
+
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
+        public Nullable<System.DateTime> PurchaseDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> PurchaseDueDate { get; set; }
+
         public string PurchaseRefNumber { get; set; }
         public Nullable<double> PurchaseSubTotal { get; set; }
         public Nullable<double> PurchaseDiscountPercenteage { get; set; }
