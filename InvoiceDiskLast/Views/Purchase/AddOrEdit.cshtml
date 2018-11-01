@@ -1018,7 +1018,7 @@
     //end
 
     //number validation
-    $("thead.PurchaseQuantity").on("keypress keyup blur", function (event) {
+    $("thead .PurchaseQuantity").on("keypress keyup blur", function (event) {
         //this.value = this.value.replace(/[^0-9\.]/g,'');
         $(this).val($(this).val().replace(/[^0-9]/g, ''));
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
@@ -1337,6 +1337,9 @@
                         });
                     }
                     else if (result.Status == "Fail") {
+                        $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
+                        alert(result.Message);
+
                         swal({
                             title: "Fail!",
                             text: result.Message,
@@ -1345,6 +1348,7 @@
                     }
                 },
                 error: function (errormessage) {
+                    $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
                     swal({
                         title: "Fail!",
                         text: errormessage,

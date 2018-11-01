@@ -116,7 +116,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
         public ActionResult RegisterNew()
         {
             var id = Session["id"];

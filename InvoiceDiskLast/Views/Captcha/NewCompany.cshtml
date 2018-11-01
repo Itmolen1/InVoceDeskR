@@ -167,8 +167,12 @@
 </script>
 
 <script>
-        $(document).ready(function () {
-            $("#SaveCompanyInformation").click(function (e) {
+    $(document).ready(function () {
+        $("#SaveCompanyInformation").click(function (e) {
+
+            var isvalid = ValidateCompany()
+
+            if (isvalid == true) {
                 if (window.FormData !== undefined) {
 
                     var fileUpload = $("#FileUpload1").get(0);
@@ -226,49 +230,202 @@
                         }
                     });
                 }
-            });
+            }
+
+
+
+          
         });
+    });
 
 
-        function SuccessInsert() {
-            swal({
-                title: "Congratulations!",
-                text: "Your data has been saved successfully",
-                type: "success",
-            });
+
+    function ValidateCompany() {
+
+        var Isvalid = true;
+        debugger;
+        if($('#CompanyName').val() == "") {
+            $('#CompanyName').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyName').css('border-color', '#D3D3D3');
+            Isvalid = true;
         }
 
 
-        $(document).ready(function () {
+        if ($('#CompanyAddress').val() == "") {
+            $('#CompanyAddress').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyAddress').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
 
-            function readURL(input) {
 
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+        if ($('#PostalCode').val() == "") {
+            $('#PostalCode').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#PostalCode').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
 
-                    reader.onload = function (e) {
-                        $('#targetImg').attr('src', e.target.result);
-                    }
+        if ($('#CompanyCity').val() == "") {
+            $('#CompanyCity').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyCity').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+        
 
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
 
-            $("#FileUpload1").change(function () {
-                readURL(this);
-            });
+        if ($('#CompanyPhone').val() == "") {
+            $('#CompanyPhone').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyPhone').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+
+        if ($('#BankName').val() == "") {
+            $('#BankName').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#BankName').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+        if ($('#BIC').val() == "") {
+            $('#BIC').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#BIC').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+        
+        if ($('#BTW').val() == "") {
+            $('#BTW').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#BTW').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+        if ($('#StreetNumber').val() == "") {
+            $('#StreetNumber').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#StreetNumber').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+
+        if ($('#CompanyCountry').val() == "") {
+            $('#CompanyCountry').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyCountry').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+        if ($('#CompanyCell').val() == "") {
+            $('#CompanyCell').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyCell').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+        if ($('#IBANNumber').val() == "") {
+            $('#IBANNumber').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#IBANNumber').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+        if ($('#KVK').val() == "") {
+            $('#KVK').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#KVK').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+        if ($('#CompanyEmail').val() == "") {
+            $('#CompanyEmail').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#CompanyEmail').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+        if (document.getElementById("FileUpload1").files.length == 0) {
+            $('#FileUpload1').css('border-color', 'red');
+            Isvalid = false;
+        }
+        else {
+            $('#FileUpload1').css('border-color', '#D3D3D3');
+            Isvalid = true;
+        }
+
+
+        return Isvalid;
+    }
+
+
+    function SuccessInsert() {
+        swal({
+            title: "Congratulations!",
+            text: "Your data has been saved successfully",
+            type: "success",
         });
+    }
 
 
-        var $loading = $('.preloader').hide();
+    $(document).ready(function () {
 
-        $(document)
-          .ajaxStart(function () {
-              $loading.show();
-          })
-          .ajaxStop(function () {
-              $loading.hide();
-          });
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#targetImg').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#FileUpload1").change(function () {
+            readURL(this);
+        });
+    });
+
+
+    var $loading = $('.preloader').hide();
+
+    $(document)
+      .ajaxStart(function () {
+          $loading.show();
+      })
+      .ajaxStop(function () {
+          $loading.hide();
+      });
 </script>
 
 
