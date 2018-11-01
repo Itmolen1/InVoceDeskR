@@ -74,7 +74,7 @@ namespace InvoiceDiskLast.Controllers
 
                     //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
                     string name = userInfo.username.ToString();
-                    Session["username"] = userInfo.username.ToString();
+                    Session["username"] = name;
                     GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("name", name);
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiCompanyStatus/" + "ss").Result;
                     var apiresut = response.Content.ReadAsAsync<object>().Result;
