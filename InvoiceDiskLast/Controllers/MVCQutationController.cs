@@ -330,6 +330,12 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 var CompanyName = Session["CompanyName"];
+
+                if (CompanyName == null)
+                {
+                    CompanyName = "Nocompany";
+                }
+
                 var contact = Session["CompanyContact"];
                 var companyEmail = Session["CompanyEmail"];
                 if (contact == null)
@@ -341,6 +347,7 @@ namespace InvoiceDiskLast.Controllers
                     companyEmail = "Company Email";
                 }
 
+
                 int id = 0;
                 if (Session["ClientID"] != null)
                 {
@@ -351,7 +358,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-                StringBuilder sb = new StringBuilder();
+              
 
 
 
@@ -384,8 +391,9 @@ namespace InvoiceDiskLast.Controllers
                 email.invoiceId = (int)QutationId;
                 email.From = "samarbudhni@gmail.com";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                throw ex;
             }
 
             return View(email);
@@ -411,7 +419,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     var p = email.Attachment.Split('.');
 
-                    var root = Server.MapPath("~/PDF/");
+                    var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}.pdf", p);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -431,7 +439,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 else
                 {
-                    var root = Server.MapPath("~/PDF/");
+                    var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}.pdf", email.Attachment);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -588,12 +596,12 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.QutationDat = QutationModel;
                 ViewBag.QutationDatailsList = QutationModelDetailsList;
                 string companyName = quttationId + "-" + companyModel.CompanyName;
-                var root = Server.MapPath("~/PDF/");
+                var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
                 path = Path.GetFullPath(path);
 
-                string subPath = "~/PDF"; // your code goes here
+                string subPath = "/PDF"; // your code goes here
                 bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
 
                 if (!exists)
@@ -1103,7 +1111,7 @@ namespace InvoiceDiskLast.Controllers
             string FileName = SetPdfName(FilePath);
             try
             {
-                filepath = System.IO.Path.Combine(Server.MapPath("~/PDF/"), FilePath);
+                filepath = System.IO.Path.Combine(Server.MapPath("/PDF/"), FilePath);
                 HttpContext.Items["FilePath"] = filepath;
 
             }
@@ -1189,7 +1197,7 @@ namespace InvoiceDiskLast.Controllers
 
                         //calling printing option
                         string path1 = PrintView((int)MVCQutationViewModel.QutationID);
-                        var root = Server.MapPath("~/PDF/");
+                        var root = Server.MapPath("/PDF/");
                         var pdfname = String.Format("{0}", path1);
                         var path = Path.Combine(root, pdfname);
                         path = Path.GetFullPath(path);
@@ -1302,7 +1310,7 @@ namespace InvoiceDiskLast.Controllers
 
                         //calling printing option
                         string path1 = PrintView(Qid);
-                        var root = Server.MapPath("~/PDF/");
+                        var root = Server.MapPath("/PDF/");
                         var pdfname = String.Format("{0}", path1);
                         var path = Path.Combine(root, pdfname);
                         path = Path.GetFullPath(path);

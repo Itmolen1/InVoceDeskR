@@ -837,7 +837,7 @@ namespace InvoiceDiskLast.Controllers
             string FileName = SetPdfName(FilePath1);
             try
             {
-                filepath = System.IO.Path.Combine(Server.MapPath("~/PDF/"), FilePath1);
+                filepath = System.IO.Path.Combine(Server.MapPath("/PDF/"), FilePath1);
                 HttpContext.Items["FilePath"] = FilePath1;
 
             }
@@ -940,7 +940,12 @@ namespace InvoiceDiskLast.Controllers
                 {
                     companyEmail = "Company Email";
                 }
+              
 
+                if (CompanyName == null)
+                {
+                    CompanyName = "Nocompany";
+                }
                 int id = 0;
                 if (Session["ClientID"] != null)
                 {
@@ -1025,7 +1030,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     var p = email.Attachment.Split('.');
 
-                    var root = Server.MapPath("~/PDF/");
+                    var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}.pdf", p);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -1045,7 +1050,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 else
                 {
-                    var root = Server.MapPath("~/PDF/");
+                    var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}.pdf", email.Attachment);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -1121,12 +1126,12 @@ namespace InvoiceDiskLast.Controllers
 
 
                 string companyName = purchaseOrderId + "-" + companyModel.CompanyName;
-                var root = Server.MapPath("~/PDF/");
+                var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
                 path = Path.GetFullPath(path);
 
-                string subPath = "~/PDF"; // your code goes here
+                string subPath = "/PDF"; // your code goes here
                 bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
 
                 if (!exists)
