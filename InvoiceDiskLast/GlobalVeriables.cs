@@ -13,8 +13,8 @@ namespace InvoiceDiskLast
         public static HttpClient WebApiClient = new HttpClient();
         static GlobalVeriables()
         {
-           WebApiClient.BaseAddress = new Uri("http://localhost:63861/api/");
-          //WebApiClient.BaseAddress = new Uri("http://uurtjefactuur.nl/api/");
+            WebApiClient.BaseAddress = new Uri("http://localhost:63861/api/");
+           // WebApiClient.BaseAddress = new Uri("http://uurtjefactuur.nl/api/");
             WebApiClient.DefaultRequestHeaders.Clear();
             WebApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
            // WebApiClient.DefaultRequestHeaders.Add("authorization", "Bearer <access_token>");

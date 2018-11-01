@@ -29,12 +29,10 @@ namespace InvoiceDiskLast.Controllers
             {
                 IDS = headerValues.FirstOrDefault();
             }
-            int id = Convert.ToInt32(IDS);
-           
+            int id = Convert.ToInt32(IDS);           
 
           try
             {
-
                List<MVCProductUnitModel> obProductUnit = db.ProductUnitTables.Where(x => x.CompanyId == id && x.Status == true).Select(c => new MVCProductUnitModel
                     {
                         ProductUnitID = c.ProductUnitID,
@@ -52,46 +50,7 @@ namespace InvoiceDiskLast.Controllers
             }
            
         }
-
-        //[Route("{name:alpha}")]
-        //public IHttpActionResult GetProductUnitTable(string name)
-        //{
-        //    CheckUnit1 onj = new CheckUnit1();
-        //    IEnumerable<string> headerValues;
-        //    object ob = new object();
-        //    ob = 0;
-        //    var IDS = "";
-        //    if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
-        //    {
-        //        IDS = headerValues.FirstOrDefault();
-        //    }
-        //    int id = Convert.ToInt32(IDS);
-
-
-        //    if (name != "")
-        //    {
-        //        onj.count = (db.ProductUnitTables.Count(x => x.ProductUnit.ToLower() == name.ToLower() && x.CompanyId == id));
-        //        return Ok(onj);
-        //    }
-        //    else
-        //    {
-        //        return Ok(onj);
-        //    }
-        //}
-
-
-        //[ResponseType(typeof(ProductUnitTable))]
-        //[Route("{id:int:min(1)}")]
-        //public IHttpActionResult GetProductUnitTable(int id)
-        //{
-        //    ProductUnitTable productUnitTable = db.ProductUnitTables.Find(id);
-        //    if (productUnitTable == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(productUnitTable);
-        //}
+       
 
         // GET: api/APIProductUnit/5
 

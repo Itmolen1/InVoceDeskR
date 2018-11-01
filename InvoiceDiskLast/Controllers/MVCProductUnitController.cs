@@ -81,7 +81,9 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult CheckUnitStatus(string name)
         {
-            CheckUnit objectcount = new CheckUnit();
+            
+            List<MVCProductUnitModel> ProductUnitmodel = new List<MVCProductUnitModel>();
+            
 
             if (name != null)
             {
@@ -91,10 +93,20 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit/" + name.ToString()).Result;
 
 
-                objectcount = response.Content.ReadAsAsync<CheckUnit>().Result;
 
-                
-                if (objectcount.count > 0)
+                ProductUnitmodel = response.Content.ReadAsAsync<List<MVCProductUnitModel>>().Result;
+                CheckUnit objectcount = new CheckUnit();
+                objectcount.countResult = 0;
+                foreach (MVCProductUnitModel p in ProductUnitmodel)
+                {
+                   if(p.ProductUnit.ToLower() == name.ToLower())
+                    {
+                        objectcount.countResult = 1;
+                        break;
+                    }
+                }
+
+                    if (objectcount.countResult > 0)
                 {
                     return Json("Found", JsonRequestBehavior.AllowGet);
                 }
@@ -114,6 +126,6 @@ namespace InvoiceDiskLast.Controllers
 
     public class CheckUnit
     {
-        public int count{ get; set; }
+        public int countResult{ get; set; }
     }
 }
