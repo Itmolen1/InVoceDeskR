@@ -11,12 +11,14 @@ using System.Web.Http.Description;
 
 namespace InvoiceDiskLast.Controllers
 {
+
+
     public class APIPurchaseController : ApiController
     {
         private DBEntities db = new DBEntities();
 
         [ResponseType(typeof(MvcPurchaseModel))]
-        public IHttpActionResult GetQutationTable(int id)
+        public IHttpActionResult GetPurchaseTable(int id)
         {
             MvcPurchaseModel puchaseorder = new MvcPurchaseModel();
 
@@ -49,33 +51,34 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception)
             {
                 return NotFound();
-               
+
             }
 
-           
+
         }
 
-        //get list
-        public IHttpActionResult GetPurchaseOrder()
+      
+        [Route("api/OrderListByStatus/{Status:alpha}")]
+        public IHttpActionResult GetPurchaseOrderListByStatus(string Status)
         {
             object ob = new object();
+
             try
             {
-
-                IEnumerable<string> headerValues;
-                //var DBLIST = "";
                 var IDS = "";
+                int id = 0;
+                IEnumerable<string> headerValues;
                 if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
                 {
                     IDS = headerValues.FirstOrDefault();
+                    id=Convert.ToInt32(IDS);
                 }
-                int id = Convert.ToInt32(IDS);
 
-                ob = db.PurchaseOrderTables.Where(p=>p.CompanyId== id).ToList().Select(p => new MvcPurchaseModel
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MvcPurchaseModel
                 {
                     PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
-                    PurchaseDate =(DateTime)p.PurchaseDate,
+                    PurchaseDate = (DateTime)p.PurchaseDate,
                     PurchaseDueDate = p.PurchaseDueDate,
                     PurchaseRefNumber = p.PurchaseRefNumber,
                     PurchaseSubTotal = p.PurchaseSubTotal,
@@ -89,6 +92,58 @@ namespace InvoiceDiskLast.Controllers
                     UserId = p.UserId,
                     AddedDate = p.AddedDate,
                 }).ToList();
+
+                return Ok(ob);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Ok();
+        }
+
+
+        //get list
+   
+        public IHttpActionResult GetPurchaseOrder()
+        {
+            object ob = new object();
+            try
+            {
+
+                IEnumerable<string> headerValues;
+                //var DBLIST = "";
+                var IDS = "";
+                var Status = "";
+
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                }
+                int id = Convert.ToInt32(IDS);
+             
+                    ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id).ToList().Select(p => new MvcPurchaseModel
+                    {
+                        PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
+                        PurchaseID = p.PurchaseID,
+                        PurchaseDate = (DateTime)p.PurchaseDate,
+                        PurchaseDueDate = p.PurchaseDueDate,
+                        PurchaseRefNumber = p.PurchaseRefNumber,
+                        PurchaseSubTotal = p.PurchaseSubTotal,
+                        PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
+                        PurchaseDiscountAmount = p.PurchaseOrderID,
+                        PurchaseVatPercentage = p.PurchaseVatPercentage,
+                        PurchaseTotoalAmount = p.PurchaseTotoalAmount,
+                        PurchaseVenderNote = p.PurchaseVenderNote,
+                        Status = p.Status,
+                        CompanyId = p.CompanyId,
+                        UserId = p.UserId,
+                        AddedDate = p.AddedDate,
+                    }).ToList();
+                
             }
             catch (Exception ex)
             {

@@ -1,10 +1,4 @@
-﻿
-@{
-    ViewBag.Title = "PurchaseList";
-}
-
-
-<script src="~/Scripts/jquery-1.10.2.js"></script>
+﻿<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 
@@ -47,21 +41,22 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        alert('ferfer');
+
         $("#PurchaseListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
             "language": {
-              //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+                //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
             },
             "searching": true,
             "serverSide": true, // for process server side
             "filter": false, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
             "ajax": {
-                "url": "/Purchase/GetPurderOrderList",
+                "url": "/Order/GetPurderOrderList",
                 "type": "POST",
                 "datatype": "json"
+
             },
             "columns": [
                    { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
@@ -92,16 +87,65 @@
                    { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
                     { "data": "Status", "name": "Status", "autoWidth": true },
-
                    {
                        render: function (data, type, row) {
-                           return '<a href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
+                           return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="RejecttOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
                        }
                    }
-
             ]
         });
-
-
     });
- </script>
+
+
+
+    function AcceptOrder(id) { 
+        updateStatus(id, "Accepted", "the invoice is Accepted successfully");
+    }
+    function RejecttOrder(id) {
+       updateStatus(id, "Rejected", "the invoice is rejected successfully");
+    }
+    function PendingtOrder(PurchaseId) {
+      updateStatus(PurchaseId, "Pending", "the invoice is Pending successfully");
+    }
+
+    function updateStatus(Id, Status,Message) {
+        debugger;
+        var Data= JSON.stringify({
+            purchaseId: Id,
+            Status: Status,
+        })
+        $.ajax({
+            url: '/Order/UpdateOrderStaus',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.Status == "Success") {
+                    $('#PurchaseListTable').DataTable().ajax.reload();
+                  
+                    swal({
+                        title: 'Status!',
+                        text: Message,
+                        type: 'success'
+                    });
+                }
+                else if (response.Status == "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text:  "fail to process",
+                        type: 'danger'
+                    });
+                }
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+    }
+
+
+
+
+
+</script>
