@@ -1,34 +1,33 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "PurchaseList";
 }
+
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-    
-    
-   
-<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a> 
 
-<table class="table" id="PurchaseDetailTable">
+<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+
+<table class="table" id="PurchaseListTable">
     <thead style="background-color:black;color:white">
         <tr>
             <th>
                 PurchaseId
             </th>
-          
+
             <th>
-               PurchaseDate
+                PurchaseDate
             </th>
             <th>
-               PurchaseDueDate
+                PurchaseDueDate
             </th>
             <th>
-               RefrenceNumber
+                RefrenceNumber
             </th>
             <th>
-               Puchase Subtotal
+                Puchase Subtotal
             </th>
             <th>
                 DiscountAmount
@@ -46,15 +45,14 @@
     <tbody></tbody>
 </table>
 
-
 <script type="text/javascript">
     $(document).ready(function () {
-     
-        $("#PurchaseDetailTable").DataTable({
+        alert('ferfer');
+        $("#PurchaseListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
             "language": {
-                "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+              //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
             },
             "searching": true,
             "serverSide": true, // for process server side
@@ -84,7 +82,7 @@
                             var pattern = /Date\(([^)]+)\)/;//date format from server side
                             var results = pattern.exec(value);
                             var dt = new Date(parseFloat(results[1]));
-                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();                          
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
                         }, "autoWidth": true
                     },
 
@@ -100,32 +98,10 @@
                            return '<a href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
                        }
                    }
+
             ]
         });
 
 
     });
-
-
-
-    function EditPurchase(PurchaseId) {
-
-       
-        $.ajax({
-            url: '/Purchase/AddOrEditPurchase',
-            type: 'GET',
-            data: {
-                purchaseId: PurchaseId
-            },
-            success: function (data) {
-              
-                window.location.href = "/Purchase/AddOrEdit/" + PurchaseId;
-            }
-        });
-    }
-
-
-</script>
-
-
-
+ </script>
