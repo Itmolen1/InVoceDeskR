@@ -12,9 +12,7 @@ namespace InvoiceDiskLast.Models
         public int ?  PurchaseOrderID { get; set; }
         public string Purchase_ID { get; set; }
 
-  
-
-
+ 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> PurchaseDate { get; set; }

@@ -46,56 +46,56 @@ namespace InvoiceDiskLast.Controllers
 
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-                {                  
+                {
                     PurchaseList = PurchaseList.Where(p => p.PurchaseOrderID.ToString().Contains(search)
                   || p.PurchaseRefNumber != null && p.PurchaseRefNumber.ToLower().Contains(search.ToLower())
                   || p.PurchaseDate != null && p.PurchaseDate.ToString().ToLower().Contains(search.ToLower())
                   || p.PurchaseDueDate != null && p.PurchaseDueDate.ToString().ToLower().Contains(search.ToLower())
                   || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
                   || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
-                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower()) ).ToList();
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
                 }
 
 
-            //    switch (sortColumn)
-            //{
-            //    case "ContactName":
-            //        ContactsList = ContactsList.OrderBy(c => c.ContactName);
-            //        break;
-            //    case "Type":
-            //        ContactsList = ContactsList.OrderBy(c => c.Type);
-            //        break;
+                //    switch (sortColumn)
+                //{
+                //    case "ContactName":
+                //        ContactsList = ContactsList.OrderBy(c => c.ContactName);
+                //        break;
+                //    case "Type":
+                //        ContactsList = ContactsList.OrderBy(c => c.Type);
+                //        break;
 
 
-            //    case "BillingPersonName":
-            //        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
-            //        break;
+                //    case "BillingPersonName":
+                //        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
+                //        break;
 
-            //    case "BillingCompanyName":
-            //        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
-            //        break;
+                //    case "BillingCompanyName":
+                //        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
+                //        break;
 
-            //    case "BillingVatTRN":
+                //    case "BillingVatTRN":
 
-            //        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
-            //        break;
+                //        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
+                //        break;
 
-            //    default:
-            //        ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
-            //        break;
-            //}
+                //    default:
+                //        ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
+                //        break;
+                //}
 
 
-            int recordsTotal = recordsTotal = PurchaseList.Count();
+                int recordsTotal = recordsTotal = PurchaseList.Count();
                 var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 Response.Write(ex.ToString());
-                Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+              return  Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
             }
-            return Json(null, JsonRequestBehavior.AllowGet);
+           return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -141,7 +141,7 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-           
+
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -201,7 +201,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
                             if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
                             {
-                                purchadeDetail.PurchaseId = intpurchaseorderId; 
+                                purchadeDetail.PurchaseId = intpurchaseorderId;
 
                                 intpurchaseorderId = Convert.ToInt32(purchaseorderId);
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
@@ -263,9 +263,9 @@ namespace InvoiceDiskLast.Controllers
             var path = Path.Combine(root, pdfname);
             path = Path.GetFullPath(path);
             //DownloadFile(path);
-            return new JsonResult { Data = new { Status = "Success", path= path, PurchaseOrderId = intpurchaseorderId } };
+            return new JsonResult { Data = new { Status = "Success", path = path, PurchaseOrderId = intpurchaseorderId } };
         }
-            
+
 
 
 
@@ -343,7 +343,7 @@ namespace InvoiceDiskLast.Controllers
 
                     purchaseviewModel.PurchaseOrderID = ob.PurchaseOrderID;
                     purchaseviewModel.Purchase_ID = ob.PurchaseID;
-                    purchaseviewModel.PurchaseDate =Convert.ToDateTime(ob.PurchaseDate);
+                    purchaseviewModel.PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);
                     purchaseviewModel.PurchaseDueDate = (DateTime)ob.PurchaseDueDate;
                     purchaseviewModel.PurchaseRefNumber = ob.PurchaseRefNumber;
                     purchaseviewModel.PurchaseSubTotal = ob.PurchaseSubTotal;
@@ -456,11 +456,11 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId==null)
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;
 
-                               HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
                             }
                             else
                             {
@@ -491,7 +491,7 @@ namespace InvoiceDiskLast.Controllers
                                 purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                                 purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                                 purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId==null)
+                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
                                 {
                                     purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -598,7 +598,7 @@ namespace InvoiceDiskLast.Controllers
                     if (purchaseViewModel.PurchaseOrderID != 0)
                     {
                         purchasemodel.PurchaseID = purchaseViewModel.Purchase_ID;
-                        intpurchaseorderId =Convert.ToInt32(purchaseViewModel.PurchaseOrderID);
+                        intpurchaseorderId = Convert.ToInt32(purchaseViewModel.PurchaseOrderID);
                         HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + purchasemodel.PurchaseOrderID, purchasemodel).Result;
 
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
@@ -869,7 +869,7 @@ namespace InvoiceDiskLast.Controllers
                     return RedirectToAction("Index", "Login");
                 }
 
-             
+
 
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
@@ -894,13 +894,15 @@ namespace InvoiceDiskLast.Controllers
 
                 string PdfName = purchaseOrderId + "-" + companyModel.CompanyName + ".pdf";
 
-                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml") { FileName = PdfName ,
-                  
+                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
+                {
+                    FileName = PdfName,
+
 
                     CustomSwitches =
             "--footer-center \"  Created Date: " +
-               "Wilt u zo vriendelik zijn om het verschuldigde bedrag binnen Convert.ToInt32 dagen over to maken naai IBAN:"+
-                    "NL07ABNA0812436350 ten name Van IT Molen o.v.v bovenstaande factuurnumber"+
+               "Wilt u zo vriendelik zijn om het verschuldigde bedrag binnen Convert.ToInt32 dagen over to maken naai IBAN:" +
+                    "NL07ABNA0812436350 ten name Van IT Molen o.v.v bovenstaande factuurnumber" +
                   "(Op al diensten en producten zijn onze algemene voorwaaren toepassing Deze Kunt u downloden vanze website) +   Page: [page]/[toPage]\"" +
           " --footer-line --footer-font-size \"12\" --footer-spacing 1 --footer-font-name \"Segoe UI\""
 
@@ -909,7 +911,7 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception ex)
             {
                 return null;
-                
+
             }
         }
 
@@ -942,7 +944,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     companyEmail = "Company Email";
                 }
-              
+
 
                 if (CompanyName == null)
                 {
@@ -1214,7 +1216,7 @@ namespace InvoiceDiskLast.Controllers
 
         [HttpPost]
         public ActionResult DeleteInvoice(int PurchaseOrderId, int purchaseOrderDetailId, int vat, decimal total)
-         {
+        {
             try
             {
 
@@ -1226,7 +1228,7 @@ namespace InvoiceDiskLast.Controllers
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 
-                  GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("PDID", PurchaseOrderId.ToString());
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("PDID", PurchaseOrderId.ToString());
                 //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("QutationDetailID1", QutationDetailID1);
 
 
@@ -1252,7 +1254,7 @@ namespace InvoiceDiskLast.Controllers
                         if (vat == 6)
                             mvcpurchaseModel.Vat6 = detailModel.PurchaseVatPercentage - 6;
                         else
-                            mvcpurchaseModel.Vat21=detailModel.PurchaseVatPercentage - 21;
+                            mvcpurchaseModel.Vat21 = detailModel.PurchaseVatPercentage - 21;
 
 
                         HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + PurchaseOrderId, mvcpurchaseModel).Result;
@@ -1297,7 +1299,7 @@ namespace InvoiceDiskLast.Controllers
                         if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                           
+
                             return new JsonResult { Data = new { Status = "Success" } };
                         }
                     }
@@ -1322,7 +1324,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult Design()
         {
             return View();
-        } 
+        }
 
 
         public class VatModel
@@ -1331,6 +1333,24 @@ namespace InvoiceDiskLast.Controllers
             public string Name { get; set; }
 
         }
+
+
+        public ActionResult PurchaseList()
+        {
+            return View();
+
+        }
+
+
+       
+
+
+
+
+      
+
+
+
     }
 
 }
