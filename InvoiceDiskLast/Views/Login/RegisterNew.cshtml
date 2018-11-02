@@ -17,8 +17,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
-    <title>Elegant Admin Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/logo-icon.png">
+    <title>Factuur Baheer Systeem</title>
     <!-- page css -->
     <link href="~/dist/css/pages/login-register-lock.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -50,8 +50,9 @@
             <div class="card-body">
                 <form class="form-horizontal form-material" id="loginform">
                     <a href="javascript:void(0)" class="text-center db">
-                        <img src="~/assets/images/logo-icon.png" alt="Home" /><br />
-                        <img src="~/assets/images/logo-text.png" alt="Home" />
+                       
+                        <img src="~/assets/images/logo-light-text.png" alt="Home" /><br />
+                       
                     </a>
                     <h3 class="box-title m-t-40 m-b-0">Register Now</h3><small>Create your account and enjoy</small>
                     <div class="form-group m-t-20">
@@ -60,13 +61,17 @@
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="email" id="txtemail" required placeholder="Email">
+                            <input class="form-control" type="email" id="txtemail" required placeholder="Email" onkeyup="ClearMessage()">                           
+                        </div>
+                        <div>
+                            <span id="message1" style="color:red; display:none">E-mail already exist,choose another</span>
                         </div>
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input class="form-control" type="password" id="txtPassword" required placeholder="Password">
-                        </div>
+                            <input class="form-control" type="password" id="txtPassword" required placeholder="Password" title="8 characters long 1 uppercase & 1 lowercase character 
+                                           1 number">
+                        </div>                        
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
@@ -160,10 +165,23 @@
 
 
             });
-
         }
 
+        $('#txtemail').change(function () {
+            CheckAvailability();
+        });
 
+
+        $(document).on('input', '#txtemail', function () {
+            var galutinis = $(this).attr('id');         
+          
+            CheckAvailability();
+        });
+
+        //$('#txtPassword').tooltip({
+        //    show: { delay: 10, duration: 500, effect: 'slideDown' },
+        //    hide: { delay: 10, duration: 500, effect: 'slideUp' }
+        //});
 
     });
 </script>
@@ -248,14 +266,39 @@
     //    }
     //    return isValid;
     //}
-    var $loading = $('.preloader').hide();
+    //var $loading = $('.preloader').hide();
 
-    $(document)
-      .ajaxStart(function () {
-          $loading.show();
-      })
-      .ajaxStop(function () {
-          $loading.hide();
-      });
+    //$(document)
+    //  .ajaxStart(function () {
+    //      $loading.show();
+    //  })
+    //  .ajaxStop(function () {
+    //      $loading.hide();
+    //  });
+
+</script>
+
+<script>
+    function CheckAvailability() {
+        debugger;
+            var username = $("#txtemail").val();
+            $.ajax({
+                type: "POST",
+                url: "/Captcha/CheckUsername",
+                data: '{UserName: "' + username + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",                
+                success: function (response) {
+                    debugger;
+                    var message = $("#message");
+                    if (response) {
+                        $("#message1").css("display", "none");
+                    }
+                    else { 
+                        $("#message1").css("display", "block");
+                    }
+                }
+            });
+        };
 
 </script>

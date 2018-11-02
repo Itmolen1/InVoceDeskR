@@ -19,6 +19,7 @@ namespace InvoiceDiskLast.Controllers
 
     public class CaptchaController : Controller
     {
+        DBEntities db = new DBEntities();
         
         public ActionResult Index()
         {
@@ -57,10 +58,15 @@ namespace InvoiceDiskLast.Controllers
 
                     HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
 
-                    HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
-                     //HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
+                    //HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
+                     HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
                     token = response.Content.ReadAsAsync<BearerToken>().Result;
 
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        ViewBag.ErrorMessage = "username or password incorrect!";
+                        return View(user);
+                    }
                     // Store token in ASP.NET Session State for later use
                     Session["ApiAccessToken"] = token.AccessToken;
                 }
@@ -69,7 +75,10 @@ namespace InvoiceDiskLast.Controllers
                 //respons.Headers.Add("Authorization", "Bearer " + token.AccessToken);              
                 //respons.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-                if(Session["ApiAccessToken"] != null)
+
+               
+
+                if (Session["ApiAccessToken"] != null)
                 {
 
                     //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
@@ -103,15 +112,63 @@ namespace InvoiceDiskLast.Controllers
                 }
             }
 
-            ViewBag.ErrMessage = "Error: captcha is not valid upto now.";
+           ViewBag.ErrorMessage = "captcha is not valid upto now.";
 
             return View(user);          
         }
+
+
+       // public string Test(int id)
+       // {
+            
+       //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + id).Result;
+       //     return response.Content.ToString();
+       // }
+
+
+       // public string Test2(string name,int id=0)
+       //{
+
+       //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name+ "/"+id).Result;
+       //     return response.Content.ToString();
+       // }
+
+       // public string Test1(string name)
+       // {
+
+       //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name).Result;
+       //     return response.Content.ToString();
+       // }
 
         public string ThankYouPage()
         {
             return "Valid";
 
+        }
+                
+
+        [HttpPost]
+        public JsonResult CheckUsername(string username)
+        {
+
+            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("Email", username);
+            AspNetUser productTable = new AspNetUser();
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ConfirmEmail/" + "ss").Result;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+
+                bool isValid = false;
+                return Json(isValid);
+               
+            }
+            else
+            {
+                bool isValid = true;
+                return Json(isValid);
+            }
+          
         }
     }
     public class UserInfo

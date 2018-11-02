@@ -12,11 +12,12 @@ using InvoiceDiskLast.Models;
 
 namespace InvoiceDiskLast.Controllers
 {
-    
+   
     public class APIProductUnitController : ApiController
     {
         
         private DBEntities db = new DBEntities();
+       
        
         // GET: api/APIProductUnit
         public IHttpActionResult GetProductUnitTables()
@@ -50,7 +51,25 @@ namespace InvoiceDiskLast.Controllers
             }
            
         }
-       
+
+        //[Route("api/students/{id:int}")]
+        //public IHttpActionResult GetProductUnitTables(int id)
+        //{
+        //    return Ok(id);
+        //}
+
+        //[Route("api/students/{name:alpha}")]
+        //public IHttpActionResult GetProductUnitTables(string name)
+        //{
+        //    return Ok(name);
+        //}
+
+        //[Route("api/students/{name:alpha}/{id:int}")]
+        //public IHttpActionResult GetProductUnitTables(string name,int id)
+        //{
+        //    return Ok(name + id);
+        //}
+
 
         // GET: api/APIProductUnit/5
 
@@ -107,6 +126,7 @@ namespace InvoiceDiskLast.Controllers
             return CreatedAtRoute("DefaultApi", new { id = productUnitTable.ProductUnitID }, productUnitTable);
         }
 
+        
         // DELETE: api/APIProductUnit/5
         [ResponseType(typeof(ProductUnitTable))]
         public IHttpActionResult DeleteProductUnitTable(int id)
