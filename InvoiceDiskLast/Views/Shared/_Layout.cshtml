@@ -68,7 +68,7 @@
                 <!-- Logo -->
                 <!-- ============================================================== -->
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index-2.html">
+                    <a class="navbar-brand" href="/Home/Index">
                         <!-- Logo icon --><b>
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
@@ -500,7 +500,7 @@
 
 
 <script>
-
+    var showRequiredModel = "";
 
     $(document).ready(function () {
 
@@ -512,11 +512,19 @@
 
         $('#SelectContacts1').change(function () {
 
+            showRequiredModel = "QutationContactModel";
             var value = $(this).val();
             if (value == "AddNewClientSelect") {
 
                 $('#QutationContactModel').modal('hide');
-                $('#AddNewContactModel').modal('show');
+               
+                $('#ModelHeading').text("Maak nieuwe klant");
+                $("#TypeContacts").find("option").remove();
+                $("#TypeContacts").prepend("<option value=Customer>" + 'Klant' + "</option>");
+                $('#CreateNewContactModal1')
+             
+               
+                .modal('show');
 
             }
 
@@ -2019,7 +2027,6 @@
                 type: "POST",
                 dataType: "json",
                 success: function (resultData) {
-                    sessionStorage.removeItem('accessToken');
                     window.location.href = "/Captcha/Index";
                 },
                 error: function (errormessage) {
@@ -2165,9 +2172,6 @@
         });
     }
 
-
-
-
     function EditQuatation(id) {
 
         $.ajax({
@@ -2206,13 +2210,30 @@
 
             var value = $(this).val();
             if (value == "AddNewVenderSelect") {
-
+                showRequiredModel = "";
                 $('#VenderSelectModel').modal('hide');
-                $('#AddNewVenderModel').modal('show');
+                $('#ModelHeading').text("Maak nieuwe vender");
+                $("#TypeContacts").find("option").remove();
+                $("#TypeContacts").prepend("<option value=Vender>" + 'verkoper' + "</option>");
+                $('#CreateNewContactModal1')              
+                .modal('show');
 
             }
 
         });
+
+
+
+
+        //$('.call-modal').on('click', function (e) {
+        //    e.preventDefault();
+        //    $('#defaultModal')
+        //    .find('.modal-header > h3').text("Teste").end()
+        //    .find('.modal-body').load($(this).attr('href')).end()
+        //    .modal('show');
+        //});
+
+
 
 
 
@@ -2249,8 +2270,6 @@
        
     });
 
-
-
     function LoadVernder() {
         $("#venderSelect").find("option").remove();
         $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
@@ -2276,33 +2295,6 @@
         });
     }
 
-
-    
-
-
-
-
-
-    //$('#SaveVender').click(function () {
-    //    $.ajax({
-    //        url: '/MVCClient/AddOrEdit',
-    //        type: 'POST',
-    //        data: {
-    //            ContactName: $('#VenderName').val(),
-    //            Type: "Vender",
-    //            ContactAddress: $('#VenderAddress').val()
-    //        },
-    //        success: function (data) {
-    //            $('#AddNewVenderModel').modal('hide');
-    //            LoadVernder();
-    //            $('#VenderSelectModel').modal('show');
-    //        },
-    //        error: function () {
-    //            alert("error");
-    //        }
-    //    });
-
-    //});
 
 
     @*function EditPurchase(PurchaseId) {
@@ -2404,24 +2396,6 @@
         }
     });
 
-    //$('#SaveClinetQutation').click(function () {
-    //    $.ajax({
-    //        url: '/MVCClient/AddOrEdit',
-    //        type: 'POST',
-    //        data: {
-    //            ContactName: $('#ContactName').val(),
-    //            ContactAddress: $('#ContactAddress').val(),
-    //            Type: "Customer"
-    //        },
-    //        success: function (data) {
-    //            $('#AddNewContactModel').modal('hide');
-    //            LoadContacts();
-    //            $('#QutationContactModel').modal('show');
-    //        },
-    //        error: function () {
-    //            alert("error");
-    //        }
-    //    });
-    //});
+ 
 
 </script>
