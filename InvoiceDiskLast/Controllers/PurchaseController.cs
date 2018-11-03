@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,6 +12,7 @@ namespace InvoiceDiskLast.Controllers
 {
 
     [SessionExpireAttribute]
+   
     public class PurchaseController : Controller
     {
         // GET: Purchase
@@ -93,9 +95,9 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception ex)
             {
                 Response.Write(ex.ToString());
-              return  Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+                return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
             }
-           return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+            return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -850,15 +852,17 @@ namespace InvoiceDiskLast.Controllers
             return File(filepath, MimeMapping.GetMimeMapping(filepath), FileName);
         }
 
+        [AllowAnonymous]
+        public ActionResult Footer()
+        {
+            return View();
+        }
 
 
 
 
         public ActionResult Print(int? purchaseOrderId)
-        {
-
-
-
+        {                       
             try
             {
                 var idd = Session["ClientID"];
@@ -891,6 +895,11 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
+                     
+                DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
+                DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
+                TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
+                 string  diffDate = ts.Days.ToString();
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
@@ -899,18 +908,15 @@ namespace InvoiceDiskLast.Controllers
 
                 string PdfName = purchaseOrderId + "-" + companyModel.CompanyName + ".pdf";
 
+              //  string CustomSwitches = string.Format("--header-html \"{0} \" " +
+
+
                 return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
                 {
                     FileName = PdfName,
-
-
-                    CustomSwitches =
-            "--footer-center \"  Created Date: " +
-               "Wilt u zo vriendelik zijn om het verschuldigde bedrag binnen Convert.ToInt32 dagen over to maken naai IBAN:" +
-                    "NL07ABNA0812436350 ten name Van IT Molen o.v.v bovenstaande factuurnumber" +
-                  "(Op al diensten en producten zijn onze algemene voorwaaren toepassing Deze Kunt u downloden vanze website) +   Page: [page]/[toPage]\"" +
-          " --footer-line --footer-font-size \"12\" --footer-spacing 1 --footer-font-name \"Segoe UI\""
-
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen "+diffDate+ " dagen over te maken naar IBAN: \n NL07ABNA0812436350 ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\""
                 };
             }
             catch (Exception ex)
@@ -1347,12 +1353,12 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-       
 
 
 
 
-      
+
+
 
 
 

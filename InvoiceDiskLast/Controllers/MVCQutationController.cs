@@ -588,6 +588,12 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quttationId.ToString()).Result;
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
 
+                DateTime qutationDueDate = Convert.ToDateTime(QutationModel.DueDate); //mm/dd/yyyy
+                DateTime qutationDate = Convert.ToDateTime(QutationModel.QutationDate);//mm/dd/yyyy
+                TimeSpan ts = qutationDueDate.Subtract(qutationDate);
+                string diffDate = ts.Days.ToString();
+
+
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quttationId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
@@ -596,6 +602,9 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.QutationDat = QutationModel;
                 ViewBag.QutationDatailsList = QutationModelDetailsList;
                 string companyName = quttationId + "-" + companyModel.CompanyName;
+
+
+
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
@@ -629,6 +638,12 @@ namespace InvoiceDiskLast.Controllers
 
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
                 {
+                 
+                   CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n NL07ABNA0812436350 ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+
+
                     SaveOnServerPath = path, // Save your place
                     PageWidth = 200,
                     PageHeight = 350,
