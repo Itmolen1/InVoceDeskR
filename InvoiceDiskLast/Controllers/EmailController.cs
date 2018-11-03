@@ -33,17 +33,18 @@ namespace InvoiceDiskLast.Controllers
             {
                 string bodyhtml = emailmodel.EmailBody;
                 MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                SmtpClient SmtpServer = new SmtpClient("smtp.uurtjefactuur.nl");               
                 mail.From = new MailAddress(emailmodel.From);
                 mail.To.Add(emailmodel.ToEmail);
-                mail.Subject = "IT Molen Offer Letter";//emailModel.Subject;
+                mail.Subject = "IT Molen";//emailModel.Subject;
                 mail.Body = bodyhtml;
                 System.Net.Mail.Attachment attachment;
                 attachment = new System.Net.Mail.Attachment(emailmodel.Attachment);
                 mail.Attachments.Add(attachment);
                 //Gmail Port
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("samarbudhni@gmail.com", "samar1234567");
+                SmtpServer.Port = 8889;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("info@uurtjefactuur.nl", "Itmolen@123");
                 //You can specifiy below line of code either in web.config file or as below.
                 SmtpServer.EnableSsl = true;
                 SmtpServer.Send(mail);

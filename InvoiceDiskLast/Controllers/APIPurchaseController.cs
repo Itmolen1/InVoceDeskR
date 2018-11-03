@@ -102,7 +102,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
 
-            return Ok();
+           
         }
 
 

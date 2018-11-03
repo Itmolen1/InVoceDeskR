@@ -123,8 +123,6 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
-
         [HttpPost]
         public ActionResult UpdateCompany(MVCCompanyInfoModel compnayViewModel)
         {
