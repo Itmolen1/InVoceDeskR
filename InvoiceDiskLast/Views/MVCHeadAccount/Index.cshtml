@@ -3,46 +3,269 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<button id="CreateNewHeadAccount" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New Head Account</button>
 
-
-<div class="row" style="margin-top:10px">
-    <div class="col-sm-6">
-        <table class="table table-bordered" id="HeadAccountListTable" >
-            <thead style="background-color:black;color:white">
-                <tr>
-                    <th>
-                        Id
-                    </th>
-                    <th>
-                        Titile
-                    </th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-
-        </table>
-    </div>
-    <div class="col-sm-6">
-        <table class="table table-bordered" id="HeadAccountListTable">
-            <thead style="background-color:black;color:white">
-                <tr>
-                    <th>
-                        Id
-                    </th>
-                    <th>
-                        Titile
-                    </th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+<div class="row">
+    <div class="col-sm-2">
+        <button id="CreateNewHeadAccount" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New Head Account</button>
     </div>
    
-</div>
+    <div class="col-sm-8">
+        <select class="form-control p-0" id="ControlAccountSelectTop"></select>
+
+    </div>
+    <div class="col-sm-2"></div>
+    </div>
+
+
+        <script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+        <script src="~/assets/node_modules/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/assets/node_modules/datatables/dataTables.bootstrap.js"></script>
+        <div class="row" style="margin-top:10px">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <table class="table table-bordered" id="HeadAccountListTable">
+                    <thead style="background-color:black;color:white">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Titile
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        @*<div class="col-sm-6">
+                    <table class="table table-bordered" id="HeadAccountListTable1">
+                        <thead style="background-color:black;color:white">
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Titile
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+            </div>*@
 
 
 
-   
+
+        <div id="HeadAccountModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add new Head Account</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <select class="form-control p-0" id="ControlAccountSelect"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="HeadAccountTitle" placeholder="Head Account Title" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="HeadAccountDescription" placeholder="Head Account Description  (Optional)" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                        <button type="button" class="btn btn-danger waves-effect text-left" id="CancelHeadAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#HeadAccountListTable").DataTable({
+                    //"processing": true, // for show progress bar
+                    "processing": true,
+                    //"language": {
+                    //    "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+                    //},
+                    "searching": true,
+                    "serverSide": true, // for process server side
+                    "filter": false, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "ajax": {
+                        "url": "/MVCHeadAccount/GetHeadAccountList",
+                        "type": "POST",
+                        "datatype": "json",
+                    },
+                    "columns": [
+                            { "data": "HeadAccountId", "name": "HeadAccountId", "autoWidth": true },// key for edit delete
+                            { "data": "HeadAccountTitle", "name": "HeadAccountTitle", "autoWidth": true },
+                             { "data": "HeadAccountDescription", "name": "HeadAccountDescription", "autoWidth": true },
+
+                            {
+                                render: function (data, type, row) {
+                                    return '<Button href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditProduct(' + row.HeadAccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</Button>|<a href="" class="btn btn-success btn-sm" onclick="Delete(' + row.HeadAccountId + ')"><i class="fa fa-eye" style="padding-right:10px"></i>View</a>'
+                                }
+                            }
+
+
+
+                    ]
+                });
+                LoadControlAccounttop();
+
+                $('#CreateNewHeadAccount').click(function () {
+                    LoadControlAccount();
+                    $('#HeadAccountModel').modal('show');
+                });
+
+
+
+                function LoadControlAccounttop() {
+
+                    if ($('#ControlAccountSelectTop').has('option').length > 0) {
+                        return;
+                    }
+                    else {
+                        $("#ControlAccountSelectTop").find("option").remove();
+                        $("#ControlAccountSelectTop").prepend("<option value=0>" + 'Select Control Account' + "</option>");
+
+
+                        $.ajax({
+                            url: "/MVCHeadAccount/GetControlAccount",
+                            type: "Get",
+                            async: false,
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+
+                                $.each(data, function (key, item) {
+
+                                    $('#ControlAccountSelectTop').append($('<option></option>').val(item.ControlAccountId).html(item.ControleAccountTitile));
+
+                                });
+
+                            },
+                            Error: function (errormessage) {
+                                alert(errormessage);
+                            }
+
+                        });
+                    }
+                }
+
+
+                function LoadControlAccount() {
+
+                    if ($('#ControlAccountSelect').has('option').length > 0) {
+                        return;
+                    }
+                    else {
+                        $("#ControlAccountSelect").find("option").remove();
+                        $("#ControlAccountSelect").prepend("<option value=0>" + 'Select Control Account' + "</option>");
+
+
+                        $.ajax({
+                            url: "/MVCHeadAccount/GetControlAccount",
+                            type: "Get",
+                            async: false,
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+
+                                $.each(data, function (key, item) {
+
+                                    $('#ControlAccountSelect').append($('<option></option>').val(item.ControlAccountId).html(item.ControleAccountTitile));
+
+                                });
+
+                            },
+                            Error: function (errormessage) {
+                                alert(errormessage);
+                            }
+
+                        });
+                    }
+                }
+
+
+                $('#SaveNewHeadAccount').click(function () {
+                    $.ajax({
+                        url: "/MVCHeadAccount/CheckHeadAvailibility",
+                        type: "POST",
+                        async: false,
+                        data: { Name: $('#HeadAccountTitle').val(), controlacid: $('#ControlAccountSelect').val() },
+                        success: function (Resultdata) {
+                            if (Resultdata == "Found") {
+                                $.toast({
+                                    heading: 'Already exist',
+                                    text: 'Head Account already exist with Title ' + $('#HeadAccountTitle').val() + ' choose another `Title`',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#FF0000'  // To change the background
+                                });
+                            }
+                            else {
+                                data = {
+                                    HeadAccountTitle: $('#HeadAccountTitle').val(),
+                                    FK_ControlAccountID: $('#ControlAccountSelect').val(),
+                                    HeadAccountDescription: $('#HeadAccountDescription').val(),
+                                }
+                                $.ajax({
+                                    url: "/MVCHeadAccount/AddOrEdit",
+                                    type: "POST",
+                                    data: data,
+                                    async: false,
+                                    success: function (Resultdat) {
+                                        $('#productTable').DataTable().ajax.reload();
+                                        {
+                                            $('#HeadAccountModel').modal('hide');
+                                            $.toast({
+                                                heading: 'Success',
+                                                text: 'Your opration has been successfuly completed `Thank you`',
+                                                icon: 'info',
+                                                loader: true,        // Change it to false to disable loader
+                                                loaderBg: '#9EC600'  // To change the background
+                                            });
+                                        }
+                                    },
+                                    Error: function (err) {
+                                        alert("erro");
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+
+

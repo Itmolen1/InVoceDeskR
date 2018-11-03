@@ -12,11 +12,26 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
 
-        [Route("api/ControlAccount")]
-        public IQueryable<ControlAccountTable> GetControlAccount()
+        [Route("api/GetControlAccount")]
+        public IHttpActionResult GetControlAccount()
         {
 
-            return db.ControlAccountTables;
+           List<MVCControlAccountModel> table =  new List<MVCControlAccountModel>();
+            // return  table = db.ControlAccountTables.ToList();
+
+
+           // table = db.ControlAccountTables.ToList();
+            table = db.ControlAccountTables.Select(c => new MVCControlAccountModel
+            {
+
+                ControlAccountId = c.ControlAccountId,
+                ControleAccountTitile = c.ControleAccountTitile,
+                ControlAcooountDescription = c.ControlAcooountDescription
+
+            }).ToList();
+
+
+            return Ok(table);
         }
     }
 }

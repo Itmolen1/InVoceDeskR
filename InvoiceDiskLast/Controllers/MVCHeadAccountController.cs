@@ -19,7 +19,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult GetHeadAccountList(int ControleAccountId = 1)
+        public ActionResult GetHeadAccountList()
         {
             
             List<HeadAccountTable> HeadAccount = new List<HeadAccountTable>();
@@ -38,12 +38,12 @@ namespace InvoiceDiskLast.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
 
-                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                int companyid = Convert.ToInt32(Session["CompayID"]);
 
                 //  IEnumerable<string> token;
                 //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);                
                
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccount/"+ ControleAccountId + "/" + CompanyId).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccountbyId/" + companyid).Result;
                 HeadAccount = response.Content.ReadAsAsync<List<HeadAccountTable>>().Result;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -84,6 +84,79 @@ namespace InvoiceDiskLast.Controllers
                 ex.ToString();
             }
             return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult GetControlAccount()
+        {
+          
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetControlAccount").Result;
+            List<ControlAccountTable> ControlAccount = response.Content.ReadAsAsync<List<ControlAccountTable>>().Result;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return Json(ControlAccount, JsonRequestBehavior.AllowGet);
+            }
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult AddOrEdit(MVCHeadAccountModel mvcheadAccountModel)
+        {
+            try
+            {
+                mvcheadAccountModel.FK_CompanyId = Convert.ToInt32(Session["CompayID"]);
+                mvcheadAccountModel.AddedBy = 1;
+                if (mvcheadAccountModel.HeadAccountId == null || mvcheadAccountModel.HeadAccountId == 0)
+                {
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostHeadAccount", mvcheadAccountModel).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return Json(response.StatusCode,JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateHeadAccount/" + mvcheadAccountModel.HeadAccountId, mvcheadAccountModel).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult CheckHeadAvailibility(string Name, int  controlacid)
+        {
+            MVCHeadAccountModel mvcHeadAccountModel = new MVCHeadAccountModel();
+            mvcHeadAccountModel.FK_CompanyId = Convert.ToInt32(Session["CompayID"]);
+            mvcHeadAccountModel.FK_ControlAccountID = controlacid;
+            mvcHeadAccountModel.HeadAccountTitle = Name;
+           HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("HeadAccountTitle", mvcHeadAccountModel).Result;
+            
+            if(response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return Json("Found", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("NotFound", JsonRequestBehavior.AllowGet);
+            }
+            
+
         }
     }
 }
