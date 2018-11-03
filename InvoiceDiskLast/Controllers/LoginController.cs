@@ -102,14 +102,14 @@ namespace InvoiceDiskLast.Controllers
             #endregion
 
             MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("samarbudhni@gmail.com");
+            msg.From = new MailAddress("infouurtjefactuur@gmail.com");
             msg.To.Add(new MailAddress(ToEmail));
             msg.Subject = "Email Verification";
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
 
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
-            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("samarbudhni@gmail.com", "samar1234567");
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential("infouurtjefactuur@gmail.com", "samar12345");
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = true;
             smtpClient.Send(msg);

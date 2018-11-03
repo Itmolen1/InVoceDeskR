@@ -31,10 +31,26 @@ namespace InvoiceDiskLast.Controllers
             bool emailstatus = false;
             try
             {
+
+
+
+
+                //MailMessage mail = new MailMessage("infouurtjefactuur@gmail.com");
+                //SmtpClient client = new SmtpClient();
+                //client.Port = 25;
+                //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                //client.UseDefaultCredentials = false;
+                //client.Host = "smtp.gmail.com";
+                //mail.Subject = "this is a test email.";
+                //mail.Body = "this is my test email body";
+                //client.Send(mail);
+
+
+
                 string bodyhtml = emailmodel.EmailBody;
                 MailMessage mail = new MailMessage();
                 //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                SmtpClient SmtpServer = new SmtpClient("smtp.uurtjefactuur.nl");               
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");               
                 mail.From = new MailAddress(emailmodel.From);
                 mail.To.Add(emailmodel.ToEmail);
                 mail.Subject = "IT Molen";//emailModel.Subject;
@@ -43,8 +59,8 @@ namespace InvoiceDiskLast.Controllers
                 attachment = new System.Net.Mail.Attachment(emailmodel.Attachment);
                 mail.Attachments.Add(attachment);
                 //Gmail Port
-                SmtpServer.Port = 8889;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("info@uurtjefactuur.nl", "Itmolen@123");
+                SmtpServer.Port = 25;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("infouurtjefactuur@gmail.com", "samar12345");
                 //You can specifiy below line of code either in web.config file or as below.
                 SmtpServer.EnableSsl = true;
                 SmtpServer.Send(mail);
