@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 namespace InvoiceDiskLast.Controllers
 {
 
-
     public class CaptchaController : Controller
     {
         DBEntities db = new DBEntities();
@@ -71,12 +70,6 @@ namespace InvoiceDiskLast.Controllers
                     Session["ApiAccessToken"] = token.AccessToken;
                 }
 
-                //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("apicontact").Result;
-                //respons.Headers.Add("Authorization", "Bearer " + token.AccessToken);              
-                //respons.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
-
-
-               
 
                 if (Session["ApiAccessToken"] != null)
                 {
