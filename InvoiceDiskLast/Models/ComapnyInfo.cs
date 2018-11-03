@@ -24,6 +24,7 @@ namespace InvoiceDiskLast.Models
             this.AccountTables = new HashSet<AccountTable>();
             this.AccountTransictionTables = new HashSet<AccountTransictionTable>();
             this.HeadAccountTables = new HashSet<HeadAccountTable>();
+            this.OrderStatusTables = new HashSet<OrderStatusTable>();
         }
     
         public int CompanyID { get; set; }
@@ -62,5 +63,7 @@ namespace InvoiceDiskLast.Models
         public virtual ICollection<AccountTransictionTable> AccountTransictionTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HeadAccountTable> HeadAccountTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderStatusTable> OrderStatusTables { get; set; }
     }
 }
