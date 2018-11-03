@@ -35,6 +35,11 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<ContactsTable> ContactsTables { get; set; }
         public virtual DbSet<ProductUnitTable> ProductUnitTables { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<AccountTable> AccountTables { get; set; }
+        public virtual DbSet<AccountTransictionTable> AccountTransictionTables { get; set; }
+        public virtual DbSet<ControlAccountTable> ControlAccountTables { get; set; }
+        public virtual DbSet<HeadAccountTable> HeadAccountTables { get; set; }
+        public virtual DbSet<PaymentTermTable> PaymentTermTables { get; set; }
         public virtual DbSet<OrderStatusTable> OrderStatusTables { get; set; }
     }
 }

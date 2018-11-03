@@ -4,9 +4,14 @@
 @model InvoiceDiskLast.Models.UserModels
 
 @{
-   
+
     Layout = null;
-}
+    var ViewBg = "";
+    if (ViewBag.ErrorMessage != "")
+    {
+        ViewBg = ViewBag.ErrorMessage;
+    }
+ }
 
 <head>
     <meta charset="utf-8">
@@ -16,8 +21,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">
-    <title>Elegant Admin Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/logo-icon.png">
+    <title>Factuur Baheer Systeem</title>
     <!-- page css -->
     <link href="~/dist/css/pages/login-register-lock.css" rel="stylesheet" />
     <!-- Custom CSS -->
@@ -47,7 +52,8 @@
                 <p class="loader__label">bezig met laden...</p>
             </div>
         </div>
-    <section id="wrapper" style="margin-left:0px">
+
+        <section id="wrapper" style="margin-left:0px">
         <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
             <div class="login-box card" style="margin-top:-100px">
                 <div class="card-body" style="margin-top:0px; " >
@@ -56,7 +62,7 @@
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 @*<input class="form-control" type="text" required id="txtUsername" placeholder="Username">*@
-                                @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control",  required = "required" })
+                                @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control", required = "required" })
                                 @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -73,7 +79,7 @@
                                     @ViewBag.ErrorMessage                                   
                                 </div>
                             </div>
-                        
+                       
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="custom-control custom-checkbox">
@@ -89,6 +95,14 @@
                                 <input type="submit" id="btnLogin" class="btn btn-block btn-lg btn-info btn-rounded" type="button" value="Login" />
                                 @*<input id="ShowModel" class="btn btn-block btn-lg btn-info btn-rounded" type="button" value="Model" />*@
                                 @*<button type="submit" value="Send" class="btn btn-block btn-lg btn-info btn-rounded"></button>*@
+                                <div>
+                                    <div id="divError" class="alert alert-danger collapse">
+                                        <a id="linkClose" class="close" href="#">&times;</a>
+                                        <div id="divErrorText">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="row">
@@ -163,11 +177,15 @@
             $("#loginform").slideUp();
             $("#recoverform").fadeIn();
         });
-
         });
-        </script>
 
-      
+        if(ViewBg != "")
+        {
+            $('#divErrorText').css("color", "red").text(ViewBg);
+            $('#divError').show('fade');
+        }
+       
+        </script>
  </body>
 }
    
