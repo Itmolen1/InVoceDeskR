@@ -1,8 +1,23 @@
 ﻿<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
+<div class="row">
+    <div class="col-md-2">
+        <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
 
-<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+    </div>
+    <div class="col-md-10">
+        <select id="select" class="form-control">
+            <option value="0">Select invoice status</option>
+            <option value="1">Open</option>
+            <option value="1">Pending</option>
+            <option value="1">Rejected</option>
+        </select>
+    </div>
+</div>
+
+
+
 
 <table class="table" id="PurchaseListTable">
     <thead style="background-color:black;color:white">
@@ -98,19 +113,19 @@
 
 
 
-    function AcceptOrder(id) { 
+    function AcceptOrder(id) {
         updateStatus(id, "Accepted", "the invoice is Accepted successfully");
     }
     function RejecttOrder(id) {
-       updateStatus(id, "Rejected", "the invoice is rejected successfully");
+        updateStatus(id, "Rejected", "the invoice is rejected successfully");
     }
     function PendingtOrder(PurchaseId) {
-      updateStatus(PurchaseId, "Pending", "the invoice is Pending successfully");
+        updateStatus(PurchaseId, "Pending", "the invoice is Pending successfully");
     }
 
-    function updateStatus(Id, Status,Message) {
+    function updateStatus(Id, Status, Message) {
         debugger;
-        var Data= JSON.stringify({
+        var Data = JSON.stringify({
             purchaseId: Id,
             Status: Status,
         })
@@ -122,7 +137,7 @@
             success: function (response) {
                 if (response.Status == "Success") {
                     $('#PurchaseListTable').DataTable().ajax.reload();
-                  
+
                     swal({
                         title: 'Status!',
                         text: Message,
@@ -132,7 +147,7 @@
                 else if (response.Status == "Fail") {
                     swal({
                         title: 'Status!',
-                        text:  "fail to process",
+                        text: "fail to process",
                         type: 'danger'
                     });
                 }
