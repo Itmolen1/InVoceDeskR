@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
             this.HeadAccountTables = new HashSet<HeadAccountTable>();
         }
     
-        public int? ControlAccountId { get; set; }
+        public int ControlAccountId { get; set; }
         public string ControleAccountTitile { get; set; }
         public string ControlAcooountDescription { get; set; }
     

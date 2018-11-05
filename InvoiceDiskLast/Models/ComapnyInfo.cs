@@ -27,7 +27,7 @@ namespace InvoiceDiskLast.Models
             this.OrderStatusTables = new HashSet<OrderStatusTable>();
         }
     
-        public int? CompanyID { get; set; }
+        public int CompanyID { get; set; }
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string CompanyPhone { get; set; }

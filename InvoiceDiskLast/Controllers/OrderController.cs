@@ -29,12 +29,57 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult AddPending(PendingModel pendingModel)
+        {
+
+            try
+            {
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + pendingModel.Purchase_QuataionId.ToString()).Result;
+                MvcPurchaseModel puchasemodel = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                puchasemodel.Status = pendingModel.Status;
+
+                if (puchasemodel == null)
+                {
+                    return new JsonResult { Data = new { Status = "Fail", Message = "No record Found" } };
+                }
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + pendingModel.Purchase_QuataionId, puchasemodel).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    PendingTable pending = new PendingTable();
+                    pending.Purchase_QuataionId = pendingModel.Purchase_QuataionId;
+                    pending.FromDate = pendingModel.FromDate;
+                    pending.ToDate = pendingModel.ToDate;
+                    pending.Description = pendingModel.Description;
+                    pending.Status = pendingModel.Status;
+                    HttpResponseMessage postPendintTableResponse = GlobalVeriables.WebApiClient.PostAsJsonAsync("Addpending", pending).Result;
+
+                    if (postPendintTableResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return new JsonResult { Data = new { Status = "Success", Message = "Status is change successfully to pending" } };
+                    }
+
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail", Message = "Fail to update status in purchase" } };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message } };
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public JsonResult GetPurderOrderList(string status)
         {
 
-            if(status=="" || status == null)
+            if (status == "" || status == null)
             {
                 status = "Open";
             }
@@ -56,7 +101,7 @@ namespace InvoiceDiskLast.Controllers
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
-               
+
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("OrderListByStatus/" + status).Result;
                 PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
@@ -125,15 +170,15 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + PurchaseId.ToString()).Result;
-                MvcPurchaseModel puchasemodel = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;                          
+                MvcPurchaseModel puchasemodel = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
                 puchasemodel.Status = Status;
 
                 if (puchasemodel == null)
                 {
-                    return new JsonResult { Data = new { Status = "Fail",Message="No record Found" } };
+                    return new JsonResult { Data = new { Status = "Fail", Message = "No record Found" } };
                 }
 
-                  HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + PurchaseId, puchasemodel).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + PurchaseId, puchasemodel).Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -147,35 +192,29 @@ namespace InvoiceDiskLast.Controllers
                         orderstatusModel.CompanyId = Convert.ToInt32(Session["CompayID"]);
                         orderstatusModel.UserId = 1;
                         orderstatusModel.Type = "Purchase";
-                        HttpResponseMessage  response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIOrderStatus", orderstatusModel).Result;
+                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIOrderStatus", orderstatusModel).Result;
 
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            return new JsonResult { Data = new { Status = "Success"} };
+                            return new JsonResult { Data = new { Status = "Success" } };
                         }
                         else
                         {
-                            return new JsonResult { Data = new { Status= "Fail"} };
+                            return new JsonResult { Data = new { Status = "Fail" } };
                         }
 
-                    }               
+                    }
                 }
-                
+
             }
             catch (Exception ex)
             {
 
-                return new JsonResult { Data = new { Status = "Fail", ex.Message} };
+                return new JsonResult { Data = new { Status = "Fail", ex.Message } };
             }
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
-
-
-
-
-
-
 
     }
 }

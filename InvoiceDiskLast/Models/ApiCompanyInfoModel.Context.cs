@@ -41,5 +41,6 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<HeadAccountTable> HeadAccountTables { get; set; }
         public virtual DbSet<OrderStatusTable> OrderStatusTables { get; set; }
         public virtual DbSet<PaymentTermTable> PaymentTermTables { get; set; }
+        public virtual DbSet<PendingTable> PendingTables { get; set; }
     }
 }

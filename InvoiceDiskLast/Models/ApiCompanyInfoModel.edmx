@@ -141,6 +141,17 @@
           <Property Name="AddebBy" Type="int" />
           <Property Name="AddedDate" Type="date" />
         </EntityType>
+        <EntityType Name="PendingTable">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Purchase_QuataionId" Type="int" />
+          <Property Name="FromDate" Type="datetime" />
+          <Property Name="ToDate" Type="datetime" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="ProductTable">
           <Key>
             <PropertyRef Name="ProductId" />
@@ -429,6 +440,7 @@
           <EntitySet Name="HeadAccountTable" EntityType="Self.HeadAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderStatusTable" EntityType="Self.OrderStatusTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTermTable" EntityType="Self.PaymentTermTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PendingTable" EntityType="Self.PendingTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductUnitTable" EntityType="Self.ProductUnitTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseOrderDetailsTable" EntityType="Self.PurchaseOrderDetailsTable" Schema="dbo" store:Type="Tables" />
@@ -608,6 +620,7 @@
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
             <End Role="OrderStatusTable" EntitySet="OrderStatusTables" />
           </AssociationSet>
+          <EntitySet Name="PendingTables" EntityType="APIcompanyModel.PendingTable" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1031,6 +1044,17 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PendingTable">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Purchase_QuataionId" Type="Int32" />
+          <Property Name="FromDate" Type="DateTime" Precision="3" />
+          <Property Name="ToDate" Type="DateTime" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1296,6 +1320,18 @@
                 <ScalarProperty Name="FK_CompanyID" ColumnName="FK_CompanyID" />
                 <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
                 <ScalarProperty Name="PayementTremId" ColumnName="PayementTremId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PendingTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.PendingTable">
+              <MappingFragment StoreEntitySet="PendingTable">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="Purchase_QuataionId" ColumnName="Purchase_QuataionId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

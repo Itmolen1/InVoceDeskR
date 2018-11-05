@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class PurchaseOrderDetailsTable
     {
-        public int? PurchaseOrderDetailsId { get; set; }
+        public int PurchaseOrderDetailsId { get; set; }
         public Nullable<int> PurchaseItemId { get; set; }
         public string PurchaseDescription { get; set; }
         public Nullable<int> PurchaseQuantity { get; set; }

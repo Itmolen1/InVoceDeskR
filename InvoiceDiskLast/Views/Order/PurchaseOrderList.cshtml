@@ -1,4 +1,7 @@
-﻿<script src="~/Scripts/jquery-1.10.2.js"></script>
+﻿@model InvoiceDiskLast.Models.PendingModel
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
@@ -34,21 +37,19 @@
                 <th>
                     PurchaseDueDate
                 </th>
-                
+                <th>
+                    RefrenceNumber
+                </th>
                 <th>
                     Puchase Subtotal
                 </th>
-               
-
                 <th>
-                    From Date
-                </th>
-                <th>
-                    T0 Date
+                    DiscountAmount
                 </th>
                 <th>
                     Status
                 </th>
+
                 <th>
                     Action
                 </th>
@@ -59,6 +60,50 @@
     </table>
 </div>
 
+
+
+<div id="Pending" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Pending perchase</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control hidden" type="text" required id="txtpurchaseId" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txtfromdate" } })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", id = "txttodate" } })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <textarea class="form-control" required id="txtdescription" placeholder="Description" cols="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="savePendind" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit123445" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 
 
@@ -77,6 +122,7 @@
             "language": {
                 //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
             },
+            "destroy": true,
             "searching": true,
             "serverSide": true, // for process server side
             "filter": false, // this is for disable filter (search box)
@@ -88,19 +134,9 @@
                 "datatype": "json"
             },
             "columns": [
-                   { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
-                     {
-                         "data": "PurchaseDate", "type": "date ",
-                         "render": function (value) {
-                             if (value === null) return "";
-                             var pattern = /Date\(([^)]+)\)/;//date format from server side
-                             var results = pattern.exec(value);
-                             var dt = new Date(parseFloat(results[1]));
-                             return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                         }, "autoWidth": true
-                     },
+                  { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
                     {
-                        "data": "PurchaseDueDate", "type": "date ",
+                        "data": "PurchaseDate", "type": "date ",
                         "render": function (value) {
                             if (value === null) return "";
                             var pattern = /Date\(([^)]+)\)/;//date format from server side
@@ -109,19 +145,52 @@
                             return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
                         }, "autoWidth": true
                     },
+                   {
+                       "data": "PurchaseDueDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
 
-                 //{ "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+                  { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
 
-                 { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                 { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+                { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
+                  { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
-                 { "data": "Status", "name": "Status", "autoWidth": true },
+                   { "data": "Status", "name": "Status", "autoWidth": true },
 
                 {
 
 
                     render: function (data, type, row) {
-                        return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+
+
+                        switch (row.Status) {
+                            case "Open":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+                                break
+
+                            case "Rejected":
+                                return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></a>'
+                                break
+
+
+                            case "Pending":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                break
+
+
+                            case "Accepted":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></a>'
+                                break
+                        }
+
+
+
                     }
                 }
             ]
@@ -130,13 +199,20 @@
 
 
     function AcceptOrder(id) {
-        updateStatus(id, "Accepted", "the invoice is Accepted successfully");
+        updateStatus(id, "Acepted", "Accepted", "the invoice is Accepted successfully");
     }
+
+
+    function Reopen(id) {
+        updateStatus(id, "Open", "Open", "the invoice is Open successfully");
+    }
+
     function Rejected(id) {
         updateStatus(id, "Rejected", "the invoice is rejected successfully");
     }
     function PendingtOrder(id) {
-        updateStatus(id, "Pending", "the invoice is Pending successfully");
+        $('#Pending').modal('show');
+        $('#txtpurchaseId').val(id);
     }
 
     function updateStatus(Id, Status, Message) {
@@ -175,16 +251,59 @@
         });
     }
 
-
-
     $('#drpstatus').change(function () {
-
-
-        $('#PurchaseListTable').DataTable().destroy();
         var status = $('#drpstatus option:selected').text();
         LoadPurchaseOrderTable(status);
-
     });
+
+    $('#savePendind').click(function () {
+        AddPending();
+    });
+
+
+    function validation() {
+
+
+    }
+
+
+
+    function AddPending() {
+        debugger;
+        var ddddd = {
+            Purchase_QuataionId: $("#txtpurchaseId").val(),
+            FromDate: $("#txtfromdate").val(),
+            ToDate: $('#txttodate').val(),
+            Description: $('#txtdescription').val(),
+            Status: "Pending"
+        };
+        $.ajax({
+            url: "/Order/AddPending",
+            type: 'POST',
+            data: ddddd,
+            success: function (rsponse) {
+                if (rsponse.Success = "Success") {
+                    $('#PurchaseListTable').DataTable().ajax.reload();
+                    $('#Pending').modal('hide');
+                    swal({
+                        title: 'Status!',
+                        text: rsponse.Message,
+                        type: 'success'
+                    });
+                }
+                else if (rsponse.Success = "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: rsponse.Message,
+                        type: 'success'
+                    });
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
 
 
 
