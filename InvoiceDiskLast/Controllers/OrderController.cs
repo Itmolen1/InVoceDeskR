@@ -31,8 +31,14 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public JsonResult GetPurderOrderList()
+        public JsonResult GetPurderOrderList(string status)
         {
+
+            if(status=="" || status == null)
+            {
+                status = "Open";
+            }
+
             IEnumerable<MvcPurchaseModel> PurchaseList;
             try
             {
@@ -50,9 +56,9 @@ namespace InvoiceDiskLast.Controllers
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
-                string Status = "Open";
+               
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("OrderListByStatus/" + Status  ).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("OrderListByStatus/" + status).Result;
                 PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -124,10 +130,10 @@ namespace InvoiceDiskLast.Controllers
 
                 if (puchasemodel == null)
                 {
-                    return new JsonResult { Data = new { Status = "No Record Found" } };
+                    return new JsonResult { Data = new { Status = "Fail",Message="No record Found" } };
                 }
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + PurchaseId, puchasemodel).Result;
+                  HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + PurchaseId, puchasemodel).Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -146,6 +152,10 @@ namespace InvoiceDiskLast.Controllers
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             return new JsonResult { Data = new { Status = "Success"} };
+                        }
+                        else
+                        {
+                            return new JsonResult { Data = new { Status= "Fail"} };
                         }
 
                     }               

@@ -7,55 +7,69 @@
 
     </div>
     <div class="col-md-10">
-        <select id="select" class="form-control">
-            <option value="0">Select invoice status</option>
+        <select id="drpstatus" class="form-control">
+
             <option value="1">Open</option>
+            <option value="1">Accepted</option>
             <option value="1">Pending</option>
             <option value="1">Rejected</option>
+
+
         </select>
     </div>
 </div>
 
 
+<div>
+    <table class="table" id="PurchaseListTable">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>
+                    PurchaseId
+                </th>
+
+                <th>
+                    PurchaseDate
+                </th>
+                <th>
+                    PurchaseDueDate
+                </th>
+                
+                <th>
+                    Puchase Subtotal
+                </th>
+               
+
+                <th>
+                    From Date
+                </th>
+                <th>
+                    T0 Date
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Action
+                </th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
 
-<table class="table" id="PurchaseListTable">
-    <thead style="background-color:black;color:white">
-        <tr>
-            <th>
-                PurchaseId
-            </th>
 
-            <th>
-                PurchaseDate
-            </th>
-            <th>
-                PurchaseDueDate
-            </th>
-            <th>
-                RefrenceNumber
-            </th>
-            <th>
-                Puchase Subtotal
-            </th>
-            <th>
-                DiscountAmount
-            </th>
-            <th>
-                Status
-            </th>
-
-            <th>
-                Action
-            </th>
-
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        LoadPurchaseOrderTable("Open");
+    });
+
+    function LoadPurchaseOrderTable(status) {
+
 
         $("#PurchaseListTable").DataTable({
             //"processing": true, // for show progress bar
@@ -70,8 +84,8 @@
             "ajax": {
                 "url": "/Order/GetPurderOrderList",
                 "type": "POST",
+                data: { status: status },
                 "datatype": "json"
-
             },
             "columns": [
                    { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
@@ -96,31 +110,33 @@
                         }, "autoWidth": true
                     },
 
-                   { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+                 //{ "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
 
                  { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+                 { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
-                    { "data": "Status", "name": "Status", "autoWidth": true },
-                   {
-                       render: function (data, type, row) {
-                           return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="RejecttOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
-                       }
-                   }
+                 { "data": "Status", "name": "Status", "autoWidth": true },
+
+                {
+
+
+                    render: function (data, type, row) {
+                        return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+                    }
+                }
             ]
         });
-    });
-
+    }
 
 
     function AcceptOrder(id) {
         updateStatus(id, "Accepted", "the invoice is Accepted successfully");
     }
-    function RejecttOrder(id) {
+    function Rejected(id) {
         updateStatus(id, "Rejected", "the invoice is rejected successfully");
     }
-    function PendingtOrder(PurchaseId) {
-        updateStatus(PurchaseId, "Pending", "the invoice is Pending successfully");
+    function PendingtOrder(id) {
+        updateStatus(id, "Pending", "the invoice is Pending successfully");
     }
 
     function updateStatus(Id, Status, Message) {
@@ -160,6 +176,15 @@
     }
 
 
+
+    $('#drpstatus').change(function () {
+
+
+        $('#PurchaseListTable').DataTable().destroy();
+        var status = $('#drpstatus option:selected').text();
+        LoadPurchaseOrderTable(status);
+
+    });
 
 
 
