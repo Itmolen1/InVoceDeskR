@@ -2408,3 +2408,38 @@
 
 </script>
 
+<script>
+    $(document).ready(function () {
+        $("#HeadAccountListTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            //"language": {
+            //    "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            //},
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/MVCHeadAccount/GetHeadAccountList",
+                "type": "POST",
+                "datatype": "json",
+            },
+            "columns": [
+                    { "data": "HeadAccountId", "name": "HeadAccountId", "autoWidth": true },// key for edit delete
+                    { "data": "HeadAccountTitle", "name": "HeadAccountTitle", "autoWidth": true },
+                     { "data": "HeadAccountDescription", "name": "HeadAccountDescription", "autoWidth": true },
+
+                    {
+                        render: function (data, type, row) {
+                            return '<Button href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditProduct(' + row.HeadAccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</Button>|<a href="" class="btn btn-success btn-sm" onclick="Delete(' + row.HeadAccountId + ')"><i class="fa fa-eye" style="padding-right:10px"></i>View</a>'
+                        }
+                    }
+
+
+
+            ]
+        });
+    });
+</script>
+

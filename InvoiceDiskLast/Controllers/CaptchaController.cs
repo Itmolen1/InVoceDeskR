@@ -58,7 +58,9 @@ namespace InvoiceDiskLast.Controllers
                     HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
 
                     //HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
-                     HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
+
+                    HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
+
                     token = response.Content.ReadAsAsync<BearerToken>().Result;
 
                     if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -144,25 +146,26 @@ namespace InvoiceDiskLast.Controllers
         public JsonResult CheckUsername(string username)
         {
 
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("Email", username);
-            AspNetUser productTable = new AspNetUser();
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ConfirmEmail/" + "ss").Result;
+            //HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetUserbyEmail/" + username).Result;
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
+            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            //{
 
-                bool isValid = false;
-                return Json(isValid);
-               
-            }
-            else
-            {
-                bool isValid = true;
-                return Json(isValid);
-            }
-          
-        }
+            //    bool isValid = false;
+            //    return Json(isValid);
+
+            //}
+            //else
+            //{
+            //    bool isValid = true;
+            //    return Json(isValid);
+            //}
+
+        
+            return Json(!db.AspNetUsers.Any(x => x.UserName == username),JsonRequestBehavior.AllowGet);
+       
+
+    }
     }
     public class UserInfo
     {
