@@ -13,7 +13,7 @@ using System.Diagnostics;
 namespace InvoiceDiskLast.Controllers
 {
 
-     [SessionExpireAttribute]
+    [SessionExpireAttribute]
     public class MVCQutationController : Controller
     {
         // GET: MVCQutation
@@ -48,23 +48,23 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("APIQutation").Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationModel>>().Result;
-               
+
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
-                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-                {
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                    {
 
-                quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
-               || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
-               || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
-               || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())              
-               || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())            
+                        quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
+                       || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
+                       || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+                       || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())
 
-              ).ToList();
+                      ).ToList();
 
-                }
-                  
+                    }
+
 
                 }
 
@@ -227,8 +227,8 @@ namespace InvoiceDiskLast.Controllers
 
                     if (mvcQutationModel.TotalVat21 != null)
                     {
-                      double  vat21= Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
-                       mvcQutationModel.TotalVat21 =vat21;
+                        double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                        mvcQutationModel.TotalVat21 = vat21;
                     }
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
@@ -247,7 +247,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                              if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
+                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -358,7 +358,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-              
+
 
 
 
@@ -395,7 +395,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 throw ex;
             }
-
+           
             return View(email);
         }
 
@@ -448,9 +448,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
                     bool result = EmailController.email(emailModel);
-
                     TempData["EmailMessge"] = "Email Send successfully";
-
                 }
                 //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
@@ -469,7 +467,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
             TempData["Message"] = "Email Send Succssfully";
-
+            email.Attachment = fileName;
 
             return View(email);
         }
@@ -516,9 +514,11 @@ namespace InvoiceDiskLast.Controllers
 
                 string PdfName = QutationID + "-" + companyModel.CompanyName + ".pdf";
 
-                return new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml") { FileName = PdfName,
+                return new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
+                {
+                    FileName = PdfName,
 
-                      CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n NL07ABNA0812436350 ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 
@@ -649,8 +649,8 @@ namespace InvoiceDiskLast.Controllers
 
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
                 {
-                 
-                   CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n NL07ABNA0812436350 ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber  + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 
@@ -836,7 +836,7 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.TotalVat6 = vat61;
                 }
 
-               
+
 
                 if (mvcQutationModel.TotalVat21 != null)
                 {
@@ -1109,7 +1109,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     CompanyId = Convert.ToInt32(Session["CompayID"]);
                 }
-                
+
 
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
@@ -1211,7 +1211,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
 
-                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId==null)
+                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -1366,7 +1366,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult ProductPricebyId(int ProductId)
         {
-            
+
 
             HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ProductId.ToString()).Result;
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;

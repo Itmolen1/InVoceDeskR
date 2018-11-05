@@ -914,7 +914,7 @@ namespace InvoiceDiskLast.Controllers
                 return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
                 {
                     FileName = PdfName,
-                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen "+diffDate+ " dagen over te maken naar IBAN: \n NL07ABNA0812436350 ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen "+diffDate+ " dagen over te maken naar IBAN: \n "+companyModel.IBANNumber+ " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\""
                 };
@@ -930,7 +930,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
-            TempData["EmailMessge"] = null;
+
 
 
             EmailModel email = new EmailModel();
@@ -1076,7 +1076,7 @@ namespace InvoiceDiskLast.Controllers
                     bool result = EmailController.email(emailModel);
 
                     TempData["EmailMessge"] = "Email Send successfully";
-
+                    
                 }
                 //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
@@ -1086,7 +1086,7 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception ex)
             {
                 email.Attachment = fileName;
-                  TempData["EmailMessge"] = ex.Message.ToString();
+                TempData["EmailMessge"] = ex.Message.ToString();
                 TempData["Error"] = ex.Message.ToString();
             }
 
@@ -1094,9 +1094,8 @@ namespace InvoiceDiskLast.Controllers
             {
                 TempData["Path"] = fileName;
             }
-
+           
             TempData["Message"] = "Email Send Succssfully";
-
             email.Attachment = fileName;
 
             return View(email);
