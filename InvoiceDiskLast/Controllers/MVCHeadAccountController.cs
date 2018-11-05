@@ -19,7 +19,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult GetHeadAccountList()
+        public ActionResult GetHeadAccountList(int ControlACid =0)
         {
             
             List<HeadAccountTable> HeadAccount = new List<HeadAccountTable>();
@@ -41,11 +41,19 @@ namespace InvoiceDiskLast.Controllers
                 int companyid = Convert.ToInt32(Session["CompayID"]);
 
                 //  IEnumerable<string> token;
-                //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);                
-               
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccountbyId/" + companyid).Result;
-                HeadAccount = response.Content.ReadAsAsync<List<HeadAccountTable>>().Result;
+                //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);  
 
+                if (ControlACid == 0)
+                {
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccountbyId/" + companyid).Result;
+                    HeadAccount = response.Content.ReadAsAsync<List<HeadAccountTable>>().Result;
+                }
+                else
+                {
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccount/" + companyid + "/" + ControlACid).Result;
+                    HeadAccount = response.Content.ReadAsAsync<List<HeadAccountTable>>().Result;
+                }
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
 
@@ -85,7 +93,7 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
-
+        
 
         [HttpGet]
         public ActionResult GetControlAccount()
@@ -157,6 +165,27 @@ namespace InvoiceDiskLast.Controllers
             }
             
 
+        }
+
+
+        public ActionResult GetHeadAccountByID(int HeadAccountID =0)
+        {
+            if(HeadAccountID > 0)
+            {
+                int companyid = Convert.ToInt32(Session["CompayID"]);
+
+                
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccountByAccountID/" + HeadAccountID + "/" + companyid).Result;
+
+
+                MVCHeadAccountModel  HeadAccountmodelObj = response.Content.ReadAsAsync<MVCHeadAccountModel>().Result;
+                
+                return Json(HeadAccountmodelObj, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("Null", JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

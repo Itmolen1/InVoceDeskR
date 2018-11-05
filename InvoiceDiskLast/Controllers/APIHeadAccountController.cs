@@ -57,7 +57,7 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
-
+        
         [Route("api/PostHeadAccount")]
 
         public IHttpActionResult PostHeadAccount(HeadAccountTable headAccountTable)
@@ -86,6 +86,39 @@ namespace InvoiceDiskLast.Controllers
             if(found)
             {
                 return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+        [Route("api/HeadAccountByAccountID/{headACid:int}/{companyId:int}")]
+        public IHttpActionResult GetHeadAccountByID(int headACid,int companyId)
+        {
+
+            if(headACid > 0)
+            {
+                try
+                {
+                    MVCHeadAccountModel HeadAccountObj = db.HeadAccountTables.Where(x => x.FK_CompanyId == companyId && x.HeadAccountId == headACid).Select(c => new MVCHeadAccountModel
+                    {
+                        HeadAccountId = c.HeadAccountId,
+                        HeadAccountTitle = c.HeadAccountTitle,
+                        HeadAccountDescription = c.HeadAccountDescription,
+                        FK_ControlAccountID = c.FK_ControlAccountID
+
+                    }).FirstOrDefault();
+
+                    return Ok(HeadAccountObj);
+
+                }
+                catch(Exception)
+                {
+                    return NotFound();
+                }
             }
             else
             {

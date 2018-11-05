@@ -30,7 +30,7 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
+       
         [HttpPost]
         public ActionResult Index(UserModels user)
         {
@@ -57,9 +57,9 @@ namespace InvoiceDiskLast.Controllers
 
                     HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
 
-                    HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
+                    //HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
 
-                    //HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
+                    HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
 
                     token = response.Content.ReadAsAsync<BearerToken>().Result;
 
