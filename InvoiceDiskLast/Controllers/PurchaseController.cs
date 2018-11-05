@@ -930,7 +930,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
-
+            TempData["EmailMessge"] = null;
 
 
             EmailModel email = new EmailModel();
@@ -1085,7 +1085,8 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
-                TempData["EmailMessge"] = ex.Message.ToString();
+                email.Attachment = fileName;
+                  TempData["EmailMessge"] = ex.Message.ToString();
                 TempData["Error"] = ex.Message.ToString();
             }
 
@@ -1096,6 +1097,7 @@ namespace InvoiceDiskLast.Controllers
 
             TempData["Message"] = "Email Send Succssfully";
 
+            email.Attachment = fileName;
 
             return View(email);
         }

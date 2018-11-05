@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -45,21 +47,20 @@ namespace InvoiceDiskLast.Controllers
                 //mail.Body = "this is my test email body";
                 //client.Send(mail);
 
-
-
                 string bodyhtml = emailmodel.EmailBody;
                 MailMessage mail = new MailMessage();
-                //SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");               
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+                mail.From = new MailAddress("infouurtjefactuur@gmail.com");
                 mail.From = new MailAddress(emailmodel.From);
                 mail.To.Add(emailmodel.ToEmail);
                 mail.Subject = "IT Molen";//emailModel.Subject;
+
                 mail.Body = bodyhtml;
                 System.Net.Mail.Attachment attachment;
                 attachment = new System.Net.Mail.Attachment(emailmodel.Attachment);
                 mail.Attachments.Add(attachment);
                 //Gmail Port
-                SmtpServer.Port = 25;
+                //SmtpServer.Port = 587;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("infouurtjefactuur@gmail.com", "samar12345");
                 //You can specifiy below line of code either in web.config file or as below.
                 SmtpServer.EnableSsl = true;
