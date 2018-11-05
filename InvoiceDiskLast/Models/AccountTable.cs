@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
             this.AccountTransictionTables = new HashSet<AccountTransictionTable>();
         }
     
-        public int AccountId { get; set; }
+        public int? AccountId { get; set; }
         public string AccountCode { get; set; }
         public string AccountTitle { get; set; }
         public string AccountDescription { get; set; }

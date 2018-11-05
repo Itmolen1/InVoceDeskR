@@ -7,9 +7,11 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+
+    [SessionExpireAttribute]
     public class HomeController : Controller
     {
-        [SessionExpireAttribute]
+     
         public ActionResult Index()
         {
 

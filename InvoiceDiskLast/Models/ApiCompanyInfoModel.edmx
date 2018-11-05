@@ -570,6 +570,7 @@
           <EntitySet Name="AccountTransictionTables" EntityType="APIcompanyModel.AccountTransictionTable" />
           <EntitySet Name="ControlAccountTables" EntityType="APIcompanyModel.ControlAccountTable" />
           <EntitySet Name="HeadAccountTables" EntityType="APIcompanyModel.HeadAccountTable" />
+          <EntitySet Name="OrderStatusTables" EntityType="APIcompanyModel.OrderStatusTable" />
           <EntitySet Name="PaymentTermTables" EntityType="APIcompanyModel.PaymentTermTable" />
           <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
@@ -595,20 +596,19 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_HeadAccountTable_ControlAccountTable" Association="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable">
-            <End Role="ControlAccountTable" EntitySet="ControlAccountTables" />
-            <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
-          </AssociationSet>
-          <EntitySet Name="OrderStatusTables" EntityType="APIcompanyModel.OrderStatusTable" />
           <AssociationSet Name="FK_OrderStatusTable_ComapnyInfo" Association="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="OrderStatusTable" EntitySet="OrderStatusTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HeadAccountTable_ControlAccountTable" Association="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable">
+            <End Role="ControlAccountTable" EntitySet="ControlAccountTables" />
+            <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderStatusTable_PurchaseOrderTable" Association="APIcompanyModel.FK_OrderStatusTable_PurchaseOrderTable">
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
             <End Role="OrderStatusTable" EntitySet="OrderStatusTables" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
             <PropertyRef Name="QutationDetailId" />
@@ -897,6 +897,21 @@
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="HeadAccountTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="ControlAccountTable" Relationship="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable" FromRole="HeadAccountTable" ToRole="ControlAccountTable" />
         </EntityType>
+        <EntityType Name="OrderStatusTable">
+          <Key>
+            <PropertyRef Name="OrderStatusId" />
+          </Key>
+          <Property Name="OrderStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseOrderId" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="OrderStatusTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_OrderStatusTable_PurchaseOrderTable" FromRole="OrderStatusTable" ToRole="PurchaseOrderTable" />
+        </EntityType>
         <EntityType Name="PaymentTermTable">
           <Key>
             <PropertyRef Name="PayementTremId" />
@@ -980,33 +995,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_HeadAccountTable_ControlAccountTable">
-          <End Type="APIcompanyModel.ControlAccountTable" Role="ControlAccountTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ControlAccountTable">
-              <PropertyRef Name="ControlAccountId" />
-            </Principal>
-            <Dependent Role="HeadAccountTable">
-              <PropertyRef Name="FK_ControlAccountID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="OrderStatusTable">
-          <Key>
-            <PropertyRef Name="OrderStatusId" />
-          </Key>
-          <Property Name="OrderStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseOrderId" Type="Int32" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="OrderStatusTable" ToRole="ComapnyInfo" />
-          <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_OrderStatusTable_PurchaseOrderTable" FromRole="OrderStatusTable" ToRole="PurchaseOrderTable" />
-        </EntityType>
         <Association Name="FK_OrderStatusTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
           <End Type="APIcompanyModel.OrderStatusTable" Role="OrderStatusTable" Multiplicity="*" />
@@ -1016,6 +1004,18 @@
             </Principal>
             <Dependent Role="OrderStatusTable">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HeadAccountTable_ControlAccountTable">
+          <End Type="APIcompanyModel.ControlAccountTable" Role="ControlAccountTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ControlAccountTable">
+              <PropertyRef Name="ControlAccountId" />
+            </Principal>
+            <Dependent Role="HeadAccountTable">
+              <PropertyRef Name="FK_ControlAccountID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1031,7 +1031,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1274,17 +1274,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PaymentTermTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.PaymentTermTable">
-              <MappingFragment StoreEntitySet="PaymentTermTable">
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="AddebBy" ColumnName="AddebBy" />
-                <ScalarProperty Name="FK_CompanyID" ColumnName="FK_CompanyID" />
-                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
-                <ScalarProperty Name="PayementTremId" ColumnName="PayementTremId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OrderStatusTables">
             <EntityTypeMapping TypeName="APIcompanyModel.OrderStatusTable">
               <MappingFragment StoreEntitySet="OrderStatusTable">
@@ -1296,6 +1285,17 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
                 <ScalarProperty Name="OrderStatusId" ColumnName="OrderStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentTermTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.PaymentTermTable">
+              <MappingFragment StoreEntitySet="PaymentTermTable">
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="AddebBy" ColumnName="AddebBy" />
+                <ScalarProperty Name="FK_CompanyID" ColumnName="FK_CompanyID" />
+                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+                <ScalarProperty Name="PayementTremId" ColumnName="PayementTremId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
