@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class AccountTransictionTable
     {
-        public int? TransictionTable { get; set; }
+        public int TransictionTable { get; set; }
         public Nullable<System.DateTime> TransictionDate { get; set; }
         public Nullable<int> FK_AccountID { get; set; }
         public Nullable<double> Dr { get; set; }

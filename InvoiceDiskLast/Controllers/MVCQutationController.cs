@@ -395,7 +395,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 throw ex;
             }
-           
+
             return View(email);
         }
 
@@ -403,9 +403,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
-
             TempData["EmailMessge"] = "";
-
             EmailModel emailModel = new EmailModel();
             var fileName = email.Attachment;
             try
@@ -418,12 +416,10 @@ namespace InvoiceDiskLast.Controllers
                 if (email.ToEmail.Contains(','))
                 {
                     var p = email.Attachment.Split('.');
-
                     var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}.pdf", p);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
-
                     string[] EmailArray = email.ToEmail.Split(',');
                     if (EmailArray.Count() > 0)
                     {
@@ -450,10 +446,7 @@ namespace InvoiceDiskLast.Controllers
                     bool result = EmailController.email(emailModel);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
-                //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
-
-
             }
             catch (Exception ex)
             {
@@ -650,7 +643,7 @@ namespace InvoiceDiskLast.Controllers
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
                 {
 
-                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber  + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 

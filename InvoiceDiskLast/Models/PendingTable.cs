@@ -12,18 +12,13 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderStatusTable
+    public partial class PendingTable
     {
-        public int OrderStatusId { get; set; }
-        public Nullable<int> PurchaseOrderId { get; set; }
+        public int PID { get; set; }
+        public Nullable<int> Purchase_QuataionId { get; set; }
+        public Nullable<System.DateTime> FromDate { get; set; }
+        public Nullable<System.DateTime> ToDate { get; set; }
+        public string Description { get; set; }
         public string Status { get; set; }
-        public string Type { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CompanyId { get; set; }
-        public Nullable<int> UserId { get; set; }
-    
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
-        public virtual PurchaseOrderTable PurchaseOrderTable { get; set; }
     }
 }
