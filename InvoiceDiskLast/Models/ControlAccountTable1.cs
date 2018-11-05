@@ -12,24 +12,19 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class HeadAccountTable
+    public partial class ControlAccountTable1
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public HeadAccountTable()
+        public ControlAccountTable1()
         {
-            this.AccountTables = new HashSet<AccountTable>();
+            this.HeadAccountTables = new HashSet<HeadAccountTable1>();
         }
     
-        public int HeadAccountId { get; set; }
-        public string HeadAccountTitle { get; set; }
-        public string HeadAccountDescription { get; set; }
-        public Nullable<int> FK_ControlAccountID { get; set; }
-        public Nullable<int> FK_CompanyId { get; set; }
-        public Nullable<int> AddedBy { get; set; }
+        public int ControlAccountId { get; set; }
+        public string ControleAccountTitile { get; set; }
+        public string ControlAcooountDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AccountTable> AccountTables { get; set; }
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
-        public virtual ControlAccountTable ControlAccountTable { get; set; }
+        public virtual ICollection<HeadAccountTable1> HeadAccountTables { get; set; }
     }
 }

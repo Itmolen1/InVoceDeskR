@@ -12,24 +12,25 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class HeadAccountTable
+    public partial class AccountTable1
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public HeadAccountTable()
+        public AccountTable1()
         {
-            this.AccountTables = new HashSet<AccountTable>();
+            this.AccountTransictionTables = new HashSet<AccountTransictionTable1>();
         }
     
-        public int HeadAccountId { get; set; }
-        public string HeadAccountTitle { get; set; }
-        public string HeadAccountDescription { get; set; }
-        public Nullable<int> FK_ControlAccountID { get; set; }
-        public Nullable<int> FK_CompanyId { get; set; }
+        public int AccountId { get; set; }
+        public string AccountCode { get; set; }
+        public string AccountTitle { get; set; }
+        public string AccountDescription { get; set; }
+        public Nullable<int> FK_HeadAccountId { get; set; }
         public Nullable<int> AddedBy { get; set; }
+        public Nullable<int> FK_CompanyId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AccountTable> AccountTables { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
-        public virtual ControlAccountTable ControlAccountTable { get; set; }
+        public virtual HeadAccountTable1 HeadAccountTable { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccountTransictionTable1> AccountTransictionTables { get; set; }
     }
 }
