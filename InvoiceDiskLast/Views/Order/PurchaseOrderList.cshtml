@@ -62,6 +62,56 @@
 
 
 
+
+<div class="modal fade bs-example-modal-lg" id="showpendindModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Show pending purchase </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="height: auto !important">
+                <table class="table" id="PendingTable">
+                    <thead style="background-color:black;color:white">
+                        <tr>
+                            <th>
+                                Code
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Frmdate
+                            </th>
+                            <th>
+                                ToDate
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+
+
+
 <div id="Pending" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -114,8 +164,6 @@
     });
 
     function LoadPurchaseOrderTable(status) {
-
-
         $("#PurchaseListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -124,6 +172,7 @@
             },
             "destroy": true,
             "searching": true,
+            "autoWidth": false,
             "serverSide": true, // for process server side
             "filter": false, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
@@ -180,7 +229,7 @@
 
 
                             case "Pending":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>'
                                 break
 
 
@@ -189,13 +238,76 @@
                                 break
                         }
 
-
-
                     }
                 }
             ]
         });
     }
+    function loadPendingTable(id) {
+        $("#PendingTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "destroy": true,
+            "searching": true,
+            "autoWidth": false,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/Order/GetPendingItem",
+                "type": "POST",
+                "datatype": "json",
+                data: { PurchaseId: id },
+            },
+            "columns": [
+                 {
+                     "data": "PID", "name": "PID", "autoWidth": true
+                 },
+
+                  { "data": "Status", "name": "Status", "autoWidth": true },
+
+                 // key for edit delete
+                   {
+                       "data": "FromDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+                  {
+                      "data": "ToDate", "type": "date ",
+                      "render": function (value) {
+                          if (value === null) return "";
+                          var pattern = /Date\(([^)]+)\)/;//date format from server side
+                          var results = pattern.exec(value);
+                          var dt = new Date(parseFloat(results[1]));
+                          return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                      }, "autoWidth": true
+                  },
+
+                 { "data": "Description", "name": "Description", "autoWidth": true },
+
+
+            ]
+        });
+
+
+
+
+    }
+
+
+
+
+
+
+
 
 
     function AcceptOrder(id) {
@@ -207,13 +319,23 @@
         updateStatus(id, "Open", "Open", "the invoice is Open successfully");
     }
 
+
+    function ViewDetail(purchaseId) {
+        loadPendingTable(purchaseId);
+        $('#showpendindModel').modal('show');
+    }
+
+
     function Rejected(id) {
         updateStatus(id, "Rejected", "the invoice is rejected successfully");
     }
+
+
     function PendingtOrder(id) {
         $('#Pending').modal('show');
         $('#txtpurchaseId').val(id);
     }
+
 
     function updateStatus(Id, Status, Message) {
         debugger;
@@ -252,7 +374,9 @@
     }
 
     $('#drpstatus').change(function () {
+
         var status = $('#drpstatus option:selected').text();
+
         LoadPurchaseOrderTable(status);
     });
 

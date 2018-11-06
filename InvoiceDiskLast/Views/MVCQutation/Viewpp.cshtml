@@ -18,7 +18,11 @@
     <title></title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
-
+    <style>
+        tr {
+            page-break-inside: avoid;
+        }
+    </style>
 </head>
 <body>
 
@@ -122,8 +126,8 @@
 
         <div class="row" style="margin-right: 0px;margin-left: 50px;">
 
-           <label style="margin-left:16px"><b>Factuur</b></label>
-           
+            <label style="margin-left:16px"><b>Factuur</b></label>
+
         </div>
         <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
 
@@ -138,7 +142,7 @@
                 <label>@QutationModel.DueDate</label>
             </div>
         </div>
-        <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+        <div class="row" style="margin-right: 50px; margin-left:50px;">
             ontvangt de offerte van ons voor de onderstaande services.
 
             <table id="mytable" class="table table-bordred table-striped table-responsive">
@@ -160,17 +164,27 @@
                             Vat
                         </th>
                         <th class="col-xs-1">
-                         
+
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    @{
+                        int rowcount = 0;
+                    }
                     @if (ViewBag.QutationDatailsList != null)
                     {
                         foreach (var item in ViewBag.QutationDatailsList)
                         {
-                            <tr id="mainrow">
+
+                            rowcount += 1;
+                            if (rowcount == 14)
+                            {
+                                rowcount = 0;
+                                <tr style="page-break-after:always; margin-left:100px;"></tr>
+                            }
+
+                            <tr>
                                 <td>
                                     @item.ItemName
                                 </td>
@@ -201,13 +215,13 @@
             <div class="col-sm-4">
                 <div class="row">
                     <div class="col-xs-6"></div>
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">Total excl. VAT:€</label>
-                        </div>
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">@QutationModel.SubTotal</label>
-                        </div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">Total excl. VAT:€</label>
                     </div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">@QutationModel.SubTotal</label>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-xs-6"></div>
@@ -273,7 +287,7 @@
             <h4>@Contectdatas.ContactName</h4>
             <h4>@CompanyDatas.CompanyName </h4>
         </div>
-       
+
     </div>
 </body>
 </html>

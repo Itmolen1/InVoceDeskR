@@ -12,7 +12,7 @@ namespace InvoiceDiskLast.Controllers
 {
 
     [SessionExpireAttribute]
-   
+
     public class PurchaseController : Controller
     {
         // GET: Purchase
@@ -862,7 +862,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         public ActionResult Print(int? purchaseOrderId)
-        {                       
+        {
             try
             {
                 var idd = Session["ClientID"];
@@ -895,11 +895,11 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
-                     
+
                 DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
                 DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
                 TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
-                 string  diffDate = ts.Days.ToString();
+                string diffDate = ts.Days.ToString();
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
@@ -908,15 +908,24 @@ namespace InvoiceDiskLast.Controllers
 
                 string PdfName = purchaseOrderId + "-" + companyModel.CompanyName + ".pdf";
 
-              //  string CustomSwitches = string.Format("--header-html \"{0} \" " +
+                //  string CustomSwitches = string.Format("--header-html \"{0} \" " +
+
+                string cutomswitches = "";
+                cutomswitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                   DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                  " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
 
                 return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
                 {
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+
                     FileName = PdfName,
-                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen "+diffDate+ " dagen over te maken naar IBAN: \n "+companyModel.IBANNumber+ " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
-                    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
-                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\""
+
+                     PageHeight = 40,
+                    CustomSwitches = cutomswitches,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
                 };
             }
             catch (Exception ex)
@@ -1076,7 +1085,7 @@ namespace InvoiceDiskLast.Controllers
                     bool result = EmailController.email(emailModel);
 
                     TempData["EmailMessge"] = "Email Send successfully";
-                    
+
                 }
                 //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
@@ -1094,7 +1103,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 TempData["Path"] = fileName;
             }
-           
+
             TempData["Message"] = "Email Send Succssfully";
             email.Attachment = fileName;
 
@@ -1141,6 +1150,15 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
 
 
+
+                DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
+                DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
+                TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
+                string diffDate = ts.Days.ToString();
+
+
+
+
                 string companyName = purchaseOrderId + "-" + companyModel.CompanyName;
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
@@ -1175,9 +1193,18 @@ namespace InvoiceDiskLast.Controllers
 
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
                 {
+
+                     PageSize = Rotativa.Options.Size.A4,
+                     MinimumFontSize = 16,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
+                     PageHeight = 40,
+
                     SaveOnServerPath = path, // Save your place
-                    PageWidth = 200,
-                    PageHeight = 350,
+
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+
                 };
                 // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);
