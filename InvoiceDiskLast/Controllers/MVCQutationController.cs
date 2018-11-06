@@ -511,6 +511,12 @@ namespace InvoiceDiskLast.Controllers
                 {
                     FileName = PdfName,
 
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
+
+
+                     PageHeight = 40,
                     CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
@@ -647,10 +653,13 @@ namespace InvoiceDiskLast.Controllers
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 
-
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
+                    PageHeight = 40,
                     SaveOnServerPath = path, // Save your place
                     PageWidth = 200,
-                    PageHeight = 350,
+                   
                 };
                 // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);
@@ -1359,7 +1368,6 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult ProductPricebyId(int ProductId)
         {
-
 
             HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ProductId.ToString()).Result;
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;

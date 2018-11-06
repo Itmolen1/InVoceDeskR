@@ -54,5 +54,26 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+        [Route("api/GetPendint/{purchaseId:int}")]
+        public IHttpActionResult GetPendingtable(int purchaseId)
+        {           
+            try
+            {
+                var query = db.PendingTables.ToList();              
+                return Ok(query);
+            }
+            catch (Exception ex)
+            {
+               return NotFound();
+               
+            }
+        }
+
+
+
+
+
+
     }
 }
