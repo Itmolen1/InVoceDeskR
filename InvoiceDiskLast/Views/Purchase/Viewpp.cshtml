@@ -18,44 +18,50 @@
     <title></title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
-
+    <style>
+        .page-breaker {
+            display: block;
+            clear: both;
+            page-break-after: always;
+        }
+    </style>
 </head>
 <body>
 
     <div style="margin-top:10px;">
         @*<div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px;">
-            <img src="@Url.Content("~/images/"+CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
-        </div>
-        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
-            <div class="col-xs-4">
-                <label>@CompanyDatas.CompanyName</label>
-                <br />
-                <label>@CompanyDatas.CompanyCity</label>
-                <br />
-                @{
-                    string value = CompanyDatas.CompanyPhone;
-                    if (value != "" && value != "undefined")
-                    { <label>T:@CompanyDatas.CompanyPhone</label> }
-                    else
-                    { <label>T:</label>  }
-                }
+                <img src="@Url.Content("~/images/"+CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+            </div>
+            <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                <div class="col-xs-4">
+                    <label>@CompanyDatas.CompanyName</label>
+                    <br />
+                    <label>@CompanyDatas.CompanyCity</label>
+                    <br />
+                    @{
+                        string value = CompanyDatas.CompanyPhone;
+                        if (value != "" && value != "undefined")
+                        { <label>T:@CompanyDatas.CompanyPhone</label> }
+                        else
+                        { <label>T:</label>  }
+                    }
 
 
-                <br />
-                <label>@CompanyDatas.CompanyEmail</label>
-            </div>
-            <div class="col-xs-4">
-                <img src="https://www.factuurdesk.nl/images/layout/offerte_concept.png" />
-            </div>
-            <div class="col-xs-4">
-                <label>@CompanyDatas.CompanyName</label><br />
-                <label> @Contectdatas.ContactName</label>
-            </div>
-        </div>*@
+                    <br />
+                    <label>@CompanyDatas.CompanyEmail</label>
+                </div>
+                <div class="col-xs-4">
+                    <img src="https://www.factuurdesk.nl/images/layout/offerte_concept.png" />
+                </div>
+                <div class="col-xs-4">
+                    <label>@CompanyDatas.CompanyName</label><br />
+                    <label> @Contectdatas.ContactName</label>
+                </div>
+            </div>*@
         <div class="row">
             <div class="col-xs-1"></div>
             <div class="col-xs-3">
-                <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)"  id="targetImg" style="border:none; margin-top:50px;" />
+                <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none; margin-top:50px;" />
                 <br />
                 <br />
                 <br />
@@ -74,7 +80,7 @@
                 <br />
                 @Contectdatas.PostalCode
 
-                <div ></div>
+                <div></div>
 
             </div>
             <div class="col-xs-3"></div>
@@ -83,10 +89,10 @@
                 <br />
                 <br />
                 <h5 style="margin-left:125px">@CompanyDatas.CompanyName</h5>
-               
+
                 <div class="row">
                     <div class="col-xs-2"></div>
-                    <div class="col-xs-3 text-right" >Kvk nr:</div>
+                    <div class="col-xs-3 text-right">Kvk nr:</div>
                     <div class="col-xs-7">@CompanyDatas.KVK</div>
                 </div>
                 <div class="row">
@@ -135,23 +141,23 @@
 
                 <div class="row">
                     <div class="col-xs-1"></div>
-                        <div class="col-xs-4 text-right">
-                            Bezoekadres:
-                        </div>
-                        <div class="col-xs-7">
-                            @CompanyDatas.CompanyAddress<br />
-                            @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
+                    <div class="col-xs-4 text-right">
+                        Bezoekadres:
                     </div>
+                    <div class="col-xs-7">
+                        @CompanyDatas.CompanyAddress<br />
+                        @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                        @CompanyDatas.CompanyCountry
+                    </div>
+                </div>
 
 
             </div>
         </div>
         <div class="row" style="margin-right: 0px;margin-left: 50px;">
 
-           <label style="margin-left:16px"><b>Invoice</b></label>
-           
+            <label style="margin-left:16px"><b>Invoice</b></label>
+
         </div>
         <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
 
@@ -187,7 +193,7 @@
                         <th class="col-xs-1">
                             Vat
                         </th>
-                       
+
                     </tr>
                 </thead>
                 <tbody>
@@ -223,17 +229,17 @@
 
             </table>
             <div class="col-xs-8"></div>
-          
-              <div class="col-sm-4">
+
+            <div class="col-sm-4">
                 <div class="row">
                     <div class="col-xs-6"></div>
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">Total excl. VAT:€</label>
-                        </div>
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
-                        </div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">Total excl. VAT:€</label>
                     </div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-xs-6"></div>
@@ -277,30 +283,18 @@
                 </div>
             </div>
 
-        </div>
-      
-    
-
-
-     
-
         
-    </div>
-    <div class="footer">
-        <div class="row" style="margin-top:20px;">
-            <div class="col-xs-1"></div>
-            <div class="col-xs-10">
-               
-            </div>
-            <div class="col-xs-1"></div>
+        
+        
+        
         </div>
-   
-    
-   
-    
-     </div>
-  
 
-   
+
+
+
+
+
+    </div>
+
 </body>
 </html>
