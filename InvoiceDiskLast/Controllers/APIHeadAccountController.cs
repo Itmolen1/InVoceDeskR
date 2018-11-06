@@ -1,6 +1,8 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -126,6 +128,37 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+
+        // PUT: api/APIComapny/5
+      
+        [Route("api/UpdateHeadAccount/{id:int}")]
+        public IHttpActionResult PutHeadAccount(int id, HeadAccountTable headAccount)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != headAccount.HeadAccountId)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(headAccount).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return StatusCode(HttpStatusCode.OK);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                throw;
+            }
+
+
+        }
 
         //[Route("api/students/{name:alpha}")]
         //public IHttpActionResult GetProductUnitTables(string name)

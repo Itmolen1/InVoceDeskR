@@ -97,6 +97,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" id="UpdateHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelHeadAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -152,8 +153,39 @@
         }
 
 
-       
-
+        $('#UpdateHeadAccount').click()
+        {
+            data = {
+                            HeadAccountId: $('#HeadAccountId').val(),
+                            HeadAccountTitle: $('#HeadAccountTitle').val(),
+                            FK_ControlAccountID: $('#ControlAccountSelect').val(),
+                            HeadAccountDescription: $('#HeadAccountDescription').val(),
+                        }
+                        $.ajax({
+                            url: "/MVCHeadAccount/AddOrEdit",
+                            type: "POST",
+                            data: data,
+                            async: false,
+                            success: function (Resultdat) {
+                                $('#productTable').DataTable().ajax.reload();
+                                {
+                                    $('#HeadAccountModel').modal('hide');
+                                    $.toast({
+                                        heading: 'Success',
+                                        text: 'Your opration has been successfuly completed `Thank you`',
+                                        icon: 'info',
+                                        loader: true,        // Change it to false to disable loader
+                                        loaderBg: '#9EC600'  // To change the background
+                                    });
+                                }
+                            },
+                            Error: function (err) {
+                                alert("erro");
+                            }
+                        });
+                    }
+               
+           
 
         $('#SaveNewHeadAccount').click(function () {
             $.ajax({
