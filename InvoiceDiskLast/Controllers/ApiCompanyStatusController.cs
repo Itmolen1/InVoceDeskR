@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/ApiCompanyStatus")]
     public class ApiCompanyStatusController : ApiController
     {       
