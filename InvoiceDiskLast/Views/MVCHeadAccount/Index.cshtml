@@ -62,12 +62,9 @@
                 </tr>
             </thead>
             <tbody></tbody>
-
         </table>
     </div>
-
 </div>
-
 
 
 <div id="HeadAccountModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -104,7 +101,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Updatet</button>
+                <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelHeadAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -166,6 +163,10 @@
     <!-- /.modal-dialog -->
 </div>
 <script>
+
+    var contrlAcId = 0;
+    var AcID = 0;
+
     $(document).ready(function () {
 
         LoadControlAccounttop();
@@ -259,13 +260,21 @@
             }
         }
 
-
+      
         $('#ControlAccountSelectTop').change(function () {
-
+            
             var value = $(this).val();
             if (value == "AddNewHeadSelect") {
                 LoadControlAccount();
                 $('#HeadAccountModel').modal('show');
+            }
+            else
+            {
+                if(value > 0)
+                {
+                    contrlAcId =value;
+                    loadHeadAccountTable(contrlAcId);
+                }
             }
 
         });
@@ -400,7 +409,7 @@
                                 success: function (Resultdat) {
                                     $('#AccountListTable').DataTable().ajax.reload();
                                     {
-                                        $('#HeadAccountModel').modal('hide');
+                                        $('#AccountModel').modal('hide');
                                         $.toast({
                                             heading: 'Success',
                                             text: 'Your opration has been successfuly completed `Thank you`',
@@ -421,22 +430,24 @@
         });
     });
 
-    var contrlAcId = 0;
-    var AcID = 0;
+   
     $(document).ready(function () {
         loadHeadAccountTable(contrlAcId);
         loadAccountTable(AcID);
     });
 
+    //load account table
     function ViewAccountByHeadAccountID(id) {
 
         AcID = id;
         loadAccountTable(AcID);
 
     }
+
     //load head account Table
     function loadHeadAccountTable(controlAcID) {
 
+      
         $("#HeadAccountListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -450,9 +461,10 @@
             "orderMulti": false, // for disable multiple column at once
             "autoWidth": false,
             "ajax": {
-                "url": "/MVCHeadAccount/GetHeadAccountList/" + parseInt(contrlAcId),
+                "url": "/MVCHeadAccount/GetHeadAccountList",
                 "type": "POST",
                 "datatype": "json",
+                data: { ControlACid: parseInt(controlAcID) },
             },
             "columns": [
                     { "data": "HeadAccountId", "name": "HeadAccountId", "autoWidth": true },// key for edit delete

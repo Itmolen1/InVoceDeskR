@@ -142,7 +142,8 @@ namespace InvoiceDiskLast.Controllers
                         AccountId = c.AccountId,
                         AccountTitle = c.AccountTitle,
                         AccountDescription = c.AccountDescription,
-                        FK_HeadAccountId = c.FK_HeadAccountId
+                        FK_HeadAccountId = c.FK_HeadAccountId,
+                        AccountCode = c.AccountCode
 
                     }).FirstOrDefault();
 
