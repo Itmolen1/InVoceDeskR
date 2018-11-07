@@ -203,6 +203,9 @@ namespace InvoiceDiskLast.Controllers
 
             List<MVCHeadAccountModel> HeadAccountmodelObj = response.Content.ReadAsAsync<List<MVCHeadAccountModel>>().Result;
 
+
+
+
             return Json(HeadAccountmodelObj, JsonRequestBehavior.AllowGet);
         }
     }

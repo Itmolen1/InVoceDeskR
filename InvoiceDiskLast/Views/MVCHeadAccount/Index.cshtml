@@ -3,6 +3,15 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+.table-wrapper-scroll-y {
+  display: block;
+  max-height: 500px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+</style>
+
 
 <div class="row">
    
@@ -24,7 +33,7 @@
 <input hidden id="AccountId" />
 <div class="row">
 
-    <div class="col-sm-6">
+    <div class="col-sm-6 table-wrapper-scroll-y">
         <table class="table table-bordered" id="HeadAccountListTable">
             <thead style="background-color:black;color:white">
                 <tr>
@@ -44,9 +53,9 @@
 
         </table>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 table-wrapper-scroll-y">
 
-        <table class="table table-bordered" id="AccountListTable">
+        <table class="table table-bordered" id="AccountListTable" onscroll="">
             <thead style="background-color:black;color:white">
                 <tr>
                     <th>
@@ -169,9 +178,13 @@
 
     $(document).ready(function () {
 
+      
+
+        loadHeadAccountTable(contrlAcId);
+        loadAccountTable(AcID);
+
         LoadControlAccounttop();
         LoadHeadAccounttop();
-
        // $('select option:first-child').css('color', 'blue ');
 
         //$('#ControlAccountSelectTop option ').find('option').each(function () {
@@ -179,7 +192,7 @@
         //    if ($(this).val() == 'AddNewAccountSelect')
         //    {
 
-        //        $(this).text.css('color', 'blue ');
+        //        $(this).text.css('color', 'blue ');HeadAccountListTable
         //    }
         //});
         
@@ -206,6 +219,7 @@
                     async: false,
                     success: function (Resultdat) {
                         $('#productTable').DataTable().ajax.reload();
+                        ClearHeadModel();
                         {
                             $('#HeadAccountModel').modal('hide');
                             $.toast({
@@ -353,6 +367,7 @@
                                 async: false,
                                 success: function (Resultdat) {
                                     $('#HeadAccountListTable').DataTable().ajax.reload();
+                                    ClearHeadModel();
                                     {
                                         $('#HeadAccountModel').modal('hide');
                                         $.toast({
@@ -409,6 +424,7 @@
                                 success: function (Resultdat) {
                                     $('#AccountListTable').DataTable().ajax.reload();
                                     {
+                                        ClearAccountModel();
                                         $('#AccountModel').modal('hide');
                                         $.toast({
                                             heading: 'Success',
@@ -430,11 +446,6 @@
         });
     });
 
-   
-    $(document).ready(function () {
-        loadHeadAccountTable(contrlAcId);
-        loadAccountTable(AcID);
-    });
 
     //load account table
     function ViewAccountByHeadAccountID(id) {
@@ -454,8 +465,9 @@
             //"language": {
             //    "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
             //},
-            "destroy": true,
+            "bDestroy": true,
             "searching": true,
+            "Retrieve": true,
             "serverSide": true, // for process server side
             "filter": false, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
@@ -520,7 +532,7 @@
     $('#ControlAccountSelectTop').change(function () {
 
         var CAID = $('#ControlAccountSelectTop').val();
-        if (CAID != 0) {
+        if (CAID != 0 ) {
             loadHeadAccountTable(CAID);
         }
 
@@ -665,8 +677,9 @@
                 success: function (Resultdat) {
                     $('#AccountListTable').DataTable().ajax.reload();
                     {
+                        ClearAccountModel();
                         $('#AccountModel').modal('hide');
-
+                        
                         $.toast({
                             heading: 'Success',
                             text: 'Your opration has been successfuly completed `Thank you`',
@@ -703,6 +716,25 @@
         }
         
         return isValid;
+    }
+
+
+    function ClearHeadModel()
+    {
+        $('#ControlAccountSelect').val(0),
+        $('#HeadAccountTitle').val(""),
+         $('#HeadAccountDescription').val("")
+        
+    }
+
+
+    function ClearAccountModel() {
+        $('#FK_HeadAccountId').val(0),
+        $('#AccountCode').val(""),
+         $('#AccountTitle').val(""),
+        $('#AccountDescription').val("")
+      
+
     }
 
     function validateAccount() {
