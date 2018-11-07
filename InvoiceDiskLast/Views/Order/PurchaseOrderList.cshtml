@@ -4,6 +4,24 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
+
+<style>
+    tbody {
+        height: 100px; /* Just for the demo          */
+        overflow-y: auto; /* Trigger vertical scroll    */
+        overflow-x: hidden; /* Hide the horizontal scroll */
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
 <div class="row">
     <div class="col-md-2">
         <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
@@ -192,7 +210,7 @@
                 <div class="row" style="margin-top:10px;">
 
                     <div class="col-sm-3">
-                        <input type="text" placeholder="Reffrence number" disabled="disabled" class="form-control"  />
+                        <input type="text" placeholder="Reffrence number" disabled="disabled" class="form-control" />
                     </div>
                     <div class="col-sm-9">
 
@@ -203,27 +221,24 @@
 
                 </div>
 
-                <div class="row" style="margin-top:10px;">
 
+
+                <div class="row" style="margin-top:10px;">
                     <div class="col-sm-6">
-                        <select class="form-control" id="drppaymentDebit">
-                            <option value="0">Select payment type</option>
+                        <select class="form-control" id="drpAccountDebit">
+                            <option value="0">Select payment Term</option>
                         </select>
                     </div>
                     <div class="col-sm-6">
-
-
                         @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txttransactionDateDebit" } })
-
                     </div>
-
                 </div>
 
                 <div class="row" style="margin-top:10px;">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <select class="form-control" id="drpAccountDebit">
+                                <select class="form-control" id="drppaymentDebit">
                                     <option value="0"> Select acccount</option>
                                 </select>
                             </div>
@@ -261,17 +276,33 @@
                 </div>
 
                 <div class="row">
-
                     <div class="col-sm-12">
                         <textarea class="form-control" type="text" required id="Description" placeholder="Description (optional)"></textarea>
                     </div>
+                </div>
 
+
+                <div class="row">
+                    <table class="table table-bordered table-striped" id="tableAccountinfo"  style="visibility:hidden">
+                        <thead style="background-color:black;color:white">
+                            <tr>
+                                <th>TID</th>
+                                <th>Ref</th>
+                                <th>Date</th>
+                                <th>Acc Name</th>
+                                <th>Payment</th>
+                                <th>Debit</th>
+                                <th>Credit</th>                                
+                            </tr>
+                        </thead>
+                        <tbody id="tbleAccount"></tbody>
+                    </table>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id=""><i class="fa fa-plus-circle" style="padding-right: 10px"></i></button>
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss=""><i class="fa fa-window-close" style="padding-right: 10px"></i></button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnAdd"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>ADD</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -286,22 +317,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script type="text/javascript">
+
     $(document).ready(function () {
         LoadPurchaseOrderTable("Open");
+        loadPayemtDropdown();
+        loadPayemtTermDropdown();
     });
 
     function LoadPurchaseOrderTable(status) {
@@ -382,7 +403,7 @@
         });
     }
     function loadPendingTable(id) {
-      $("#PendingTable").DataTable({
+        $("#PendingTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
             "language": {
@@ -440,9 +461,9 @@
     function AcceptOrder(id) {
 
         $('#txtrefrencenumber').val(id);
-        $('#txttransactionId').val(Math.floor(Math.random() * 10));       
+        $('#txttransactionId').val(Math.floor(Math.random() * 10));
         $('#TransactionModel').modal('show');
-      
+
     }
     function Reopen(id) {
         updateStatus(id, "Open", "Open", "the invoice is Open successfully");
@@ -514,10 +535,6 @@
     });
 
 
-
-
-
-
     function AddPending() {
         debugger;
         var ddddd = {
@@ -555,37 +572,103 @@
         });
     }
 
-
-
-
-    function loadPayemtDropdown() {
-
-
+    function loadPayemtDropdown() {     
         var drppayment = $('#drppaymentDebit');
-
+        var drpAccountCredit = $('#drpAccountCredit');
         $.ajax({
-            url: "/",
-            type: "",
+            url: "/MvcAccounts/GetAccount",
+            type: "POST",
             contentType: "appplication/json",
-            success: function (response){
-
-                $.each(response, function (i,item) {
-    
-                    alert(item)
-
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+                    drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
                 });
-
             },
-
             error: function (Error) {
                 alert(Error)
             },
+        });
+    }
 
 
-
+    function loadPayemtTermDropdown() {      
+        var drppaymentTerm = $('#drpAccountDebit');
+        var drppaymentTermCredit = $('#drpAccountCredit');
+        $.ajax({
+            url: "/MvcPaymentTerm/GetPaymentTerm",
+            type: "POST",
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                    drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
         });
 
     }
+
+
+    $('#btnAdd').click(function () {
+
+        if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+            alert('Account name canot be same');
+            return;
+        }
+
+        
+        if ($('txttransactionDateDebit').val() == 0) {
+            alert('txttransactionDateDebit  canot be null');
+            return;
+        }
+
+
+        if ($('#drpAccountDebit').val() == 0) {
+            alert('drpAccountDebit  canot be null');
+            return;
+        }
+
+
+        if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+            alert('debit amount canot be zero');
+            return;
+        }
+
+        if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+            alert('AmountCredit amount canot be zero');
+            return;
+        }
+
+
+        if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
+            alert('Amonnt are not same please checke');
+            return;
+        }
+
+        if ($('#tbleAccount tr').length == 2) {
+            alert("Please save and chhose another transiction");
+        }
+        else {
+
+            var AccountTable = $('#tbleAccount');
+            var AcciontName = $('#drppaymentDebit option:selected').text();
+            var TID = $('#txttransactionId').val();
+            var ref = $('#txtrefrencenumber').val();
+            var Amountdebit = $('#AmountDebit').val();
+            var AmountCridit = $('#AmountCredit').val();
+            var Tdate = $('#txttransactionDateDebit').val();
+            var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+            var paymentTer = $('#drpAccountDebit option:selected').text();
+            AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+            AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+            $('#tableAccountinfo').css('visibility', 'visible');
+        }
+       
+    });
 
 
 </script>

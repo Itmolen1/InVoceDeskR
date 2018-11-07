@@ -97,8 +97,23 @@ namespace InvoiceDiskLast.Controllers
 
         [HttpGet]
         public ActionResult GetControlAccount()
+        {                   HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetControlAccount").Result;
+            List<ControlAccountTable> ControlAccount = response.Content.ReadAsAsync<List<ControlAccountTable>>().Result;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return Json(ControlAccount, JsonRequestBehavior.AllowGet);
+            }
+
+            return View();
+        }
+
+
+
+
+        [HttpGet]
+        public ActionResult GePaymentTerm()
         {
-          
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetControlAccount").Result;
             List<ControlAccountTable> ControlAccount = response.Content.ReadAsAsync<List<ControlAccountTable>>().Result;
 
@@ -109,6 +124,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
+
 
 
         [HttpPost]
