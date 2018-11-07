@@ -9,14 +9,13 @@
         <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
 
     </div>
-    <div class="col-md-10">
+    <div class="col-md-6">
         <select id="drpstatus" class="form-control">
 
             <option value="1">Open</option>
             <option value="1">Accepted</option>
             <option value="1">Pending</option>
             <option value="1">Rejected</option>
-
 
         </select>
     </div>
@@ -61,8 +60,6 @@
 </div>
 
 
-
-
 <div class="modal fade bs-example-modal-lg" id="showpendindModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -104,12 +101,6 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
-
-
-
-
-
 
 
 <div id="Pending" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -157,9 +148,159 @@
 
 
 
+
+<div class="modal fade bs-example-modal-lg" id="TransactionModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Create Transaction</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row text-center">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label style="color:#288c7b"><b>Debit Account</b></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label style="color:#288c7b"><b>Credit Account</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="Transaction number" disabled="disabled" class="form-control" />
+                    </div>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="txttransactionId" class="form-control" placeholder="transaction Number" />
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="Reffrence number" disabled="disabled" class="form-control"  />
+                    </div>
+                    <div class="col-sm-9">
+
+
+                        <input type="text" id="txtrefrencenumber" class="form-control" placeholder="Reffrence number" readonly />
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-6">
+                        <select class="form-control" id="drppaymentDebit">
+                            <option value="0">Select payment type</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+
+
+                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txttransactionDateDebit" } })
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <select class="form-control" id="drpAccountDebit">
+                                    <option value="0"> Select acccount</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required id="AmountDebit" placeholder="Amount Debit" title="Debit Amount">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <select class="form-control" id="drpAccountCredit">
+
+                                    <option value="0">Account type</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required id="AmountCredit" placeholder="Amount Credit" title="Credit Amount">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <textarea class="form-control" type="text" required id="Description" placeholder="Description (optional)"></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id=""><i class="fa fa-plus-circle" style="padding-right: 10px"></i></button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss=""><i class="fa fa-window-close" style="padding-right: 10px"></i></button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
     $(document).ready(function () {
-
         LoadPurchaseOrderTable("Open");
     });
 
@@ -211,10 +352,7 @@
                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
                    { "data": "Status", "name": "Status", "autoWidth": true },
-
                 {
-
-
                     render: function (data, type, row) {
 
 
@@ -244,7 +382,7 @@
         });
     }
     function loadPendingTable(id) {
-        $("#PendingTable").DataTable({
+      $("#PendingTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
             "language": {
@@ -296,25 +434,16 @@
 
             ]
         });
-
-
-
-
     }
-
-
-
-
-
-
-
 
 
     function AcceptOrder(id) {
-        updateStatus(id, "Acepted", "Accepted", "the invoice is Accepted successfully");
+
+        $('#txtrefrencenumber').val(id);
+        $('#txttransactionId').val(Math.floor(Math.random() * 10));       
+        $('#TransactionModel').modal('show');
+      
     }
-
-
     function Reopen(id) {
         updateStatus(id, "Open", "Open", "the invoice is Open successfully");
     }
@@ -385,10 +514,7 @@
     });
 
 
-    function validation() {
 
-
-    }
 
 
 
@@ -429,6 +555,37 @@
         });
     }
 
+
+
+
+    function loadPayemtDropdown() {
+
+
+        var drppayment = $('#drppaymentDebit');
+
+        $.ajax({
+            url: "/",
+            type: "",
+            contentType: "appplication/json",
+            success: function (response){
+
+                $.each(response, function (i,item) {
+    
+                    alert(item)
+
+                });
+
+            },
+
+            error: function (Error) {
+                alert(Error)
+            },
+
+
+
+        });
+
+    }
 
 
 </script>
