@@ -59,7 +59,7 @@ namespace InvoiceDiskLast.Controllers
 
                     //HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
 
-                    HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861//Token", encodedRequest).Result;
+                    HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861/Token", encodedRequest).Result;
 
                     token = response.Content.ReadAsAsync<BearerToken>().Result;
 

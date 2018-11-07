@@ -13,5 +13,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> FK_ControlAccountID { get; set; }
         public Nullable<int> FK_CompanyId { get; set; }
         public Nullable<int> AddedBy { get; set; }
+
     }
 }
