@@ -8,6 +8,7 @@ using InvoiceDiskLast.Models;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [SessionExpireAttribute]
     public class MVCAccountsController : Controller
     {
         // GET: MVCAccounts

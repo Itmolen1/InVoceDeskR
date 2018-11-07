@@ -19,10 +19,14 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult GetHeadAccountList(int ControlACid =0)
+        public ActionResult GetHeadAccountList(int? ControlACid)
         {
             
             List<HeadAccountTable> HeadAccount = new List<HeadAccountTable>();
+            if(ControlACid == null)
+            {
+                ControlACid = 0;
+            }
             //List<MVCProductModel> ProductList1 = new List<MVCProductModel>();
             try
             {
@@ -51,7 +55,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 else
                 {
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccount/" + companyid + "/" + ControlACid).Result;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccount/" + ControlACid + "/" + companyid).Result;
                     HeadAccount = response.Content.ReadAsAsync<List<HeadAccountTable>>().Result;
                 }
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
