@@ -89,6 +89,9 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+
+
         [HttpPost]
         public ActionResult CheckAccountAvailibility(string Name, int HdAcountId)
         {
@@ -164,5 +167,16 @@ namespace InvoiceDiskLast.Controllers
                 return Json("Null", JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult GetAccount()
+        {
+
+            int companyId = Convert.ToInt32(Session["CompayID"]);
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("AccountByAccountID/" + 0 + "/" + companyId).Result;
+            List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
+            return Json(AccountOBj, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

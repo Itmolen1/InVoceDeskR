@@ -25,7 +25,11 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult PurchaseOrderList()
         {
-            return View();
+
+            PendingModel model = new PendingModel();
+            model.FromDate = DateTime.Now;
+            model.ToDate = DateTime.Now.AddDays(1);
+            return View(model);
         }
 
 
@@ -170,7 +174,7 @@ namespace InvoiceDiskLast.Controllers
 
         [HttpPost]
         public JsonResult GetPendingItem(int PurchaseId)
-        {      
+        {
             IEnumerable<PendingModel> pendingItemList;
             try
             {
@@ -201,7 +205,7 @@ namespace InvoiceDiskLast.Controllers
                   || p.ToDate != null && p.ToDate.ToString().ToLower().Contains(search.ToLower())
                   || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
                   || p.Description != null && p.Description.ToString().ToLower().Contains(search.ToLower())).ToList();
-             
+
                 }
 
 

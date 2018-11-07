@@ -14,7 +14,6 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
         [Route("api/AccountByAccountID/{HeadAcID:int}/{companyId:int}")]
-
         public IHttpActionResult GetHeadAccount( int HeadAcID, int companyId)
         {
 
