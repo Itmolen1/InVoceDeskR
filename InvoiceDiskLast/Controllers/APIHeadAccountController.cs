@@ -160,6 +160,29 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+        [Route("api/HeadAccountList/{companyId:int}")]
+
+        public IHttpActionResult GetHeadAccount(int companyId)
+        {
+            try
+            {
+                List<MVCHeadAccountModel> HeadAccountObj = db.HeadAccountTables.Where(x => x.FK_CompanyId == companyId).Select(c => new MVCHeadAccountModel
+                {
+                    HeadAccountId = c.HeadAccountId,
+                    HeadAccountTitle = c.HeadAccountTitle,
+                    HeadAccountDescription = c.HeadAccountDescription,
+
+                }).ToList();
+
+                return Ok(HeadAccountObj);
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
         //[Route("api/students/{name:alpha}")]
         //public IHttpActionResult GetProductUnitTables(string name)
         //{

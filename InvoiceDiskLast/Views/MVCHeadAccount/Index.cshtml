@@ -5,24 +5,26 @@
 }
 
 <div class="row">
-    <div class="col-sm-2">
-        <button id="CreateNewHeadAccount" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New Head Account</button>
-    </div>
+   
 
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         <select class="form-control p-0" id="ControlAccountSelectTop"></select>
 
     </div>
-    <div class="col-sm-2"></div>
+    
+    <div class="col-sm-6">
+        <select class="form-control p-0" id="HeadAccountSelectTop"></select>
+    </div>
 </div>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 
 
 
-<input hidden id="HeadAccountId"/>
+<input hidden id="HeadAccountId" />
+<input hidden id="AccountId" />
 <div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
+
+    <div class="col-sm-6">
         <table class="table table-bordered" id="HeadAccountListTable">
             <thead style="background-color:black;color:white">
                 <tr>
@@ -42,26 +44,31 @@
 
         </table>
     </div>
-    <div class="col-sm-2"></div>
-</div>
-@*<div class="col-sm-6">
-            <table class="table table-bordered" id="HeadAccountListTable1">
-                <thead style="background-color:black;color:white">
-                    <tr>
-                        <th>
-                            Id
-                        </th>
-                        <th>
-                            Titile
-                        </th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div class="col-sm-6">
 
-    </div>*@
+        <table class="table table-bordered" id="AccountListTable">
+            <thead style="background-color:black;color:white">
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Titile
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+    </div>
+
+</div>
+
+
 
 <div id="HeadAccountModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -97,7 +104,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" id="UpdateHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Updatet</button>
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelHeadAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -107,15 +114,115 @@
 </div>
 
 
+
+<div id="AccountModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabelAc">Add new Account</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <select class="form-control p-0" id="FK_HeadAccountId"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="AccountCode" placeholder="Account Code Number" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="AccountTitle" placeholder="Account Title" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="AccountDescription" placeholder="Account Description  (Optional)" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" id="UpdateAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Updatet</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <script>
     $(document).ready(function () {
 
         LoadControlAccounttop();
+        LoadHeadAccounttop();
 
-        $('#CreateNewHeadAccount').click(function () {
-            LoadControlAccount();
-            $('#HeadAccountModel').modal('show');
+       // $('select option:first-child').css('color', 'blue ');
+
+        //$('#ControlAccountSelectTop option ').find('option').each(function () {
+
+        //    if ($(this).val() == 'AddNewAccountSelect')
+        //    {
+
+        //        $(this).text.css('color', 'blue ');
+        //    }
+        //});
+        
+       // $("select option:AddNewAccountSelect").css("background-color", "red");
+          
+      
+       
+      
+
+        $('#UpdateHeadAccountTbale').click(function () {
+            var validdate = validateHeadAccount();
+            if (validdate == true) {
+
+                data = {
+                    HeadAccountId: $('#HeadAccountId').val(),
+                    HeadAccountTitle: $('#HeadAccountTitle').val(),
+                    FK_ControlAccountID: $('#ControlAccountSelect').val(),
+                    HeadAccountDescription: $('#HeadAccountDescription').val(),
+                }
+                $.ajax({
+                    url: "/MVCHeadAccount/AddOrEdit",
+                    type: "POST",
+                    data: data,
+                    async: false,
+                    success: function (Resultdat) {
+                        $('#productTable').DataTable().ajax.reload();
+                        {
+                            $('#HeadAccountModel').modal('hide');
+                            $.toast({
+                                heading: 'Success',
+                                text: 'Your opration has been successfuly completed `Thank you`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                        }
+                    },
+                    Error: function (err) {
+                        alert("erro");
+                    }
+                });
+            }
         });
+
 
 
 
@@ -127,7 +234,7 @@
             else {
                 $("#ControlAccountSelectTop").find("option").remove();
                 $("#ControlAccountSelectTop").prepend("<option value=0>" + 'Select Control Account' + "</option>");
-
+                $("#ControlAccountSelectTop").append("<option value=AddNewHeadSelect>" + 'Add New Head Account' + "</option>");
 
                 $.ajax({
                     url: "/MVCHeadAccount/GetControlAccount",
@@ -153,98 +260,181 @@
         }
 
 
-        $('#UpdateHeadAccount').click()
-        {
-            data = {
-                            HeadAccountId: $('#HeadAccountId').val(),
-                            HeadAccountTitle: $('#HeadAccountTitle').val(),
-                            FK_ControlAccountID: $('#ControlAccountSelect').val(),
-                            HeadAccountDescription: $('#HeadAccountDescription').val(),
-                        }
-                        $.ajax({
-                            url: "/MVCHeadAccount/AddOrEdit",
-                            type: "POST",
-                            data: data,
-                            async: false,
-                            success: function (Resultdat) {
-                                $('#productTable').DataTable().ajax.reload();
-                                {
-                                    $('#HeadAccountModel').modal('hide');
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: 'Your opration has been successfuly completed `Thank you`',
-                                        icon: 'info',
-                                        loader: true,        // Change it to false to disable loader
-                                        loaderBg: '#9EC600'  // To change the background
-                                    });
-                                }
-                            },
-                            Error: function (err) {
-                                alert("erro");
-                            }
+        $('#ControlAccountSelectTop').change(function () {
+
+            var value = $(this).val();
+            if (value == "AddNewHeadSelect") {
+                LoadControlAccount();
+                $('#HeadAccountModel').modal('show');
+            }
+
+        });
+
+        function LoadHeadAccounttop() {
+
+            if ($('#HeadAccountSelectTop').has('option').length > 1) {
+                return;
+            }
+            else {
+                $("#HeadAccountSelectTop").find("option").remove();
+                $("#HeadAccountSelectTop").prepend("<option value=0>" + 'Select Head Account' + "</option>");
+                $("#HeadAccountSelectTop").append("<option value=AddNewAccountSelect>" + 'Add New Account' + "</option>");
+                $.ajax({
+                    url: "/MVCHeadAccount/GetHeadAccountList",
+                    type: "Get",
+                    async: false,
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        $.each(data, function (key, item) {
+
+                            $('#HeadAccountSelectTop').append($('<option></option>').val(item.HeadAccountId).html(item.HeadAccountTitle));
+
                         });
+
+                    },
+                    Error: function (errormessage) {
+                        alert(errormessage);
                     }
-               
-           
+
+                });
+            }
+        }
+
+        $('#HeadAccountSelectTop').change(function () {
+
+            var value = $(this).val();
+            if (value == "AddNewAccountSelect") {
+                LoadHeadAccount();               
+                $('#AccountModel').modal('show');
+            }
+
+        });
 
         $('#SaveNewHeadAccount').click(function () {
-            $.ajax({
-                url: "/MVCHeadAccount/CheckHeadAvailibility",
-                type: "POST",
-                async: false,
-                data: { Name: $('#HeadAccountTitle').val(), controlacid: $('#ControlAccountSelect').val() },
-                success: function (Resultdata) {
-                    if (Resultdata == "Found") {
-                        $.toast({
-                            heading: 'Already exist',
-                            text: 'Head Account already exist with Title ' + $('#HeadAccountTitle').val() + ' choose another `Title`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#FF0000'  // To change the background
-                        });
-                    }
-                    else {
-                        data = {
-                            HeadAccountTitle: $('#HeadAccountTitle').val(),
-                            FK_ControlAccountID: $('#ControlAccountSelect').val(),
-                            HeadAccountDescription: $('#HeadAccountDescription').val(),
+
+            var validdate = validateHeadAccount();
+            if (validdate == true) {
+                $.ajax({
+                    url: "/MVCHeadAccount/CheckHeadAvailibility",
+                    type: "POST",
+                    async: false,
+                    data: { Name: $('#HeadAccountTitle').val(), controlacid: $('#ControlAccountSelect').val() },
+                    success: function (Resultdata) {
+                        if (Resultdata == "Found") {
+                            $.toast({
+                                heading: 'Already exist',
+                                text: 'Head Account already exist with Title ' + $('#HeadAccountTitle').val() + ' choose another `Title`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#FF0000'  // To change the background
+                            });
                         }
-                        $.ajax({
-                            url: "/MVCHeadAccount/AddOrEdit",
-                            type: "POST",
-                            data: data,
-                            async: false,
-                            success: function (Resultdat) {
-                                $('#productTable').DataTable().ajax.reload();
-                                {
-                                    $('#HeadAccountModel').modal('hide');
-                                    $.toast({
-                                        heading: 'Success',
-                                        text: 'Your opration has been successfuly completed `Thank you`',
-                                        icon: 'info',
-                                        loader: true,        // Change it to false to disable loader
-                                        loaderBg: '#9EC600'  // To change the background
-                                    });
-                                }
-                            },
-                            Error: function (err) {
-                                alert("erro");
+                        else {
+                            data = {
+                                HeadAccountTitle: $('#HeadAccountTitle').val(),
+                                FK_ControlAccountID: $('#ControlAccountSelect').val(),
+                                HeadAccountDescription: $('#HeadAccountDescription').val(),
                             }
-                        });
+                            $.ajax({
+                                url: "/MVCHeadAccount/AddOrEdit",
+                                type: "POST",
+                                data: data,
+                                async: false,
+                                success: function (Resultdat) {
+                                    $('#HeadAccountListTable').DataTable().ajax.reload();
+                                    {
+                                        $('#HeadAccountModel').modal('hide');
+                                        $.toast({
+                                            heading: 'Success',
+                                            text: 'Your opration has been successfuly completed `Thank you`',
+                                            icon: 'info',
+                                            loader: true,        // Change it to false to disable loader
+                                            loaderBg: '#9EC600'  // To change the background
+                                        });
+                                    }
+                                },
+                                Error: function (err) {
+                                    alert("erro");
+                                }
+                            });
+                        }
                     }
-                }
+                });
+            }
             });
+
+        
+        $('#SaveNewAccount').click(function () {
+            var validdate = validateAccount();
+            if (validdate == true) {
+
+                $.ajax({
+                    url: "/MVCAccounts/CheckAccountAvailibility",
+                    type: "POST",
+                    async: false,
+                    data: { Name: $('#AccountTitle').val(), HdAcountId: $('#FK_HeadAccountId').val() },
+                    success: function (Resultdata1) {
+                        if (Resultdata1 == "Found") {
+                            $.toast({
+                                heading: 'Already exist',
+                                text: 'Head Account already exist with Title ' + $('#HeadAccountTitle').val() + ' choose another `Title`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#FF0000'  // To change the background
+                            });
+                        }
+                        else {
+                            data = {
+                                AccountCode: $('#AccountCode').val(),
+                                AccountTitle: $('#AccountTitle').val(),
+                                AccountDescription: $('#AccountDescription').val(),
+                                FK_HeadAccountId: $('#FK_HeadAccountId').val(),
+                            }
+                            $.ajax({
+                                url: "/MVCAccounts/AddOrEdit",
+                                type: "POST",
+                                data: data,
+                                async: false,
+                                success: function (Resultdat) {
+                                    $('#AccountListTable').DataTable().ajax.reload();
+                                    {
+                                        $('#HeadAccountModel').modal('hide');
+                                        $.toast({
+                                            heading: 'Success',
+                                            text: 'Your opration has been successfuly completed `Thank you`',
+                                            icon: 'info',
+                                            loader: true,        // Change it to false to disable loader
+                                            loaderBg: '#9EC600'  // To change the background
+                                        });
+                                    }
+                                },
+                                Error: function (err) {
+                                    alert("erro");
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         });
     });
-</script>
-
-<script>
 
     var contrlAcId = 0;
+    var AcID = 0;
     $(document).ready(function () {
         loadHeadAccountTable(contrlAcId);
+        loadAccountTable(AcID);
     });
 
+    function ViewAccountByHeadAccountID(id) {
+
+        AcID = id;
+        loadAccountTable(AcID);
+
+    }
+    //load head account Table
     function loadHeadAccountTable(controlAcID) {
 
         $("#HeadAccountListTable").DataTable({
@@ -258,8 +448,9 @@
             "serverSide": true, // for process server side
             "filter": false, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
+            "autoWidth": false,
             "ajax": {
-                "url": "/MVCHeadAccount/GetHeadAccountList/" +  parseInt(contrlAcId),
+                "url": "/MVCHeadAccount/GetHeadAccountList/" + parseInt(contrlAcId),
                 "type": "POST",
                 "datatype": "json",
             },
@@ -270,7 +461,7 @@
 
                     {
                         render: function (data, type, row) {
-                            return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditHeadAccount(' + row.HeadAccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</a>|<a href="" class="btn btn-success btn-sm" onclick="Delete(' + row.HeadAccountId + ')"><i class="fa fa-eye" style="padding-right:10px"></i>View</a>'
+                            return '<button href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditHeadAccount(' + row.HeadAccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</button>|<Button href="" class="btn btn-success btn-sm" onclick="ViewAccountByHeadAccountID(' + row.HeadAccountId + ')">View List <i class="fa fa-angle-double-right" style="padding-Left:10px"></i></Button>'
                         }
                     }
             ]
@@ -278,22 +469,55 @@
 
     }
 
+    function loadAccountTable(AcID) {
+
+        $("#AccountListTable").DataTable({
+            //"processing": true, // for show progress bar
+
+            "processing": true,
+            //"language": {
+            //    "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            //},
+            "destroy": true,
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "autoWidth": false,
+            "ajax": {
+                "url": "/MVCAccounts/GetAccountList",
+                "type": "POST",
+                "datatype": "json",
+                data: { HeadAcoountIDs: parseInt(AcID) },
+            },
+            "columns": [
+                    { "data": "AccountId", "name": "AccountId", "autoWidth": true },// key for edit delete
+                    { "data": "AccountTitle", "name": "AccountTitle", "autoWidth": true },
+                     { "data": "AccountDescription", "name": "AccountDescription", "autoWidth": true },
+
+                    {
+                        render: function (data, type, row) {
+                            return '<Button class="btn btn-info btn-sm" data-id="Id" onclick="EditAccount(' + row.AccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</Button>|<Button class="btn btn-success btn-sm" onclick="ViewAccount(' + row.AccountId + ')"><i class="fa fa-eye" style="padding-right:10px"></i>View List</Button>'
+                        }
+                    }
+            ]
+        });
+
+    }
 
     $('#ControlAccountSelectTop').change(function () {
 
         var CAID = $('#ControlAccountSelectTop').val();
-        if (CAID != 0)
-        {
+        if (CAID != 0) {
             loadHeadAccountTable(CAID);
         }
 
 
     });
 
-    function EditHeadAccount(HeadAcID)
-    {
+    function EditHeadAccount(HeadAcID) {
         LoadControlAccount();
-        
+
         $.ajax({
             url: "/MVCHeadAccount/GetHeadAccountByID",
             type: 'GET',
@@ -308,11 +532,9 @@
                     }
                 });
 
-                alert(Responsedata.FK_ControlAccountID);
                 $('#HeadAccountTitle').val(Responsedata.HeadAccountTitle);
                 $('#HeadAccountDescription').val(Responsedata.HeadAccountDescription);
                 $('#HeadAccountId').val(Responsedata.HeadAccountId);
-               
                 $('#HeadAccountModel').modal('show');
             }
         });
@@ -351,5 +573,154 @@
             });
         }
     }
+
+    function LoadHeadAccount() {
+
+        if ($('#FK_HeadAccountId').has('option').length > 0) {
+            return;
+        }
+        else {
+            $("#FK_HeadAccountId").find("option").remove();
+            $("#FK_HeadAccountId").prepend("<option value=0>" + 'Select Control Account' + "</option>");
+            
+            $.ajax({
+                url: "/MVCHeadAccount/GetHeadAccountList",
+                type: "Get",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $.each(data, function (key, item) {
+
+                        $('#FK_HeadAccountId').append($('<option></option>').val(item.HeadAccountId).html(item.HeadAccountTitle));
+
+                    });
+
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
+        }
+    }
+  
+    function EditAccount(id) {
+        LoadHeadAccount();
+        $.ajax({
+            url: "/MVCAccounts/GetAccountByID",
+            type: 'GET',
+            data: {
+                AccountID: id
+            },
+            success: function (Responsedata) {
+
+                console.log(Responsedata);
+                $('select#FK_HeadAccountId option').each(function () {
+                    if ($(this).val() == Responsedata.FK_HeadAccountId) {
+                        this.selected = true;
+                        return;
+                    }
+                });
+
+                $('#AccountTitle').val(Responsedata.AccountTitle);
+                $('#AccountDescription').val(Responsedata.AccountDescription);
+                $('#AccountId').val(Responsedata.AccountId);
+                $('#AccountCode').val(Responsedata.AccountCode);
+
+                
+                $('#AccountModel').modal('show');
+            }
+        });
+    }
+
+    $('#UpdateAccountTbale').click(function () {
+        var validdate = validateAccount();
+        if (validdate == true) {
+            data = {
+                AccountId: $('#AccountId').val(),
+                AccountCode: $('#AccountCode').val(),
+                AccountTitle: $('#AccountTitle').val(),
+                AccountDescription: $('#AccountDescription').val(),
+                FK_HeadAccountId: $('#FK_HeadAccountId').val(),
+            }
+            $.ajax({
+                url: "/MVCAccounts/AddOrEdit",
+                type: "POST",
+                data: data,
+                async: false,
+                success: function (Resultdat) {
+                    $('#AccountListTable').DataTable().ajax.reload();
+                    {
+                        $('#AccountModel').modal('hide');
+
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Your opration has been successfuly completed `Thank you`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                    }
+                },
+                Error: function (err) {
+                    alert("erro");
+                }
+            });
+        }
+    });
+   
+    
+    function validateHeadAccount() {
+        var isValid = true;
+
+        if ($('#ControlAccountSelect').val() == 0) {
+            $('#ControlAccountSelect').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ControlAccountSelect').css('border-color', 'lightgrey');
+        }
+        if ($('#HeadAccountTitle').val().trim() == "") {
+            $('#HeadAccountTitle').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#HeadAccountTitle').css('border-color', 'lightgrey');
+        }
+        
+        return isValid;
+    }
+
+    function validateAccount() {
+        var isValid = true;
+
+        if ($('#FK_HeadAccountId').val() == 0) {
+            $('#FK_HeadAccountId').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#FK_HeadAccountId').css('border-color', 'lightgrey');
+        }
+        if ($('#AccountTitle').val().trim() == "") {
+            $('#AccountTitle').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#AccountTitle').css('border-color', 'lightgrey');
+        }
+
+        if ($('#AccountCode').val().trim() == "") {
+            $('#AccountCode').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#AccountCode').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
 </script>
+
 

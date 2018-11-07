@@ -187,5 +187,19 @@ namespace InvoiceDiskLast.Controllers
                 return Json("Null", JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        public ActionResult GetHeadAccountList()
+        {
+            int companyid = Convert.ToInt32(Session["CompayID"]);
+
+
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("HeadAccountbyId/" + companyid).Result;
+
+
+            List<MVCHeadAccountModel> HeadAccountmodelObj = response.Content.ReadAsAsync<List<MVCHeadAccountModel>>().Result;
+
+            return Json(HeadAccountmodelObj, JsonRequestBehavior.AllowGet);
+        }
     }
 }
