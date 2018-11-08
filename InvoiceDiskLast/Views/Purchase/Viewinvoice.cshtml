@@ -48,14 +48,15 @@
                     <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
-
             @Html.ActionLink("print concept", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success", style = "margin:0px 10px;" })
-
-
-
             <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-success">Change</a>
+            
 
+            <a href="/Order/PurchaseOrderList/" class="btn btn-success" style = "margin:0px 10px;visibility:hidden;" id="BackToHome">Bake To List</a>
+                    
         </div>
+
+        
     </div>
 </div>
 <div style="margin-top:10px;border: 1px solid #CECECE;">
@@ -73,6 +74,8 @@
             <br />
 
 
+
+            @(Contectdatas.ContactName!=null || Contectdatas.ContactName!="" ? Contectdatas.ContactName : "No Contact name")
             @Contectdatas.ContactName
             <br />
             @Contectdatas.ContactAddress
@@ -313,6 +316,13 @@
 
 
 <script type="text/javascript">
+
+
+ 
+
+   
+
+
     $(document).ready(function () {
         var patth = localStorage.getItem('path1');
         $("#FilePath1").val(patth);
@@ -323,5 +333,12 @@
             $("#FilePath1").val('');
             localStorage.removeItem('path1');
         }
-    })
+    });
+
+
+
+    
+
+
+
 </script>
