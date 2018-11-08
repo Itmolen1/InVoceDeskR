@@ -11,33 +11,25 @@ using System.Data.Entity.Infrastructure;
 
 namespace InvoiceDiskLast.Controllers
 {
+   [Authorize]
     public class APIProductController : ApiController
     {
         private DBEntities db = new DBEntities();
         // GET: api/APIProduct
 
 
-
+        [Route("api/APIProduct/{CompanyId:int}")]
         [ResponseType(typeof(List<MVCProductModel>))]
-        public IHttpActionResult GetProductTables()
+        
+        public IHttpActionResult GetProductTables(int CompanyId)
         {
            
             List<ProductTable> i = new List<ProductTable>();
-            IEnumerable<string> headerValues;
-            //var DBLIST = "";
-            var IDS = "";
-
-            int id = 0;
-            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
-            {
-                IDS = headerValues.FirstOrDefault();
-                id = Convert.ToInt32(IDS);
-            }
-            
+           
             // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
             
 
-          var ob=   db.ProductTables.Where(x => x.Company_ID == id).Select(c => new MVCProductModel
+          var ob=   db.ProductTables.Where(x => x.Company_ID == CompanyId).Select(c => new MVCProductModel
             {
 
                 ProductId = c.ProductId,
@@ -56,6 +48,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        [Route("api/APIProductByProductID/{id:int}")]
         // GET: api/APIProduct/5
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult GetProductTable(int id)
@@ -93,7 +86,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        // PUT: api/APIProduct/5
+        [Route("api/PutAPIProduct/{id:int}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProductTable(int id, ProductTable productTable)
         {
@@ -129,6 +122,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // POST: api/APIProduct
+        [Route("api/PostProduct")]
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult PostProductTable(ProductTable productTable)
         {
@@ -144,6 +138,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // DELETE: api/APIProduct/5
+        [Route("api/DeleteProduct/{id:int}")]
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult DeleteProductTable(int id)
         {

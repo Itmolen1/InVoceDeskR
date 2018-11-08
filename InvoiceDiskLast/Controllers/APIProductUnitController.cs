@@ -19,22 +19,12 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
        
        
-        // GET: api/APIProductUnit
-        public IHttpActionResult GetProductUnitTables()
+       [Route("api/GetProductUnit/{CompanyID:int}")]
+        public IHttpActionResult GetProductUnitTables(int CompanyID)
         {
-            
-            IEnumerable<string> headerValues;
-            //var DBLIST = "";
-            var IDS = "";
-            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
-            {
-                IDS = headerValues.FirstOrDefault();
-            }
-            int id = Convert.ToInt32(IDS);           
-
           try
             {
-               List<MVCProductUnitModel> obProductUnit = db.ProductUnitTables.Where(x => x.CompanyId == id && x.Status == true).Select(c => new MVCProductUnitModel
+               List<MVCProductUnitModel> obProductUnit = db.ProductUnitTables.Where(x => x.CompanyId == CompanyID && x.Status == true).Select(c => new MVCProductUnitModel
                     {
                         ProductUnitID = c.ProductUnitID,
                         ProductUnit = c.ProductUnit,
@@ -58,11 +48,24 @@ namespace InvoiceDiskLast.Controllers
         //    return Ok(id);
         //}
 
-        //[Route("api/students/{name:alpha}")]
-        //public IHttpActionResult GetProductUnitTables(string name)
-        //{
-        //    return Ok(name);
-        //}
+        [Route("api/APIProductUnitByName/{name:alpha}/{CompanyID:int}")]
+        public IHttpActionResult GetProductUnitTables(string name,int CompanyID)
+        {
+            CheckUnit1 ch = new CheckUnit1();
+            bool resut =  db.ProductUnitTables.Count(e => e.ProductUnit == name && e.CompanyId == CompanyID) > 0;
+
+            if (resut == true)
+            {
+                ch.count = 1;
+              return Ok(ch);
+            }
+            else
+            {
+                ch.count = 0;
+               return Ok(ch);
+            }
+           
+        }
 
         //[Route("api/students/{name:alpha}/{id:int}")]
         //public IHttpActionResult GetProductUnitTables(string name,int id)
@@ -74,7 +77,7 @@ namespace InvoiceDiskLast.Controllers
         // GET: api/APIProductUnit/5
 
 
-        // PUT: api/APIProductUnit/5
+        [Route("api/PutProductUnit/{id:int}")]
         [ResponseType(typeof(void))]
        
         public IHttpActionResult PutProductUnitTable(int id, ProductUnitTable productUnitTable)
@@ -111,7 +114,7 @@ namespace InvoiceDiskLast.Controllers
            
         }
 
-        // POST: api/APIProductUnit
+       [Route("api/PostProductUnit")]
         [ResponseType(typeof(ProductUnitTable))]
         public IHttpActionResult PostProductUnitTable(ProductUnitTable productUnitTable)
         {
@@ -126,8 +129,8 @@ namespace InvoiceDiskLast.Controllers
             return CreatedAtRoute("DefaultApi", new { id = productUnitTable.ProductUnitID }, productUnitTable);
         }
 
-        
-        // DELETE: api/APIProductUnit/5
+
+        [Route("api/DeleteProductUnitByID/{id:int}")]
         [ResponseType(typeof(ProductUnitTable))]
         public IHttpActionResult DeleteProductUnitTable(int id)
         {

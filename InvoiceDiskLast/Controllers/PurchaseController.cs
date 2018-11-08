@@ -152,12 +152,6 @@ namespace InvoiceDiskLast.Controllers
                     Contectid = Convert.ToInt32(Session["ClientId"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
-                else
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-
-
                 purchasemodel.CompanyId = CompanyID;
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
@@ -289,12 +283,7 @@ namespace InvoiceDiskLast.Controllers
                     Contectid = Convert.ToInt32(Session["ClientId"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
-                else
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-
-
+               
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", cdd.ToString());
 
@@ -336,7 +325,7 @@ namespace InvoiceDiskLast.Controllers
                     ViewBag.VatDrop = model;
 
 
-                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
+                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID).Result;
                     List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                     ViewBag.Product = productModel;
 
@@ -1379,17 +1368,7 @@ namespace InvoiceDiskLast.Controllers
             return View();
 
         }
-
-
-
-
-
-
-
-
-
-
-
+        
     }
 
 }

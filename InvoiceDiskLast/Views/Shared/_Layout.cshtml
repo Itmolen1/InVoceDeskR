@@ -1869,7 +1869,7 @@
       
 
         $('#SaveNewProductModel').click(function () {
-            debugger;
+           
             $.ajax({
                 url: '/MVCProduct/AddOrEdit',
                 type: 'POST',
@@ -1958,8 +1958,6 @@
                 type: "POST",
                 data: { name: $('#ProductUnit').val() },
                 success: function (Resultdat) {
-
-                    console.log(Resultdat);
                     if (Resultdat == "Found") {
                         $.toast({
                             heading: 'Already exist',
@@ -2027,7 +2025,15 @@
         @*Contact or client Script*@
 
        
+        function CleartProdctTextBox() {
+            $('#ProductName').val(""),
+             $('#Description').val(""),
+             $('#SalePrice').val(""),
+             $('#PurchasePrice').val(""),
+             $('#OpeningQuantity').val(""),
+             $('#ProductUnitSelect').val("0")
 
+        }
       
 
         $('#Logout').click(function () {

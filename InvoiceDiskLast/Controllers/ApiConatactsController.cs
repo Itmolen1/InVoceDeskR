@@ -15,7 +15,7 @@ using System.Web;
 namespace InvoiceDiskLast.Controllers
 {
 
-    //[Authorize]
+    
     public class ApiConatactsController : ApiController
     {
         private DBEntities db = new DBEntities();

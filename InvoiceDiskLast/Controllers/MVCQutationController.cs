@@ -141,7 +141,7 @@ namespace InvoiceDiskLast.Controllers
 
                         ViewBag.VatDrop = model;
 
-                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
+                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+CompanyID).Result;
                         List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                         ViewBag.Product = productModel;
 
@@ -1369,7 +1369,7 @@ namespace InvoiceDiskLast.Controllers
         public JsonResult ProductPricebyId(int ProductId)
         {
 
-            HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ProductId.ToString()).Result;
+            HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + ProductId.ToString()).Result;
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;
             float price = (float)productModel.SalePrice;
             return Json(price, JsonRequestBehavior.AllowGet);

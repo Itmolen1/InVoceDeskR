@@ -76,7 +76,6 @@ namespace InvoiceDiskLast.Controllers
                 if (Session["ApiAccessToken"] != null)
                 {
                     GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session["ApiAccessToken"].ToString());
-
                     //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
                     string name = userInfo.username.ToString();
                     Session["username"] = name;

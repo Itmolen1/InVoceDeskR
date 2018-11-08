@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
-    [SessionExpireAttribute]
+   [SessionExpireAttribute]
     public class MVCProductController : Controller
     {
         // GET: MVCProduct
@@ -19,9 +19,6 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult GetProductlist()
         {
-
-
-
             List<MVCProductModel> ProductList = new List<MVCProductModel>();
             List<MVCProductModel> ProductList1 = new List<MVCProductModel>();
             try
@@ -39,15 +36,8 @@ namespace InvoiceDiskLast.Controllers
 
 
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
-
-                //  IEnumerable<string> token;
-                //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);
-
-
-
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
+              
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+ CompanyId).Result;
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -101,11 +91,7 @@ namespace InvoiceDiskLast.Controllers
                         break;
                 }
 
-                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDir)))
-                //{
-                //    var v = CompanyList.OrderBy(c=>c.);
-
-                //}
+              
                 int recordsTotal = recordsTotal = ProductList.Count();
                 var data = ProductList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
@@ -123,13 +109,9 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetProduct()
         {
 
-            int CompanyId = Convert.ToInt32(Session["CompayID"]);
-
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct").Result;
+            int CompanyId = Convert.ToInt32(Session["CompayID"]);            
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+ CompanyId).Result;
             List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
-
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return Json(ProductList, JsonRequestBehavior.AllowGet);
@@ -148,7 +130,7 @@ namespace InvoiceDiskLast.Controllers
             }
             else
             {
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + id.ToString()).Result;
                 return Json(response.Content.ReadAsAsync<MVCProductModel>().Result, JsonRequestBehavior.AllowGet);
             }
         }
@@ -163,19 +145,18 @@ namespace InvoiceDiskLast.Controllers
                 ProductModel.Company_ID = CompanyId;
                 ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                 if (ProductModel.ProductId == null)
-                {                   
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-                  
+                {
 
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIProduct", ProductModel).Result;
-                    TempData["SuccessMessage"] = "Saved Successfully";
+                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());                  
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
+                   
                 }
                 else
                 {
                    
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIProduct/" + ProductModel.ProductId, ProductModel).Result;
-                    TempData["SuccessMessage"] = "Updated Successfully";
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutAPIProduct/" + ProductModel.ProductId, ProductModel).Result;
+                  
                 }
 
                 return RedirectToAction("Index");
@@ -192,7 +173,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("APIProduct/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()).Result;
                 TempData["SuccessMessage"] = "Delete Successfully";
                 return Json("Delete", JsonRequestBehavior.AllowGet);
             }
@@ -207,7 +188,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + id.ToString()).Result;
                 return View(response.Content.ReadAsAsync<MVCProductModel>().Result);
             }
             catch (Exception ex)
