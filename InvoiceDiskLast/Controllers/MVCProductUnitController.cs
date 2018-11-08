@@ -24,10 +24,8 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetProductUnit()
         {
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-           
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit").Result;
+
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnit/"+ CompanyId).Result;
 
             var ProductUnitList = response.Content.ReadAsAsync<IEnumerable<MVCProductUnitModel>>().Result;
 
@@ -49,7 +47,7 @@ namespace InvoiceDiskLast.Controllers
             }
             else
             {
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnitByID/" + id).Result;
                 MVCProductUnitModel MvcUnitModel = response.Content.ReadAsAsync<MVCProductUnitModel>().Result;
                 
                 return Json(MvcUnitModel, JsonRequestBehavior.AllowGet);
@@ -63,14 +61,14 @@ namespace InvoiceDiskLast.Controllers
             {
                     unitmodel.CompanyId = Convert.ToInt32(Session["CompayID"]);                  
                   
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIProductUnit", unitmodel).Result;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProductUnit", unitmodel).Result;
 
                     return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
                     unitmodel.CompanyId = Convert.ToInt32(Session["CompayID"]);                
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIProductUnit/" + unitmodel.ProductUnitID, unitmodel).Result;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutProductUnit/" + unitmodel.ProductUnitID, unitmodel).Result;
 
                     return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
             }
@@ -87,26 +85,13 @@ namespace InvoiceDiskLast.Controllers
 
             if (name != null)
             {
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                int CompanyId = Convert.ToInt32(Session["CompayID"]);
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnit/" + name.ToString()).Result;
+                CheckUnit1 objectcount = new CheckUnit1();
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);              
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnitByName/" + name.ToString() + "/" + CompanyId).Result;
 
-
-
-                ProductUnitmodel = response.Content.ReadAsAsync<List<MVCProductUnitModel>>().Result;
-                CheckUnit objectcount = new CheckUnit();
-                objectcount.countResult = 0;
-                foreach (MVCProductUnitModel p in ProductUnitmodel)
-                {
-                   if(p.ProductUnit.ToLower() == name.ToLower())
-                    {
-                        objectcount.countResult = 1;
-                        break;
-                    }
-                }
-
-                    if (objectcount.countResult > 0)
+                objectcount = response.Content.ReadAsAsync<CheckUnit1>().Result;
+                
+                if (objectcount.count > 0)
                 {
                     return Json("Found", JsonRequestBehavior.AllowGet);
                 }
