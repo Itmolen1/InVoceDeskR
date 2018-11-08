@@ -15,17 +15,9 @@
 
 
 
-
-
-
-
-
-
-
 <div class="row">
     <div class="col-md-2">
         <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
-
     </div>
     <div class="col-md-6">
         <select id="drpstatus" class="form-control">
@@ -86,39 +78,172 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body" style="height: auto !important">
+
+                <div class="row">
+                    <div class="col-ms-4">
+                        <img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="margin-left: 234px"><h5>CompanyName</h5><hr /></div>
+
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3 pull-left"><div class="pull-right">Kvk nr:</div></div>
+                            <div class="col-sm-5">KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-5">BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3 pull-right"><div class="pull-right">Bank:</div></div>
+                            <div class="col-sm-5">BankName</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3 pull-right"><div class="pull-right">IBAN:</div></div>
+                            <div class="col-sm-5">IBANNumber</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3 pull-right"><div class="pull-right">BIC:</div></div>
+                            <div class="col-sm-5">BIC</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-4"><div class="pull-right">Tel:</div></div>
+                            <div class="col-sm-5">CompanyPhone</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-4"><div class="pull-right">Cel:</div></div>
+                            <div class="col-sm-5">CompanyCell</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-4 pull-right"><div class="pull-right">E-mail:</div></div>
+                            <div class="col-sm-5">CompanyCell</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-4 pull-right"><div class="pull-right">Website:</div></div>
+                            <div class="col-sm-5">Website</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-7 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                            <div class="col-sm-4">
+                                address<br />
+                                PostalCode   CompanyCity <br />
+                                CompanyCountry
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
                 <table class="table" id="PendingTable">
                     <thead style="background-color:black;color:white">
                         <tr>
                             <th>
                                 Code
                             </th>
+                            <th>
+                                ProductName
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                               Price
+                            </th>
+                         
+                            <th>
+                                Total
+                            </th>
+                           
+                            <th>
+                                Vat
+                            </th>
 
-                            <th>
-                                Status
-                            </th>
-                            <th>
-                                Frmdate
-                            </th>
-                            <th>
-                                ToDate
-                            </th>
-                            <th>
-                                Description
-                            </th>
+                            
+
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody  id="tbody"></tbody>
                 </table>
+            
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="tex pull-right">Total excl. VAT:	€	</label>
+                        </div>
+                        <div class="col-sm-5">
+                            <label class="tex pull-right" id="PurchaseSubTotal"></label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                       
+
+
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">VAT 6%:	€	</label>
+                            </div>
+                            <div class="col-sm-5 ">
+                                <label class="tex pull-right" id="vat5"></label>
+                            </div>
+                        
+                    </div>
+
+                    <div class="row">
+
+                       
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">VAT 21%:	€</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="tex pull-right" id="Vat21"></label>
+
+                            </div>
+                       
+
+
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="tex pull-right">Grand Total:</label>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <label class="tex  pull-right" id="PurchaseTotoalAmount"></label>
+
+                        </div>
+                    </div>
+                </div>
+            
+                
             </div>
             <div class="modal-footer">
-
 
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
+<!-- /.modal-dialog -->
+
 
 
 <div id="Pending" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -283,7 +408,7 @@
 
 
                 <div class="row">
-                    <table class="table table-bordered table-striped" id="tableAccountinfo"  style="visibility:hidden">
+                    <table class="table table-bordered table-striped" id="tableAccountinfo" style="visibility:hidden">
                         <thead style="background-color:black;color:white">
                             <tr>
                                 <th>TID</th>
@@ -292,7 +417,7 @@
                                 <th>Acc Name</th>
                                 <th>Payment</th>
                                 <th>Debit</th>
-                                <th>Credit</th>                                
+                                <th>Credit</th>
                             </tr>
                         </thead>
                         <tbody id="tbleAccount"></tbody>
@@ -318,6 +443,8 @@
 
 
 <script type="text/javascript">
+
+
 
     $(document).ready(function () {
         LoadPurchaseOrderTable("Open");
@@ -471,9 +598,87 @@
 
 
     function ViewDetail(purchaseId) {
-        loadPendingTable(purchaseId);
+
+        //loadPendingTable(purchaseId);
+
+        $.ajax({
+            url: '/Purchase/AddOrEditPurchase',
+            type: 'GET',
+            data: {
+                purchaseId: purchaseId
+            },
+            success: function () {
+                GetPurchaseDetailByPurchaseId(purchaseId)
+            }
+        });
+
+
+    }
+
+
+    function GetPurchaseDetailByPurchaseId(pruchaseId) {
+        debugger;
+
+        var Data = JSON.stringify({
+            PurchaseId: pruchaseId,
+
+        })
+        $.ajax({
+            url: '/Order/GetPendingItem',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log(response);
+               
+
+                
+
+                var html = '';
+                $.each(response.PurchaseData, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.PurchaseId + '</td>';
+                    html += '<td>' + item.PurchaseItemName + '</td>';
+                    html += '<td>' + item.PurchaseQuantity + '</td>';
+                    html += '<td>' + item.PurchaseItemRate + '</td>';
+                    html += '<td>' + item.PurchaseTotal + '</td>';
+                    html += '<td>' + item.PurchaseVatPercentage + '</td>';                 
+                    html += '</tr>';
+                });
+
+                $('#tbody').html(html);
+
+
+                
+
+
+                $('#showpendindModel').modal('show');
+
+
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+
+       // loadPendingTable(purchaseId);
         $('#showpendindModel').modal('show');
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     function Rejected(id) {
@@ -572,7 +777,7 @@
         });
     }
 
-    function loadPayemtDropdown() {     
+    function loadPayemtDropdown() {
         var drppayment = $('#drppaymentDebit');
         var drpAccountCredit = $('#drpAccountCredit');
         $.ajax({
@@ -592,7 +797,7 @@
     }
 
 
-    function loadPayemtTermDropdown() {      
+    function loadPayemtTermDropdown() {
         var drppaymentTerm = $('#drpAccountDebit');
         var drppaymentTermCredit = $('#drpAccountCredit');
         $.ajax({
@@ -620,7 +825,7 @@
             return;
         }
 
-        
+
         if ($('txttransactionDateDebit').val() == 0) {
             alert('txttransactionDateDebit  canot be null');
             return;
@@ -639,7 +844,7 @@
         }
 
         if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
-            alert('AmountCredit amount canot be zero');
+            alert('AmountCredit canot be zero');
             return;
         }
 
@@ -654,6 +859,8 @@
         }
         else {
 
+
+
             var AccountTable = $('#tbleAccount');
             var AcciontName = $('#drppaymentDebit option:selected').text();
             var TID = $('#txttransactionId').val();
@@ -667,7 +874,7 @@
             AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
             $('#tableAccountinfo').css('visibility', 'visible');
         }
-       
+
     });
 
 

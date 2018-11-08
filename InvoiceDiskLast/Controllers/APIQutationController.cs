@@ -18,9 +18,9 @@ namespace InvoiceDiskLast.Controllers
 
         //Get: api/GetQutationCount
 
-       
 
-        
+
+
         // GET: api/APIQutation
         public IHttpActionResult GetQutationTables()
         {
@@ -32,8 +32,8 @@ namespace InvoiceDiskLast.Controllers
             if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
             {
                 IDS = headerValues.FirstOrDefault();
-                 id = Convert.ToInt32(IDS);
-            }        
+                id = Convert.ToInt32(IDS);
+            }
 
             var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new MVCQutationModel
             {
@@ -200,5 +200,51 @@ namespace InvoiceDiskLast.Controllers
         {
             return db.QutationTables.Count(e => e.QutationID == id) > 0;
         }
+
+
+
+        [Route("api/QutationOrderListByStatus/{Status:alpha}")]
+        public IHttpActionResult GetQutationOrderListByStatus(string Status)
+        {
+            object ob = new object();
+            try
+            {
+                var IDS = "";
+                int id = 0;
+                IEnumerable<string> headerValues;
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                    id = Convert.ToInt32(IDS);
+                }
+                ob = db.QutationTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MVCQutationModel
+                {
+                    QutationID = Convert.ToInt32(p.QutationID),
+                    Qutation_ID = p.Qutation_ID,
+                    QutationDate = (DateTime)p.QutationDate,
+                    DueDate = p.DueDate,
+                    RefNumber = p.RefNumber,
+                    SubTotal = p.SubTotal,
+                    Status = p.Status,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+
+                }).ToList();
+
+                return Ok(ob);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
+
+
+
     }
 }

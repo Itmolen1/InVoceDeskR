@@ -1,0 +1,425 @@
+﻿
+@{
+    ViewBag.Title = "QutationOrderList";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="row">
+    <div class="col-md-2">
+        <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+
+    </div>
+    <div class="col-md-6">
+        <select id="drpstatus" class="form-control">
+
+            <option value="1">Open</option>
+            <option value="1">Accepted</option>
+            <option value="1">Pending</option>
+            <option value="1">Rejected</option>
+
+        </select>
+    </div>
+</div>
+
+<div>
+    <table class="table" id="QutationOrderTable">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>
+                    Code
+                </th>
+
+                <th>
+                    Date
+                </th>
+                <th>
+                   DueDate
+                </th>
+                <th>
+                    RefrenceNumber
+                </th>
+                <th>
+                    Qutation Subtotal
+                </th>
+               
+                <th>
+                    Status
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        LoadQutationOrderTable("Open");
+        //loadPayemtDropdown();
+        //loadPayemtTermDropdown();
+    });
+
+    function LoadQutationOrderTable(status) {
+        $("#QutationOrderTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "destroy": true,
+            "searching": true,
+            "autoWidth": false,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/QutationOrder/GetQutationOrderList",
+                "type": "POST",
+                data: { status: status },
+                "datatype": "json"
+            },
+            "columns": [
+                  { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
+                    {
+                        "data": "QutationDate", "type": "date ",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var pattern = /Date\(([^)]+)\)/;//date format from server side
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        }, "autoWidth": true
+                    },
+                   {
+                       "data": "DueDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+
+                  { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
+
+                { "data": "SubTotal", "name": "SubTotal", "autoWidth": true },
+
+               { "data": "Status", "name": "Status", "autoWidth": true },
+                {
+                    render: function (data, type, row) {
+
+
+                        switch (row.Status) {
+                            case "Open":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+                                break
+
+                            case "Rejected":
+                                return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></a>'
+                                break
+
+
+                            case "Pending":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                break
+
+
+                            case "Accepted":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></a>'
+                                break
+                        }
+
+                    }
+                }
+            ]
+        });
+    }
+
+    //function loadPendingTable(id) {
+    //    $("#PendingTable").DataTable({
+    //        //"processing": true, // for show progress bar
+    //        "processing": true,
+    //        "language": {
+    //            //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+    //        },
+    //        "destroy": true,
+    //        "searching": true,
+    //        "autoWidth": false,
+    //        "serverSide": true, // for process server side
+    //        "filter": false, // this is for disable filter (search box)
+    //        "orderMulti": false, // for disable multiple column at once
+    //        "ajax": {
+    //            "url": "/Order/GetPendingItem",
+    //            "type": "POST",
+    //            "datatype": "json",
+    //            data: { PurchaseId: id },
+    //        },
+    //        "columns": [
+    //             {
+    //                 "data": "PID", "name": "PID", "autoWidth": true
+    //             },
+
+    //              { "data": "Status", "name": "Status", "autoWidth": true },
+
+    //             // key for edit delete
+    //               {
+    //                   "data": "FromDate", "type": "date ",
+    //                   "render": function (value) {
+    //                       if (value === null) return "";
+    //                       var pattern = /Date\(([^)]+)\)/;//date format from server side
+    //                       var results = pattern.exec(value);
+    //                       var dt = new Date(parseFloat(results[1]));
+    //                       return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+    //                   }, "autoWidth": true
+    //               },
+    //              {
+    //                  "data": "ToDate", "type": "date ",
+    //                  "render": function (value) {
+    //                      if (value === null) return "";
+    //                      var pattern = /Date\(([^)]+)\)/;//date format from server side
+    //                      var results = pattern.exec(value);
+    //                      var dt = new Date(parseFloat(results[1]));
+    //                      return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+    //                  }, "autoWidth": true
+    //              },
+
+    //             { "data": "Description", "name": "Description", "autoWidth": true },
+
+
+    //        ]
+    //    });
+    //}
+
+
+    //function AcceptOrder(id) {
+
+    //    $('#txtrefrencenumber').val(id);
+    //    $('#txttransactionId').val(Math.floor(Math.random() * 10));
+    //    $('#TransactionModel').modal('show');
+
+    //}
+    function Reopen(id) {
+        updateStatus(id, "Open", "Open", "the qutation is Open successfully");
+    }
+
+    function ViewDetail(purchaseId) {
+        //loadPendingTable(purchaseId);
+       // $('#showpendindModel').modal('show');
+    }
+
+
+    function Rejected(id) {
+        updateStatus(id, "Rejected", "the Qutation is rejected successfully");
+    }
+
+
+    function PendingtOrder(id) {
+        //$('#Pending').modal('show');
+        //$('#txtpurchaseId').val(id);
+    }
+
+
+    function updateStatus(Id, Status, Message) {
+        debugger;
+        var Data = JSON.stringify({
+            purchaseId: Id,
+            Status: Status,
+        })
+        $.ajax({
+            url: '/Order/UpdateOrderStaus',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.Status == "Success") {
+                    $('#QutationOrderTable').DataTable().ajax.reload();
+
+                    swal({
+                        title: 'Status!',
+                        text: Message,
+                        type: 'success'
+                    });
+                }
+                else if (response.Status == "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: "fail to process",
+                        type: 'danger'
+                    });
+                }
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+    }
+
+    $('#drpstatus').change(function () {
+        var status = $('#drpstatus option:selected').text();
+        LoadQutationOrderTable(status);
+    });
+
+    //$('#savePendind').click(function () {
+    //    AddPending();
+    //});
+
+
+    //function AddPending() {
+    //    debugger;
+    //    var ddddd = {
+    //        Purchase_QuataionId: $("#txtpurchaseId").val(),
+    //        FromDate: $("#txtfromdate").val(),
+    //        ToDate: $('#txttodate').val(),
+    //        Description: $('#txtdescription').val(),
+    //        Status: "Pending"
+    //    };
+    //    $.ajax({
+    //        url: "/Order/AddPending",
+    //        type: 'POST',
+    //        data: ddddd,
+    //        success: function (rsponse) {
+    //            if (rsponse.Success = "Success") {
+    //                $('#PurchaseListTable').DataTable().ajax.reload();
+    //                $('#Pending').modal('hide');
+    //                swal({
+    //                    title: 'Status!',
+    //                    text: rsponse.Message,
+    //                    type: 'success'
+    //                });
+    //            }
+    //            else if (rsponse.Success = "Fail") {
+    //                swal({
+    //                    title: 'Status!',
+    //                    text: rsponse.Message,
+    //                    type: 'success'
+    //                });
+    //            }
+    //        },
+    //        error: function (error) {
+    //            alert(error);
+    //        }
+    //    });
+    //}
+
+    //function loadPayemtDropdown() {
+    //    var drppayment = $('#drppaymentDebit');
+    //    var drpAccountCredit = $('#drpAccountCredit');
+    //    $.ajax({
+    //        url: "/MvcAccounts/GetAccount",
+    //        type: "POST",
+    //        contentType: "appplication/json",
+    //        success: function (response) {
+    //            $.each(response, function (i, item) {
+    //                drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+    //                drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+    //            });
+    //        },
+    //        error: function (Error) {
+    //            alert(Error)
+    //        },
+    //    });
+    //}
+
+
+    //function loadPayemtTermDropdown() {
+    //    var drppaymentTerm = $('#drpAccountDebit');
+    //    var drppaymentTermCredit = $('#drpAccountCredit');
+    //    $.ajax({
+    //        url: "/MvcPaymentTerm/GetPaymentTerm",
+    //        type: "POST",
+    //        contentType: "appplication/json",
+    //        success: function (response) {
+    //            $.each(response, function (i, item) {
+    //                drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+    //                drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+    //            });
+    //        },
+    //        error: function (Error) {
+    //            alert(Error)
+    //        },
+    //    });
+
+    //}
+
+
+    //$('#btnAdd').click(function () {
+
+    //    if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+    //        alert('Account name canot be same');
+    //        return;
+    //    }
+
+
+    //    if ($('txttransactionDateDebit').val() == 0) {
+    //        alert('txttransactionDateDebit  canot be null');
+    //        return;
+    //    }
+
+
+    //    if ($('#drpAccountDebit').val() == 0) {
+    //        alert('drpAccountDebit  canot be null');
+    //        return;
+    //    }
+
+
+    //    if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+    //        alert('debit amount canot be zero');
+    //        return;
+    //    }
+
+    //    if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+    //        alert('AmountCredit canot be zero');
+    //        return;
+    //    }
+
+    //    if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
+    //        alert('Amonnt are not same please checke');
+    //        return;
+    //    }
+
+    //    if ($('#tbleAccount tr').length == 2) {
+    //        alert("Please save and chhose another transiction");
+    //    }
+    //    else {
+
+    //        var AccountTable = $('#tbleAccount');
+    //        var AcciontName = $('#drppaymentDebit option:selected').text();
+    //        var TID = $('#txttransactionId').val();
+    //        var ref = $('#txtrefrencenumber').val();
+    //        var Amountdebit = $('#AmountDebit').val();
+    //        var AmountCridit = $('#AmountCredit').val();
+    //        var Tdate = $('#txttransactionDateDebit').val();
+    //        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+    //        var paymentTer = $('#drpAccountDebit option:selected').text();
+    //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+    //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+    //        $('#tableAccountinfo').css('visibility', 'visible');
+    //    }
+
+    //});
+
+
+</script>

@@ -646,21 +646,38 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
 
+
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
                 {
-
-                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
-                    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
-                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
                     PageHeight = 40,
+
                     SaveOnServerPath = path, // Save your place
-                    PageWidth = 200,
-                   
+
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                   DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                  " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+
                 };
+
+                //var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
+                //{
+
+                //    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                //    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                //   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+
+                //    PageSize = Rotativa.Options.Size.A4,
+                //    MinimumFontSize = 16,
+                //    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
+                //    PageHeight = 40,
+                //    SaveOnServerPath = path, // Save your place
+                //    PageWidth = 200,
+                   
+                //};
                 // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);
             }
