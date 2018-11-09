@@ -161,5 +161,30 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+
+        [Route("api/AccountCheckStatus")]
+        public IHttpActionResult PostUserEmailConformed(UserModel user)
+        {
+            try
+            {
+
+                bool IsConformed = db.AspNetUsers.Count(x => x.UserName == user.Username && x.EmailConfirmed == true ) > 0;
+
+                if (IsConformed == true)
+                {
+                    return Ok(user);
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+        }
     }
 }

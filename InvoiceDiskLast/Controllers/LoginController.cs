@@ -63,7 +63,7 @@ namespace InvoiceDiskLast.Controllers
 
        
        [HttpGet]
-        public ActionResult VerifyEmail(string Email)
+        public ActionResult VerifyEmail(string Email, int? forgotpassword)
         {
             try
             {
@@ -77,9 +77,16 @@ namespace InvoiceDiskLast.Controllers
                 mvcuserModel=response.Content.ReadAsAsync<MvcUserModel>().Result;
 
                 string url = System.Configuration.ConfigurationManager.AppSettings["url"];
-          
-                string link = url + mvcuserModel.Id;
 
+                string link;
+                if (forgotpassword != null)
+                {
+                     link = url + "Captcha/RestPassword?Code=" + mvcuserModel.Id;
+                }
+                else
+                {
+                     link = url + "Login/Verifiy?Code=" + mvcuserModel.Id;
+                }
                 sendMail(Email, mvcuserModel.Id, link);
 
                 return Json("Success", JsonRequestBehavior.AllowGet);
@@ -93,7 +100,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        void sendMail(string ToEmail, string Code ,  string link )
+       public void sendMail(string ToEmail, string Code ,  string link )
         {
             #region formatter
             string text = string.Format("Please click on this link to {0}: {1}","", "Please verify your email to loogin");

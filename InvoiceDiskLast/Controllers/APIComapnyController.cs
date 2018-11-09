@@ -90,7 +90,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 return BadRequest();
             }
-
+            
             db.Entry(comapnyInfo).State = EntityState.Modified;
 
             try
