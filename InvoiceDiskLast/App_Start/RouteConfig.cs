@@ -18,6 +18,9 @@ namespace InvoiceDiskLast
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Captcha", action = "Index", id = UrlParameter.Optional }
             );
+
+
+          
         }
     }
 }

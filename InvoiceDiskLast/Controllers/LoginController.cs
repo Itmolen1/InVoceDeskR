@@ -19,6 +19,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Captcha");
+            //return View();
         }
 
         [HttpPost]
