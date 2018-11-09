@@ -147,10 +147,6 @@ namespace InvoiceDiskLast.Controllers
             {
                 return NotFound();
             }
-
-            db.ProductTables.Remove(productTable);
-            db.SaveChanges();
-
             return Ok(productTable);
         }
 

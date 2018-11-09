@@ -88,6 +88,7 @@
 </div>
 
 <input type="hidden" id="companyiddd" />
+<input type="hidden" id="UserName" />
 
 <div class="modal fade bs-example-modal-lg" id="CCompanyModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
@@ -205,12 +206,11 @@
 
     function LoadCompanyInfo()
     {
-        var companyid = parseInt(localStorage.getItem('CompanyID'));
+       
         $.ajax({
             url: "/MVCComapny/CompanyEdit",
             type: "GET",
             cache: false,
-            data: { 'id': companyid },
             success: function (resultCompany) {
                 $('#companyiddd').val(resultCompany.companyid);
                 $('#ccompanyname').val(resultCompany.CompanyName);
@@ -231,7 +231,8 @@
                 $('#cKVK').val(resultCompany.KVK);
                 $('#cBTW').val(resultCompany.BTW);
                 $('#cStreetNumber').val(resultCompany.StreetNumber);
-
+                $('#UserName').val(resultCompany.UserName);
+                
                 $('#CtargetImg').attr('src', '/images/' + resultCompany.CompanyLogo);
             },
             error: function (errormessage) {
@@ -260,6 +261,7 @@
                     $('#Website').val($('#websitecc').text());
                     $('#IBANNumber').val($('#CIBN').val());
                     $('#KVK').val($('#cKVK').val());
+
                     //$('#FileUpload1').val($('#logourl').val());
                     $('#targetImg').attr('src', '/images/' + $('#logourl').val());
                     $('#CCompanyModal').modal('show');
@@ -293,7 +295,7 @@
 
                 function SuccessUpdated() {
                     swal({
-                        title: "Congratulations!",
+                        title: "Success",
                         text: "Your data has been updated successfully",
                         type: "success",
                        
@@ -340,13 +342,11 @@
                             fileData.append('IBANNumber', $('#IBANNumber').val());
                             fileData.append('BIC', $('#BIC').val());
                             fileData.append('KVK', $('#KVK').val());
-
+                            fileData.append('UserName', $('#UserName').val());
+                           
                             fileData.append('BTW', $('#BTW').val());
 
                             fileData.append('AddedDate', $('#AddedDate').val());
-                            fileData.append('UserName', localStorage.getItem('Username'));
-
-
 
                             var url = "/MVCComapny/UpdateCompany";
                             debugger;
@@ -374,7 +374,5 @@
                 });
 
             });
-
-
 </script>
 

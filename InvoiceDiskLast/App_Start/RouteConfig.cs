@@ -13,6 +13,15 @@ namespace InvoiceDiskLast
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+          // routes.MapRoute(
+          //"RouteName",
+          //"{Index}",
+          //new { controller = "Captcha", action = "Index" });
+
+            // default route
+
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

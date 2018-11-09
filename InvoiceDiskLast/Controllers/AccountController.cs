@@ -19,7 +19,7 @@ using InvoiceDiskLast.Results;
 
 namespace InvoiceDiskLast.Controllers
 {
-    [Authorize]
+   // [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -152,6 +152,36 @@ namespace InvoiceDiskLast.Controllers
 
             return Ok();
         }
+
+
+
+
+        [Route("RestSetPassword")]
+        public async Task<IHttpActionResult> RestSetPassword(RestSetPasswordBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+           var user = await UserManager.FindByEmailAsync(model.Email);
+
+
+            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+
+
+            manager.RemovePassword(user.Id);
+            manager.AddPassword(user.Id, model.NewPassword);
+           
+            if(user == null)
+            {
+                return BadRequest(ModelState);
+            }
+           
+
+            return Ok();
+        }
+        
 
         // POST api/Account/AddExternalLogin
         [Route("AddExternalLogin")]
@@ -317,6 +347,8 @@ namespace InvoiceDiskLast.Controllers
 
             return logins;
         }
+
+      
 
         // POST api/Account/Register
         [AllowAnonymous]

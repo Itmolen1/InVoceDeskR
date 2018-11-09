@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,64 +29,88 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-       
+
         [HttpPost]
         public ActionResult Index(UserModels user)
         {
 
-            if (this.IsCaptchaValid("Captcha is not valid"))
-            {               
+            HttpResponseMessage messageConformed = GlobalVeriables.WebApiClient.PostAsJsonAsync("AccountCheckStatus",user).Result;
+            //HttpResponseMessage responsec = GlobalVeriables.WebApiClient.PostAsJsonAsync("IsUserEmailConformed", user).Result;
 
-                UserInfo userInfo = new UserInfo();
-                userInfo.username = user.Username;
-                userInfo.password = user.Password;
-                userInfo.grant_type = "password";
-               var jsonInput = new JavaScriptSerializer().Serialize(userInfo);
-
-                BearerToken token;
-                using (var httpClient = new HttpClient())
+            if (messageConformed.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                ViewBag.ErrorMessage = "E-mail not conformed until! Please Conform";
+                return View(user);
+            }
+            else
+            {
+                string url = GlobalVeriables.WebApiClient.BaseAddress.ToString().Replace("/api", "");
+                if (this.IsCaptchaValid("Captcha is not valid"))
                 {
-                    var tokenRequest =
-                        new List<KeyValuePair<string, string>>
-                            {
-                        new KeyValuePair<string, string>("grant_type", "password"),
-                        new KeyValuePair<string, string>("username", userInfo.username),
-                        new KeyValuePair<string, string>("password", userInfo.password)
-                            };
 
-                    HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.username = user.Username;
+                    userInfo.password = user.Password;
+                    userInfo.grant_type = "password";
 
-                    //HttpResponseMessage response = httpClient.PostAsync("http://uurtjefactuur.nl/Token", encodedRequest).Result;
+                    var jsonInput = new JavaScriptSerializer().Serialize(userInfo);
 
-                    HttpResponseMessage response = httpClient.PostAsync("http://localhost:63861/Token", encodedRequest).Result;
-
-                    token = response.Content.ReadAsAsync<BearerToken>().Result;
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    #region
+                    BearerToken token;
+                    using (var httpClient = new HttpClient())
                     {
-                        ViewBag.ErrorMessage = "username or password incorrect!";
-                        return View(user);
+                        var tokenRequest =
+
+                            new List<KeyValuePair<string, string>>
+                                {
+                                new KeyValuePair<string, string>("grant_type", "password"),
+                                new KeyValuePair<string, string>("username", userInfo.username),
+                                new KeyValuePair<string, string>("password", userInfo.password)
+                                };
+
+                        HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
+
+
+
+
+                        //HttpResponseMessage response = httpClient.PostAsync(url+"/Token", encodedRequest).Result;
+
+                        HttpResponseMessage response = httpClient.PostAsync(url + "Token", encodedRequest).Result;
+
+                        token = response.Content.ReadAsAsync<BearerToken>().Result;
+
+                        #region
+
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                        {
+                            ViewBag.ErrorMessage = "username or password incorrect!";
+                            return View(user);
+                        }
+                        #endregion
+                        // Store token in ASP.NET Session State for later use
+                        Session["ApiAccessToken"] = token.AccessToken;
                     }
-                    // Store token in ASP.NET Session State for later use
-                    Session["ApiAccessToken"] = token.AccessToken;
-                }
 
-
-                if (Session["ApiAccessToken"] != null)
-                {
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session["ApiAccessToken"].ToString());
-                    //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
-                    string name = userInfo.username.ToString();
-                    Session["username"] = name;
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("name", name);
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiCompanyStatus/" + "ss").Result;
-                    var apiresut = response.Content.ReadAsAsync<object>().Result;
-
-                    int compnyID = Convert.ToInt32(apiresut);
-                    if (compnyID > 0)
+                    #endregion
+                    if (Session["ApiAccessToken"] != null)
                     {
-                        MVCCompanyInfoModel cominfo = new MVCCompanyInfoModel();
-                       
+                        
+                        //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
+                        string name = userInfo.username.ToString();
+                        Session["username"] = name;
+                        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("name", name);
+                        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session["ApiAccessToken"].ToString());
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiCompanyStatus/" + "ss").Result;
+                        var apiresut = response.Content.ReadAsAsync<object>().Result;
+
+                        int compnyID = Convert.ToInt32(apiresut);
+                        #region
+                        if (compnyID > 0)
+                        {
+                            MVCCompanyInfoModel cominfo = new MVCCompanyInfoModel();
+
                             Session["CompayID"] = compnyID;
 
                             HttpResponseMessage responses = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + compnyID.ToString()).Result;
@@ -96,52 +119,96 @@ namespace InvoiceDiskLast.Controllers
                             Session["CompanyEmail"] = cominfo.CompanyEmail;
                             Session["CompanyContact"] = cominfo.CompanyPhone;
 
-                        return RedirectToAction("Index","Home");
-                       
-                    }
-                    else
-                    {
-                        return RedirectToAction("NewCompany");
-                    }
+                            return RedirectToAction("Index", "Home");
 
+                        }
+                        else
+                        {
+                            return RedirectToAction("NewCompany");
+                        }
+                        #endregion
+                    }
                 }
+
+                ViewBag.ErrorMessage = "captcha is not valid upto now.";
+
+                return View(user);
             }
-
-           ViewBag.ErrorMessage = "captcha is not valid upto now.";
-
-            return View(user);          
         }
 
 
-       // public string Test(int id)
-       // {
-            
-       //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + id).Result;
-       //     return response.Content.ToString();
-       // }
+        // public string Test(int id)
+        // {
+
+        //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + id).Result;
+        //     return response.Content.ToString();
+        // }
 
 
-       // public string Test2(string name,int id=0)
-       //{
+        // public string Test2(string name,int id=0)
+        //{
 
-       //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name+ "/"+id).Result;
-       //     return response.Content.ToString();
-       // }
+        //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name+ "/"+id).Result;
+        //     return response.Content.ToString();
+        // }
 
-       // public string Test1(string name)
-       // {
+        public string Test1(string Email)
+        {
 
-       //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name).Result;
-       //     return response.Content.ToString();
-       // }
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("EmailExist/" + Email).Result;
+            return response.Content.ToString();
+        }
 
         public string ThankYouPage()
         {
             return "Valid";
 
         }
-                
 
+        //for forgot pasword
+
+        [HttpPost]
+        public void CheckEmail(string UserEmail)
+        {
+
+            LoginController login = new LoginController();
+            bool result = db.AspNetUsers.Count(e => e.UserName == UserEmail) > 0;
+
+            if (result == true)
+            {
+                login.VerifyEmail(UserEmail,1);
+            }
+
+        }
+
+
+        [HttpGet]
+        public ActionResult RestPassword()
+        {
+            RestPasswordModel model = new RestPasswordModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult RestPassword(RestPasswordModel model)
+        {
+            if(model.NewPassword != model.ConfirmPassword)
+            {
+                return View(model);
+            }
+
+            RestSetPasswordBindingModel md = new RestSetPasswordBindingModel();
+            md.NewPassword = model.NewPassword;
+            md.ConfirmPassword = model.ConfirmPassword;
+            md.Email = model.Email;
+
+           HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/RestSetPassword", md).Result;
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        //for new register 
         [HttpPost]
         public JsonResult CheckUsername(string username)
         {
@@ -165,7 +232,7 @@ namespace InvoiceDiskLast.Controllers
             return Json(!db.AspNetUsers.Any(x => x.UserName == username),JsonRequestBehavior.AllowGet);
        
 
-    }
+            }
     }
     public class UserInfo
     {

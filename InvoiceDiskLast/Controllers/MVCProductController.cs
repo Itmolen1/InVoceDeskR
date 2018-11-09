@@ -174,7 +174,7 @@ namespace InvoiceDiskLast.Controllers
             {
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()).Result;
-                TempData["SuccessMessage"] = "Delete Successfully";
+               
                 return Json("Delete", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
