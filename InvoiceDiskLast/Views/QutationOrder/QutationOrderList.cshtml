@@ -1,4 +1,4 @@
-﻿
+﻿@model InvoiceDiskLast.Models.PendingModel
 @{
     ViewBag.Title = "QutationOrderList";
 }
@@ -35,7 +35,7 @@
                     Date
                 </th>
                 <th>
-                   DueDate
+                    DueDate
                 </th>
                 <th>
                     RefrenceNumber
@@ -43,7 +43,7 @@
                 <th>
                     Qutation Subtotal
                 </th>
-               
+
                 <th>
                     Status
                 </th>
@@ -59,6 +59,236 @@
 </div>
 
 
+
+
+
+
+<div class="modal fade bs-example-modal-lg" id="showpendindModelq" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Show pending Qutation </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="height: auto !important">
+
+                <div class="row">
+                    <div class="col-ms-4">
+                        <img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="margin-left: 234px"><h5 id="CompanyNameq"></h5></div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-left"><div class="pull-right">Kvk nr:</div></div>
+                            <div class="col-sm-4" id="Kvkq">KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-4" id="BTWq"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                            <div class="col-sm-4" id="Bankq"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">IBAN:</div></div>
+                            <div class="col-sm-4" id="IBNq"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">BIC:</div></div>
+                            <div class="col-sm-4" id="IBC"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right">Tel:</div></div>
+                            <div class="col-sm-4" id="CompanyPhoneq"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right">Cel:</div></div>
+                            <div class="col-sm-4" id="Cellq"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">E-mail:</div></div>
+                            <div class="col-sm-4" id="CompanyEmailq"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">Website:</div></div>
+                            <div class="col-sm-4" id="websiteq"></div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-8 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                            <div class="col-sm-3">
+                                <h6 id="add"></h6>
+                                <h6 id="pcode"></h6> <h6 id="companyCityq"></h6>
+                                <h6 id="companyCountry"></h6>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <table class="table" id="QutationDetailTable">
+                    <thead style="background-color:black;color:white">
+                        <tr>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                ProductName
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Vat
+                            </th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="Qdetail"></tbody>
+                </table>
+
+
+
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">Total excl. VAT:€</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="text-left" id="PurchaseSubTotalq"></label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">VAT 6%:€</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="text-left" id="vat6q"></label>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">VAT 21%:	€</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="tex text-left" id="Vat21q"></label>
+
+                    </div>
+
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">Grand Total:</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="text-left" id="PurchaseTotoalAmountq"></label>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="Pendingq" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Pending Qutation</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control hidden" type="text" required id="txtpurchaseIdQ" disabled />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txtfromdateq",@required="required" } })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", id = "txttodateq" , @required ="required"} })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <textarea class="form-control" required id="txtdescriptionq" placeholder="Description" cols="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="savePendindq" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit123445q" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
 
 
@@ -133,21 +363,21 @@
 
                         switch (row.Status) {
                             case "Open":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
                                 break
 
                             case "Rejected":
-                                return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></a>'
+                                return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-clock-o"> Re open</i></a>'
                                 break
 
 
                             case "Pending":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
                                 break
 
 
                             case "Accepted":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></a>'
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.QutationID + ')"><i class="fa fa-eye"> View Invoice</i></a>'
                                 break
                         }
 
@@ -156,61 +386,6 @@
             ]
         });
     }
-
-    //function loadPendingTable(id) {
-    //    $("#PendingTable").DataTable({
-    //        //"processing": true, // for show progress bar
-    //        "processing": true,
-    //        "language": {
-    //            //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-    //        },
-    //        "destroy": true,
-    //        "searching": true,
-    //        "autoWidth": false,
-    //        "serverSide": true, // for process server side
-    //        "filter": false, // this is for disable filter (search box)
-    //        "orderMulti": false, // for disable multiple column at once
-    //        "ajax": {
-    //            "url": "/Order/GetPendingItem",
-    //            "type": "POST",
-    //            "datatype": "json",
-    //            data: { PurchaseId: id },
-    //        },
-    //        "columns": [
-    //             {
-    //                 "data": "PID", "name": "PID", "autoWidth": true
-    //             },
-
-    //              { "data": "Status", "name": "Status", "autoWidth": true },
-
-    //             // key for edit delete
-    //               {
-    //                   "data": "FromDate", "type": "date ",
-    //                   "render": function (value) {
-    //                       if (value === null) return "";
-    //                       var pattern = /Date\(([^)]+)\)/;//date format from server side
-    //                       var results = pattern.exec(value);
-    //                       var dt = new Date(parseFloat(results[1]));
-    //                       return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-    //                   }, "autoWidth": true
-    //               },
-    //              {
-    //                  "data": "ToDate", "type": "date ",
-    //                  "render": function (value) {
-    //                      if (value === null) return "";
-    //                      var pattern = /Date\(([^)]+)\)/;//date format from server side
-    //                      var results = pattern.exec(value);
-    //                      var dt = new Date(parseFloat(results[1]));
-    //                      return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-    //                  }, "autoWidth": true
-    //              },
-
-    //             { "data": "Description", "name": "Description", "autoWidth": true },
-
-
-    //        ]
-    //    });
-    //}
 
 
     //function AcceptOrder(id) {
@@ -226,29 +401,27 @@
 
     function ViewDetail(purchaseId) {
         //loadPendingTable(purchaseId);
-       // $('#showpendindModel').modal('show');
+        // $('#showpendindModel').modal('show');
     }
-
 
     function Rejected(id) {
         updateStatus(id, "Rejected", "the Qutation is rejected successfully");
     }
 
-
-    function PendingtOrder(id) {
-        //$('#Pending').modal('show');
-        //$('#txtpurchaseId').val(id);
+    function PendingtOrderq(id) {
+        $('#Pendingq').modal('show');
+        $('#txtpurchaseIdQ').val(id);
     }
 
 
     function updateStatus(Id, Status, Message) {
         debugger;
         var Data = JSON.stringify({
-            purchaseId: Id,
+            QutationId: Id,
             Status: Status,
         })
         $.ajax({
-            url: '/Order/UpdateOrderStaus',
+            url: '/QutationOrder/UpdateOrderStaus',
             type: 'POST',
             data: Data,
             contentType: 'application/json; charset=utf-8',
@@ -282,144 +455,183 @@
         LoadQutationOrderTable(status);
     });
 
-    //$('#savePendind').click(function () {
-    //    AddPending();
-    //});
+    $('#savePendindq').click(function () {
+        AddPendingQutation();
+    });
 
 
-    //function AddPending() {
-    //    debugger;
-    //    var ddddd = {
-    //        Purchase_QuataionId: $("#txtpurchaseId").val(),
-    //        FromDate: $("#txtfromdate").val(),
-    //        ToDate: $('#txttodate').val(),
-    //        Description: $('#txtdescription').val(),
-    //        Status: "Pending"
-    //    };
-    //    $.ajax({
-    //        url: "/Order/AddPending",
-    //        type: 'POST',
-    //        data: ddddd,
-    //        success: function (rsponse) {
-    //            if (rsponse.Success = "Success") {
-    //                $('#PurchaseListTable').DataTable().ajax.reload();
-    //                $('#Pending').modal('hide');
-    //                swal({
-    //                    title: 'Status!',
-    //                    text: rsponse.Message,
-    //                    type: 'success'
-    //                });
-    //            }
-    //            else if (rsponse.Success = "Fail") {
-    //                swal({
-    //                    title: 'Status!',
-    //                    text: rsponse.Message,
-    //                    type: 'success'
-    //                });
-    //            }
-    //        },
-    //        error: function (error) {
-    //            alert(error);
-    //        }
-    //    });
-    //}
+    function AddPendingQutation() {
+        debugger;
+        var ddddd = {
+            Purchase_QuataionId: $("#txtpurchaseIdQ").val(),
+            FromDate: $("#txtfromdateq").val(),
+            ToDate: $('#txttodateq').val(),
+            Description: $('#txtdescriptionq').val(),
+            Status: "Pending"
+        };
+        $.ajax({
+            url: "/QutationOrder/AddPending",
+            type: 'POST',
+            data: ddddd,
+            success: function (rsponse) {
+                if (rsponse.Success = "Success") {
+                    $('#QutationOrderTable').DataTable().ajax.reload();
+                    $('#Pendingq').modal('hide');
+                    swal({
+                        title: 'Status!',
+                        text: rsponse.Message,
+                        type: 'success'
+                    });
+                }
+                else if (rsponse.Success = "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: rsponse.Message,
+                        type: 'danger'
+                    });
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
 
-    //function loadPayemtDropdown() {
-    //    var drppayment = $('#drppaymentDebit');
-    //    var drpAccountCredit = $('#drpAccountCredit');
-    //    $.ajax({
-    //        url: "/MvcAccounts/GetAccount",
-    //        type: "POST",
-    //        contentType: "appplication/json",
-    //        success: function (response) {
-    //            $.each(response, function (i, item) {
-    //                drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
-    //                drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
-    //            });
-    //        },
-    //        error: function (Error) {
-    //            alert(Error)
-    //        },
-    //    });
-    //}
+    function ViewQutationDetail(QutationId) {
+
+        //loadPendingTable(purchaseId);
 
 
-    //function loadPayemtTermDropdown() {
-    //    var drppaymentTerm = $('#drpAccountDebit');
-    //    var drppaymentTermCredit = $('#drpAccountCredit');
-    //    $.ajax({
-    //        url: "/MvcPaymentTerm/GetPaymentTerm",
-    //        type: "POST",
-    //        contentType: "appplication/json",
-    //        success: function (response) {
-    //            $.each(response, function (i, item) {
-    //                drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
-    //                drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
-    //            });
-    //        },
-    //        error: function (Error) {
-    //            alert(Error)
-    //        },
-    //    });
 
-    //}
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+
+                GetQutationDetailByQutationId(QutationId)
+            }
+        });
 
 
-    //$('#btnAdd').click(function () {
+        function GetQutationDetailByQutationId(QutationId) {
+            debugger;
 
-    //    if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
-    //        alert('Account name canot be same');
-    //        return;
-    //    }
+            var Data = JSON.stringify({
+                QutationId: QutationId,
 
+            })
+            $.ajax({
+                url: '/QutationOrder/GetPendingQutationDetail',
+                type: 'POST',
+                data: Data,
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    console.log(response);
+                    var html = '';
+                    $.each(response.QutationList, function (key, item) {
+                        html += '<tr>';
+                        html += '<td>' + item.QutationID + '</td>';
+                        html += '<td>' + item.ItemName + '</td>';
+                        html += '<td>' + item.Quantity + '</td>';
+                        html += '<td>' + item.Rate + '</td>';
+                        html += '<td>' + item.Total + '</td>';
+                        html += '<td>' + item.Vat + '</td>';
+                        html += '</tr>';
+                    });
+                    $('#PurchaseTotoalAmountq').text(response.purchase.TotalAmount);
+                    $('#Vat21q').text(response.purchase.TotalVat21);
+                    $('#vat6q').text(response.purchase.TotalVat6);
+                    $('#PurchaseSubTotalq').text(response.purchase.SubTotal);
+                    $('#CompanyNameq').text(response.CompanyDta.CompanyName);
+                    $('#Kvkq').text(response.CompanyDta.KVK);
+                    $('#BTWq').text(response.CompanyDta.BTW);
+                    $('#Bankq').text(response.CompanyDta.BankName);
+                    $('#IBNq').text(response.CompanyDta.CompanyName);
+                    $('#IBCq').text(response.CompanyDta.BIC);
+                    $('#CompanyPhoneq').text(response.CompanyDta.CompanyName);
+                    $('#Cellq').text(response.CompanyDta.CompanyCell);
+                    $('#CompanyEmailq').text(response.CompanyDta.CompanyEmail);
+                    $('#websiteq').text(response.CompanyDta.Website);
+                    $('#addq').text(response.CompanyDta.CompanyAddress);
+                    $('#pcodeq').text(response.CompanyDta.CompanyPhone);
+                    $('#companyCityq').text(response.CompanyDta.CompanyCity);
+                    $('#companyCountryq').text(response.CompanyDta.CompanyCountry);
 
-    //    if ($('txttransactionDateDebit').val() == 0) {
-    //        alert('txttransactionDateDebit  canot be null');
-    //        return;
-    //    }
-
-
-    //    if ($('#drpAccountDebit').val() == 0) {
-    //        alert('drpAccountDebit  canot be null');
-    //        return;
-    //    }
-
-
-    //    if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
-    //        alert('debit amount canot be zero');
-    //        return;
-    //    }
-
-    //    if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
-    //        alert('AmountCredit canot be zero');
-    //        return;
-    //    }
-
-    //    if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
-    //        alert('Amonnt are not same please checke');
-    //        return;
-    //    }
-
-    //    if ($('#tbleAccount tr').length == 2) {
-    //        alert("Please save and chhose another transiction");
-    //    }
-    //    else {
-
-    //        var AccountTable = $('#tbleAccount');
-    //        var AcciontName = $('#drppaymentDebit option:selected').text();
-    //        var TID = $('#txttransactionId').val();
-    //        var ref = $('#txtrefrencenumber').val();
-    //        var Amountdebit = $('#AmountDebit').val();
-    //        var AmountCridit = $('#AmountCredit').val();
-    //        var Tdate = $('#txttransactionDateDebit').val();
-    //        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
-    //        var paymentTer = $('#drpAccountDebit option:selected').text();
-    //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
-    //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
-    //        $('#tableAccountinfo').css('visibility', 'visible');
-    //    }
-
-    //});
+                    $('#Qdetail').html(html);
 
 
+                    $('#showpendindModelq').modal('show');
+
+
+                },
+
+                Error: function (error) {
+                    alert(error)
+                },
+            });
+
+            // loadPendingTable(purchaseId);
+            $('#showpendindModel').modal('show');
+        }
+
+        //$('#btnAdd').click(function () {
+
+        //    if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+        //        alert('Account name canot be same');
+        //        return;
+        //    }
+
+
+        //    if ($('txttransactionDateDebit').val() == 0) {
+        //        alert('txttransactionDateDebit  canot be null');
+        //        return;
+        //    }
+
+
+        //    if ($('#drpAccountDebit').val() == 0) {
+        //        alert('drpAccountDebit  canot be null');
+        //        return;
+        //    }
+
+
+        //    if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+        //        alert('debit amount canot be zero');
+        //        return;
+        //    }
+
+        //    if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+        //        alert('AmountCredit canot be zero');
+        //        return;
+        //    }
+
+        //    if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
+        //        alert('Amonnt are not same please checke');
+        //        return;
+        //    }
+
+        //    if ($('#tbleAccount tr').length == 2) {
+        //        alert("Please save and chhose another transiction");
+        //    }
+        //    else {
+
+        //        var AccountTable = $('#tbleAccount');
+        //        var AcciontName = $('#drppaymentDebit option:selected').text();
+        //        var TID = $('#txttransactionId').val();
+        //        var ref = $('#txtrefrencenumber').val();
+        //        var Amountdebit = $('#AmountDebit').val();
+        //        var AmountCridit = $('#AmountCredit').val();
+        //        var Tdate = $('#txttransactionDateDebit').val();
+        //        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+        //        var paymentTer = $('#drpAccountDebit option:selected').text();
+        //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+        //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+        //        $('#tableAccountinfo').css('visibility', 'visible');
+        //    }
+
+        //});
+
+    }
 </script>

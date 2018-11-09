@@ -13,8 +13,9 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
 
-        [ResponseType(typeof(OrderStatusTable))]
-        public IHttpActionResult PostProductTable(OrderStatusTable OrderStausTable)
+        [ResponseType(typeof(QutationOrderStatusTable))]
+        [Route("api/InsertOrderStatus")]
+        public IHttpActionResult PostProductTable(QutationOrderStatusTable QutationOrderStausTable)
         {
             if (!ModelState.IsValid)
             {
@@ -22,7 +23,7 @@ namespace InvoiceDiskLast.Controllers
             }
             try
             {
-                db.OrderStatusTables.Add(OrderStausTable);
+                db.QutationOrderStatusTables.Add(QutationOrderStausTable);
                 db.SaveChanges();
                 return Ok();
             }

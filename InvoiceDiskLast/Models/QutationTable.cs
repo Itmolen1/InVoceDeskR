@@ -18,6 +18,7 @@ namespace InvoiceDiskLast.Models
         public QutationTable()
         {
             this.QutationDetailsTables = new HashSet<QutationDetailsTable>();
+            this.QutationOrderStatusTables = new HashSet<QutationOrderStatusTable>();
         }
     
         public int QutationID { get; set; }
@@ -39,5 +40,7 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationDetailsTable> QutationDetailsTables { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationOrderStatusTable> QutationOrderStatusTables { get; set; }
     }
 }

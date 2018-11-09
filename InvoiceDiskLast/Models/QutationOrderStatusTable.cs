@@ -12,11 +12,18 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProductUnitTable
+    public partial class QutationOrderStatusTable
     {
-        public int ProductUnitID { get; set; }
-        public string ProductUnit { get; set; }
-        public Nullable<bool> Status { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> Fk_QutationID { get; set; }
+        public string Status { get; set; }
+        public string Type { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CompanyId { get; set; }
+        public Nullable<int> UserId { get; set; }
+    
+        public virtual QutationTable QutationTable { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

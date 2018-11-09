@@ -161,22 +161,16 @@ namespace InvoiceDiskLast.Controllers
             return Json(null, JsonRequestBehavior.AllowGet);
 
         }
-        
+
         [HttpPost]
         public JsonResult GetPendingItem(int PurchaseId)
         {
             int Contectid, CompanyID = 0;
-
-      
-
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
-
             try
             {
-
                 var idd = Session["ClientId"];
                 var cdd = Session["CompayID"];
-
                 if (Session["ClientId"] != null && Session["CompayID"] != null)
                 {
                     Contectid = Convert.ToInt32(Session["ClientId"]);
@@ -186,7 +180,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     //  return RedirectToAction("Index", "Login");
                 }
-
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", cdd.ToString());
@@ -203,8 +196,6 @@ namespace InvoiceDiskLast.Controllers
                 InvoiceDate = DateTime.Now;
                 purchaseviewModel.PurchaseDate = InvoiceDate;
                 purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-
-              
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + PurchaseId.ToString()).Result;
                 MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
@@ -232,82 +223,12 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.Companydata = companyModel;
                 ViewBag.PurchaseDatailsList = QutationModelDetailsList;
 
+                return new JsonResult { Data = new { PurchaseData = QutationModelDetailsList, ContectDetail = contectmodel, CompanyDta = companyModel, purchase = ob } };
 
-
-                return new JsonResult { Data = new { PurchaseData = QutationModelDetailsList, ContectDetail=contectmodel, CompanyDta = companyModel,  purchase= ob } };
-
-
-
-
-
-
-                //var draw = Request.Form.GetValues("draw").FirstOrDefault();
-                //var start = Request.Form.GetValues("start").FirstOrDefault();
-                //var length = Request.Form.GetValues("length").FirstOrDefault();
-                //var sortColumn = Request.Form.GetValues("columns[" +
-                //Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-                //var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
-                //string search = Request.Form.GetValues("search[value]")[0];
-
-                //int pageSize = length != null ? Convert.ToInt32(length) : 0;
-                //int skip = start != null ? Convert.ToInt32(start) : 0;
-
-                //int CompanyId = Convert.ToInt32(Session["CompayID"]);
-                //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-
-
-
-                //HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPendint/" + PurchaseId).Result;
-                //pendingItemList = response.Content.ReadAsAsync<IEnumerable<PendingModel>>().Result;
-
-                //if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-                //{
-                //    pendingItemList = pendingItemList.Where(p => p.PID.ToString().Contains(search)
-                //  || p.Purchase_QuataionId != null && p.Purchase_QuataionId.ToString().Contains(search)
-                //  || p.FromDate != null && p.FromDate.ToString().Contains(search)
-                //  || p.ToDate != null && p.ToDate.ToString().ToLower().Contains(search.ToLower())
-                //  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
-                //  || p.Description != null && p.Description.ToString().ToLower().Contains(search.ToLower())).ToList();
-
-                //}
-
-
-                ////    switch (sortColumn)
-                ////{
-                ////    case "ContactName":
-                ////        ContactsList = ContactsList.OrderBy(c => c.ContactName);
-                ////        break;
-                ////    case "Type":
-                ////        ContactsList = ContactsList.OrderBy(c => c.Type);
-                ////        break;
-
-
-                ////    case "BillingPersonName":
-                ////        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
-                ////        break;
-
-                ////    case "BillingCompanyName":
-                ////        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
-                ////        break;
-
-                ////    case "BillingVatTRN":
-
-                ////        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
-                ////        break;
-
-                ////    default:
-                ////        ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
-                ////        break;
-                ////}
-
-
-                //int recordsTotal = recordsTotal = pendingItemList.Count();
-                //var data = pendingItemList.Skip(skip).Take(pageSize).ToList();
-                //return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                //return new JsonResult { Data = new { PurchaseData = QutationModelDetailsList, CompanyDta = companyModel, Contentdata = contectmodel } };
+                return Json("", JsonRequestBehavior.AllowGet);
             }
 
             return Json("", JsonRequestBehavior.AllowGet);

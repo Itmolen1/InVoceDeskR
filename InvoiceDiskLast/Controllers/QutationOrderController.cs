@@ -21,17 +21,65 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult QutationOrderList()
         {
-            return View();
+            PendingModel model = new PendingModel();
+            model.FromDate = DateTime.Now;
+            model.ToDate = DateTime.Now;
+
+            return View(model);
         }
 
+        [HttpPost]
+        public ActionResult AddPending(PendingModel pendingModel)
+        {
 
+            try
+            {
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + pendingModel.Purchase_QuataionId.ToString()).Result;
+                MVCQutationModel puchasemodel = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+                puchasemodel.Status = pendingModel.Status;
+
+                if (puchasemodel == null)
+                {
+                    return new JsonResult { Data = new { Status = "Fail", Message = "No record Found" } };
+                }
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + pendingModel.Purchase_QuataionId, puchasemodel).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    PendingTable pending = new PendingTable();
+                    pending.Purchase_QuataionId = pendingModel.Purchase_QuataionId;
+                    pending.FromDate = pendingModel.FromDate;
+                    pending.ToDate = pendingModel.ToDate;
+                    pending.Description = pendingModel.Description;
+                    pending.Status = pendingModel.Status;
+                    HttpResponseMessage postPendintTableResponse = GlobalVeriables.WebApiClient.PostAsJsonAsync("Addpending", pending).Result;
+
+                    if (postPendintTableResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return new JsonResult { Data = new { Status = "Success", Message = "Status is change successfully to pending" } };
+                    }
+
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail", Message = "Fail to update status in purchase" } };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message } };
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
 
 
 
         [HttpPost]
         public JsonResult UpdateOrderStaus(int QutationId, string Status)
         {
-            OrderStatusTable orderstatusModel = new OrderStatusTable();
+            QutationOrderStatusTable orderstatusModel = new QutationOrderStatusTable();
 
             try
             {
@@ -51,13 +99,13 @@ namespace InvoiceDiskLast.Controllers
                     GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                     if (qutationModel != null)
                     {
-                        orderstatusModel.PurchaseOrderId = qutationModel.QutationID;
+                        orderstatusModel.Fk_QutationID = qutationModel.QutationID;
                         orderstatusModel.Status = Status;
-                        orderstatusModel.CreatedDate = DateTime.Now;
+                        orderstatusModel.CreateDate = DateTime.Now;
                         orderstatusModel.CompanyId = Convert.ToInt32(Session["CompayID"]);
                         orderstatusModel.UserId = 1;
                         orderstatusModel.Type = "Qutation";
-                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIOrderStatus", orderstatusModel).Result;
+                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("InsertOrderStatus", orderstatusModel).Result;
 
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
@@ -134,7 +182,69 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult GetPendingQutationDetail(int QutationId)
+        {
+            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
+            int Contectid, CompanyID = 0;
+            MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
 
+            try
+            {
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                    MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+
+
+                    HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                    MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+
+                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID).Result;
+                    List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
+                    ViewBag.Product = productModel;
+
+                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
+                    MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                    quutionviewModel.QutationID = ob.QutationID;
+                    quutionviewModel.Qutation_ID = ob.Qutation_ID;
+                    quutionviewModel.QutationDate = ob.QutationDate;
+                    quutionviewModel.RefNumber = ob.RefNumber;
+                    quutionviewModel.DueDate = ob.DueDate;
+                    quutionviewModel.CustomerNote = ob.CustomerNote;
+                    quutionviewModel.SubTotal = ob.SubTotal;
+                    quutionviewModel.TotalAmount = ob.TotalAmount;
+                    quutionviewModel.TotalVat21 = (ob.TotalVat21 != null ? (float)(ob.TotalVat21) : (float)0.00);
+                    quutionviewModel.TotalVat6 = (ob.TotalVat6 != null ? (float)(ob.TotalVat6) : (float)0.00);
+                    quutionviewModel.ConatctId = (int)ob.ContactId;
+                    HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationId.ToString()).Result;
+                    List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+                    ViewBag.Contentdata = contectmodel;
+                    ViewBag.Companydata = companyModel;
+                    ViewBag.QutationDatailsList = QutationModelDetailsList;
+
+                    return new JsonResult { Data = new { QutationList = QutationModelDetailsList, ContactData = contectmodel, CompanyDta = companyModel, purchase = ob } };
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+
+        }
 
     }
 }
