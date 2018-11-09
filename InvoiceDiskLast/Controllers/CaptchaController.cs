@@ -35,8 +35,7 @@ namespace InvoiceDiskLast.Controllers
         {
 
             HttpResponseMessage messageConformed = GlobalVeriables.WebApiClient.PostAsJsonAsync("AccountCheckStatus",user).Result;
-            //HttpResponseMessage responsec = GlobalVeriables.WebApiClient.PostAsJsonAsync("IsUserEmailConformed", user).Result;
-
+           
             if (messageConformed.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 ViewBag.ErrorMessage = "E-mail not conformed until! Please Conform";
@@ -118,6 +117,8 @@ namespace InvoiceDiskLast.Controllers
                             Session["CompanyName"] = cominfo.CompanyName;
                             Session["CompanyEmail"] = cominfo.CompanyEmail;
                             Session["CompanyContact"] = cominfo.CompanyPhone;
+
+                             Session["username"].ToString();
 
                             return RedirectToAction("Index", "Home");
 
@@ -204,7 +205,7 @@ namespace InvoiceDiskLast.Controllers
 
            HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/RestSetPassword", md).Result;
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("ResitPasswordSuccess", "Login");
         }
 
 
