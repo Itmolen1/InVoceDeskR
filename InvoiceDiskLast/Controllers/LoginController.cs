@@ -37,6 +37,11 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+        public ActionResult ResitPasswordSuccess()
+        {
+            return View();
+        }
+
         public ActionResult  Verifiy(string Code)
         {
             TempData["Success"] = null;
@@ -54,9 +59,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 TempData["Success"] = "faild to verified";
             }
-
-         
-
+            
             return RedirectToAction("Index","Login");
            
         }
