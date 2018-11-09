@@ -399,10 +399,7 @@
         updateStatus(id, "Open", "Open", "the qutation is Open successfully");
     }
 
-    function ViewDetail(purchaseId) {
-        //loadPendingTable(purchaseId);
-        // $('#showpendindModel').modal('show');
-    }
+  
 
     function Rejected(id) {
         updateStatus(id, "Rejected", "the Qutation is rejected successfully");
@@ -415,7 +412,7 @@
 
 
     function updateStatus(Id, Status, Message) {
-        debugger;
+      
         var Data = JSON.stringify({
             QutationId: Id,
             Status: Status,
@@ -499,9 +496,6 @@
 
     function ViewQutationDetail(QutationId) {
 
-        //loadPendingTable(purchaseId);
-
-
 
         $.ajax({
             url: '/MVCClient/AddOrEditQutation',
@@ -515,13 +509,10 @@
             }
         });
 
-
         function GetQutationDetailByQutationId(QutationId) {
-            debugger;
 
             var Data = JSON.stringify({
                 QutationId: QutationId,
-
             })
             $.ajax({
                 url: '/QutationOrder/GetPendingQutationDetail',
