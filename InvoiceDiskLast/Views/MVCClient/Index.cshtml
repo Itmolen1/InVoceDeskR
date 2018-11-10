@@ -207,12 +207,16 @@
                     <div class="col-sm-11">
                         <textarea class="form-control" id="Remarks" rows="2" data-toggle="tooltip" data-placement="bottom" title="Opmerkingen!!"></textarea>
                     </div>
-                </div>
+                </div> 
             </div>
             <div class="modal-footer">
-                <button type="button" id="SaveNewContacts" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Opslaan</button>
-                <button type="button" id="UpdateContacts" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Bijwerken</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelContacts" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Dichtbij</button>
+                <div id="SaveClinetID">
+                    <button type="button" id="SaveNewContacts" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Opslaan</button>
+                </div>
+                <div id="UpdateClineId">
+                    <button type="button" id="UpdateContacts" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Bijwerken</button>
+                </div>
+                     <button type="button" class="btn btn-danger waves-effect text-left" id="CancelContacts" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Dichtbij</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -237,13 +241,6 @@
 
 
     $(document).ready(function () {
-
-      
-          
-      
-
-
-
 
         $("#ContactListTable").DataTable({
             //"processing": true, // for show progress bar
@@ -291,11 +288,11 @@
 
       
     });
-  
+    
 
     $('#CreateNewContacts').click(function () {
-        $('#UpdateContacts').hide();
-        $('#SaveNewContacts').show();
+        $('#UpdateClineId').hide();
+        $('#SaveClinetID').show();
         $('#CreateNewContactModal').modal('show');
 
     });
@@ -475,8 +472,8 @@
                 $('#Website').val(resultContactData.Website);
                 $('#BillingEmail').val(resultContactData.BillingEmail);
                 $('#Remarks').val(resultContactData.Remarks);
-                $('#UpdateContacts').show();
-                $('#SaveNewContacts').hide();
+                $('#UpdateClineId').show();
+                $('#SaveClinetID').hide();
                 $('#CreateNewContactModal').modal('show');
             },
             error: function (errormessage) {
@@ -485,6 +482,7 @@
         });
     }
 
+   
     $(document).ready(function () {
         $("input[type='radio']").click(function () {
             var radioValue = $("input[name='ClientType']:checked").val();

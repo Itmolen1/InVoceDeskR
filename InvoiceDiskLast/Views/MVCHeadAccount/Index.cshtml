@@ -4,24 +4,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    .table-wrapper-scroll-y {
-        display: block;
-        max-height: 500px;
-        overflow-y: auto;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
-    }
+.table-wrapper-scroll-y {
+  display: block;
+  max-height: 500px;
+  overflow-y: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
 </style>
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
-
+   
 
     <div class="col-sm-6">
         <select class="form-control p-0" id="ControlAccountSelectTop"></select>
 
     </div>
-
+    
     <div class="col-sm-6">
         <select class="form-control p-0" id="HeadAccountSelectTop"></select>
     </div>
@@ -110,8 +110,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                <div id="saveAcHead">
+                    <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                </div>
+                <div id="UpAcHead">
+                    <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                </div>
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelHeadAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -163,9 +167,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="SaveNewAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" id="UpdateAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Updatet</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                <div id="SaveAC">
+                    <button type="button" id="SaveNewAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                </div>
+                <div id="UpdateAC">
+                    <button type="button" id="UpdateAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                </div>
+                    <button type="button" class="btn btn-danger waves-effect text-left" id="CancelAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+               
             </div>
         </div>
         <!-- /.modal-content -->
@@ -179,14 +188,14 @@
 
     $(document).ready(function () {
 
-
+      
 
         //loadHeadAccountTable(0);
         loadAccountTable(AcID);
 
         LoadControlAccounttop();
         LoadHeadAccounttop();
-        // $('select option:first-child').css('color', 'blue ');
+       // $('select option:first-child').css('color', 'blue ');
 
         //$('#ControlAccountSelectTop option ').find('option').each(function () {
 
@@ -196,12 +205,12 @@
         //        $(this).text.css('color', 'blue ');HeadAccountListTable
         //    }
         //});
-
-        // $("select option:AddNewAccountSelect").css("background-color", "red");
-
-
-
-
+        
+       // $("select option:AddNewAccountSelect").css("background-color", "red");
+          
+      
+       
+      
 
         $('#UpdateHeadAccountTbale').click(function () {
             var validdate = validateHeadAccount();
@@ -246,7 +255,7 @@
 
             if ($('#ControlAccountSelectTop').has('option').length > 0) {
 
-
+               
 
                 return;
             }
@@ -278,18 +287,22 @@
             }
         }
 
-
+      
         $('#ControlAccountSelectTop').change(function () {
-
+            
             var value = $(this).val();
             if (value == "AddNewHeadSelect") {
 
                 LoadControlAccount();
+                $('#UpAcHead').hide();
+                $('#saveAcHead').show();
                 $('#HeadAccountModel').modal('show');
                 return;
             }
-            else {
-                if (value > 0) {
+            else
+            {
+                if(value > 0)
+                {
                     contrlAcId = value;
 
                     loadHeadAccountTable(contrlAcId);
@@ -335,6 +348,8 @@
             var value = $(this).val();
             if (value == "AddNewAccountSelect") {
                 LoadHeadAccount();
+                $('#SaveAC').show();
+                $('#UpdateAC').hide();
                 $('#AccountModel').modal('show');
             }
 
@@ -392,9 +407,9 @@
                     }
                 });
             }
-        });
+            });
 
-
+        
         $('#SaveNewAccount').click(function () {
             var validdate = validateAccount();
             if (validdate == true) {
@@ -461,7 +476,7 @@
     }
 
     //load head account Table
-
+ 
 
     function loadAccountTable(AcID) {
 
@@ -502,7 +517,7 @@
     $('#ControlAccountSelectTop').change(function () {
 
         var CAID = $('#ControlAccountSelectTop').val();
-        if (CAID != 0) {
+        if (CAID != 0 ) {
             loadHeadAccountTable(CAID);
         }
 
@@ -529,6 +544,8 @@
                 $('#HeadAccountTitle').val(Responsedata.HeadAccountTitle);
                 $('#HeadAccountDescription').val(Responsedata.HeadAccountDescription);
                 $('#HeadAccountId').val(Responsedata.HeadAccountId);
+                $('#UpAcHead').show();
+                $('#saveAcHead').hide();
                 $('#HeadAccountModel').modal('show');
             }
         });
@@ -537,7 +554,7 @@
 
     function LoadControlAccount() {
 
-
+    
 
         if ($('#ControlAccountSelect').has('option').length > 0) {
             return;
@@ -571,13 +588,16 @@
     }
 
     function LoadHeadAccount() {
-        debugger;
-         
+
+        if ($('#FK_HeadAccountId').has('option').length > 0) {
+            return;
+        }
+        else {
             $("#FK_HeadAccountId").find("option").remove();
             $("#FK_HeadAccountId").prepend("<option value=0>" + 'Select Control Account' + "</option>");
-
+            
             $.ajax({
-                url: "/MVCHeadAccount/GetHeadAccountList",
+                url: "/MVCHeadAccount/GetHeadAccountList12",
                 type: "Get",
                 async: false,
                 contentType: "application/json;charset=utf-8",
@@ -597,10 +617,9 @@
 
             });
         }
-    
-
+    }
+  
     function EditAccount(id) {
-
         LoadHeadAccount();
         $.ajax({
             url: "/MVCAccounts/GetAccountByID",
@@ -623,7 +642,8 @@
                 $('#AccountId').val(Responsedata.AccountId);
                 $('#AccountCode').val(Responsedata.AccountCode);
 
-
+                $('#SaveAC').hide();
+                $('#UpdateAC').show();
                 $('#AccountModel').modal('show');
             }
         });
@@ -649,7 +669,7 @@
                     {
                         ClearAccountModel();
                         $('#AccountModel').modal('hide');
-
+                        
                         $.toast({
                             heading: 'Success',
                             text: 'Your opration has been successfuly completed `Thank you`',
@@ -665,8 +685,8 @@
             });
         }
     });
-
-
+   
+    
     function validateHeadAccount() {
         var isValid = true;
 
@@ -684,16 +704,17 @@
         else {
             $('#HeadAccountTitle').css('border-color', 'lightgrey');
         }
-
+        
         return isValid;
     }
 
 
-    function ClearHeadModel() {
+    function ClearHeadModel()
+    {
         $('#ControlAccountSelect').val(0),
         $('#HeadAccountTitle').val(""),
          $('#HeadAccountDescription').val("")
-
+        
     }
 
 
@@ -702,7 +723,7 @@
         $('#AccountCode').val(""),
          $('#AccountTitle').val(""),
         $('#AccountDescription').val("")
-
+      
 
     }
 
@@ -740,7 +761,7 @@
 
     $(document).ready(function () {
         loadHeadAccountTable(0)
-
+        
     });
 
 

@@ -74,9 +74,9 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
+        [Route("{id:alpha}/{ss:alpha}")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutProductTable(string id, AspNetUser productTable)
+        public IHttpActionResult PutProductTable(string id, string ss, AspNetUser productTable)
         {
             IEnumerable<string> headerValues;
             var Code = "";
