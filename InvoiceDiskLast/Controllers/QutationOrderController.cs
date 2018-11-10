@@ -105,15 +105,17 @@ namespace InvoiceDiskLast.Controllers
                         orderstatusModel.CompanyId = Convert.ToInt32(Session["CompayID"]);
                         orderstatusModel.UserId = 1;
                         orderstatusModel.Type = "Qutation";
-                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("InsertOrderStatus", orderstatusModel).Result;
+                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("postOrderStatus", orderstatusModel).Result;
 
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            return new JsonResult { Data = new { Status = "Success" } };
+                            return new JsonResult { Data = new { Status = "Success", Message = "Status is change successfully" } };
+                          
                         }
                         else
                         {
-                            return new JsonResult { Data = new { Status = "Fail" } };
+                            return new JsonResult { Data = new { Status = "Fail", Message = "Fail to change status" } };
+                          
                         }
                     }
                 }

@@ -7,10 +7,10 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
-    <div class="col-md-2">
+    @*<div class="col-md-2">
         <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
 
-    </div>
+    </div>*@
     <div class="col-md-6">
         <select id="drpstatus" class="form-control">
 
@@ -74,7 +74,10 @@
 
                 <div class="row">
                     <div class="col-ms-4">
-                        <img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />
+                        <div id="logo">
+                            @*<img src="~/images/logon1.png183807568.png" />*@
+                        </div>
+                      
                     </div>
                     <div class="col-sm-8">
                         <div style="margin-left: 234px"><h5 id="CompanyNameq"></h5></div>
@@ -298,6 +301,150 @@
 
 
 
+<div class="modal fade bs-example-modal-lg" id="TransactionModelq" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Create Transaction</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row text-center">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label style="color:#288c7b"><b>Debit Account</b></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label style="color:#288c7b"><b>Credit Account</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="Transaction number" disabled="disabled" class="form-control" />
+                    </div>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="txttransactionIdq" class="form-control" placeholder="transaction Number" />
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="Reffrence number" disabled="disabled" class="form-control" />
+                    </div>
+                    <div class="col-sm-9">
+
+
+                        <input type="text" id="txtrefrencenumberq" class="form-control" placeholder="Reffrence number" readonly />
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <select class="form-control" id="drpAccountDebitq">
+                            <option value="0">Select payment Term</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txttransactionDateDebitq" } })
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <select class="form-control" id="drppaymentDebitq">
+                                    <option value="0"> Select acccount</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required id="AmountDebitq" placeholder="Amount Debit" title="Debit Amount">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <select class="form-control" id="drpAccountCreditq">
+
+                                    <option value="0">Account type</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required id="AmountCreditq" placeholder="Amount Credit" title="Credit Amount">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" type="text" required id="Descriptionq" placeholder="Description (optional)"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <table class="table table-bordered table-striped" id="tableAccountinfoq" style="visibility:hidden">
+                        <thead style="background-color:black;color:white">
+                            <tr>
+                                <th>TID</th>
+                                <th>Ref</th>
+                                <th>Date</th>
+                                <th>Acc Name</th>
+                                <th>Payment</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbleAccount"></tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnqutation"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>ADD</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
 
 
 
@@ -306,8 +453,61 @@
 
     $(document).ready(function () {
         LoadQutationOrderTable("Open");
-        //loadPayemtDropdown();
-        //loadPayemtTermDropdown();
+
+
+        $('#btnqutation').click(function () {
+            if ($('#drppaymentDebitq option:selected').text() == $('#drpAccountCreditq option:selected').text()) {
+                alert('Account name canot be same');
+                return;
+            }
+
+
+            if ($('txttransactionDateDebitq').val() == 0) {
+                alert('txttransactionDateDebit  canot be null');
+                return;
+            }
+
+
+            if ($('#drpAccountDebitq').val() == 0) {
+                alert('drpAccountDebit  canot be null');
+                return;
+            }
+
+
+            if ($('#AmountDebitq').val() == 0 || $('#AmountDebitq').val() == 0.00) {
+                alert('debit amount canot be zero');
+                return;
+            }
+
+            if ($('#AmountCreditq').val() == 0 || $('#AmountCreditq').val() == 0.00) {
+                alert('AmountCredit canot be zero');
+                return;
+            }
+
+            if ($('#AmountDebitq').val() != $('#AmountCreditq').val()) {
+                alert('Amonnt are not same please checke');
+                return;
+            }
+
+            if ($('#tbleAccount tr').length == 2) {
+                alert("Please save and chhose another transiction");
+            }
+            else {
+
+                var AccountTable = $('#tbleAccount');
+                var AcciontName = $('#drppaymentDebitq option:selected').text();
+                var TID = $('#txttransactionIdq').val();
+                var ref = $('#txtrefrencenumberq').val();
+                var Amountdebit = $('#AmountDebitq').val();
+                var AmountCridit = $('#AmountCreditq').val();
+                var Tdate = $('#txttransactionDateDebitq').val();
+                var drpAccountCredit = $('#drpAccountCreditq option:selected').text();
+                var paymentTer = $('#drpAccountDebit option:selected').text();
+                AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+                AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+                $('#tableAccountinfo').css('visibility', 'visible');
+            }
+        });
     });
 
     function LoadQutationOrderTable(status) {
@@ -388,18 +588,18 @@
     }
 
 
-    //function AcceptOrder(id) {
+    function AcceptOrder(id) {
 
-    //    $('#txtrefrencenumber').val(id);
-    //    $('#txttransactionId').val(Math.floor(Math.random() * 10));
-    //    $('#TransactionModel').modal('show');
+        $('#txtrefrencenumberq').val(id);
+        $('#txttransactionIdq').val(Math.floor(Math.random() * 10));
+        $('#TransactionModelq').modal('show');
 
-    //}
+    }
+
+
     function Reopen(id) {
         updateStatus(id, "Open", "Open", "the qutation is Open successfully");
     }
-
-  
 
     function Rejected(id) {
         updateStatus(id, "Rejected", "the Qutation is rejected successfully");
@@ -412,7 +612,7 @@
 
 
     function updateStatus(Id, Status, Message) {
-      
+
         var Data = JSON.stringify({
             QutationId: Id,
             Status: Status,
@@ -447,10 +647,12 @@
         });
     }
 
+
     $('#drpstatus').change(function () {
         var status = $('#drpstatus option:selected').text();
         LoadQutationOrderTable(status);
     });
+
 
     $('#savePendindq').click(function () {
         AddPendingQutation();
@@ -496,7 +698,6 @@
 
     function ViewQutationDetail(QutationId) {
 
-
         $.ajax({
             url: '/MVCClient/AddOrEditQutation',
             type: 'GET',
@@ -508,121 +709,122 @@
                 GetQutationDetailByQutationId(QutationId)
             }
         });
-
-        function GetQutationDetailByQutationId(QutationId) {
-
-            var Data = JSON.stringify({
-                QutationId: QutationId,
-            })
-            $.ajax({
-                url: '/QutationOrder/GetPendingQutationDetail',
-                type: 'POST',
-                data: Data,
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-                    console.log(response);
-                    var html = '';
-                    $.each(response.QutationList, function (key, item) {
-                        html += '<tr>';
-                        html += '<td>' + item.QutationID + '</td>';
-                        html += '<td>' + item.ItemName + '</td>';
-                        html += '<td>' + item.Quantity + '</td>';
-                        html += '<td>' + item.Rate + '</td>';
-                        html += '<td>' + item.Total + '</td>';
-                        html += '<td>' + item.Vat + '</td>';
-                        html += '</tr>';
-                    });
-                    $('#PurchaseTotoalAmountq').text(response.purchase.TotalAmount);
-                    $('#Vat21q').text(response.purchase.TotalVat21);
-                    $('#vat6q').text(response.purchase.TotalVat6);
-                    $('#PurchaseSubTotalq').text(response.purchase.SubTotal);
-                    $('#CompanyNameq').text(response.CompanyDta.CompanyName);
-                    $('#Kvkq').text(response.CompanyDta.KVK);
-                    $('#BTWq').text(response.CompanyDta.BTW);
-                    $('#Bankq').text(response.CompanyDta.BankName);
-                    $('#IBNq').text(response.CompanyDta.CompanyName);
-                    $('#IBCq').text(response.CompanyDta.BIC);
-                    $('#CompanyPhoneq').text(response.CompanyDta.CompanyName);
-                    $('#Cellq').text(response.CompanyDta.CompanyCell);
-                    $('#CompanyEmailq').text(response.CompanyDta.CompanyEmail);
-                    $('#websiteq').text(response.CompanyDta.Website);
-                    $('#addq').text(response.CompanyDta.CompanyAddress);
-                    $('#pcodeq').text(response.CompanyDta.CompanyPhone);
-                    $('#companyCityq').text(response.CompanyDta.CompanyCity);
-                    $('#companyCountryq').text(response.CompanyDta.CompanyCountry);
-
-                    $('#Qdetail').html(html);
-
-
-                    $('#showpendindModelq').modal('show');
-
-
-                },
-
-                Error: function (error) {
-                    alert(error)
-                },
-            });
-
-            // loadPendingTable(purchaseId);
-            $('#showpendindModel').modal('show');
-        }
-
-        //$('#btnAdd').click(function () {
-
-        //    if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
-        //        alert('Account name canot be same');
-        //        return;
-        //    }
-
-
-        //    if ($('txttransactionDateDebit').val() == 0) {
-        //        alert('txttransactionDateDebit  canot be null');
-        //        return;
-        //    }
-
-
-        //    if ($('#drpAccountDebit').val() == 0) {
-        //        alert('drpAccountDebit  canot be null');
-        //        return;
-        //    }
-
-
-        //    if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
-        //        alert('debit amount canot be zero');
-        //        return;
-        //    }
-
-        //    if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
-        //        alert('AmountCredit canot be zero');
-        //        return;
-        //    }
-
-        //    if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
-        //        alert('Amonnt are not same please checke');
-        //        return;
-        //    }
-
-        //    if ($('#tbleAccount tr').length == 2) {
-        //        alert("Please save and chhose another transiction");
-        //    }
-        //    else {
-
-        //        var AccountTable = $('#tbleAccount');
-        //        var AcciontName = $('#drppaymentDebit option:selected').text();
-        //        var TID = $('#txttransactionId').val();
-        //        var ref = $('#txtrefrencenumber').val();
-        //        var Amountdebit = $('#AmountDebit').val();
-        //        var AmountCridit = $('#AmountCredit').val();
-        //        var Tdate = $('#txttransactionDateDebit').val();
-        //        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
-        //        var paymentTer = $('#drpAccountDebit option:selected').text();
-        //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
-        //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
-        //        $('#tableAccountinfo').css('visibility', 'visible');
-        //    }
-
-        //});
-
     }
+
+    function GetQutationDetailByQutationId(QutationId) {
+
+        var Data = JSON.stringify({
+            QutationId: QutationId,
+        })
+        $.ajax({
+            url: '/QutationOrder/GetPendingQutationDetail',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log(response);
+                var html = '';
+                $.each(response.QutationList, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.QutationID + '</td>';
+                    html += '<td>' + item.ItemName + '</td>';
+                    html += '<td>' + item.Quantity + '</td>';
+                    html += '<td>' + item.Rate + '</td>';
+                    html += '<td>' + item.Total + '</td>';
+                    html += '<td>' + item.Vat + '</td>';
+                    html += '</tr>';
+                });
+                $('#PurchaseTotoalAmountq').text(response.purchase.TotalAmount);
+                $('#Vat21q').text(response.purchase.TotalVat21);
+                $('#vat6q').text(response.purchase.TotalVat6);
+                $('#PurchaseSubTotalq').text(response.purchase.SubTotal);
+                $('#CompanyNameq').text(response.CompanyDta.CompanyName);
+                $('#Kvkq').text(response.CompanyDta.KVK);
+                $('#BTWq').text(response.CompanyDta.BTW);
+                $('#Bankq').text(response.CompanyDta.BankName);
+                $('#IBNq').text(response.CompanyDta.CompanyName);
+                $('#IBCq').text(response.CompanyDta.BIC);
+                $('#CompanyPhoneq').text(response.CompanyDta.CompanyName);
+                $('#Cellq').text(response.CompanyDta.CompanyCell);
+                $('#CompanyEmailq').text(response.CompanyDta.CompanyEmail);
+                $('#websiteq').text(response.CompanyDta.Website);
+                $('#addq').text(response.CompanyDta.CompanyAddress);
+                $('#pcodeq').text(response.CompanyDta.CompanyPhone);
+                $('#companyCityq').text(response.CompanyDta.CompanyCity);
+                $('#companyCountryq').text(response.CompanyDta.CompanyCountry);
+
+                $("#logo").empty();
+                $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "' style='width:72%; height:146px' />");
+                $('#Qdetail').html(html);
+
+
+                $('#showpendindModelq').modal('show');
+
+
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+
+        // loadPendingTable(purchaseId);
+        $('#showpendindModel').modal('show');
+    }
+
+
+
+
+
+
+
+
+    $(document).ready(function () {
+        loadPayemtDropdownq();
+        loadPayemtTermDropdownq();
+    });
+
+
+
+    function loadPayemtDropdownq() {
+        var drppayment = $('#drppaymentDebitq');
+        var drpAccountCredit = $('#drpAccountCreditq');
+        $.ajax({
+            url: "/MvcAccounts/GetAccount",
+            type: "POST",
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+                    drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+    }
+
+
+    function loadPayemtTermDropdownq() {
+        var drppaymentTerm = $('#drpAccountDebitq');
+        var drppaymentTermCredit = $('#drpAccountCreditq');
+        $.ajax({
+            url: "/MvcPaymentTerm/GetPaymentTerm",
+            type: "POST",
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                    drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+    }
+
+  
+
 </script>

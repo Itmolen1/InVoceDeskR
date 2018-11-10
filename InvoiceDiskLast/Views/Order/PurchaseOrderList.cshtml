@@ -16,9 +16,9 @@
 
 
 <div class="row">
-    <div class="col-md-2">
+    @*<div class="col-md-2">
         <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
-    </div>
+    </div>*@
     <div class="col-md-6">
         <select id="drpstatus" class="form-control">
 
@@ -81,7 +81,8 @@
 
                 <div class="row">
                     <div class="col-ms-4">
-                        <img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />
+                        <div id="logo"></div>
+                        @*<img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />*@
                     </div>
                     <div class="col-sm-8">
                         <div style="margin-left: 234px"><h5 id="CompanyName"></h5></div>
@@ -256,7 +257,7 @@
 
                     <div class="col-sm-12">
                         <div class="form-group ">
-                            <input class="form-control hidden" type="text" required id="txtpurchaseId"  disabled/>
+                            <input class="form-control hidden" type="text" required id="txtpurchaseId" disabled />
                         </div>
                     </div>
 
@@ -504,21 +505,21 @@
 
                         switch (row.Status) {
                             case "Open":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
                                 break
 
                             case "Rejected":
-                                return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></a>'
+                                return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
                                 break
 
 
                             case "Pending":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
                                 break
 
 
                             case "Accepted":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></a>'
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
                                 break
                         }
 
@@ -584,7 +585,6 @@
 
 
     function AcceptOrder(id) {
-
         $('#txtrefrencenumber').val(id);
         $('#txttransactionId').val(Math.floor(Math.random() * 10));
         $('#TransactionModel').modal('show');
@@ -596,8 +596,6 @@
 
 
     function ViewDetail(purchaseId) {
-
-        //loadPendingTable(purchaseId);
 
         $.ajax({
             url: '/Purchase/AddOrEditPurchase',
@@ -660,18 +658,12 @@
                 $('#pcode').text(response.CompanyDta.CompanyPhone);
                 $('#companyCity').text(response.CompanyDta.CompanyCity);
                 $('#companyCountry').text(response.CompanyDta.CompanyCountry);
-                // $('#companyCountry').text(response.CompanyDta.CompanyName);
-                // $('#companyCountry').text(response.CompanyDta.CompanyName);
-
                 $('#tbody').html(html);
 
-
-
-
+                $("#logo").empty();
+                $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "' style='width:72%; height:146px' />");
 
                 $('#showpendindModel').modal('show');
-
-
             },
 
             Error: function (error) {
@@ -682,20 +674,6 @@
         // loadPendingTable(purchaseId);
         $('#showpendindModel').modal('show');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     function Rejected(id) {
