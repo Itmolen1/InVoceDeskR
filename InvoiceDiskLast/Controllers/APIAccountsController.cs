@@ -186,5 +186,33 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+
+
+        [Route("api/AccountUpdateAspNetUserConformed/{code:alpha}")]
+        public IHttpActionResult PutUpdateAspNetUser(string code, AspNetUser aspnetuser)
+        {
+            AspNetUser asp = db.AspNetUsers.Where(c => c.Id == code).FirstOrDefault();
+            asp.EmailConfirmed = true;
+            db.Entry(asp).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+
+            }
+        }
+
+
+
+
+
+
+       
+
+     
     }
 }

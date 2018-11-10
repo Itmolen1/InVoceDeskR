@@ -137,9 +137,13 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="SaveNewProduct" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save Product</button>
-                    <button type="button" id="UpdateProduct" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
-                    <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                    <div id="SAveProdID">
+                        <button type="button" id="SaveNewProduct" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save Product</button>
+                    </div>
+                    <div id="UpdateProId">
+                        <button type="button" id="UpdateProduct" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
+                    </div>
+                          <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -166,8 +170,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>              
+            <div class="modal-footer">              
+                    <button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>                        
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -181,12 +185,13 @@
     $(document).ready(function () {
 
         $('#CreateNewProduct').click(function () {
-            $('#UpdateProduct').hide();
-            $('#SaveNewProduct').show();
+            $('#UpdateProId').hide();
+            $('#SAveProdID').show();
             LoadProductUnit();
             $('#CreateNewProductModal').modal('show');
         });
 
+       
         $('#UpdateProduct').click(function () {
             var validdatep = validateProduct();
             if (validdatep == true) {
@@ -337,15 +342,15 @@
                 });
 
                 $('#CreateNewProductModal').modal('show');
-                $('#UpdateProduct').show();
-                $('#SaveNewProduct').hide();
+                $('#UpdateProId').show();
+                $('#SAveProdID').hide();
             },
             error: function (errormessage) {
                 alert(errormessage.responseText);
             }
         });
     }
-   
+  
 
     $('#SaveNewProduct').click(function () {
         var validdatep = validateProduct();

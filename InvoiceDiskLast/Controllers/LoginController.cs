@@ -49,7 +49,7 @@ namespace InvoiceDiskLast.Controllers
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
             GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("Code", Code.ToString());
             AspNetUser productTable = new AspNetUser();
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("ConfirmEmail/" + 122, productTable).Result;
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("ConfirmEmail/" + "ss/" + "ss", productTable).Result;
 
             if(response.StatusCode== System.Net.HttpStatusCode.OK)
             {
@@ -92,6 +92,8 @@ namespace InvoiceDiskLast.Controllers
                 }
                 sendMail(Email, mvcuserModel.Id, link);
                
+               
+
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -136,7 +138,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult Logut()
         {
-           
+          
             Session.Clear();
             Session.Abandon();
 

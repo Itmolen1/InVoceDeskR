@@ -109,8 +109,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                <div id="saveAcHead">
+                    <button type="button" id="SaveNewHeadAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                </div>
+                <div id="UpAcHead">
+                    <button type="button" id="UpdateHeadAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                </div>
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelHeadAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -162,9 +166,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="SaveNewAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" id="UpdateAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Updatet</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                <div id="SaveAC">
+                    <button type="button" id="SaveNewAccount" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                </div>
+                <div id="UpdateAC">
+                    <button type="button" id="UpdateAccountTbale" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                </div>
+                    <button type="button" class="btn btn-danger waves-effect text-left" id="CancelAccount" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+               
             </div>
         </div>
         <!-- /.modal-content -->
@@ -280,6 +289,8 @@
             var value = $(this).val();
             if (value == "AddNewHeadSelect") {
                 LoadControlAccount();
+                $('#UpAcHead').hide();
+                $('#saveAcHead').show();
                 $('#HeadAccountModel').modal('show');
             }
             else
@@ -329,7 +340,9 @@
 
             var value = $(this).val();
             if (value == "AddNewAccountSelect") {
-                LoadHeadAccount();               
+                LoadHeadAccount();
+                $('#SaveAC').show();
+                $('#UpdateAC').hide();
                 $('#AccountModel').modal('show');
             }
 
@@ -559,6 +572,8 @@
                 $('#HeadAccountTitle').val(Responsedata.HeadAccountTitle);
                 $('#HeadAccountDescription').val(Responsedata.HeadAccountDescription);
                 $('#HeadAccountId').val(Responsedata.HeadAccountId);
+                $('#UpAcHead').show();
+                $('#saveAcHead').hide();
                 $('#HeadAccountModel').modal('show');
             }
         });
@@ -653,7 +668,8 @@
                 $('#AccountId').val(Responsedata.AccountId);
                 $('#AccountCode').val(Responsedata.AccountCode);
 
-                
+                $('#SaveAC').hide();
+                $('#UpdateAC').show();
                 $('#AccountModel').modal('show');
             }
         });
