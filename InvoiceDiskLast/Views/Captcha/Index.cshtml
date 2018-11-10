@@ -105,7 +105,7 @@
                             </div>
                         </div>
                     </form>
-                    <form  class="form-horizontal" id="recoverform">
+                    <form  class="form-horizontal" id="recoverform" action="/Captcha/CheckEmail" method="post">
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <h3>Herstel wachtwoord</h3>
@@ -114,13 +114,14 @@
                         </div>
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" id="UserEmail" required placeholder="Email">
+                                @*<input class="form-control" type="text" id="UserEmail" required placeholder="Email">*@
+                                @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control", required = "required" })
+                                @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group text-center m-t-20">
                             <div class="col-xs-12">
-                                <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" id="Emailrest">Reset</button>
-                              
+                                <button type="submit" class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" id="Emailrest">Reset</button>                              
                             </div>
                         </div>
                     </form>
@@ -165,6 +166,54 @@
         });
         });
 
+
+        //$('#Emailrest').click(function () {         
+        //    $.ajax({
+        //        url: '/Captcha/CheckEmail',
+        //        type: 'POST',
+        //        data: {
+        //            UserEmail: $('#UserEmail').val()                   
+        //        },
+        //        success: function (data) 
+        //        {
+        //            if (data == "Success")
+        //            {
+        //                alert("success");
+        //                $.ajax({
+        //                    url: '/Login/VerifyEmail',
+        //                    method: 'Get',
+        //                    data: {
+        //                        Email: $('#UserEmail').val(),
+        //                        forgotpassword: 1
+        //                    },
+        //                    success: function (result) {
+                              
+        //                        if (result == "Success") {
+        //                            alert('res');
+        //                            window.location.href = "/Login/ResitPasswordSuccess"
+        //                        }
+        //                    },
+        //                    error: function (jqHXR) {
+        //                        if (jqHXR.status == '400') {
+        //                            Isvalid = false;
+        //                            FailRegistration();
+        //                        }
+        //                    }
+        //                });
+        //            }
+        //            else {
+        //                $.toast({
+        //                    heading: 'Failed',
+        //                    text: 'Email not Exist!',
+        //                    icon: 'info',
+        //                    loader: true,        // Change it to false to disable loader
+        //                    loaderBg: '#FF0000'  // To change the background
+        //                });
+        //            }
+                  
+        //        }
+        //    });
+        //});
        
         </script>
  </body>

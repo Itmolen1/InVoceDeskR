@@ -21,6 +21,10 @@ namespace InvoiceDiskLast.Controllers
         
         public ActionResult Index()
         {
+            if(TempData["EmailNotExist"] != null)
+            {
+                ViewBag.ErrorMessage = TempData["EmailNotExist"].ToString();
+            }
             return View();
         }
 
@@ -169,26 +173,45 @@ namespace InvoiceDiskLast.Controllers
         //for forgot pasword
 
         [HttpPost]
-        public void CheckEmail(string UserEmail)
+        public ActionResult CheckEmail(UserModels UserEmail)
         {
 
             LoginController login = new LoginController();
-            bool result = db.AspNetUsers.Count(e => e.UserName == UserEmail) > 0;
+            bool result = db.AspNetUsers.Count(e => e.UserName == UserEmail.Username) > 0;
 
             if (result == true)
             {
-                login.VerifyEmail(UserEmail,1);
-            }
+                login.VerifyEmail(UserEmail.Username, 1);
 
+                //return Json("Success", JsonRequestBehavior.AllowGet);
+
+                return RedirectToAction("ResitPasswordSuccess","Login");
+            }
+            TempData["EmailNotExist"] = "Email Not Exist!";
+            return RedirectToAction(nameof(Index));
         }
 
 
         [HttpGet]
-        public ActionResult RestPassword()
+        public ActionResult RestPassword(string Code)
         {
-            RestPasswordModel model = new RestPasswordModel();
-            return View(model);
-        }
+           
+            if (Code != null)
+            {
+
+                RestPasswordModel model = new RestPasswordModel();
+                model.Codes = Code;
+                return View(model);
+
+            }
+            else
+            {
+                TempData["EmailNotExist"] = "Not a vlaid user!";
+                return RedirectToAction(nameof(Index));
+            }              
+       }
+           
+  
 
         [HttpPost]
         public ActionResult RestPassword(RestPasswordModel model)
@@ -202,10 +225,17 @@ namespace InvoiceDiskLast.Controllers
             md.NewPassword = model.NewPassword;
             md.ConfirmPassword = model.ConfirmPassword;
             md.Email = model.Email;
+            md.Code = model.Codes;
 
            HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/RestSetPassword", md).Result;
-
-            return RedirectToAction("ResitPasswordSuccess", "Login");
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
 

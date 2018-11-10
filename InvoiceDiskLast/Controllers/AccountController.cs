@@ -164,7 +164,7 @@ namespace InvoiceDiskLast.Controllers
                 return BadRequest(ModelState);
             }
 
-           var user = await UserManager.FindByEmailAsync(model.Email);
+           var user = await UserManager.FindByIdAsync(model.Code);
 
 
             UserManager<IdentityUser> manager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
