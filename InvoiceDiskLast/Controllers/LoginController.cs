@@ -66,19 +66,19 @@ namespace InvoiceDiskLast.Controllers
 
        
        [HttpGet]
+      
         public ActionResult VerifyEmail(string Email, int? forgotpassword)
         {
             try
             {
                 string id = Email;
 
-
                 MvcUserModel mvcuserModel = new MvcUserModel();
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("Email",Email.ToString());
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ConfirmEmail/" + "ss").Result;
                 mvcuserModel=response.Content.ReadAsAsync<MvcUserModel>().Result;
-
+                
                 string url = System.Configuration.ConfigurationManager.AppSettings["url"];
 
                 string link;
@@ -91,10 +91,10 @@ namespace InvoiceDiskLast.Controllers
                      link = url + "Login/Verifiy?Code=" + mvcuserModel.Id;
                 }
                 sendMail(Email, mvcuserModel.Id, link);
-
+               
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
@@ -136,6 +136,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult Logut()
         {
+           
             Session.Clear();
             Session.Abandon();
 
