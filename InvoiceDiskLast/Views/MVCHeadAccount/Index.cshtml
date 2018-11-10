@@ -11,7 +11,8 @@
   -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 </style>
-
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
    
@@ -34,7 +35,7 @@
 <div class="row">
 
     <div class="col-sm-6 table-wrapper-scroll-y">
-        <table class="table table-bordered" id="HeadAccountListTable">
+        <table class="table table-bordered" id="HeadAccountListTable12">
             <thead style="background-color:black;color:white">
                 <tr>
                     <th>
@@ -180,7 +181,7 @@
 
       
 
-        loadHeadAccountTable(contrlAcId);
+        //loadHeadAccountTable(0);
         loadAccountTable(AcID);
 
         LoadControlAccounttop();
@@ -244,6 +245,9 @@
         function LoadControlAccounttop() {
 
             if ($('#ControlAccountSelectTop').has('option').length > 0) {
+
+               
+
                 return;
             }
             else {
@@ -279,14 +283,17 @@
             
             var value = $(this).val();
             if (value == "AddNewHeadSelect") {
+
                 LoadControlAccount();
                 $('#HeadAccountModel').modal('show');
+                return;
             }
             else
             {
                 if(value > 0)
                 {
-                    contrlAcId =value;
+                    contrlAcId = value;
+
                     loadHeadAccountTable(contrlAcId);
                 }
             }
@@ -366,7 +373,7 @@
                                 data: data,
                                 async: false,
                                 success: function (Resultdat) {
-                                    $('#HeadAccountListTable').DataTable().ajax.reload();
+                                    $('#HeadAccountListTable12').DataTable().ajax.reload();
                                     ClearHeadModel();
                                     {
                                         $('#HeadAccountModel').modal('hide');
@@ -456,42 +463,7 @@
     }
 
     //load head account Table
-    function loadHeadAccountTable(controlAcID) {
-
-      
-        $("#HeadAccountListTable").DataTable({
-            //"processing": true, // for show progress bar
-            "processing": true,
-            //"language": {
-            //    "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-            //},
-            "bDestroy": true,
-            "searching": true,
-            "Retrieve": true,
-            "serverSide": true, // for process server side
-            "filter": false, // this is for disable filter (search box)
-            "orderMulti": false, // for disable multiple column at once
-            "autoWidth": false,
-            "ajax": {
-                "url": "/MVCHeadAccount/GetHeadAccountList",
-                "type": "POST",
-                "datatype": "json",
-                data: { ControlACid: parseInt(controlAcID) },
-            },
-            "columns": [
-                    { "data": "HeadAccountId", "name": "HeadAccountId", "autoWidth": true },// key for edit delete
-                    { "data": "HeadAccountTitle", "name": "HeadAccountTitle", "autoWidth": true },
-                     { "data": "HeadAccountDescription", "name": "HeadAccountDescription", "autoWidth": true },
-
-                    {
-                        render: function (data, type, row) {
-                            return '<button href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditHeadAccount(' + row.HeadAccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</button>|<Button href="" class="btn btn-success btn-sm" onclick="ViewAccountByHeadAccountID(' + row.HeadAccountId + ')">View List <i class="fa fa-angle-double-right" style="padding-Left:10px"></i></Button>'
-                        }
-                    }
-            ]
-        });
-
-    }
+ 
 
     function loadAccountTable(AcID) {
 
@@ -567,6 +539,8 @@
 
     function LoadControlAccount() {
 
+    
+
         if ($('#ControlAccountSelect').has('option').length > 0) {
             return;
         }
@@ -608,7 +582,7 @@
             $("#FK_HeadAccountId").prepend("<option value=0>" + 'Select Control Account' + "</option>");
             
             $.ajax({
-                url: "/MVCHeadAccount/GetHeadAccountList",
+                url: "/MVCHeadAccount/GetHeadAccountList12",
                 type: "Get",
                 async: false,
                 contentType: "application/json;charset=utf-8",
@@ -765,6 +739,64 @@
 
         return isValid;
     }
+
+
+
+
+    $(document).ready(function () {
+        loadHeadAccountTable(0)
+        
+    });
+
+
+    function loadHeadAccountTable(controlAcID) {
+
+        debugger;
+
+        var derpHeadAccountValu = $('#ControlAccountSelectTop').val();
+
+
+        if (derpHeadAccountValu == "AddNewHeadSelect") {
+            return true;
+        }
+        else {
+
+            $("#HeadAccountListTable12").DataTable({
+                //"processing": true, // for show progress bar
+                "processing": true,
+                //"language": {
+                //    "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+                //},
+                "bDestroy": true,
+                "searching": true,
+                "Retrieve": true,
+                "serverSide": true, // for process server side
+                "filter": false, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "autoWidth": false,
+                "ajax": {
+                    "url": "/MVCHeadAccount/GetHeadAccountList1",
+                    "type": "POST",
+                    "datatype": "json",
+                    data: { ControlACid: controlAcID },
+
+                },
+                "columns": [
+                        { "data": "HeadAccountId", "name": "HeadAccountId", "autoWidth": true },// key for edit delete
+                        { "data": "HeadAccountTitle", "name": "HeadAccountTitle", "autoWidth": true },
+                         { "data": "HeadAccountDescription", "name": "HeadAccountDescription", "autoWidth": true },
+
+                        {
+                            render: function (data, type, row) {
+                                return '<button href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditHeadAccount(' + row.HeadAccountId + ')"><i class="fa fa-pencil" style="padding-right:10px"></i>Edit</button>|<Button href="" class="btn btn-success btn-sm" onclick="ViewAccountByHeadAccountID(' + row.HeadAccountId + ')">View List <i class="fa fa-angle-double-right" style="padding-Left:10px"></i></Button>'
+                            }
+                        }
+                ]
+            });
+
+        }
+    }
+
 </script>
 
 
