@@ -41,7 +41,6 @@ namespace InvoiceDiskLast.Controllers
                 string search = Request.Form.GetValues("search[value]")[0];
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
-
                 int companyid = Convert.ToInt32(Session["CompayID"]);
 
                 //  IEnumerable<string> token;

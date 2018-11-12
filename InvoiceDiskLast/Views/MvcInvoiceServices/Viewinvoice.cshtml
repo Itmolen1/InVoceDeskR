@@ -24,7 +24,7 @@
 
 <div class="row" style="margin-left:0px;margin-right:0px;">
 
-    @using (Html.BeginForm("DownloadFile", "Purchase", FormMethod.Post, new { id = "DownloadFileInvoice" }))
+    @using (Html.BeginForm("DownloadFile", "MvcInvoiceServices", FormMethod.Post, new { id = "DownloadFileInvoice" }))
     {
         <input type="hidden" name="FilePath1" id="FilePath1" />
         <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
@@ -41,18 +41,18 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li>@Html.ActionLink(" Send Invoice by Email", "InvoicebyEmail", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Send Invoice by Email", "InvoicebyEmail", "MvcInvoiceServices", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                     <li class="divider"></li>
                     <li><a href="#"></a></li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "MvcInvoiceServices", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
-            @Html.ActionLink("print concept", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success", style = "margin:0px 10px;" })
-            <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-success">Change</a>
+            @Html.ActionLink("print concept", "Print", "MvcInvoiceServices", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success", style = "margin:0px 10px;" })
+            <a href="/MvcInvoiceServices/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-success">Change</a>
             
 
-            <a href="/Order/PurchaseOrderList/" class="btn btn-success" style = "margin:0px 10px;visibility:hidden;" id="BackToHome">Bake To List</a>
+           
                     
         </div>
 
@@ -170,26 +170,26 @@
             <label>@purchaseModel.PurchaseDueDate</label>
         </div>
     </div>
-    <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+    <div class="row" style="margin-right:66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
         will receive the invoice from us for the services below.
 
-        <table id="mytable" class="table table-bordred table-striped table-responsive">
+        <table id="mytable" class="table table-bordred">
             <thead>
                 <tr>
-                    <th class="col-sm-4">
-                        Product Name
+                    <th >
+                        Project
                     </th>
-                    <th class="col-sm-2">
-                        Quantity
+                    <th>
+                        Number of hour
                     </th>
-                    <th class="col-sm-2">
-                        Price
+                    <th>
+                        Hourly rate
                     </th>
-                    <th class="col-sm-2">
+                    <th>
                         Total
                     </th>
-                    <th class="col-sm-1">
-                        Vat
+                    <th>
+                        Vat %
                     </th>
                 </tr>
             </thead>
@@ -316,11 +316,6 @@
 
 
 <script type="text/javascript">
-
-
- 
-
-   
 
 
     $(document).ready(function () {
