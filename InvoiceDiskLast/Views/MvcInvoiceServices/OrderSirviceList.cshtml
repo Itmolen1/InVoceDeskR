@@ -1,0 +1,880 @@
+﻿
+@{
+    ViewBag.Title = "OrderSirviceList";
+}
+
+<h2>OrderSirviceList</h2>
+
+@model InvoiceDiskLast.Models.PendingModel
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+<style>
+    tbody {
+        height: 100px; /* Just for the demo          */
+        overflow-y: auto; /* Trigger vertical scroll    */
+        overflow-x: hidden; /* Hide the horizontal scroll */
+    }
+</style>
+
+
+
+<div class="row">
+    @*<div class="col-md-2">
+            <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+        </div>*@
+    <div class="col-md-6">
+        <select id="drpstatus" class="form-control">
+
+            <option value="1">Open</option>
+            <option value="1">Accepted</option>
+            <option value="1">Pending</option>
+            <option value="1">Rejected</option>
+
+        </select>
+    </div>
+</div>
+
+
+<div>
+    <table class="table" id="PurchaseListTable">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>
+                    PurchaseId
+                </th>
+
+                <th>
+                    PurchaseDate
+                </th>
+                <th>
+                    PurchaseDueDate
+                </th>
+                <th>
+                    RefrenceNumber
+                </th>
+                <th>
+                    Puchase Subtotal
+                </th>
+                <th>
+                    DiscountAmount
+                </th>
+                <th>
+                    Status
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="showpendindModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Show pending Invoice </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="height: auto !important">
+
+                <div class="row">
+                    <div class="col-ms-4">
+                        <div id="logo"></div>
+                        @*<img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />*@
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="margin-left: 234px"><h5 id="CompanyName"></h5></div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-left"><div class="pull-right">Kvk nr:</div></div>
+                            <div class="col-sm-4" id="Kvk">KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-4" id="BTW"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                            <div class="col-sm-4" id="Bank"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">IBAN:</div></div>
+                            <div class="col-sm-4" id="IBN"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">BIC:</div></div>
+                            <div class="col-sm-4" id="IBC"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right">Tel:</div></div>
+                            <div class="col-sm-4" id="CompanyPhone"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right">Cel:</div></div>
+                            <div class="col-sm-4" id="Cell"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">E-mail:</div></div>
+                            <div class="col-sm-4" id="CompanyEmail"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">Website:</div></div>
+                            <div class="col-sm-4" id="website"></div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-8 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                            <div class="col-sm-3">
+                                <h6 id="add"></h6>
+                                <h6 id="pcode"></h6> <h6 id="companyCity"></h6>
+                                <h6 id="companyCountry"></h6>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <table class="table" id="PendingTable">
+                    <thead style="background-color:black;color:white">
+                        <tr>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                                ProductName
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Price
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Vat
+                            </th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                </table>
+
+
+
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">Total excl. VAT:€</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="text-left" id="PurchaseSubTotal"></label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">VAT 6%:€</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="text-left" id="vat6"></label>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">VAT 21%:	€</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="tex text-left" id="Vat21"></label>
+
+                    </div>
+
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">Grand Total:</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="text-left" id="PurchaseTotoalAmount"></label>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+
+<!-- /.modal-dialog -->
+
+
+
+<div id="Pending" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Pending perchase</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control hidden" type="text" required id="txtpurchaseId" disabled />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txtfromdate" } })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", id = "txttodate" } })
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <textarea class="form-control" required id="txtdescription" placeholder="Description" cols="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="savePendind" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit123445" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+<div class="modal fade bs-example-modal-lg" id="TransactionModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Create Transaction</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="row text-center">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label style="color:#288c7b"><b>Debit Account</b></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label style="color:#288c7b"><b>Credit Account</b></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="Transaction number" disabled="disabled" class="form-control" />
+                    </div>
+
+                    <div class="col-sm-9">
+                        <input type="text" id="txttransactionId" class="form-control" placeholder="transaction Number" />
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+
+                    <div class="col-sm-3">
+                        <input type="text" placeholder="Reffrence number" disabled="disabled" class="form-control" />
+                    </div>
+                    <div class="col-sm-9">
+
+
+                        <input type="text" id="txtrefrencenumber" class="form-control" placeholder="Reffrence number" readonly />
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <select class="form-control" id="drpAccountDebit">
+                            <option value="0">Select payment Term</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txttransactionDateDebit" } })
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <select class="form-control" id="drppaymentDebit">
+                                    <option value="0"> Select acccount</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required id="AmountDebit" placeholder="Amount Debit" title="Debit Amount">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <select class="form-control" id="drpAccountCredit">
+
+                                    <option value="0">Account type</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required id="AmountCredit" placeholder="Amount Credit" title="Credit Amount">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" type="text" required id="Description" placeholder="Description (optional)"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <table class="table table-bordered table-striped" id="tableAccountinfo" style="visibility:hidden">
+                        <thead style="background-color:black;color:white">
+                            <tr>
+                                <th>TID</th>
+                                <th>Ref</th>
+                                <th>Date</th>
+                                <th>Acc Name</th>
+                                <th>Payment</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbleAccount"></tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnAdd"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>ADD</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+        LoadPurchaseOrderTable("Open");
+       // loadPayemtDropdown();
+        //loadPayemtTermDropdown();
+    });
+
+    function LoadPurchaseOrderTable(status) {
+        $("#PurchaseListTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "destroy": true,
+            "searching": true,
+            "autoWidth": false,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/Order/GetPurderOrderList",
+                "type": "POST",
+                data: { status: status },
+                "datatype": "json"
+            },
+            "columns": [
+                  { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
+                    {
+                        "data": "PurchaseDate", "type": "date ",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var pattern = /Date\(([^)]+)\)/;//date format from server side
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        }, "autoWidth": true
+                    },
+                   {
+                       "data": "PurchaseDueDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+
+                  { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+
+                { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
+                  { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+
+                   { "data": "Status", "name": "Status", "autoWidth": true },
+                {
+                    render: function (data, type, row) {
+
+
+                        switch (row.Status) {
+                            case "Open":
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
+                                break
+
+                            case "Rejected":
+                                return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
+                                break
+
+
+                            case "Pending":
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
+                                break
+
+
+                            case "Accepted":
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
+                                break
+                        }
+
+                    }
+                }
+            ]
+        });
+    }
+    //function loadPendingTable(id) {
+    //    $("#PendingTable").DataTable({
+    //        //"processing": true, // for show progress bar
+    //        "processing": true,
+    //        "language": {
+    //            //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+    //        },
+    //        "destroy": true,
+    //        "searching": true,
+    //        "autoWidth": false,
+    //        "serverSide": true, // for process server side
+    //        "filter": false, // this is for disable filter (search box)
+    //        "orderMulti": false, // for disable multiple column at once
+    //        "ajax": {
+    //            "url": "/Order/GetPendingItem",
+    //            "type": "POST",
+    //            "datatype": "json",
+    //            data: { PurchaseId: id },
+    //        },
+    //        "columns": [
+    //             {
+    //                 "data": "PID", "name": "PID", "autoWidth": true
+    //             },
+
+    //              { "data": "Status", "name": "Status", "autoWidth": true },
+
+    //             // key for edit delete
+    //               {
+    //                   "data": "FromDate", "type": "date ",
+    //                   "render": function (value) {
+    //                       if (value === null) return "";
+    //                       var pattern = /Date\(([^)]+)\)/;//date format from server side
+    //                       var results = pattern.exec(value);
+    //                       var dt = new Date(parseFloat(results[1]));
+    //                       return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+    //                   }, "autoWidth": true
+    //               },
+    //              {
+    //                  "data": "ToDate", "type": "date ",
+    //                  "render": function (value) {
+    //                      if (value === null) return "";
+    //                      var pattern = /Date\(([^)]+)\)/;//date format from server side
+    //                      var results = pattern.exec(value);
+    //                      var dt = new Date(parseFloat(results[1]));
+    //                      return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+    //                  }, "autoWidth": true
+    //              },
+
+    //             { "data": "Description", "name": "Description", "autoWidth": true },
+
+
+    //        ]
+    //    });
+    //}
+
+
+    //function AcceptOrder(id) {
+    //    $('#txtrefrencenumber').val(id);
+    //    $('#txttransactionId').val(Math.floor(Math.random() * 10));
+    //    $('#TransactionModel').modal('show');
+
+    //}
+    //function Reopen(id) {
+    //    updateStatus(id, "Open", "Open", "the invoice is Open successfully");
+    //}
+
+
+    //function ViewDetail(purchaseId) {
+
+    //    $.ajax({
+    //        url: '/Purchase/AddOrEditPurchase',
+    //        type: 'GET',
+    //        data: {
+    //            purchaseId: purchaseId
+    //        },
+    //        success: function () {
+    //            GetPurchaseDetailByPurchaseId(purchaseId)
+    //        }
+    //    });
+
+
+    //}
+
+
+    //function GetPurchaseDetailByPurchaseId(pruchaseId) {
+    //    debugger;
+
+    //    var Data = JSON.stringify({
+    //        PurchaseId: pruchaseId,
+
+    //    })
+    //    $.ajax({
+    //        url: '/Order/GetPendingItem',
+    //        type: 'POST',
+    //        data: Data,
+    //        contentType: 'application/json; charset=utf-8',
+    //        success: function (response) {
+    //            console.log(response);
+
+    //            var html = '';
+    //            $.each(response.PurchaseData, function (key, item) {
+    //                html += '<tr>';
+    //                html += '<td>' + item.PurchaseId + '</td>';
+    //                html += '<td>' + item.PurchaseItemName + '</td>';
+    //                html += '<td>' + item.PurchaseQuantity + '</td>';
+    //                html += '<td>' + item.PurchaseItemRate + '</td>';
+    //                html += '<td>' + item.PurchaseTotal + '</td>';
+    //                html += '<td>' + item.PurchaseVatPercentage + '</td>';
+    //                html += '</tr>';
+    //            });
+
+    //            $('#PurchaseTotoalAmount').text(response.purchase.PurchaseSubTotal);
+    //            $('#Vat21').text(response.purchase.Vat21);
+    //            $('#vat6').text(response.purchase.Vat6);
+    //            $('#PurchaseSubTotal').text(response.purchase.PurchaseSubTotal);
+
+    //            $('#CompanyName').text(response.CompanyDta.CompanyName);
+    //            $('#Kvk').text(response.CompanyDta.KVK);
+    //            $('#BTW').text(response.CompanyDta.BTW);
+    //            $('#Bank').text(response.CompanyDta.BankName);
+    //            $('#IBN').text(response.CompanyDta.CompanyName);
+    //            $('#IBC').text(response.CompanyDta.BIC);
+    //            $('#CompanyPhone').text(response.CompanyDta.CompanyName);
+    //            $('#Cell').text(response.CompanyDta.CompanyCell);
+    //            $('#CompanyEmail').text(response.CompanyDta.CompanyEmail);
+    //            $('#website').text(response.CompanyDta.Website);
+    //            $('#add').text(response.CompanyDta.CompanyAddress);
+    //            $('#pcode').text(response.CompanyDta.CompanyPhone);
+    //            $('#companyCity').text(response.CompanyDta.CompanyCity);
+    //            $('#companyCountry').text(response.CompanyDta.CompanyCountry);
+    //            $('#tbody').html(html);
+
+    //            $("#logo").empty();
+    //            $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "' style='width:72%; height:146px' />");
+
+    //            $('#showpendindModel').modal('show');
+    //        },
+
+    //        Error: function (error) {
+    //            alert(error)
+    //        },
+    //    });
+
+    //    // loadPendingTable(purchaseId);
+    //    $('#showpendindModel').modal('show');
+    //}
+
+
+    //function Rejected(id) {
+    //    updateStatus(id, "Rejected", "the invoice is rejected successfully");
+    //}
+
+
+    //function PendingtOrder(id) {
+    //    $('#Pending').modal('show');
+    //    $('#txtpurchaseId').val(id);
+    //}
+
+
+    //function updateStatus(Id, Status, Message) {
+    //    debugger;
+    //    var Data = JSON.stringify({
+    //        purchaseId: Id,
+    //        Status: Status,
+    //    })
+    //    $.ajax({
+    //        url: '/Order/UpdateOrderStaus',
+    //        type: 'POST',
+    //        data: Data,
+    //        contentType: 'application/json; charset=utf-8',
+    //        success: function (response) {
+    //            if (response.Status == "Success") {
+    //                $('#PurchaseListTable').DataTable().ajax.reload();
+
+    //                swal({
+    //                    title: 'Status!',
+    //                    text: Message,
+    //                    type: 'success'
+    //                });
+    //            }
+    //            else if (response.Status == "Fail") {
+    //                swal({
+    //                    title: 'Status!',
+    //                    text: "fail to process",
+    //                    type: 'danger'
+    //                });
+    //            }
+    //        },
+
+    //        Error: function (error) {
+    //            alert(error)
+    //        },
+    //    });
+    //}
+
+    //$('#drpstatus').change(function () {
+
+    //    var status = $('#drpstatus option:selected').text();
+
+    //    LoadPurchaseOrderTable(status);
+    //});
+
+    //$('#savePendind').click(function () {
+    //    AddPending();
+    //});
+
+
+    //function AddPending() {
+    //    debugger;
+    //    var ddddd = {
+    //        Purchase_QuataionId: $("#txtpurchaseId").val(),
+    //        FromDate: $("#txtfromdate").val(),
+    //        ToDate: $('#txttodate').val(),
+    //        Description: $('#txtdescription').val(),
+    //        Status: "Pending"
+    //    };
+    //    $.ajax({
+    //        url: "/Order/AddPending",
+    //        type: 'POST',
+    //        data: ddddd,
+    //        success: function (rsponse) {
+    //            if (rsponse.Success = "Success") {
+    //                $('#PurchaseListTable').DataTable().ajax.reload();
+    //                $('#Pending').modal('hide');
+    //                swal({
+    //                    title: 'Status!',
+    //                    text: rsponse.Message,
+    //                    type: 'success'
+    //                });
+    //            }
+    //            else if (rsponse.Success = "Fail") {
+    //                swal({
+    //                    title: 'Status!',
+    //                    text: rsponse.Message,
+    //                    type: 'danger'
+    //                });
+    //            }
+    //        },
+    //        error: function (error) {
+    //            alert(error);
+    //        }
+    //    });
+    //}
+
+    //function loadPayemtDropdown() {
+    //    var drppayment = $('#drppaymentDebit');
+    //    var drpAccountCredit = $('#drpAccountCredit');
+    //    $.ajax({
+    //        url: "/MvcAccounts/GetAccount",
+    //        type: "POST",
+    //        contentType: "appplication/json",
+    //        success: function (response) {
+    //            $.each(response, function (i, item) {
+    //                drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+    //                drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+    //            });
+    //        },
+    //        error: function (Error) {
+    //            alert(Error)
+    //        },
+    //    });
+    //}
+
+
+    //function loadPayemtTermDropdown() {
+    //    var drppaymentTerm = $('#drpAccountDebit');
+    //    var drppaymentTermCredit = $('#drpAccountCredit');
+    //    $.ajax({
+    //        url: "/MvcPaymentTerm/GetPaymentTerm",
+    //        type: "POST",
+    //        contentType: "appplication/json",
+    //        success: function (response) {
+    //            $.each(response, function (i, item) {
+    //                drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+    //                drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+    //            });
+    //        },
+    //        error: function (Error) {
+    //            alert(Error)
+    //        },
+    //    });
+
+    //}
+
+
+    //$('#btnAdd').click(function () {
+
+    //    if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+    //        alert('Account name canot be same');
+    //        return;
+    //    }
+
+
+    //    if ($('txttransactionDateDebit').val() == 0) {
+    //        alert('txttransactionDateDebit  canot be null');
+    //        return;
+    //    }
+
+
+    //    if ($('#drpAccountDebit').val() == 0) {
+    //        alert('drpAccountDebit  canot be null');
+    //        return;
+    //    }
+
+
+    //    if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+    //        alert('debit amount canot be zero');
+    //        return;
+    //    }
+
+    //    if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+    //        alert('AmountCredit canot be zero');
+    //        return;
+    //    }
+
+    //    if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
+    //        alert('Amonnt are not same please checke');
+    //        return;
+    //    }
+
+    //    if ($('#tbleAccount tr').length == 2) {
+    //        alert("Please save and chhose another transiction");
+    //    }
+    //    else {
+
+    //        var AccountTable = $('#tbleAccount');
+    //        var AcciontName = $('#drppaymentDebit option:selected').text();
+    //        var TID = $('#txttransactionId').val();
+    //        var ref = $('#txtrefrencenumber').val();
+    //        var Amountdebit = $('#AmountDebit').val();
+    //        var AmountCridit = $('#AmountCredit').val();
+    //        var Tdate = $('#txttransactionDateDebit').val();
+    //        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+    //        var paymentTer = $('#drpAccountDebit option:selected').text();
+    //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+    //        AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+    //        $('#tableAccountinfo').css('visibility', 'visible');
+    //    }
+
+    //});
+
+
+</script>

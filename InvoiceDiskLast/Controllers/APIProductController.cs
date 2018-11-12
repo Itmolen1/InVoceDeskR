@@ -18,18 +18,18 @@ namespace InvoiceDiskLast.Controllers
         // GET: api/APIProduct
 
 
-        [Route("api/APIProduct/{CompanyId:int}")]
+        [Route("api/APIProduct/{CompanyId:int}/{status:alpha}")]
         [ResponseType(typeof(List<MVCProductModel>))]
-        
-        public IHttpActionResult GetProductTables(int CompanyId)
-        {
-           
-            List<ProductTable> i = new List<ProductTable>();
-           
-            // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
-            
 
-          var ob=   db.ProductTables.Where(x => x.Company_ID == CompanyId).Select(c => new MVCProductModel
+        public IHttpActionResult GetProductTables(int CompanyId, string status)
+        {
+
+            List<ProductTable> i = new List<ProductTable>();
+
+            // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
+
+
+            var ob = db.ProductTables.Where(x => x.Company_ID == CompanyId && x.Type.ToLower() == status.ToLower()).Select(c => new MVCProductModel
             {
 
                 ProductId = c.ProductId,
@@ -80,7 +80,7 @@ namespace InvoiceDiskLast.Controllers
                     return NotFound();
                 }
             }
-            catch(Exception EX)
+            catch (Exception EX)
             {
                 throw EX;
             }

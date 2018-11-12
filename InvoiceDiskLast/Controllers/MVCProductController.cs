@@ -9,8 +9,6 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
     [SessionExpireAttribute]
-   
-        
     public class MVCProductController : Controller
     {
         // GET: MVCProduct
@@ -110,9 +108,9 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult GetProduct()
         {
-
+            string Status = "Sirvice";
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId).Result;
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + Status).Result;
             List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -199,40 +197,5 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
-
-        public string GetProductByName(string ProductName)
-        {
-            bool Result = false;
-            try
-            {
-                int CompanyId = Convert.ToInt32(Session["CompayID"]);
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId).Result;
-                List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
-
-
-                foreach (MVCProductModel model in ProductList)
-                {
-                    if (model.ProductName == ProductName)
-                    {
-
-                        Result = true;
-                        break;
-                    }
-                }
-                if(Result == true)
-                {
-                    return "Found";
-                }
-            }
-            catch (Exception)
-            {
-                return "Not Found";
-            }
-            return "Not Found";
-          
-        }
-        
-
     }
 }

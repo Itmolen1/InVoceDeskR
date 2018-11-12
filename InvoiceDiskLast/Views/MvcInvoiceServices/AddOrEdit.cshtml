@@ -1,9 +1,11 @@
-﻿
-@model InvoiceDiskLast.Models.MvcPurchaseViewModel
+﻿@model InvoiceDiskLast.Models.MvcPurchaseViewModel
 
 @{
     ViewBag.Title = "AddOrEdit";
 }
+
+<h2>AddOrEdit</h2>
+
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -138,10 +140,10 @@
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-sm-2">Invoice Date:</div>
-                            <div class="col-sm-4"> 
-                                                             
-                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseDate"} })
-                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })                              
+                            <div class="col-sm-4">
+
+                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseDate" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-sm-6"></div>
                         </div>
@@ -185,19 +187,19 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>
-                                            Product Name
+                                           Project 
                                         </th>
                                         <th>
-                                            Quantity
+                                            Number Of hour
                                         </th>
                                         <th>
-                                            Price
+                                            Hourly rate
                                         </th>
                                         <th>
                                             Total
                                         </th>
                                         <th>
-                                            Vat
+                                            Vat %
                                         </th>
                                         <th>
                                             Action
@@ -242,7 +244,7 @@
 
                                         </td>
                                         <td>
-
+                                           
                                             <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
 
                                     </tr>
@@ -454,9 +456,7 @@
                             </div>
 
                             <div class="col-sm-2"></div>
-                            @*<div class="col-sm-1"></div>
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2"></div>*@
+
                         </div>
 
                     </div>
@@ -990,7 +990,7 @@
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
             LoadProductUnitPurchase();
-          //  $('#VenderSelectModel').modal('hide');
+            //  $('#VenderSelectModel').modal('hide');
             $('#CreateNewProductModalAdd').modal('show');
         }
         else if (value == "0") {
@@ -1009,7 +1009,7 @@
                     $('thead #PurchaseItemRate ').val(resultData);
                 },
                 error: function (errormessage) {
-                   // alert(errormessage)
+                    // alert(errormessage)
                 }
             });
         }
@@ -1096,7 +1096,7 @@
                 PurchaseDetailslist: list
             };
             $.ajax({
-                url: "/Purchase/save",
+                url: "/MvcInvoiceServices/save",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
@@ -1113,7 +1113,7 @@
                             type: 'success'
                         },
                   function (isconform) {
-                      window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.purchaseId;
+                      window.location.href = "/MvcInvoiceServices/Viewinvoice?purchaseOrderId=" + result.purchaseId;
                   });
                     }
                     else if (result.Status == "Fail") {
@@ -1208,7 +1208,7 @@
 
             };
             $.ajax({
-                url: "/Purchase/saveEmail",
+                url: "/MvcInvoiceServices/saveEmail",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
@@ -1223,7 +1223,7 @@
                             type: 'success'
                         },
                         function (isconform) {
-                            window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.PurchaseOrderId;
+                            window.location.href = "/MvcInvoiceServices/InvoiceByEmail?purchaseOrderId=" + result.PurchaseOrderId;
                         });
                         $("#saveEmailp").val('Save + Email');
                         list = [];
@@ -1317,7 +1317,7 @@
                 PurchaseDetailslist: list
             };
             $.ajax({
-                url: "/Purchase/savePrintAndSentItToYouronsave",
+                url: "/MvcInvoiceServices/savePrintAndSentItToYouronsave",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
@@ -1333,12 +1333,12 @@
                             type: 'success'
                         },
                         function (isconform) {
-                            window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.PurchaseOrderId;
+                            window.location.href = "/MvcInvoiceServices/Viewinvoice?purchaseOrderId=" + result.PurchaseOrderId;
                         });
                     }
                     else if (result.Status == "Fail") {
                         $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
-                      
+
 
                         swal({
                             title: "Fail!",
@@ -1380,7 +1380,7 @@
                 total: purchaseTotal
             })
             $.ajax({
-                url: "/Purchase/DeleteInvoice",
+                url: "/MvcInvoiceServices/DeleteInvoice",
                 type: "POST",
                 async: false,
                 contentType: "application/json;charset=utf-8",
@@ -1414,7 +1414,7 @@
                         text: errormessage,
                         icon: "danger",
                     });
-                   
+
                 }
 
             });
