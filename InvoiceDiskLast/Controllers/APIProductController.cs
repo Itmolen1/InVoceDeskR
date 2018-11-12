@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace InvoiceDiskLast.Controllers
 {
-   [Authorize]
+    [Authorize]
     public class APIProductController : ApiController
     {
         private DBEntities db = new DBEntities();
@@ -149,6 +149,8 @@ namespace InvoiceDiskLast.Controllers
             }
             return Ok(productTable);
         }
+
+
 
         protected override void Dispose(bool disposing)
         {

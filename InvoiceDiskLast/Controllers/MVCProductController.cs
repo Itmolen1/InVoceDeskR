@@ -8,7 +8,9 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
-   [SessionExpireAttribute]
+    [SessionExpireAttribute]
+   
+        
     public class MVCProductController : Controller
     {
         // GET: MVCProduct
@@ -36,8 +38,8 @@ namespace InvoiceDiskLast.Controllers
 
 
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
-              
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+ CompanyId).Result;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId).Result;
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -91,7 +93,7 @@ namespace InvoiceDiskLast.Controllers
                         break;
                 }
 
-              
+
                 int recordsTotal = recordsTotal = ProductList.Count();
                 var data = ProductList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
@@ -109,8 +111,8 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetProduct()
         {
 
-            int CompanyId = Convert.ToInt32(Session["CompayID"]);            
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+ CompanyId).Result;
+            int CompanyId = Convert.ToInt32(Session["CompayID"]);
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId).Result;
             List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -147,23 +149,23 @@ namespace InvoiceDiskLast.Controllers
                 if (ProductModel.ProductId == null)
                 {
 
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());                  
+                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
-                   
+
                 }
                 else
                 {
-                   
+
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutAPIProduct/" + ProductModel.ProductId, ProductModel).Result;
-                  
+
                 }
 
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw ex;        
+                throw ex;
             }
         }
 
@@ -174,7 +176,7 @@ namespace InvoiceDiskLast.Controllers
             {
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()).Result;
-               
+
                 return Json("Delete", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -197,5 +199,40 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
+
+        public string GetProductByName(string ProductName)
+        {
+            bool Result = false;
+            try
+            {
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId).Result;
+                List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
+
+
+                foreach (MVCProductModel model in ProductList)
+                {
+                    if (model.ProductName == ProductName)
+                    {
+
+                        Result = true;
+                        break;
+                    }
+                }
+                if(Result == true)
+                {
+                    return "Found";
+                }
+            }
+            catch (Exception)
+            {
+                return "Not Found";
+            }
+            return "Not Found";
+          
+        }
+        
+
     }
 }
