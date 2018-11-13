@@ -446,7 +446,7 @@
 
 
     $(document).ready(function () {
-        LoadPurchaseOrderTable("open");
+        LoadPurchaseOrderTable("Open");
         loadPayemtDropdown();
         loadPayemtTermDropdown();
     });
@@ -504,21 +504,21 @@
 
 
                         switch (row.Status) {
-                            case "open":
+                            case "Open":
                                 return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
                                 break
 
-                            case "rejected":
+                            case "Rejected":
                                 return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
                                 break
 
 
-                            case "pending":
+                            case "Pending":
                                 return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
                                 break
 
 
-                            case "accepted":
+                            case "Accepted":
                                 return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
                                 break
                         }
@@ -591,7 +591,7 @@
 
     }
     function Reopen(id) {
-        updateStatus(id, "open", "open", "the invoice is Open successfully");
+        updateStatus(id, "Open", "Open", "the invoice is Open successfully");
     }
 
 
@@ -677,7 +677,7 @@
 
 
     function Rejected(id) {
-        updateStatus(id, "rejected", "the invoice is rejected successfully");
+        updateStatus(id, "Rejected", "the invoice is rejected successfully");
     }
 
 
@@ -742,7 +742,7 @@
             FromDate: $("#txtfromdate").val(),
             ToDate: $('#txttodate').val(),
             Description: $('#txtdescription').val(),
-            Status: "pending"
+            Status: "Pending"
         };
         $.ajax({
             url: "/Order/AddPending",

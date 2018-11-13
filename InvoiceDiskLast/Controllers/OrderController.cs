@@ -85,7 +85,7 @@ namespace InvoiceDiskLast.Controllers
 
             if (status == "" || status == null)
             {
-                status = "open";
+                status = "Open";
             }
 
             IEnumerable<MvcPurchaseModel> PurchaseList;
@@ -222,7 +222,9 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.PurchaseDatailsList = QutationModelDetailsList;
+
                 return new JsonResult { Data = new { PurchaseData = QutationModelDetailsList, ContectDetail = contectmodel, CompanyDta = companyModel, purchase = ob } };
+
             }
             catch (Exception ex)
             {
@@ -272,7 +274,7 @@ namespace InvoiceDiskLast.Controllers
                         orderstatusModel.CreatedDate = DateTime.Now;
                         orderstatusModel.CompanyId = Convert.ToInt32(Session["CompayID"]);
                         orderstatusModel.UserId = 1;
-                        orderstatusModel.Type = StatusEnum.InvoiceServices.ToString();
+                        orderstatusModel.Type = "Purchase";
                         HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("InsertOrderStatus", orderstatusModel).Result;
 
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)

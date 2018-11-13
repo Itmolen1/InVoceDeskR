@@ -108,7 +108,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult GetProduct()
         {
-            string Status = "service";
+            string Status = "Sirvice";
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + Status).Result;
             List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
