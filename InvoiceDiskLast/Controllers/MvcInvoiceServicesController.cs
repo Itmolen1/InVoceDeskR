@@ -164,7 +164,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Type = "Services";
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 

@@ -284,7 +284,6 @@ namespace InvoiceDiskLast.Controllers
                       where p.Type == "Sirvice" && po.Status == Status && po.CompanyId == id
                       select new MvcPurchaseModel
                       {
-
                           PurchaseOrderID =po.PurchaseOrderID,
                           PurchaseID = po.PurchaseID,
                           PurchaseDate = po.PurchaseDate,

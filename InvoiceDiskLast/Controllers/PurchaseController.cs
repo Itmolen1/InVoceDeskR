@@ -283,7 +283,7 @@ namespace InvoiceDiskLast.Controllers
                     Contectid = Convert.ToInt32(Session["ClientId"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
-               
+
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", cdd.ToString());
 
@@ -389,7 +389,6 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-            int companyId = 0;
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -420,7 +419,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Status = StatusEnum.InvoiceGood.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -513,7 +512,7 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-            int companyId = 0;
+        
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -544,7 +543,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Status = StatusEnum.InvoiceGood.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
@@ -635,8 +634,8 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult saveEmailPrint(MvcPurchaseViewModel purchaseViewModel)
         {
             var purchaseorderId = "";
-            int intpurchaseorderId = 0;
-            int companyId = 0;
+            int intpurchaseorderId = 0;  
+                  
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -667,7 +666,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Status = StatusEnum.InvoiceGood.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -867,9 +866,6 @@ namespace InvoiceDiskLast.Controllers
                     return RedirectToAction("Index", "Login");
                 }
 
-
-
-
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
@@ -883,7 +879,6 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
-
 
                 DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
                 DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
@@ -912,7 +907,7 @@ namespace InvoiceDiskLast.Controllers
 
                     FileName = PdfName,
 
-                     PageHeight = 40,
+                    PageHeight = 40,
                     CustomSwitches = cutomswitches,
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
                 };
@@ -1132,21 +1127,15 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
-
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.Purchase = ob;
                 ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
 
-
-
                 DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
                 DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
                 TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
                 string diffDate = ts.Days.ToString();
-
-
-
 
                 string companyName = purchaseOrderId + "-" + companyModel.CompanyName;
                 var root = Server.MapPath("/PDF/");
@@ -1183,19 +1172,17 @@ namespace InvoiceDiskLast.Controllers
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
                 {
 
-                     PageSize = Rotativa.Options.Size.A4,
-                     MinimumFontSize = 16,
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
-                     PageHeight = 40,
+                    PageHeight = 40,
 
-                    SaveOnServerPath = path, // Save your place
+                    SaveOnServerPath = path,
 
                     CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
-
                 };
-                // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);
             }
             catch (Exception)
@@ -1368,7 +1355,7 @@ namespace InvoiceDiskLast.Controllers
             return View();
 
         }
-        
+
     }
 
 }
