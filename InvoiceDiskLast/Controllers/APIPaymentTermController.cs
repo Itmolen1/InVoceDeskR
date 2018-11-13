@@ -33,6 +33,29 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+        [Route("api/PostpaymentTerm")]
+        public IHttpActionResult PostPaymentTerm(PaymentTermTable paymentTable)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.PaymentTermTables.Add(paymentTable);
+                    db.SaveChanges();
+
+                    return Ok(paymentTable);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
 
     }
 }

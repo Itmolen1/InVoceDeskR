@@ -191,6 +191,9 @@
             $('#CreateNewProductModal').modal('show');
         });
 
+
+
+
        
         $('#UpdateProduct').click(function () {
             var validdatep = validateProduct();
@@ -239,7 +242,6 @@
         });
      
         $('#SaveNewProductUnit').click(function () {
-
             $.ajax({
                 url: "/MVCProductUnit/CheckUnitStatus",
                 type: "POST",
@@ -355,112 +357,135 @@
     $('#SaveNewProduct').click(function () {
         var validdatep = validateProduct();
         if (validdatep == true) {
-
             $.ajax({
-                url: '/MVCProduct/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ProductName: $('#ProductName').val(),
-                    Description: $('#Description').val(),
-                    SalePrice: $('#SalePrice').val(),
-                    PurchasePrice: $('#PurchasePrice').val(),
-                    Type: $('#Type').val(),
-                    OpeningQuantity: $('#OpeningQuantity').val(),
-                    ProductUnit: $('#ProductUnitSelect').val()
+                
+                url: "/MVCProduct/GetProductByName",
+                type: "POST",
+                data: { ProductName: $('#ProductName').val() },
+                success: function (Resultdat) {
+                    if (Resultdat == "Found")
+                    {
+                        $.toast({
+                            heading: 'Already exist',
+                            text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#FF0000'  // To change the background
+                        });
 
-                },
-                success: function (data) {
-                    $('#productTable').DataTable().ajax.reload();
-                    CleartProdctTextBox();
-                    $('#CreateNewProductModal').modal('hide');
-                    SuccessInsertProduct();
-                },
-                error: function () {
-                    alert("error");
+                    }
+                    else {
+                        $.ajax({
+                            url: '/MVCProduct/AddOrEdit',
+                            type: 'POST',
+                            data: {
+                                ProductName: $('#ProductName').val(),
+                                Description: $('#Description').val(),
+                                SalePrice: $('#SalePrice').val(),
+                                PurchasePrice: $('#PurchasePrice').val(),
+                                Type: $('#Type').val(),
+                                OpeningQuantity: $('#OpeningQuantity').val(),
+                                ProductUnit: $('#ProductUnitSelect').val()
+                            },
+                            success: function (data) {
+                                $('#productTable').DataTable().ajax.reload();
+                                CleartProdctTextBox();
+                                $('#CreateNewProductModal').modal('hide');
+                                SuccessInsertProduct();
+                            },
+                            error: function () {
+                                alert("error");
+                            }
+                        });
+                       
+                    }
+
                 }
             });
         }
-        });
-    
+    });
 
-    function SuccessInsertProduct() {
-        swal({
-            title: "Congratulations!!!!",
-            text: "Your data has been saved successfully",
-            type: "success",
 
-        });
-    }
 
-    function validateProduct() {
-        var isValid = true;
+              
 
-        if ($('#ProductName').val().trim() == "") {
-            $('#ProductName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ProductName').css('border-color', 'lightgrey');
-        }
-        if ($('#SalePrice').val().trim() == "") {
-            $('#SalePrice').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#SalePrice').css('border-color', 'lightgrey');
-        }
-        if ($('#PurchasePrice').val().trim() == "") {
-            $('#PurchasePrice').css('border-color', 'Red');
-            $('#PurchasePrice').focus();
-            isValid = false;
-        }
-        else {
-            $('#PurchasePrice').css('border-color', 'lightgrey');
-        }
-        if ($('#OpeningQuantity').val() == "") {
-            $('#OpeningQuantity').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#OpeningQuantity').css('border-color', 'lightgrey');
-        }
+            function SuccessInsertProduct() {
+                swal({
+                    title: "Congratulations!!!!",
+                    text: "Your data has been saved successfully",
+                    type: "success",
 
-        if ($('#ProductUnitSelect').val() == 0) {
-            $('#ProductUnitSelect').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ProductUnitSelect').css('border-color', 'lightgrey');
-        }
-        return isValid;
-    }
-
-    function LoadProductUnit() {
-
-        $("#ProductUnitSelect").find("option").remove();
-
-        $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
-        $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
-
-        $.ajax({
-            url: "/MVCProductUnit/GetProductUnit",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-                console.log(data);
-                $.each(data, function (key, item) {
-                    $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
                 });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
             }
 
-        });
-    }
+            function validateProduct() {
+                var isValid = true;
+
+                if ($('#ProductName').val().trim() == "") {
+                    $('#ProductName').css('border-color', 'Red');
+                    isValid = false;
+                }
+                else {
+                    $('#ProductName').css('border-color', 'lightgrey');
+                }
+                if ($('#SalePrice').val().trim() == "") {
+                    $('#SalePrice').css('border-color', 'Red');
+                    isValid = false;
+                }
+                else {
+                    $('#SalePrice').css('border-color', 'lightgrey');
+                }
+                if ($('#PurchasePrice').val().trim() == "") {
+                    $('#PurchasePrice').css('border-color', 'Red');
+                    $('#PurchasePrice').focus();
+                    isValid = false;
+                }
+                else {
+                    $('#PurchasePrice').css('border-color', 'lightgrey');
+                }
+                if ($('#OpeningQuantity').val() == "") {
+                    $('#OpeningQuantity').css('border-color', 'Red');
+                    isValid = false;
+                }
+                else {
+                    $('#OpeningQuantity').css('border-color', 'lightgrey');
+                }
+
+                if ($('#ProductUnitSelect').val() == 0) {
+                    $('#ProductUnitSelect').css('border-color', 'Red');
+                    isValid = false;
+                }
+                else {
+                    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+                }
+                return isValid;
+            }
+
+            function LoadProductUnit() {
+
+                $("#ProductUnitSelect").find("option").remove();
+
+                $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
+                $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+
+                $.ajax({
+                    url: "/MVCProductUnit/GetProductUnit",
+                    type: "Get",
+                    async: false,
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $.each(data, function (key, item) {
+                            $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                        });
+
+                    },
+                    Error: function (errormessage) {
+                        alert(errormessage);
+                    }
+
+                });
+            }
+       
 
 </script>
