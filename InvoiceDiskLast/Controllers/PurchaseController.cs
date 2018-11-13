@@ -325,7 +325,7 @@ namespace InvoiceDiskLast.Controllers
                     ViewBag.VatDrop = model;
 
 
-                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID).Result;
+                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID +"/All").Result;
                     List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                     ViewBag.Product = productModel;
 
