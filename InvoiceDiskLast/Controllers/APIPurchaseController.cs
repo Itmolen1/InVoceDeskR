@@ -125,7 +125,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 int id = Convert.ToInt32(IDS);
 
-                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id).ToList().Select(p => new MvcPurchaseModel
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status != "accepted" && p.Type==StatusEnum.InvoiceGood.ToString()).ToList().Select(p => new MvcPurchaseModel
                 {
                     PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
@@ -278,47 +278,24 @@ namespace InvoiceDiskLast.Controllers
                 //select* from ProductTable as p inner join PurchaseOrderDetailsTable as pdetain on p.ProductId=pdetain.PurchaseItemId
                 // inner join PurchaseOrderTable as po on  pdetain.PurchaseId=po.PurchaseOrderID where p.Type='Sirvice' and po.Status='Open'
 
-                ob = (from p in db.ProductTables
-                      join pdet in db.PurchaseOrderDetailsTables on p.ProductId equals pdet.PurchaseItemId
-                      join po in db.PurchaseOrderTables on pdet.PurchaseId equals po.PurchaseOrderID
-                      where p.Type == "Sirvice" && po.Status == Status && po.CompanyId == id
-                      select new MvcPurchaseModel
-                      {
-                          PurchaseOrderID =po.PurchaseOrderID,
-                          PurchaseID = po.PurchaseID,
-                          PurchaseDate = po.PurchaseDate,
-                          PurchaseDueDate = po.PurchaseDueDate,
-                          PurchaseRefNumber = po.PurchaseRefNumber,
-                          PurchaseSubTotal = po.PurchaseSubTotal,
-                          PurchaseDiscountPercenteage = po.PurchaseDiscountPercenteage,
-                          PurchaseDiscountAmount = po.PurchaseOrderID,
-                          PurchaseVatPercentage = po.PurchaseVatPercentage,
-                          PurchaseTotoalAmount = po.PurchaseTotoalAmount,
-                          PurchaseVenderNote = po.PurchaseVenderNote,
-                          Status = po.Status,
-                          CompanyId = po.CompanyId,
-                          UserId = po.UserId,
-                          AddedDate = p.AddedDate,
-                      }).ToList();
-
-                //ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MvcPurchaseModel
-                //{
-                //    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
-                //    PurchaseID = p.PurchaseID,
-                //    PurchaseDate = (DateTime)p.PurchaseDate,
-                //    PurchaseDueDate = p.PurchaseDueDate,
-                //    PurchaseRefNumber = p.PurchaseRefNumber,
-                //    PurchaseSubTotal = p.PurchaseSubTotal,
-                //    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
-                //    PurchaseDiscountAmount = p.PurchaseOrderID,
-                //    PurchaseVatPercentage = p.PurchaseVatPercentage,
-                //    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
-                //    PurchaseVenderNote = p.PurchaseVenderNote,
-                //    Status = p.Status,
-                //    CompanyId = p.CompanyId,
-                //    UserId = p.UserId,
-                //    AddedDate = p.AddedDate,
-                //}).ToList();
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower() && p.Type == StatusEnum.InvoiceServices.ToString()).ToList().Select(p => new MvcPurchaseModel
+                {
+                    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
+                    PurchaseID = p.PurchaseID,
+                    PurchaseDate = (DateTime)p.PurchaseDate,
+                    PurchaseDueDate = p.PurchaseDueDate,
+                    PurchaseRefNumber = p.PurchaseRefNumber,
+                    PurchaseSubTotal = p.PurchaseSubTotal,
+                    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
+                    PurchaseDiscountAmount = p.PurchaseOrderID,
+                    PurchaseVatPercentage = p.PurchaseVatPercentage,
+                    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
+                    PurchaseVenderNote = p.PurchaseVenderNote,
+                    Status = p.Status,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+                    AddedDate = p.AddedDate,
+                }).ToList();
 
                 return Ok(ob);
             }

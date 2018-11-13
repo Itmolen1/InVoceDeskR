@@ -164,7 +164,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-                purchasemodel.Type = "Services";
+                purchasemodel.Type = StatusEnum.InvoiceServices.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -286,7 +286,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Type = StatusEnum.InvoiceServices.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
@@ -407,7 +407,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Type = StatusEnum.InvoiceServices.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -521,7 +521,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-
+                purchasemodel.Type = StatusEnum.InvoiceServices.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 

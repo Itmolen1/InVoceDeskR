@@ -511,21 +511,21 @@
 
 
                         switch (row.Status) {
-                            case "Open":
+                            case "open":
                                 return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
                                 break
 
-                            case "Rejected":
+                            case "rejected":
                                 return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
                                 break
 
 
-                            case "Pending":
+                            case "pending":
                                 return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
                                 break
 
 
-                            case "Accepted":
+                            case "accepted":
                                 return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
                                 break
                         }
@@ -730,12 +730,10 @@
     //    });
     //}
 
-    //$('#drpstatus').change(function () {
-
-    //    var status = $('#drpstatus option:selected').text();
-
-    //    LoadPurchaseOrderTable(status);
-    //});
+    $('#drpstatus').change(function () {
+      var status = $('#drpstatus option:selected').text();
+       LoadPurchaseOrderTable(status);
+    });
 
     //$('#savePendind').click(function () {
     //    AddPending();
