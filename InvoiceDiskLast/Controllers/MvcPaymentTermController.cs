@@ -27,5 +27,22 @@ namespace InvoiceDiskLast.Controllers
             return Json(objpaymentTerm, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult PostPaymntTerm(PaymentTermModel paymentTermModel)
+        {
+
+          
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostpaymentTerm",paymentTermModel).Result;
+
+            if(response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return Json("OK",JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("Failed", JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }
