@@ -30,8 +30,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult PostPaymntTerm(PaymentTermModel paymentTermModel)
         {
-
-          
+                      
             HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostpaymentTerm",paymentTermModel).Result;
 
             if(response.StatusCode == System.Net.HttpStatusCode.OK)

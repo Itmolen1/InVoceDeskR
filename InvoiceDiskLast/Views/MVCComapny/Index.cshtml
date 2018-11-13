@@ -16,11 +16,11 @@
     <div class="col-sm-8">
         <div class="row">
             <div class="col-sm-2">Naam:</div>
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="ccompanyname" />
             </div>
             <div class="col-sm-2">Logo:</div>
-            <div class="col-sm-2"><img class="pull-right" id="CtargetImg" style="height:38px;width:38px" /></div>
+            <div class="col-sm-3"><img class="pull-right" id="CtargetImg" style="height:30%;width:30%" /></div>
             <input type="hidden" id="logourl" />
         </div>
         <div class="row" style="margin-top:5px">
@@ -149,11 +149,19 @@
 
                     </div>
                     <div class="col-sm-6">
-                        <div class="form-group">
-                            <input type="file" name="file" id="CFileUpload1" />
-                            <img class="img-responsive" id="targetImg" style="height:38px;width:38px" />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="file" name="file" id="CFileUpload1" />
+                                </div>
+                                </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <img class="pull-right" id="targetImg" style="height:30%;width:45%" />
+                                </div>
+                            </div>
                         </div>
-
+                      
                         <div class="form-group" style="margin-top:5px">
                             <div class="col-xs-12">
                                 <input class="form-control" type="text" required id="StreetNumber" placeholder="Huisnummer">
@@ -349,7 +357,7 @@
                             fileData.append('AddedDate', $('#AddedDate').val());
 
                             var url = "/MVCComapny/UpdateCompany";
-                            debugger;
+
                             $.ajax({
                                 url: url,
                                 type: 'POST',
