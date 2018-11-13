@@ -7,10 +7,9 @@ namespace InvoiceDiskLast.Models
 {
     public enum StatusEnum
     {
-        InvoiceGood = 1,
-        InvoiceServices = 2,
-        QutationGood = 3,
-        QutationServices = 4,
+        Goods = 1,
+        Services = 2,
+       
 
     }
 }

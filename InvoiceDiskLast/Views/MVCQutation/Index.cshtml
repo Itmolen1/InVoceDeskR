@@ -1,13 +1,15 @@
 ﻿
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 
 
-    <a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</a> 
+<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</a>
 
 
 
 <table class="table" id="QutationListTable">
-    <thead  style="background-color:black;color:white">
+    <thead style="background-color:black;color:white">
         <tr>
             <th>
                 ID
@@ -19,18 +21,91 @@
                 Referntie nummer
             </th>
             <th>
-               Vaevalidatum
-            </th>          
+                Vaevalidatum
+            </th>
+            <th>
+                Type
+            </th>
             <th>
                 staat
             </th>
             <th>
                 Actie
             </th>
-         </tr>
+        </tr>
     </thead>
     <tbody></tbody>
 </table>
 <div id="loaderQuationList"></div>
 @*<label>dhj</label>*@
 
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#QutationListTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/MVCQutation/IndexQutation",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                    { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
+                    { "data": "Qutation_ID", "name": "Qutation_ID", "autoWidth": true },
+                    { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
+
+
+                   {
+                       "data": "QutationDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+                     { "data": "Type", "name": "Type", "autoWidth": true },
+                    { "data": "Status", "name": "Status", "autoWidth": true },
+
+                    //{
+                    //    render: function (data, type, row) {
+                    //        return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
+                    //    }
+                    //}
+
+                    {
+                        render: function (data, type, row) {
+
+
+                            switch (row.Type) {
+                                case "Goods":
+                                    return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>'
+                                    break
+
+                                case "Services":
+                                    return '<button  class="btn btn-info btn-sm" onclick="EditService(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>'
+                                    break
+
+                            }
+
+                        }
+
+                    }
+
+            ]
+        });
+
+
+    });
+</script>

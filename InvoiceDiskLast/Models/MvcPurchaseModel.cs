@@ -33,5 +33,10 @@ namespace InvoiceDiskLast.Models
 
         public double ? PurchaseTotal { get; set; }
 
+      
+
+        public string Type { get; set; }
+
+
     }
 }

@@ -17,15 +17,15 @@
 
 <div class="row">
     @*<div class="col-md-2">
-        <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
-    </div>*@
+            <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+        </div>*@
     <div class="col-md-6">
         <select id="drpstatus" class="form-control">
 
-            <option value="1">Open</option>
-            <option value="1">Accepted</option>
-            <option value="1">Pending</option>
-            <option value="1">Rejected</option>
+            <option value="1">open</option>
+            <option value="1">accepted</option>
+            <option value="1">pending</option>
+            <option value="1">rejected</option>
 
         </select>
     </div>
@@ -56,12 +56,15 @@
                     DiscountAmount
                 </th>
                 <th>
+                    Type
+                </th>
+                <th>
                     Status
                 </th>
-
                 <th>
                     Action
                 </th>
+                
 
             </tr>
         </thead>
@@ -498,33 +501,36 @@
                 { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
+                 { "data": "Type", "name": "Type", "autoWidth": true },
+
                    { "data": "Status", "name": "Status", "autoWidth": true },
-                {
-                    render: function (data, type, row) {
+
+                  {
+                      render: function (data, type, row) {
 
 
-                        switch (row.Status) {
-                            case "Open":
-                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
-                                break
+                          switch (row.Status) {
+                              case "open":
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
+                                  break
 
-                            case "Rejected":
-                                return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
-                                break
-
-
-                            case "Pending":
-                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
-                                break
+                              case "rejected":
+                                  return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
+                                  break
 
 
-                            case "Accepted":
-                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
-                                break
-                        }
+                              case "pending":
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
+                                  break
 
-                    }
-                }
+
+                              case "accepted":
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
+                                  break
+                          }
+
+                      }
+                  }
             ]
         });
     }
@@ -591,7 +597,7 @@
 
     }
     function Reopen(id) {
-        updateStatus(id, "Open", "Open", "the invoice is Open successfully");
+        updateStatus(id, "open", "open", "the invoice is Open successfully");
     }
 
 
@@ -677,7 +683,7 @@
 
 
     function Rejected(id) {
-        updateStatus(id, "Rejected", "the invoice is rejected successfully");
+        updateStatus(id, "rejected", "the invoice is rejected successfully");
     }
 
 
@@ -742,7 +748,7 @@
             FromDate: $("#txtfromdate").val(),
             ToDate: $('#txttodate').val(),
             Description: $('#txtdescription').val(),
-            Status: "Pending"
+            Status: "pending"
         };
         $.ajax({
             url: "/Order/AddPending",

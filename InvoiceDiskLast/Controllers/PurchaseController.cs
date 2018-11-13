@@ -43,7 +43,9 @@ namespace InvoiceDiskLast.Controllers
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIPurchase").Result;
+                int companyId = Convert.ToInt32(Session["CompayID"]);
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseInvoiceList/" + StatusEnum.Goods +"/"+ companyId).Result;
                 PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
 
 
@@ -418,8 +420,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
-                purchasemodel.Status = StatusEnum.InvoiceGood.ToString();
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -543,7 +545,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-                purchasemodel.Status = StatusEnum.InvoiceGood.ToString();
+                purchasemodel.Status = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
@@ -666,7 +668,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "Open";
-                purchasemodel.Status = StatusEnum.InvoiceGood.ToString();
+                purchasemodel.Status = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 

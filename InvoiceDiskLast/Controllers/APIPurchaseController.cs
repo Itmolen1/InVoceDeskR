@@ -40,6 +40,7 @@ namespace InvoiceDiskLast.Controllers
                 puchaseorder.UserId = ob.UserId;
                 puchaseorder.CompanyId = ob.CompanyId;
                 puchaseorder.VenderId = ob.VenderId;
+                puchaseorder.Type = ob.Type;
 
                 if (puchaseorder == null)
                 {
@@ -89,6 +90,7 @@ namespace InvoiceDiskLast.Controllers
                     PurchaseVenderNote = p.PurchaseVenderNote,
                     Status = p.Status,
                     CompanyId = p.CompanyId,
+                    Type = p.Type,
                     UserId = p.UserId,
                     AddedDate = p.AddedDate,
                 }).ToList();
@@ -108,7 +110,10 @@ namespace InvoiceDiskLast.Controllers
 
         //get list
 
-        public IHttpActionResult GetPurchaseOrder()
+
+
+        [Route("api/GetPurchaseInvoiceList/{type:alpha}/{CompanyId:int}")]
+        public IHttpActionResult GetPurchaseOrder(string type, int CompanyId)
         {
             object ob = new object();
             try
@@ -125,7 +130,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 int id = Convert.ToInt32(IDS);
 
-                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id).ToList().Select(p => new MvcPurchaseModel
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId).ToList().Select(p => new MvcPurchaseModel
                 {
                     PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
@@ -139,8 +144,10 @@ namespace InvoiceDiskLast.Controllers
                     PurchaseTotoalAmount = p.PurchaseTotoalAmount,
                     PurchaseVenderNote = p.PurchaseVenderNote,
                     Status = p.Status,
+                    Type = p.Type,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
+
                     AddedDate = p.AddedDate,
                 }).ToList();
 
@@ -153,6 +160,8 @@ namespace InvoiceDiskLast.Controllers
             return Ok(ob);
 
         }
+
+
         //// GET: api/APIQutation/5
         //[ResponseType(typeof(PurchaseOrderTable))]
         //public IHttpActionResult GetPurchaseTable(int id)

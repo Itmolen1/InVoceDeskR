@@ -59,12 +59,8 @@ namespace InvoiceDiskLast.Controllers
                        || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
                        || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
                        || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
-                       || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())
-
-                      ).ToList();
-
+                       || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())).ToList();
                     }
-
 
                 }
 
@@ -141,7 +137,7 @@ namespace InvoiceDiskLast.Controllers
 
                         ViewBag.VatDrop = model;
 
-                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+CompanyID).Result;
+                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID).Result;
                         List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                         ViewBag.Product = productModel;
 
@@ -516,7 +512,7 @@ namespace InvoiceDiskLast.Controllers
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
 
 
-                     PageHeight = 40,
+                    PageHeight = 40,
                     CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
@@ -676,7 +672,7 @@ namespace InvoiceDiskLast.Controllers
                 //    PageHeight = 40,
                 //    SaveOnServerPath = path, // Save your place
                 //    PageWidth = 200,
-                   
+
                 //};
                 // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);

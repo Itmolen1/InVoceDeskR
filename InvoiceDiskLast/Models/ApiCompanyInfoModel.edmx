@@ -259,6 +259,7 @@
           <Property Name="UserId" Type="int" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="ContactId" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="UserTable">
           <Key>
@@ -699,6 +700,7 @@
           <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationTable" ToRole="QutationDetailsTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ProductTable">
           <Key>
@@ -1187,6 +1189,7 @@
           <EntitySetMapping Name="QutationTables">
             <EntityTypeMapping TypeName="APIcompanyModel.QutationTable">
               <MappingFragment StoreEntitySet="QutationTable">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="ContactId" ColumnName="ContactId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />

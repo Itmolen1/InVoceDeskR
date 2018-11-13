@@ -6,41 +6,32 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
+@*<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>*@
 
-
-
-<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
-
-<table class="table" id="PurchaseDetailTable">
+<table class="table" id="InvoiceServiseList">
     <thead style="background-color:black;color:white">
         <tr>
             <th>
-                PurchaseId
-            </th>
-
-            <th>
-                PurchaseDate
+                PurcaseId
             </th>
             <th>
-                PurchaseDueDate
+                Project
             </th>
             <th>
-                RefrenceNumber
+                Number of hour
             </th>
             <th>
-                Puchase Subtotal
+                Hourly rate
             </th>
             <th>
-                Purchase Amount
+                Total
             </th>
-            <th>Type</th>
             <th>
-                Status
+                Vat %
             </th>
             <th>
                 Action
             </th>
-
         </tr>
     </thead>
     <tbody></tbody>
@@ -49,9 +40,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $("#PurchaseDetailTable").DataTable({
-            //"processing": true, // for show progress bar
+      
+        $("#InvoiceServiseList").DataTable({
             "processing": true,
             "language": {
                 "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
@@ -94,31 +84,12 @@
                    { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
                     { "data": "Status", "name": "Status", "autoWidth": true },
-                    { "data": "Type", "name": "Type", "autoWidth": true },
 
-                   //{
-                   //    render: function (data, type, row) {
-                   //        return '<a href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
-                   //    }
-
-                        {
-                            render: function (data, type, row) {
-
-
-                                switch (row.Type) {
-                                    case "Goods":
-                                        return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>'
-                                        break
-
-                                    case "Services":
-                                        return '<button  class="btn btn-info btn-sm" onclick="EditService(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>'
-                                        break
-                                   
-                                }
-
-                            }
-
-                        }
+                   {
+                       render: function (data, type, row) {
+                           return '<a href="" class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"></i></a>'
+                       }
+                   }
 
             ]
         });
@@ -143,22 +114,5 @@
 
     }
 
-
-
-    function EditService(PurchaseId) {
-        $.ajax({
-            url: '/Purchase/AddOrEditPurchase',
-            type: 'GET',
-            data: {
-                purchaseId: PurchaseId
-            },
-            success: function (data) {
-
-                window.location.href = "/MvcInvoiceServices/AddOrEdit/" + PurchaseId;
-            }
-        });
-
-
-    }
 
 </script>
