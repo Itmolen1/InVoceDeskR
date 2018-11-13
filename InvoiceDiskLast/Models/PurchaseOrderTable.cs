@@ -39,6 +39,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> Vat6 { get; set; }
         public Nullable<double> Vat21 { get; set; }
         public Nullable<int> VenderId { get; set; }
+        public string Type { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

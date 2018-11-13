@@ -57,7 +57,7 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-      
+
         [Route("api/OrderListByStatus/{Status:alpha}")]
         public IHttpActionResult GetPurchaseOrderListByStatus(string Status)
         {
@@ -71,7 +71,7 @@ namespace InvoiceDiskLast.Controllers
                 if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
                 {
                     IDS = headerValues.FirstOrDefault();
-                    id=Convert.ToInt32(IDS);
+                    id = Convert.ToInt32(IDS);
                 }
 
                 ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MvcPurchaseModel
@@ -102,12 +102,12 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
 
-           
+
         }
 
 
         //get list
-   
+
         public IHttpActionResult GetPurchaseOrder()
         {
             object ob = new object();
@@ -124,26 +124,26 @@ namespace InvoiceDiskLast.Controllers
                     IDS = headerValues.FirstOrDefault();
                 }
                 int id = Convert.ToInt32(IDS);
-             
-                    ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id).ToList().Select(p => new MvcPurchaseModel
-                    {
-                        PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
-                        PurchaseID = p.PurchaseID,
-                        PurchaseDate = (DateTime)p.PurchaseDate,
-                        PurchaseDueDate = p.PurchaseDueDate,
-                        PurchaseRefNumber = p.PurchaseRefNumber,
-                        PurchaseSubTotal = p.PurchaseSubTotal,
-                        PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
-                        PurchaseDiscountAmount = p.PurchaseOrderID,
-                        PurchaseVatPercentage = p.PurchaseVatPercentage,
-                        PurchaseTotoalAmount = p.PurchaseTotoalAmount,
-                        PurchaseVenderNote = p.PurchaseVenderNote,
-                        Status = p.Status,
-                        CompanyId = p.CompanyId,
-                        UserId = p.UserId,
-                        AddedDate = p.AddedDate,
-                    }).ToList();
-                
+
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status != "accepted" && p.Type==StatusEnum.InvoiceGood.ToString()).ToList().Select(p => new MvcPurchaseModel
+                {
+                    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
+                    PurchaseID = p.PurchaseID,
+                    PurchaseDate = (DateTime)p.PurchaseDate,
+                    PurchaseDueDate = p.PurchaseDueDate,
+                    PurchaseRefNumber = p.PurchaseRefNumber,
+                    PurchaseSubTotal = p.PurchaseSubTotal,
+                    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
+                    PurchaseDiscountAmount = p.PurchaseOrderID,
+                    PurchaseVatPercentage = p.PurchaseVatPercentage,
+                    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
+                    PurchaseVenderNote = p.PurchaseVenderNote,
+                    Status = p.Status,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+                    AddedDate = p.AddedDate,
+                }).ToList();
+
             }
             catch (Exception ex)
             {
@@ -251,6 +251,68 @@ namespace InvoiceDiskLast.Controllers
 
             return Ok(PurchaseTable);
         }
+
+
+
+
+
+
+
+        [Route("api/OrderListByStatusInvoice/{Status:alpha}")]
+        public IHttpActionResult GetPurchaseOrderListBy(string Status)
+        {
+            object ob = new object();
+
+            try
+            {
+                var IDS = "";
+                int id = 0;
+                IEnumerable<string> headerValues;
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                    id = Convert.ToInt32(IDS);
+                }
+
+
+                //select* from ProductTable as p inner join PurchaseOrderDetailsTable as pdetain on p.ProductId=pdetain.PurchaseItemId
+                // inner join PurchaseOrderTable as po on  pdetain.PurchaseId=po.PurchaseOrderID where p.Type='Sirvice' and po.Status='Open'
+
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower() && p.Type == StatusEnum.InvoiceServices.ToString()).ToList().Select(p => new MvcPurchaseModel
+                {
+                    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
+                    PurchaseID = p.PurchaseID,
+                    PurchaseDate = (DateTime)p.PurchaseDate,
+                    PurchaseDueDate = p.PurchaseDueDate,
+                    PurchaseRefNumber = p.PurchaseRefNumber,
+                    PurchaseSubTotal = p.PurchaseSubTotal,
+                    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
+                    PurchaseDiscountAmount = p.PurchaseOrderID,
+                    PurchaseVatPercentage = p.PurchaseVatPercentage,
+                    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
+                    PurchaseVenderNote = p.PurchaseVenderNote,
+                    Status = p.Status,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+                    AddedDate = p.AddedDate,
+                }).ToList();
+
+                return Ok(ob);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
+
+
+
+
 
     }
 }

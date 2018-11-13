@@ -209,6 +209,7 @@
           <Property Name="PurchaseTotoalAmount" Type="float" />
           <Property Name="PurchaseVenderNote" Type="nvarchar" MaxLength="300" />
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="UserId" Type="int" />
           <Property Name="AddedDate" Type="date" />
@@ -791,6 +792,7 @@
           <Property Name="Vat21" Type="Double" />
           <Property Name="VenderId" Type="Int32" />
           <NavigationProperty Name="OrderStatusTables" Relationship="APIcompanyModel.FK_OrderStatusTable_PurchaseOrderTable" FromRole="PurchaseOrderTable" ToRole="OrderStatusTable" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_PurchaseOrderTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1237,6 +1239,7 @@
           <EntitySetMapping Name="PurchaseOrderTables">
             <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderTable">
               <MappingFragment StoreEntitySet="PurchaseOrderTable">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="VenderId" ColumnName="VenderId" />
                 <ScalarProperty Name="Vat21" ColumnName="Vat21" />
                 <ScalarProperty Name="Vat6" ColumnName="Vat6" />
