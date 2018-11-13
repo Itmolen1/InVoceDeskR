@@ -1232,7 +1232,7 @@ namespace InvoiceDiskLast.Controllers
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("OrderListByStatus/" + status).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("OrderListByStatusInvoice/" + status).Result;
                 PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
