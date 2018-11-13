@@ -37,7 +37,7 @@ namespace InvoiceDiskLast.Controllers
 
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/All").Result;
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -103,14 +103,14 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
-
+        //ujhy6t7y67y
 
         [HttpGet]
-        public ActionResult GetProduct()
+        public ActionResult GetProduct(string ProductStatus)
         {
-            string Status = "Sirvice";
+            
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + Status).Result;
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + ProductStatus.ToString()).Result;
             List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {

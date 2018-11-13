@@ -27,24 +27,45 @@ namespace InvoiceDiskLast.Controllers
             List<ProductTable> i = new List<ProductTable>();
 
             // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
-
-
-            var ob = db.ProductTables.Where(x => x.Company_ID == CompanyId && x.Type.ToLower() == status.ToLower()).Select(c => new MVCProductModel
+            if (status == "All")
             {
 
-                ProductId = c.ProductId,
-                ProductName = c.ProductName,
-                Description = c.Description,
-                SalePrice = c.SalePrice,
-                PurchasePrice = c.PurchasePrice,
-                Type = c.Type,
-                OpeningQuantity = c.OpeningQuantity,
-                AddedBy = c.AddedBy,
-                Company_ID = c.Company_ID,
-                AddedDate = c.AddedDate,
-            }).ToList();
+                var ob = db.ProductTables.Where(x => x.Company_ID == CompanyId).Select(c => new MVCProductModel
+                {
 
-            return Ok(ob);
+                    ProductId = c.ProductId,
+                    ProductName = c.ProductName,
+                    Description = c.Description,
+                    SalePrice = c.SalePrice,
+                    PurchasePrice = c.PurchasePrice,
+                    Type = c.Type,
+                    OpeningQuantity = c.OpeningQuantity,
+                    AddedBy = c.AddedBy,
+                    Company_ID = c.Company_ID,
+                    AddedDate = c.AddedDate,
+                }).ToList();
+
+                return Ok(ob);
+            }
+            else
+            {
+                var ob = db.ProductTables.Where(x => x.Company_ID == CompanyId && x.Type.ToLower() == status.ToLower()).Select(c => new MVCProductModel
+                {
+
+                    ProductId = c.ProductId,
+                    ProductName = c.ProductName,
+                    Description = c.Description,
+                    SalePrice = c.SalePrice,
+                    PurchasePrice = c.PurchasePrice,
+                    Type = c.Type,
+                    OpeningQuantity = c.OpeningQuantity,
+                    AddedBy = c.AddedBy,
+                    Company_ID = c.Company_ID,
+                    AddedDate = c.AddedDate,
+                }).ToList();
+
+                return Ok(ob);
+            }
         }
 
 
