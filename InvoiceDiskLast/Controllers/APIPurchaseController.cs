@@ -254,10 +254,6 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-
-
-
-
         [Route("api/OrderListByStatusInvoice/{Status:alpha}")]
         public IHttpActionResult GetPurchaseOrderListBy(string Status)
         {
@@ -284,7 +280,7 @@ namespace InvoiceDiskLast.Controllers
                       where p.Type == "Sirvice" && po.Status == Status && po.CompanyId == id
                       select new MvcPurchaseModel
                       {
-                          PurchaseOrderID =po.PurchaseOrderID,
+                          PurchaseOrderID = po.PurchaseOrderID,
                           PurchaseID = po.PurchaseID,
                           PurchaseDate = po.PurchaseDate,
                           PurchaseDueDate = po.PurchaseDueDate,
