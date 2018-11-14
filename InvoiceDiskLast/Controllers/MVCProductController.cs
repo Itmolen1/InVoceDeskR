@@ -174,9 +174,35 @@ namespace InvoiceDiskLast.Controllers
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
 
-                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                   
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        return Json("Created", JsonRequestBehavior.AllowGet);
+                        
+                        ProductTable PModel = response.Content.ReadAsAsync<ProductTable>().Result;
+
+                        string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                        AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+
+                        accountTransictiontable.TransictionDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
+                        accountTransictiontable.FK_AccountID = 4002;
+                        accountTransictiontable.Cr = ProductModel.OpeningQuantity * PModel.PurchasePrice;
+                        accountTransictiontable.Dr = 0.00;
+                        accountTransictiontable.TransictionNumber = base64Guid;
+                        accountTransictiontable.TransictionRefrenceId = PModel.ProductId.ToString();
+                        accountTransictiontable.TransictionType = "Purchase";
+                        accountTransictiontable.CreationTime = System.TimeSpan.MinValue;
+                        accountTransictiontable.AddedBy = 1;
+                        accountTransictiontable.FK_CompanyId = CompanyId;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        accountTransictiontable.Description = "Purchase has been created for the product" + PModel.ProductName.ToString() + "first time"; 
+                        
+
+                        HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/PostTransiction", accountTransictiontable).Result;
+
+                        if(responses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            return Json("Created", JsonRequestBehavior.AllowGet);
+                        }                       
                     }
                 }
                 else
