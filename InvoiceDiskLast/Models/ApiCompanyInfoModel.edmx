@@ -167,6 +167,8 @@
           <Property Name="Company_ID" Type="int" />
           <Property Name="AddedDate" Type="date" />
           <Property Name="ProductUnit" Type="int" />
+          <Property Name="ProductStatus" Type="bit" />
+          <Property Name="OpeningStockValue" Type="int" />
         </EntityType>
         <EntityType Name="ProductUnitTable">
           <Key>
@@ -718,6 +720,8 @@
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ProductTable" ToRole="ComapnyInfo" />
           <Property Name="ProductUnit" Type="Int32" />
+          <Property Name="ProductStatus" Type="Boolean" />
+          <Property Name="OpeningStockValue" Type="Int32" />
         </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -1211,6 +1215,8 @@
           <EntitySetMapping Name="ProductTables">
             <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
               <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="OpeningStockValue" ColumnName="OpeningStockValue" />
+                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
                 <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
