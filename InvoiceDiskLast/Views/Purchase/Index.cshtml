@@ -107,13 +107,13 @@
 
                                 switch (row.Type) {
                                     case "Goods":
-                                        return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>'
+                                        return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewInvoiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>'
                                         break
 
                                     case "Services":
-                                        return '<button  class="btn btn-info btn-sm" onclick="EditService(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>'
+                                        return '<button  class="btn btn-info btn-sm" onclick="EditService(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>'
                                         break
-                                   
+
                                 }
 
                             }
@@ -140,8 +140,39 @@
             }
         });
 
+    }
+
+    function ViewServiceDetail(PurchaseId) {
+        $.ajax({
+            url: '/Purchase/AddOrEditPurchase',
+            type: 'GET',
+            data: {
+                purchaseId: PurchaseId
+            },
+            success: function (data) {
+
+                window.location.href = "/MvcInvoiceServices/Viewinvoice?purchaseOrderId=" + PurchaseId;
+            }
+        });
+    }
+
+
+    function ViewInvoiceDetail(PurchaseId) {
+    
+        $.ajax({
+            url: '/Purchase/AddOrEditPurchase',
+            type: 'GET',
+            data: {
+                purchaseId: PurchaseId
+            },
+            success: function (data) {
+
+                window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + PurchaseId;
+            }
+        });
 
     }
+
 
 
 

@@ -141,7 +141,7 @@ namespace InvoiceDiskLast.Controllers
 
                         ViewBag.VatDrop = model;
 
-                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/"+CompanyID + "/Good").Result;
+                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Good").Result;
                         List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                         ViewBag.Product = productModel;
 
@@ -215,8 +215,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.CustomerNote = MVCQutationViewModel.CustomerNote;
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
-
-
+                    mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                    mvcQutationModel.Status = "open";
                     if (mvcQutationModel.TotalVat6 != null)
                     {
                         double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
@@ -516,7 +516,7 @@ namespace InvoiceDiskLast.Controllers
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
 
 
-                     PageHeight = 40,
+                    PageHeight = 40,
                     CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
@@ -676,7 +676,7 @@ namespace InvoiceDiskLast.Controllers
                 //    PageHeight = 40,
                 //    SaveOnServerPath = path, // Save your place
                 //    PageWidth = 200,
-                   
+
                 //};
                 // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);
@@ -846,7 +846,8 @@ namespace InvoiceDiskLast.Controllers
                 mvcQutationModel.CustomerNote = mvcQutationViewModel.CustomerNote;
                 mvcQutationModel.TotalVat21 = mvcQutationViewModel.TotalVat21;
                 mvcQutationModel.TotalVat6 = mvcQutationViewModel.TotalVat6;
-
+                mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                mvcQutationModel.Status = "open";
 
 
                 if (mvcQutationModel.TotalVat6 != null)
@@ -945,7 +946,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-
+                    mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                    mvcQutationModel.Status = "open";
 
                     if (mvcQutationModel.TotalVat6 != null)
                     {
@@ -963,7 +965,6 @@ namespace InvoiceDiskLast.Controllers
 
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.Status = "Open";
 
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -1042,14 +1043,13 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-
+                    mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                    mvcQutationModel.Status = "open";
                     if (mvcQutationModel.TotalVat6 != null)
                     {
                         double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
                         mvcQutationModel.TotalVat6 = vat61;
                     }
-
-
 
                     if (mvcQutationModel.TotalVat21 != null)
                     {
@@ -1057,7 +1057,7 @@ namespace InvoiceDiskLast.Controllers
                         mvcQutationModel.TotalVat21 = vat21;
                     }
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.Status = "Open";
+
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
 
                     IEnumerable<string> headerValues;
@@ -1198,7 +1198,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-
+                    mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                    mvcQutationModel.Status = "open";
                     if (mvcQutationModel.TotalVat6 != null)
                     {
                         double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
@@ -1214,7 +1215,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.Status = "Open";
+
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -1300,7 +1301,8 @@ namespace InvoiceDiskLast.Controllers
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                     mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
                     mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-
+                    mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                    mvcQutationModel.Status = "open";
                     if (mvcQutationModel.TotalVat6 != null)
                     {
                         double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
@@ -1360,7 +1362,6 @@ namespace InvoiceDiskLast.Controllers
                         var path = Path.Combine(root, pdfname);
                         path = Path.GetFullPath(path);
                         DownloadFile(path);
-
 
                         return new JsonResult { Data = new { Status = "Success", path = pdfname, QutationId = Qid } };
 

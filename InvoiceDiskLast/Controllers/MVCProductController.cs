@@ -108,6 +108,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult GetProduct(string ProductStatus)
         {
+
             
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + ProductStatus.ToString()).Result;

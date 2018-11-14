@@ -137,7 +137,7 @@ namespace InvoiceDiskLast.Controllers
 
             if (status == "" || status == null)
             {
-                status = "Open";
+                status = "open";
             }
 
             IEnumerable<MVCQutationModel> QutationOrderList;

@@ -492,7 +492,7 @@
     <script src="~/assets/node_modules/datatables/jquery.dataTables.min.js"></script>
     <script src="~/assets/node_modules/datatables/dataTables.bootstrap.js"></script>
 
-   
+
     <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
     <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
     <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
@@ -1332,7 +1332,7 @@
                 async: false,
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
-                data: {ProductStatus: "Good"},
+                data: { ProductStatus: "Good" },
                 success: function (data) {
 
                     $.each(data, function (key, item) {
@@ -1362,7 +1362,7 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            data: {ProductStatus: "Good"},
+            data: { ProductStatus: "Good" },
             success: function (data) {
 
                 $.each(data, function (key, item) {
@@ -1754,7 +1754,7 @@
 
 
 
- 
+
 
     $(document).ready(function () {
 
@@ -1821,7 +1821,7 @@
 
 
         $('#SaveNewProductModel').click(function () {
-           
+
             $.ajax({
                 url: '/MVCProduct/AddOrEdit',
                 type: 'POST',
@@ -2200,9 +2200,10 @@
 
 
         $('#VenderClientNext').click(function () {
-
+            var serviceOrgoo = "";
             var value = $('#venderSelect').val();
-
+            serviceOrgoo = $('#SelectTypeQutation1 option:selected').text();
+            debugger;
             if (value > 0) {
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
@@ -2211,7 +2212,18 @@
                         id: value
                     },
                     success: function (data) {
-                        window.location.href = "/Purchase/AddOrEdit"
+                        alert('uy');
+                        if (serviceOrgoo == "Good") {
+                            serviceOrgoo = "";
+                            alert('selected goods');
+                            window.location.href = "/Purchase/AddOrEdit"
+                        }
+                        else if (serviceOrgoo == "Services") {
+                            serviceOrgoo = "";
+                            alert('selected Services');
+                            window.location.href = "/MvcInvoiceServices/AddOrEdit/0"
+                        }
+
                     },
                     error: function () {
                         alert("error");
@@ -2333,7 +2345,7 @@
 
 
     function GetProductPriceById(ProductId) {
-      
+
 
     }
 

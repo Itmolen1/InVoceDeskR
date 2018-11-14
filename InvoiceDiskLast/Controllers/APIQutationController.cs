@@ -51,8 +51,8 @@ namespace InvoiceDiskLast.Controllers
                 CustomerNote = c.CustomerNote,
                 Status = c.Status,
                 UserId = c.UserId,
-                ContactId = c.ContactId
-
+                ContactId = c.ContactId,
+                Type=c.Type
             }).ToList();
 
             return Ok(Qutationob);
@@ -228,6 +228,8 @@ namespace InvoiceDiskLast.Controllers
                     Status = p.Status,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
+                    Type=p.Type,
+                
 
                 }).ToList();
 

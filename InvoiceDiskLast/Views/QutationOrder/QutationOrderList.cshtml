@@ -8,16 +8,16 @@
 
 <div class="row">
     @*<div class="col-md-2">
-        <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+            <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
 
-    </div>*@
+        </div>*@
     <div class="col-md-6">
         <select id="drpstatus" class="form-control">
 
-            <option value="1">Open</option>
-            <option value="1">Accepted</option>
-            <option value="1">Pending</option>
-            <option value="1">Rejected</option>
+            <option value="1">open</option>
+            <option value="1">accepted</option>
+            <option value="1">pending</option>
+            <option value="1">rejected</option>
 
         </select>
     </div>
@@ -43,7 +43,7 @@
                 <th>
                     Qutation Subtotal
                 </th>
-
+                <th>Type</th>
                 <th>
                     Status
                 </th>
@@ -77,7 +77,7 @@
                         <div id="logo">
                             @*<img src="~/images/logon1.png183807568.png" />*@
                         </div>
-                      
+
                     </div>
                     <div class="col-sm-8">
                         <div style="margin-left: 234px"><h5 id="CompanyNameq"></h5></div>
@@ -268,12 +268,12 @@
 
                     <div class="col-sm-12">
                         <div class="form-group ">
-                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txtfromdateq",@required="required" } })
+                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txtfromdateq", @required = "required" } })
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group ">
-                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", id = "txttodateq" , @required ="required"} })
+                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control", id = "txttodateq", @required = "required" } })
                         </div>
                     </div>
                     <div class="col-sm-12">
@@ -555,28 +555,28 @@
                   { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
 
                 { "data": "SubTotal", "name": "SubTotal", "autoWidth": true },
-
+                { "data": "Type", "name": "Type", "autoWidth": true },
                { "data": "Status", "name": "Status", "autoWidth": true },
                 {
                     render: function (data, type, row) {
 
 
                         switch (row.Status) {
-                            case "Open":
+                            case "open":
                                 return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
                                 break
 
-                            case "Rejected":
+                            case "rejected":
                                 return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-clock-o"> Re open</i></a>'
                                 break
 
 
-                            case "Pending":
+                            case "pending":
                                 return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
                                 break
 
 
-                            case "Accepted":
+                            case "accepted":
                                 return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.QutationID + ')"><i class="fa fa-eye"> View Invoice</i></a>'
                                 break
                         }
@@ -598,7 +598,7 @@
 
 
     function Reopen(id) {
-        updateStatus(id, "Open", "Open", "the qutation is Open successfully");
+        updateStatus(id, "open", "open", "the qutation is Open successfully");
     }
 
     function Rejected(id) {
@@ -666,7 +666,7 @@
             FromDate: $("#txtfromdateq").val(),
             ToDate: $('#txttodateq').val(),
             Description: $('#txtdescriptionq').val(),
-            Status: "Pending"
+            Status: "pending"
         };
         $.ajax({
             url: "/QutationOrder/AddPending",
@@ -825,6 +825,6 @@
         });
     }
 
-  
+
 
 </script>

@@ -107,7 +107,7 @@ namespace InvoiceDiskLast.Controllers
 
         [HttpGet]
         public ActionResult AddOrEdit(int id)
-         {
+        {
 
 
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
@@ -119,11 +119,11 @@ namespace InvoiceDiskLast.Controllers
                 var idd = Session["ClientId"];
                 var cdd = Session["CompayID"];
 
-                //if (Session["ClientId"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019;//Convert.ToInt32(Session["ClientId"]);
-                CompanyID = Convert.ToInt32(Session["CompayID"]);
-                //}
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", cdd.ToString());
@@ -142,7 +142,7 @@ namespace InvoiceDiskLast.Controllers
                 purchaseviewModel.PurchaseDate = InvoiceDate;
                 purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
 
-                if (id == 0 || id==null)
+                if (id == 0 || id == null)
                 {
                     MvcPurchaseModel q = new MvcPurchaseModel();
                     HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
@@ -220,15 +220,15 @@ namespace InvoiceDiskLast.Controllers
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
-                //if (Session["ClientId"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019;//Convert.ToInt32(Session["ClientId"]);
-                CompanyID = Convert.ToInt32(Session["CompayID"]);
-                //}
-                //else
-                //{
-                //    return RedirectToAction("Index", "Login");
-                //}
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
 
 
                 purchasemodel.CompanyId = CompanyID;
@@ -246,8 +246,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
-                purchasemodel.Type = "Services";
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Services.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -338,19 +338,19 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-        
+
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
-                //if (Session["ClientId"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019; //Convert.ToInt32(Session["ClientId"]);
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
-                //}
-                //else
-                //{
-                //    return RedirectToAction("Index", "Login");
-                //}
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
 
 
                 purchasemodel.CompanyId = CompanyID;
@@ -368,8 +368,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
-
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Services.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
@@ -459,19 +459,19 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-            int companyId = 0;
+           
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
-                //if (Session["ClientId"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019;//Convert.ToInt32(Session["ClientId"]);
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
-                //}
-                //else
-                //{
-                //    return RedirectToAction("Index", "Login");
-                //}
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
 
 
                 purchasemodel.CompanyId = CompanyID;
@@ -489,8 +489,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
-
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Services.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -583,11 +583,11 @@ namespace InvoiceDiskLast.Controllers
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
-                //if (Session["ClientId"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019; //Convert.ToInt32(Session["ClientId"]);
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
-               // }
+                }
                 purchasemodel.CompanyId = CompanyID;
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
@@ -603,8 +603,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
-
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Services.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -732,11 +732,11 @@ namespace InvoiceDiskLast.Controllers
                 var cdd = Session["CompayID"];
 
 
-                //if (Session["ClientID"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019;//Convert.ToInt32(Session["ClientID"]);
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
-               // }
+                }
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -864,7 +864,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-     
+
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
 
@@ -960,11 +960,11 @@ namespace InvoiceDiskLast.Controllers
                 var cdd = Session["CompayID"];
 
 
-                //if (Session["ClientID"] != null && Session["CompayID"] != null)
-                //{
-                Contectid = 4019;//Convert.ToInt32(Session["ClientID"]);
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
-               // }
+                }
 
 
 
@@ -1098,11 +1098,11 @@ namespace InvoiceDiskLast.Controllers
 
             var idd = Session["ClientID"];
             var cdd = Session["CompayID"];
-            //if (Session["ClientID"] != null && Session["CompayID"] != null)
-            //{
-            Contectid = 4019; //Convert.ToInt32(Session["ClientID"]);
+            if (Session["ClientID"] != null && Session["CompayID"] != null)
+            {
+                Contectid = Convert.ToInt32(Session["ClientID"]);
                 CompanyID = Convert.ToInt32(Session["CompayID"]);
-            //}
+            }
 
 
 
@@ -1295,7 +1295,7 @@ namespace InvoiceDiskLast.Controllers
 
             if (status == "" || status == null)
             {
-                status = "Open";
+                status = "open";
             }
 
             IEnumerable<MvcPurchaseModel> PurchaseList;
