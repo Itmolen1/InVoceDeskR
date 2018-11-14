@@ -71,7 +71,7 @@ namespace InvoiceDiskLast.Controllers
 
                         ViewBag.VatDrop = model;
 
-                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Service").Result;
+                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Services").Result;
                         List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                         ViewBag.Product = productModel;
 
@@ -88,7 +88,7 @@ namespace InvoiceDiskLast.Controllers
                         quutionviewModel.TotalAmount = ob.TotalAmount;
                         quutionviewModel.TotalVat21 = (ob.TotalVat21 != null ? (float)(ob.TotalVat21) : (float)0.00);
                         quutionviewModel.TotalVat6 = (ob.TotalVat6 != null ? (float)(ob.TotalVat6) : (float)0.00);
-                        quutionviewModel.ConatctId = (int)ob.ContactId;
+                        quutionviewModel.ConatctId = (Contectid != null ? Contectid : 0);
                         HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + id.ToString()).Result;
                         List<MVCQutationDetailsModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationDetailsModel>>().Result;
                         ViewBag.Contentdata = contectmodel;
@@ -178,6 +178,8 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Vat = Convert.ToDouble(item.Vat);
                             if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
                             {
+                                QtDetails.QutationID = intQutationorderId;
+
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
                             else
@@ -225,6 +227,8 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
+                throw ex;
+
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
             return new JsonResult { Data = new { Status = "Success", Qutation = intQutationorderId } };
@@ -374,7 +378,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MVCQutation/Viewpp.cshtml")
+                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/QutationService/Viewpp.cshtml")
                 {
 
                     PageSize = Rotativa.Options.Size.A4,
@@ -564,7 +568,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        public ActionResult Print(int? purchaseOrderId)
+        public ActionResult Print(int? QutationID)
         {
             try
             {
@@ -584,32 +588,33 @@ namespace InvoiceDiskLast.Controllers
 
 
 
+              
+
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
-                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationID.ToString()).Result;
+                MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 
-                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
-                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
-
-
-                DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
-                DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
-                TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
+                DateTime qutationDueDate = Convert.ToDateTime(QutationModel.DueDate); //mm/dd/yyyy
+                DateTime qutationDate = Convert.ToDateTime(QutationModel.QutationDate);//mm/dd/yyyy
+                TimeSpan ts = qutationDueDate.Subtract(qutationDate);
                 string diffDate = ts.Days.ToString();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationID.ToString()).Result;
+                List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
-                ViewBag.Purchase = ob;
-                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+                ViewBag.QutationDat = QutationModel;
+                ViewBag.QutationDatailsList = QutationModelDetailsList;
 
-                string PdfName = purchaseOrderId + "-" + companyModel.CompanyName + ".pdf";
+                string PdfName = QutationID + "-" + companyModel.CompanyName + ".pdf";
 
                 //  string CustomSwitches = string.Format("--header-html \"{0} \" " +
 
@@ -619,7 +624,7 @@ namespace InvoiceDiskLast.Controllers
                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
 
-                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
+                return new Rotativa.PartialViewAsPdf("~/Views/QutationService/Viewpp.cshtml")
                 {
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
@@ -772,7 +777,7 @@ namespace InvoiceDiskLast.Controllers
                     bool result = EmailController.email(emailModel);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
-                return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
+                return RedirectToAction("ViewServiceQutation", new { quautionId = email.invoiceId });
             }
             catch (Exception ex)
             {
