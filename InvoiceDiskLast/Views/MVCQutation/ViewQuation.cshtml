@@ -64,14 +64,14 @@
                                 @Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
                             </div>
                         </div>
+                        <div style="margin-left:3px">
+                            <a href="/MVCQutation/AddOrEdit/@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+                        </div>
 
-
-
-                        <a href="/MVCQutation/AddOrEdit/@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
-
-
-
-                    </div>
+                            <div style="margin-left:3px">
+                                <a href="/MVCQutation/Index/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                            </div>
+                        </div>
                 </div>
             </div>
             <div style="margin-top:10px;border: 1px solid #CECECE;">
@@ -107,9 +107,9 @@
                         <br />
                         <br />
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-8 col-lg-4"></div>
-                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 text-center">@CompanyDatas.CompanyName</div>
-                            <div class="col-xs-0 col-sm-0 col-md-0 col-lg-4"></div>
+                            <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
+                            <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue"><b>@CompanyDatas.CompanyName</b></div>
+                            <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
                         </div>
                        
                         <hr />
@@ -124,46 +124,46 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2"></div>
-                            <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                            <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
                             <div class="col-sm-8">@CompanyDatas.BankName</div>
                         </div>
                         <div class="row">
 
-                            <div class="col-sm-4 pull-right"><div class="pull-right">IBAN:</div></div>
+                            <div class="col-sm-4 pull-right"><div class="text-right">IBAN:</div></div>
                             <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
                         </div>
                         <div class="row">
 
-                            <div class="col-sm-4 pull-right"><div class="pull-right">BIC:</div></div>
+                            <div class="col-sm-4 pull-right"><div class="text-right">BIC:</div></div>
                             <div class="col-sm-8">@CompanyDatas.BIC</div>
                         </div>
                         <div class="row">
 
-                            <div class="col-sm-4"><div class="pull-right">Tel:</div></div>
+                            <div class="col-sm-4"><div class="text-right">Tel:</div></div>
                             <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-2"></div>
-                            <div class="col-sm-2"><div class="pull-right">Cel:</div></div>
+                            <div class="col-sm-2"><div class="text-right">Cel:</div></div>
                             <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
                         </div>
 
                         <div class="row">
 
-                            <div class="col-sm-4 pull-right"><div class="pull-right">E-mail:</div></div>
+                            <div class="col-sm-4 pull-right"><div class="text-right">E-mail:</div></div>
                             <div class="col-sm-8">@CompanyDatas.CompanyEmail</div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-3 pull-right"><div class="pull-right">Website:</div></div>
+                            <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
                             <div class="col-sm-8">@CompanyDatas.Website</div>
                         </div>
 
                         <div class="row">
 
-                            <div class="col-sm-4 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                            <div class="col-sm-4 pull-right"><div class="text-right">Bezoekadres:</div></div>
                             <div class="col-sm-8">
                                 @CompanyDatas.CompanyAddress<br />
                                 @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
@@ -263,29 +263,31 @@
                         </tbody>
 
                     </table>
-                    <div class="col-md-8"></div>
+                    <div class="col-lg-8 col-md-6 col-sm-2 col-xs-0"></div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4 col-md-8 col-sm-10">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label class="tex pull-right">Total excl. VAT:	€	</label>
+                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <label class="tex-right">Total excl. VAT:	€	</label>
                             </div>
-                            <div class="col-sm-5">
-                                <label class="tex pull-right">@QutationModel.SubTotal</label>
+                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                <label class="text-right">@QutationModel.SubTotal</label>
                             </div>
-                        </div>
+                            <div class="col-lg-0 col-md-0 col-sm-0">
+                            </div>
+                         </div>
 
                         <div class="row">
 
                             @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
                             {
-
-
-                                <div class="col-sm-6">
-                                    <label class="tex pull-right">VAT 6%:	€	</label>
+                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                    <label class="text-right">VAT 6%:	€	</label>
                                 </div>
-                                <div class="col-sm-5 ">
-                                    <label class="tex pull-right">@QutationModel.TotalVat6</label>
+                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                    <label class="text-right">@QutationModel.TotalVat6</label>
+                                </div>
+                                <div class="col-lg-0 col-md-0 col-sm-0">
                                 </div>
                             }
                         </div>
@@ -294,39 +296,51 @@
 
                             @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
                             {
-                                <div class="col-lg-6">
+                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
                                     <label class="tex pull-right">VAT 21%:	€</label>
                                 </div>
-                                <div class="col-lg-5">
+                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
                                     <label class="tex pull-right">@QutationModel.TotalVat21</label>
+                                </div>
+                                <div class="col-lg-0 col-md-0 col-sm-0">
                                 </div>
 
                             }
-
-
                         </div>
                         <hr />
                         <div class="row">
-                            <div class="col-sm-6">
-                                <label class="tex pull-right">Eindtotaal:€</label>
+                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <label class="text-right">Eindtotaal:€</label>
                             </div>
 
-                            <div class="col-sm-5">
-                                <label class="tex  pull-right">€:@QutationModel.TotalAmount</label>
+                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                <label class="text-right">€:@QutationModel.TotalAmount</label>
 
+                            </div>
+                            <div class="col-lg-0 col-md-0 col-sm-0">
                             </div>
                         </div>
                   
 
                 </div>
+                    <div class="col-lg-7"> We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.</div>
+                    <div class="col-lg-5"></div>
 
-                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+                    <div class="col-lg-7"> Met vriendelijke groet</div>
+                    <div class="col-lg-5"></div>
+
+                    <div class="col-lg-7" style="margin-top:10px"><b>@Contectdatas.ContactName</b></div>
+                    <div class="col-lg-5"></div>
+                    <div class="col-lg-7"><b>@CompanyDatas.CompanyName</b></div>
+                    <div class="col-lg-5"></div>
+                  
+                @*<div class="row" style="margin-right: 0px; margin-top: 20px;">
                     We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
                 </div>
 
 
                 <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
-                    Met vriendelijke groet,
+                    <br /> Met vriendelijke groet,
                 </div>
                 <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
                     <label><b>@Contectdatas.ContactName</b></label>
@@ -336,13 +350,14 @@
 
                 <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
                     <label><b>@CompanyDatas.CompanyName</b> </label>
-                </div>
+                </div>*@
                 <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
 
             </div>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-1"></div>
     </div>
+        </div>
 </body>
 <script>
 
