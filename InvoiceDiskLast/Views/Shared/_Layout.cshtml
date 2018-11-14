@@ -195,7 +195,9 @@
                                                     <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Message"></textarea>
                                                 </div>
                                                 <button type="submit" class="btn btn-info">Submit</button>
+                                                
                                             </form>
+                                           
                                         </li>
                                         <li class="col-lg-3 col-xlg-4 m-b-30">
                                             <h4 class="m-b-20">List style</h4>
@@ -351,7 +353,7 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor">Home Page</h4>
+                        <h4 class="text-themecolor">@ViewContext.RouteData.Values["action"]</h4>
                     </div>
                     <div class="col-md-7 align-self-center text-right">
                         <div class="d-flex justify-content-end align-items-center">
@@ -1840,7 +1842,8 @@
                     PurchasePrice: $('#PurchasePrice').val(),
                     Type: $('#Type').val(),
                     OpeningQuantity: $('#OpeningQuantity').val(),
-                    ProductUnit: $('#ProductUnitSelect').val()
+                    ProductUnit: $('#ProductUnitSelect').val(),
+                    OpeningStockValue: $('#OpeningStockValue').val()
                 },
                 success: function (data) {
                     $('#CreateNewProductModalAdd').modal('hide');

@@ -121,6 +121,31 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public ActionResult GetProductByName(string ProductName, string ProductStatus)
+        {
+            string Status = "Not Found";
+
+            int CompanyId = Convert.ToInt32(Session["CompayID"]);
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + ProductStatus.ToString()).Result;
+            List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                foreach(MVCProductModel product in ProductList)
+                {
+                    if(product.ProductName == ProductName)
+                    {
+                        Status = "Found";
+                        break;
+                    }                   
+                   
+                }
+                return Json(Status, JsonRequestBehavior.AllowGet);
+            }
+            return Json(Status, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
         {
@@ -147,17 +172,16 @@ namespace InvoiceDiskLast.Controllers
                 ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                 if (ProductModel.ProductId == null)
                 {
-
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
 
+                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return Json("Created", JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutAPIProduct/" + ProductModel.ProductId, ProductModel).Result;
-
                 }
 
                 return RedirectToAction("Index");

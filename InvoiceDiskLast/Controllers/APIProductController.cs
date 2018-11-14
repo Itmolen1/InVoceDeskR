@@ -43,6 +43,7 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
+                    OpeningStockValue = c.OpeningStockValue,
                 }).ToList();
 
                 return Ok(ob);
@@ -62,6 +63,7 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
+                    OpeningStockValue = c.OpeningStockValue,
                 }).ToList();
 
                 return Ok(ob);
@@ -90,7 +92,9 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
-                    ProductUnit = c.ProductUnit
+                    ProductUnit = c.ProductUnit,
+                    OpeningStockValue = c.OpeningStockValue,
+
                 }).FirstOrDefault();
                 if (productTable != null)
                 {
@@ -126,6 +130,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 db.SaveChanges();
+                return Ok(productTable);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -138,8 +143,7 @@ namespace InvoiceDiskLast.Controllers
                     throw;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+          
         }
 
         // POST: api/APIProduct
@@ -155,7 +159,9 @@ namespace InvoiceDiskLast.Controllers
             db.ProductTables.Add(productTable);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = productTable.ProductId }, productTable);
+
+            return Ok(productTable);
+           // return CreatedAtRoute("DefaultApi", new { id = productTable.ProductId }, productTable);
         }
 
         // DELETE: api/APIProduct/5

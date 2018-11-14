@@ -45,9 +45,7 @@
 
         </thead>
         <tbody></tbody>
-
     </table>
-
 
    
         <script>
@@ -70,8 +68,7 @@
                 }, null);
             }
         </script>
-
-   
+  
 
     <input type="hidden" id="ProductId" />
     <div class="modal fade bs-example-modal-lg" id="CreateNewProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
@@ -108,9 +105,8 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-2" style="margin-top:7px">Type</div>
-                                <div class="col-sm-10">
+                            <div class="row">                               
+                                <div class="col-sm-12">
                                     <select class="form-control p-0" id="Type">
                                         <option value="Good" selected>Good</option>
                                         <option value="Services">Services</option>
@@ -129,9 +125,15 @@
 
                     <div class="row">
                        
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <select class="form-control p-0" id="ProductUnitSelect">
-                               </select>
+                             </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="OpeningStockValue" placeholder="Opening Stock Value" />
+                            </div>
                         </div>
                     </div>
 
@@ -150,8 +152,6 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-
-
 
 
 <div id="UnitModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -183,7 +183,6 @@
 <script>
 
     $(document).ready(function () {
-
         $('#CreateNewProduct').click(function () {
             $('#UpdateProId').hide();
             $('#SAveProdID').show();
@@ -191,10 +190,6 @@
             $('#CreateNewProductModal').modal('show');
         });
 
-
-
-
-       
         $('#UpdateProduct').click(function () {
             var validdatep = validateProduct();
             if (validdatep == true) {
@@ -209,7 +204,8 @@
                         PurchasePrice: $('#PurchasePrice').val(),
                         Type: $('#Type').val(),
                         OpeningQuantity: $('#OpeningQuantity').val(),
-                        ProductUnit: $('#ProductUnitSelect').val()
+                        ProductUnit: $('#ProductUnitSelect').val(),
+                        OpeningStockValue: $('#OpeningStockValue').val()
                     },
                     success: function (data) {
                         $('#CreateNewProductModal').modal('hide');
@@ -228,11 +224,9 @@
 
             var value = $(this).val();
             if (value == "AddNewPUnitSelect") {
-
                 $('#CreateNewProductModal').modal('hide');
                 $('#UnitModel').modal('show');
             }
-
         });
 
         $('#CancelProductUnit').click(function () {
@@ -260,7 +254,6 @@
                     else
                     {
                         var dataUnit = {
-
                             ProductUnit: $('#ProductUnit').val(),
                             Status: "true"
                         }
@@ -284,20 +277,14 @@
                             Error: function (err) {
                                 alert("erro");
                             }
-
                         });
-                    }
-                  
+                    }                  
                 },
                 Error: function (err) {
                     alert("erro");
                 }
-
             });
-
-
         });
-
     });
 
 
@@ -322,7 +309,8 @@
             url: "/MVCProduct/AddOrEdit/" + ProductId,
             type: "GET",
             dataType: "json",
-            success: function (resultData) {              
+            success: function (resultData)
+            {
                 $('#ProductId').val(resultData.ProductId);
                 $('#ProductName').val(resultData.ProductName);
                 $('#Description').val(resultData.Description);
@@ -335,6 +323,7 @@
                     }
                 });
                 $('#OpeningQuantity').val(resultData.OpeningQuantity);
+                $('#OpeningStockValue').val(resultData.OpeningStockValue);
 
                 $('select#ProductUnitSelect option').each(function () {
                     if ($(this).val() == resultData.ProductUnit) {
@@ -342,7 +331,6 @@
                         return;
                     }
                 });
-
                 $('#CreateNewProductModal').modal('show');
                 $('#UpdateProId').show();
                 $('#SAveProdID').hide();
@@ -357,14 +345,16 @@
     $('#SaveNewProduct').click(function () {
         var validdatep = validateProduct();
         if (validdatep == true) {
-            $.ajax({
-                
+            $.ajax({                
                 url: "/MVCProduct/GetProductByName",
                 type: "POST",
-                data: { ProductName: $('#ProductName').val() },
+                data: {
+                    ProductName: $('#ProductName').val(),
+                    ProductStatus: "All"
+                },
                 success: function (Resultdat) {
                     if (Resultdat == "Found")
-                    {
+                    {                      
                         $.toast({
                             heading: 'Already exist',
                             text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
@@ -372,9 +362,8 @@
                             loader: true,        // Change it to false to disable loader
                             loaderBg: '#FF0000'  // To change the background
                         });
-
                     }
-                    else {
+                    else {                      
                         $.ajax({
                             url: '/MVCProduct/AddOrEdit',
                             type: 'POST',
@@ -385,21 +374,22 @@
                                 PurchasePrice: $('#PurchasePrice').val(),
                                 Type: $('#Type').val(),
                                 OpeningQuantity: $('#OpeningQuantity').val(),
-                                ProductUnit: $('#ProductUnitSelect').val()
+                                ProductUnit: $('#ProductUnitSelect').val(),
+                                OpeningStockValue: $('#OpeningStockValue').val()
                             },
                             success: function (data) {
-                                $('#productTable').DataTable().ajax.reload();
-                                CleartProdctTextBox();
-                                $('#CreateNewProductModal').modal('hide');
-                                SuccessInsertProduct();
+                                if (data == "Created") {
+                                    $('#productTable').DataTable().ajax.reload();
+                                    CleartProdctTextBox();
+                                    $('#CreateNewProductModal').modal('hide');
+                                    SuccessInsertProduct();
+                                }
                             },
                             error: function () {
                                 alert("error");
                             }
-                        });
-                       
+                        });                       
                     }
-
                 }
             });
         }
@@ -409,18 +399,16 @@
 
               
 
-            function SuccessInsertProduct() {
-                swal({
-                    title: "Congratulations!!!!",
-                    text: "Your data has been saved successfully",
-                    type: "success",
-
+    function SuccessInsertProduct() {
+        swal({
+                title: "Congratulations!!!!",
+                text: "Your data has been saved successfully",
+                 type: "success",
                 });
             }
 
             function validateProduct() {
                 var isValid = true;
-
                 if ($('#ProductName').val().trim() == "") {
                     $('#ProductName').css('border-color', 'Red');
                     isValid = false;
@@ -462,12 +450,9 @@
             }
 
             function LoadProductUnit() {
-
                 $("#ProductUnitSelect").find("option").remove();
-
                 $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
                 $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
-
                 $.ajax({
                     url: "/MVCProductUnit/GetProductUnit",
                     type: "Get",
