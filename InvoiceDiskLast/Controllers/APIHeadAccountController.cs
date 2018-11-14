@@ -17,7 +17,6 @@ namespace InvoiceDiskLast.Controllers
         [Route("api/HeadAccount/{ControlAccountId:int}/{CompanyID:int}")]
         public IHttpActionResult GetControlAccount(int ControlAccountId, int CompanyID)
         {
-
             try
             {
                 List<MVCHeadAccountModel> HeadAccountObj = db.HeadAccountTables.Where(x => x.FK_CompanyId == CompanyID && x.FK_ControlAccountID == ControlAccountId).Select(c => new MVCHeadAccountModel
