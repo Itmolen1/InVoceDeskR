@@ -28,6 +28,7 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+        [SessionExpireAttribute]
         public ActionResult NewCompany()
         {
             return View();
@@ -156,14 +157,14 @@ namespace InvoiceDiskLast.Controllers
         //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name+ "/"+id).Result;
         //     return response.Content.ToString();
         // }
-
+      
         public string Test1(string Email)
         {
 
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("EmailExist/" + Email).Result;
             return response.Content.ToString();
         }
-
+        [SessionExpireAttribute]
         public string ThankYouPage()
         {
             return "Valid";
@@ -171,7 +172,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         //for forgot pasword
-
+       
         [HttpPost]
         public ActionResult CheckEmail(UserModels UserEmail)
         {

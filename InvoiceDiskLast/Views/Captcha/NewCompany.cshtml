@@ -139,7 +139,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="SaveCompanyInformation">Opslaan</button>
-                    <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal">Dichtbij</button>
+                    <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal" id="CancelCompanyRegistration">Dichtbij</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -415,7 +415,25 @@
         $("#FileUpload1").change(function () {
             readURL(this);
         });
+
+
+        $('#CancelCompanyRegistration').click(function () {
+            $.ajax({
+                url: "/Login/Logut",
+                type: "POST",
+                dataType: "json",
+                success: function (resultData) {
+                    window.location.href = "/Captcha/Index";
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        });
     });
+
+
 
 
     var $loading = $('.preloader').hide();

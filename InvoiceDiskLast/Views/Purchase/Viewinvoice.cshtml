@@ -84,7 +84,7 @@
                 <div class="col-sm-1"></div>
                 <div class="col-sm-3">
                     <div class="mydiv">
-                        <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />
+                        <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none;  margin-top:50px" />
                     </div>
                     <br />
                     <br />
@@ -95,9 +95,6 @@
                     <br />
                     <br />
 
-
-
-                    @(Contectdatas.ContactName != null || Contectdatas.ContactName != "" ? Contectdatas.ContactName : "No Contact name")
                     @Contectdatas.ContactName
                     <br />
                     @Contectdatas.ContactAddress
@@ -109,26 +106,30 @@
 
 
                 </div>
-                <div class="col-sm-4 col-md-4"></div>
-                <div class="col-sm-4 col-md-4">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
                     <br />
                     <br />
                     <br />
-                    <h5 style="margin-left:100px;color:skyblue">@CompanyDatas.CompanyName</h5>
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
+                        <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue"><b>@CompanyDatas.CompanyName</b></div>
+                        <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
+                    </div>
+
                     <hr />
                     <div class="row">
-
-                        <div class="col-sm-4 pull-left"><div class="text-right">Kvk nr:</div></div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3 text-right">Kvk nr:</div>
                         <div class="col-sm-8">@CompanyDatas.KVK</div>
                     </div>
                     <div class="row">
-
-                        <div class="col-sm-4"><div class="text-right"> BTW nr:</div></div>
+                        <div class="col-sm-4"><div class="pull-right"> BTW nr:</div></div>
                         <div class="col-sm-8">@CompanyDatas.BTW</div>
                     </div>
                     <div class="row">
-
-                        <div class="col-sm-4 pull-right"><div class="text-right">Bank:</div></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
                         <div class="col-sm-8">@CompanyDatas.BankName</div>
                     </div>
                     <div class="row">
@@ -148,8 +149,8 @@
                     </div>
 
                     <div class="row">
-
-                        <div class="col-sm-4"><div class="text-right">Cel:</div></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"><div class="text-right">Cel:</div></div>
                         <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
                     </div>
 
@@ -160,8 +161,8 @@
                     </div>
 
                     <div class="row">
-
-                        <div class="col-sm-4 pull-right"><div class="text-right">Website:</div></div>
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
                         <div class="col-sm-8">@CompanyDatas.Website</div>
                     </div>
 
@@ -178,19 +179,38 @@
 
                 </div>
             </div>
-            <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 50px;">
 
-                <div class="col-md-1">
-                    <label>offer Date</label><br />
-                    <label>offer number</label><br />
-                    <label>valid untill</label>
-
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                    <label>Factuurdatum</label>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
                     <label>@purchaseModel.PurchaseDate</label><br />
-                    <label>@purchaseModel.PurchaseRefNumber</label><br />
-                    <label>@purchaseModel.PurchaseDueDate</label>
                 </div>
+                <div class="col-lg-7 col-md-4 col-sm-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                    <label>Factuurnummer</label>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                    <label>@purchaseModel.PurchaseRefNumber</label><br />
+                </div>
+                <div class="col-lg-7 col-md-4 col-sm-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                    <label>Vervalidatum</label>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                    <label>@purchaseModel.PurchaseDueDate</label><br />
+                </div>
+                <div class="col-lg-7 col-md-4 col-sm-3"></div>
             </div>
             <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
                 will receive the invoice from us for the services below.

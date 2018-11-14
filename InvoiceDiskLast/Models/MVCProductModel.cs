@@ -16,8 +16,9 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> OpeningQuantity { get; set; }
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> Company_ID { get; set; }
-        public Nullable<int> ProductUnit { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
-        public Nullable<int> ProductUnits { get; set; }
+        public Nullable<int> ProductUnit { get; set; }
+        public Nullable<bool> ProductStatus { get; set; }
+        public Nullable<int> OpeningStockValue { get; set; }
     }
 }
