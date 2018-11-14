@@ -30,7 +30,7 @@
         <div class="col-lg-8 col-md-8 col-sm-10">
             <div class="row" style="margin-left:0px;margin-right:0px;">
 
-                @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
+                @using (Html.BeginForm("DownloadFile", "QutationService", FormMethod.Post, new { id = "DownloadFile1" }))
                 {
                     <input type="hidden" name="FilePath" id="FilePath" />
                     <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
@@ -51,17 +51,17 @@
                             </button>
                             <ul class="dropdown-menu">
 
-                                <li>@Html.ActionLink("Send qutation by Email", "InvoicebyEmail", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                                <li>@Html.ActionLink("Send qutation by Email", "InvoicebyEmail", "QutationService", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                                 <li class="divider"></li>
                                 <li><a href="#"></a></li>
                                 <li class="divider"></li>
-                                <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                                <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "QutationService", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                             </ul>
                         </div>
                         <div style="margin-left:3px">
                             <div class="btn-group">
                                 <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                                @Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                                @Html.ActionLink("print concept", "Print", "QutationService", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
                             </div>
                         </div>
                         <div style="margin-left:3px">
@@ -215,20 +215,20 @@
                     <table id="mytable" class="table table-bordred table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>
-                                    Project
+                                <th class="col-sm-4">
+                                    productnaam
                                 </th>
-                                <th>
-                                    Number of hour
+                                <th class="col-sm-2">
+                                    Quantity
                                 </th>
-                                <th>
-                                    Hourly rate
+                                <th class="col-sm-2">
+                                    Prijs
                                 </th>
-                                <th>
-                                    Total
+                                <th class="col-sm-2">
+                                    Totaal
                                 </th>
-                                <th>
-                                    Vat %
+                                <th class="col-sm-1">
+                                    Vat
                                 </th>
                             </tr>
                         </thead>

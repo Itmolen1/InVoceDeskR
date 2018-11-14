@@ -253,7 +253,7 @@
 
                                 <tbody>
 
-                                    @if (ViewBag.PurchaseDatailsList != null)
+                                    @if (ViewBag.QutationDatailsList != null)
                                     {
                                         if (ViewBag.QutationDatailsList != null)
                                         {
@@ -264,7 +264,7 @@
 
                                                     <td>
 
-                                                        <select Id="SelectProductQutationp" class="product form-control pClass" style="width:216px !important;font-size:12px">
+                                                        <select Id="SelectProductQutationp" class="productp form-control pClass" style="width:216px !important;font-size:12px">
                                                             <option value="0">Select Item..</option>
                                                             @foreach (var product in ViewBag.Product)
                                                             {
@@ -277,14 +277,14 @@
                                                     </td>
 
                                                     <td>
-                                                        <input type="text" class="rate form-control" id="Rate" value="@item.Rate" style="font-size:12px" />
+                                                        <input type="text" class="PurchaseItemRate  rate form-control" id="Rate" value="@item.Rate" style="font-size:12px" />
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="FTotal form-control" id="FTotal" value="@item.Total" readonly="readonly" style="font-size:12px" />
+                                                        <input type="text" class="PurchaseTotal  FTotal form-control" id="FTotal" value="@item.Total" readonly="readonly" style="font-size:12px" />
 
                                                     </td>
                                                     <td>
-                                                        <select id="SelectVAT" name="NewsCategoriesID" class="VAT  form-control" style="width:80px;font-size:12px">
+                                                        <select id="SelectVAT" name="NewsCategoriesID" class="VATp  form-control" style="width:80px;font-size:12px">
 
                                                             @foreach (var item1 in ViewBag.VatDrop)
                                                             {
@@ -297,11 +297,11 @@
                                                         <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="QutationDetailId" value="@item.QutationDetailId" />
+                                                        <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
 
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="QutationID" value="@item.QutationID" />
+                                                        <input type="hidden" class="QutationID" value="@item.QutationID" />
 
                                                     </td>
 
@@ -578,6 +578,7 @@
     var r = "";
 
     function SUMOFALLPRODUCTp() {
+
         var sum = 0;
         $('#QutationServiceDetail tbody tr').each(function () {
             var row = $(this).closest('tr');
@@ -590,7 +591,7 @@
         })
     }
     function sumofGrandModelp() {
-
+        
         var btw6p = 0, btw21p, totalbtwp = 0, grandtotalp = 0;
         btw6p = parseFloat($('#BTW6p').text());
         btw21p = parseFloat($('#BTW21p').text());
@@ -827,7 +828,8 @@
         currentRow.find('td:eq(3)').find('input').val(total.toFixed(2));
     })
 
-    $(document).on('keyup', "#QutationServiceDetail tbody .PurchaseQuantity", function () {
+    $(document).on('keyup', "#QutationServiceDetail tbody #Quantity", function () {
+
         debugger;
         var currentRow = $(this).closest("tr");
         var quantity = $(this).val();  // get current row 1st TD value
@@ -836,7 +838,7 @@
         currentRow.find('td:eq(3)').find('input').val(total);
     })
 
-    $(document).on('keyup', "#QutationServiceDetail tbody .PurchaseItemRate", function () {
+    $(document).on('keyup', "#QutationServiceDetail tbody .PurchaseItemRate ", function () {
 
         currentRow1 = $(this).closest("tr");
         var currentRow = $(this).closest("tr");
@@ -853,7 +855,7 @@
         if (vatValue == 6) {
             var sum6 = 0;
             var total6 = 0;
-            $('#orderdetailsitemsp tbody tr').each(function () {
+            $('#QutationServiceDetail tbody tr').each(function () {
                 r = $(this).closest('tr');
                 var value = r.find('.VATp  option:selected').val();
                 if (r.find('.VATp  option:selected').val() == 6) {
@@ -870,7 +872,7 @@
         if (vatValue == 21) {
             var sum21 = 0;
             var total21 = 0;
-            $('#orderdetailsitemsp tbody tr').each(function () {
+            $('#QutationServiceDetail tbody tr').each(function () {
                 r = $(this).closest('tr');
                 var value = r.find('.VATp  option:selected').val();
                 if (r.find('.VATp  option:selected').val() == 21) {
@@ -888,7 +890,7 @@
         sumofGrandModelp();
     })
 
-    $(document).on('keyup', "#QutationServiceDetail tbody .PurchaseQuantity ", function () {
+    $(document).on('keyup', "#QutationServiceDetail tbody .Quantity ", function () {
         currentRow1 = $(this).closest("tr");
         var currentRow = $(this).closest("tr");
         var quantity = $(this).val();
@@ -926,7 +928,7 @@
         if (vatValue == 21) {
             var sum21 = 0;
             var total21 = 0;
-            $('#orderdetailsitemsp tbody tr').each(function () {
+            $('#QutationServiceDetail tbody tr').each(function () {
                 r = $(this).closest('tr');
                 var value = r.find('.VATp  option:selected').val();
                 if (r.find('.VATp  option:selected').val() == 21) {
@@ -1028,7 +1030,7 @@
         }
     });
 
-    $("thead #Rate").on("keypress keyup blur", function (event) {
+    $("thead #PurchaseItemRate").on("keypress keyup blur", function (event) {
         //this.value = this.value.replace(/[^0-9\.]/g,'');
         $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
@@ -1046,18 +1048,20 @@
         var list = [];
         var errorItemCount = 0;
         $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
-            debugger;
-            if ($('#SelectProductQutationp', this).val() == '0') {
-                alert('r4rf4erf');
-                errorItemCount++;
-                $(this).addClass('error');
+            if ($('#SelectProductQutationp', this).val() == '0' ||
+                 (parseInt($('#Quantity', this).val()) || 0) == 0 ||
+                 $('#Rate', this).val() == "" ||
+                 isNaN($('.PurchaseItemRate', this).val())
+                 ) {
+           
             }
             else {
                 var orderItem = {
                     ItemId: $('select.productp', this).val(),
-                    Quantity: parseInt($('.Quantity', this).val()),
+                    Quantity: parseInt($('#Quantity', this).val()),
                     Rate: parseFloat($('.PurchaseItemRate', this).val()),
                     Total: parseFloat($('.PurchaseTotal', this).val()),
+                    SubTotal: parseFloat($('#SubTotalp', this).val()),
                     Vat: parseFloat($('.VATp', this).val()),
                     QutationDetailId: $('.QutationDetailId', this).val(),
                     Qutation_ID: $('.Qutation_ID').val(),
@@ -1090,7 +1094,8 @@
                 CustomerNote: $('#CustomerNote').val(),
                 DiscountAmount: 0,
                 QutationID: $('#QutationDetailId').val(),
-                SubTotalp: $('#SubTotalp').text(),
+                 SubTotal: $('#SubTotalp').text(),
+                SubTotal: $('#SubTotalp').text(),
                 TotalAmount: $('#gtotalp').text(),
                 CustomerNote: $('#PurchaseVenderNote').val(),
                 TotalVat6: $('#BTW6p').text(),
