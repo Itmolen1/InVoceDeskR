@@ -34,7 +34,6 @@ namespace InvoiceDiskLast.Controllers
                 string search = Request.Form.GetValues("search[value]")[0];
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
-
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/All").Result;
@@ -46,13 +45,12 @@ namespace InvoiceDiskLast.Controllers
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                     {
                         ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search)
-                         || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())
-                       || p.Description != null && p.Description.ToLower().Contains(search.ToLower())
+                       || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())                      
                        || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
                         //|| p.Prod != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
                        || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
                        || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
-                       || p.OpeningQuantity != null && p.OpeningQuantity.ToString().ToLower().Contains(search.ToLower())).ToList();
+                       || p.ProductStatus != null && p.ProductStatus   .ToString().ToLower().Contains(search.ToLower())).ToList();
                     }
                 }
                 switch (sortColumn)
@@ -62,10 +60,7 @@ namespace InvoiceDiskLast.Controllers
                         break;
                     case "ProductName":
                         ProductList = ProductList.OrderBy(c => c.ProductName).ToList();
-                        break;
-                    case "Description":
-                        ProductList = ProductList.OrderBy(c => c.Description).ToList();
-                        break;
+                        break;                   
 
                     case "SalePrice":
                         ProductList = ProductList.OrderBy(c => c.SalePrice).ToList();
@@ -75,17 +70,9 @@ namespace InvoiceDiskLast.Controllers
                         ProductList = ProductList.OrderBy(c => c.PurchasePrice).ToList();
                         break;
 
-                    case "Type":
-
-                        ProductList = ProductList.OrderBy(c => c.Type).ToList();
+                    case "ProductStatus":
+                        ProductList = ProductList.OrderBy(c => c.ProductStatus).ToList();
                         break;
-
-                    case "OpeningQuantity":
-
-                        ProductList = ProductList.OrderBy(c => c.OpeningQuantity).ToList();
-                        break;
-
-
                     default:
                         ProductList = ProductList.OrderByDescending(c => c.ProductId).ToList();
                         break;
@@ -264,13 +251,13 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public ActionResult Delete(int id, bool ProductStatus)
         {
             try
             {
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()+ "/"+ ProductStatus).Result;
 
                 return Json("Delete", JsonRequestBehavior.AllowGet);
             }

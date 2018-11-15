@@ -33,10 +33,6 @@ namespace InvoiceDiskLast.Controllers
             bool emailstatus = false;
             try
             {
-
-
-
-
                 //MailMessage mail = new MailMessage("infouurtjefactuur@gmail.com");
                 //SmtpClient client = new SmtpClient();
                 //client.Port = 25;

@@ -44,6 +44,7 @@ namespace InvoiceDiskLast.Controllers
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
                     OpeningStockValue = c.OpeningStockValue,
+                    ProductStatus = c.ProductStatus,
                 }).ToList();
 
                 return Ok(ob);
@@ -64,6 +65,7 @@ namespace InvoiceDiskLast.Controllers
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
                     OpeningStockValue = c.OpeningStockValue,
+                    ProductStatus = c.ProductStatus,
                 }).ToList();
 
                 return Ok(ob);
@@ -94,6 +96,7 @@ namespace InvoiceDiskLast.Controllers
                     AddedDate = c.AddedDate,
                     ProductUnit = c.ProductUnit,
                     OpeningStockValue = c.OpeningStockValue,
+
 
                 }).FirstOrDefault();
                 if (productTable != null)
@@ -165,16 +168,31 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // DELETE: api/APIProduct/5
-        [Route("api/DeleteProduct/{id:int}")]
+        [Route("api/DeleteProduct/{id:int}/{ProductStatus:alpha}")]
         [ResponseType(typeof(ProductTable))]
-        public IHttpActionResult DeleteProductTable(int id)
+        public IHttpActionResult DeleteProductTable(int id, bool productStatus)
         {
             ProductTable productTable = db.ProductTables.Find(id);
-            if (productTable == null)
+            if (productTable == null || productStatus.ToString() == null)
             {
                 return NotFound();
             }
-            return Ok(productTable);
+
+            ProductTable productTables = db.ProductTables.Where(c => c.ProductId == id).FirstOrDefault();
+            productTables.ProductStatus = productStatus;
+            
+            db.Entry(productTables).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+
+            }
+
         }
 
 
