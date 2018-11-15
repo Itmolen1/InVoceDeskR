@@ -180,27 +180,34 @@ namespace InvoiceDiskLast.Controllers
                         
                         ProductTable PModel = response.Content.ReadAsAsync<ProductTable>().Result;
 
+                       
+
                         string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
                         AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
 
-                        accountTransictiontable.TransictionDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
+                        accountTransictiontable.TransictionDate = PModel.AddedDate;
                         accountTransictiontable.FK_AccountID = 4002;
                         accountTransictiontable.Cr = ProductModel.OpeningQuantity * PModel.PurchasePrice;
                         accountTransictiontable.Dr = 0.00;
                         accountTransictiontable.TransictionNumber = base64Guid;
                         accountTransictiontable.TransictionRefrenceId = PModel.ProductId.ToString();
                         accountTransictiontable.TransictionType = "Purchase";
-                        accountTransictiontable.CreationTime = System.TimeSpan.MinValue;
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
                         accountTransictiontable.AddedBy = 1;
                         accountTransictiontable.FK_CompanyId = CompanyId;
                         accountTransictiontable.FKPaymentTerm = 1;
-                        accountTransictiontable.Description = "Purchase has been created for the product" + PModel.ProductName.ToString() + "first time"; 
-                        
-
-                        HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/PostTransiction", accountTransictiontable).Result;
+                        accountTransictiontable.Description = "Purchase created at product" + PModel.ProductName.ToString() + "First time";
+                                               
+                        HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
 
                         if(responses.StatusCode == System.Net.HttpStatusCode.OK)
                         {
+                            AccountTransictionTable accountTransictiontable1 = new AccountTransictionTable();
+                           // accountTransictiontable1.
+
+
+
+
                             return Json("Created", JsonRequestBehavior.AllowGet);
                         }                       
                     }
