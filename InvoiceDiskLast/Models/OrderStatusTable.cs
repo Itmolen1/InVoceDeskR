@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class OrderStatusTable
     {
-        public int? OrderStatusId { get; set; }
+        public int OrderStatusId { get; set; }
         public Nullable<int> PurchaseOrderId { get; set; }
         public string Status { get; set; }
         public string Type { get; set; }
