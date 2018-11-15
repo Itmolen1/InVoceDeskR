@@ -125,14 +125,24 @@
 
                     <div class="row">
                        
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <select class="form-control p-0" id="ProductUnitSelect">
                              </select>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group ">
                                 <input class="form-control" type="text" required id="OpeningStockValue" placeholder="Opening Stock Value" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group ">
+                                <select class="form-control p-0" id="VatValue">
+                                    <option value="Select">Select vat Value</option>
+                                    <option value="0">0%</option>
+                                    <option value="6">6%</option>
+                                    <option value="21">21%</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -294,12 +304,14 @@
     }
 
     function CleartProdctTextBox() {
-        $('#ProductName').val(""),
-         $('#Description').val(""),
-         $('#SalePrice').val(""),
-         $('#PurchasePrice').val(""),
-         $('#OpeningQuantity').val(""),
-         $('#ProductUnitSelect').val("0")
+        $('#ProductName').val("");
+        $('#Description').val("");
+        $('#SalePrice').val("");
+        $('#PurchasePrice').val("");
+        $('#OpeningQuantity').val("");
+        $('#ProductUnitSelect').val("0");
+        $('#VatValue').val("Select");
+
         
     }
 
@@ -375,7 +387,8 @@
                                 Type: $('#Type').val(),
                                 OpeningQuantity: $('#OpeningQuantity').val(),
                                 ProductUnit: $('#ProductUnitSelect').val(),
-                                OpeningStockValue: $('#OpeningStockValue').val()
+                                OpeningStockValue: $('#OpeningStockValue').val(),
+                                VatValue: $('#VatValue').val()
                             },
                             success: function (data) {
                                 if (data == "Created") {
@@ -438,14 +451,44 @@
                 else {
                     $('#OpeningQuantity').css('border-color', 'lightgrey');
                 }
+                if(($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != ""))
+                {
+                    if(parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val()))
+                    {
+                        $('#SalePrice').css('border-color', 'Red');
+                        $('#PurchasePrice').css('border-color', 'Red');
+                        isValid == false;
+                        $.toast({
+                            heading: 'Sale amount less',
+                            text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#FF0000'  // To change the background
+                        });                     
+                    }
+                    else
+                    {
+                        $('#PurchasePrice').css('border-color', 'lightgrey');
+                        $('#SalePrice').css('border-color', 'lightgrey');
+                    }
+                }
+                //if ($('#ProductUnitSelect').val() == 0) {
+                //    $('#ProductUnitSelect').css('border-color', 'Red');
+                //    isValid = false;
+                //}
+                //else {
+                //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+                //}
 
-                if ($('#ProductUnitSelect').val() == 0) {
-                    $('#ProductUnitSelect').css('border-color', 'Red');
+                if ($('#VatValue').val() == "Select")
+                {
+                    $('#VatValue').css('border-color', 'Red');
                     isValid = false;
                 }
                 else {
-                    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+                    $('#VatValue').css('border-color', 'lightgrey');
                 }
+                
                 return isValid;
             }
 
