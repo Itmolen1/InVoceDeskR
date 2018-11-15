@@ -34,7 +34,6 @@ namespace InvoiceDiskLast.Controllers
                 string search = Request.Form.GetValues("search[value]")[0];
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
-
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/All").Result;
@@ -46,13 +45,12 @@ namespace InvoiceDiskLast.Controllers
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                     {
                         ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search)
-                         || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())
-                       || p.Description != null && p.Description.ToLower().Contains(search.ToLower())
+                       || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())                      
                        || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
                         //|| p.Prod != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
                        || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
                        || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
-                       || p.OpeningQuantity != null && p.OpeningQuantity.ToString().ToLower().Contains(search.ToLower())).ToList();
+                       || p.ProductStatus != null && p.ProductStatus   .ToString().ToLower().Contains(search.ToLower())).ToList();
                     }
                 }
                 switch (sortColumn)
@@ -62,10 +60,7 @@ namespace InvoiceDiskLast.Controllers
                         break;
                     case "ProductName":
                         ProductList = ProductList.OrderBy(c => c.ProductName).ToList();
-                        break;
-                    case "Description":
-                        ProductList = ProductList.OrderBy(c => c.Description).ToList();
-                        break;
+                        break;                   
 
                     case "SalePrice":
                         ProductList = ProductList.OrderBy(c => c.SalePrice).ToList();
@@ -75,17 +70,9 @@ namespace InvoiceDiskLast.Controllers
                         ProductList = ProductList.OrderBy(c => c.PurchasePrice).ToList();
                         break;
 
-                    case "Type":
-
-                        ProductList = ProductList.OrderBy(c => c.Type).ToList();
+                    case "ProductStatus":
+                        ProductList = ProductList.OrderBy(c => c.ProductStatus).ToList();
                         break;
-
-                    case "OpeningQuantity":
-
-                        ProductList = ProductList.OrderBy(c => c.OpeningQuantity).ToList();
-                        break;
-
-
                     default:
                         ProductList = ProductList.OrderByDescending(c => c.ProductId).ToList();
                         break;
@@ -170,6 +157,7 @@ namespace InvoiceDiskLast.Controllers
                 ProductModel.AddedBy = 1;
                 ProductModel.Company_ID = CompanyId;
                 ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
+                int VatValue = ProductModel.VatValue;
                 if (ProductModel.ProductId == null)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
@@ -180,14 +168,16 @@ namespace InvoiceDiskLast.Controllers
                         
                         ProductTable PModel = response.Content.ReadAsAsync<ProductTable>().Result;
 
-                       
+
+                        double Total = Convert.ToDouble(ProductModel.OpeningQuantity * PModel.PurchasePrice);
+                        double totalvat = Convert.ToDouble(Total/100 * VatValue + Total- Total);
 
                         string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
                         AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
 
                         accountTransictiontable.TransictionDate = PModel.AddedDate;
                         accountTransictiontable.FK_AccountID = 4002;
-                        accountTransictiontable.Cr = ProductModel.OpeningQuantity * PModel.PurchasePrice;
+                        accountTransictiontable.Cr = Math.Round(totalvat + Total,2);
                         accountTransictiontable.Dr = 0.00;
                         accountTransictiontable.TransictionNumber = base64Guid;
                         accountTransictiontable.TransictionRefrenceId = PModel.ProductId.ToString();
@@ -196,19 +186,55 @@ namespace InvoiceDiskLast.Controllers
                         accountTransictiontable.AddedBy = 1;
                         accountTransictiontable.FK_CompanyId = CompanyId;
                         accountTransictiontable.FKPaymentTerm = 1;
-                        accountTransictiontable.Description = "Purchase created at product" + PModel.ProductName.ToString() + "First time";
+                        accountTransictiontable.Description = "Total + VAT ,Purchase created at product" + PModel.ProductName.ToString() + "First time added";
                                                
                         HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
 
                         if(responses.StatusCode == System.Net.HttpStatusCode.OK)
                         {
+                            base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
                             AccountTransictionTable accountTransictiontable1 = new AccountTransictionTable();
-                           // accountTransictiontable1.
+                            accountTransictiontable1.FK_AccountID = 3005;
+                            accountTransictiontable1.TransictionDate = PModel.AddedDate;
+                            accountTransictiontable1.Dr = Math.Round(totalvat, 2);
+                            accountTransictiontable1.Cr = 0.00;
+                            accountTransictiontable1.TransictionNumber = base64Guid;
+                            accountTransictiontable1.TransictionRefrenceId = PModel.ProductId.ToString();
+                            accountTransictiontable1.TransictionType = "Purchase VAT "+VatValue ;
+                            accountTransictiontable1.CreationTime = DateTime.Now.TimeOfDay;
+                            accountTransictiontable1.AddedBy = 1;
+                            accountTransictiontable1.FK_CompanyId = CompanyId;
+                            accountTransictiontable1.FKPaymentTerm = 1;
+                            accountTransictiontable1.Description = "VAT" + VatValue+", Purchase created at product" + PModel.ProductName.ToString() + "First time added";
+
+                            HttpResponseMessage response1 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable1).Result;
+
+                            if (response1.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                                AccountTransictionTable accountTransictiontable2 = new AccountTransictionTable();
+
+                                accountTransictiontable2.FK_AccountID = 4003;
+                                accountTransictiontable2.TransictionDate = PModel.AddedDate;
+                                accountTransictiontable2.Dr = Math.Round(Total, 2);
+                                accountTransictiontable2.Cr = 0.00;
+                                accountTransictiontable2.TransictionNumber = base64Guid;
+                                accountTransictiontable2.TransictionRefrenceId = PModel.ProductId.ToString();
+                                accountTransictiontable2.TransictionType = "Purchase Total";
+                                accountTransictiontable2.CreationTime = DateTime.Now.TimeOfDay;
+                                accountTransictiontable2.AddedBy = 1;
+                                accountTransictiontable2.FK_CompanyId = CompanyId;
+                                accountTransictiontable2.FKPaymentTerm = 1;
+                                accountTransictiontable2.Description = "Total, Purchase created at product" + PModel.ProductName.ToString() + "First time added";
+
+                                HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable2).Result;
 
 
-
-
-                            return Json("Created", JsonRequestBehavior.AllowGet);
+                                if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                                {
+                                    return Json("Created", JsonRequestBehavior.AllowGet);
+                                }
+                            }
                         }                       
                     }
                 }
@@ -225,13 +251,13 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public ActionResult Delete(int id, bool ProductStatus)
         {
             try
             {
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()+ "/"+ ProductStatus).Result;
 
                 return Json("Delete", JsonRequestBehavior.AllowGet);
             }

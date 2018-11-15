@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 <script src="~/Scripts/jquery-1.10.2.js"></script>
@@ -9,149 +8,129 @@
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
 
-    @*<a href="@Url.Action("AddOrEdit","MVCProduct")" class="btn btn-info"><i class="fa fa-plus"></i>Create New</a>*@
+@*<a href="@Url.Action("AddOrEdit","MVCProduct")" class="btn btn-info"><i class="fa fa-plus"></i>Create New</a>*@
 
-    <table class="table" id="productTable">
+<table class="table" id="productTable">
 
-        <thead class="table-heading" style="background-color:black;color:white">
-            <tr>
-                <th>
-                    Id
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Sale Price
-                </th>
-                <th>
-                    Purchase Price
-                </th>
-                <th>
-                    Type
-                </th>
-                <th>
-                    Opening Quantity
-                </th>
+    <thead class="table-heading" style="background-color:black;color:white">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>           
+            <th>
+                Sale Price
+            </th>
+            <th>
+                Purchase Price
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Status
+            </th>          
+            <th>Action</th>
+        </tr>
 
-                <th>
-                    Unit
-                </th>
-                <th>Action</th>
-            </tr>
-
-        </thead>
-        <tbody></tbody>
-    </table>
-
-   
-        <script>
-            $(function () {
-                var successMessage = '@TempData["SuccessMessage"]'
-                if (successMessage != '') {
-                    alertify.success(successMessage);
-
-                }
-                successMessage = '';
-            });
+    </thead>
+    <tbody></tbody>
+</table>
 
 
-            function Delete(id) {
 
-                alertify.confirm('Product Information', 'Are you sure to delete this record ?', function () {
-
-                    window.location.href = '@Url.Action("Delete","MVCProduct")/' + id;
-
-                }, null);
-            }
-        </script>
-  
-
-    <input type="hidden" id="ProductId" />
-    <div class="modal fade bs-example-modal-lg" id="CreateNewProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel" style="color:skyblue">Add New Product</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="ProductName" placeholder="Product Name" />
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="Description" placeholder="Description" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="SalePrice" placeholder="Sale Price" />
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="PurchasePrice" placeholder="Purchase Price" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">                               
-                                <div class="col-sm-12">
-                                    <select class="form-control p-0" id="Type">
-                                        <option value="Good" selected>Good</option>
-                                        <option value="Services">Services</option>
-                                    </select><span class="bar"></span>
-                                </div>
-                            </div>
-                           
-                           
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="OpeningQuantity" placeholder="Opening Quantity" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                       
-                        <div class="col-sm-6">
-                            <select class="form-control p-0" id="ProductUnitSelect">
-                             </select>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group ">
-                                <input class="form-control" type="text" required id="OpeningStockValue" placeholder="Opening Stock Value" />
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <div id="SAveProdID">
-                        <button type="button" id="SaveNewProduct" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save Product</button>
-                    </div>
-                    <div id="UpdateProId">
-                        <button type="button" id="UpdateProduct" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
-                    </div>
-                          <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-                </div>
+<input type="hidden" id="ProductId" />
+<div class="modal fade bs-example-modal-lg" id="CreateNewProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel" style="color:skyblue">Add New Product</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
-            <!-- /.modal-content -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ProductName" placeholder="Product Name" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="Description" placeholder="Description" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="SalePrice" placeholder="Sale Price" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="PurchasePrice" placeholder="Purchase Price" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <select class="form-control p-0" id="Type">
+                                    <option value="Good" selected>Good</option>
+                                    <option value="Services">Services</option>
+                                </select><span class="bar"></span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="OpeningQuantity" placeholder="Opening Quantity" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <select class="form-control p-0" id="ProductUnitSelect"></select>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="OpeningStockValue" placeholder="Opening Stock Value" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group ">
+                            <select class="form-control p-0" id="VatValue">
+                                <option value="Select">Select vat Value</option>
+                                <option value="0">0%</option>
+                                <option value="6">6%</option>
+                                <option value="21">21%</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div id="SAveProdID">
+                    <button type="button" id="SaveNewProduct" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save Product</button>
+                </div>
+                <div id="UpdateProId">
+                    <button type="button" id="UpdateProduct" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
+                </div>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
         </div>
-        <!-- /.modal-dialog -->
+        <!-- /.modal-content -->
     </div>
+    <!-- /.modal-dialog -->
+</div>
 
 
 <div id="UnitModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -170,8 +149,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">              
-                    <button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>                        
+            <div class="modal-footer">
+                <button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
@@ -179,6 +158,58 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        var rtype;
+        $("#productTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            //"language": {
+            //    "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            //},
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/MVCProduct/GetProductlist",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                    { "data": "ProductId", "name": "ProductId", "autoWidth": true },// key for edit delete
+                    { "data": "ProductName", "name": "ProductName", "autoWidth": true },                   
+                    { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
+                    { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
+                     { "data": "Type", "name": "Type", "autoWidth": true },                     
+                     { "data": "ProductStatus", "name": "ProductStatus", "autoWidth": true },
+
+                   {
+                       "data": "AddedDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+
+
+
+                    {
+                        render: function (data, type, row) {                           
+                            return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil"></i></a>|<button type="button" href="" class="btn btn-danger btn-xs" onclick="DeleteProductNow(' + row.ProductId +')"><i class="fa fa-trash"></i></button>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ProductId + ')"><i class="fa fa-eye"></i></a>'
+                        }
+                    }
+            ]
+        });
+
+    })
+</script>
 
 <script>
 
@@ -234,15 +265,14 @@
             $('#CreateNewProductModal').modal('show');
             $('#UnitModel').modal('hide');
         });
-     
+
         $('#SaveNewProductUnit').click(function () {
             $.ajax({
                 url: "/MVCProductUnit/CheckUnitStatus",
                 type: "POST",
                 data: { name: $('#ProductUnit').val() },
-                success: function (Resultdat) {  
-                    if (Resultdat == "Found")
-                    {
+                success: function (Resultdat) {
+                    if (Resultdat == "Found") {
                         $.toast({
                             heading: 'Already exist',
                             text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
@@ -251,8 +281,7 @@
                             loaderBg: '#FF0000'  // To change the background
                         });
                     }
-                    else
-                    {
+                    else {
                         var dataUnit = {
                             ProductUnit: $('#ProductUnit').val(),
                             Status: "true"
@@ -278,7 +307,7 @@
                                 alert("erro");
                             }
                         });
-                    }                  
+                    }
                 },
                 Error: function (err) {
                     alert("erro");
@@ -287,20 +316,18 @@
         });
     });
 
-
-    function CleartUnitTextBox()
-    {
+    function CleartUnitTextBox() {
         $('#ProductUnit').val("")
     }
 
     function CleartProdctTextBox() {
-        $('#ProductName').val(""),
-         $('#Description').val(""),
-         $('#SalePrice').val(""),
-         $('#PurchasePrice').val(""),
-         $('#OpeningQuantity').val(""),
-         $('#ProductUnitSelect').val("0")
-        
+        $('#ProductName').val("");
+        $('#Description').val("");
+        $('#SalePrice').val("");
+        $('#PurchasePrice').val("");
+        $('#OpeningQuantity').val("");
+        $('#ProductUnitSelect').val("0");
+        $('#VatValue').val("Select");
     }
 
     function EditProduct(ProductId) {
@@ -309,8 +336,7 @@
             url: "/MVCProduct/AddOrEdit/" + ProductId,
             type: "GET",
             dataType: "json",
-            success: function (resultData)
-            {
+            success: function (resultData) {
                 $('#ProductId').val(resultData.ProductId);
                 $('#ProductName').val(resultData.ProductName);
                 $('#Description').val(resultData.Description);
@@ -340,12 +366,11 @@
             }
         });
     }
-  
 
     $('#SaveNewProduct').click(function () {
         var validdatep = validateProduct();
         if (validdatep == true) {
-            $.ajax({                
+            $.ajax({
                 url: "/MVCProduct/GetProductByName",
                 type: "POST",
                 data: {
@@ -353,8 +378,7 @@
                     ProductStatus: "All"
                 },
                 success: function (Resultdat) {
-                    if (Resultdat == "Found")
-                    {                      
+                    if (Resultdat == "Found") {
                         $.toast({
                             heading: 'Already exist',
                             text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
@@ -363,7 +387,7 @@
                             loaderBg: '#FF0000'  // To change the background
                         });
                     }
-                    else {                      
+                    else {
                         $.ajax({
                             url: '/MVCProduct/AddOrEdit',
                             type: 'POST',
@@ -375,7 +399,8 @@
                                 Type: $('#Type').val(),
                                 OpeningQuantity: $('#OpeningQuantity').val(),
                                 ProductUnit: $('#ProductUnitSelect').val(),
-                                OpeningStockValue: $('#OpeningStockValue').val()
+                                OpeningStockValue: $('#OpeningStockValue').val(),
+                                VatValue: $('#VatValue').val()
                             },
                             success: function (data) {
                                 if (data == "Created") {
@@ -388,89 +413,120 @@
                             error: function () {
                                 alert("error");
                             }
-                        });                       
+                        });
                     }
                 }
             });
         }
     });
 
-
-
-              
-
     function SuccessInsertProduct() {
         swal({
-                title: "Congratulations!!!!",
-                text: "Your data has been saved successfully",
-                 type: "success",
+            title: "Congratulations!!!!",
+            text: "Your data has been saved successfully",
+            type: "success",
+        });
+    }
+
+    function validateProduct() {
+        var isValid = true;
+        if ($('#ProductName').val().trim() == "") {
+            $('#ProductName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductName').css('border-color', 'lightgrey');
+        }
+        if ($('#SalePrice').val().trim() == "") {
+            $('#SalePrice').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePrice').val().trim() == "") {
+            $('#PurchasePrice').css('border-color', 'Red');
+            $('#PurchasePrice').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#OpeningQuantity').val() == "") {
+            $('#OpeningQuantity').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+        }
+        if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
+            if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+                $('#SalePrice').css('border-color', 'Red');
+                $('#PurchasePrice').css('border-color', 'Red');
+                isValid == false;
+                $.toast({
+                    heading: 'Sale amount less',
+                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
                 });
             }
-
-            function validateProduct() {
-                var isValid = true;
-                if ($('#ProductName').val().trim() == "") {
-                    $('#ProductName').css('border-color', 'Red');
-                    isValid = false;
-                }
-                else {
-                    $('#ProductName').css('border-color', 'lightgrey');
-                }
-                if ($('#SalePrice').val().trim() == "") {
-                    $('#SalePrice').css('border-color', 'Red');
-                    isValid = false;
-                }
-                else {
-                    $('#SalePrice').css('border-color', 'lightgrey');
-                }
-                if ($('#PurchasePrice').val().trim() == "") {
-                    $('#PurchasePrice').css('border-color', 'Red');
-                    $('#PurchasePrice').focus();
-                    isValid = false;
-                }
-                else {
-                    $('#PurchasePrice').css('border-color', 'lightgrey');
-                }
-                if ($('#OpeningQuantity').val() == "") {
-                    $('#OpeningQuantity').css('border-color', 'Red');
-                    isValid = false;
-                }
-                else {
-                    $('#OpeningQuantity').css('border-color', 'lightgrey');
-                }
-
-                if ($('#ProductUnitSelect').val() == 0) {
-                    $('#ProductUnitSelect').css('border-color', 'Red');
-                    isValid = false;
-                }
-                else {
-                    $('#ProductUnitSelect').css('border-color', 'lightgrey');
-                }
-                return isValid;
+            else {
+                $('#PurchasePrice').css('border-color', 'lightgrey');
+                $('#SalePrice').css('border-color', 'lightgrey');
             }
+        }
+        //if ($('#ProductUnitSelect').val() == 0) {
+        //    $('#ProductUnitSelect').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        //}
 
-            function LoadProductUnit() {
-                $("#ProductUnitSelect").find("option").remove();
-                $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
-                $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
-                $.ajax({
-                    url: "/MVCProductUnit/GetProductUnit",
-                    type: "Get",
-                    async: false,
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (data) {
-                        $.each(data, function (key, item) {
-                            $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
-                        });
+        if ($('#VatValue').val() == "Select") {
+            $('#VatValue').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#VatValue').css('border-color', 'lightgrey');
+        }
 
-                    },
-                    Error: function (errormessage) {
-                        alert(errormessage);
-                    }
+        return isValid;
+    }
 
+    function LoadProductUnit() {
+        $("#ProductUnitSelect").find("option").remove();
+        $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
+        $("#ProductUnitSelect").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+        $.ajax({
+            url: "/MVCProductUnit/GetProductUnit",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#ProductUnitSelect').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
                 });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
             }
-       
+
+        });
+    }
+
+    function DeleteProductNow(id) {
+        alert();
+        ProductStatus = false;
+        alertify.confirm('Product Information', 'Are you sure to delete this record ?', function () {
+
+            window.location.href = '@Url.Action("Delete","MVCProduct")/' + id;
+
+        }, null);
+    }
 
 </script>

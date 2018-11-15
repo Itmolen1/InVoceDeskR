@@ -414,8 +414,7 @@
                             <ul class="m-t-20 chatonline">
                                 <li><b>Chat option</b></li>
                                 <li>
-
-                                    <a href="javascript:void(0)"><img src="~/assets/images/users/logo-icon.jpg" alt="user-img" class="img-circle"> <span>Varun Dhavan <small class="text-success">online</small></span></a>
+                                    <a href="javascript:void(0)"><img src="~/assets/images/logo-icon.png" alt="user-img" class="img-circle"> <span>Varun Dhavan <small class="text-success">online</small></span></a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)"><img src="~/assets/images/users/2.jpg" alt="user-img" class="img-circle"> <span>Genelia Deshmukh <small class="text-warning">Away</small></span></a>
@@ -1762,67 +1761,6 @@
         window.location.href = "Company/AddOrEdit/" + companyId;
     }
 
-
-
-
-
-    $(document).ready(function () {
-
-        $("#productTable").DataTable({
-            //"processing": true, // for show progress bar
-            "processing": true,
-            //"language": {
-            //    "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-            //},
-            "searching": true,
-            "serverSide": true, // for process server side
-            "filter": false, // this is for disable filter (search box)
-            "orderMulti": false, // for disable multiple column at once
-            "ajax": {
-                "url": "/MVCProduct/GetProductlist",
-                "type": "POST",
-                "datatype": "json"
-            },
-            "columns": [
-                    { "data": "ProductId", "name": "ProductId", "autoWidth": true },// key for edit delete
-                    { "data": "ProductName", "name": "ProductName", "autoWidth": true },
-                    { "data": "Description", "name": "Description", "autoWidth": true },
-                    { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
-                    { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
-                     { "data": "Type", "name": "Type", "autoWidth": true },
-                     { "data": "OpeningQuantity", "name": "OpeningQuantity", "autoWidth": true },
-
-                   {
-                       "data": "AddedDate", "type": "date ",
-                       "render": function (value) {
-                           if (value === null) return "";
-                           var pattern = /Date\(([^)]+)\)/;//date format from server side
-                           var results = pattern.exec(value);
-                           var dt = new Date(parseFloat(results[1]));
-
-                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                       }, "autoWidth": true
-                   },
-
-
-
-                    {
-                        render: function (data, type, row) {
-                            return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil"></i></a>|<button type="button" href="" class="btn btn-danger btn-xs" onclick="DeleteProduct(' + row.ProductId + ')"><i class="fa fa-trash"></i></button>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ProductId + ')"><i class="fa fa-eye"></i></a>'
-                        }
-                    }
-
-
-
-            ]
-        });
-
-    })
-
-
-
-
-
     $(document).ready(function () {
         @*product Script*@
 
@@ -2360,7 +2298,15 @@
 
     }
 
+    function CleartProdctTextBox() {
+        $('#ProductName').val("");
+        $('#Description').val("");
+        $('#SalePrice').val("");
+        $('#PurchasePrice').val("");
+        $('#OpeningQuantity').val("");
+        $('#ProductUnitSelect').val("0");
 
+    }
 
 
     /// numver validatio for input
