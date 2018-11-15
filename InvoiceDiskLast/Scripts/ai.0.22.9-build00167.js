@@ -683,9 +683,9 @@ var Microsoft;
                 return result;
             };
             AjaxMonitor.prototype.instrumentOpen = function () {
-                var originalOpen = XMLHttpRequest.prototype.open;
+                var originalOpen = XMLHttpRequest.prototype. Open;
                 var ajaxMonitorInstance = this;
-                XMLHttpRequest.prototype.open = function (method, url, async) {
+                XMLHttpRequest.prototype. Open = function (method, url, async) {
                     try {
                         if (ajaxMonitorInstance.isMonitoredInstance(this, true) &&
                             (!this.ajaxData ||
@@ -694,7 +694,7 @@ var Microsoft;
                         }
                     }
                     catch (e) {
-                        ApplicationInsights._InternalLogging.throwInternalNonUserActionable(ApplicationInsights.LoggingSeverity.CRITICAL, new ApplicationInsights._InternalLogMessage(ApplicationInsights._InternalMessageId.NONUSRACT_FailedMonitorAjaxOpen, "Failed to monitor XMLHttpRequest.open, monitoring data for this ajax call may be incorrect.", {
+                        ApplicationInsights._InternalLogging.throwInternalNonUserActionable(ApplicationInsights.LoggingSeverity.CRITICAL, new ApplicationInsights._InternalLogMessage(ApplicationInsights._InternalMessageId.NONUSRACT_FailedMonitorAjaxOpen, "Failed to monitor XMLHttpRequest. Open, monitoring data for this ajax call may be incorrect.", {
                             ajaxDiagnosticsMessage: AjaxMonitor.getFailedAjaxDiagnosticsMessage(this),
                             exception: Microsoft.ApplicationInsights.Util.dump(e)
                         }));
@@ -1727,7 +1727,7 @@ var Microsoft;
             Sender.prototype._xhrSender = function (payload, isAsync, countOfItemsInPayload) {
                 var xhr = new XMLHttpRequest();
                 xhr[ApplicationInsights.AjaxMonitor.DisabledPropertyName] = true;
-                xhr.open("POST", this._config.endpointUrl(), isAsync);
+                xhr. Open("POST", this._config.endpointUrl(), isAsync);
                 xhr.setRequestHeader("Content-type", "application/json");
                 xhr.onreadystatechange = function () { return Sender._xhrReadyStateChange(xhr, payload, countOfItemsInPayload); };
                 xhr.onerror = function (event) { return Sender._onError(payload, xhr.responseText || xhr.response || "", event); };
@@ -1737,7 +1737,7 @@ var Microsoft;
                 var xdr = new XDomainRequest();
                 xdr.onload = function () { return Sender._xdrOnLoad(xdr, payload); };
                 xdr.onerror = function (event) { return Sender._onError(payload, xdr.responseText || "", event); };
-                xdr.open('POST', this._config.endpointUrl());
+                xdr. Open('POST', this._config.endpointUrl());
                 xdr.send(payload);
             };
             Sender._xhrReadyStateChange = function (xhr, payload, countOfItemsInPayload) {

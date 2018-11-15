@@ -591,7 +591,7 @@
         })
     }
     function sumofGrandModelp() {
-        
+
         var btw6p = 0, btw21p, totalbtwp = 0, grandtotalp = 0;
         btw6p = parseFloat($('#BTW6p').text());
         btw21p = parseFloat($('#BTW21p').text());
@@ -1053,7 +1053,7 @@
                  $('#Rate', this).val() == "" ||
                  isNaN($('.PurchaseItemRate', this).val())
                  ) {
-           
+
             }
             else {
                 var orderItem = {
@@ -1094,7 +1094,7 @@
                 CustomerNote: $('#CustomerNote').val(),
                 DiscountAmount: 0,
                 QutationID: $('#QutationDetailId').val(),
-                 SubTotal: $('#SubTotalp').text(),
+                SubTotal: $('#SubTotalp').text(),
                 SubTotal: $('#SubTotalp').text(),
                 TotalAmount: $('#gtotalp').text(),
                 CustomerNote: $('#PurchaseVenderNote').val(),
@@ -1118,8 +1118,8 @@
                         $('#QutationServiceDetail').empty();
                         $("#Submitservice").val('Save draft');
                         swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
+                            title: 'Service!',
+                            text: 'Service save successfully!',
                             type: 'success'
                         },
                   function (isconform) {
@@ -1153,33 +1153,28 @@
     //Save Email
     $("#saveEmailp").click(function () {
         var isAllValid = true;
-        debugger;
-
         $('#orderItemError').text('');
-
         var list = [];
         var errorItemCount = 0;
-
         $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
-
             if ($('#SelectProductQutationp', this).val() == '0' ||
-                (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
-                $('.ratep', this).val() == "" ||
-                isNaN($('.PurchaseItemRate ', this).val())
-                ) {
-                errorItemCount++;
-                $(this).addClass('error');
+                 (parseInt($('#Quantity', this).val()) || 0) == 0 ||
+                 $('#Rate', this).val() == "" ||
+                 isNaN($('.PurchaseItemRate', this).val())
+                 ) {
+
             }
             else {
                 var orderItem = {
-                    PurchaseItemId: $('select.productp', this).val(),
-                    PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
-                    PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
-                    PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
+                    ItemId: $('select.productp', this).val(),
+                    Quantity: parseInt($('#Quantity', this).val()),
+                    Rate: parseFloat($('.PurchaseItemRate', this).val()),
                     Total: parseFloat($('.PurchaseTotal', this).val()),
-                    PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
+                    SubTotal: parseFloat($('#SubTotalp', this).val()),
+                    Vat: parseFloat($('.VATp', this).val()),
+                    QutationDetailId: $('.QutationDetailId', this).val(),
+                    Qutation_ID: $('.Qutation_ID').val(),
+                    QutationID: $('.QutationID').val()
                 }
                 list.push(orderItem);
             }
@@ -1200,25 +1195,25 @@
 
             $(this).val("please wait...");
             var empObj = {
-                PurchaseId: $('#PurchaseId').val(),
-                PurchaseID: $('#PurchaseID').val(),
-                PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-                PurchaseDate: $('#PurchaseDate').val(),
-                PurchaseDueDate: $('#PurchaseDueDate').val(),
-                PurchaseSubTotal: $('#SubTotalp').text(),
-                PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-                PurchaseOrderID: $('#PurchaseOrderID').val(),
-                PurchaseTotoalAmount: $('#gtotalp').text(),
-                PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-                Vat6: $('#BTW6p').text(),
-                Vat21: $('#BTW21p').text(),
-                Purchase_ID: $('.Purchase_ID').val(),
-
-                PurchaseDetailslist: list
-
+                Qutation_ID: $('#Qutation_ID').val(),
+                QutationDetailId: $('#QutationDetailId').val(),
+                RefNumber: $('#RefNumber').val(),
+                QutationDate: $('#QutationDate').val(),
+                DueDate: $('#DueDate').val(),
+                CustomerNote: $('#CustomerNote').val(),
+                DiscountAmount: 0,
+                QutationID: $('#QutationDetailId').val(),
+                SubTotal: $('#SubTotalp').text(),
+                SubTotal: $('#SubTotalp').text(),
+                TotalAmount: $('#gtotalp').text(),
+                CustomerNote: $('#PurchaseVenderNote').val(),
+                TotalVat6: $('#BTW6p').text(),
+                TotalVat21: $('#BTW21p').text(),
+                QutationID: $('.QutationID').val(),
+                QutationDetailslist: list
             };
             $.ajax({
-                url: "/MvcInvoiceServices/saveEmail",
+                url: "/QutationService/saveEmail",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
@@ -1228,12 +1223,12 @@
                     if (result.Status == "Success") {
 
                         swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
+                            title: 'Service!',
+                            text: 'Service save successfully!',
                             type: 'success'
                         },
                         function (isconform) {
-                            window.location.href = "/MvcInvoiceServices/InvoiceByEmail?purchaseOrderId=" + result.PurchaseOrderId;
+                            window.location.href = "/QutationService/InvoiceByEmail?QutationId=" + result.QutationId;
                         });
                         $("#saveEmailp").val('Save + Email');
                         list = [];
@@ -1259,6 +1254,7 @@
 
         }
 
+
     });
 
     //End save and Email
@@ -1267,30 +1263,27 @@
     $("#SaveEmailPrintPrintp").click(function () {
         var isAllValid = true;
         $('#orderItemError').text('');
-
         var list = [];
         var errorItemCount = 0;
-
-        $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
-
+        $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
             if ($('#SelectProductQutationp', this).val() == '0' ||
-                (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
-                $('.ratep', this).val() == "" ||
-                isNaN($('.PurchaseItemRate ', this).val())
-                ) {
-                errorItemCount++;
-                $(this).addClass('error');
+                 (parseInt($('#Quantity', this).val()) || 0) == 0 ||
+                 $('#Rate', this).val() == "" ||
+                 isNaN($('.PurchaseItemRate', this).val())
+                 ) {
+
             }
             else {
                 var orderItem = {
-                    PurchaseItemId: $('select.productp', this).val(),
-                    PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
-                    PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
-                    PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
+                    ItemId: $('select.productp', this).val(),
+                    Quantity: parseInt($('#Quantity', this).val()),
+                    Rate: parseFloat($('.PurchaseItemRate', this).val()),
                     Total: parseFloat($('.PurchaseTotal', this).val()),
-                    PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
+                    SubTotal: parseFloat($('#SubTotalp', this).val()),
+                    Vat: parseFloat($('.VATp', this).val()),
+                    QutationDetailId: $('.QutationDetailId', this).val(),
+                    Qutation_ID: $('.Qutation_ID').val(),
+                    QutationID: $('.QutationID').val()
                 }
                 list.push(orderItem);
             }
@@ -1311,39 +1304,43 @@
 
             $(this).val("please wait...");
             var empObj = {
-                PurchaseId: $('#PurchaseId').val(),
-                PurchaseID: $('#PurchaseID').val(),
-                PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-                PurchaseDate: $('#PurchaseDate').val(),
-                PurchaseDueDate: $('#PurchaseDueDate').val(),
-                PurchaseSubTotal: $('#SubTotalp').text(),
-                PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-                PurchaseOrderID: $('#PurchaseOrderID').val(),
-                PurchaseTotoalAmount: $('#gtotalp').text(),
-                PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-                Vat6: $('#BTW6p').text(),
-                Vat21: $('#BTW21p').text(),
-                Purchase_ID: $('.Purchase_ID').val(),
-                PurchaseDetailslist: list
+                Qutation_ID: $('#Qutation_ID').val(),
+                QutationDetailId: $('#QutationDetailId').val(),
+                RefNumber: $('#RefNumber').val(),
+                QutationDate: $('#QutationDate').val(),
+                DueDate: $('#DueDate').val(),
+                CustomerNote: $('#CustomerNote').val(),
+                DiscountAmount: 0,
+                QutationID: $('#QutationDetailId').val(),
+                SubTotal: $('#SubTotalp').text(),
+                SubTotal: $('#SubTotalp').text(),
+                TotalAmount: $('#gtotalp').text(),
+                CustomerNote: $('#PurchaseVenderNote').val(),
+                TotalVat6: $('#BTW6p').text(),
+                TotalVat21: $('#BTW21p').text(),
+                QutationID: $('.QutationID').val(),
+                QutationDetailslist: list
             };
             $.ajax({
-                url: "/MvcInvoiceServices/savePrintAndSentItToYouronsave",
+                url: "/QutationService/savePrintAndSentItToYouronsave",
                 data: JSON.stringify(empObj),
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (result) {
+
                     localStorage.setItem('path1', result.path);
 
                     if (result.Status == "Success") {
 
                         swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
+                            title: 'Service!',
+                            text: 'Service save successfully!',
                             type: 'success'
                         },
                         function (isconform) {
-                            window.location.href = "/MvcInvoiceServices/Viewinvoice?purchaseOrderId=" + result.PurchaseOrderId;
+                            window.location.href = "/QutationService/ViewServiceQutation?quautionId=" + result.QutationID;
+                       
                         });
                     }
                     else if (result.Status == "Fail") {
@@ -1356,25 +1353,26 @@
                             icon: "danger",
                         });
                     }
+                    console.log(result);
+
                 },
                 error: function (errormessage) {
-                    $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
                     swal({
                         title: "Fail!",
                         text: errormessage,
                         icon: "danger",
                     });
                 }
+
             });
+
         }
     });
-
 
 
     $(document).ready(function () {
 
         $(document).on('click', '#RemoveEdit1', function () {
-
 
             var row = $(this).closest('tr');
 
@@ -1403,8 +1401,8 @@
                         SUMOFALLPRODUCTp();
                         SUMOFALLPRODUCTp();
                         swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
+                            title: 'Service!',
+                            text: 'Service save successfully!',
                             type: 'success'
                         });
 

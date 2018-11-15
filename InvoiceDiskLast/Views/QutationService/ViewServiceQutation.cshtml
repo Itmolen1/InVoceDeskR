@@ -11,6 +11,8 @@
     var QutationModel = ViewBag.QutationDat;
 }
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
     @if (TempData["EmailMessge"] != null)
@@ -32,7 +34,7 @@
 
                 @using (Html.BeginForm("DownloadFile", "QutationService", FormMethod.Post, new { id = "DownloadFile1" }))
                 {
-                    <input type="hidden" name="FilePath" id="FilePath" />
+                    <input type="hidden" name="FilePath1" id="FilePath" />
                     <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
                 }
 
@@ -88,9 +90,9 @@
                         <br />
                         <br />
                         <br />
-                        <br />
-
-                        @Contectdatas.ContactName
+                        @if(Contectdatas.ContactName != null) { @Contectdatas.ContactName}
+                       @*@(Contectdatas.ContactName!= null && Contectdatas.ContactName != "" ? Contectdatas.ContactName:"")*@
+                      
                         <br />
                         @Contectdatas.ContactAddress
                         <br />
@@ -362,13 +364,14 @@
 <script>
 
     $(document).ready(function () {
-        var patth = localStorage.getItem('path');
+        debugger;
+        var patth = localStorage.getItem('path1');
         $("#FilePath").val(patth);
 
         if ($("#FilePath").val().length > 0) {
             $('#DownloadFile1').submit();
         }
         $("#FilePath").val('');
-        localStorage.removeItem('path');
+        localStorage.removeItem('path1');
     })
 </script>

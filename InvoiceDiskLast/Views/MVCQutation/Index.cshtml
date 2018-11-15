@@ -43,6 +43,8 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        alert('r234r');
+
         $("#QutationListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -84,17 +86,18 @@
                     //    }
                     //}
 
+
                     {
                         render: function (data, type, row) {
 
 
                             switch (row.Type) {
                                 case "Goods":
-                                    return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
+                                    return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQutation(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>'
                                     break
 
                                 case "Services":
-                                    return '<button  class="btn btn-info btn-sm" onclick="EditService(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
+                                    return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditService(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>'
                                     break
 
                             }
@@ -108,4 +111,88 @@
 
 
     });
+
+
+   
+
+
+
+
+
+
+    function EditQutation(QutationId) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/MVCQutation/AddOrEdit/" + QutationId;
+            }
+        });
+    }
+
+
+
+    function ViewQutationDetail(QutationId) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/MVCQutation/ViewQuation?quautionId=" + QutationId;
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+    function EditService(QutationId) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/ServiceQutation/AddOrEdit/" + QutationId;
+            }
+        });
+    }
+
+
+
+    function ViewServiceDetail(QutationId) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/QutationService/ViewServiceQutation?quautionId=" + QutationId;
+
+            }
+        });
+    }
+
+
+
+
 </script>

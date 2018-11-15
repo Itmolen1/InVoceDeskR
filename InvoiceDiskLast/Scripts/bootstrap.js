@@ -721,7 +721,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     if ($this.is('.disabled, :disabled')) return
 
     var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    var isActive = $parent.hasClass(' Open')
 
     clearMenus()
 
@@ -736,7 +736,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
       if (e.isDefaultPrevented()) return
 
       $parent
-        .toggleClass('open')
+        .toggleClass(' Open')
         .trigger('shown.bs.dropdown')
 
       $this.focus()
@@ -756,7 +756,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     if ($this.is('.disabled, :disabled')) return
 
     var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    var isActive = $parent.hasClass(' Open')
 
     if (!isActive || (isActive && e.keyCode == 27)) {
       if (e.which == 27) $parent.find(toggle).focus()
@@ -780,10 +780,10 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     $(backdrop).remove()
     $(toggle).each(function (e) {
       var $parent = getParent($(this))
-      if (!$parent.hasClass('open')) return
+      if (!$parent.hasClass(' Open')) return
       $parent.trigger(e = $.Event('hide.bs.dropdown'))
       if (e.isDefaultPrevented()) return
-      $parent.removeClass('open').trigger('hidden.bs.dropdown')
+      $parent.removeClass(' Open').trigger('hidden.bs.dropdown')
     })
   }
 
@@ -1081,8 +1081,8 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
   })
 
   $(document)
-    .on('show.bs.modal',  '.modal', function () { $(document.body).addClass('modal-open') })
-    .on('hidden.bs.modal', '.modal', function () { $(document.body).removeClass('modal-open') })
+    .on('show.bs.modal',  '.modal', function () { $(document.body).addClass('modal- Open') })
+    .on('hidden.bs.modal', '.modal', function () { $(document.body).removeClass('modal- Open') })
 
 }(window.jQuery);
 

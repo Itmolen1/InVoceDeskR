@@ -76,7 +76,7 @@
             });
         },
         write : function ( PADocument, $ele ) {
-            PADocument.open();
+            PADocument. Open();
             PADocument.write( PrintArea.docType() + "<html>" + PrintArea.getHead() + PrintArea.getBody( $ele ) + "</html>" );
             PADocument.close();
         },
@@ -183,7 +183,7 @@
             windowAttr += ",width=" + settings.popWd + ",height=" + settings.popHt;
             windowAttr += ",resizable=yes,screenX=" + settings.popX + ",screenY=" + settings.popY + ",personalbar=no,scrollbars=yes";
 
-            var newWin = window.open( "", "_blank",  windowAttr );
+            var newWin = window. Open( "", "_blank",  windowAttr );
 
             newWin.doc = newWin.document;
 

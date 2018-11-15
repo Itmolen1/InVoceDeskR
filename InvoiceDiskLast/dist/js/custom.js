@@ -37,7 +37,7 @@ $(function() {
 
     });
 
-    // this is for close icon when navigation open in mobile view
+    // this is for close icon when navigation  Open in mobile view
     $(".nav-toggler").on('click', function() {
         $("body").toggleClass("show-sidebar");
     });

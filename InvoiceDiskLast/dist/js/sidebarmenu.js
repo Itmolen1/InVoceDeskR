@@ -30,11 +30,11 @@ $(function() {
     $('#sidebarnav a').on('click', function(e) {
 
         if (!$(this).hasClass("active")) {
-            // hide any open menus and remove all other classes
+            // hide any  Open menus and remove all other classes
             $("ul", $(this).parents("ul:first")).removeClass("in");
             $("a", $(this).parents("ul:first")).removeClass("active");
 
-            // open our new menu and add the open class
+            //  Open our new menu and add the  Open class
             $(this).next("ul").addClass("in");
             $(this).addClass("active");
 
