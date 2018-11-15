@@ -23,8 +23,8 @@ $(function() {
     $(window).ready(chtin);
     $(window).on("resize", chtin);
 
-    $(". Open-panel").on("click", function() {
-        $(".chat-left-aside").toggleClass(" Open-pnl");
-        $(". Open-panel i").toggleClass("ti-angle-left");
+    $(".open-panel").on("click", function() {
+        $(".chat-left-aside").toggleClass("open-pnl");
+        $(".open-panel i").toggleClass("ti-angle-left");
     });
 });

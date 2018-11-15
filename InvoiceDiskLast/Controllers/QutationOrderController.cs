@@ -137,7 +137,7 @@ namespace InvoiceDiskLast.Controllers
 
             if (status == "" || status == null)
             {
-                status = "open";
+                status = "Open";
             }
 
             IEnumerable<MVCQutationModel> QutationOrderList;
@@ -248,5 +248,134 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+
+
+        [HttpPost]
+        public ActionResult DeleteQuatation(int QutationId, int QutationDetailID, int vat, decimal total)
+        {
+            try
+            {
+
+                MVCQutationViewModel viewModel = new MVCQutationViewModel();
+                viewModel.QutationDetailId = QutationDetailID;
+                HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
+                MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("QTID", QutationId.ToString());
+                //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("QutationDetailID1", QutationDetailID1);
+
+
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationId.ToString()).Result;
+                List<MVCQutationDetailsModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationDetailsModel>>().Result;
+                MVCQutationDetailsModel CMODEL = new MVCQutationDetailsModel();
+
+                if (QutationModelDetailsList.Count() > 1)
+                {
+                    QutationModelDetailsList = QutationModelDetailsList.Where(C => C.QutationDetailId == QutationDetailID).ToList();
+
+                    #region
+                    if (QutationModelDetailsList.Count() != 0)
+                    {
+                        CMODEL.Vat = QutationModelDetailsList[0].Vat;
+                        CMODEL.Total = QutationModelDetailsList[0].Total;
+                        QutationModel.SubTotal = QutationModel.SubTotal - CMODEL.Total;
+                        QutationModel.TotalAmount = QutationModel.TotalAmount - (CMODEL.Vat + CMODEL.Total);
+
+                        QutationModel.QutationID = QutationModel.QutationID;
+
+
+
+                        QutationModel.QutationDate = QutationModel.QutationDate;
+                        QutationModel.CustomerNote = QutationModel.CustomerNote;
+                        QutationModel.Qutation_ID = QutationModel.Qutation_ID;
+                        QutationModel.DueDate = QutationModel.DueDate;
+                        QutationModel.Status = QutationModel.Status;
+                        QutationModel.CompanyId = QutationModel.CompanyId;
+                        if (vat == 6)
+                            QutationModel.TotalVat6 = QutationModel.TotalVat6 - 6;
+                        else
+                            QutationModel.TotalVat21 = QutationModel.TotalVat21 - 21;
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + QutationId, QutationModel).Result;
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            HttpResponseMessage deleteQuaution2 = GlobalVeriables.WebApiClient.DeleteAsync("APIQutationDetails/" + QutationDetailID).Result;
+                            if (deleteQuaution2.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                                return new JsonResult { Data = new { Status = "Success" } };
+                            }
+                        }
+                        else
+                        {
+                            return new JsonResult { Data = new { Status = "Fail" } };
+
+
+                        }
+                        #endregion
+                    }
+                }
+
+                else
+                {
+
+                    HttpResponseMessage Qdresponse = GlobalVeriables.WebApiClient.DeleteAsync("APIQutationDetails/" + QutationDetailID).Result;
+
+                    if (Qdresponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        QutationModel.SubTotal = 0.00;
+                        QutationModel.TotalAmount = 0.00;
+                        QutationModel.Qutation_ID = QutationModel.Qutation_ID;
+                        QutationModel.QutationID = QutationModel.QutationID;
+                        QutationModel.QutationDate = QutationModel.QutationDate;
+                        QutationModel.CustomerNote = QutationModel.CustomerNote;
+                        QutationModel.Qutation_ID = QutationModel.Qutation_ID;
+                        QutationModel.DueDate = QutationModel.DueDate;
+                        QutationModel.Status = QutationModel.Status;
+                        QutationModel.CompanyId = QutationModel.CompanyId;
+
+                        QutationModel.TotalVat6 = 0;
+
+                        QutationModel.TotalVat21 = 0;
+
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + QutationId, QutationModel).Result;
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                            return new JsonResult { Data = new { Status = "Success" } };
+                        }
+                    }
+                    else
+                    {
+                        return new JsonResult { Data = new { Status = "Fail" } };
+
+
+                    }
+                    //    HttpResponseMessage deleteQuaution = GlobalVeriables.WebApiClient.DeleteAsync("APIQutationDetail/" + QutationId).Result;
+
+
+
+                    //if (deleteQuaution.StatusCode == System.Net.HttpStatusCode.OK)
+                    //{
+                    //  return Json("Success", JsonRequestBehavior.AllowGet);
+                    // }
+
+                }
+
+
+
+            }
+            catch (Exception)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail" } };
+            }
+
+            return new JsonResult { Data = new { Status = "Success" } };
+        }
     }
 }

@@ -84,6 +84,7 @@ namespace InvoiceDiskLast.Controllers
             qutationmodel.UserId = ob.UserId;
             qutationmodel.CompanyId = ob.CompanyId;
             qutationmodel.ContactId = ob.ContactId;
+            qutationmodel.Type = ob.Type;
 
             if (qutationmodel == null)
             {
@@ -246,7 +247,45 @@ namespace InvoiceDiskLast.Controllers
 
 
 
+        [Route("api/QutationOrderListByStatus12/{Status:alpha}")]
+        public IHttpActionResult GetQutationOrderListByStatus12(string Status)
+        {
+            object ob = new object();
+            try
+            {
+                var IDS = "";
+                int id = 0;
+                IEnumerable<string> headerValues;
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                    id = Convert.ToInt32(IDS);
+                }
+                ob = db.QutationTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MVCQutationModel
+                {
+                    QutationID = Convert.ToInt32(p.QutationID),
+                    Qutation_ID = p.Qutation_ID,
+                    QutationDate = (DateTime)p.QutationDate,
+                    DueDate = p.DueDate,
+                    RefNumber = p.RefNumber,
+                    SubTotal = p.SubTotal,
+                    Status = p.Status,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+                    Type = p.Type,
 
+
+                }).ToList();
+
+                return Ok(ob);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 }

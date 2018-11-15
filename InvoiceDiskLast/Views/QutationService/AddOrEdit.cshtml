@@ -294,7 +294,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
+                                                        <button type="button" id="RemoveEdit2" class="btn btn-danger">Remove</button>
                                                     </td>
                                                     <td>
                                                         <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
@@ -1605,5 +1605,57 @@
 
 
 
+    $(document).ready(function () {
+
+        $(document).on('click', '#RemoveEdit2', function () {
+            var row = $(this).closest('tr');
+
+            var QIDId = row.find('td').find('.QutationDetailId').val();
+            var total1 = row.find('td').find('.PurchaseTotal').val();
+            var vat = row.find('td').find('.VATp').val();
+            var QID = row.find('td').find('.QutationID').val();
+
+            var data = JSON.stringify({
+                QutationId: QID,
+                QutationDetailID: QIDId,
+                vat: vat,
+                total: total1
+            })
+            $.ajax({
+                url: "/QutationService/DeleteQuatation",
+                type: "POST",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: data,
+                success: function (data) {
+                    if (data.Status == "Success") {
+                        $("#" + QIDId).remove();
+                        calculatevat();
+                        SUMOFALLPRODUCT();
+                        sumofGrandModel();
+                        swal({
+                            title: 'Qutation!',
+                            text: 'Qutation delete successfully!',
+                            type: 'success'
+                        });
+                    }
+                    else if (data.Status == "Fail") {
+
+                        swal({
+                            title: 'Qutation!',
+                            text: 'fail to delete qutation!',
+                            type: 'danger'
+                        });
+
+                    }
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
+        });
+    });
 
 </script>

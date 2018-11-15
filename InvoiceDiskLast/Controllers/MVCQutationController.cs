@@ -858,7 +858,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                mvcQutationModel.Status = "Open";
+              
 
 
 
@@ -1311,7 +1311,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.Status = "Open";
+                   
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
 
                     IEnumerable<string> headerValues;

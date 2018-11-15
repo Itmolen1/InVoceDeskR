@@ -64,7 +64,7 @@
                 <th>
                     Action
                 </th>
-                
+
 
             </tr>
         </thead>
@@ -155,32 +155,29 @@
 
 
                 <table class="table" id="PendingTable">
-                    <thead style="background-color:black;color:white">
-                        <tr>
-                            <th>
-                                Code
-                            </th>
-                            <th>
-                                ProductName
-                            </th>
-                            <th>
-                                Quantity
-                            </th>
-                            <th>
-                                Price
-                            </th>
+                    <thead style="background-color:black;color:white" id="theadTable">
+                        @*<tr>
+                                <th>
+                                    Code
+                                </th>
+                                <th>
+                                    ProductName
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
 
-                            <th>
-                                Total
-                            </th>
+                                <th>
+                                    Total
+                                </th>
 
-                            <th>
-                                Vat
-                            </th>
-
-
-
-                        </tr>
+                                <th>
+                                    Vat
+                                </th>
+                            </tr>*@
                     </thead>
                     <tbody id="tbody"></tbody>
                 </table>
@@ -243,6 +240,9 @@
     </div>
     <!-- /.modal-content -->
 </div>
+
+
+
 
 <!-- /.modal-dialog -->
 
@@ -501,9 +501,15 @@
                 { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
                   { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
 
-                 { "data": "Type", "name": "Type", "autoWidth": true },
+                 {
+                     "data": "Type", "name": "Type", "autoWidth": true
 
-                   { "data": "Status", "name": "Status", "autoWidth": true },
+                 },
+
+                   {
+                       "data": "Status", "name": "Status", "autoWidth": true
+
+                   },
 
                   {
                       render: function (data, type, row) {
@@ -515,12 +521,12 @@
                                   break
 
                               case "rejected":
-                                  return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re open</i></button>'
+                                  return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re  Open</i></button>'
                                   break
 
 
                               case "pending":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re  Open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
                                   break
 
 
@@ -572,7 +578,7 @@
                        }, "autoWidth": true
                    },
                   {
-                      "data": "ToDate", "type": "date ",
+                      "data": "ToDate", "type": "date",
                       "render": function (value) {
                           if (value === null) return "";
                           var pattern = /Date\(([^)]+)\)/;//date format from server side
@@ -590,19 +596,8 @@
     }
 
 
-    function AcceptOrder(id) {
-        $('#txtrefrencenumber').val(id);
-        $('#txttransactionId').val(Math.floor(Math.random() * 10));
-        $('#TransactionModel').modal('show');
-
-    }
-    function Reopen(id) {
-        updateStatus(id, "open", "open", "the invoice is open successfully");
-    }
-
-
-    function ViewDetail(purchaseId) {
-
+    function ViewDetail1( purchaseId,Type1) {
+    
         $.ajax({
             url: '/Purchase/AddOrEditPurchase',
             type: 'GET',
@@ -610,20 +605,37 @@
                 purchaseId: purchaseId
             },
             success: function () {
-                GetPurchaseDetailByPurchaseId(purchaseId)
+
+                GetPurchaseDetailByPurchaseId(purchaseId, Type1)
             }
         });
-
-
     }
 
 
-    function GetPurchaseDetailByPurchaseId(pruchaseId) {
-        debugger;
+    function AcceptOrder(id) {
+        $('#txtrefrencenumber').val(id);
+        $('#txttransactionId').val(Math.floor(Math.random() * 10));
+        $('#TransactionModel').modal('show');
 
+    }
+    function Reopen(id) {
+        updateStatus(id, " Open", " Open", "the invoice is  Open successfully");
+    }
+
+
+    function GetPurchaseDetailByPurchaseId(pruchaseId, Type) {
+        if (Type=="Goods")
+        {
+            $('#theadTable').empty();
+            $('#theadTable').append("<tr> <th> PurchaseId</th><th> PurchaseDate</th><th>PurchaseDueDate</th><th> RefrenceNumber</th><th> Puchase Subtotal </th><th>Vat %</th></tr>")
+        }
+        if (Type == "Services") {
+            $('#theadTable').empty();
+            $('#theadTable').append("<tr><th> PurchaseId</th><th> Project</th><th>Number of hour</th><th>Hourly rate</th><th>Total</th><th>Vat %</th></tr>")
+        }
+       
         var Data = JSON.stringify({
             PurchaseId: pruchaseId,
-
         })
         $.ajax({
             url: '/Order/GetPendingItem',

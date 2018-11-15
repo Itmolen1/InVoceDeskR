@@ -1085,7 +1085,7 @@ var i,
 		return -1;
 	},
 
-	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple| Open|readonly|required|scoped",
+	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
 
 	// Regular expressions
 
@@ -8678,12 +8678,12 @@ if ( xhrSupported ) {
 					var handle, i,
 						xhr = s.xhr();
 
-					//  Open the socket
+					// Open the socket
 					// Passing null username, generates a login popup on Opera (#2865)
 					if ( s.username ) {
-						xhr. Open( s.type, s.url, s.async, s.username, s.password );
+						xhr.open( s.type, s.url, s.async, s.username, s.password );
 					} else {
-						xhr. Open( s.type, s.url, s.async );
+						xhr.open( s.type, s.url, s.async );
 					}
 
 					// Apply custom fields if provided
