@@ -169,8 +169,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
-
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -544,7 +544,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
+                purchasemodel.Status = "open";
                 purchasemodel.Status = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
@@ -667,7 +667,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
-                purchasemodel.Status = "Open";
+                purchasemodel.Status = "open";
                 purchasemodel.Status = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
