@@ -959,8 +959,7 @@
     });
 
 
-    function LoadProductSelect()
-    {
+    function LoadProductSelect() {
         LoadProductUnitPurchase();
         $("thead #SelectProductQutationp").find("option").remove();
         $("thead #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
@@ -972,16 +971,16 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            data:{ProductStatus: "Goods"},
-            success : function (data) {
+            data: { ProductStatus: "Services" },
+            success: function (data) {
                 $.each(data, function (key, item) {
                     $('thead #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
                 });
             },
-        Error: function (errormessage) {
-            alert(errormessage);
-        }
-    });
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
     }
 
     // product price by id
@@ -1471,6 +1470,7 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
+            data: { ProductStatus: 'Service' },
             success: function (data) {
 
                 $.each(data, function (key, item) {

@@ -114,7 +114,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-                string Status = "Sirvice";
+                string Status = "Services";
 
                 var idd = Session["ClientId"];
                 var cdd = Session["CompayID"];

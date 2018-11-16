@@ -195,9 +195,9 @@
                                                     <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Message"></textarea>
                                                 </div>
                                                 <button type="submit" class="btn btn-info">Submit</button>
-                                                
+
                                             </form>
-                                           
+
                                         </li>
                                         <li class="col-lg-3 col-xlg-4 m-b-30">
                                             <h4 class="m-b-20">List style</h4>
@@ -733,7 +733,6 @@
 
 
         $('#orderdetailsitems').on('click', '.remove', function () {
-
             var currentRow = $(this).closest('tr');
             var vat = currentRow.find('.VAT  option:selected').val();
             var Total = currentRow.find('.FTotal').val();
@@ -789,7 +788,7 @@
 
 
 
-                $('#orderdetailsitems > .tbody  > tr:not(:first)').each(function (index, ele) {
+                $('#orderdetailsitems > .tbody  > tr ').each(function (index, ele) {
 
                     if ($('#SelectProductQutation', this).val() == '0' ||
                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
@@ -986,20 +985,31 @@
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
-            {
-                var orderItem = {
-                    ItemId: $('.product ', this).val(),
-                    Quantity: parseInt($('.quantity', this).val()),
-                    Rate: parseFloat($('.rate', this).val()),
-                    TotalAmount: parseFloat($('.FTotal', this).val()),
-                    Total: parseFloat($('.FTotal', this).val()),
-                    Vat: parseFloat($('.VAT', this).val()),
-                    QutationID: $('#QutationID').val(),
-                    QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                    Qutation_ID: $('#Qutation_ID').val()
+        $('#orderdetailsitems .tbody >tr ').each(function (index, ele) {
+
+            if ($('#SelectProductQutation', this).val() == '0' ||
+                       (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                       $('.rate', this).val() == "" ||
+                       isNaN($('.rate', this).val())
+                       ) {
+                errorItemCount++;
+                $(this).addClass('error');
+            }
+            else {
+                {
+                    var orderItem = {
+                        ItemId: $('.product ', this).val(),
+                        Quantity: parseInt($('.quantity', this).val()),
+                        Rate: parseFloat($('.rate', this).val()),
+                        TotalAmount: parseFloat($('.FTotal', this).val()),
+                        Total: parseFloat($('.FTotal', this).val()),
+                        Vat: parseFloat($('.VAT', this).val()),
+                        QutationID: $('#QutationID').val(),
+                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                        Qutation_ID: $('#Qutation_ID').val()
+                    }
+                    list.push(orderItem);
                 }
-                list.push(orderItem);
             }
         });
 
@@ -1164,20 +1174,30 @@
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
+        $('#orderdetailsitems .tbody > tr').each(function (index, ele) {
             {
-                var orderItem = {
-                    ItemId: $('.product ', this).val(),
-                    Quantity: parseInt($('.quantity', this).val()),
-                    Rate: parseFloat($('.rate', this).val()),
-                    TotalAmount: parseFloat($('.FTotal', this).val()),
-                    Total: parseFloat($('.FTotal', this).val()),
-                    Vat: parseFloat($('.VAT', this).val()),
-                    QutationID: $('#QutationID').val(),
-                    QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                    Qutation_ID: $('#Qutation_ID').val()
+                if ($('#SelectProductQutation', this).val() == '0' ||
+                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                         $('.rate', this).val() == "" ||
+                         isNaN($('.rate', this).val())
+                         ) {
+                    errorItemCount++;
+                    $(this).addClass('error');
                 }
-                list.push(orderItem);
+                else {
+                    var orderItem = {
+                        ItemId: $('.product ', this).val(),
+                        Quantity: parseInt($('.quantity', this).val()),
+                        Rate: parseFloat($('.rate', this).val()),
+                        TotalAmount: parseFloat($('.FTotal', this).val()),
+                        Total: parseFloat($('.FTotal', this).val()),
+                        Vat: parseFloat($('.VAT', this).val()),
+                        QutationID: $('#QutationID').val(),
+                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                        Qutation_ID: $('#Qutation_ID').val()
+                    }
+                    list.push(orderItem);
+                }
             }
         });
 
@@ -1252,7 +1272,16 @@
         var list = [];
         var errorItemCount = 0;
         $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
-            {
+
+            if ($('#SelectProductQutation', this).val() == '0' ||
+                        (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                        $('.rate', this).val() == "" ||
+                        isNaN($('.rate', this).val())
+                        ) {
+                errorItemCount++;
+                $(this).addClass('error');
+            }
+            else {
                 var orderItem = {
                     ItemId: $('.product ', this).val(),
                     Quantity: parseInt($('.quantity', this).val()),

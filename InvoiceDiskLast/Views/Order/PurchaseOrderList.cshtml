@@ -84,7 +84,7 @@
 
                 <div class="row">
                     <div class="col-ms-4">
-                        <div id="logo"></div>
+                        <div id="logo" class="mydiv"></div>
                         @*<img src="~/images/logo.png182634230.png" class="img-responsive" id="targetImg" style="border:none; margin-top:50px" />*@
                     </div>
                     <div class="col-sm-8">
@@ -596,8 +596,8 @@
     }
 
 
-    function ViewDetail1( purchaseId,Type1) {
-    
+    function ViewDetail1(purchaseId, Type1) {
+
         $.ajax({
             url: '/Purchase/AddOrEditPurchase',
             type: 'GET',
@@ -624,8 +624,7 @@
 
 
     function GetPurchaseDetailByPurchaseId(pruchaseId, Type) {
-        if (Type=="Goods")
-        {
+        if (Type == "Goods") {
             $('#theadTable').empty();
             $('#theadTable').append("<tr> <th> PurchaseId</th><th> PurchaseDate</th><th>PurchaseDueDate</th><th> RefrenceNumber</th><th> Puchase Subtotal </th><th>Vat %</th></tr>")
         }
@@ -633,7 +632,7 @@
             $('#theadTable').empty();
             $('#theadTable').append("<tr><th> PurchaseId</th><th> Project</th><th>Number of hour</th><th>Hourly rate</th><th>Total</th><th>Vat %</th></tr>")
         }
-       
+
         var Data = JSON.stringify({
             PurchaseId: pruchaseId,
         })
@@ -679,7 +678,7 @@
                 $('#tbody').html(html);
 
                 $("#logo").empty();
-                $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "' style='width:72%; height:146px' />");
+                $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "'/>");
 
                 $('#showpendindModel').modal('show');
             },
