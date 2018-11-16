@@ -162,7 +162,7 @@
 
 <script>
     $(document).ready(function () {
-        var rtype;
+        
         $("#productTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -186,23 +186,9 @@
                      { "data": "Type", "name": "Type", "autoWidth": true },                     
                      { "data": "ProductStatus", "name": "ProductStatus", "autoWidth": true },
 
-                   {
-                       "data": "AddedDate", "type": "date ",
-                       "render": function (value) {
-                           if (value === null) return "";
-                           var pattern = /Date\(([^)]+)\)/;//date format from server side
-                           var results = pattern.exec(value);
-                           var dt = new Date(parseFloat(results[1]));
-
-                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                       }, "autoWidth": true
-                   },
-
-
-
                     {
                         render: function (data, type, row) {                           
-                            return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil"></i></a>|<button type="button" href="" class="btn btn-danger btn-xs" onclick="DeleteProductNow(' + row.ProductId +')"><i class="fa fa-trash"></i></button>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ProductId + ')"><i class="fa fa-eye"></i></a>'
+                            return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil"></i></a>|<button type="button" href="" class="btn btn-danger btn-xs" onclick="DeleteProductNow(' + row.ProductId + ","+ row.ProductStatus +')"><i class="fa fa-trash"></i></button>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ProductId + ')"><i class="fa fa-eye"></i></a>'
                         }
                     }
             ]
@@ -519,14 +505,40 @@
         });
     }
 
-    function DeleteProductNow(id) {
-        alert();
-        ProductStatus = false;
-        alertify.confirm('Product Information', 'Are you sure to delete this record ?', function () {
+    function DeleteProductNow(id, ProductStatus) {
+        var answer = confirm('Are you sure you want to change the status of the product?');
+        if (answer) {
+            $.ajax({ 
+                url: "/MVCProduct/Delete",
+                type: "Post",
+                async: false,
+                dataType: "json",
+                data: { id: id, ProductStatus: ProductStatus },
+                success: function (data) {
+                    if (data == "ok")
+                    $('#productTable').DataTable().ajax.reload();                    
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+        });
+           
+        }
+        else {
+            console.log('cancel');
+        }
+        //alertify.confirm("This is an alert dialog?", function (e) {
+        //    if (e) {
+        //        alertify.success("Category was saved.")
+        //    } else {
+        //        alertify.error("Category not saved.");
+        //    }
+        //});
+        @*alertify.confirm('Product Information', 'Are you sure to delete this record ?', function () {
 
-            window.location.href = '@Url.Action("Delete","MVCProduct")/' + id;
+            alert()
 
-        }, null);
+        }, null);*@
     }
 
 </script>

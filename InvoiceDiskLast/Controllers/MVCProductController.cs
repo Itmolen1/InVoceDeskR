@@ -45,7 +45,7 @@ namespace InvoiceDiskLast.Controllers
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                     {
                         ProductList = ProductList.Where(p => p.ProductId.ToString().Contains(search)
-                       || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())                      
+                        || p.ProductName != null && p.ProductName.ToLower().Contains(search.ToLower())                      
                        || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
                         //|| p.Prod != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
                        || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
@@ -69,7 +69,10 @@ namespace InvoiceDiskLast.Controllers
                     case "PurchasePrice":
                         ProductList = ProductList.OrderBy(c => c.PurchasePrice).ToList();
                         break;
-
+                        
+                  case "Type":
+                        ProductList = ProductList.OrderBy(c => c.Type).ToList();
+                        break;
                     case "ProductStatus":
                         ProductList = ProductList.OrderBy(c => c.ProductStatus).ToList();
                         break;
@@ -256,10 +259,17 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-
+                if(ProductStatus == true)
+                {
+                    ProductStatus = false;
+                }
+                else
+                {
+                    ProductStatus = true;
+                }
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteProduct/" + id.ToString()+ "/"+ ProductStatus).Result;
 
-                return Json("Delete", JsonRequestBehavior.AllowGet);
+                return Json("ok", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
