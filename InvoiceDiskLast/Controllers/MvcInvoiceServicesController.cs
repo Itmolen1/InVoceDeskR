@@ -459,7 +459,7 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-           
+
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -1150,8 +1150,22 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
                     bool result = EmailController.email(emailModel);
-
                     TempData["EmailMessge"] = "Email Send successfully";
+
+
+                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + email.invoiceId.ToString()).Result;
+                    MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                    if (PerformTransaction(ob, CompanyID))
+                    {
+
+                        TempData["EmailMessge"] = "Email Send Succssfully";
+
+                    }
+                    else
+                    {
+                        TempData["EmailMessge"] = "Your transaction is not perform with success";
+                    }
 
                 }
                 //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
@@ -1176,6 +1190,96 @@ namespace InvoiceDiskLast.Controllers
 
             return View(email);
         }
+
+
+        public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
+        {
+            bool TransactionResult = false;
+
+            try
+            {
+                string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+                accountTransictiontable.TransictionDate = DateTime.Now;
+                accountTransictiontable.FK_AccountID = 4002;
+                accountTransictiontable.Cr = purchaseViewModel.PurchaseTotoalAmount;
+                accountTransictiontable.Dr = 0.00;
+                accountTransictiontable.TransictionNumber = base64Guid;
+                accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                accountTransictiontable.TransictionType = "Purchase";
+                accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                accountTransictiontable.AddedBy = 1;
+                accountTransictiontable.FK_CompanyId = CompanyId;
+                accountTransictiontable.FKPaymentTerm = 1;
+                accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseTotoalAmount.ToString() + "On invoice genrattion";
+                HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                if (responses.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                    TransactionResult = true;
+                    accountTransictiontable.TransictionDate = DateTime.Now;
+                    accountTransictiontable.FK_AccountID = 4003;
+                    accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
+                    accountTransictiontable.Cr = 0.00;
+                    accountTransictiontable.TransictionNumber = base64Guid1;
+                    accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                    accountTransictiontable.TransictionType = "Purchase";
+                    accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                    accountTransictiontable.AddedBy = 1;
+                    accountTransictiontable.FK_CompanyId = CompanyId;
+                    accountTransictiontable.FKPaymentTerm = 1;
+                    accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseSubTotal.ToString() + "On invoice genrattion";
+                    HttpResponseMessage responses2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+
+                    if (responses2.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        string base64Guid2 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                        TransactionResult = true;
+                        accountTransictiontable.TransictionDate = DateTime.Now;
+                        accountTransictiontable.FK_AccountID = 3005;
+                        accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
+                        accountTransictiontable.Cr = 0.00;
+                        accountTransictiontable.TransictionNumber = base64Guid2;
+                        accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                        accountTransictiontable.TransictionType = "Purchase";
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                        accountTransictiontable.AddedBy = 1;
+                        accountTransictiontable.FK_CompanyId = CompanyId;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        double TotalVat = Convert.ToDouble(purchaseViewModel.Vat21 + purchaseViewModel.Vat6);
+                        accountTransictiontable.Dr = TotalVat;
+                        accountTransictiontable.Description = "Total + Vat ,Invoice created at Invoice" + TotalVat + "On invoice genrattion";
+
+                        HttpResponseMessage responses3 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                        if (responses3.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            return TransactionResult = true;
+                        }
+
+                    }
+                }
+            }
+
+
+            catch (Exception)
+            {
+
+                return TransactionResult = false;
+            }
+            return TransactionResult;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         [HttpPost]

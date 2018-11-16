@@ -232,7 +232,7 @@
                                         </td>
                                         <td>
 
-                                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal" } })
+                                            @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal",@readonly="readonly" } })
                                             @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
                                         </td>
                                         <td>
@@ -1167,7 +1167,7 @@
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#orderdetailsitems > tbody > tr ').each(function (index, ele) {
+        $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
             if ($('#product', this).val() == '0' ||
                  (parseInt($('.quantity', this).val()) || 0) == 0 ||
                  $('#Rate', this).val() == "" ||

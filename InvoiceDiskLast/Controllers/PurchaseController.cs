@@ -45,7 +45,7 @@ namespace InvoiceDiskLast.Controllers
 
                 int companyId = Convert.ToInt32(Session["CompayID"]);
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseInvoiceList/" + StatusEnum.Goods +"/"+ companyId).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseInvoiceList/" + StatusEnum.Goods + "/" + companyId).Result;
                 PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
 
 
@@ -327,7 +327,7 @@ namespace InvoiceDiskLast.Controllers
                     ViewBag.VatDrop = model;
 
 
-                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID +"/All").Result;
+                    HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/All").Result;
                     List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                     ViewBag.Product = productModel;
 
@@ -408,7 +408,6 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.CompanyId = CompanyID;
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
-
                 purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
                 purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
@@ -422,6 +421,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
+
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -437,6 +437,8 @@ namespace InvoiceDiskLast.Controllers
 
                     if (response.StatusCode == System.Net.HttpStatusCode.Created)
                     {
+                        purchaseViewModel.PurchaseOrderID = intpurchaseorderId;
+
                         foreach (var item in purchaseViewModel.PurchaseDetailslist)
                         {
                             PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
@@ -504,8 +506,15 @@ namespace InvoiceDiskLast.Controllers
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
+
+
+
+
+
             return new JsonResult { Data = new { Status = "Success", purchaseId = intpurchaseorderId } };
         }
+
+
 
 
 
@@ -514,7 +523,7 @@ namespace InvoiceDiskLast.Controllers
         {
             var purchaseorderId = "";
             int intpurchaseorderId = 0;
-        
+
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -545,7 +554,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
-                purchasemodel.Status = StatusEnum.Goods.ToString();
+                purchasemodel.Type = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
@@ -636,8 +645,8 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult saveEmailPrint(MvcPurchaseViewModel purchaseViewModel)
         {
             var purchaseorderId = "";
-            int intpurchaseorderId = 0;  
-                  
+            int intpurchaseorderId = 0;
+
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -668,7 +677,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.VenderId = Contectid;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
-                purchasemodel.Status = StatusEnum.Goods.ToString();
+                purchasemodel.Type = StatusEnum.Goods.ToString();
                 if (purchaseViewModel.PurchaseOrderID == 0)
                 {
 
@@ -995,6 +1004,7 @@ namespace InvoiceDiskLast.Controllers
 
                 email.invoiceId = (int)purchaseOrderId;
                 email.From = "infouurtjefactuur@gmail.com";
+
             }
             catch (Exception)
             {
@@ -1002,13 +1012,84 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
 
-
-
-
-
             return View(email);
         }
+        public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
+        {
+            bool TransactionResult = false;
 
+            try
+            {
+                string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+                accountTransictiontable.TransictionDate = DateTime.Now;
+                accountTransictiontable.FK_AccountID = 4002;
+                accountTransictiontable.Cr = purchaseViewModel.PurchaseTotoalAmount;
+                accountTransictiontable.Dr = 0.00;
+                accountTransictiontable.TransictionNumber = base64Guid;
+                accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                accountTransictiontable.TransictionType = "Purchase";
+                accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                accountTransictiontable.AddedBy = 1;
+                accountTransictiontable.FK_CompanyId = CompanyId;
+                accountTransictiontable.FKPaymentTerm = 1;
+                accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseTotoalAmount.ToString() + "On invoice genrattion";
+                HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                if (responses.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                    TransactionResult = true;
+                    accountTransictiontable.TransictionDate = DateTime.Now;
+                    accountTransictiontable.FK_AccountID = 4003;
+                    accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
+                    accountTransictiontable.Cr = 0.00;
+                    accountTransictiontable.TransictionNumber = base64Guid1;
+                    accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                    accountTransictiontable.TransictionType = "Purchase";
+                    accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                    accountTransictiontable.AddedBy = 1;
+                    accountTransictiontable.FK_CompanyId = CompanyId;
+                    accountTransictiontable.FKPaymentTerm = 1;
+                    accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseSubTotal.ToString() + "On invoice genrattion";
+                    HttpResponseMessage responses2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+
+                    if (responses2.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        string base64Guid2 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                        TransactionResult = true;
+                        accountTransictiontable.TransictionDate = DateTime.Now;
+                        accountTransictiontable.FK_AccountID = 3005;
+                        accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
+                        accountTransictiontable.Cr = 0.00;
+                        accountTransictiontable.TransictionNumber = base64Guid2;
+                        accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                        accountTransictiontable.TransictionType = "Purchase";
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                        accountTransictiontable.AddedBy = 1;
+                        accountTransictiontable.FK_CompanyId = CompanyId;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        double TotalVat = Convert.ToDouble(purchaseViewModel.Vat21 + purchaseViewModel.Vat6);
+                        accountTransictiontable.Dr = TotalVat;
+                        accountTransictiontable.Description = "Total + Vat ,Invoice created at Invoice" + TotalVat + "On invoice genrattion";
+
+                        HttpResponseMessage responses3 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                        if (responses3.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            return TransactionResult = true;
+                        }
+
+                    }
+                }
+            }
+
+
+            catch (Exception)
+            {
+
+                return TransactionResult = false;
+            }
+            return TransactionResult;
+        }
 
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
@@ -1073,6 +1154,21 @@ namespace InvoiceDiskLast.Controllers
                     TempData["EmailMessge"] = "Email Send successfully";
 
                 }
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + email.invoiceId.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                if (PerformTransaction(ob, CompanyID))
+                {
+
+                    TempData["EmailMessge"] = "Email Send Succssfully";
+
+                }
+                else
+                {
+                    TempData["EmailMessge"] = "Your transaction is not perform with success";
+                }
+
                 //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
 
