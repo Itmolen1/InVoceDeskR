@@ -506,9 +506,7 @@
     }
 
     function DeleteProductNow(id, ProductStatus) {
-
-
-        var answer = confirm('Are you sure you want to delete this?');
+        var answer = confirm('Are you sure you want to change the status of the product?');
         if (answer) {
             $.ajax({ 
                 url: "/MVCProduct/Delete",
@@ -517,16 +515,14 @@
                 dataType: "json",
                 data: { id: id, ProductStatus: ProductStatus },
                 success: function (data) {
-                    $('#productTable').DataTable().ajax.reload();
-                    return;
+                    if (data == "ok")
+                    $('#productTable').DataTable().ajax.reload();                    
                 },
                 Error: function (errormessage) {
                     alert(errormessage);
                 }
         });
-
-
-            window.location.href = '@Url.Action("Delete","MVCProduct")/' + id +"/"+false;
+           
         }
         else {
             console.log('cancel');
@@ -540,7 +536,7 @@
         //});
         @*alertify.confirm('Product Information', 'Are you sure to delete this record ?', function () {
 
-            window.location.href = '@Url.Action("Delete","MVCProduct")/' + id;
+            alert()
 
         }, null);*@
     }
