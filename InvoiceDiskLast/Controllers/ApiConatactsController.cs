@@ -22,32 +22,18 @@ namespace InvoiceDiskLast.Controllers
 
 
         // GET: api/ApiConatacts
-        public IHttpActionResult GetContactsTables()
-        {
-            List<ContactsTable> ContactModel = new List<ContactsTable>();
-            IEnumerable<string> headerValues;
-            //var DBLIST = "";
-            var IDS = "";
-            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
-            {
-                IDS = headerValues.FirstOrDefault();
-            }
-            int id = Convert.ToInt32(IDS);
-            string status = "";
-            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CustomerStatus", out headerValues))
-            {
-                status = headerValues.FirstOrDefault();
-            }
-
-            // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
+        [Route("api/ApiConatacts/{companyID:int}/{contactStatus:alpha}")]
+        public IHttpActionResult GetContactsTables(int companyID, string contactStatus)
+        {            
             try
             {
-                if (status != "")
+                if (contactStatus != "All")
                 {
-                    var obvender = db.ContactsTables.Where(x => x.Company_Id == id && x.Type == status && x.ContactsId != null).Select(c => new MVCContactModel
+                    var obvender = db.ContactsTables.Where(x => x.Company_Id == companyID && x.Type == contactStatus && x.ContactsId != null).Select(c => new MVCContactModel
                     {
                         ContactsId = c.ContactsId,
-                        ContactName = c.ContactName,
+                        ContactName = c.ContactName,                       
+                        Type = c.Type,                      
                         Status = c.Status,
                     }).ToList();
 
@@ -57,7 +43,7 @@ namespace InvoiceDiskLast.Controllers
                 else
                 {
 
-                    var obContact = db.ContactsTables.Where(x => x.Company_Id == id).Select(c => new MVCContactModel
+                    var obContact = db.ContactsTables.Where(x => x.Company_Id == companyID).Select(c => new MVCContactModel
                     {
                         ContactsId = c.ContactsId,
                         ContactName = c.ContactName,
@@ -182,19 +168,31 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // DELETE: api/ApiConatacts/5
+        [Route("api/DeleteConatcts/{id:int}/{status:alpha}")]
         [ResponseType(typeof(ContactsTable))]
-        public IHttpActionResult DeleteContactsTable(int id)
+        public IHttpActionResult DeleteContactsTable(int id,bool status)
         {
             ContactsTable contactsTable = db.ContactsTables.Find(id);
-            if (contactsTable == null)
+                       
+            if (contactsTable == null || contactsTable.ToString() == null)
             {
                 return NotFound();
             }
 
-            db.ContactsTables.Remove(contactsTable);
-            db.SaveChanges();
+            ContactsTable contactstble = db.ContactsTables.Where(c => c.ContactsId == id).FirstOrDefault();
+            contactstble.Status = status;
 
-            return Ok(contactsTable);
+            db.Entry(contactstble).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+
+            }
         }
 
         protected override void Dispose(bool disposing)

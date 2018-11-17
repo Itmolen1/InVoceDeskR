@@ -16,10 +16,7 @@
             <th>
                 Bedrijif Naam
             </th>
-            <th>
-                Adres
-            </th>
-
+           
             <th>
                 City
             </th>
@@ -256,36 +253,33 @@
             },
             "columns": [
                     { "data": "ContactsId", "name": "ContactsId", "autoWidth": true },
-                    { "data": "ContactName", "name": "ContactName", "autoWidth": true },
-                    { "data": "ContactAddress", "name": "ContactAddress", "autoWidth": true },
-                      { "data": "City", "name": "City", "autoWidth": true },
-                     { "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
-                       { "data": "Mobile", "name": "Mobile", "autoWidth": true },
-
-                  { "data": "Type", "name": "Type", "autoWidth": true },
-                    //{ "data": "StreetNumber", "name": "StreetNumber", "autoWidth": true },
-
-
-                    { "data": "Status", "name": "Status", "autoWidth": true },
+                    { "data": "ContactName", "name": "ContactName", "autoWidth": true },                   
+                    { "data": "City", "name": "City", "autoWidth": true },
+                    { "data": "PostalCode", "name": "PostalCode", "autoWidth": true },
+                    { "data": "Mobile", "name": "Mobile", "autoWidth": true },
+                    { "data": "Type", "name": "Type", "autoWidth": true },                  
                     {
+                        render: function (data, type, row)
+                        {
+                            if (row.Status == true) {
+                                return '<label class="switch"><input type="checkbox" onclick="EditClinetStatus(' + row.ContactsId + "," + row.Status + ')" checked><span class="slider round"></span></label>'
+
+                            }
+                            else {
+                                return '<label class="switch"><input type="checkbox" onclick="EditClinetStatus(' + row.ContactsId + "," + row.Status + ')"><span class="slider round"></span></label>'
+                            }
+                        }
+                    },
+                    
+                     {
                         render: function (data, type, row) {
-                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil"></i></button>|<button type="button" class="btn btn-danger btn-sm" onclick="DeleteCompany(' + row.ContactsId + ')"><i class="fa fa-trash"></i></button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye"></i></button>'
+                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil" style="margin-right:5px"></i>Edit</button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye" style="margin-right:5px"></i>View</button>'
                         }
                     }
-
-
             ]
 
         });
-
-     
-
-        // Append a caption to the table before the DataTables initialisation
-       // $('#ContactListTable').append('<caption style="caption-center: Top">Company\'s Client table.</caption>');
-
-      
-    });
-    
+    });    
 
     $('#CreateNewContacts').click(function () {
         $('#UpdateClineId').hide();
@@ -293,7 +287,6 @@
         $('#CreateNewContactModal').modal('show');
 
     });
-
 
     function SuccessInsertConatct() {
         swal({
@@ -510,4 +503,24 @@ $(document)
     $loading.hide();
   });
 
+    
+function EditClinetStatus(id, Status) {   
+    var answer = confirm('Are you sure you want to change the status of the Client?');
+    if (answer) {
+        $.ajax({
+            url: "/MVCClient/Delete",
+            type: "Post",
+            async: false,
+            dataType: "json",
+            data: { id: id, status: Status },
+            success: function (data) {
+                if (data == "ok")
+                    $('#ContactListTable').DataTable().ajax.reload();
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
+}
 </script>

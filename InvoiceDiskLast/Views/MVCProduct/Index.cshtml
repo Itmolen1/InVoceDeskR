@@ -3,17 +3,13 @@
 }
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-@*<h2>Product <a href="@Url.Action("AddOrEdit","MVCProduct")" class="btn btn-info"><i class="fa fa-plus-circle"></i>Create New</a> </h2>*@
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
 
 
+<table class="table table" id="productTable">
 
-@*<a href="@Url.Action("AddOrEdit","MVCProduct")" class="btn btn-info"><i class="fa fa-plus"></i>Create New</a>*@
-
-<table class="table" id="productTable">
-
-    <thead class="table-heading" style="background-color:black;color:white">
+    <thead class="table-heading table responsive" style="background-color:black;color:white">
         <tr>
             <th>
                 Id
@@ -33,7 +29,7 @@
             <th>
                 Status
             </th>          
-            <th>Action</th>
+            <th class="text-">Action</th>
         </tr>
 
     </thead>
@@ -41,7 +37,12 @@
 </table>
 
 
-
+<div class="preloader" id="loadingDiv">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">loading...</p>
+    </div>
+</div>
 
 <input type="hidden" id="ProductId" />
 <div class="modal fade bs-example-modal-lg" id="CreateNewProductModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
@@ -164,7 +165,72 @@
 </div>
 
 
-<div class="ones"><input type="checkbox" class="js-switch" data-color="#26c6da" data-secondary-color="#f62d51" /></div>
+
+<div id="ProductViewModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add new unit</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">Product Name:</div>
+                            <div class="col-sm-9"><label id="ProductName" style="margin-left:5px"></label></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Unit:</div>
+                            <div class="col-sm-3"><label id="Unit" style="margin-left:5px"></label></div>                       
+                            <div class="col-sm-3">Type:</div>
+                            <div class="col-sm-3"><label id="Type" style="margin-left:5px"></label></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Sale Price:</div>
+                            <div class="col-sm-3"><label id="SPrice" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Purchase Price:</div>
+                            <div class="col-sm-3"><label id="PPrice" style="margin-left:5px"></label></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Open Stock Val:</div>
+                            <div class="col-sm-3"><label id="OpenSV" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Opening QTY:</div>
+                            <div class="col-sm-3"><label id="openQTY" style="margin-left:5px"></label></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Added Date:</div>
+                            <div class="col-sm-3"><label id="AddedDate" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Current Status:</div>
+                            <div class="col-sm-3"><label id="CState" style="margin-left:5px"></label></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Description:</div>
+                            <div class="col-sm-9"><textarea id="Desc" class="form-control" style="margin-left:5px"></textarea></div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>*@
+               
+                 <button type="button" class="btn btn-danger waves-effect text-left" id="CancelViewProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 
 
 <script>
@@ -191,26 +257,24 @@
                     { "data": "ProductName", "name": "ProductName", "autoWidth": true },                   
                     { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
                     { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
-                     { "data": "Type", "name": "Type", "autoWidth": true },                     
-                     //{ "data": "ProductStatus", "name": "ProductStatus", "autoWidth": true },
-
-                     {
+                    { "data": "Type", "name": "Type", "autoWidth": true },                   
+                    {
                          render: function(data, type,row)
                          {
                              if (row.ProductStatus == true) {
-                                 return '<label class="switch"><input type="checkbox" name="ProStatus" checked><span class="slider round"></span></label>'
+                                 return '<label class="switch"><input type="checkbox" name="ProStatus" onclick="DeleteProductNow(' + row.ProductId + "," + row.ProductStatus + ')"  checked><span class="slider round"></span></label>'
                                 
                              }
                              else
                              {
-                                 return '<label class="switch"><input type="checkbox" name="ProStatus"><span class="slider round"></span></label>'
+                                 return '<label class="switch"><input type="checkbox" onclick="DeleteProductNow(' + row.ProductId + "," + row.ProductStatus + ')" name="ProStatus"><span class="slider round"></span></label>'
                              }
                          }
                      },
 
                     {
                         render: function (data, type, row) {                           
-                            return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil"></i></a>|<button type="button" href="" class="btn btn-danger btn-xs" onclick="DeleteProductNow(' + row.ProductId + ","+ row.ProductStatus +')"><i class="fa fa-trash"></i></button>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ProductId + ')"><i class="fa fa-eye"></i></a>'
+                            return '<div class="pull-right"><a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil" style="margin-right:5px"></i>Edit</a>|<a href="#" class="btn btn-success btn-xs" onclick="ProductViewModel(' + row.ProductId + ')"><i class="fa fa-eye" style="margin-right:5px"></i>View</a></div>'
 
                         }
                     }
@@ -533,23 +597,39 @@
         });
     }
 
-    $(document).on("change", "input[name='ProStatus']", function () {
-        debugger;
-        if (this.checked) {
-            alert();
-        }
-       
-        DeleteProductNow();
-        alert("Thanks for checking me");
 
-    });
+    function ProductViewModel(ProductId)
+    {
+        $.ajax({
+            url: "/MVCProduct/AddOrEdit/" + ProductId,
+            type: "GET",
+            dataType: "json",
+            success: function (resultDataView) {               
+                console.log(resultDataView);
+                $('#ProductName').val(resultDataView.ProductName);
+                $('#Unit').val(resultDataView.ProductUnit);
+                $('#Type').val(resultDataView.SalePrice);
+                $('#SPrice').val(resultDataView.PurchasePrice);
+                $('#PPrice').val(resultDataView.OpeningQuantity);
+                $('#OpenSV').val(resultDataView.OpeningStockValue);
+                $('#openQTY').val(resultDataView.ProductId);
+                $('#AddedDate').val(resultDataView.ProductId);
+                $('#CState').val(resultDataView.ProductId);
+                $('#Desc').val(resultDataView.ProductId);
+                $('#ProductViewModel').modal('show');
+               
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        
+    }
+
+   
 
 
-    $(".checkbox").change(function () {
-        if (this.checked) {
-            //Do stuff
-        }
-    });
+    
 
    // <input type='checkbox' name='chkBestSeller' value='Best Seller'/>
 

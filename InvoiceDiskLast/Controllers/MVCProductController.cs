@@ -39,6 +39,8 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/All").Result;
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
+                ViewBag.count = 23;
+
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
 

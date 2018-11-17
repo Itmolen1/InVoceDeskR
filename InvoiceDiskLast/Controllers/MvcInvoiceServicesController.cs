@@ -1269,19 +1269,7 @@ namespace InvoiceDiskLast.Controllers
             return TransactionResult;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult DeleteInvoice(int PurchaseOrderId, int purchaseOrderDetailId, int vat, decimal total)
         {

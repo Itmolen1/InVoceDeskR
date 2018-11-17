@@ -21,16 +21,11 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult GetContacts()
         {
-            int CompanyId = Convert.ToInt32(Session["CompayID"]);
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CustomerStatus");
-
-            GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CustomerStatus", "Customer");
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts").Result;
-
-
-         
+            int CompanyId = Convert.ToInt32(Session["CompayID"]);           
+            //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CustomerStatus");
+            
+           // GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CustomerStatus", "Customer");
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + CompanyId +"/Customer").Result;            
         
             var ProductList = response.Content.ReadAsAsync<IEnumerable<MVCContactModel>>().Result;
 
@@ -59,11 +54,12 @@ namespace InvoiceDiskLast.Controllers
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+               // GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
+                //  GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts").Result;
+                
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + CompanyId + "/All").Result;
                 ContactsList = response.Content.ReadAsAsync<IEnumerable<MVCContactModel>>().Result;
 
 
@@ -86,10 +82,19 @@ namespace InvoiceDiskLast.Controllers
                         break;
                     case "Type":
                         ContactsList = ContactsList.OrderBy(c => c.Type);
+                        break;                   
+                    case "City":
+                        ContactsList = ContactsList.OrderBy(c => c.City);
                         break;
-
-
-                
+                    case "PostalCode":
+                        ContactsList = ContactsList.OrderBy(c => c.PostalCode);
+                        break;
+                    case "Mobile":
+                        ContactsList = ContactsList.OrderBy(c => c.Mobile);
+                        break;
+                    case "Status":
+                        ContactsList = ContactsList.OrderBy(c => c.Status);
+                        break;
 
                     default:
                         ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
@@ -149,10 +154,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddOrEdit(MVCContactModel mvcContactModel)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(mvcContactModel);
-            //}
+           
             mvcContactModel.Addeddate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
 
           
@@ -172,20 +174,27 @@ namespace InvoiceDiskLast.Controllers
                     mvcContactModel.UserId = 1;
                     mvcContactModel.Addeddate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("ApiConatacts/" + mvcContactModel.ContactsId, mvcContactModel).Result;
-                    TempData["SuccessMessage"] = "Updated Successfully";
+                   
                 }
             
             return RedirectToAction("Index");
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id,bool status)
         {
             try
             {
+                if (status == true)
+                {
+                    status = false;
+                }
+                else
+                {
+                    status = true;
+                }
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("DeleteConatcts/" + id + "/" +status).Result;
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.DeleteAsync("ApiConatacts/" + id.ToString()).Result;
-                TempData["SuccessMessage"] = "Delete Successfully";
-                return RedirectToAction("Index");
+                return Json("ok", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
