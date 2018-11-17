@@ -22,7 +22,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult GetAccountList(int HeadAcoountIDs)
         {
-            
+
             try
             {
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -46,7 +46,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("AccountByAccountID/" + HeadAcoountIDs + "/" + companyid).Result;
 
                 List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
-              
+
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
 
@@ -85,7 +85,7 @@ namespace InvoiceDiskLast.Controllers
                 ex.ToString();
             }
             return View();
-            
+
         }
 
 
@@ -177,6 +177,59 @@ namespace InvoiceDiskLast.Controllers
             List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
             return Json(AccountOBj, JsonRequestBehavior.AllowGet);
         }
+
+
+
+
+
+
+
+        [HttpPost]
+        public ActionResult GetAssetAccount(int HeadAccountId=0)
+        {
+
+            try
+            {
+                if (HeadAccountId == 0 || HeadAccountId == null)
+                {
+                    int companyId = Convert.ToInt32(Session["CompayID"]);
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetHeadAccount/" + 0 + "/" + companyId).Result;
+                    List<MVCHeadAccountModel> AccountOBj = response.Content.ReadAsAsync<List<MVCHeadAccountModel>>().Result;
+                    return Json(AccountOBj, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    int companyId = Convert.ToInt32(Session["CompayID"]);
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetHeadAccount/" + HeadAccountId + "/" + companyId).Result;
+                    List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
+                    return Json(AccountOBj, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+
+
+
+
+        [HttpPost]
+        public ActionResult GetAccountHeadAccount()
+        {
+
+            int companyId = Convert.ToInt32(Session["CompayID"]);
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetAssetAccount/" + 0 + "/" + companyId).Result;
+            List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
+            return Json(AccountOBj, JsonRequestBehavior.AllowGet);
+        }
+
+
 
     }
 }
