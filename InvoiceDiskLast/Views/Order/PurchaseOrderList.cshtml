@@ -508,7 +508,6 @@
 
                    {
                        "data": "Status", "name": "Status", "autoWidth": true
-
                    },
 
                   {
@@ -517,13 +516,12 @@
 
                           switch (row.Status) {
                               case "open":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Accept</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Record payment</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
                                   break
 
                               case "rejected":
                                   return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re  Open</i></button>'
                                   break
-
 
                               case "pending":
                                   return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re  Open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
@@ -790,15 +788,24 @@
     }
 
     function loadPayemtDropdown() {
+        debugger;
+
+        var data1 =JSON.stringify({
+            HeadAccountId:0,
+        })
+
         var drppayment = $('#drppaymentDebit');
         var drpAccountCredit = $('#drpAccountCredit');
         $.ajax({
-            url: "/MvcAccounts/GetAccount",
+            url: "/MVCAccounts/GetAssetAccount",
             type: "POST",
+            data: data1,
             contentType: "appplication/json",
             success: function (response) {
                 $.each(response, function (i, item) {
-                    drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+
+
+                    drppayment.append("<option value=" + item.HeadAccountId + "> " + item.HeadAccountTitle + " </option>")
                     drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
                 });
             },
@@ -807,6 +814,30 @@
             },
         });
     }
+    
+
+    $('#drppaymentDebit').change(function () {
+        ///
+
+        function loadPayemtTermDropdown() {
+            var drppaymentTerm = $('#drpAccountDebit');
+            var drppaymentTermCredit = $('#drpAccountCredit');
+            $.ajax({
+                url: "/MvcPaymentTerm/GetPaymentTerm",
+                type: "POST",
+                contentType: "appplication/json",
+                success: function (response) {
+                    $.each(response, function (i, item) {
+                        drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                        drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                    });
+                },
+                error: function (Error) {
+                    alert(Error)
+                },
+            });
+
+    });
 
 
     function loadPayemtTermDropdown() {
