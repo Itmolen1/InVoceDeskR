@@ -219,8 +219,6 @@
                                                 </th>
 
                                             </tr>
-                                        </thead>
-                                        <tbody class="tbody">
                                             <tr id="mainrow">
                                                 <td>
                                                     <select id="SelectProductQutation" class="product form-control pClass" style="font-size:12px"></select>
@@ -239,7 +237,7 @@
                                                 </td>
                                                 <td>
 
-                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal" } })
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal",@readonly="readonly" } })
                                                     @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
@@ -253,10 +251,13 @@
                                                 </td>
                                                 <td>
 
-                                                    <input type="button" id="add" value="add" class="btn btn-success" style="width:80px;font-size:12px"/>
+                                                    <input type="button" id="add" value="add" class="btn btn-success" style="width:80px;font-size:12px" />
 
                                             </tr>
 
+                                        </thead>
+                                        <tbody class="tbody">
+                                     
                                             @if (ViewBag.QutationDatailsList != null)
                                             {
                                                 foreach (var item in ViewBag.QutationDatailsList)
@@ -640,14 +641,12 @@
                                                 </th>
 
                                             </tr>
-                                        </thead>
-                                        <tbody class="tbody">
                                             <tr id="mainrow">
                                                 <td>
                                                     <select id="SelectProductQutation" class="product form-control pClass" style="width: 235px;font-size:12px"></select>
                                                 </td>
                                                 <td>
-                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px",@type ="text", @class = "quantity form-control", id = "Quantity" } })
+                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "Quantity" } })
                                                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
@@ -660,7 +659,7 @@
                                                 </td>
                                                 <td>
 
-                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal" } })
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal" ,@readonly="readonly"} })
                                                     @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
@@ -677,6 +676,9 @@
                                                     <input type="button" id="add" value="add" class="btn btn-success" style="width:80px" />
 
                                             </tr>
+                                        </thead>
+                                        <tbody class="tbody">
+                          
 
                                             @if (ViewBag.QutationDatailsList != null)
                                             {

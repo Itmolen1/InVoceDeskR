@@ -12,7 +12,10 @@ namespace InvoiceDiskLast.Controllers
     [SessionExpire]
     public class QutationOrderController : Controller
     {
+       
         // GET: QutationOrder
+        int Contectid, CompanyID = 0;
+
         public ActionResult Index()
         {
             return View();
@@ -377,5 +380,150 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success" } };
         }
+
+
+
+        [HttpPost]
+        public JsonResult GetPendingQutation(int QutationId)
+        {
+            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
+            try
+            {
+
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+
+                HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Good").Result;
+                List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
+                ViewBag.Product = productModel;
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
+                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                quutionviewModel.QutationID = ob.QutationID;
+                quutionviewModel.Qutation_ID = ob.Qutation_ID;
+                quutionviewModel.QutationDate = ob.QutationDate;
+                quutionviewModel.RefNumber = ob.RefNumber;
+                quutionviewModel.DueDate = ob.DueDate;
+                quutionviewModel.CustomerNote = ob.CustomerNote;
+                quutionviewModel.SubTotal = ob.SubTotal;
+                quutionviewModel.TotalAmount = ob.TotalAmount;
+                quutionviewModel.TotalVat21 = (ob.TotalVat21 != null ? (float)(ob.TotalVat21) : (float)0.00);
+                quutionviewModel.TotalVat6 = (ob.TotalVat6 != null ? (float)(ob.TotalVat6) : (float)0.00);
+                quutionviewModel.ConatctId = (int)ob.ContactId;
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationId.ToString()).Result;
+                List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.QutationDatailsList = QutationModelDetailsList;
+
+                return new JsonResult { Data = new { QutationDat = QutationModelDetailsList, ContectDetail = contectmodel, CompanyDta = companyModel, purchase = ob } };
+            }
+            catch (Exception ex)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+
+
+
+
+
+
+        [HttpPost]
+        public JsonResult GetPendingItem(int PurchaseId)
+        {
+            int Contectid, CompanyID = 0;
+            MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
+            try
+            {
+                var idd = Session["ClientId"];
+                var cdd = Session["CompayID"];
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+                else
+                {
+                    //  return RedirectToAction("Index", "Login");
+                }
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", cdd.ToString());
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + idd.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + cdd.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                DateTime InvoiceDate = new DateTime();
+                InvoiceDate = DateTime.Now;
+                purchaseviewModel.PurchaseDate = InvoiceDate;
+                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + PurchaseId.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                purchaseviewModel.PurchaseOrderID = ob.PurchaseOrderID;
+                purchaseviewModel.Purchase_ID = ob.PurchaseID;
+                purchaseviewModel.PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);
+                purchaseviewModel.PurchaseDueDate = (DateTime)ob.PurchaseDueDate;
+                purchaseviewModel.PurchaseRefNumber = ob.PurchaseRefNumber;
+                purchaseviewModel.PurchaseSubTotal = ob.PurchaseSubTotal;
+                purchaseviewModel.PurchaseDiscountPercenteage = ob.PurchaseDiscountPercenteage;
+                purchaseviewModel.PurchaseDiscountAmount = ob.PurchaseDiscountAmount;
+                purchaseviewModel.PurchaseVatPercentage = ob.PurchaseVatPercentage;
+                purchaseviewModel.PurchaseTotoalAmount = ob.PurchaseTotoalAmount;
+                purchaseviewModel.PurchaseVenderNote = ob.PurchaseVenderNote;
+                purchaseviewModel.Status = ob.Status;
+                purchaseviewModel.Vat21 = (int)ob.Vat21;
+                purchaseviewModel.Vat6 = (int)ob.Vat6;
+                purchaseviewModel.CompanyId = ob.CompanyId;
+                purchaseviewModel.UserId = ob.UserId;
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + PurchaseId.ToString()).Result;
+                List<MvcPurchaseViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.PurchaseDatailsList = QutationModelDetailsList;
+
+                return new JsonResult { Data = new { PurchaseData = QutationModelDetailsList, ContectDetail = contectmodel, CompanyDta = companyModel, purchase = ob } };
+
+            }
+            catch (Exception ex)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+
+        }
+
     }
 }

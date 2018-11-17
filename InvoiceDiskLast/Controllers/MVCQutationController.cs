@@ -285,7 +285,7 @@ namespace InvoiceDiskLast.Controllers
         {
             FileStream stream = null;
             try
-            {             
+            {
                 stream = file.Open
                 (
                     FileMode.Open,
@@ -294,7 +294,7 @@ namespace InvoiceDiskLast.Controllers
                 );
             }
             catch (IOException ex)
-            {            
+            {
                 return true;
             }
             finally
@@ -398,6 +398,12 @@ namespace InvoiceDiskLast.Controllers
         {
             TempData["EmailMessge"] = "";
             EmailModel emailModel = new EmailModel();
+
+            if (Session["CompayID"] != null)
+            {
+                CompanyID = Convert.ToInt32(Session["CompayID"]);
+            }
+
             var fileName = email.Attachment;
             try
             {
@@ -405,7 +411,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     email.Attachment = email.Attachment.Replace(".pdf", "");
                 }
-
                 if (email.ToEmail.Contains(','))
                 {
                     var p = email.Attachment.Split('.');
@@ -438,7 +443,21 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.EmailBody = email.EmailText;
                     bool result = EmailController.email(emailModel);
                     TempData["EmailMessge"] = "Email Send successfully";
+                 }
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
+                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                if (PerformTransaction(ob, CompanyID))
+                {
+                    TempData["EmailMessge"] = "Email Send Succssfully";
                 }
+                else
+                {
+                    TempData["EmailMessge"] = "Your transaction is not perform with success";
+
+                }
+
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
             }
             catch (Exception ex)
@@ -457,6 +476,89 @@ namespace InvoiceDiskLast.Controllers
 
             return View(email);
         }
+
+
+
+
+
+        public bool PerformTransaction(MVCQutationModel purchaseViewModel, int CompanyId)
+        {
+            bool TransactionResult = false;
+
+            try
+            {
+                string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+                accountTransictiontable.TransictionDate = DateTime.Now;
+                accountTransictiontable.FK_AccountID = 4002;
+                accountTransictiontable.Cr = purchaseViewModel.TotalAmount;
+                accountTransictiontable.Dr = 0.00;
+                accountTransictiontable.TransictionNumber = base64Guid;
+                accountTransictiontable.TransictionRefrenceId = purchaseViewModel.QutationID.ToString();
+                accountTransictiontable.TransictionType = "Qutation";
+                accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                accountTransictiontable.AddedBy = 1;
+                accountTransictiontable.FK_CompanyId = CompanyId;
+                accountTransictiontable.FKPaymentTerm = 1;
+                accountTransictiontable.Description = "Total + Qutation ,Qutation created at Qutation" + purchaseViewModel.TotalAmount.ToString() + "On Qutation genrattion";
+                HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                if (responses.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                    TransactionResult = true;
+                    accountTransictiontable.TransictionDate = DateTime.Now;
+                    accountTransictiontable.FK_AccountID = 4003;
+                    accountTransictiontable.Dr = purchaseViewModel.SubTotal;
+                    accountTransictiontable.Cr = 0.00;
+                    accountTransictiontable.TransictionNumber = base64Guid1;
+                    accountTransictiontable.TransictionRefrenceId = purchaseViewModel.QutationID.ToString();
+                    accountTransictiontable.TransictionType = "Qutation";
+                    accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                    accountTransictiontable.AddedBy = 1;
+                    accountTransictiontable.FK_CompanyId = CompanyId;
+                    accountTransictiontable.FKPaymentTerm = 1;
+                    accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.SubTotal.ToString() + "On invoice genrattion";
+                    HttpResponseMessage responses2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+
+                    if (responses2.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        string base64Guid2 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                        TransactionResult = true;
+                        accountTransictiontable.TransictionDate = DateTime.Now;
+                        accountTransictiontable.FK_AccountID = 3005;
+                        accountTransictiontable.Dr = purchaseViewModel.SubTotal;
+                        accountTransictiontable.Cr = 0.00;
+                        accountTransictiontable.TransictionNumber = base64Guid2;
+                        accountTransictiontable.TransictionRefrenceId = purchaseViewModel.QutationID.ToString();
+                        accountTransictiontable.TransictionType = "Qutation";
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                        accountTransictiontable.AddedBy = 1;
+                        accountTransictiontable.FK_CompanyId = CompanyId;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        double TotalVat = Convert.ToDouble(purchaseViewModel.TotalVat21 + purchaseViewModel.TotalVat6);
+                        accountTransictiontable.Dr = TotalVat;
+                        accountTransictiontable.Description = "Total + Vat ,Invoice created at Invoice" + TotalVat + "On invoice genrattion";
+                        HttpResponseMessage responses3 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                        if (responses3.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            return TransactionResult = true;
+                        }
+
+                    }
+                }
+            }
+
+
+            catch (Exception)
+            {
+
+                return TransactionResult = false;
+            }
+            return TransactionResult;
+        }
+
+
+
 
         public ActionResult Print(int? QutationID)
         {
@@ -858,7 +960,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-              
+
 
 
 
@@ -1311,7 +1413,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                   
+
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
 
                     IEnumerable<string> headerValues;

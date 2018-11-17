@@ -240,12 +240,151 @@
 
 
 
+<div class="modal fade bs-example-modal-lg" id="showpendindModelqutation" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Show pending Invoice </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="height: auto !important">
+
+                <div class="row">
+                    <div class="col-ms-4">
+                        <div id="logo1"class="mydiv"></div>
+
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="margin-left: 234px"><h5 id="CompanyName"></h5></div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-left"><div class="pull-right">Kvk nr:</div></div>
+                            <div class="col-sm-4" id="Kvk">KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-4" id="BTW"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                            <div class="col-sm-4" id="Bank"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">IBAN:</div></div>
+                            <div class="col-sm-4" id="IBN"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">BIC:</div></div>
+                            <div class="col-sm-4" id="IBC"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right">Tel:</div></div>
+                            <div class="col-sm-4" id="CompanyPhone"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2"><div class="pull-right">Cel:</div></div>
+                            <div class="col-sm-4" id="Cell"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">E-mail:</div></div>
+                            <div class="col-sm-4" id="CompanyEmail"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-2 pull-right"><div class="pull-right">Website:</div></div>
+                            <div class="col-sm-4" id="website"></div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-8 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                            <div class="col-sm-3">
+                                <h6 id="add"></h6>
+                                <h6 id="pcode"></h6> <h6 id="companyCity"></h6>
+                                <h6 id="companyCountry"></h6>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <table class="table" id="PendingTable">
+                    <thead style="background-color:black;color:white" id="theadTable">
+
+                    <tbody id="tbody"></tbody>
+                </table>
 
 
 
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">Total excl. VAT:€</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="text-left" id="PurchaseSubTotal"></label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">VAT 6%:€</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="text-left" id="vat6"></label>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">VAT 21%:	€</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="tex text-left" id="Vat21"></label>
+
+                    </div>
+
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-2">
+                        <label class="text-right">Grand Total:</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <label class="text-left" id="PurchaseTotoalAmount"></label>
+
+                    </div>
+                </div>
+            </div>
 
 
+        </div>
+        <div class="modal-footer">
 
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
 
 
 
@@ -572,7 +711,7 @@
 
 
                             case "pending":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re  Open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re  Open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
                                 break
 
 
@@ -587,6 +726,94 @@
         });
     }
 
+    //pending service and qutation
+
+    function ViewDetail1(QutationId, Type1) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid:QutationId
+            },
+            success: function () {
+
+                GetPurchaseDetailByPurchaseId(QutationId, Type1)
+            }
+        });
+    }
+
+
+    function GetPurchaseDetailByPurchaseId(QutationId, Type) {
+        if (Type == "Goods") {
+            $('#theadTable').empty();
+            $('#theadTable').append("<tr> <th> PurchaseId</th><th> PurchaseDate</th><th>PurchaseDueDate</th><th> RefrenceNumber</th><th> Puchase Subtotal </th><th>Vat %</th></tr>")
+        }
+        if (Type == "Services") {
+            $('#theadTable').empty();
+            $('#theadTable').append("<tr><th> PurchaseId</th><th> Project</th><th>Number of hour</th><th>Hourly rate</th><th>Total</th><th>Vat %</th></tr>")
+        }
+
+        var Data = JSON.stringify({
+            QutationId: QutationId,
+        })
+        $.ajax({
+            url: '/QutationOrder/GetPendingQutation',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log(response);
+
+                var html = '';
+                $.each(response.QutationDat, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.QutationID + '</td>';
+                    html += '<td>' + item.ItemName + '</td>';
+                    html += '<td>' + item.Quantity + '</td>';
+                    html += '<td>' + item.Rate + '</td>';
+                    html += '<td>' + item.Total + '</td>';
+                    html += '<td>' + item.Vat + '</td>';
+                    html += '</tr>';
+                });
+
+                $('#PurchaseTotoalAmount').text(response.purchase.TotalAmount);
+                $('#Vat21').text(response.purchase.TotalVat21);
+                $('#vat6').text(response.purchase.TotalVat6);
+                $('#PurchaseSubTotal').text(response.purchase.SubTotal);
+
+                $('#CompanyName').text(response.CompanyDta.CompanyName);
+                $('#Kvk').text(response.CompanyDta.KVK);
+                $('#BTW').text(response.CompanyDta.BTW);
+                $('#Bank').text(response.CompanyDta.BankName);
+                $('#IBN').text(response.CompanyDta.CompanyName);
+                $('#IBC').text(response.CompanyDta.BIC);
+                $('#CompanyPhone').text(response.CompanyDta.CompanyName);
+                $('#Cell').text(response.CompanyDta.CompanyCell);
+                $('#CompanyEmail').text(response.CompanyDta.CompanyEmail);
+                $('#website').text(response.CompanyDta.Website);
+                $('#add').text(response.CompanyDta.CompanyAddress);
+                $('#pcode').text(response.CompanyDta.CompanyPhone);
+                $('#companyCity').text(response.CompanyDta.CompanyCity);
+                $('#companyCountry').text(response.CompanyDta.CompanyCountry);
+                $('#tbody').html(html);
+
+                $("#logo1").empty();
+                $("#logo1").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "'/>");
+
+                $('#showpendindModelqutation').modal('show');
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+
+        // loadPendingTable(purchaseId);
+        $('#showpendindModelqutation').modal('show');
+    }
+
+    // end of service and qutation
 
     function AcceptOrder(id) {
 
