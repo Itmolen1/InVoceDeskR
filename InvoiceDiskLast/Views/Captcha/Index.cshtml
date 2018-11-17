@@ -6,11 +6,7 @@
 @{
 
     Layout = null;
-    var ViewBg = "";
-    if (ViewBag.ErrorMessage != "")
-    {
-        ViewBg = ViewBag.ErrorMessage;
-    }
+   
  }
 
 <head>
@@ -53,7 +49,7 @@
                     <form action="/Captcha/Index" method="post" class="form-horizontal form-material" id="loginform">
                         <h3 class="box-title m-b-20">Aanmelden</h3>
                         <div class="form-group ">
-                            <div class="col-xs-12">
+                            <div class="col-xs-12" id="use">
                                 @*<input class="form-control" type="text" required id="txtUsername" placeholder="Username">*@
                                 @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control", required = "required" })
                                 @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })
@@ -113,10 +109,10 @@
                             </div>
                         </div>
                         <div class="form-group ">
-                            <div class="col-xs-12">
-                                @*<input class="form-control" type="text" id="UserEmail" required placeholder="Email">*@
+                            <div class="col-xs-12 us">
+                                @*<input class="form-control" type="text" id="UserEmail" required placeholder="Email">
                                 @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control", required = "required" })
-                                @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                         <div class="form-group text-center m-t-20">
@@ -146,8 +142,7 @@
 
         <script>
         $(document).ready(function () {
-            $('#CaptchaInputText').addClass('form-control').attr("required", "true");
-
+            $('#CaptchaInputText').addClass('form-control').attr("required", "true");           
 
            
         $(function () {
@@ -162,6 +157,7 @@
         // ==============================================================
         $('#to-recover').on("click", function () {
             $("#loginform").slideUp();
+            $('.us').append($("#use"));
             $("#recoverform").fadeIn();
         });
         });

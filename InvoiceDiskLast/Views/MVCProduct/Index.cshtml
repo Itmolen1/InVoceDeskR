@@ -3,10 +3,11 @@
 }
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 @*<h2>Product <a href="@Url.Action("AddOrEdit","MVCProduct")" class="btn btn-info"><i class="fa fa-plus-circle"></i>Create New</a> </h2>*@
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
+
+
 
 @*<a href="@Url.Action("AddOrEdit","MVCProduct")" class="btn btn-info"><i class="fa fa-plus"></i>Create New</a>*@
 
@@ -38,6 +39,7 @@
     </thead>
     <tbody></tbody>
 </table>
+
 
 
 
@@ -133,6 +135,8 @@
 </div>
 
 
+
+
 <div id="UnitModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -160,9 +164,12 @@
 </div>
 
 
+<div class="ones"><input type="checkbox" class="js-switch" data-color="#26c6da" data-secondary-color="#f62d51" /></div>
+
+
 <script>
     $(document).ready(function () {
-        
+       
         $("#productTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -173,6 +180,7 @@
             "serverSide": true, // for process server side
             "filter": false, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
+
             "ajax": {
                 "url": "/MVCProduct/GetProductlist",
                 "type": "POST",
@@ -184,18 +192,38 @@
                     { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
                     { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
                      { "data": "Type", "name": "Type", "autoWidth": true },                     
-                     { "data": "ProductStatus", "name": "ProductStatus", "autoWidth": true },
+                     //{ "data": "ProductStatus", "name": "ProductStatus", "autoWidth": true },
+
+                     {
+                         render: function(data, type,row)
+                         {
+                             if (row.ProductStatus == true) {
+                                 return '<label class="switch"><input type="checkbox" name="ProStatus" checked><span class="slider round"></span></label>'
+                                
+                             }
+                             else
+                             {
+                                 return '<label class="switch"><input type="checkbox" name="ProStatus"><span class="slider round"></span></label>'
+                             }
+                         }
+                     },
 
                     {
                         render: function (data, type, row) {                           
                             return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil"></i></a>|<button type="button" href="" class="btn btn-danger btn-xs" onclick="DeleteProductNow(' + row.ProductId + ","+ row.ProductStatus +')"><i class="fa fa-trash"></i></button>|<a href="" class="btn btn-success btn-xs" onclick="Delete(' + row.ProductId + ')"><i class="fa fa-eye"></i></a>'
+
                         }
                     }
             ]
         });
+       
+    });
 
-    })
+   
+   
 </script>
+
+
 
 <script>
 
@@ -504,6 +532,26 @@
 
         });
     }
+
+    $(document).on("change", "input[name='ProStatus']", function () {
+        debugger;
+        if (this.checked) {
+            alert();
+        }
+       
+        DeleteProductNow();
+        alert("Thanks for checking me");
+
+    });
+
+
+    $(".checkbox").change(function () {
+        if (this.checked) {
+            //Do stuff
+        }
+    });
+
+   // <input type='checkbox' name='chkBestSeller' value='Best Seller'/>
 
     function DeleteProductNow(id, ProductStatus) {
         var answer = confirm('Are you sure you want to change the status of the product?');
