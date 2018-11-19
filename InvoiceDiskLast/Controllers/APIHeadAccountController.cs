@@ -187,6 +187,56 @@ namespace InvoiceDiskLast.Controllers
         //{
         //    return Ok(name);
         //}
+
+
+
+
+
+
+
+
+
+        [Route("api/GetHeadAccount/{HeadAcID:int}/{companyId:int}")]
+        public IHttpActionResult GetHeadAccounts(int HeadAcID, int companyId)
+        {
+
+            if (HeadAcID == 0)
+            {
+
+                try
+                {
+                    List<MVCHeadAccountModel> AccountObj = db.HeadAccountTables.Where(x => x.FK_CompanyId == companyId && x.FK_ControlAccountID == 1).Select(c => new MVCHeadAccountModel
+                    {
+                        HeadAccountId = c.HeadAccountId,
+                        HeadAccountTitle = c.HeadAccountTitle,
+                    }).ToList();
+
+                    return Ok(AccountObj);
+                }
+                catch (Exception ex)
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                try
+                {
+                    List<MVCAccountTableModel> AccountObj2 = db.AccountTables.Where(x => x.FK_CompanyId == companyId && x.FK_HeadAccountId == HeadAcID).Select(c => new MVCAccountTableModel
+                    {
+                        AccountId = c.AccountId,
+                        AccountTitle = c.AccountTitle,
+
+                    }).ToList();
+
+                    return Ok(AccountObj2);
+                }
+                catch (Exception ex)
+                {
+                    return NotFound();
+                }
+            }
+        }
     }
 }
     

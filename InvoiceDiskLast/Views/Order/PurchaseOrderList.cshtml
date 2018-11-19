@@ -17,7 +17,7 @@
 
 <div class="row">
     @*<div class="col-md-2">
-            <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
+        <a href="@Url.Action(" Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</a>
         </div>*@
     <div class="col-md-6">
         <select id="drpstatus" class="form-control">
@@ -157,26 +157,26 @@
                 <table class="table" id="PendingTable">
                     <thead style="background-color:black;color:white" id="theadTable">
                         @*<tr>
-                                <th>
-                                    Code
-                                </th>
-                                <th>
-                                    ProductName
-                                </th>
-                                <th>
-                                    Quantity
-                                </th>
-                                <th>
-                                    Price
-                                </th>
+                            <th>
+                            Code
+                            </th>
+                            <th>
+                            ProductName
+                            </th>
+                            <th>
+                            Quantity
+                            </th>
+                            <th>
+                            Price
+                            </th>
 
-                                <th>
-                                    Total
-                                </th>
+                            <th>
+                            Total
+                            </th>
 
-                                <th>
-                                    Vat
-                                </th>
+                            <th>
+                            Vat
+                            </th>
                             </tr>*@
                     </thead>
                     <tbody id="tbody"></tbody>
@@ -450,7 +450,8 @@
 
     $(document).ready(function () {
         LoadPurchaseOrderTable("open");
-        loadPayemtDropdown();
+        LoadAssetDropDown();
+
         loadPayemtTermDropdown();
     });
 
@@ -516,7 +517,7 @@
 
                           switch (row.Status) {
                               case "open":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Record payment</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ',' + row.PurchaseSubTotal + ')"><i class="fa fa-check"> Record payment</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
                                   break
 
                               case "rejected":
@@ -534,7 +535,10 @@
                           }
 
                       }
-                  }
+                  },
+                  {
+                      "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true
+                  },
             ]
         });
     }
@@ -610,12 +614,14 @@
     }
 
 
-    function AcceptOrder(id) {
+    function AcceptOrder(id, Amount) {
         $('#txtrefrencenumber').val(id);
+        $('#AmountDebit').val(Amount);
         $('#txttransactionId').val(Math.floor(Math.random() * 10));
         $('#TransactionModel').modal('show');
-
     }
+
+
     function Reopen(id) {
         updateStatus(id, " Open", " Open", "the invoice is  Open successfully");
     }
@@ -626,6 +632,7 @@
             $('#theadTable').empty();
             $('#theadTable').append("<tr> <th> PurchaseId</th><th> PurchaseDate</th><th>PurchaseDueDate</th><th> RefrenceNumber</th><th> Puchase Subtotal </th><th>Vat %</th></tr>")
         }
+
         if (Type == "Services") {
             $('#theadTable').empty();
             $('#theadTable').append("<tr><th> PurchaseId</th><th> Project</th><th>Number of hour</th><th>Hourly rate</th><th>Total</th><th>Vat %</th></tr>")
@@ -787,26 +794,22 @@
         });
     }
 
-    function loadPayemtDropdown() {
+    function LoadAssetDropDown() {
         debugger;
 
-        var data1 =JSON.stringify({
-            HeadAccountId:0,
-        })
-
         var drppayment = $('#drppaymentDebit');
-        var drpAccountCredit = $('#drpAccountCredit');
+
         $.ajax({
             url: "/MVCAccounts/GetAssetAccount",
-            type: "POST",
-            data: data1,
+            type: "GET",
+            data: { HeadAccountId: 0 },
             contentType: "appplication/json",
             success: function (response) {
+
                 $.each(response, function (i, item) {
 
-
                     drppayment.append("<option value=" + item.HeadAccountId + "> " + item.HeadAccountTitle + " </option>")
-                    drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+
                 });
             },
             error: function (Error) {
@@ -814,44 +817,71 @@
             },
         });
     }
-    
+
 
     $('#drppaymentDebit').change(function () {
-        ///
+        $('#drpAccountCredit').empty();
+        var id = $(this).val();
+        var data1 = JSON.stringify({
+            HeadAccountId: id,
+        })
+        var drppayment = $('#drpAccountCredit');
 
-        function loadPayemtTermDropdown() {
-            var drppaymentTerm = $('#drpAccountDebit');
-            var drppaymentTermCredit = $('#drpAccountCredit');
-            $.ajax({
-                url: "/MvcPaymentTerm/GetPaymentTerm",
-                type: "POST",
-                contentType: "appplication/json",
-                success: function (response) {
-                    $.each(response, function (i, item) {
-                        drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
-                        drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
-                    });
-                },
-                error: function (Error) {
-                    alert(Error)
-                },
-            });
-
+        $.ajax({
+            url: "/MVCAccounts/GetAssetAccount",
+            type: "GET",
+            data: {
+                HeadAccountId: id,
+            },
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+        //var drppaymentTerm = $('#drpAccountDebit');
+        //var drppaymentTermCredit = $('#drpAccountCredit');
+        //$.ajax({
+        //    url: "/MvcPaymentTerm/GetPaymentTerm",
+        //    type: "POST",
+        //    data:{ },
+        //    contentType: "appplication/json",
+        //    success: function (response) {
+        //        $.each(response, function (i, item) {
+        //            drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+        //            drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+        //        });
+        //    },
+        //    error: function (Error) {
+        //        alert(Error)
+        //    },
     });
 
 
     function loadPayemtTermDropdown() {
+
         var drppaymentTerm = $('#drpAccountDebit');
-        var drppaymentTermCredit = $('#drpAccountCredit');
+
         $.ajax({
             url: "/MvcPaymentTerm/GetPaymentTerm",
             type: "POST",
             contentType: "appplication/json",
             success: function (response) {
+                console.log(response);
+
                 $.each(response, function (i, item) {
-                    drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
-                    drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                    drppaymentTerm.append("<option value=" + item.PayementTremId + "> " + item.PaymentTerm + " </option>")
+
                 });
+
+
+                $("#drpAccountDebit").val($("#drpAccountDebit option:eq(1)").val());
+
+
             },
             error: function (Error) {
                 alert(Error)
@@ -860,62 +890,102 @@
 
     }
 
-
     $('#btnAdd').click(function () {
 
-        if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
-            alert('Account name canot be same');
-            return;
-        }
+
+        if ($('#tableAccountinfo #tbleAccount tr').length == 2) {
+            PayTransaction();
 
 
-        if ($('txttransactionDateDebit').val() == 0) {
-            alert('txttransactionDateDebit  canot be null');
-            return;
-        }
-
-
-        if ($('#drpAccountDebit').val() == 0) {
-            alert('drpAccountDebit  canot be null');
-            return;
-        }
-
-
-        if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
-            alert('debit amount canot be zero');
-            return;
-        }
-
-        if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
-            alert('AmountCredit canot be zero');
-            return;
-        }
-
-        if ($('#AmountDebit').val() != $('#AmountCredit').val()) {
-            alert('Amonnt are not same please checke');
-            return;
-        }
-
-        if ($('#tbleAccount tr').length == 2) {
-            alert("Please save and chhose another transiction");
         }
         else {
 
-            var AccountTable = $('#tbleAccount');
-            var AcciontName = $('#drppaymentDebit option:selected').text();
-            var TID = $('#txttransactionId').val();
-            var ref = $('#txtrefrencenumber').val();
-            var Amountdebit = $('#AmountDebit').val();
-            var AmountCridit = $('#AmountCredit').val();
-            var Tdate = $('#txttransactionDateDebit').val();
-            var drpAccountCredit = $('#drpAccountCredit option:selected').text();
-            var paymentTer = $('#drpAccountDebit option:selected').text();
-            AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
-            AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
-            $('#tableAccountinfo').css('visibility', 'visible');
-        }
+            if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+                alert('Account name canot be same');
+                return;
+            }
 
+            if ($('txttransactionDateDebit').val() == 0) {
+                alert('txttransactionDateDebit  canot be null');
+                return;
+            }
+
+            if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+                alert('debit amount canot be zero');
+                return;
+            }
+
+            if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+                alert('AmountCredit canot be zero');
+                return;
+            }
+
+            if ($('#tbleAccount tr').length == 2) {
+                alert("Please save and chhose another transiction");
+            }
+            else {
+                var AccountTable = $('#tbleAccount');
+                var AccountName = $('#drpAccountCredit option:selected').text();
+                var TID = $('#txttransactionId').val();
+                var ref = $('#txtrefrencenumber').val();
+                var Amountdebit = $('#AmountDebit').val();
+                var AmountCridit = $('#AmountCredit').val();
+                var Tdate = $('#txttransactionDateDebit').val();
+                var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+                var paymentTer = $('#drpAccountDebit option:selected').text();
+
+                if ($("#tableAccountinfo #tbleAccount tr").length == 0) {
+                    AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AccountName + '</td><td>' + paymentTer + '</td><td class="AmountDebit1">' + Amountdebit + '</td><td>' + 0 + '</td><td class="drpAccountCredit">' + $('#drpAccountCredit').val() + '</td><td class="paymentTerm1">' + $('#drpAccountDebit').val() + '</td></tr>');
+                }
+                else if ($("#tableAccountinfo #tbleAccount tr").length > 0) {
+
+                    AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AccountName + '</td><td>' + paymentTer + '</td><td class="AmountDebit1">' + $('#AmountCredit').val() + '</td><td>' + 0 + '</td><td class="drpAccountCredit">' + $('#drpAccountCredit').val() + '</td><td class="paymentTerm1">' + $('#drpAccountDebit').val() + '</td></tr>');
+                }
+                $('#tableAccountinfo').css('visibility', 'visible');
+            }
+        }
     });
+
+
+    
+
+    function PayTransaction() {
+
+        var ListaTransic = [];
+
+        $('#tableAccountinfo  #tbleAccount tr').each(function (index, ele) {
+
+
+            var currentRow = $(this).closest("tr");
+            var col1 = currentRow.find(".pd-price").html(); // get current row 1st table cell TD value
+            var col2 = currentRow.find(".pd-name").html();
+            var datas = {
+                TranDate: $('#txttransactionDateDebit').val(),
+                SubTotal: parseFloat(currentRow.find(".AmountDebit1").html()),
+                Id: currentRow.find('.drpAccountCredit').html(),
+                paymentTermId: currentRow.find('.paymentTerm1').html(),
+                PurchaseOrderID: $('#txtrefrencenumber').val(),
+            }
+            ListaTransic.push(datas);
+        });
+
+       var datss = {_TansactinList: ListaTransic}
+        
+        $.ajax({
+            url: '/Purchase/Trasactionpayment',
+            type: 'POST',
+            data: datss,
+            dataType: 'application/json',
+            success: function (response) {
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+
 
 
 </script>

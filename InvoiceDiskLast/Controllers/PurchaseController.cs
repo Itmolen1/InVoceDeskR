@@ -105,8 +105,6 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-
-
         public ActionResult GetVender()
         {
             var ProductList = new List<MVCContactModel>();
@@ -118,7 +116,7 @@ namespace InvoiceDiskLast.Controllers
 
                 //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CustomerStatus");
 
-               // GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CustomerStatus", "Vender");
+                // GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CustomerStatus", "Vender");
 
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + CompanyId + "/Vender").Result;
@@ -268,8 +266,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
         int Contectid = 0;
         int CompanyID = 0;
 
@@ -386,7 +382,6 @@ namespace InvoiceDiskLast.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
 
         }
-
 
 
         [HttpPost]
@@ -518,9 +513,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
-
         [HttpPost]
         public ActionResult saveEmail(MvcPurchaseViewModel purchaseViewModel)
         {
@@ -641,7 +633,6 @@ namespace InvoiceDiskLast.Controllers
             }
             return new JsonResult { Data = new { Status = "Success", PurchaseOrderId = intpurchaseorderId } };
         }
-
 
 
         [HttpPost]
@@ -860,9 +851,6 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
-
-
         public ActionResult Print(int? purchaseOrderId)
         {
             try
@@ -932,8 +920,6 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
-
-
 
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
@@ -1020,7 +1006,6 @@ namespace InvoiceDiskLast.Controllers
         public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
         {
             bool TransactionResult = false;
-
             try
             {
                 string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
@@ -1097,8 +1082,6 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
-
-
             var idd = Session["ClientID"];
             var cdd = Session["CompayID"];
             if (Session["ClientID"] != null && Session["CompayID"] != null)
@@ -1106,8 +1089,6 @@ namespace InvoiceDiskLast.Controllers
                 Contectid = Convert.ToInt32(Session["ClientID"]);
                 CompanyID = Convert.ToInt32(Session["CompayID"]);
             }
-
-
 
             TempData["EmailMessge"] = "";
 
@@ -1119,7 +1100,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     email.Attachment = email.Attachment.Replace(".pdf", "");
                 }
-
                 if (email.ToEmail.Contains(','))
                 {
                     var p = email.Attachment.Split('.');
@@ -1128,7 +1108,6 @@ namespace InvoiceDiskLast.Controllers
                     var pdfname = String.Format("{0}.pdf", p);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
-
                     string[] EmailArray = email.ToEmail.Split(',');
                     if (EmailArray.Count() > 0)
                     {
@@ -1153,9 +1132,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
                     bool result = EmailController.email(emailModel);
-
                     TempData["EmailMessge"] = "Email Send successfully";
-
                 }
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + email.invoiceId.ToString()).Result;
@@ -1163,7 +1140,6 @@ namespace InvoiceDiskLast.Controllers
 
                 if (PerformTransaction(ob, CompanyID))
                 {
-
                     TempData["EmailMessge"] = "Email Send Succssfully";
 
                 }
@@ -1171,11 +1147,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     TempData["EmailMessge"] = "Your transaction is not perform with success";
                 }
-
-                //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
-
-
             }
             catch (Exception ex)
             {
@@ -1183,18 +1155,15 @@ namespace InvoiceDiskLast.Controllers
                 TempData["EmailMessge"] = ex.Message.ToString();
                 TempData["Error"] = ex.Message.ToString();
             }
-
             if (TempData["Path"] == null)
             {
                 TempData["Path"] = fileName;
             }
-
             TempData["Message"] = "Email Send Succssfully";
             email.Attachment = fileName;
 
             return View(email);
         }
-
 
 
         public string PrintView(int purchaseOrderId)
@@ -1205,14 +1174,11 @@ namespace InvoiceDiskLast.Controllers
                 var idd = Session["ClientID"];
                 var cdd = Session["CompayID"];
 
-
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
                     Contectid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
-
-
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -1302,8 +1268,6 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                //Don't change FileAccess to ReadWrite, 
-                //because if a file is in readOnly, it fails.
                 stream = file.Open
                 (
                     FileMode.Open,
@@ -1313,10 +1277,6 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (IOException ex)
             {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
                 return true;
             }
             finally
@@ -1457,6 +1417,48 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+
+        [HttpPost]
+        public ActionResult Trasactionpayment(TransactionModel TransactionModel)
+         {
+            try
+            {
+               
+                if (Session["CompayID"] != null)
+                {
+                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + TransactionModel.ToString()).Result;
+                    MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+                        accountTransictiontable.FK_CompanyId = Convert.ToInt32(Session["CompayID"]);
+                        //accountTransictiontable.Description = _TransactionModel.descrition;                      
+                        //accountTransictiontable.FK_AccountID = _TransactionModel.ToAccountId;
+                        //accountTransictiontable.Description = _TransactionModel.descrition;
+                        //accountTransictiontable.FKPaymentTerm = 1;
+
+                        //accountTransictiontable.TransictionRefrenceId = ob.PurchaseOrderID.ToString();
+                        //accountTransictiontable.Dr = _TransactionModel.SubTotal;
+                        //accountTransictiontable.Cr = 0.0;
+                  
+                        //bool result = TransactionClass.PerformTransaction(accountTransictiontable);
+                        //if (result != false)
+                        //{
+                        //    return Json("Success", JsonRequestBehavior.AllowGet);
+                        //}
+                    }
+
+
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Fail", JsonRequestBehavior.AllowGet);
+            }
+            return View();
+        }
     }
 
 }
