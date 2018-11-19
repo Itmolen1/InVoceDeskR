@@ -171,7 +171,7 @@
           <Property Name="ProductUnit" Type="int" />
           <Property Name="ProductStatus" Type="bit" />
           <Property Name="OpeningStockValue" Type="int" />
-          <Property Name="VatValue" Type="nvarchar" MaxLength="5" />
+          <Property Name="VatsValue" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="ProductUnitTable">
           <Key>
@@ -579,7 +579,6 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ProductTables" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ProductTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
           <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
           <Property Name="StreetNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -601,14 +600,9 @@
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
           <EntitySet Name="QutationDetailsTables" EntityType="APIcompanyModel.QutationDetailsTable" />
           <EntitySet Name="QutationTables" EntityType="APIcompanyModel.QutationTable" />
-          <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
           <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="APIcompanyModel.FK_QutationDetailsTable_QutationTable">
             <End Role="QutationTable" EntitySet="QutationTables" />
             <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductTable_ComapnyInfo" Association="APIcompanyModel.FK_ProductTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="ProductTable" EntitySet="ProductTables" />
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
@@ -684,6 +678,7 @@
             <End Role="PaymentTermTable" EntitySet="PaymentTermTables" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
           </AssociationSet>
+          <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
           <AssociationSet Name="FK_ProductTable_ProductUnitTable" Association="APIcompanyModel.FK_ProductTable_ProductUnitTable">
             <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
             <End Role="ProductTable" EntitySet="ProductTables" />
@@ -727,27 +722,6 @@
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ProductTable">
-          <Key>
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="SalePrice" Type="Double" />
-          <Property Name="PurchasePrice" Type="Double" />
-          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="OpeningQuantity" Type="Int32" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="Company_ID" Type="Int32" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ProductTable_ComapnyInfo" FromRole="ProductTable" ToRole="ComapnyInfo" />
-          <Property Name="ProductUnit" Type="Int32" />
-          <Property Name="ProductStatus" Type="Boolean" />
-          <Property Name="OpeningStockValue" Type="Int32" />
-          <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
-          <Property Name="VatsValue" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-        </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.QutationDetailsTable" Role="QutationDetailsTable" Multiplicity="*" />
@@ -757,18 +731,6 @@
             </Principal>
             <Dependent Role="QutationDetailsTable">
               <PropertyRef Name="QutationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="ProductTable">
-              <PropertyRef Name="Company_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1171,6 +1133,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ProductTable">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="PurchasePrice" Type="Double" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OpeningQuantity" Type="Int32" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="Company_ID" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <Property Name="ProductUnit" Type="Int32" />
+          <Property Name="ProductStatus" Type="Boolean" />
+          <Property Name="OpeningStockValue" Type="Int32" />
+          <Property Name="VatsValue" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
+        </EntityType>
         <Association Name="FK_ProductTable_ProductUnitTable">
           <End Type="APIcompanyModel.ProductUnitTable" Role="ProductUnitTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="*" />
@@ -1249,26 +1231,6 @@
                 <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
                 <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
                 <ScalarProperty Name="QutationID" ColumnName="QutationID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
-              <MappingFragment StoreEntitySet="ProductTable">
-                <ScalarProperty Name="VatsValue" ColumnName="VatValue" />
-                <ScalarProperty Name="OpeningStockValue" ColumnName="OpeningStockValue" />
-                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
-                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="OpeningQuantity" ColumnName="OpeningQuantity" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
-                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1481,6 +1443,26 @@
                 <ScalarProperty Name="FK_AccountID" ColumnName="FK_AccountID" />
                 <ScalarProperty Name="TransictionDate" ColumnName="TransictionDate" />
                 <ScalarProperty Name="TransictionId" ColumnName="TransictionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
+              <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="VatsValue" ColumnName="VatsValue" />
+                <ScalarProperty Name="OpeningStockValue" ColumnName="OpeningStockValue" />
+                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
+                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="OpeningQuantity" ColumnName="OpeningQuantity" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

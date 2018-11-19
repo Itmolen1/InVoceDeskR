@@ -17,7 +17,6 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ComapnyInfo()
         {
-            this.ProductTables = new HashSet<ProductTable>();
             this.QutationTables = new HashSet<QutationTable>();
             this.PurchaseOrderTables = new HashSet<PurchaseOrderTable>();
             this.ContactsTables = new HashSet<ContactsTable>();
@@ -50,8 +49,6 @@ namespace InvoiceDiskLast.Models
         public string KVK { get; set; }
         public string BTW { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductTable> ProductTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationTable> QutationTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -29,7 +29,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> OpeningStockValue { get; set; }
         public string VatsValue { get; set; }
     
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual ProductUnitTable ProductUnitTable { get; set; }
     }
 }
