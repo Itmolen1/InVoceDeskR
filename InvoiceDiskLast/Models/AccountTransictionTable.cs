@@ -11,11 +11,10 @@ namespace InvoiceDiskLast.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class AccountTransictionTable
     {
-        public int? TransictionId { get; set; }
+        public int TransictionId { get; set; }
         public Nullable<System.DateTime> TransictionDate { get; set; }
         public Nullable<int> FK_AccountID { get; set; }
         public Nullable<double> Dr { get; set; }
@@ -27,8 +26,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> FK_CompanyId { get; set; }
         public Nullable<int> FKPaymentTerm { get; set; }
-
-        [MaxLength(150)]
         public string Description { get; set; }
     
         public virtual AccountTable AccountTable { get; set; }

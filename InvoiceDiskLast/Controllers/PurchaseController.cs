@@ -1027,6 +1027,7 @@ namespace InvoiceDiskLast.Controllers
                 AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
                 accountTransictiontable.TransictionDate = DateTime.Now;
                 accountTransictiontable.FK_AccountID = 4002;
+                //with tax
                 accountTransictiontable.Cr = purchaseViewModel.PurchaseTotoalAmount;
                 accountTransictiontable.Dr = 0.00;
                 accountTransictiontable.TransictionNumber = base64Guid;

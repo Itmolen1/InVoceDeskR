@@ -58,6 +58,8 @@ namespace InvoiceDiskLast.Controllers
                         StreetNumber = c.StreetNumber,                      
                         Addeddate = c.Addeddate,
                         Status = c.Status,
+                        PersonCompany = c.PersonCompany,
+                        Remarks = c.Remarks,
                     }).ToList();
 
                     return Ok(obContact);
@@ -96,6 +98,8 @@ namespace InvoiceDiskLast.Controllers
                     Company_Id = c.Company_Id,
                     UserId = c.UserId,
                     Type = c.Type,
+                    PersonCompany = c.PersonCompany,
+                    Remarks = c.Remarks,
 
                     Addeddate = c.Addeddate,
                     Status = c.Status,

@@ -81,7 +81,7 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                MVCProductModel productTable = db.ProductTables.Where(x => x.ProductId == id).Select(c => new MVCProductModel
+                MVCProductViewModel productTable = db.ProductTables.Where(x => x.ProductId == id).Select(c => new MVCProductViewModel
                 {
 
                     ProductId = c.ProductId,
@@ -96,6 +96,8 @@ namespace InvoiceDiskLast.Controllers
                     AddedDate = c.AddedDate,
                     ProductUnit = c.ProductUnit,
                     OpeningStockValue = c.OpeningStockValue,
+                    ProductUnitName = c.ProductUnitTable.ProductUnit,
+                    ProductStatus = c.ProductStatus
 
 
                 }).FirstOrDefault();

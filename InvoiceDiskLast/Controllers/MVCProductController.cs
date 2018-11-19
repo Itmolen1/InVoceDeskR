@@ -149,7 +149,7 @@ namespace InvoiceDiskLast.Controllers
             else
             {
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + id.ToString()).Result;
-                return Json(response.Content.ReadAsAsync<MVCProductModel>().Result, JsonRequestBehavior.AllowGet);
+                return Json(response.Content.ReadAsAsync<MVCProductViewModel>().Result, JsonRequestBehavior.AllowGet);
             }
         }
 
