@@ -91,6 +91,8 @@ namespace InvoiceDiskLast.Controllers
                     Status = p.Status,
                     CompanyId = p.CompanyId,
                     Type = p.Type,
+                    Vat21=p.Vat21,
+                    Vat6=p.Vat6,
                     UserId = p.UserId,
                     AddedDate = p.AddedDate,
                 }).ToList();

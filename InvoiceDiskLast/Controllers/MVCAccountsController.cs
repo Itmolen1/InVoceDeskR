@@ -39,9 +39,6 @@ namespace InvoiceDiskLast.Controllers
 
                 int companyid = Convert.ToInt32(Session["CompayID"]);
 
-                //  IEnumerable<string> token;
-                //   GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("accessToken",out token);  
-
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("AccountByAccountID/" + HeadAcoountIDs + "/" + companyid).Result;
 
@@ -184,13 +181,12 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult GetAssetAccount(int HeadAccountId=0)
+        [HttpGet]
+        public ActionResult GetAssetAccount(int HeadAccountId)
         {
-
             try
             {
-                if (HeadAccountId == 0 || HeadAccountId == null)
+                if (HeadAccountId == 0)
                 {
                     int companyId = Convert.ToInt32(Session["CompayID"]);
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetHeadAccount/" + 0 + "/" + companyId).Result;
@@ -204,17 +200,15 @@ namespace InvoiceDiskLast.Controllers
                     List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
                     return Json(AccountOBj, JsonRequestBehavior.AllowGet);
                 }
-
             }
             catch (Exception)
             {
+               
 
-                throw;
+                return Json("Fail", JsonRequestBehavior.AllowGet);            
             }
-
+            return Json("", JsonRequestBehavior.AllowGet);
         }
-
-
 
 
 
@@ -222,14 +216,11 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult GetAccountHeadAccount()
         {
-
             int companyId = Convert.ToInt32(Session["CompayID"]);
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetAssetAccount/" + 0 + "/" + companyId).Result;
             List<MVCAccountTableModel> AccountOBj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
             return Json(AccountOBj, JsonRequestBehavior.AllowGet);
         }
-
-
 
     }
 }
