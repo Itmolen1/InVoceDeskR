@@ -17,7 +17,6 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
         // GET: api/APIProduct
 
-
         [Route("api/APIProduct/{CompanyId:int}/{status:alpha}")]
         [ResponseType(typeof(List<MVCProductModel>))]
 
@@ -45,6 +44,7 @@ namespace InvoiceDiskLast.Controllers
                     AddedDate = c.AddedDate,
                     OpeningStockValue = c.OpeningStockValue,
                     ProductStatus = c.ProductStatus,
+                    VatsValue = c.VatsValue
                 }).ToList();
 
                 return Ok(ob);
@@ -66,12 +66,12 @@ namespace InvoiceDiskLast.Controllers
                     AddedDate = c.AddedDate,
                     OpeningStockValue = c.OpeningStockValue,
                     ProductStatus = c.ProductStatus,
+                    VatsValue = c.VatsValue
                 }).ToList();
 
                 return Ok(ob);
             }
         }
-
 
         [Route("api/APIProductByProductID/{id:int}")]
         // GET: api/APIProduct/5
@@ -97,7 +97,8 @@ namespace InvoiceDiskLast.Controllers
                     ProductUnit = c.ProductUnit,
                     OpeningStockValue = c.OpeningStockValue,
                     ProductUnitName = c.ProductUnitTable.ProductUnit,
-                    ProductStatus = c.ProductStatus
+                    ProductStatus = c.ProductStatus,
+                    VatsValue = c.VatsValue
 
 
                 }).FirstOrDefault();
@@ -196,8 +197,6 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
 
         protected override void Dispose(bool disposing)
         {

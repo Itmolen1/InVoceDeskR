@@ -21,6 +21,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<bool> ProductStatus { get; set; }
         public Nullable<int> OpeningStockValue { get; set; }
         public int VatValue { get; set; }
+        public string VatsValue { get; set; }
         public string ProductUnitName { get; set; }
     }
 }
