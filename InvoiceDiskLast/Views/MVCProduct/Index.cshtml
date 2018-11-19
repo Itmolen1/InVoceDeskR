@@ -6,37 +6,40 @@
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
 
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="table-responsive">
+            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="productTable">
 
-<table class="table table" id="productTable">
+                <thead class="table-heading" style="background-color:black;color:white">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Sale Price
+                        </th>
+                        <th>
+                            Purchase Price
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th class="text-right">Action</th>
+                    </tr>
 
-    <thead class="table-heading table responsive" style="background-color:black;color:white">
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Name
-            </th>           
-            <th>
-                Sale Price
-            </th>
-            <th>
-                Purchase Price
-            </th>
-            <th>
-                Type
-            </th>
-            <th>
-                Status
-            </th>          
-            <th class="text-">Action</th>
-        </tr>
-
-    </thead>
-    <tbody></tbody>
-</table>
-
-
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <div class="preloader" id="loadingDiv">
     <div class="loader">
         <div class="loader__figure"></div>
@@ -170,7 +173,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add new unit</h4>
+                <h4 class="modal-title" style="color:skyblue">Product Details...</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -178,14 +181,14 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-3">Product Name:</div>
-                            <div class="col-sm-9"><label id="ProductName" style="margin-left:5px"></label></div>
+                            <div class="col-sm-9"><label id="ProductNamev" style="margin-left:5px"></label></div>
                         </div>
                         <hr />
                         <div class="row">
                             <div class="col-sm-3">Unit:</div>
                             <div class="col-sm-3"><label id="Unit" style="margin-left:5px"></label></div>                       
                             <div class="col-sm-3">Type:</div>
-                            <div class="col-sm-3"><label id="Type" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3"><label id="TypeV" style="margin-left:5px"></label></div>
                         </div>
 
                         <hr />
@@ -435,6 +438,13 @@
                         return;
                     }
                 });
+                $('select#VatValue option').each(function () {
+                    if ($(this).val() == resultData.VatValue) {
+                        this.selected = true;
+                        return;
+                    }
+                });
+
                 $('#CreateNewProductModal').modal('show');
                 $('#UpdateProId').show();
                 $('#SAveProdID').hide();
@@ -597,25 +607,32 @@
         });
     }
 
-
     function ProductViewModel(ProductId)
     {
         $.ajax({
             url: "/MVCProduct/AddOrEdit/" + ProductId,
             type: "GET",
             dataType: "json",
-            success: function (resultDataView) {               
+            success: function (resultDataView) {
                 console.log(resultDataView);
-                $('#ProductName').val(resultDataView.ProductName);
-                $('#Unit').val(resultDataView.ProductUnit);
-                $('#Type').val(resultDataView.SalePrice);
-                $('#SPrice').val(resultDataView.PurchasePrice);
-                $('#PPrice').val(resultDataView.OpeningQuantity);
-                $('#OpenSV').val(resultDataView.OpeningStockValue);
-                $('#openQTY').val(resultDataView.ProductId);
-                $('#AddedDate').val(resultDataView.ProductId);
-                $('#CState').val(resultDataView.ProductId);
-                $('#Desc').val(resultDataView.ProductId);
+                $('#ProductNamev').text(resultDataView.ProductName);
+                $('#Unit').text(resultDataView.ProductUnitName);
+                $('#TypeV').text(resultDataView.Type);
+                $('#SPrice').text(resultDataView.SalePrice);
+                $('#PPrice').text(resultDataView.PurchasePrice);
+                $('#OpenSV').text(resultDataView.OpeningStockValue);
+                $('#openQTY').text(resultDataView.OpeningQuantity);                
+                $('#CState').text(resultDataView.ProductStatus);
+
+                if(resultDataView.ProductStatus == true)
+                {
+                    $('#CState').css('color', 'green');
+                }
+                else
+                {
+                    $('#CState').css('color', 'Red');
+                }
+                $('#Desc').val(resultDataView.Description);
                 $('#ProductViewModel').modal('show');
                
             },
@@ -624,12 +641,7 @@
             }
         });
         
-    }
-
-   
-
-
-    
+    }   
 
    // <input type='checkbox' name='chkBestSeller' value='Best Seller'/>
 

@@ -7,7 +7,7 @@
 
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New</button>
 
-<table class="table" id="ContactListTable">
+<table class="table table-striped" id="ContactListTable">
     <thead style="background-color:black;color:white">
         <tr>
             <th>
@@ -34,7 +34,7 @@
                 Status
             </th>
 
-            <th>Action</th>
+            <th class="text-right">Action</th>
         </tr>
     </thead>
     <tbody></tbody>
@@ -64,6 +64,162 @@
     });
 
 </script>
+
+<div class="modal fade bs-example-modal-lg" id="ContactViewModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabe1l" style="color:skyblue">Details... </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body" style="height: auto !important">
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="ClientTypev" value="CompanyClient" checked> Bedrijif<br>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="ClientTypev" value="Private">Persoon<br>
+                    </div>
+                    <div class="col-sm-4"></div>
+                </div>
+                <hr />
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            Name:
+                            <input class="form-control" type="text" required id="ContactNamev" placeholder="Naam" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            Address:
+                            <input class="form-control" type="text" required id="ContactAddressv" placeholder="Adres(Straatt Naam)" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            Street Number:
+                            <input class="form-control" type="text" required id="StreetNumberv" placeholder="Street Number" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    postal Code:
+                                    <input class="form-control" type="text" required id="PostalCodev" placeholder="PostCode" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    City:
+                                    <input class="form-control" type="text" required id="Cityv" placeholder="City" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            Land:
+                            <input class="form-control" type="text" required id="LandLinev" placeholder="Land" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                           Telephone:
+                            <input class="form-control" type="text" required id="telephonev" placeholder="Telefoon" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            Mobile:
+                            <input class="form-control" type="text" required id="Mobilev" placeholder="Mobiel" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" id="rowiddd">
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            Email:
+                            <input class="form-control" type="text" required id="BillingEmailv" placeholder="E-mial" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group ">
+                            Website:
+                            <input class="form-control" type="text" required id="Websitev" placeholder="Website" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row" id="rowiddd2">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            Email:
+                            <input class="form-control" type="text" required id="BillingEmailv" placeholder="E-mial" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="row">                              
+                                <div class="col-sm-2" style="margin-top:7px">Type</div>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="TypeContactsv">
+                                        <option value="Customerv" selected>Klant</option>
+                                        <option value="Venderv">verkoper</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="row">                              
+                                <div class="col-sm-2" style="margin-top:7px">staat</div>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="Statusv" disabled="disabled">
+                                        <option value="1" selected>True</option>
+                                        <option value="0">False</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-1">Rem:</div>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" id="Remarksv" rows="1" data-toggle="tooltip" data-placement="bottom" title="Opmerkingen!!"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelContactsv" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Dichtbij</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 
 
 
@@ -273,7 +429,8 @@
                     
                      {
                         render: function (data, type, row) {
-                            return '<button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil" style="margin-right:5px"></i>Edit</button>|<button type="button" class="btn btn-success btn-xs" onclick="Delete(' + row.ContactsId + ')"><i class="fa fa-eye" style="margin-right:5px"></i>View</button>'
+
+                            return '<div class="text-right"><button type="button" href="" class="btn btn-info btn-xs" data-id="Id" onclick="EditContact(' + row.ContactsId + ')"><i class="fa fa-pencil" style="margin-right:5px"></i>Edit</button>|<button type="button" class="btn btn-success btn-xs" onclick="ViewContacts(' + row.ContactsId + ')"><i class="fa fa-eye" style="margin-right:5px"></i>View</button></div>'
                         }
                     }
             ]
@@ -322,7 +479,11 @@
                     BillingEmail: $('#BillingEmail').val(),
                     Remarks: $('#Remarks').val(),
                     Status: $('#Status option:selected').text(),
-                    Company_Id: localStorage.getItem('CompanyID')
+                    Company_Id: localStorage.getItem('CompanyID'),
+                    PersonCompany: $("input[name='ClientType']:checked").val(),
+                    Remarks: $('#Remarks').text()
+                        
+                   
                 },
                 success: function (response) {
                     if (response == '201') {
@@ -367,8 +528,9 @@
                     Website: $('#Website').val(),
                     BillingEmail: $('#BillingEmail').val(),
                     Remarks: $('#Remarks').val(),
-                    Status: $('#Status option:selected').text(),
-                    Company_Id: localStorage.getItem('CompanyID')
+                    Status: $('#Status option:selected').text(),                    
+                    PersonCompany: $("input[name='ClientType']:checked").val(),
+                    Remarks: $('#Remarks').text()
                 },
                 success: function (data) {
                     $('#CreateNewContactModal').modal('hide');
@@ -462,6 +624,10 @@
                 $('#Website').val(resultContactData.Website);
                 $('#BillingEmail').val(resultContactData.BillingEmail);
                 $('#Remarks').val(resultContactData.Remarks);
+
+                $("input[name='ClientType']:checked").val(resultContactData.PersonCompany),
+                $('#Remarks').text(resultContactData.Remarks)
+
                 $('#UpdateClineId').show();
                 $('#SaveClinetID').hide();
                 $('#CreateNewContactModal').modal('show');
@@ -472,7 +638,6 @@
         });
     }
 
-   
     $(document).ready(function () {
         $("input[type='radio']").click(function () {
             var radioValue = $("input[name='ClientType']:checked").val();
@@ -492,8 +657,6 @@
         $('#rowiddd2').hide();
     });
 
-
- 
 var $loading = $('#loadingDiv').hide();
 $(document)
   .ajaxStart(function () {
@@ -503,6 +666,71 @@ $(document)
     $loading.hide();
   });
 
+function ViewContacts(id)
+{
+    $.ajax({
+        url: "/MVCClient/AddOrEdit/" + id,
+        type: "GET",
+        dataType: "json",
+        success: function (resultContactData)
+        {
+            $('#ContactNamev').val(resultContactData.ContactName);
+            $('#ContactAddressv').val(resultContactData.ContactAddress);
+            $('select#TypeContactsv option').each(function () {
+                if ($(this).text().toLowerCase() == resultContactData.Type.toLowerCase())
+               {
+                 this.selected = true;
+                 return;
+               }
+            });
+
+            if (resultContactData.Type == "Customer")
+            {
+
+                $('#TypeContactsv').val("Customerv");
+            }
+            else
+            {
+                $('#TypeContactsv').val("Venderv");
+            }
+
+            if (resultContactData.Status == true)
+            {
+                $('#Statusv').val("1");
+            }
+            else
+            {
+                $('#Statusv').val("0");
+            }
+            $('#Company_Idv').val(resultContactData.Company_Id);
+            $('#UserIdv').val(resultContactData.UserId);
+            $('#StreetNumberv').val(resultContactData.StreetNumber);
+            $('#PostalCodev').val(resultContactData.PostalCode);
+            $('#Cityv').val(resultContactData.City);
+            $('#LandLinev').val(resultContactData.LandLine);
+            $('#telephonev').val(resultContactData.telephone);
+            $('#Mobilev').val(resultContactData.Mobile);
+            $('#Websitev').val(resultContactData.Website);
+            $('#BillingEmailv').val(resultContactData.BillingEmail);
+            $('#Remarksv').val(resultContactData.Remarks);
+
+            if (resultContactData.PersonCompany == 'Private') {
+                $('input:radio[name="ClientTypev"][value="Private"]').prop('checked', true);
+            }
+            else 
+            {
+                $('input:radio[name="ClientTypev"][value="CompanyClient"]').prop('checked', true);
+            }
+
+            $('#Remarksv').text(resultContactData.Remarks)
+
+            $('#ContactViewModel').modal('show');
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
     
 function EditClinetStatus(id, Status) {   
     var answer = confirm('Are you sure you want to change the status of the Client?');

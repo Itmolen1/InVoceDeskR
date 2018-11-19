@@ -23,6 +23,8 @@ namespace InvoiceDiskLast.Models
         public string Mobile { get; set; }
         public string Website { get; set; }
         public string BillingEmail { get; set; }
+        public string PersonCompany { get; set; }
+        public string Remarks { get; set; }
 
     }
 }

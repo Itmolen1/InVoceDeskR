@@ -33,7 +33,7 @@
           <Property Name="AddedBy" Type="int" />
           <Property Name="FK_CompanyId" Type="int" />
           <Property Name="FKPaymentTerm" Type="int" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
@@ -96,6 +96,8 @@
           <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
           <Property Name="BillingEmail" Type="nvarchar" MaxLength="50" />
           <Property Name="Website" Type="nvarchar" MaxLength="50" />
+          <Property Name="PersonCompany" Type="varchar" MaxLength="15" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="50" />
           <Property Name="Addeddate" Type="date" />
           <Property Name="Status" Type="bit" />
         </EntityType>
@@ -169,6 +171,7 @@
           <Property Name="ProductUnit" Type="int" />
           <Property Name="ProductStatus" Type="bit" />
           <Property Name="OpeningStockValue" Type="int" />
+          <Property Name="VatValue" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="ProductUnitTable">
           <Key>
@@ -399,6 +402,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProductTable_ProductUnitTable">
+          <End Role="ProductUnitTable" Type="Self.ProductUnitTable" Multiplicity="0..1" />
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductUnitTable">
+              <PropertyRef Name="ProductUnitID" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="ProductUnit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
           <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="0..1" />
           <End Role="PurchaseOrderDetailsTable" Type="Self.PurchaseOrderDetailsTable" Multiplicity="*" />
@@ -517,6 +532,10 @@
           <AssociationSet Name="FK_OrderStatusTable_PurchaseOrderTable" Association="Self.FK_OrderStatusTable_PurchaseOrderTable">
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
             <End Role="OrderStatusTable" EntitySet="OrderStatusTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTable_ProductUnitTable" Association="Self.FK_ProductTable_ProductUnitTable">
+            <End Role="ProductUnitTable" EntitySet="ProductUnitTable" />
+            <End Role="ProductTable" EntitySet="ProductTable" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="Self.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
@@ -665,6 +684,10 @@
             <End Role="PaymentTermTable" EntitySet="PaymentTermTables" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProductTable_ProductUnitTable" Association="APIcompanyModel.FK_ProductTable_ProductUnitTable">
+            <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
+            <End Role="ProductTable" EntitySet="ProductTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -722,6 +745,8 @@
           <Property Name="ProductUnit" Type="Int32" />
           <Property Name="ProductStatus" Type="Boolean" />
           <Property Name="OpeningStockValue" Type="Int32" />
+          <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
+          <Property Name="VatsValue" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -861,6 +886,8 @@
           <Property Name="Addeddate" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="Boolean" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
+          <Property Name="PersonCompany" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -882,6 +909,7 @@
           <Property Name="ProductUnit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Boolean" />
           <Property Name="CompanyId" Type="Int32" />
+          <NavigationProperty Name="ProductTables" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductUnitTable" ToRole="ProductTable" />
         </EntityType>
         <EntityType Name="AspNetUser">
           <Key>
@@ -1102,7 +1130,7 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="FK_CompanyId" Type="Int32" />
           <Property Name="FKPaymentTerm" Type="Int32" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTransictionTable" ToRole="AccountTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="AccountTransictionTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="PaymentTermTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable" FromRole="AccountTransictionTable" ToRole="PaymentTermTable" />
@@ -1140,6 +1168,18 @@
             </Principal>
             <Dependent Role="AccountTransictionTable">
               <PropertyRef Name="FKPaymentTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTable_ProductUnitTable">
+          <End Type="APIcompanyModel.ProductUnitTable" Role="ProductUnitTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductUnitTable">
+              <PropertyRef Name="ProductUnitID" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="ProductUnit" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1215,6 +1255,7 @@
           <EntitySetMapping Name="ProductTables">
             <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
               <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="VatsValue" ColumnName="VatValue" />
                 <ScalarProperty Name="OpeningStockValue" ColumnName="OpeningStockValue" />
                 <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
                 <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
@@ -1290,6 +1331,8 @@
           <EntitySetMapping Name="ContactsTables">
             <EntityTypeMapping TypeName="APIcompanyModel.ContactsTable">
               <MappingFragment StoreEntitySet="ContactsTable">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
                 <ScalarProperty Name="Website" ColumnName="Website" />
