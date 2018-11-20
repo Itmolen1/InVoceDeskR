@@ -232,7 +232,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                    mvcQutationModel.Status = MVCQutationViewModel.Status;
+                   
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {

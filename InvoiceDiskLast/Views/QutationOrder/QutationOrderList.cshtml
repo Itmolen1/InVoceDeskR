@@ -251,7 +251,7 @@
 
                 <div class="row">
                     <div class="col-ms-4">
-                        <div id="logo1"class="mydiv"></div>
+                        <div id="logo1" class="mydiv"></div>
 
                     </div>
                     <div class="col-sm-8">
@@ -436,11 +436,7 @@
 
 
 
-
-
-
-
-<div class="modal fade bs-example-modal-lg" id="TransactionModelq" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+<div class="modal fade bs-example-modal-lg" id="TransactionModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -475,7 +471,7 @@
                     </div>
 
                     <div class="col-sm-9">
-                        <input type="text" id="txttransactionIdq" class="form-control" placeholder="transaction Number" />
+                        <input type="text" id="txttransactionId" class="form-control" placeholder="transaction Number" />
                     </div>
 
                 </div>
@@ -488,7 +484,7 @@
                     <div class="col-sm-9">
 
 
-                        <input type="text" id="txtrefrencenumberq" class="form-control" placeholder="Reffrence number" readonly />
+                        <input type="text" id="txtrefrencenumber" class="form-control" placeholder="Reffrence number" readonly />
 
                     </div>
 
@@ -498,12 +494,12 @@
 
                 <div class="row" style="margin-top:10px;">
                     <div class="col-sm-6">
-                        <select class="form-control" id="drpAccountDebitq">
+                        <select class="form-control" id="drpAccountDebit">
                             <option value="0">Select payment Term</option>
                         </select>
                     </div>
                     <div class="col-sm-6">
-                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txttransactionDateDebitq" } })
+                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control", id = "txttransactionDateDebit" } })
                     </div>
                 </div>
 
@@ -511,7 +507,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <select class="form-control" id="drppaymentDebitq">
+                                <select class="form-control" id="drppaymentDebit">
                                     <option value="0"> Select acccount</option>
                                 </select>
                             </div>
@@ -521,7 +517,7 @@
 
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required id="AmountDebitq" placeholder="Amount Debit" title="Debit Amount">
+                                <input class="form-control" type="text" required id="AmountDebit" placeholder="Amount Debit" title="Debit Amount">
                             </div>
                         </div>
 
@@ -530,7 +526,7 @@
 
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <select class="form-control" id="drpAccountCreditq">
+                                <select class="form-control" id="drpAccountCredit">
 
                                     <option value="0">Account type</option>
 
@@ -540,23 +536,26 @@
 
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required id="AmountCreditq" placeholder="Amount Credit" title="Credit Amount">
+                                <select class="form-control" id="DrpTrasctionType">
+                                    <option value="0">select trasaction type</option>
+                                    <option>Cr</option>
+                                    <option>Dr</option>
+                                </select>
                             </div>
                         </div>
-
 
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <textarea class="form-control" type="text" required id="Descriptionq" placeholder="Description (optional)"></textarea>
+                        <textarea class="form-control" type="text" required id="Description" placeholder="Description (optional)"></textarea>
                     </div>
                 </div>
 
 
                 <div class="row">
-                    <table class="table table-bordered table-striped" id="tableAccountinfoq" style="visibility:hidden">
+                    <table class="table table-bordered table-striped" id="tableAccountinfo" style="visibility:hidden">
                         <thead style="background-color:black;color:white">
                             <tr>
                                 <th>TID</th>
@@ -566,6 +565,7 @@
                                 <th>Payment</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="tbleAccount"></tbody>
@@ -574,7 +574,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnqutation"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>ADD</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnSave" style="visibility:hidden"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnAdd"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Add</button>
                 <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
             </div>
         </div>
@@ -582,6 +583,10 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+
+
+
 
 
 
@@ -702,7 +707,9 @@
 
                         switch (row.Status) {
                             case "open":
-                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ')"><i class="fa fa-check"> Accept</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.SubTotal + ')"><i class="fa fa-check"> Record payment</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+
+                                //return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.PurchaseSubTotal + ')"><i class="fa fa-check"> Record payment</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
                                 break
 
                             case "rejected":
@@ -734,12 +741,33 @@
             url: '/MVCClient/AddOrEditQutation',
             type: 'GET',
             data: {
-                Qutationid:QutationId
+                Qutationid: QutationId
             },
             success: function () {
 
                 GetPurchaseDetailByPurchaseId(QutationId, Type1)
             }
+        });
+    }
+
+
+    function loadPayemtTermDropdown() {
+
+        var drppaymentTerm = $('#drpAccountDebit');
+
+        $.ajax({
+            url: "/MvcPaymentTerm/GetPaymentTerm",
+            type: "POST",
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppaymentTerm.append("<option value=" + item.PayementTremId + "> " + item.PaymentTerm + " </option>")
+                });
+                $("#drpAccountDebit").val($("#drpAccountDebit option:eq(1)").val());
+            },
+            error: function (Error) {
+                alert(Error)
+            },
         });
     }
 
@@ -815,12 +843,15 @@
 
     // end of service and qutation
 
-    function AcceptOrder(id) {
 
-        $('#txtrefrencenumberq').val(id);
-        $('#txttransactionIdq').val(Math.floor(Math.random() * 10));
-        $('#TransactionModelq').modal('show');
 
+
+    function AcceptOrder(id, Amount) {
+
+        $('#txtrefrencenumber').val(id);
+        $('#AmountDebit').val(Amount);
+        $('#txttransactionId').val(Math.floor(Math.random() * 10));
+        $('#TransactionModel').modal('show');
     }
 
 
@@ -1008,49 +1039,220 @@
 
     $(document).ready(function () {
         loadPayemtDropdownq();
-        loadPayemtTermDropdownq();
+        //loadPayemtTermDropdownq();
+        loadPayemtTermDropdown();
     });
 
 
 
     function loadPayemtDropdownq() {
-        var drppayment = $('#drppaymentDebitq');
-        var drpAccountCredit = $('#drpAccountCreditq');
+
+        var drppayment = $('#drppaymentDebit');
+
         $.ajax({
-            url: "/MvcAccounts/GetAccount",
-            type: "POST",
+            url: "/MVCAccounts/GetAssetAccount",
+            type: "GET",
+            data: { HeadAccountId: 0 },
+            contentType: "appplication/json",
+            success: function (response) {
+
+                $.each(response, function (i, item) {
+                    drppayment.append("<option value=" + item.HeadAccountId + "> " + item.HeadAccountTitle + " </option>")
+
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+    }
+
+
+
+
+
+    $('#drppaymentDebit').change(function () {
+        $('#drpAccountCredit').empty();
+        var id = $(this).val();
+        var data1 = JSON.stringify({
+            HeadAccountId: id,
+        })
+        var drppayment = $('#drpAccountCredit');
+
+        $.ajax({
+            url: "/MVCAccounts/GetAssetAccount",
+            type: "GET",
+            data: {
+                HeadAccountId: id,
+            },
             contentType: "appplication/json",
             success: function (response) {
                 $.each(response, function (i, item) {
                     drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
-                    drpAccountCredit.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
                 });
             },
             error: function (Error) {
                 alert(Error)
             },
         });
-    }
+
+    });
 
 
-    function loadPayemtTermDropdownq() {
-        var drppaymentTerm = $('#drpAccountDebitq');
-        var drppaymentTermCredit = $('#drpAccountCreditq');
+    $('#btnAdd').click(function () {
+
+        if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+            alert('Account name canot be same');
+            return;
+        }
+
+        if ($('#txttransactionDateDebit').val() == 0) {
+            alert('txttransactionDateDebit  canot be null');
+            return;
+        }
+
+        if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+            alert('debit amount canot be zero');
+            return;
+        }
+        
+        if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+            alert('AmountCredit canot be zero');
+            return;
+        }
+        if ($('#DrpTrasctionType').val() == 0) {
+            alert('Select Transaction type');
+
+            return;
+        }
+
+        if ($('#drpAccountCredit').val() == 0) {
+            alert('Select Account type');
+
+            return;
+        }
+        
+
+        
+
+        var AccountTable = $('#tbleAccount');
+        var AccountName = $('#drpAccountCredit option:selected').text();
+        var TID = $('#txttransactionId').val();
+        var ref = $('#txtrefrencenumber').val();
+        var Amountdebit = $('#AmountDebit').val();
+        var AmountCridit = $('#AmountCredit').val();
+        var Tdate = $('#txttransactionDateDebit').val();
+        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+        var paymentTer = $('#drpAccountDebit option:selected').text();
+
+        if ($('#DrpTrasctionType option:selected').text().trim() == "Dr") {
+
+            $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + Amountdebit + "</td><td class='AmountCredit'>" + 0.00 + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
+            $('#btnSave').css('visibility', 'visible');
+            $('#drppaymentDebit').val(0);
+            $('#drpAccountCredit').val(0);
+            $('#DrpTrasctionType').val(0);
+        }
+        else if ($('#DrpTrasctionType option:selected').text().trim() == "Cr") {
+
+            $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + 0.0 + "</td><td class='AmountCredit'>" + Amountdebit + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
+            $('#btnSave').css('visibility', 'visible');
+            $('#drppaymentDebit').val(0);
+            $('#drpAccountCredit').val(0);
+            $('#DrpTrasctionType').val(0);
+            $('#tableAccountinfo').css('visibility', 'visible');
+            
+        }
+       
+       
+        $('#tableAccountinfo').css('visibility', 'visible');
+
+    });
+
+
+    $(document).on("click", '.ibtnDel', function () {
+
+        debugger;
+        $(this).closest("tr").remove();
+
+        if ($('#tableAccountinfo #tbleAccount tr').length == 0) {
+            $('#tableAccountinfo').css('visibility', 'visible');
+            $("#tableAccountinfo #tbleAccount").empty();
+            $('#tableAccountinfo').css('visibility', 'hidden');
+            $('#btnSave').css('visibility', 'hidden');
+        }
+    });
+
+    $('#btnSave').click(function () {
+        if ($('#tableAccountinfo #tbleAccount tr').length > 0) {
+            PayTransaction();
+        }
+        else {
+            swal({
+                title: 'Message!',
+                text: "select field and tray again",
+                type: 'danger'
+            });
+
+            $('#tableAccountinfo').css('visibility', 'hidden');
+        }
+    });
+
+
+    function PayTransaction() {
+        var TransactionModel = new Array()
+
+        $('#tableAccountinfo  #tbleAccount tr').each(function (index, ele) {
+            var currentRow = $(this).closest("tr");
+            var Trans = {};
+            Trans.TranDate = $('#txttransactionDateDebit').val();
+            Trans.Id = currentRow.find('.drpAccountCredit').html();
+            Trans.paymentTermId = currentRow.find('.paymentTerm1').html(),
+            Trans.PurchaseOrderID = $('#txtrefrencenumber').val(),
+            Trans.AmountCredit = parseFloat(currentRow.find('.AmountCredit').html()),
+            Trans.AmountDebit = parseFloat(currentRow.find('.AmountDebit').html()),
+            TransactionModel.push(Trans);
+        });
         $.ajax({
-            url: "/MvcPaymentTerm/GetPaymentTerm",
-            type: "POST",
-            contentType: "appplication/json",
+            url: '/QutationOrder/Trasactionpayment',
+            type: 'POST',
+            data: JSON.stringify(TransactionModel),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
             success: function (response) {
-                $.each(response, function (i, item) {
-                    drppaymentTerm.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
-                    drppaymentTermCredit.append("<option value=" + item.PaymentTermId + "> " + item.PaymentTerm + " </option>")
+                if (response == "Success") {
+
+                    $('#tableAccountinfo').css('visibility', 'visible');
+                    $("#tableAccountinfo #tbleAccount").empty();
+
+
+                    swal({
+                        title: 'Message!',
+                        text: "Transaction process successfully",
+                        type: 'success'
+                    });
+
+                }
+
+                else if (response == "Fail") {
+                    swal({
+                        title: 'Message!',
+                        text: "Fail to  process Transaction",
+                        type: 'danger'
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: 'Message!',
+                    text: "Fail to  process Transaction",
+                    type: 'danger'
                 });
-            },
-            error: function (Error) {
-                alert(Error)
-            },
+            }
         });
+
     }
+
 
 
 

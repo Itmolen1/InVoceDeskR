@@ -1422,42 +1422,44 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult Trasactionpayment(TransactionModel TransactionModel)
-         {
+        public ActionResult Trasactionpayment(List<TransactionModel> TransactionModel)
+        {
+
             try
             {
-               
-                if (Session["CompayID"] != null)
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + TransactionModel[0].PurchaseOrderID.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + TransactionModel.ToString()).Result;
-                    MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                    
+                    foreach (var item in TransactionModel)
                     {
+                        string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
                         AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
                         accountTransictiontable.FK_CompanyId = Convert.ToInt32(Session["CompayID"]);
-                        //accountTransictiontable.Description = _TransactionModel.descrition;                      
-                        //accountTransictiontable.FK_AccountID = _TransactionModel.ToAccountId;
-                        //accountTransictiontable.Description = _TransactionModel.descrition;
-                        //accountTransictiontable.FKPaymentTerm = 1;
-
-                        //accountTransictiontable.TransictionRefrenceId = ob.PurchaseOrderID.ToString();
-                        //accountTransictiontable.Dr = _TransactionModel.SubTotal;
-                        //accountTransictiontable.Cr = 0.0;
-                  
-                        //bool result = TransactionClass.PerformTransaction(accountTransictiontable);
-                        //if (result != false)
-                        //{
-                        //    return Json("Success", JsonRequestBehavior.AllowGet);
-                        //}
+                        accountTransictiontable.Description = item.descrition;
+                        accountTransictiontable.FK_AccountID = item.Id;
+                        accountTransictiontable.Description = item.descrition;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        accountTransictiontable.TransictionRefrenceId = ob.PurchaseOrderID.ToString();
+                        accountTransictiontable.Dr = item.AmountDebit;
+                        accountTransictiontable.Cr = item.AmountCredit;
+                        accountTransictiontable.TransictionNumber = base64Guid1;
+                        accountTransictiontable.TransictionType = "Purchase";
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                        accountTransictiontable.TransictionDate = item.TranDate;
+                        TransactionClass.PerformTransaction(accountTransictiontable);
                     }
-
-
                 }
             }
             catch (Exception)
             {
                 return Json("Fail", JsonRequestBehavior.AllowGet);
             }
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
+
             return View();
         }
     }

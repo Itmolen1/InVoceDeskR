@@ -770,20 +770,12 @@
 
         $("#Submit").click(function () {
 
-
-
             var con = validateQutationAddOrEdit();
             if (con == true) {
-
                 var isAllValid = true;
                 $('#orderItemError').text('');
-
                 var list = [];
                 var errorItemCount = 0;
-
-
-
-
                 $('#orderdetailsitems > .tbody  > tr ').each(function (index, ele) {
 
                     if ($('#SelectProductQutation', this).val() == '0' ||
@@ -896,7 +888,7 @@
             $('#orderItemError').text('');
             var list = [];
             var errorItemCount = 0;
-            $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
+            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
                 {
                     var orderItem = {
                         ItemId: $('.product ', this).val(),
@@ -1267,7 +1259,7 @@
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
+        $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
             if ($('#SelectProductQutation', this).val() == '0' ||
                         (parseInt($('.quantity', this).val()) || 0) == 0 ||
@@ -1983,6 +1975,7 @@
 
         if ($('#Qutation_ID').val().trim() == "") {
             $('#Qutation_ID').css('border-color', 'Red');
+
             isValid = false;
         }
         else {
@@ -1997,8 +1990,8 @@
         }
         if ($('#RefNumber').val().trim() == "") {
             $('#RefNumber').css('border-color', 'Red');
-            $('#RefNumber').focus();
-            isValid = false;
+           
+             isValid = false;
         }
         else {
             $('#RefNumber').css('border-color', 'lightgrey');
