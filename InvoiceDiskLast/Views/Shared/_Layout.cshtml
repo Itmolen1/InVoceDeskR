@@ -26,8 +26,7 @@
     <!-- page css -->
     <link href="~/dist/css/pages/floating-label.css" rel="stylesheet">
     <link href="~/Content/CustomRadio.css" rel="stylesheet" />
-   
-       
+     
         
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -231,7 +230,7 @@
 
 
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                                <a class="dropdown-item" href="javascript:void(0)" id="AccountSitting"><i class="ti-settings m-r-5 m-l-5" id="AccountSitting"></i> Account Setting</a>
                                 <a class="dropdown-item" href="javascript:void(0)" id="CompanySitting"><i class="ti-settings m-r-5 m-l-5" id="CompanySitting"></i> Company Setting</a>
                                 <div class="dropdown-divider"></div>
                                 @*<a class="dropdown-item"><i href="javascript:void(0)" class="fa fa-power-off" id="Logouts"></i> Logout</a>*@
@@ -1776,11 +1775,13 @@
 
 
     $('#CompanySitting').click(function () {
-
         window.location.href = "/MVCComapny/Index";
-
     });
 
+    $('#AccountSitting').click(function () {
+        window.location.href = "/userinfo/Index";
+    });
+    
     function Edit(companyId) {
 
         window.location.href = "Company/AddOrEdit/" + companyId;

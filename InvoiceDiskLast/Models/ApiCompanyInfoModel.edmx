@@ -274,13 +274,11 @@
           <Property Name="UserFname" Type="varchar" MaxLength="50" />
           <Property Name="Insertion" Type="varchar" MaxLength="50" />
           <Property Name="UserLname" Type="varchar" MaxLength="50" />
-          <Property Name="Username" Type="nvarchar" MaxLength="100" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
-          <Property Name="RememberMe" Type="bit" />
           <Property Name="Gender" Type="int" />
           <Property Name="DOB" Type="nvarchar" MaxLength="50" />
           <Property Name="AddedDate" Type="date" />
-          <Property Name="UserAuthorityID" Type="int" />
+          <Property Name="CompanyId" Type="int" />
         </EntityType>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
@@ -474,6 +472,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="UserTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="APIcompanyModelStoreContainer">
           <EntitySet Name="AccountTable" EntityType="Self.AccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccountTransictionTable" EntityType="Self.AccountTransictionTable" Schema="dbo" store:Type="Tables" />
@@ -557,6 +567,10 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="Self.FK_UserTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="UserTable" EntitySet="UserTable" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -595,6 +609,7 @@
           <NavigationProperty Name="OrderStatusTables" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="OrderStatusTable" />
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationOrderStatusTable" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTransictionTable" />
+          <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
         </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
@@ -682,6 +697,10 @@
           <AssociationSet Name="FK_ProductTable_ProductUnitTable" Association="APIcompanyModel.FK_ProductTable_ProductUnitTable">
             <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
             <End Role="ProductTable" EntitySet="ProductTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="UserTable" EntitySet="UserTables" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
@@ -819,13 +838,12 @@
           <Property Name="UserFname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Insertion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UserLname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RememberMe" Type="Boolean" />
           <Property Name="Gender" Type="Int32" />
           <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="UserAuthorityID" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
         </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
@@ -1165,6 +1183,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="UserTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1276,13 +1306,11 @@
           <EntitySetMapping Name="UserTables">
             <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
               <MappingFragment StoreEntitySet="UserTable">
-                <ScalarProperty Name="UserAuthorityID" ColumnName="UserAuthorityID" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="RememberMe" ColumnName="RememberMe" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="UserLname" ColumnName="UserLname" />
                 <ScalarProperty Name="Insertion" ColumnName="Insertion" />
                 <ScalarProperty Name="UserFname" ColumnName="UserFname" />
