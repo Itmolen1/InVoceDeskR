@@ -12,7 +12,6 @@ namespace InvoiceDiskLast.Controllers
 {
 
     [SessionExpireAttribute]
-
     public class PurchaseController : Controller
     {
         // GET: Purchase

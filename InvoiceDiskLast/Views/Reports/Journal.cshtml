@@ -1,0 +1,123 @@
+﻿@model  List<InvoiceDiskLast.Models.TransactionModel>
+@{
+    ViewBag.Title = "Journal";
+
+    double Dr = 0, Cr = 0;
+}
+
+
+<style>
+    .table th, .table td {
+        border: none !important;
+    }
+</style>
+
+<div class="row">
+<div class="col-md-2"></div>  
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-sm-1">
+                <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>Print</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>send by email</button>
+            </div>
+            <div class="col-sm-1">From:</div>
+            <div class="col-sm-3"><input type="text" class="input-sm" /></div>
+            <div class="col-sm-1">To:
+            </div>
+            <div class="col-sm-3"><input type="text" class="input-sm" /></div>
+            <div class="col-sm-1">
+                <button class="btn btn-primary btn-sm"><i class="fa fa-search"></i>Search</button>    
+            </div>
+        </div>
+
+    </div>  
+    <div class="col-md-2"></div>  
+</div>
+
+
+<div class="row">
+    <div class="col-md-2 col-lg-2 col-sm-0">
+    </div>
+
+    <div class="col-md-8 col-lg-8 col-sm-12" style="border:1px solid">
+        @{
+            
+                        <div class="row">
+                <div class="col-md-6 mydiv">
+                    <img src="~/images/logo.png184502514.png" style="width:140px;height:140px" />
+                </div>
+                <div class="col-md-4">
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-4">Conatct</div>
+                        <div class="col-md-8">0312 0941195</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Email</div>
+                        <div class="col-md-8">Samarbudhni@gmail.com</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Address</div>
+                        <div class="col-md-8">Village budhni mohallah sydan</div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <table class="table" id="orderdetailsitemsp">
+                <thead style="border-bottom:1px solid">
+
+                    <tr style="border-top:1px solid">
+                        <th colspan="2">Date</th>
+                        <th colspan="10">Account</th>
+                        <th colspan="1" style="text-align:center">Dr</th>
+                        <th colspan="1" style="text-align:center">Cr</th>
+                    </tr>
+                </thead>
+
+
+
+                <tbody>
+                    @{
+
+
+                        if (Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                Dr = Dr + item.AmountDebit;
+                                Cr = Cr + item.AmountCredit;
+
+
+
+                                <tr>
+                                    <td style="border-right:1px solid !important;" colspan="2">@item.TranDate</td>
+                                    <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
+                                    <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
+                                    <td colspan="1" style="text-align:right">@item.AmountCredit</td>
+
+                                </tr>
+
+                            }
+                        }
+                    }
+
+
+                </tbody>
+                <tfoot>
+                    <tr style="border-top:1px solid">
+                        <td colspan="8"></td>
+                        <td colspan="4"><b>Total</b></td>
+                        <td style="text-align:right"><b>@Dr</b></td>
+                        <td colspan="1" style="text-align:right"><b>@Cr</b></td>
+                    </tr>
+                </tfoot>
+
+
+            </table>
+        }
+    </div>
+    <div class="col-md-2 col-lg-2 col-sm-0"></div>
+</div>

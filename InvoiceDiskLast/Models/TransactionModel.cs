@@ -24,5 +24,12 @@ namespace InvoiceDiskLast.Models
         public int PurchaseOrderID { get; set; }
         public double AmountCredit{ get; set;}
         public double AmountDebit { get; set; }
+
+        public string AccountCode { get; set; }
+
+        public  string AccountTitle { get; set; }
+
+
+
     } 
 }
