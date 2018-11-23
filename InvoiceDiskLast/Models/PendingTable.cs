@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class PendingTable
     {
-        public int PID { get; set; }
+        public int? PID { get; set; }
         public Nullable<int> Purchase_QuataionId { get; set; }
         public Nullable<System.DateTime> FromDate { get; set; }
         public Nullable<System.DateTime> ToDate { get; set; }

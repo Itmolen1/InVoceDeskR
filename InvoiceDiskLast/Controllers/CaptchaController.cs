@@ -122,9 +122,13 @@ namespace InvoiceDiskLast.Controllers
                             Session["CompanyName"] = cominfo.CompanyName;
                             Session["CompanyEmail"] = cominfo.CompanyEmail;
                             Session["CompanyContact"] = cominfo.CompanyPhone;
+                            Session["username"].ToString();
 
-                             Session["username"].ToString();
+                            HttpResponseMessage responseUser = GlobalVeriables.WebApiClient.GetAsync("GetUserInfo/" + compnyID).Result;
+                            UserModel usermodel = responseUser.Content.ReadAsAsync<UserModel>().Result;
 
+                            Session["imageurl"]  = usermodel.ImageUrl;
+                            Session["UName"] = usermodel.UserFname + " " + usermodel.UserLname;
                             return RedirectToAction("Index", "Home");
 
                         }

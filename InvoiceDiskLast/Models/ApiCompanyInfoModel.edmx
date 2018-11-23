@@ -274,7 +274,7 @@
           <Property Name="UserFname" Type="varchar" MaxLength="50" />
           <Property Name="Insertion" Type="varchar" MaxLength="50" />
           <Property Name="UserLname" Type="varchar" MaxLength="50" />
-          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="150" />
           <Property Name="Gender" Type="int" />
           <Property Name="DOB" Type="nvarchar" MaxLength="50" />
           <Property Name="AddedDate" Type="date" />
@@ -838,12 +838,12 @@
           <Property Name="UserFname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Insertion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UserLname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="Int32" />
           <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="CompanyId" Type="Int32" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
+          <Property Name="ImageUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
@@ -1306,11 +1306,11 @@
           <EntitySetMapping Name="UserTables">
             <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
               <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserLname" ColumnName="UserLname" />
                 <ScalarProperty Name="Insertion" ColumnName="Insertion" />
                 <ScalarProperty Name="UserFname" ColumnName="UserFname" />
