@@ -1,7 +1,7 @@
-﻿@model  List<InvoiceDiskLast.Models.TransactionModel>
+﻿@model  InvoiceDiskLast.Models.SearchModel
+
 @{
     ViewBag.Title = "Journal";
-
     double Dr = 0, Cr = 0;
 }
 
@@ -12,29 +12,45 @@
     }
 </style>
 
-<div class="row">
-<div class="col-md-2"></div>  
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-sm-1">
-                <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>Print</button>
-            </div>
-            <div class="col-sm-2">
-                <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>send by email</button>
-            </div>
-            <div class="col-sm-1">From:</div>
-            <div class="col-sm-3"><input type="text" class="input-sm" /></div>
-            <div class="col-sm-1">To:
-            </div>
-            <div class="col-sm-3"><input type="text" class="input-sm" /></div>
-            <div class="col-sm-1">
-                <button class="btn btn-primary btn-sm"><i class="fa fa-search"></i>Search</button>    
-            </div>
-        </div>
 
-    </div>  
-    <div class="col-md-2"></div>  
+@{
+    InvoiceDiskLast.Models.MVCCompanyInfoModel _videwModel = new InvoiceDiskLast.Models.MVCCompanyInfoModel();
+
+    _videwModel = (InvoiceDiskLast.Models.MVCCompanyInfoModel)TempData["Compantinfo"];
+}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        @using (Html.BeginForm("Journal", "Reports", FormMethod.Post, new { id = "frmsearch" }))
+        {
+            <div class="row">
+
+                <div class="col-sm-1">
+                    <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>Print</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>send by email</button>
+                </div>
+
+                <div class="col-sm-1">From:</div>
+                <div class="col-sm-3">@Html.EditorFor(model => model.FromDate, new { @class = "input-sm" })</div>
+                <div class="col-sm-1">
+                    To:
+                </div>
+                <div class="col-sm-3">@Html.EditorFor(model => model.Todate, new { @class = "input-sm" })</div>
+                <div class="col-sm-1">
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>Search</button>
+                </div>
+
+
+            </div>
+        }
+    </div>
+
+    <div class="col-md-2"></div>
 </div>
+
 
 
 <div class="row">
@@ -43,23 +59,23 @@
 
     <div class="col-md-8 col-lg-8 col-sm-12" style="border:1px solid">
         @{
-            
-                        <div class="row">
+
+            <div class="row">
                 <div class="col-md-6 mydiv">
                     <img src="~/images/logo.png184502514.png" style="width:140px;height:140px" />
                 </div>
                 <div class="col-md-4">
                     <div class="row" style="margin-top:20px;">
                         <div class="col-md-4">Conatct</div>
-                        <div class="col-md-8">0312 0941195</div>
+                        <div class="col-md-8">@_videwModel.CompanyCell</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Email</div>
-                        <div class="col-md-8">Samarbudhni@gmail.com</div>
+                        <div class="col-md-8">@_videwModel.CompanyEmail</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Address</div>
-                        <div class="col-md-8">Village budhni mohallah sydan</div>
+                        <div class="col-md-8">@_videwModel.CompanyAddress</div>
                     </div>
                 </div>
             </div>
@@ -83,27 +99,37 @@
                     @{
 
 
-                        if (Model.Count > 0)
+                        if (Model._TransactionList != null)
                         {
-                            foreach (var item in Model)
+
+                            if (Model._TransactionList.Count > 0)
                             {
-                                Dr = Dr + item.AmountDebit;
-                                Cr = Cr + item.AmountCredit;
+                                foreach (var item in Model._TransactionList)
+                                {
+                                    Dr = Dr + item.AmountDebit;
+                                    Cr = Cr + item.AmountCredit;
 
 
 
-                                <tr>
-                                    <td style="border-right:1px solid !important;" colspan="2">@item.TranDate</td>
-                                    <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
-                                    <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
-                                    <td colspan="1" style="text-align:right">@item.AmountCredit</td>
+                                    <tr>
+                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate</td>
+                                        <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
+                                        <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
+                                        <td colspan="1" style="text-align:right">@item.AmountCredit</td>
 
-                                </tr>
+                                    </tr>
 
+                                }
                             }
                         }
-                    }
+                        else
+                        {
+                            <tr>
+                                <td><h4>No record found</h4> </td>
+                            </tr>
+                        }
 
+                    }
 
                 </tbody>
                 <tfoot>

@@ -1,8 +1,10 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,9 +14,10 @@ using System.Web.Http.Description;
 namespace InvoiceDiskLast.Controllers
 {
 
-
+    
     public class APIPurchaseController : ApiController
     {
+        SqlParameter _Prameter;
         private DBEntities db = new DBEntities();
 
         [ResponseType(typeof(MvcPurchaseModel))]
@@ -91,8 +94,8 @@ namespace InvoiceDiskLast.Controllers
                     Status = p.Status,
                     CompanyId = p.CompanyId,
                     Type = p.Type,
-                    Vat21=p.Vat21,
-                    Vat6=p.Vat6,
+                    Vat21 = p.Vat21,
+                    Vat6 = p.Vat6,
                     UserId = p.UserId,
                     AddedDate = p.AddedDate,
                 }).ToList();
@@ -339,10 +342,10 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+      
+  
 
-
-
-
+       
 
     }
 }
