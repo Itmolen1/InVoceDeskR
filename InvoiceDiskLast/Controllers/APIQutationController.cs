@@ -218,11 +218,11 @@ namespace InvoiceDiskLast.Controllers
                     IDS = headerValues.FirstOrDefault();
                     id = Convert.ToInt32(IDS);
                 }
-                ob = db.QutationTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MVCQutationModel
+                ob = db.QutationTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).Select(p => new MVCQutationModel
                 {
-                    QutationID = Convert.ToInt32(p.QutationID),
+                    QutationID = p.QutationID,
                     Qutation_ID = p.Qutation_ID,
-                    QutationDate = (DateTime)p.QutationDate,
+                    QutationDate =p.QutationDate,
                     DueDate = p.DueDate,
                     RefNumber = p.RefNumber,
                     SubTotal = p.SubTotal,

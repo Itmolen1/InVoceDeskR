@@ -140,7 +140,7 @@ namespace InvoiceDiskLast.Controllers
 
             if (status == "" || status == null)
             {
-                status = "Open";
+                status = "open";
             }
 
             IEnumerable<MVCQutationModel> QutationOrderList;
@@ -523,6 +523,49 @@ namespace InvoiceDiskLast.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
 
+        }
+
+
+        [HttpPost]
+        public ActionResult Trasactionpayment(List<TransactionModel> TransactionModel)
+        {
+
+            try
+            {
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + TransactionModel[0].PurchaseOrderID.ToString()).Result;
+                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+
+                    foreach (var item in TransactionModel)
+                    {
+                        string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                        AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+                        accountTransictiontable.FK_CompanyId = Convert.ToInt32(Session["CompayID"]);
+                        accountTransictiontable.Description = item.descrition;
+                        accountTransictiontable.FK_AccountID = item.Id;
+                        accountTransictiontable.Description = item.descrition;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        accountTransictiontable.TransictionRefrenceId = ob.QutationID.ToString();
+                        accountTransictiontable.Dr = item.AmountDebit;
+                        accountTransictiontable.Cr = item.AmountCredit;
+                        accountTransictiontable.TransictionNumber = base64Guid1;
+                        accountTransictiontable.TransictionType = "Qutation";
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                        accountTransictiontable.TransictionDate = item.TranDate;
+                        TransactionClass.PerformTransaction(accountTransictiontable);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Fail", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
+
+            return View();
         }
 
     }

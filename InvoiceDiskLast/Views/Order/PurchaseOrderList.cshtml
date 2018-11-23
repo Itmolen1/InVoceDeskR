@@ -394,10 +394,13 @@
 
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required id="AmountCredit" placeholder="Amount Credit" title="Credit Amount">
+                                <select class="form-control" id="DrpTrasctionType">
+                                    <option value="0">select trasaction type</option>
+                                    <option>Cr</option>
+                                    <option>Dr</option>
+                                </select>
                             </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -420,6 +423,7 @@
                                 <th>Payment</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="tbleAccount"></tbody>
@@ -428,7 +432,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnAdd"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>ADD</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnSave" style="visibility:hidden"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                <button type="button" class="btn waves-effect waves-light btn-rounded btn-success" id="btnAdd"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Add</button>
                 <button type="button" class="btn waves-effect waves-light btn-rounded btn-danger" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
             </div>
         </div>
@@ -536,9 +541,7 @@
 
                       }
                   },
-                  {
-                      "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true
-                  },
+
             ]
         });
     }
@@ -702,12 +705,10 @@
         updateStatus(id, "rejected", "the invoice is rejected successfully");
     }
 
-
     function PendingtOrder(id) {
         $('#Pending').modal('show');
         $('#txtpurchaseId').val(id);
     }
-
 
     function updateStatus(Id, Status, Message) {
         debugger;
@@ -748,7 +749,6 @@
     $('#drpstatus').change(function () {
 
         var status = $('#drpstatus option:selected').text();
-
         LoadPurchaseOrderTable(status);
     });
 
@@ -807,7 +807,6 @@
             success: function (response) {
 
                 $.each(response, function (i, item) {
-
                     drppayment.append("<option value=" + item.HeadAccountId + "> " + item.HeadAccountTitle + " </option>")
 
                 });
@@ -871,116 +870,164 @@
             type: "POST",
             contentType: "appplication/json",
             success: function (response) {
-                console.log(response);
-
                 $.each(response, function (i, item) {
                     drppaymentTerm.append("<option value=" + item.PayementTremId + "> " + item.PaymentTerm + " </option>")
-
                 });
-
-
                 $("#drpAccountDebit").val($("#drpAccountDebit option:eq(1)").val());
-
-
             },
             error: function (Error) {
                 alert(Error)
             },
         });
-
     }
 
     $('#btnAdd').click(function () {
 
+        if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+            alert('Account name canot be same');
+            return;
+        }
 
-        if ($('#tableAccountinfo #tbleAccount tr').length == 2) {
+        if ($('#txttransactionDateDebit').val() == 0) {
+            alert('txttransactionDateDebit  canot be null');
+            return;
+        }
+
+        if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+            alert('debit amount canot be zero');
+            return;
+        }
+
+        if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+            alert('AmountCredit canot be zero');
+            return;
+        }
+        if ($('#DrpTrasctionType').val() == 0) {
+            alert('Select Transaction type');
+
+            return;
+        }
+
+        if ($('#drpAccountCredit').val() == 0) {
+            alert('Select Account type');
+
+            return;
+        }
+
+
+
+        var AccountTable = $('#tbleAccount');
+        var AccountName = $('#drpAccountCredit option:selected').text();
+        var TID = $('#txttransactionId').val();
+        var ref = $('#txtrefrencenumber').val();
+        var Amountdebit = $('#AmountDebit').val();
+        var AmountCridit = $('#AmountCredit').val();
+        var Tdate = $('#txttransactionDateDebit').val();
+        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+        var paymentTer = $('#drpAccountDebit option:selected').text();
+
+        if ($('#DrpTrasctionType option:selected').text().trim() == "Dr") {
+
+            $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + Amountdebit + "</td><td class='AmountCredit'>" + 0.00 + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
+            $('#btnSave').css('visibility', 'visible');
+            $('#drppaymentDebit').val(0);
+            $('#drpAccountCredit').val(0);
+            $('#DrpTrasctionType').val(0);
+        }
+        else if ($('#DrpTrasctionType option:selected').text().trim() == "Cr") {
+
+            $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + 0.0 + "</td><td class='AmountCredit'>" + Amountdebit + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
+            $('#drppaymentDebit').val(0);
+            $('#drpAccountCredit').val(0);
+            $('#DrpTrasctionType').val(0);
+            $('#btnSave').css('visibility', 'visible');
+            
+        }
+        $('#tableAccountinfo').css('visibility', 'visible');
+
+
+    });
+
+
+    $(document).on("click", '.ibtnDel', function () {
+        $(this).closest("tr").remove();
+
+        if ($('#tableAccountinfo #tbleAccount tr').length == 0) {
+            $('#tableAccountinfo').css('visibility', 'visible');
+            $("#tableAccountinfo #tbleAccount").empty();
+          
+            $("#tableAccountinfo #tbleAccount").empty();
+            $('#tableAccountinfo').css('visibility', 'hidden');
+            $('#btnSave').css('visibility', 'hidden');
+            
+        }
+
+
+    });
+
+    $('#btnSave').click(function () {
+        debugger;
+        if ($('#tableAccountinfo #tbleAccount tr').length > 0) {
             PayTransaction();
-
-
         }
         else {
-
-            if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
-                alert('Account name canot be same');
-                return;
-            }
-
-            if ($('txttransactionDateDebit').val() == 0) {
-                alert('txttransactionDateDebit  canot be null');
-                return;
-            }
-
-            if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
-                alert('debit amount canot be zero');
-                return;
-            }
-
-            if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
-                alert('AmountCredit canot be zero');
-                return;
-            }
-
-            if ($('#tbleAccount tr').length == 2) {
-                alert("Please save and chhose another transiction");
-            }
-            else {
-                var AccountTable = $('#tbleAccount');
-                var AccountName = $('#drpAccountCredit option:selected').text();
-                var TID = $('#txttransactionId').val();
-                var ref = $('#txtrefrencenumber').val();
-                var Amountdebit = $('#AmountDebit').val();
-                var AmountCridit = $('#AmountCredit').val();
-                var Tdate = $('#txttransactionDateDebit').val();
-                var drpAccountCredit = $('#drpAccountCredit option:selected').text();
-                var paymentTer = $('#drpAccountDebit option:selected').text();
-
-                if ($("#tableAccountinfo #tbleAccount tr").length == 0) {
-                    AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AccountName + '</td><td>' + paymentTer + '</td><td class="AmountDebit1">' + Amountdebit + '</td><td>' + 0 + '</td><td class="drpAccountCredit">' + $('#drpAccountCredit').val() + '</td><td class="paymentTerm1">' + $('#drpAccountDebit').val() + '</td></tr>');
-                }
-                else if ($("#tableAccountinfo #tbleAccount tr").length > 0) {
-
-                    AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AccountName + '</td><td>' + paymentTer + '</td><td class="AmountDebit1">' + $('#AmountCredit').val() + '</td><td>' + 0 + '</td><td class="drpAccountCredit">' + $('#drpAccountCredit').val() + '</td><td class="paymentTerm1">' + $('#drpAccountDebit').val() + '</td></tr>');
-                }
-                $('#tableAccountinfo').css('visibility', 'visible');
-            }
+            swal({
+                title: 'Message!',
+                text: "select required field",
+                type: 'dangers'
+            });
+            $('#tableAccountinfo').css('visibility', 'hidden');
         }
     });
 
 
-    
-
     function PayTransaction() {
-
-        var ListaTransic = [];
-
+        var TransactionModel = new Array()
         $('#tableAccountinfo  #tbleAccount tr').each(function (index, ele) {
-
-
             var currentRow = $(this).closest("tr");
-            var col1 = currentRow.find(".pd-price").html(); // get current row 1st table cell TD value
-            var col2 = currentRow.find(".pd-name").html();
-            var datas = {
-                TranDate: $('#txttransactionDateDebit').val(),
-                SubTotal: parseFloat(currentRow.find(".AmountDebit1").html()),
-                Id: currentRow.find('.drpAccountCredit').html(),
-                paymentTermId: currentRow.find('.paymentTerm1').html(),
-                PurchaseOrderID: $('#txtrefrencenumber').val(),
-            }
-            ListaTransic.push(datas);
+            var Trans = {};
+            Trans.TranDate = $('#txttransactionDateDebit').val();
+            Trans.Id = currentRow.find('.drpAccountCredit').html();
+            Trans.paymentTermId = currentRow.find('.paymentTerm1').html(),
+            Trans.PurchaseOrderID = $('#txtrefrencenumber').val(),
+            Trans.AmountCredit = parseFloat(currentRow.find('.AmountCredit').html()),
+            Trans.AmountDebit = parseFloat(currentRow.find('.AmountDebit').html()),
+            TransactionModel.push(Trans);
+            console.log(TransactionModel);
         });
-
-       var datss = {_TansactinList: ListaTransic}
-        
         $.ajax({
             url: '/Purchase/Trasactionpayment',
             type: 'POST',
-            data: datss,
-            dataType: 'application/json',
+            data: JSON.stringify(TransactionModel),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
             success: function (response) {
+                if (response == "Success") {
 
+                    $('#tableAccountinfo').css('visibility', 'visible');
+                    $("#tableAccountinfo #tbleAccount").empty();
+                    swal({
+                        title: 'Message!',
+                        text: "Transaction process successfully",
+                        type: 'success'
+                    });
+
+                }
+
+                else if (response == "Fail") {
+                    swal({
+                        title: 'Message!',
+                        text: "Fail to  process Transaction",
+                        type: 'danger'
+                    });
+                }
             },
             error: function () {
-
+                swal({
+                    title: 'Message!',
+                    text: "Fail to  process Transaction",
+                    type: 'danger'
+                });
             }
         });
 

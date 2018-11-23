@@ -415,6 +415,7 @@
                             </ul>
                         </li>
 
+
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-agenda"></i><span class="hide-menu">Account</span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -422,19 +423,19 @@
                             </ul>
                         </li>
                         <li>
-                            @*<a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-align-left"></i><span class="hide-menu">Multi dd</span></a>*@
-                            @*<ul aria-expanded="false" class="collapse">
-                                    <li>
-                                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">Menu 1.3</a>
+                            <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-align-left"></i><span class="hide-menu">Report</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                    @*<li>
+                                        
                                         <ul aria-expanded="false" class="collapse">
-                                            <li><a href="javascript:void(0)">item 1.3.1</a></li>
-                                            <li><a href="javascript:void(0)">item 1.3.2</a></li>
-                                            <li><a href="javascript:void(0)">item 1.3.3</a></li>
-                                            <li><a href="javascript:void(0)">item 1.3.4</a></li>
+                                            <li><a href="Report/Journal">Journal</a></li>
+                                            <li><a href="Report/Journal">Journal</a></li>
+                                            <li><a href="Report/Journal">Journal</a></li>
+                                            <li><a href="Report/Journal">Journal</a></li>
                                         </ul>
-                                    </li>
-                                    <li><a href="javascript:void(0)">item 1.4</a></li>
-                                </ul>*@
+                                    </li>*@
+                                <li><a href="/Reports/Journal">Journal</a></li>
+                                </ul>
                         </li>
                     </ul>
                 </nav>
@@ -967,6 +968,13 @@
 
 
                     $('#orderdetailsitems > .tbody  > tr ').each(function (index, ele) {
+            var con = validateQutationAddOrEdit();
+            if (con == true) {
+                var isAllValid = true;
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems > .tbody  > tr ').each(function (index, ele) {
 
                         if ($('#SelectProductQutation', this).val() == '0' ||
                             (parseInt($('.quantity', this).val()) || 0) == 0 ||
@@ -1074,27 +1082,27 @@
             //Edit functionality
             $("#SubmitEdit").click(function () {
 
-                var isAllValid = true;
-                $('#orderItemError').text('');
-                var list = [];
-                var errorItemCount = 0;
-                $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
-                    {
-                        var orderItem = {
-                            ItemId: $('.product ', this).val(),
-                            Quantity: parseInt($('.quantity', this).val()),
-                            Rate: parseFloat($('.rate', this).val()),
-                            TotalAmount: parseFloat($('.FTotal', this).val()),
-                            Total: parseFloat($('.FTotal', this).val()),
-                            Vat: parseFloat($('.VAT', this).val()),
-                            QutationID: $('#QutationID').val(),
-                            QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                            Qutation_ID: $('#Qutation_ID').val()
-                        }
-                        list.push(orderItem);
+            var isAllValid = true;
+            $('#orderItemError').text('');
+            var list = [];
+            var errorItemCount = 0;
+            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
+                {
+                    var orderItem = {
+                        ItemId: $('.product ', this).val(),
+                        Quantity: parseInt($('.quantity', this).val()),
+                        Rate: parseFloat($('.rate', this).val()),
+                        TotalAmount: parseFloat($('.FTotal', this).val()),
+                        Total: parseFloat($('.FTotal', this).val()),
+                        Vat: parseFloat($('.VAT', this).val()),
+                        QutationID: $('#QutationID').val(),
+                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                        Qutation_ID: $('#Qutation_ID').val()
                     }
-                });
-                if (list.length == 0) {
+                    list.push(orderItem);
+                }
+            });
+            if (list.length == 0) {
 
                     $("#orderItemError").text("At least one order item required.");
                     isAllValid = false;
@@ -1442,14 +1450,14 @@
 
         });
 
-        $('#saveprintandsendtoyourselfsave').click(function () {
-            debugger;
-            var QutationIdd;
-            var isAllValid = true;
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody').children('tr:not(:first)').each(function (index, ele) {
+    $('#saveprintandsendtoyourselfsave').click(function () {
+        debugger;
+        var QutationIdd;
+        var isAllValid = true;
+        $('#orderItemError').text('');
+        var list = [];
+        var errorItemCount = 0;
+        $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
                 if ($('#SelectProductQutation', this).val() == '0' ||
                             (parseInt($('.quantity', this).val()) || 0) == 0 ||
@@ -2220,35 +2228,36 @@
         function validateQutationAddOrEdit() {
             var isValid = true;
 
-            if ($('#Qutation_ID').val().trim() == "") {
-                $('#Qutation_ID').css('border-color', 'Red');
-                isValid = false;
-            }
-            else {
-                $('#Qutation_ID').css('border-color', 'lightgrey');
-            }
-            if ($('#DueDate').val().trim() == "") {
-                $('#DueDate').css('border-color', 'Red');
-                isValid = false;
-            }
-            else {
-                $('#DueDate').css('border-color', 'lightgrey');
-            }
-            if ($('#RefNumber').val().trim() == "") {
-                $('#RefNumber').css('border-color', 'Red');
-                $('#RefNumber').focus();
-                isValid = false;
-            }
-            else {
-                $('#RefNumber').css('border-color', 'lightgrey');
-            }
-            if ($('#QutationDate').val() == "") {
-                $('#QutationDate').css('border-color', 'Red');
-                isValid = false;
-            }
-            else {
-                $('#QutationDate').css('border-color', 'lightgrey');
-            }
+        if ($('#Qutation_ID').val().trim() == "") {
+            $('#Qutation_ID').css('border-color', 'Red');
+
+            isValid = false;
+        }
+        else {
+            $('#Qutation_ID').css('border-color', 'lightgrey');
+        }
+        if ($('#DueDate').val().trim() == "") {
+            $('#DueDate').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#DueDate').css('border-color', 'lightgrey');
+        }
+        if ($('#RefNumber').val().trim() == "") {
+            $('#RefNumber').css('border-color', 'Red');
+            $('#RefNumber').focus();
+             isValid = false;
+        }
+        else {
+            $('#RefNumber').css('border-color', 'lightgrey');
+        }
+        if ($('#QutationDate').val() == "") {
+            $('#QutationDate').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#QutationDate').css('border-color', 'lightgrey');
+        }
 
             if ($('#QutationDate1').val() == "") {
                 $('#QutationDate1').css('border-color', 'Red');
