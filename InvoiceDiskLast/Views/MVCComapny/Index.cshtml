@@ -90,7 +90,7 @@
 <input type="hidden" id="companyiddd" />
 <input type="hidden" id="UserName" />
 
-<div class="modal fade bs-example-modal-lg" id="CCompanyModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+<div class="modal fade bs-example-modal-lg" id="CCompanyModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -278,23 +278,10 @@
 
             });
 
-            $(document).ready(function () {
-
-                function readURL(input) {
-
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-
-                        reader.onload = function (e) {
-                            $('#targetImg').attr('src', e.target.result);
-                        }
-
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                }
+    $(document).ready(function () {
 
                 $("#CFileUpload1").change(function () {
-                    readURL(this);
+                    readURL(this, 'targetImg');
                 });
 
                 data = {

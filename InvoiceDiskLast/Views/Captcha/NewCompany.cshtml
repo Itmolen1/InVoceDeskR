@@ -23,6 +23,7 @@
     <link href="../dist/css/pages/floating-label.css" rel="stylesheet">
     <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
     <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
+    <script src="~/dist/js/pages/CustomeImage.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -399,21 +400,9 @@
 
     $(document).ready(function () {
 
-        function readURL(input) {
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#targetImg').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
         $("#FileUpload1").change(function () {
-            readURL(this);
+            readURL(this, 'targetImg');
         });
 
 

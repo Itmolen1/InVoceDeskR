@@ -205,14 +205,6 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
-
-
-
-
-
-
-
-       
-
+        
     }
 }
