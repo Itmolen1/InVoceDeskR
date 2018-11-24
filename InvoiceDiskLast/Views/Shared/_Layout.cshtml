@@ -13,8 +13,6 @@
     <title>Factuur Baheer Systeem</title>
     <!-- Custom CSS -->
 
-
-
     <link href="~/assets/node_modules/morrisjs/morris.css" rel="stylesheet">
     <!--Toaster Popup message CSS -->
     <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
@@ -26,16 +24,12 @@
     <!-- page css -->
     <link href="~/dist/css/pages/floating-label.css" rel="stylesheet">
     <link href="~/Content/CustomRadio.css" rel="stylesheet" />
- 
-     
         
         <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-
-
 
     <body class="horizontal-nav skin-megna-dark fixed-layout">
         <input hidden id="userid" />
@@ -127,18 +121,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">         
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                             </div>
                             <div class="col-sm-8">
                                 <div class="form-group">
                                     <div class="mydiv">
-                                        <img id="Useimage" alt="user Image"  style="height:200px; width:200px; border:1px groove" /><br />
+                                        <img id="Useimage" alt="user Image"  style="min-height:50px; min-width:100px; max-height:200px; max-width:200px; border:1px groove" /><br />
                                     </div>
-                                         <input type="file" id="uploadimg"  class="btn btn-success"/>
+                                         <input type="file" id="uploadimg"  class="btn btn-success"  style="width:200px"/>
                                 </div>                               
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-">
                             </div>
                         </div>
                     </div>
@@ -151,7 +145,6 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
-
 
         <div id="ChangePasswordModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -372,15 +365,13 @@
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
                                 <span class="with-arrow"><span class="bg-primary"></span></span>
                                 <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
-                                    <div class=""><img src="/images/@Session["imageurl"]"  alt="user Image" class="img-circle" width="60"></div>
+                                    <div class="mydiv"><img   alt="user Image" id="UserImageWithName" class="img-circle" style="height:50px;width:50px"></div>
                                     <div class="m-l-10">
                                         <h4 class="m-b-0">@Session["UName"]</h4>
                                         <p class="m-b-0 small">@Session["username"].ToString()</p>
                                     </div>
                                 </div>
-
-
-
+                                @*src="/images/@Session["imageurl"]"*@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)" id="AccountSitting"><i class="ti-settings m-r-5 m-l-5" id="AccountSitting"></i> Account Setting</a>
                                 <a class="dropdown-item" href="javascript:void(0)" id="CompanySitting"><i class="ti-settings m-r-5 m-l-5" id="CompanySitting"></i> Company Setting</a>
@@ -453,9 +444,7 @@
                                 <li><a href="/Order/PurchaseOrderList">Invoice Order Status</a></li>
                                 @*<li><a href="/MvcInvoiceServices/OrderSirviceList">Service Order Status</a></li>*@
                             </ul>
-                        </li>
-
-
+                        </li>                        
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-agenda"></i><span class="hide-menu">Account</span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -604,7 +593,7 @@
 
 
         <footer class="footer">
-            © 2018 invoice Disk
+            © 2018 Factuur Baheer Systeem
         </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
@@ -650,633 +639,11 @@
 </body>
 </html>
 
-@*Custome Scripts loading here*@
 
 
 
-@*<script>
-    $('#changeImage').click(function () {
-        $.ajax({
-            url: "/UserInfo/GetUserByCompayId",
-            type: 'Post',
-            success: function (Userdata) {   
-                $('#Useimage').attr("src","/images/"+Userdata.ImageUrl);  
-                $('#ImageSRC').val(Userdata.ImageUrl);
-                $('#UserInfoModel').modal('hide');
-                $('#ImageModel').modal('show');
-            }
-        });
-      });
 
-    $('#changePWD').click(function () {
-        $('#UserInfoModel').modal('hide');
-        $('#ChangePasswordModel').modal('show');
-    });
 
-    $('#SaveChangePassword').click(function () {
-        var Istrue = ChangePasswordValidation();
-
-        if(Istrue == true)
-        {
-            Data =
-                {
-                    OldPassword: $('#CurrentPassword').val(),
-                    NewPassword: $('#NewPassowrd').val(),
-                    ConfirmPassword: $('#ConfirmPassword').val()
-                }
-            $.ajax({
-                url: "/UserInfo/UpdateUserPassword",
-                type: 'Post',
-                data: Data,
-                success: function (Response) {
-                    if (Response == "Ok") {
-                        $('#ChangePasswordModel').modal('hide');
-                        $('#UserInfoModel').modal('show');
-                        $.toast({
-                            heading: 'Success',
-                            text: 'Password update successfuly `updated`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-
-                        });
-                    }                  
-
-                },
-                error: function () {
-                    alert('something wrong');
-                }
-                
-            });
-        }
-       
-    });
-
-    function ChangePasswordValidation()
-    {
-        var isvalid = false;
-
-        if($('#CurrentPassword').val().trim() == "")
-        {
-            $('#CurrentPassword').css('border-color', 'Red');
-            return;
-        }
-        else
-        {
-            $('#CurrentPassword').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-
-        if ($('#NewPassowrd').val().trim() == "") {
-            $('#NewPassowrd').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#NewPassowrd').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-        if ($('#ConfirmPassword').val().trim() == "") {
-            $('#ConfirmPassword').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#ConfirmPassword').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-
-        if ($('#NewPassowrd').val() != $('#ConfirmPassword').val())
-        {
-            $.toast({
-                heading: 'Miss match',
-                text: 'new password and confirm password must match `Password`',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#FF0000'  // To change the background
-            });
-        }       
-        return isvalid;
-    }
-
-    $('#CancelChangePassword').click(function () {
-        $('#UserInfoModel').modal('show');
-        $('#ChangePasswordModel').modal('hide');
-    });
-
-    $('#CancelserImage').click(function () {
-        $('#ImageModel').modal('hide');
-        $('#UserInfoModel').modal('show');
-    });
-    
-    $('#SaveuserImage').click(function () {
-       
-        if (window.FormData != undefined) {
-            var fileData = new FormData();
-
-            if ($("#uploadimg").val() != "") {
-                var fileUpload = $("#uploadimg").get(0);
-                var files = fileUpload.files;
-
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append(files[i].name, files[i]);
-                }
-            }
-
-            if ($("#uploadimg").val() != "")
-            {
-                fileData.append('ImageUrl', $('#uploadimg').val());
-            }
-            fileData.append('UserId', $('#userid').val());
-            fileData.append('ImageUrl', $('#ImageSRC').val());
-
-            $.ajax({
-                url: '/UserInfo/UpdateImage',
-                type: 'POST',
-                data: fileData,
-                processData: false,
-                contentType: false,
-                success: function (ReturnStatus) {                                 
-                    if (ReturnStatus == 200) {
-                        $('#ImageModel').modal('hide');
-                        $('#UserInfoModel').modal('show');
-                        $.toast({
-                            heading: 'Success',
-                            text: 'Image update successfuly `updated`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-                        });
-                    }
-                },
-                error: function () {
-                    alert("Error please try again");
-                }
-            });
-        }
-
-    });
-
-    var showRequiredModel = "";
-
-        $(document).ready(function () {
-
-            $("#uploadimg").change(function () {
-                readURL(this, 'Useimage');
-            });
-
-            $('#btn-QutationNew').click(function () {
-
-                LoadContacts();
-                $('#QutationContactModel').modal('show');
-            });
-
-            $('#SelectContacts1').change(function () {
-
-                showRequiredModel = "QutationContactModel";
-                var value = $(this).val();
-                if (value == "AddNewClientSelect") {
-
-                    $('#QutationContactModel').modal('hide');
-
-                    $('#ModelHeading').text("Maak nieuwe klant");
-                    $("#TypeContacts").find("option").remove();
-                    $("#TypeContacts").prepend("<option value=Customer>" + 'Klant' + "</option>");
-                    $('#CreateNewContactModal1')
-
-
-                    .modal('show');
-
-                }
-
-            });
-
-
-            $('#SelectProductQutation').change(function () {
-
-                var value = $(this).val();
-                if (value == "AddNewProductSelect") {
-
-                    $('#CreateNewProductModalAdd').modal('show');
-
-                }
-
-            });
-
-
-
-            $('#QutationClientNext').click(function () {
-
-                var qutationGoodOrService = $('#SelectTypeQutation').val();
-                debugger;
-                var value = $('#SelectContacts1').val();
-
-                if (value > 0) {
-                    $.ajax({
-                        url: '/MVCClient/AddOrEdit',
-                        type: 'GET',
-                        data: {
-                            id: value
-                        },
-                        success: function (data) {
-
-                            if (qutationGoodOrService == "1") {
-                                window.location.href = "/MVCQutation/AddOrEdit"
-                            }
-                            else if (qutationGoodOrService == "2") {
-                                window.location.href = "/QutationService/AddOrEdit/0"
-                            }
-                        },
-                        error: function () {
-                            alert("error");
-                        }
-                    });
-                }
-                else {
-                    $.toast({
-                        heading: 'Information',
-                        text: 'Please select client to continue',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#9EC600'  // To change the background
-                    })
-                }
-            });
-
-        });
-
-      
-      
-
-
-            $(document).ready(function () {
-                $("#CompanyListTable").DataTable({
-                    // "processing": true, // for show progress bar
-                    processing: true,
-                    "language": {
-                        "processing": $('#loader').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-                    },
-                    "serverSide": true, // for process server side
-                    "filter": false, // this is for disable filter (search box)
-                    "orderMulti": false, // for disable multiple column at once
-
-                    searching: true,
-                    "ajax": {
-                        "url": "/Company/Index1",
-                        "type": "POST",
-                        "datatype": "json"
-                    },
-                    "columns": [
-                            { "data": "CompanyId", "name": "CompanyId", "autoWidth": true },
-                            { "data": "CompanyName", "name": "CompanyName", "autoWidth": true },
-                            { "data": "CompanyAddress", "name": "CompanyAddress", "autoWidth": true },
-                            { "data": "CompanyPhone", "name": "CompanyPhone", "autoWidth": true },
-                            { "data": "CompanyCell", "name": "CompanyCell", "autoWidth": true },
-                            { "data": "CompanyEmail", "name": "CompanyEmail", "autoWidth": true },
-                            { "data": "CompanyTRN", "name": "CompanyTRN", "autoWidth": true },
-                            {
-                                'data': 'CompanyLogo',
-                                render: function (logo) {
-                                    if (logo) {
-                                        return '<img height="25px" width="25px" src="' + logo + '" />'
-                                    }
-                                    else { return 'No Image'; }
-                                }
-                            },
-                          {
-                              render: function (data, type, row) {
-                                  return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="fa fa-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye- Open"></i></a>'
-                              }
-                          }
-
-                    ]
-                });
-            });
-
-
-            $('#CompanySitting').click(function () {
-                window.location.href = "/MVCComapny/Index";
-            });
-
-            $('#AccountSitting').click(function () {
-
-                $.ajax({
-                    url: "/UserInfo/GetUserByCompayId",
-                    type: 'Post',
-                    success: function (Userdata) {
-                        $.toast({
-                            heading: 'Success',
-                            text: 'Data loaded successfuly `Loaded`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-                        });
-
-                        $('#userid').val(Userdata.UserId);
-                        $('#txtFname').val(Userdata.UserFname);
-                        $('#txtInsertion').val(Userdata.Insertion);
-                        $('#txtLname').val(Userdata.UserLname);
-                        $('#txtEmail').val(Userdata.Username);
-                        $('#TxtDob').val(Userdata.DOB);
-                        var gen = Userdata.Gender;
-                        if (gen == 1) {
-                            $('input:radio[name="gender"]').filter('[value="1"]').attr('checked', true);
-                        }
-                        else {
-                            $('input:radio[name="gender"]').filter('[value="2"]').attr('checked', true);
-                        }
-
-                        $('#UserInfoModel').modal('show');
-                    }
-                });
-
-            });
-
-            $('#SaveuserInfo').click(function () {
-
-                Userdata = {
-                    UserFname: $('#txtFname').val(),
-                    Insertion: $('#txtInsertion').val(),
-                    UserLname: $('#txtLname').val(),
-                    Gender: $("input[name='gender']:checked").val(),
-                    DOB: $('#TxtDob').val(),
-                    UserId: $('#userid').val()
-                },
-
-                $.ajax({
-                    url: "/UserInfo/UpdateUserInfo",
-                    type: 'Post',
-                    data: Userdata,
-                    success: function (response) {
-                        if (response == "Ok") {
-                            $.toast({
-                                heading: 'Success',
-                                text: 'Information updated successfuly `Updated`',
-                                icon: 'info',
-                                loader: true,        // Change it to false to disable loader
-                                loaderBg: '#9EC600'  // To change the background
-                            });
-                            $('#UserInfoModel').modal('hide');
-                        }
-                    },
-                    error: function (error) {
-                        alert('somthing going wrong');
-                    },
-                });
-            });
-
-            function Edit(companyId) {
-
-                window.location.href = "Company/AddOrEdit/" + companyId;
-            }
-
-            $(document).ready(function () {
-              
-
-                $('#SaveNewProductModel').click(function () {
-
-                    $.ajax({
-                        url: '/MVCProduct/AddOrEdit',
-                        type: 'POST',
-                        data: {
-                            ProductName: $('#ProductName').val(),
-                            Description: $('#Description').val(),
-                            SalePrice: $('#SalePrice').val(),
-                            PurchasePrice: $('#PurchasePrice').val(),
-                            Type: $('#Type').val(),
-                            OpeningQuantity: $('#OpeningQuantity').val(),
-                            ProductUnit: $('#ProductUnitSelect').val(),
-                            OpeningStockValue: $('#OpeningStockValue').val()
-                        },
-                        success: function (data) {
-                            $('#CreateNewProductModalAdd').modal('hide');
-                            LoadProductAdding();
-                            $.toast({
-                                heading: 'Success',
-                                text: 'Your opration has been successfuly completed `loader`',
-                                icon: 'info',
-                                loader: true,        // Change it to false to disable loader
-                                loaderBg: '#9EC600'  // To change the background
-                            });
-
-                            //$("#productTable").ajax.reload();
-                            //SuccessInsert();
-                        },
-                        error: function () {
-                            alert("error");
-                        }
-                    });
-                });
-
-
-                $(document).ready(function () {
-                    LoadProductUnit();
-                });
-
-                function LoadProductUnit() {
-
-                    $("#ProductUnitSelectQutation").find("option").remove();
-
-                    $("#ProductUnitSelectQutation").prepend("<option value=0>" + 'Select Unit' + "</option>");
-                    $("#ProductUnitSelectQutation").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
-
-                    $.ajax({
-                        url: "/MVCProductUnit/GetProductUnit",
-                        type: "Get",
-                        async: false,
-                        contentType: "application/json;charset=utf-8",
-                        dataType: "json",
-                        success: function (data) {
-
-                            $.each(data, function (key, item) {
-                                $('#ProductUnitSelectQutation').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
-                            });
-
-                        },
-                        Error: function (errormessage) {
-                            alert(errormessage);
-                        }
-
-                    });
-                }
-
-                $('#ProductUnitSelectQutation').change(function () {
-
-                    var value = $(this).val();
-                    if (value == "AddNewPUnitSelect") {
-
-                        $('#CreateNewProductModalAdd').modal('hide');
-                        $('#UnitModelQutation').modal('show');
-                    }
-
-                });
-
-                $('#CancelProductUnitQutation').click(function () {
-                    CleartUnitTextBoxqt();
-                    $('#CreateNewProductModalAdd').modal('show');
-                    $('#UnitModelQutation').modal('hide');
-                });
-
-                $('#SaveNewProductUnitQutation').click(function () {
-
-                    $.ajax({
-                        url: "/MVCProductUnit/CheckUnitStatus",
-                        type: "POST",
-                        data: { name: $('#ProductUnit').val() },
-                        success: function (Resultdat) {
-
-                            console.log(Resultdat);
-                            if (Resultdat == "Found") {
-                                $.toast({
-                                    heading: 'Already exist',
-                                    text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
-                                    icon: 'info',
-                                    loader: true,        // Change it to false to disable loader
-                                    loaderBg: '#FF0000'  // To change the background
-                                });
-                            }
-                            else {
-                                var dataUnit = {
-
-                                    ProductUnit: $('#ProductUnit').val(),
-                                    Status: "true"
-                                }
-                                $.ajax({
-                                    url: "/MVCProductUnit/AddorEdit",
-                                    type: "POST",
-                                    data: dataUnit,
-                                    success: function (dat) {
-                                        CleartUnitTextBoxqt();
-                                        $('#UnitModelQutation').modal('hide');
-                                        LoadProductUnit();
-                                        $('#CreateNewProductModalAdd').modal('show');
-                                        $.toast({
-                                            heading: 'Success',
-                                            text: 'Your opration has been successfuly completed `Thank you`',
-                                            icon: 'info',
-                                            loader: true,        // Change it to false to disable loader
-                                            loaderBg: '#9EC600'  // To change the background
-                                        });
-                                    },
-                                    Error: function (err) {
-                                        alert("erro");
-                                    }
-
-                                });
-                            }
-
-                        },
-                        Error: function (err) {
-                            alert("erro");
-                        }
-
-                    });
-
-                });
-
-                function CleartUnitTextBoxqt() {
-                    $('#ProductUnit').val("")
-                }
-
-
-             
-                $('#Logout').click(function () {
-                    Username = "";
-                    $.ajax({
-                        url: "/Login/Logut",
-                        type: "POST",
-                        dataType: "json",
-                        success: function (resultData) {
-                            window.location.href = "/Captcha/Index";
-                        },
-                        error: function (errormessage) {
-                            alert(errormessage.responseText);
-                        }
-                    });
-
-                });
-
-            });
-
-
-          
-
-            $(document).ready(function () {
-
-                $('#btn-InvoiceNew').click(function () {
-                    LoadVernder();
-                    $('#VenderSelectModel').modal('show');
-                });
-
-                $('#venderSelect').change(function () {
-
-                    var value = $(this).val();
-                    if (value == "AddNewVenderSelect") {
-                        showRequiredModel = "";
-                        $('#VenderSelectModel').modal('hide');
-                        $('#ModelHeading').text("Maak nieuwe vender");
-                        $("#TypeContacts").find("option").remove();
-                        $("#TypeContacts").prepend("<option value=Vender>" + 'verkoper' + "</option>");
-                        $('#CreateNewContactModal1')
-                        .modal('show');
-
-                    }
-
-                });
-
-
-
-
-                $('#VenderClientNext').click(function () {
-                    var serviceOrgoo = "";
-                    var value = $('#venderSelect').val();
-                    serviceOrgoo = $('#SelectTypeQutation1 option:selected').text();
-                    debugger;
-                    if (value > 0) {
-                        $.ajax({
-                            url: '/MVCClient/AddOrEdit',
-                            type: 'GET',
-                            data: {
-                                id: value
-                            },
-                            success: function (data) {
-
-                                if (serviceOrgoo == "Good") {
-                                    serviceOrgoo = "";
-
-                                    window.location.href = "/Purchase/AddOrEdit"
-                                }
-                                else if (serviceOrgoo == "Services") {
-                                    serviceOrgoo = "";
-
-                                    window.location.href = "/MvcInvoiceServices/AddOrEdit/0"
-                                }
-
-                            },
-                            error: function () {
-                                alert("error");
-                            }
-                        });
-                    }
-                    else {
-                        $.toast({
-                            heading: 'Information',
-                            text: 'Please select client to continue',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-                        })
-                    }
-                });
-
-
-            });
-
-        
-            function Edit(companyId) {
-                window.location.href = "Company/AddOrEdit/" + companyId;
-            }
-
-
-</script>*@
 
 
 

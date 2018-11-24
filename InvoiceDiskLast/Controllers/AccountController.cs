@@ -115,6 +115,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // POST api/Account/ChangePassword
+
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
@@ -151,10 +152,7 @@ namespace InvoiceDiskLast.Controllers
 
             return Ok();
         }
-
-
-
-
+        
         [Route("RestSetPassword")]
         public async Task<IHttpActionResult> RestSetPassword(RestSetPasswordBindingModel model)
         {
