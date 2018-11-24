@@ -1,9 +1,12 @@
 ﻿using InvoiceDiskLast.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -114,20 +117,29 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateUserPassword(ChangePasswordBindingModel model)
+        public async Task<string> UpdateUserPassword(ChangePasswordBindingModel model)
         {
             try
             {
                 var jsonInput = new JavaScriptSerializer().Serialize(model);
 
-                //HttpResponseMessage response =  GlobalVeriables.WebApiClient.PostAsync("Account/ChangePassword").Result;
+                var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-                return null;
+                var response = await GlobalVeriables.WebApiClient.PostAsync("Account/ChangePassword", stringContent);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return "Ok";
+                }
+                else
+                {
+                    return "Not Found";
+                }
                 
             }
             catch (Exception ex)
             {
-                return null;
+                return "Ex";
             }
            
         }
