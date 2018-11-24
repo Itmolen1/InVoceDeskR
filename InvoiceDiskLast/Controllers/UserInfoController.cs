@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -41,7 +42,6 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-
         public ActionResult UpdateImage(UserModel model)
         {
             try
@@ -111,6 +111,25 @@ namespace InvoiceDiskLast.Controllers
             {
                 return Json("Failed" + ex, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateUserPassword(ChangePasswordBindingModel model)
+        {
+            try
+            {
+                var jsonInput = new JavaScriptSerializer().Serialize(model);
+
+                //HttpResponseMessage response =  GlobalVeriables.WebApiClient.PostAsync("Account/ChangePassword").Result;
+
+                return null;
+                
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+           
         }
     }
 }
