@@ -18,11 +18,11 @@ namespace InvoiceDiskLast.Models
         public string UserFname { get; set; }
         public string Insertion { get; set; }
         public string UserLname { get; set; }
-        public string Password { get; set; }
         public Nullable<int> Gender { get; set; }
         public string DOB { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> CompanyId { get; set; }
+        public string ImageUrl { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
     }

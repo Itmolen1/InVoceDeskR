@@ -456,6 +456,18 @@
     @*Contact or client Script*@
 
     $('#SaveNewContacts').click(function () {
+
+        var billingAd;
+        if ($('#BillingEmail').val().trim() != "")
+        {
+            billingAd = $('#BillingEmail').val();
+        }
+        else
+        {
+            billingAd = $('#BillingEmail1').val();
+        }       
+        
+        
         var res = validateContact();
         if (res == false) {
             return false;
@@ -475,8 +487,8 @@
                     LandLine: $('#LandLine').val(),
                     telephone: $('#telephone').val(),
                     Mobile: $('#Mobile').val(),
-                    Website: $('#Website').val(),
-                    BillingEmail: $('#BillingEmail').val(),
+                    Website: $('#Website').val(),                   
+                    BillingEmail: billingAd,
                     Remarks: $('#Remarks').val(),
                     Status: $('#Status option:selected').text(),
                     Company_Id: localStorage.getItem('CompanyID'),
@@ -505,6 +517,14 @@
     });
 
     $('#UpdateContacts').click(function () {
+
+        var billingAd;
+        if ($('#BillingEmail').val().trim() != "") {
+            billingAd = $('#BillingEmail').val();
+        }
+        else {
+            billingAd = $('#BillingEmail1').val();
+        }
         var res = validateContact();
         if (res == false) {
             return false;
@@ -526,7 +546,7 @@
                     telephone: $('#telephone').val(),
                     Mobile: $('#Mobile').val(),
                     Website: $('#Website').val(),
-                    BillingEmail: $('#BillingEmail').val(),
+                    BillingEmail: billingAd,
                     Remarks: $('#Remarks').val(),
                     Status: $('#Status option:selected').text(),                    
                     PersonCompany: $("input[name='ClientType']:checked").val(),
@@ -623,6 +643,7 @@
                 $('#Mobile').val(resultContactData.Mobile);
                 $('#Website').val(resultContactData.Website);
                 $('#BillingEmail').val(resultContactData.BillingEmail);
+                $('#BillingEmail1').val(resultContactData.BillingEmail);
                 $('#Remarks').val(resultContactData.Remarks);
 
                 $("input[name='ClientType']:checked").val(resultContactData.PersonCompany),

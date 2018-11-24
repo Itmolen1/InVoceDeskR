@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using InvoiceDiskLast.Models;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -14,8 +16,7 @@ namespace InvoiceDiskLast.Controllers
 
         [Route("api/GetUserbyEmail/{username:alpha}")]
         public IHttpActionResult GetUserByEmail(string username)
-        {
-           
+        {           
             try
             {
                 var RegEmailId = (from u in db.AspNetUsers
@@ -26,8 +27,7 @@ namespace InvoiceDiskLast.Controllers
                 if (RegEmailId != null)
                 {
                     return Ok(RegEmailId);
-                    //Already registered  
-                  
+                    //Already registered                  
                 }
                 else
                 {
@@ -35,25 +35,95 @@ namespace InvoiceDiskLast.Controllers
                     return BadRequest();
                 }
 
-                //return status;
-                //string user = db.AspNetUsers.Where(x => x.UserName == username).Select(u => u.UserName).FirstOrDefault();
-
-                //    if (user == username)
-                //    {
-                //        return Ok(user);
-
-                //    }
-                //    else
-                //    {
-                //        return BadRequest();
-                //    }
+              
             }
 
             catch (Exception ex)
             {
                 return BadRequest();
+            }        
+        }
+
+
+        [Route("api/GetUserInfo/{companyId:int}")]
+        public IHttpActionResult GetUserInfo(int companyId)
+        {
+            try
+            {
+                UserModel userModel = db.UserTables.Where(x => x.CompanyId == companyId).Select(c => new UserModel
+                {
+                    UserId = c.UserId,
+                    UserFname = c.UserFname,
+                    Insertion = c.Insertion,
+                    UserLname = c.UserLname,
+                    Username = c.ComapnyInfo.UserName,
+                    Gender = c.Gender,
+                    DOB = c.DOB,
+                    ImageUrl = c.ImageUrl,
+                    AddedDate = c.AddedDate
+
+                }).FirstOrDefault();
+
+                return Ok(userModel);
             }
-        
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+
+        [Route("api/PutUserInfo")]
+        public IHttpActionResult PustuserInfo(UserTable userTabe)
+        {
+            int companyid = Convert.ToInt32(userTabe.CompanyId);
+            if (companyid != userTabe.CompanyId)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(userTabe).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return Ok(userTabe);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserTableExists(companyid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+
+
+        [Route("api/UpdateUserImage")]
+        public IHttpActionResult PutUserImage(UserTable usertable)
+        {
+            UserTable usertble = db.UserTables.Where(c => c.UserId == usertable.UserId).FirstOrDefault();
+            usertble.ImageUrl = usertable.ImageUrl;
+            db.Entry(usertble).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+
+            }
+        }
+
+        private bool UserTableExists(int id)
+        {
+            return db.UserTables.Count(e => e.CompanyId == id) > 0;
         }
     }
 }

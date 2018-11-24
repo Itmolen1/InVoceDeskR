@@ -115,6 +115,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         // POST api/Account/ChangePassword
+
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
@@ -123,8 +124,7 @@ namespace InvoiceDiskLast.Controllers
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
+            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,model.NewPassword);
             
             if (!result.Succeeded)
             {
@@ -152,10 +152,7 @@ namespace InvoiceDiskLast.Controllers
 
             return Ok();
         }
-
-
-
-
+        
         [Route("RestSetPassword")]
         public async Task<IHttpActionResult> RestSetPassword(RestSetPasswordBindingModel model)
         {
