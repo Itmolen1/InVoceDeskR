@@ -287,6 +287,90 @@
 
 
 <script>
+
+
+    $(document).ready(function () {
+        $('#btn-QutationNew').click(function () {
+
+            LoadContacts();
+            $('#QutationContactModel').modal('show');
+        });
+
+        $('#SelectContacts1').change(function () {
+
+            showRequiredModel = "QutationContactModel";
+            var value = $(this).val();
+            if (value == "AddNewClientSelect") {
+
+                $('#QutationContactModel').modal('hide');
+
+                $('#ModelHeading').text("Maak nieuwe klant");
+                $("#TypeContacts").find("option").remove();
+                $("#TypeContacts").prepend("<option value=Customer>" + 'Klant' + "</option>");
+                $('#CreateNewContactModal1')
+
+
+                .modal('show');
+
+            }
+
+        });
+
+
+        $('#SelectProductQutation').change(function () {
+
+            var value = $(this).val();
+            if (value == "AddNewProductSelect") {
+
+                $('#CreateNewProductModalAdd').modal('show');
+
+            }
+
+        });
+
+
+
+        $('#QutationClientNext').click(function () {
+
+            var qutationGoodOrService = $('#SelectTypeQutation').val();
+            debugger;
+            var value = $('#SelectContacts1').val();
+
+            if (value > 0) {
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'GET',
+                    data: {
+                        id: value
+                    },
+                    success: function (data) {
+
+                        if (qutationGoodOrService == "1") {
+                            window.location.href = "/MVCQutation/AddOrEdit"
+                        }
+                        else if (qutationGoodOrService == "2") {
+                            window.location.href = "/QutationService/AddOrEdit/0"
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+            else {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Please select client to continue',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            }
+        });
+
+    });
+
+
     $('#SaveNewContacts').click(function () {
         var res = validateContactQutation();
         if (res == false) {

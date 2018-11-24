@@ -1,0 +1,122 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Journal";
+    double Dr = 0, Cr = 0;
+}
+<html>
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <style>
+        tr {
+            page-break-inside: avoid;
+        }
+    </style>
+
+</head>
+<body>
+
+    <style>
+        .table th, .table td {
+            border: none !important;
+        }
+    </style>
+
+
+    @{
+        InvoiceDiskLast.Models.MVCCompanyInfoModel _videwModel = new InvoiceDiskLast.Models.MVCCompanyInfoModel();
+
+        _videwModel = (InvoiceDiskLast.Models.MVCCompanyInfoModel)TempData["Compantinfo"];
+    }
+
+
+
+
+    <div class="row">
+        <div class="col-xs-2">
+        </div>
+
+        <div class="col-xs-8">
+            @{
+
+                <div class="row">
+                    <div class="col-xs-6 mydiv">
+                        <img src="~/images/logo.png184502514.png" style="width:140px;height:140px" />
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="row" style="margin-top:20px;">
+                            <div class="col-xs-4">Conatct</div>
+                            <div class="col-xs-8">@_videwModel.CompanyCell</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">Email</div>
+                            <div class="col-xs-8">@_videwModel.CompanyEmail</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">Address</div>
+                            <div class="col-xs-8">@_videwModel.CompanyAddress</div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <table class="table" id="orderdetailsitemsp">
+                    <thead style="border-bottom:1px solid">
+
+                        <tr style="border-top:1px solid">
+                            <th colspan="2">Date</th>
+                            <th colspan="10">Account</th>
+                            <th colspan="1" style="text-align:center">Dr</th>
+                            <th colspan="1" style="text-align:center">Cr</th>
+                        </tr>
+                    </thead>
+
+
+
+                    <tbody>
+                        @{
+
+                            if (ViewBag.JournalList != null)
+                            {
+                                foreach (var item in ViewBag.JournalList)
+                                {
+                                    Dr = Dr + item.AmountDebit;
+                                    Cr = Cr + item.AmountCredit;
+                                    <tr>
+                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate.Date</td>
+                                        <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
+                                        <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
+                                        <td colspan="1" style="text-align:right">@item.AmountCredit</td>
+
+                                    </tr>
+
+                                }
+                            }
+
+
+
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr style="border-top:1px solid">
+                            <td colspan="8"></td>
+                            <td colspan="4"><b>Total</b></td>
+                            <td style="text-align:right"><b>@Dr</b></td>
+                            <td colspan="1" style="text-align:right"><b>@Cr</b></td>
+                        </tr>
+                    </tfoot>
+
+
+                </table>
+            }
+        </div>
+        <div class="col-md-2 col-lg-2 col-sm-0"></div>
+    </div>
+    </body>
+</html>

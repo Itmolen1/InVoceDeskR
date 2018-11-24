@@ -1,0 +1,58 @@
+﻿@model InvoiceDiskLast.Models.SearchModel
+@{
+    ViewBag.Title = "ReportByEmail";
+}
+
+<h2>ReportByEmail</h2>
+@model InvoiceDiskLast.Models.EmailModel
+
+@{
+    ViewBag.Title = "InvoicebyEmail";
+}
+
+<div class="container">
+
+
+ 
+
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            @using (Html.BeginForm("InvoiceByEmail", "purchase", FormMethod.Post, new { id = "frmSendEmail" }))
+            {
+                <div class="row">
+                                    
+                    <div class="col-sm-12">
+                        <div class="bg-light border-left">
+                            <div class="card-body">
+                                <h3 class="card-title">Compose New Message<div class="pull-right" style="color:skyblue"> Invoice-@Model.invoiceId</div></h3>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(Model => Model.From, new { @class = "form-control", @readonly = "readonly", @title = "From" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(Model => Model.ToEmail, new { @class = "form-control", @required = "required", @placeholder = "To" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control", @placeholder = "Topic" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextAreaFor(Model => Model.EmailText, new { @class = "form-control textarea_editor", @rows = "15", @cols = "50", placeholder = "Enter text ..." })
+                                  
+                                </div>
+                                <h4><i class="ti-link"></i><label>@Model.Attachment</label></h4>
+                                 @Html.HiddenFor(Model => Model.Attachment)                           
+                                <hr />
+                                <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i>Send</button>
+                                <button href="/Purchase/AddOrEdit/@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i>Discard</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+</div>
+

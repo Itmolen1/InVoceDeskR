@@ -26,12 +26,14 @@
         {
             <div class="row">
 
+
                 <div class="col-sm-1">
-                    <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>Print</button>
+
+                    @Html.ActionLink("PrintK", actionName: "PrintJournal", controllerName: "Reports", routeValues: new { FromDate = Model.FromDate, Todate = Model.Todate }, htmlAttributes: null)
+
                 </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-primary btn-sm"><i class="fa ti-face-smile"></i>send by email</button>
-                </div>
+
+                
 
                 <div class="col-sm-1">From:</div>
                 <div class="col-sm-3">@Html.EditorFor(model => model.FromDate, new { @class = "input-sm" })</div>
@@ -39,8 +41,15 @@
                     To:
                 </div>
                 <div class="col-sm-3">@Html.EditorFor(model => model.Todate, new { @class = "input-sm" })</div>
+                
+                
+                <button type="submit" class="btn btn-primary btn-sm" name="SendEmail" value="SendEmail"><i class="fa ti-face-smile"></i>send by email</button>
                 <div class="col-sm-1">
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>Search</button>
+                    
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>Search</button>
+                      
+                    </div>
                 </div>
 
 
@@ -62,7 +71,8 @@
 
             <div class="row">
                 <div class="col-md-6 mydiv">
-                    <img src="~/images/logo.png184502514.png" style="width:140px;height:140px" />
+                    <img src="@Url.Content("~/Images/" + _videwModel.CompanyLogo)" id="targetImg" style="border:none;" />
+
                 </div>
                 <div class="col-md-4">
                     <div class="row" style="margin-top:20px;">
@@ -112,7 +122,7 @@
 
 
                                     <tr>
-                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate</td>
+                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate.Date</td>
                                         <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
                                         <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
                                         <td colspan="1" style="text-align:right">@item.AmountCredit</td>
