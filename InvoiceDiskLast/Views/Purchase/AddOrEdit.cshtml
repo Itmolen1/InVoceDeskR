@@ -989,6 +989,7 @@
     // product price by id
     $('thead .pClassp').change(function () {
 
+        var currentRow=$(this).closest('tr');
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
@@ -1009,7 +1010,9 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
+
                     $('thead #PurchaseItemRate ').val(resultData);
+                    ChangeTotalOnItemCahe(currentRow);
                 },
                 error: function (errormessage) {
                    // alert(errormessage)
@@ -1019,6 +1022,20 @@
     })
 
     //end
+
+
+
+    function ChangeTotalOnItemCahe(currentRow) {
+        debugger;
+        var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
+        var Price = currentRow.find("td:eq(2)").find('input').val();
+        var total = quantity * Price;
+        currentRow.find('td:eq(3)').find('input').val(total);
+
+    }
+
+
+
 
     //number validation
     $("thead .PurchaseQuantity").on("keypress keyup blur", function (event) {
@@ -1526,7 +1543,7 @@
             }
 
         });
-    }
+    }-
 
     $('#SaveNewProductUnitPurchase').click(function () {
 
