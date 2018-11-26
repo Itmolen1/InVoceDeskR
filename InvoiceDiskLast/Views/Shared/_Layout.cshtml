@@ -216,13 +216,12 @@
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
                                 <span class="with-arrow"><span class="bg-primary"></span></span>
                                 <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
-                                    <div class="mydiv"><img   alt="user Image" id="UserImageWithName" class="img-circle" style="height:50px;width:50px"></div>
+                                    <div class="mydiv"><img alt="user Image" id="UserImageWithName" class="img-circle" style="max-height:60px;max-width:50px"></div>
                                     <div class="m-l-10">
-                                        <h4 class="m-b-0">@Session["UName"]</h4>
-                                        <p class="m-b-0 small">@Session["username"].ToString()</p>
-                                    </div>
+                                        <h4 class="m-b-0"><span id="UFnameLname"></span></h4>  
+                                        <p class="m-b-0 small"><span id="UserNamess"></span></p>
+                                    </div>  
                                 </div>
-                                @*src="/images/@Session["imageurl"]"*@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0)" id="AccountSitting"><i class="ti-settings m-r-5 m-l-5" id="AccountSitting"></i> Account Setting</a>
                                 <a class="dropdown-item" href="javascript:void(0)" id="CompanySitting"><i class="ti-settings m-r-5 m-l-5" id="CompanySitting"></i> Company Setting</a>
@@ -230,7 +229,7 @@
                                 @*<a class="dropdown-item"><i href="javascript:void(0)" class="fa fa-power-off" id="Logouts"></i> Logout</a>*@
                                 <div class="p-l-30 p-10"><a href="javascript:void(0)" id="Logout" class="btn btn-sm btn-warning  btn-rounded"><i class="fa fa-power-off"></i>        LogOut</a></div>
                                 <div class="dropdown-divider"></div>
-
+                              
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -489,10 +488,309 @@
         </div>
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+            $.ajax({
+                url: "/UserInfo/GetUserByCompayId",
+                type: 'Post',
+                success: function (Userdata) {
+                   
+                    var url;
+                    if (Userdata.ImageUrl == null)
+                    {
+                        url = '/images/download.jpg';
+                    }
+                    else {
+                         url = '/images/' + Userdata.ImageUrl;
+                    }
+                    $('#UserImageWithName').attr('src', url)
+                    $('#UFnameLname').text(Userdata.UserFname + " " + Userdata.UserLname);
+                    $('#UserNamess').text(Userdata.Username);
+                }
+        });
+
+     });
+
+    $('#changeImage').click(function () {
+        $.ajax({
+            url: "/UserInfo/GetUserByCompayId",
+            type: 'Post',
+            success: function (Userdat) {
+                var urls
+                if (Userdat.ImageUrl == null) {
+
+                    urls = url = '/images/download.jpg';
+                }
+                else {
+                    urls = '/images/' + Userdat.ImageUrl;                   
+                }
+                $('#Useimage').attr("src", urls);
+                $('#UserImageWithName').attr('src', urls)
+                $('#ImageSRC').val(Userdat.ImageUrl);
+                $('#UserInfoModel').modal('hide');
+                $('#ImageModel').modal('show');
+            }
+        });
+    });
+
+    $('#changePWD').click(function () {
+        $('#UserInfoModel').modal('hide');
+        $('#ChangePasswordModel').modal('show');
+    });
+
+    $('#SaveChangePassword').click(function () {
+        var Istrue = ChangePasswordValidation();
+
+        if (Istrue == true) {
+            Data =
+                {
+                    OldPassword: $('#CurrentPassword').val(),
+                    NewPassword: $('#NewPassowrd').val(),
+                    ConfirmPassword: $('#ConfirmPassword').val()
+                }
+            $.ajax({
+                url: "/UserInfo/UpdateUserPassword",
+                type: 'Post',
+                data: Data,
+                success: function (Response) {
+                    if (Response == "Ok") {
+                        $('#ChangePasswordModel').modal('hide');
+                        $('#UserInfoModel').modal('show');
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Password update successfuly `updated`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+
+                        });
+                    }
+                    else {
+                        $.toast({
+                            heading: 'Failed',
+                            text: 'Filed update password `current password incorrect`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#FF0000'  // To change the background
+
+                        });
+                    }
+
+                },
+                error: function () {
+                    alert('something wrong');
+                }
+
+            });
+        }
+
+    });
+
+    function ChangePasswordValidation() {
+        var isvalid = false;
+
+        if ($('#CurrentPassword').val().trim() == "") {
+            $('#CurrentPassword').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#CurrentPassword').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+
+        if ($('#NewPassowrd').val().trim() == "") {
+            $('#NewPassowrd').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#NewPassowrd').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+        if ($('#ConfirmPassword').val().trim() == "") {
+            $('#ConfirmPassword').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#ConfirmPassword').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+
+        if ($('#NewPassowrd').val() != $('#ConfirmPassword').val()) {
+            $.toast({
+                heading: 'Miss match',
+                text: 'new password and confirm password must match `Password`',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#FF0000'  // To change the background
+            });
+        }
+        return isvalid;
+    }
+
+    $('#CancelChangePassword').click(function () {
+        $('#UserInfoModel').modal('show');
+        $('#ChangePasswordModel').modal('hide');
+    });
+
+    $('#CancelserImage').click(function () {
+        $('#ImageModel').modal('hide');
+        $('#UserInfoModel').modal('show');
+    });
+
+    $('#SaveuserImage').click(function () {
+
+        if (window.FormData != undefined) {
+            var fileData = new FormData();
+
+            if ($("#uploadimg").val() != "") {
+                var fileUpload = $("#uploadimg").get(0);
+                var files = fileUpload.files;
+
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+            }
+
+            if ($("#uploadimg").val() != "") {
+                fileData.append('ImageUrl', $('#uploadimg').val());
+            }
+            fileData.append('UserId', $('#userid').val());
+            fileData.append('ImageUrl', $('#ImageSRC').val());
+
+            $.ajax({
+                url: '/UserInfo/UpdateImage',
+                type: 'POST',
+                data: fileData,
+                processData: false,
+                contentType: false,
+                success: function (Return) {
+                  
+                        var urls = '/images/' + Return.ImageUrl;
+                        $('#UserImageWithName').attr('src', urls)
+                        $('#ImageModel').modal('hide');
+                        $('#UserInfoModel').modal('show');
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Image update successfuly `updated`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                   
+                },
+                error: function () {
+                    alert("Error please try again");
+                }
+            });
+        }
+
+    });
+
+    var showRequiredModel = "";
+
+    $(document).ready(function () {
+
+        $("#uploadimg").change(function () {
+            readURL(this, 'Useimage');
+        });
+    });
 
 
+    $('#CompanySitting').click(function () {
+        window.location.href = "/MVCComapny/Index";
+    });
+
+    $('#AccountSitting').click(function () {
+
+        $.ajax({
+            url: "/UserInfo/GetUserByCompayId",
+            type: 'Post',
+            success: function (Userdata) {
+                $.toast({
+                    heading: 'Success',
+                    text: 'Data loaded successfuly `Loaded`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+
+                $('#userid').val(Userdata.UserId);
+                $('#txtFname').val(Userdata.UserFname);
+                $('#txtInsertion').val(Userdata.Insertion);
+                $('#txtLname').val(Userdata.UserLname);
+                $('#txtEmail').val(Userdata.Username);
+                $('#TxtDob').val(Userdata.DOB);
+                var gen = Userdata.Gender;
+                if (gen == 1) {
+                    $('input:radio[name="gender"]').filter('[value="1"]').attr('checked', true);
+                }
+                else {
+                    $('input:radio[name="gender"]').filter('[value="2"]').attr('checked', true);
+                }
+
+                $('#UserInfoModel').modal('show');
+            }
+        });
+
+    });
+
+    $('#SaveuserInfo').click(function () {
+
+        Userdata = {
+            UserFname: $('#txtFname').val(),
+            Insertion: $('#txtInsertion').val(),
+            UserLname: $('#txtLname').val(),
+            Gender: $("input[name='gender']:checked").val(),
+            DOB: $('#TxtDob').val(),
+            UserId: $('#userid').val()
+        },
+
+        $.ajax({
+            url: "/UserInfo/UpdateUserInfo",
+            type: 'Post',
+            data: Userdata,
+            success: function (response)
+            {              
+                $('#UFnameLname').text(response.UserFname + " " + response.UserLname);
+                $('#UserNamess').text(response.Username);
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Information updated successfuly `Updated`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                    $('#UserInfoModel').modal('hide');               
+            },
+            error: function (error) {
+                alert('somthing going wrong');
+            },
+        });
+    });
+
+    function Edit(companyId) {
+
+        window.location.href = "Company/AddOrEdit/" + companyId;
+    }
+
+    $('#Logout').click(function () {
+        Username = "";
+        $.ajax({
+            url: "/Login/Logut",
+            type: "POST",
+            dataType: "json",
+            success: function (resultData) {
+                window.location.href = "/Captcha/Index";
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    });
 
 
+</script>
 
 
 

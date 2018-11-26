@@ -118,65 +118,64 @@ namespace InvoiceDiskLast.Controllers
                 if (stream != null)
                     stream.Close();
             }
-
             //file is not locked
             return false;
         }
 
 
 
-        //[HttpPost]
-        //public ActionResult Journal(SearchModel _searchModel)
-        //{
-        //    SearchModel _model = new SearchModel();
-        //    try
-        //    {
+        [HttpPost]
+        public ActionResult Journal(SearchModel _searchModel)
+        {
+            SearchModel _model = new SearchModel();
+            try
+            {
+               
+                if (_searchModel.FromDate > _searchModel.Todate)
+                {
+                    ViewBag.massage = "From Date must be Less from To Date";
+                    _searchModel._TransactionList = null;
+                    return View(_searchModel);
+                }
+                else
+                {
 
-        //        if (_searchModel.FromDate > _searchModel.Todate)
-        //        {
-        //            ViewBag.massage = "From Date must be Less from To Date";
-        //            _searchModel._TransactionList = null;
-        //            return View(_searchModel);
-        //        }
-        //        else
-        //        {
+                    FormCollection form;
+                    if (Request.Form["SendEmail"] != null)
+                    {
+                        string Path = SaveOnPathe("Journal", _searchModel.FromDate, _searchModel.Todate);
 
-        //            FormCollection form;
-        //            if (Request.Form["SendEmail"] != null)
-        //            {
-        //                string Path = SaveOnPathe("Journal", _searchModel.FromDate, _searchModel.Todate);
+                        TempData["Pathe"] = Path;
+                        TempData.Keep();
 
-        //                TempData["Pathe"] = Path;
-        //                TempData.Keep();
+                        return RedirectToAction("ReportByEmail");
 
-        //                return RedirectToAction("ReportByEmail");
+                    }
 
-        //            }
+                    long FromDate = Convert.ToDateTime(_searchModel.FromDate).Ticks;
+                    long TDate = Convert.ToDateTime(_searchModel.Todate).Ticks;
 
-        //            long FromDate = Convert.ToDateTime(_searchModel.FromDate).Ticks;
-        //            long TDate = Convert.ToDateTime(_searchModel.Todate).Ticks;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDate + "/" + TDate).Result;
+                    _model._TransactionList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
 
-        //            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDate + "/" + TDate).Result;
-        //            _model._TransactionList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
+                    if (TempData["Compantinfo"] == null)
+                    {
+                        CompanyId = Convert.ToInt32(Session["CompayID"]);
 
-        //            if (TempData["Compantinfo"] == null)
-        //            {
-        //                CompanyId = Convert.ToInt32(Session["CompayID"]);
+                        HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
+                        _company = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                        TempData["Compantinfo"] = _company;
+                        TempData.Keep();
+                    }
+                }
+            }
+            catch (Exception EX)
+            {
+                throw EX;
+            }
 
-        //                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
-        //                _company = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-        //                TempData["Compantinfo"] = _company;
-        //                TempData.Keep();
-        //            }
-        //        }
-        //    }
-        //    catch (Exception EX)
-        //    {
-        //        throw EX;
-        //    }
-
-        //    return View(_model);
-        //}
+            return View(_model);
+        }
 
 
 
@@ -225,60 +224,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-
-
-        [HttpPost]
-        public ActionResult GetJournalList(DateTime FromDate1, DateTime ToDate)
-        {
-            try
-            {
-                if (Session["CompayID"] != null)
-                {
-                    CompanyId = Convert.ToInt32(Session["CompayID"]);
-
-                    HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
-                    _company = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                    TempData["Compantinfo"] = _company;
-                    TempData.Keep();
-                }
-
-
-               
-                long FromDate = DateTime.Now.Ticks;
-                DateTime dt = DateTime.Now.AddDays(-20);
-                long TDate = DateTime.Now.AddDays(-20).Ticks;
-
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDate + "/" + TDate).Result;
-                _SearchModel._TransactionList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
-                _SearchModel.Todate = DateTime.Now.AddDays(-20);
-
-
-
-                int recordsTotal = recordsTotal = _SearchModel._TransactionList.Count();
-                var data = _SearchModel._TransactionList;
-                return Json(new { recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-        public ActionResult PrintJournal(string FromDate, string Todate)
+        public ActionResult PrintJournal(DateTime? FromDate, DateTime? Todate)
         {
             try
             {

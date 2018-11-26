@@ -84,8 +84,16 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateUserImage", model).Result;
-                MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                UserModel UserModel = response.Content.ReadAsAsync<UserModel>().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return Json(UserModel, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {
@@ -101,10 +109,11 @@ namespace InvoiceDiskLast.Controllers
                 usermodel.CompanyId = Convert.ToInt32(Session["CompayID"]);
                
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PutUserInfo", usermodel).Result;
+                UserModel Umodel = response.Content.ReadAsAsync<UserModel>().Result;
 
-                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return Json("Ok", JsonRequestBehavior.AllowGet);
+                    return Json(Umodel, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
