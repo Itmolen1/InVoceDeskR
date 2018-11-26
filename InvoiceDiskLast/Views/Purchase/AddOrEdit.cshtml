@@ -39,10 +39,10 @@
                 <div class="col-sm-1"></div>
                 <div class="col-sm-3">
                     <div class="mydiv">
-                        <img src="@Url.Content("/Images/"+@CompanyDatas.CompanyLogo)"  id="targetImg" style="border:none" />
+                        <img src="@Url.Content("/Images/"+@CompanyDatas.CompanyLogo)" id="targetImg" style="border:none" />
                     </div>
                     <br />
-                    <br />                 
+                    <br />
                     <br />
                     <br />
                     <br />
@@ -140,10 +140,10 @@
                     <div class="form-horizontal">
                         <div class="row">
                             <div class="col-sm-2">Invoice Date:</div>
-                            <div class="col-sm-4"> 
-                                                             
-                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseDate"} })
-                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })                              
+                            <div class="col-sm-4">
+
+                                @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseDate" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-sm-6"></div>
                         </div>
@@ -994,7 +994,7 @@
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
             LoadProductUnitPurchase();
-          //  $('#VenderSelectModel').modal('hide');
+            //  $('#VenderSelectModel').modal('hide');
             $('#CreateNewProductModalAdd').modal('show');
         }
         else if (value == "0") {
@@ -1015,7 +1015,7 @@
                     ChangeTotalOnItemCahe(currentRow);
                 },
                 error: function (errormessage) {
-                   // alert(errormessage)
+                    // alert(errormessage)
                 }
             });
         }
@@ -1057,104 +1057,115 @@
 
     //saving detail
     $("#Submitp").click(function () {
-        var isAllValid = true;
-        $('#orderItemError').text('');
-        var list = [];
-        var errorItemCount = 0;
-        $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
-            if ($('#SelectProductQutationp', this).val() == '0' ||
-                (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
-                $('.ratep', this).val() == "" ||
-                isNaN($('.PurchaseItemRate ', this).val())
-                ) {
-                errorItemCount++;
-                $(this).addClass('error');
-            }
-            else {
-                var orderItem = {
-                    PurchaseItemId: $('select.productp', this).val(),
-                    PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
-                    PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
-                    PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
-                    Total: parseFloat($('.PurchaseTotal', this).val()),
-                    PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
-                }
-                list.push(orderItem);
-            }
-        });
+        var ValidOrNot=validateQutationAddOrEdit();
 
-        if (errorItemCount > 0) {
-            $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
-            isAllValid = false;
+        if(ValidOrNot!=true){
+            return true;
         }
+        else{
 
-        if (list.length == 0) {
 
-            $("#orderItemError").text("At least one order item required.");
-            isAllValid = false;
-        }
 
-        if (isAllValid) {
 
-            $(this).val("please wait...");
-            var empObj = {
-                PurchaseId: $('#PurchaseId').val(),
-                PurchaseID: $('#PurchaseID').val(),
-                PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-                PurchaseDate: $('#PurchaseDate').val(),
-                PurchaseDueDate: $('#PurchaseDueDate').val(),
-                PurchaseSubTotal: $('#SubTotalp').text(),
-                PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-                PurchaseOrderID: $('#PurchaseOrderID').val(),
-                PurchaseTotoalAmount: $('#gtotalp').text(),
-                PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-                Vat6: $('#BTW6p').text(),
-                Vat21: $('#BTW21p').text(),
-                Purchase_ID: $('.Purchase_ID').val(),
-                PurchaseDetailslist: list
-            };
-            $.ajax({
-                url: "/Purchase/save",
-                data: JSON.stringify(empObj),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-
-                    if (result.Status == "Success") {
-                        list = [];
-                        $('#orderdetailsitems').empty();
-                        $("#Submit").val('Save');
-                        swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
-                            type: 'success'
-                        },
-                  function (isconform) {
-                      window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.purchaseId;
-                  });
-                    }
-                    else if (result.Status == "Fail") {
-                        swal({
-                            title: "Fail!",
-                            text: result.Message,
-                            icon: "danger",
-                        });
-
-                    }
-                },
-                error: function (errormessage) {
-                    swal({
-                        title: "Fail!",
-                        text: errormessage,
-                        icon: "danger",
-                    });
+            var isAllValid = true;
+            $('#orderItemError').text('');
+            var list = [];
+            var errorItemCount = 0;
+            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+                if ($('#SelectProductQutationp', this).val() == '0' ||
+                    (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
+                    $('.ratep', this).val() == "" ||
+                    isNaN($('.PurchaseItemRate ', this).val())
+                    ) {
+                    errorItemCount++;
+                    $(this).addClass('error');
                 }
-
+                else {
+                    var orderItem = {
+                        PurchaseItemId: $('select.productp', this).val(),
+                        PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
+                        PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
+                        PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
+                        Total: parseFloat($('.PurchaseTotal', this).val()),
+                        PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
+                        PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
+                        PurchaseOrderID: $('.PurchaseOrderID').val(),
+                    }
+                    list.push(orderItem);
+                }
             });
 
+            if (errorItemCount > 0) {
+                $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
+                isAllValid = false;
+            }
+
+            if (list.length == 0) {
+
+                $("#orderItemError").text("At least one order item required.");
+                isAllValid = false;
+            }
+
+            if (isAllValid) {
+
+                $(this).val("please wait...");
+                var empObj = {
+                    PurchaseId: $('#PurchaseId').val(),
+                    PurchaseID: $('#PurchaseID').val(),
+                    PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+                    PurchaseDate: $('#PurchaseDate').val(),
+                    PurchaseDueDate: $('#PurchaseDueDate').val(),
+                    PurchaseSubTotal: $('#SubTotalp').text(),
+                    PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+                    PurchaseOrderID: $('#PurchaseOrderID').val(),
+                    PurchaseTotoalAmount: $('#gtotalp').text(),
+                    PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+                    Vat6: $('#BTW6p').text(),
+                    Vat21: $('#BTW21p').text(),
+                    Purchase_ID: $('.Purchase_ID').val(),
+                    PurchaseDetailslist: list
+                };
+                $.ajax({
+                    url: "/Purchase/save",
+                    data: JSON.stringify(empObj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+
+                        if (result.Status == "Success") {
+                            list = [];
+                            $('#orderdetailsitems').empty();
+                            $("#Submit").val('Save');
+                            swal({
+                                title: 'Invoice!',
+                                text: 'Invoice save successfully!',
+                                type: 'success'
+                            },
+                      function (isconform) {
+                          window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.purchaseId;
+                      });
+                        }
+                        else if (result.Status == "Fail") {
+                            swal({
+                                title: "Fail!",
+                                text: result.Message,
+                                icon: "danger",
+                            });
+
+                        }
+                    },
+                    error: function (errormessage) {
+                        swal({
+                            title: "Fail!",
+                            text: errormessage,
+                            icon: "danger",
+                        });
+                    }
+
+                });
+
+            }
         }
 
     });
@@ -1162,220 +1173,239 @@
 
     //Save Email
     $("#saveEmailp").click(function () {
-        var isAllValid = true;
-        
 
-        $('#orderItemError').text('');
 
-        var list = [];
-        var errorItemCount = 0;
+        var ValidOrNot=validateQutationAddOrEdit();
 
-        $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+        if(ValidOrNot!=true){
+            return true;
+        }
+        else{
 
-            if ($('#SelectProductQutationp', this).val() == '0' ||
-                (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
-                $('.ratep', this).val() == "" ||
-                isNaN($('.PurchaseItemRate ', this).val())
-                ) {
-                errorItemCount++;
-                $(this).addClass('error');
-            }
-            else {
-                var orderItem = {
-                    PurchaseItemId: $('select.productp', this).val(),
-                    PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
-                    PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
-                    PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
-                    Total: parseFloat($('.PurchaseTotal', this).val()),
-                    PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
+
+            var isAllValid = true;
+            $('#orderItemError').text('');
+
+            var list = [];
+            var errorItemCount = 0;
+
+            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+
+                if ($('#SelectProductQutationp', this).val() == '0' ||
+                    (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
+                    $('.ratep', this).val() == "" ||
+                    isNaN($('.PurchaseItemRate ', this).val())
+                    ) {
+                    errorItemCount++;
+                    $(this).addClass('error');
                 }
-                list.push(orderItem);
-            }
-        });
-
-        if (errorItemCount > 0) {
-            $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
-            isAllValid = false;
-        }
-
-        if (list.length == 0) {
-
-            $("#orderItemError").text("At least one order item required.");
-            isAllValid = false;
-        }
-
-        if (isAllValid) {
-
-            $(this).val("please wait...");
-            var empObj = {
-                PurchaseId: $('#PurchaseId').val(),
-                PurchaseID: $('#PurchaseID').val(),
-                PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-                PurchaseDate: $('#PurchaseDate').val(),
-                PurchaseDueDate: $('#PurchaseDueDate').val(),
-                PurchaseSubTotal: $('#SubTotalp').text(),
-                PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-                PurchaseOrderID: $('#PurchaseOrderID').val(),
-                PurchaseTotoalAmount: $('#gtotalp').text(),
-                PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-                Vat6: $('#BTW6p').text(),
-                Vat21: $('#BTW21p').text(),
-                Purchase_ID: $('.Purchase_ID').val(),
-
-                PurchaseDetailslist: list
-
-            };
-            $.ajax({
-                url: "/Purchase/saveEmail",
-                data: JSON.stringify(empObj),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-
-                    if (result.Status == "Success") {
-
-                        swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
-                            type: 'success'
-                        },
-                        function (isconform) {
-                            window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.PurchaseOrderId;
-                        });
-                        $("#saveEmailp").val('Save + Email');
-                        list = [];
-
+                else {
+                    var orderItem = {
+                        PurchaseItemId: $('select.productp', this).val(),
+                        PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
+                        PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
+                        PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
+                        Total: parseFloat($('.PurchaseTotal', this).val()),
+                        PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
+                        PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
+                        PurchaseOrderID: $('.PurchaseOrderID').val(),
                     }
-                    else if (result.Status == "Fail") {
+                    list.push(orderItem);
+                }
+            });
+
+            if (errorItemCount > 0) {
+                $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
+                isAllValid = false;
+            }
+
+            if (list.length == 0) {
+
+                $("#orderItemError").text("At least one order item required.");
+                isAllValid = false;
+            }
+
+            if (isAllValid) {
+
+                $(this).val("please wait...");
+                var empObj = {
+                    PurchaseId: $('#PurchaseId').val(),
+                    PurchaseID: $('#PurchaseID').val(),
+                    PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+                    PurchaseDate: $('#PurchaseDate').val(),
+                    PurchaseDueDate: $('#PurchaseDueDate').val(),
+                    PurchaseSubTotal: $('#SubTotalp').text(),
+                    PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+                    PurchaseOrderID: $('#PurchaseOrderID').val(),
+                    PurchaseTotoalAmount: $('#gtotalp').text(),
+                    PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+                    Vat6: $('#BTW6p').text(),
+                    Vat21: $('#BTW21p').text(),
+                    Purchase_ID: $('.Purchase_ID').val(),
+
+                    PurchaseDetailslist: list
+
+                };
+                $.ajax({
+                    url: "/Purchase/saveEmail",
+                    data: JSON.stringify(empObj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+
+                        if (result.Status == "Success") {
+
+                            swal({
+                                title: 'Invoice!',
+                                text: 'Invoice save successfully!',
+                                type: 'success'
+                            },
+                            function (isconform) {
+                                window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.PurchaseOrderId;
+                            });
+                            $("#saveEmailp").val('Save + Email');
+                            list = [];
+
+                        }
+                        else if (result.Status == "Fail") {
+                            swal({
+                                title: "Fail!",
+                                text: result.Message,
+                                icon: "danger",
+                            });
+                        }
+                    },
+                    error: function (errormessage) {
                         swal({
                             title: "Fail!",
-                            text: result.Message,
+                            text: errormessage,
                             icon: "danger",
                         });
                     }
-                },
-                error: function (errormessage) {
-                    swal({
-                        title: "Fail!",
-                        text: errormessage,
-                        icon: "danger",
-                    });
-                }
 
-            });
+                });
 
+            }
         }
-
     });
 
     //End save and Email
 
     //save print
     $("#SaveEmailPrintPrintp").click(function () {
-        var isAllValid = true;
-        $('#orderItemError').text('');
 
-        var list = [];
-        var errorItemCount = 0;
 
-        $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+        var ValidOrNot=validateQutationAddOrEdit();
 
-            if ($('#SelectProductQutationp', this).val() == '0' ||
-                (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
-                $('.ratep', this).val() == "" ||
-                isNaN($('.PurchaseItemRate ', this).val())
-                ) {
-                errorItemCount++;
-                $(this).addClass('error');
-            }
-            else {
-                var orderItem = {
-                    PurchaseItemId: $('select.productp', this).val(),
-                    PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
-                    PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
-                    PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
-                    Total: parseFloat($('.PurchaseTotal', this).val()),
-                    PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
+        if(ValidOrNot!=true){
+            return true;
+        }
+        else{
+
+
+            var isAllValid = true;
+            $('#orderItemError').text('');
+
+            var list = [];
+            var errorItemCount = 0;
+
+            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+
+                if ($('#SelectProductQutationp', this).val() == '0' ||
+                    (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
+                    $('.ratep', this).val() == "" ||
+                    isNaN($('.PurchaseItemRate ', this).val())
+                    ) {
+                    errorItemCount++;
+                    $(this).addClass('error');
                 }
-                list.push(orderItem);
-            }
-        });
-
-        if (errorItemCount > 0) {
-            $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
-            isAllValid = false;
-        }
-
-        if (list.length == 0) {
-
-            $("#orderItemError").text("At least one order item required.");
-            isAllValid = false;
-        }
-
-        if (isAllValid) {
-
-            $(this).val("please wait...");
-            var empObj = {
-                PurchaseId: $('#PurchaseId').val(),
-                PurchaseID: $('#PurchaseID').val(),
-                PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-                PurchaseDate: $('#PurchaseDate').val(),
-                PurchaseDueDate: $('#PurchaseDueDate').val(),
-                PurchaseSubTotal: $('#SubTotalp').text(),
-                PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-                PurchaseOrderID: $('#PurchaseOrderID').val(),
-                PurchaseTotoalAmount: $('#gtotalp').text(),
-                PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-                Vat6: $('#BTW6p').text(),
-                Vat21: $('#BTW21p').text(),
-                Purchase_ID: $('.Purchase_ID').val(),
-                PurchaseDetailslist: list
-            };
-            $.ajax({
-                url: "/Purchase/savePrintAndSentItToYouronsave",
-                data: JSON.stringify(empObj),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-                    localStorage.setItem('path1', result.path);
-
-                    if (result.Status == "Success") {
-
-                        swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
-                            type: 'success'
-                        },
-                        function (isconform) {
-                            window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.PurchaseOrderId;
-                        });
+                else {
+                    var orderItem = {
+                        PurchaseItemId: $('select.productp', this).val(),
+                        PurchaseQuantity: parseInt($('.PurchaseQuantity', this).val()),
+                        PurchaseItemRate: parseFloat($('.PurchaseItemRate', this).val()),
+                        PurchaseTotal: parseFloat($('.PurchaseTotal', this).val()),
+                        Total: parseFloat($('.PurchaseTotal', this).val()),
+                        PurchaseVatPercentage: parseFloat($('.VATp', this).val()),
+                        PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
+                        PurchaseOrderID: $('.PurchaseOrderID').val(),
                     }
-                    else if (result.Status == "Fail") {
-                        $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
-                      
+                    list.push(orderItem);
+                }
+            });
 
+            if (errorItemCount > 0) {
+                $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
+                isAllValid = false;
+            }
+
+            if (list.length == 0) {
+
+                $("#orderItemError").text("At least one order item required.");
+                isAllValid = false;
+            }
+
+            if (isAllValid) {
+
+                $(this).val("please wait...");
+                var empObj = {
+                    PurchaseId: $('#PurchaseId').val(),
+                    PurchaseID: $('#PurchaseID').val(),
+                    PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+                    PurchaseDate: $('#PurchaseDate').val(),
+                    PurchaseDueDate: $('#PurchaseDueDate').val(),
+                    PurchaseSubTotal: $('#SubTotalp').text(),
+                    PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+                    PurchaseOrderID: $('#PurchaseOrderID').val(),
+                    PurchaseTotoalAmount: $('#gtotalp').text(),
+                    PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+                    Vat6: $('#BTW6p').text(),
+                    Vat21: $('#BTW21p').text(),
+                    Purchase_ID: $('.Purchase_ID').val(),
+                    PurchaseDetailslist: list
+                };
+                $.ajax({
+                    url: "/Purchase/savePrintAndSentItToYouronsave",
+                    data: JSON.stringify(empObj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        localStorage.setItem('path1', result.path);
+
+                        if (result.Status == "Success") {
+
+                            swal({
+                                title: 'Invoice!',
+                                text: 'Invoice save successfully!',
+                                type: 'success'
+                            },
+                            function (isconform) {
+                                window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + result.PurchaseOrderId;
+                            });
+                        }
+                        else if (result.Status == "Fail") {
+                            $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
+
+
+                            swal({
+                                title: "Fail!",
+                                text: result.Message,
+                                icon: "danger",
+                            });
+                        }
+                    },
+                    error: function (errormessage) {
+                        $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
                         swal({
                             title: "Fail!",
-                            text: result.Message,
+                            text: errormessage,
                             icon: "danger",
                         });
                     }
-                },
-                error: function (errormessage) {
-                    $("#SaveEmailPrintPrintp").val("Save + print and send and send ot yourself");
-                    swal({
-                        title: "Fail!",
-                        text: errormessage,
-                        icon: "danger",
-                    });
-                }
-            });
+                });
+            }
         }
     });
 
@@ -1434,7 +1464,7 @@
                         text: errormessage,
                         icon: "danger",
                     });
-                   
+
                 }
 
             });
@@ -1476,6 +1506,42 @@
             }
         });
     });
+
+    function validateQutationAddOrEdit() {
+        var isValid = true;
+
+        if ($('#PurchaseID').val().trim() == "") {
+            $('#PurchaseID').css('border-color', 'Red');
+
+            isValid = false;
+        }
+        else {
+            $('#PurchaseID').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchaseDueDate').val().trim() == "") {
+            $('#PurchaseDueDate').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#PurchaseDueDate').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchaseRefNumber').val().trim() == "") {
+            $('#PurchaseRefNumber').css('border-color', 'Red');
+            $('#PurchaseRefNumber').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchaseRefNumber').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchaseDate').val() == "") {
+            $('#PurchaseDate').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#PurchaseDate').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
 
 
     function LoadProductAdding1() {
