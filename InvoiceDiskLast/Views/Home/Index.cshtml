@@ -317,6 +317,75 @@
         });
 
 
+        $(document).ready(function () {
+
+            $('#btn-InvoiceNew').click(function () {
+                LoadVernder();
+                $('#VenderSelectModel').modal('show');
+            });
+
+            $('#venderSelect').change(function () {
+
+                var value = $(this).val();
+                if (value == "AddNewVenderSelect") {
+                    showRequiredModel = "";
+                    $('#VenderSelectModel').modal('hide');
+                    $('#ModelHeading').text("Maak nieuwe vender");
+                    $("#TypeContacts").find("option").remove();
+                    $("#TypeContacts").prepend("<option value=Vender>" + 'verkoper' + "</option>");
+                    $('#CreateNewContactModal1')
+                    .modal('show');
+
+                }
+
+            });
+
+            $('#VenderClientNext').click(function () {
+                var serviceOrgoo = "";
+                var value = $('#venderSelect').val();
+                serviceOrgoo = $('#SelectTypeQutation1 option:selected').text();
+                debugger;
+                if (value > 0) {
+                    $.ajax({
+                        url: '/MVCClient/AddOrEdit',
+                        type: 'GET',
+                        data: {
+                            id: value
+                        },
+                        success: function (data) {
+
+                            if (serviceOrgoo == "Good") {
+                                serviceOrgoo = "";
+
+                                window.location.href = "/Purchase/AddOrEdit"
+                            }
+                            else if (serviceOrgoo == "Services") {
+                                serviceOrgoo = "";
+
+                                window.location.href = "/MvcInvoiceServices/AddOrEdit/0"
+                            }
+
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
+                else {
+                    $.toast({
+                        heading: 'Information',
+                        text: 'Please select client to continue',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    })
+                }
+            });
+
+        });
+
+
+
         $('#SelectProductQutation').change(function () {
 
             var value = $(this).val();
@@ -327,7 +396,59 @@
             }
 
         });
+        function LoadVernder() {
+            $("#venderSelect").find("option").remove();
+            $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
+            $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
 
+            $.ajax({
+                url: "/Purchase/GetVender",
+                type: "Get",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (key, item) {
+                        $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                    });
+
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
+        }
+
+        function LoadContacts() {
+
+            $("#SelectContacts1").find("option").remove();
+
+            $("#SelectContacts1").prepend("<option value=0>" + 'Select Client' + "</option>");
+            $("#SelectContacts1").append("<option value=AddNewClientSelect>" + 'Add New Client' + "</option>");
+
+            $.ajax({
+                url: "/MVCClient/GetContacts",
+                type: "Get",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $.each(data, function (key, item) {
+
+                        $('#SelectContacts1').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                    });
+
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+
+            });
+        }
 
 
         $('#QutationClientNext').click(function () {

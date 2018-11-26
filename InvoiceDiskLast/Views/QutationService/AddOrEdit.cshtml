@@ -219,13 +219,13 @@
                                             <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
                                         </td>
                                         <td>
-                                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "Quantity form-control", id = "Quantity" } })
+                                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "Quantity form-control", id = "QuantityE" } })
                                             @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                         </td>
                                         <td>
 
 
-                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "Rate" } })
+                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "RateE" } })
                                             @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
 
 
@@ -251,7 +251,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody class="tbody">
 
                                     @if (ViewBag.QutationDatailsList != null)
                                     {
@@ -273,7 +273,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="quantity form-control" id="Quantity" value="@item.Quantity" style="font-size:12px" />
+                                                        <input type="text" class="quantity form-control" id="QuantityE" value="@item.Quantity" style="font-size:12px" />
                                                     </td>
 
                                                     <td>
@@ -753,10 +753,24 @@
             return;
         }
 
-        if ($(".PurchaseQuantity").val() == 0) {
+        if ($(".Quantity").val() == 0) {
             isAllValid = false;
             alert("Please select quantity");
+            return;
         }
+        if ($(".PurchaseTotal").val() == 0) {
+            isAllValid = false;
+            alert("Please select quantity");
+            return;
+        }
+        
+
+        if ($(".PurchaseItemRate").val() == 0) {
+            isAllValid = false;
+            alert("Please select quantity");
+            return;
+        }
+
 
         if (isAllValid) {
             var $newRowp = $("#mainrow").clone().removeAttr('id');
@@ -770,10 +784,11 @@
             $('#QutationServiceDetail').append($newRowp);
 
             $('thead #SelectProductQutationp').val('0');
-            $('thead #Quantity ').val('');
-            $('thead #Rate ').val('');
-            $('thead #PurchaseTotal ').val('');
+            $('thead .Quantity ').val('');
+            $('thead .PurchaseItemRate ').val('');
+            $('thead .PurchaseTotal ').val('');
             $('thead #VATp ').val('0');
+            $('thead .PurchaseTotal ').val('0');
 
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
@@ -839,7 +854,7 @@
         currentRow.find('td:eq(3)').find('input').val(total.toFixed(2));
     })
 
-    $(document).on('keyup', "#QutationServiceDetail tbody #Quantity", function () {
+    $(document).on('keyup', "#QutationServiceDetail tbody #QuantityE", function () {
 
         debugger;
         var currentRow = $(this).closest("tr");
@@ -848,6 +863,32 @@
         var total = quantity * Price;
         currentRow.find('td:eq(3)').find('input').val(total);
     })
+
+
+
+    $(document).on('keyup', " thead .Quantity", function () {
+
+        debugger;
+        var currentRow = $(this).closest("tr");
+        var quantity = $(this).val();  // get current row 1st TD value
+        var Price = currentRow.find("td:eq(2)").find('input').val();
+        var total = quantity * Price;
+        currentRow.find('td:eq(3)').find('input').val(total);
+    })
+
+    $(document).on('keyup', " thead .PurchaseItemRate", function () {
+
+        debugger;
+        var currentRow = $(this).closest("tr");
+        var Price  = $(this).val();  // get current row 1st TD value
+        var quantity = currentRow.find("td:eq(2)").find('input').val();
+        var total = quantity * Price;
+        currentRow.find('td:eq(3)').find('input').val(total);
+    })
+
+
+    
+
 
     $(document).on('keyup', "#QutationServiceDetail tbody .PurchaseItemRate ", function () {
 
@@ -1001,6 +1042,7 @@
     // product price by id
     $('thead .pClassp').change(function () {
 
+        var currentRow = $(this).closest("tr");
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
@@ -1021,7 +1063,8 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
-                    $('thead #Rate ').val(resultData);
+                    $('thead #RateE').val(resultData);
+                    ChangeTotalOnItemCahe(currentRow);                 
                 },
                 error: function (errormessage) {
                     // alert(errormessage)
@@ -1029,6 +1072,18 @@
             });
         }
     })
+
+
+
+    function ChangeTotalOnItemCahe(currentRow) {
+        debugger;
+        var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
+        var Price = currentRow.find("td:eq(2)").find('input').val();
+        var total = quantity * Price;
+        currentRow.find('td:eq(3)').find('input').val(total);
+
+    }
+
 
     //end
 
@@ -1058,9 +1113,10 @@
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
+        $('#QutationServiceDetail .tbody tr').each(function (index, ele) {
+
             if ($('#SelectProductQutationp', this).val() == '0' ||
-                 (parseInt($('#Quantity', this).val()) || 0) == 0 ||
+                 (parseInt($('#QuantityE', this).val()) || 0) == 0 ||
                  $('#Rate', this).val() == "" ||
                  isNaN($('.PurchaseItemRate', this).val())
                  ) {
@@ -1069,7 +1125,7 @@
             else {
                 var orderItem = {
                     ItemId: $('select.productp', this).val(),
-                    Quantity: parseInt($('#Quantity', this).val()),
+                    Quantity: parseInt($('#QuantityE', this).val()),
                     Rate: parseFloat($('.PurchaseItemRate', this).val()),
                     Total: parseFloat($('.PurchaseTotal', this).val()),
                     SubTotal: parseFloat($('#SubTotalp', this).val()),
@@ -1163,22 +1219,26 @@
 
     //Save Email
     $("#saveEmailp").click(function () {
+
         var isAllValid = true;
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
-            if ($('#product', this).val() == '0' ||
-                 (parseInt($('.quantity', this).val()) || 0) == 0 ||
+      
+             $('#QutationServiceDetail .tbody tr').each(function (index, ele) {
+
+
+            if ($('#SelectProductQutationp', this).val() == '0' ||
+                 (parseInt($('#QuantityE', this).val()) || 0) == 0 ||
                  $('#Rate', this).val() == "" ||
-                 isNaN($('.rate ', this).val())
+                 isNaN($('.PurchaseItemRate', this).val())
                  ) {
 
             }
             else {
                 var orderItem = {
                     ItemId: $('select.productp', this).val(),
-                    Quantity: parseInt($('#Quantity', this).val()),
+                    Quantity: parseInt($('#QuantityE', this).val()),
                     Rate: parseFloat($('.PurchaseItemRate', this).val()),
                     Total: parseFloat($('.PurchaseTotal', this).val()),
                     SubTotal: parseFloat($('#SubTotalp', this).val()),
@@ -1272,13 +1332,18 @@
 
     //save print
     $("#SaveEmailPrintPrintp").click(function () {
+        debugger;
+
         var isAllValid = true;
         $('#orderItemError').text('');
         var list = [];
         var errorItemCount = 0;
-        $('#QutationServiceDetail > tbody > tr ').each(function (index, ele) {
+        $('#QutationServiceDetail .tbody tr ').each(function (index, ele) {
+
+           
+
             if ($('#SelectProductQutationp', this).val() == '0' ||
-                 (parseInt($('#Quantity', this).val()) || 0) == 0 ||
+                 (parseInt($('#QuantityE', this).val()) || 0) == 0 ||
                  $('#Rate', this).val() == "" ||
                  isNaN($('.PurchaseItemRate', this).val())
                  ) {
@@ -1287,7 +1352,7 @@
             else {
                 var orderItem = {
                     ItemId: $('select.productp', this).val(),
-                    Quantity: parseInt($('#Quantity', this).val()),
+                    Quantity: parseInt($('#QuantityE', this).val()),
                     Rate: parseFloat($('.PurchaseItemRate', this).val()),
                     Total: parseFloat($('.PurchaseTotal', this).val()),
                     SubTotal: parseFloat($('#SubTotalp', this).val()),
@@ -1610,11 +1675,6 @@
         $('#CreateNewProductModalAdd').modal('show');
         $('#UnitModelPurchase').modal('hide');
     });
-
-
-
-
-
 
     $(document).ready(function () {
 

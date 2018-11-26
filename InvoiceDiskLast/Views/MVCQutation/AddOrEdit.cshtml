@@ -228,7 +228,7 @@
                                                     <select id="SelectProductQutation" class="product form-control pClass" style="font-size:12px"></select>
                                                 </td>
                                                 <td>
-                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "Quantity" } })
+                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "QuantityE" } })
                                                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
@@ -241,7 +241,7 @@
                                                 </td>
                                                 <td>
 
-                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal", @readonly = "readonly" } })
+                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotalE", @readonly = "readonly" } })
                                                     @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                                                 </td>
                                                 <td>
@@ -1108,7 +1108,7 @@
         });
 
         $("#SubmitEdit").click(function () {
-            alert();
+
             var isAllValid = validateQutationAddOrEdit();
             $('#orderItemError').text('');
             var list = [];
@@ -1240,139 +1240,113 @@
             }
         });
 
+
         $("#Submit").click(function () {
 
 
+            debugger;
+            var QutationIdd;
+            var isAllValid = true;
+            $('#orderItemError').text('');
+            var list = [];
+            var errorItemCount = 0;
+            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
-            var con = validateQutationAddOrEdit();
-            if (con == true) {
-
-                var isAllValid = true;
-                $('#orderItemError').text('');
-
-                var list = [];
-                var errorItemCount = 0;
-
-
-
-
-                $('#orderdetailsitems > .tbody  > tr ').each(function (index, ele) {
-                    var con = validateQutationAddOrEdit();
-                    if (con == true) {
-                        var isAllValid = true;
-                        $('#orderItemError').text('');
-                        var list = [];
-                        var errorItemCount = 0;
-                        $('#orderdetailsitems > .tbody  > tr ').each(function (index, ele) {
-
-                            if ($('#SelectProductQutation', this).val() == '0' ||
-                                (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                                $('.rate', this).val() == "" ||
-                                isNaN($('.rate', this).val())
-                                ) {
-                                errorItemCount++;
-                                $(this).addClass('error');
-                            }
-                            else {
-                                var orderItem = {
-                                    ItemId: $('select.product', this).val(),
-                                    Quantity: parseInt($('.quantity', this).val()),
-                                    Rate: parseFloat($('.rate', this).val()),
-                                    TotalAmount: parseFloat($('.FTotal', this).val()),
-                                    Total: parseFloat($('.FTotal', this).val()),
-                                    Vat: parseFloat($('.VAT', this).val())
-                                }
-                                list.push(orderItem);
-                            }
-                        });
-
-                        if (errorItemCount > 0) {
-                            $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
-                            isAllValid = false;
-                        }
-
-                        if (list.length == 0) {
-
-                            $("#orderItemError").text("At least one order item required.");
-                            isAllValid = false;
-                        }
-
-
-                        if (isAllValid) {
-                            $(this).val("please wait...");
-                            var empObj = {
-                                Qutation_ID: $('#Qutation_ID').val(),
-                                RefNumber: $('#RefNumber').val(),
-                                QutationDate: $('#QutationDate').val(),
-                                DueDate: $('#DueDate').val(),
-                                SubTotal: $('#SubTotal').text(),
-                                DiscountAmount: $('#DiscountAmount').val(),
-                                Vat: $('#Vat').val(),
-                                Total: $('#gtotal').text(),
-                                CustomerNote: $('#CustomerNote').val(),
-                                TotalVat6: $('#BTW6').text(),
-                                TotalVat21: $('#BTW21').text(),
-                                ConatctId: $('#contactId').val(),
-                                QutationDetailslist: list
-
-                            };
-                            $.ajax({
-                                url: "/MVCQutation/Save",
-                                data: JSON.stringify(empObj),
-                                type: "POST",
-                                contentType: "application/json;charset=utf-8",
-                                dataType: "json",
-                                success: function (result) {
-
-                                    console.log(result);
-
-                                    if (result.Status == "Success") {
-
-                                        $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
-                                        $('#orderdetailsitems').empty();
-                                        $("#Submit").val('Save');
-                                        swal({
-                                            title: 'Qutation!',
-                                            text: 'Qutation save successfully!',
-                                            type: 'success'
-                                        },
-                                  function (isconform) {
-                                      window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
-                                  });
-                                    }
-
-                                    else if (result.Status == "Fail") {
-                                        $("#Submit").val('Save');
-                                        swal(
-                                             'Qutation!',
-                                               result.message,
-                                             'danger'
-                                        )
-                                    }
-
-                                },
-                                error: function (errormessage) {
-                                    $("#Submit").val('Save');
-                                    swal(
-                                             'Qutation!',
-                                               errormessage.responseText,
-                                             'danger'
-                                        )
-
-
-                                }
-
-                            });
-
-                        }
+                if ($('#SelectProductQutation', this).val() == '0' ||
+                            (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                            $('.rate', this).val() == "" ||
+                            isNaN($('.rate', this).val())
+                            ) {
+                    errorItemCount++;
+                    $(this).addClass('error');
+                }
+                else {
+                    var orderItem = {
+                        ItemId: $('.product ', this).val(),
+                        Quantity: parseInt($('.quantity', this).val()),
+                        Rate: parseFloat($('.rate', this).val()),
+                        TotalAmount: parseFloat($('.FTotal', this).val()),
+                        Total: parseFloat($('.FTotal', this).val()),
+                        Vat: parseFloat($('.VAT', this).val()),
+                        QutationID: $('#QutationID').val(),
+                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                        Qutation_ID: $('#Qutation_ID').val()
                     }
-                });
+                    list.push(orderItem);
+                }
+            });
 
-                //Edit functionality
+            if (list.length == 0) {
 
+                $("#orderItemError").text("At least one order item required.");
+                isAllValid = false;
             }
-        });
 
+            if (isAllValid) {
+                $(this).val("please wait...");
+                var empObj = {
+                    Qutation_ID: $('#Qutation_ID').val(),
+                    RefNumber: $('#RefNumber').val(),
+                    QutationDate: $('#QutationDate').val(),
+                    DueDate: $('#DueDate').val(),
+                    SubTotal: $('#SubTotal').text(),
+                    DiscountAmount: $('#DiscountAmount').val(),
+                    QutationID: $('#QutationID').val(),
+                    TotalVat6: $('#BTW6').text(),
+                    TotalVat21: $('#BTW21').text(),
+                    Total: $('#gtotal').text(),
+                    TotalAmount: $('#gtotal').text(),
+                    CustomerNote: $('#CustomerNote').val(),
+                    ConatctId: $('#contactId').val(),
+                    QutationDetailslist: list
+                };
+                $.ajax({
+                    url: "/MVCQutation/Save",
+                    data: JSON.stringify(empObj),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+
+                        console.log(result);
+
+                        if (result.Status == "Success") {
+
+                            $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
+                            $('#orderdetailsitems').empty();
+                            $("#Submit").val('Save');
+                            swal({
+                                title: 'Qutation!',
+                                text: 'Qutation save successfully!',
+                                type: 'success'
+                            },
+                      function (isconform) {
+                          window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                      });
+                        }
+
+                        else if (result.Status == "Fail") {
+                            $("#Submit").val('Save');
+                            swal(
+                                 'Qutation!',
+                                   result.message,
+                                 'danger'
+                            )
+                        }
+
+                    },
+                    error: function (errormessage) {
+                        $("#Submit").val('Save');
+                        swal(
+                                 'Qutation!',
+                                   errormessage.responseText,
+                                 'danger'
+                            )
+                        }
+                });
+             }
+
+        });
 
 
         /// save ptint and send it to your self
@@ -1488,12 +1462,23 @@
 
         $("#saveEmail").click(function () {
 
+            debugger;
+            var QutationIdd;
             var isAllValid = true;
             $('#orderItemError').text('');
             var list = [];
             var errorItemCount = 0;
-            $('#orderdetailsitems tr').each(function (index, ele) {
-                {
+            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
+
+                if ($('#SelectProductQutation', this).val() == '0' ||
+                            (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                            $('.rate', this).val() == "" ||
+                            isNaN($('.rate', this).val())
+                            ) {
+                    errorItemCount++;
+                    $(this).addClass('error');
+                }
+                else {
                     var orderItem = {
                         ItemId: $('.product ', this).val(),
                         Quantity: parseInt($('.quantity', this).val()),
@@ -1558,12 +1543,10 @@
                     },
                     error: function (errormessage) {
                         alert(errormessage.responseText);
-                    }
+                   }
 
                 });
-
             }
-
         });
 
         $("#saveEmailedit").click(function () {
@@ -2253,7 +2236,7 @@
         }
 
         $(document).ready(function () {
-            @*product Script*@
+
 
             $('#SaveNewProductModel').click(function () {
 
@@ -2412,8 +2395,6 @@
                 $('#CreateNewContactModal').modal('show');
             });
 
-            @*Contact or client Script*@
-
 
 
         });
@@ -2546,107 +2527,8 @@
         //  });
 
 
-        $(document).ready(function () {
+      
 
-            $('#btn-InvoiceNew').click(function () {
-                LoadVernder();
-                $('#VenderSelectModel').modal('show');
-            });
-
-            $('#venderSelect').change(function () {
-
-                var value = $(this).val();
-                if (value == "AddNewVenderSelect") {
-                    showRequiredModel = "";
-                    $('#VenderSelectModel').modal('hide');
-                    $('#ModelHeading').text("Maak nieuwe vender");
-                    $("#TypeContacts").find("option").remove();
-                    $("#TypeContacts").prepend("<option value=Vender>" + 'verkoper' + "</option>");
-                    $('#CreateNewContactModal1')
-                    .modal('show');
-
-                }
-
-            });
-
-
-
-
-
-
-
-
-            $('#VenderClientNext').click(function () {
-                var serviceOrgoo = "";
-                var value = $('#venderSelect').val();
-                serviceOrgoo = $('#SelectTypeQutation1 option:selected').text();
-                debugger;
-                if (value > 0) {
-                    $.ajax({
-                        url: '/MVCClient/AddOrEdit',
-                        type: 'GET',
-                        data: {
-                            id: value
-                        },
-                        success: function (data) {
-
-                            if (serviceOrgoo == "Good") {
-                                serviceOrgoo = "";
-
-                                window.location.href = "/Purchase/AddOrEdit"
-                            }
-                            else if (serviceOrgoo == "Services") {
-                                serviceOrgoo = "";
-
-                                window.location.href = "/MvcInvoiceServices/AddOrEdit/0"
-                            }
-
-                        },
-                        error: function () {
-                            alert("error");
-                        }
-                    });
-                }
-                else {
-                    $.toast({
-                        heading: 'Information',
-                        text: 'Please select client to continue',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#9EC600'  // To change the background
-                    })
-                }
-            });
-
-
-        });
-
-        function LoadVernder() {
-            $("#venderSelect").find("option").remove();
-            $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
-            $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
-
-            $.ajax({
-                url: "/Purchase/GetVender",
-                type: "Get",
-                async: false,
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    $.each(data, function (key, item) {
-                        $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
-
-                    });
-
-                },
-                Error: function (errormessage) {
-                    alert(errormessage);
-                }
-
-            });
-        }
-
-        
 
 
         $(document).ready(function () {
@@ -2671,6 +2553,10 @@
         $('.pClass').change(function () {
 
 
+            debugger;
+
+            var Current = $(this).closest('tr');
+
             var value = $(this).val();
             if (value == "AddNewProductSelect") {
                 return;
@@ -2690,7 +2576,13 @@
                     cache: false,
                     data: { 'ProductId': productId },
                     success: function (resultData) {
+                        ChangeTotalOnItemCahe(Current);
                         $('#Rate').val(resultData);
+
+                        
+
+
+
                     },
                     error: function (errormessage) {
                         //alert(errormessage)
@@ -2698,6 +2590,21 @@
                 });
             }
         })
+
+
+
+        function ChangeTotalOnItemCahe(currentRow) {
+            debugger;
+            var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
+            var Price = currentRow.find("td:eq(2)").find('input').val();
+            var total = quantity * Price;
+            currentRow.find('td:eq(3)').find('input').val(total);
+
+        }
+
+
+
+
 
         function GetProductPriceById(ProductId) {
 
@@ -2733,34 +2640,7 @@
             }
         });
     });
-    function LoadContacts() {
 
-        $("#SelectContacts1").find("option").remove();
-
-        $("#SelectContacts1").prepend("<option value=0>" + 'Select Client' + "</option>");
-        $("#SelectContacts1").append("<option value=AddNewClientSelect>" + 'Add New Client' + "</option>");
-
-        $.ajax({
-            url: "/MVCClient/GetContacts",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-                $.each(data, function (key, item) {
-
-                    $('#SelectContacts1').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
-
-                });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
 
 </script>
 

@@ -10,14 +10,14 @@ using System.Web.Http;
 
 namespace InvoiceDiskLast.Controllers
 {
-   // [RoutePrefix("api/APIReport")]
+    // [RoutePrefix("api/APIReport")]
     public class APIReportController : ApiController
     {
         private DBEntities db = new DBEntities();
         SqlParameter _Prameter;
 
 
-   
+
 
         [Route("api/GetJournal/{ToDate:long}/{FromDate:long}")]
         public IHttpActionResult Getjournal(long FromDate, long ToDate)
@@ -27,15 +27,15 @@ namespace InvoiceDiskLast.Controllers
 
             string Date = dt.ToString("yyyy-MM-dd");
 
-
-
             var FDate = new SqlParameter("FromDate", ConvertLongToDate(FromDate).ToString("yyyy-MM-dd"));
             var TDate = new SqlParameter("ToDate", ConvertLongToDate(ToDate).ToString("yyyy-MM-dd"));
-
             try
             {
-                var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal  @FromDate , @ToDate", FDate, TDate).ToList<TransactionModel>();
-                return Ok(Journal);
+                // var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal  @FromDate , @ToDate", FDate, TDate).ToList();
+                var result = db.AccountTransictionTables.Where(d => d.TransictionDate >= Convert.ToDateTime(FDate)
+                 && d.TransictionDate <= Convert.ToDateTime(TDate));
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
