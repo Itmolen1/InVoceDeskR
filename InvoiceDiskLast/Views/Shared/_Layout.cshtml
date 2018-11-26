@@ -1,187 +1,38 @@
 ﻿
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/logo-icon.png">
-    <title>Factuur Baheer Systeem</title>
-    <!-- Custom CSS -->
+    <head>
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <!-- Tell the browser to be responsive to screen width -->
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="description" content="">
+            <meta name="author" content="">
+            <!-- Favicon icon -->
+            <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/logo-icon.png">
+            <title>Factuur Baheer Systeem</title>
+            <!-- Custom CSS -->
 
-    <link href="~/assets/node_modules/morrisjs/morris.css" rel="stylesheet">
-    <!--Toaster Popup message CSS -->
-    <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
-    <!--c3 plugins CSS -->
-    <link href="~/assets/node_modules/c3-master/c3.min.css" rel="stylesheet">
-    <link href="~/dist/css/style.min.css" rel="stylesheet" />
-    <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
-    <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
-    <!-- page css -->
-    <link href="~/dist/css/pages/floating-label.css" rel="stylesheet">
-    <link href="~/Content/CustomRadio.css" rel="stylesheet" />
-        
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-    </head>
+            <link href="~/assets/node_modules/morrisjs/morris.css" rel="stylesheet">
+            <!--Toaster Popup message CSS -->
+            <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
+            <!--c3 plugins CSS -->
+            <link href="~/assets/node_modules/c3-master/c3.min.css" rel="stylesheet">
+            <link href="~/dist/css/style.min.css" rel="stylesheet" />
+            <link href="~/assets/node_modules/sweetalert/sweetalert.css" rel="stylesheet" />
+            <link href="~/assets/node_modules/toast-master/css/jquery.toast.css" rel="stylesheet">
+            <!-- page css -->
+            <link href="~/dist/css/pages/floating-label.css" rel="stylesheet">
+            <link href="~/Content/CustomRadio.css" rel="stylesheet" />
+
+            <!--[if lt IE 9]>
+                <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+        </head>
 
     <body class="horizontal-nav skin-megna-dark fixed-layout">
-        <input hidden id="userid" />
-        <input hidden id="ImageSRC" />
-        <div id="UserInfoModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" style="color:skyblue">User Inforamtion</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">Fisrt Name:</div>
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" required id="txtFname" placeholder="First Name" />
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">Insertion:</div>
-                                          </div>
-                            <div class="col-sm-9">
-                                <div class="form-group ">
-                                    <input class="form-control" type="text" required id="txtInsertion" placeholder="insertion" />
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">Last Name:</div>
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="form-group">
-                                    <input class="form-control" type="text" required id="txtLname" placeholder="Last Name" />
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">E-mail:</div>
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="form-group ">
-                                    <input class="form-control" type="text" required id="txtEmail" placeholder="Email" disabled="disabled" />
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">DOB:</div>
-                            </div>
-                            <div class="col-sm-9">
-                                <div class="form-group">
-                                    <input class="form-control" type="date" required id="TxtDob" placeholder="Date of Birth" />
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">gender:</div>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="form-group">
-                                    <label class="btn btn-success"><input type="radio" name="gender" value="1"> Male</label>
-                                    <label class="btn btn-success"><input type="radio" name="gender" value="2"> Female</label>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-3">                               
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="form-group">
-                                    <a href="#" id="changeImage">Change Image</a> | <a href="#" id="changePWD">Change Password</a>                                   
-                                  </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="SaveuserInfo" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                        <button type="button" class="btn btn-danger waves-effect text-left" id="CancelserInfo" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-
-        <div id="ImageModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" style="color:skyblue">Change Image</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">         
-                            <div class="col-sm-3">
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="form-group">
-                                    <div class="mydiv">
-                                        <img id="Useimage" alt="user Image"  style="min-height:50px; min-width:100px; max-height:200px; max-width:200px; border:1px groove" /><br />
-                                    </div>
-                                         <input type="file" id="uploadimg"  class="btn btn-success"  style="width:200px"/>
-                                </div>                               
-                            </div>
-
-                            <div class="col-sm-">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="SaveuserImage" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                        <button type="button" class="btn btn-danger waves-effect text-left" id="CancelserImage" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-
-        <div id="ChangePasswordModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" style="color:skyblue">Change Image</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal" id="recoverform">                           
-                            <div class="form-group ">
-                                <div class="col-xs-12">
-                                    <input class="form-control" id="CurrentPassword" type="password" required="" placeholder="Current Password">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="col-xs-12">
-                                    <input class="form-control" id="NewPassowrd" type="password" required="" placeholder="New Password">
-                                </div>
-                            </div>
-                            <div class="form-group ">
-                                <div class="col-xs-12">
-                                    <input class="form-control" id="ConfirmPassword" type="password" required="" placeholder="Confirm Password">
-                                </div>
-                            </div>
-                           
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="SaveChangePassword" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                        <button type="button" class="btn btn-danger waves-effect text-left" id="CancelChangePassword" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
+       
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->

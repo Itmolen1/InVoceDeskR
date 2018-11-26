@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Journal";
-    double Dr = 0, Cr = 0;
+    double? Dr = 0, Cr = 0;
 }
 
 
@@ -25,15 +25,9 @@
         @using (Html.BeginForm("Journal", "Reports", FormMethod.Post, new { id = "frmsearch" }))
         {
             <div class="row">
-
-
                 <div class="col-sm-1">
-
-                    @Html.ActionLink("PrintK", actionName: "PrintJournal", controllerName: "Reports", routeValues: new { FromDate = Model.FromDate, Todate = Model.Todate }, htmlAttributes: null)
-
-                </div>
-
-                
+                    @Html.ActionLink("PrintK", actionName: "PrintJournal", controllerName: "Reports", routeValues: new { FromDate = Model.FromDate, Todate = Model.Todate }, htmlAttributes: null)              
+                  </div>
 
                 <div class="col-sm-1">From:</div>
                 <div class="col-sm-3">@Html.EditorFor(model => model.FromDate, new { @class = "input-sm" })</div>
@@ -51,8 +45,6 @@
                       
                     </div>
                 </div>
-
-
             </div>
         }
     </div>
@@ -103,26 +95,17 @@
                     </tr>
                 </thead>
 
-
-
                 <tbody>
-                    @{
-
-
-                        if (Model._TransactionList != null)
-                        {
-
-                            if (Model._TransactionList.Count > 0)
+                   @{ 
+                            if (Model._TransactionList != null)
                             {
                                 foreach (var item in Model._TransactionList)
                                 {
                                     Dr = Dr + item.AmountDebit;
-                                    Cr = Cr + item.AmountCredit;
-
-
+                                    Cr = Cr + item.AmountCredit;                   
 
                                     <tr>
-                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate.Date</td>
+                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate.</td>
                                         <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
                                         <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
                                         <td colspan="1" style="text-align:right">@item.AmountCredit</td>
@@ -131,7 +114,7 @@
 
                                 }
                             }
-                        }
+                       
                         else
                         {
                             <tr>
@@ -153,7 +136,11 @@
 
 
             </table>
+
+            
         }
     </div>
+
+   
     <div class="col-md-2 col-lg-2 col-sm-0"></div>
 </div>

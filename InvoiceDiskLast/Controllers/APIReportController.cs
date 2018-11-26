@@ -23,27 +23,37 @@ namespace InvoiceDiskLast.Controllers
         public IHttpActionResult Getjournal(long FromDate, long ToDate)
         {
 
-            DateTime dt = dt = ConvertLongToDate(FromDate);
-
-            string Date = dt.ToString("yyyy-MM-dd");
-
-
-
-            var FDate = new SqlParameter("FromDate", ConvertLongToDate(FromDate).ToString("yyyy-MM-dd"));
-            var TDate = new SqlParameter("ToDate", ConvertLongToDate(ToDate).ToString("yyyy-MM-dd"));
-
-            try
+            if (FromDate.ToString() != null)
             {
-                var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal  @FromDate , @ToDate", FDate, TDate).ToList<TransactionModel>();
-                return Ok(Journal);
+
+                var FDate = ConvertLongToDate(FromDate);
+                var TDate = ConvertLongToDate(ToDate);
+                try
+                {
+                    //var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal", new SqlParameter("@FromDate", FDate),new SqlParameter("@ToDate", TDate)).ToList<TransactionModel>();
+
+                   List<TransactionModel> Journal = db.AccountTransictionTables.Where(t => t.TransictionDate < FDate && t.TransictionDate > TDate).Select(c => new TransactionModel {
+                       TranDate = c.TransictionDate,
+                       AmountDebit = c.Dr,
+                       AmountCredit = c.Cr,
+                       AccountTitle = c.AccountTable.AccountTitle
+                   }).ToList();
+
+                    return Ok(Journal);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+
+                    // return NotFound();
+
+                }
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
-
-                // return NotFound();
-
+                return null;
             }
+            
         }
 
         public DateTime ConvertLongToDate(long Date)

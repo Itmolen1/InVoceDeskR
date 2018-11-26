@@ -13,6 +13,7 @@ namespace InvoiceDiskLast.Models
         public DateTime FromDate { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
+        
         public DateTime Todate { get; set; }
 
 

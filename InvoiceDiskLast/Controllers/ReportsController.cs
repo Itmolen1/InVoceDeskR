@@ -22,14 +22,6 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
-
-
-
-
-
-
-
         public string SaveOnPathe(string ReportName, DateTime FromDate, DateTime Todate)
         {
             string pdfname = "";
@@ -54,9 +46,9 @@ namespace InvoiceDiskLast.Controllers
 
                 string companyName = ReportName + "-" + FromDate.ToString("yyyy-MM-dd") + "-" + Todate.ToString("yyyy-MM-dd");
                 var root = Server.MapPath("/PDF/");
-                var path = Path.Combine(root, companyName);              
+                var path = Path.Combine(root, companyName);
                 pdfname = path;
-                string subPath = "/PDF"; 
+                string subPath = "/PDF";
                 bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
 
                 if (!exists)
@@ -144,40 +136,44 @@ namespace InvoiceDiskLast.Controllers
             SearchModel _model = new SearchModel();
             try
             {
-
-
-                FormCollection form;
-                if (Request.Form["SendEmail"] != null)
+               
+                if (_searchModel.FromDate > _searchModel.Todate)
                 {
-                    string Path = SaveOnPathe("Journal", _searchModel.FromDate, _searchModel.Todate);
-
-                    TempData["Pathe"] = Path;
-                    TempData.Keep();
-
-                    return RedirectToAction("ReportByEmail");
-
-
+                    ViewBag.massage = "From Date must be Less from To Date";
+                    _searchModel._TransactionList = null;
+                    return View(_searchModel);
                 }
-
-
-
-
-                long FromDate = Convert.ToDateTime(_searchModel.FromDate).Ticks;
-                long TDate = Convert.ToDateTime(_searchModel.Todate).Ticks;
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDate + "/" + TDate).Result;
-                _model._TransactionList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
-
-                if (TempData["Compantinfo"] == null)
+                else
                 {
-                    CompanyId = Convert.ToInt32(Session["CompayID"]);
 
-                    HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
-                    _company = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                    TempData["Compantinfo"] = _company;
-                    TempData.Keep();
+                    FormCollection form;
+                    if (Request.Form["SendEmail"] != null)
+                    {
+                        string Path = SaveOnPathe("Journal", _searchModel.FromDate, _searchModel.Todate);
+
+                        TempData["Pathe"] = Path;
+                        TempData.Keep();
+
+                        return RedirectToAction("ReportByEmail");
+
+                    }
+
+                    long FromDate = Convert.ToDateTime(_searchModel.FromDate).Ticks;
+                    long TDate = Convert.ToDateTime(_searchModel.Todate).Ticks;
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDate + "/" + TDate).Result;
+                    _model._TransactionList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
+
+                    if (TempData["Compantinfo"] == null)
+                    {
+                        CompanyId = Convert.ToInt32(Session["CompayID"]);
+
+                        HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
+                        _company = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                        TempData["Compantinfo"] = _company;
+                        TempData.Keep();
+                    }
                 }
-
             }
             catch (Exception EX)
             {

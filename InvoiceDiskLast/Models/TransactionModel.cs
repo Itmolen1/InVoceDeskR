@@ -19,11 +19,11 @@ namespace InvoiceDiskLast.Models
 
         public int paymentTermId { get; set; }
 
-        public DateTime TranDate { get; set; }
+        public  DateTime? TranDate { get; set; }
 
         public int PurchaseOrderID { get; set; }
-        public double AmountCredit{ get; set;}
-        public double AmountDebit { get; set; }
+        public double? AmountCredit{ get; set;}
+        public double? AmountDebit { get; set; }
 
         public string AccountCode { get; set; }
 

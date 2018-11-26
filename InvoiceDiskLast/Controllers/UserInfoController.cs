@@ -45,8 +45,7 @@ namespace InvoiceDiskLast.Controllers
                 return Json(ex,JsonRequestBehavior.AllowGet);
             }
         } 
-
-
+        
         [HttpPost]
         public ActionResult UpdateImage(UserModel model)
         {
@@ -93,9 +92,8 @@ namespace InvoiceDiskLast.Controllers
                 throw ex;
             }
         }
-
-
-        [HttpPost]
+        
+        [HttpPost]    
         public ActionResult UpdateUserInfo(UserModel usermodel)
         {
             try
