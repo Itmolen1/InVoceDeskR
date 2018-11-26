@@ -112,7 +112,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 db.SaveChanges();
-                return Ok();
+                return Ok(usertable);
             }
             catch (DbUpdateConcurrencyException)
             {

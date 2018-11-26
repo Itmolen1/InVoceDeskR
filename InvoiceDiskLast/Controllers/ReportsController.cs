@@ -224,7 +224,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        public ActionResult PrintJournal(string FromDate, string Todate)
+        public ActionResult PrintJournal(DateTime? FromDate, DateTime? Todate)
         {
             try
             {

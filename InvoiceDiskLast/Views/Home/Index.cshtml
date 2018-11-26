@@ -680,9 +680,9 @@
                         else
                         {
                             $('#VenderSelectModel').modal('show');
-                            $('#CreateNewContactModal1').modal('hide');                            
+                            $('#CreateNewContactModal1').modal('hide');
                         }
-                       
+
                         clearContectTextBox1();
                         SuccessInsertConatct1();
                         LoadContactsQuIndex();
@@ -733,7 +733,7 @@
             loaderBg: '#9EC600'  // To change the background
         })
     }
-    
+
     function validateContactQutation() {
         var isValid = true;
         if ($('#ContactName').val().trim() == "") {
@@ -777,7 +777,7 @@
     $('#CancelContactsQt').click(function ()
     {
         if (showRequiredModel == "QutationContactModel") {
-    
+
             $('#QutationContactModel').modal('show');
             $('#CreateNewContactModal1').modal('hide');
         }
@@ -816,271 +816,4 @@
         });
     }
 
-    $('#changeImage').click(function () {
-        $.ajax({
-            url: "/UserInfo/GetUserByCompayId",
-            type: 'Post',
-            success: function (Userdata) {
-                $('#Useimage').attr("src", "/images/" + Userdata.ImageUrl);
-                $('#UserImageWithName').attr("src", "/images/" + Userdata.ImageUrl);
-                $('#ImageSRC').val(Userdata.ImageUrl);
-                $('#UserInfoModel').modal('hide');
-                $('#ImageModel').modal('show');
-            }
-        });
-    });
-
-    $('#changePWD').click(function () {
-        $('#UserInfoModel').modal('hide');
-        $('#ChangePasswordModel').modal('show');
-    });
-
-    $('#SaveChangePassword').click(function () {
-        var Istrue = ChangePasswordValidation();
-
-        if (Istrue == true) {
-            Data =
-                {
-                    OldPassword: $('#CurrentPassword').val(),
-                    NewPassword: $('#NewPassowrd').val(),
-                    ConfirmPassword: $('#ConfirmPassword').val()
-                }
-            $.ajax({
-                url: "/UserInfo/UpdateUserPassword",
-                type: 'Post',
-                data: Data,
-                success: function (Response) {
-                    if (Response == "Ok") {
-                        $('#ChangePasswordModel').modal('hide');
-                        $('#UserInfoModel').modal('show');
-                        $.toast({
-                            heading: 'Success',
-                            text: 'Password update successfuly `updated`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-
-                        });
-                    }
-                    else
-                    {
-                        $.toast({
-                            heading: 'Failed',
-                            text: 'Filed update password `current password incorrect`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#FF0000'  // To change the background
-
-                        });
-                    }
-
-                },
-                error: function () {
-                    alert('something wrong');
-                }
-
-            });
-        }
-
-    });
-
-    function ChangePasswordValidation() {
-        var isvalid = false;
-
-        if ($('#CurrentPassword').val().trim() == "") {
-            $('#CurrentPassword').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#CurrentPassword').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-
-        if ($('#NewPassowrd').val().trim() == "") {
-            $('#NewPassowrd').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#NewPassowrd').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-        if ($('#ConfirmPassword').val().trim() == "") {
-            $('#ConfirmPassword').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#ConfirmPassword').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-
-        if ($('#NewPassowrd').val() != $('#ConfirmPassword').val()) {
-            $.toast({
-                heading: 'Miss match',
-                text: 'new password and confirm password must match `Password`',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#FF0000'  // To change the background
-            });
-        }
-        return isvalid;
-    }
-
-    $('#CancelChangePassword').click(function () {
-        $('#UserInfoModel').modal('show');
-        $('#ChangePasswordModel').modal('hide');
-    });
-
-    $('#CancelserImage').click(function () {
-        $('#ImageModel').modal('hide');
-        $('#UserInfoModel').modal('show');
-    });
-
-    $('#SaveuserImage').click(function () {
-
-        if (window.FormData != undefined) {
-            var fileData = new FormData();
-
-            if ($("#uploadimg").val() != "") {
-                var fileUpload = $("#uploadimg").get(0);
-                var files = fileUpload.files;
-
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append(files[i].name, files[i]);
-                }
-            }
-
-            if ($("#uploadimg").val() != "") {
-                fileData.append('ImageUrl', $('#uploadimg').val());
-            }
-            fileData.append('UserId', $('#userid').val());
-            fileData.append('ImageUrl', $('#ImageSRC').val());
-
-            $.ajax({
-                url: '/UserInfo/UpdateImage',
-                type: 'POST',
-                data: fileData,
-                processData: false,
-                contentType: false,
-                success: function (ReturnStatus) {
-                    if (ReturnStatus == 200) {
-                        $('#ImageModel').modal('hide');
-                        $('#UserInfoModel').modal('show');
-                        $.toast({
-                            heading: 'Success',
-                            text: 'Image update successfuly `updated`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-                        });
-                    }
-                },
-                error: function () {
-                    alert("Error please try again");
-                }
-            });
-        }
-
-    });
-
-    var showRequiredModel = "";
-
-    $(document).ready(function () {
-
-        $("#uploadimg").change(function () {
-            readURL(this, 'Useimage');
-        });
-    });
-
-
-    $('#CompanySitting').click(function () {
-        window.location.href = "/MVCComapny/Index";
-    });
-
-    $('#AccountSitting').click(function () {
-
-        $.ajax({
-            url: "/UserInfo/GetUserByCompayId",
-            type: 'Post',
-            success: function (Userdata) {
-                $.toast({
-                    heading: 'Success',
-                    text: 'Data loaded successfuly `Loaded`',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                });
-
-                $('#userid').val(Userdata.UserId);
-                $('#txtFname').val(Userdata.UserFname);
-                $('#txtInsertion').val(Userdata.Insertion);
-                $('#txtLname').val(Userdata.UserLname);
-                $('#txtEmail').val(Userdata.Username);
-                $('#TxtDob').val(Userdata.DOB);
-                var gen = Userdata.Gender;
-                if (gen == 1) {
-                    $('input:radio[name="gender"]').filter('[value="1"]').attr('checked', true);
-                }
-                else {
-                    $('input:radio[name="gender"]').filter('[value="2"]').attr('checked', true);
-                }
-
-                $('#UserInfoModel').modal('show');
-            }
-        });
-
-    });
-
-    $('#SaveuserInfo').click(function () {
-
-        Userdata = {
-            UserFname: $('#txtFname').val(),
-            Insertion: $('#txtInsertion').val(),
-            UserLname: $('#txtLname').val(),
-            Gender: $("input[name='gender']:checked").val(),
-            DOB: $('#TxtDob').val(),
-            UserId: $('#userid').val()
-        },
-
-        $.ajax({
-            url: "/UserInfo/UpdateUserInfo",
-            type: 'Post',
-            data: Userdata,
-            success: function (response) {
-                if (response == "Ok") {
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Information updated successfuly `Updated`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#9EC600'  // To change the background
-                    });
-                    $('#UserInfoModel').modal('hide');
-                }
-            },
-            error: function (error) {
-                alert('somthing going wrong');
-            },
-        });
-    });
-
-    function Edit(companyId) {
-
-        window.location.href = "Company/AddOrEdit/" + companyId;
-    }
-
-    $('#Logout').click(function () {
-        Username = "";
-        $.ajax({
-            url: "/Login/Logut",
-            type: "POST",
-            dataType: "json",
-            success: function (resultData) {
-                window.location.href = "/Captcha/Index";
-            },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
-        });
-
-    });
 </script>
