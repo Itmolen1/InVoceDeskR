@@ -123,7 +123,6 @@ namespace InvoiceDiskLast.Controllers
                 if (stream != null)
                     stream.Close();
             }
-
             //file is not locked
             return false;
         }
