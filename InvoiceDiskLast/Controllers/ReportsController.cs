@@ -96,11 +96,6 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-
-
-
-
-
         public static Boolean IsFileLocked(FileInfo file)
         {
             FileStream stream = null;

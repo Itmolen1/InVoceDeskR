@@ -1108,94 +1108,100 @@
         });
 
         $("#SubmitEdit").click(function () {
+            var valid = validateQutationAddOrEdit();
 
-            var isAllValid = validateQutationAddOrEdit();
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody > tr').each(function (index, ele) {
-                {
-                    if ($('#SelectProductQutation', this).val() == '0' ||
-                             (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                             $('.rate', this).val() == "" ||
-                             isNaN($('.rate', this).val())
-                             ) {
-                        errorItemCount++;
-                        $(this).addClass('error');
-                    }
-                    else {
-                        var orderItem = {
-                            ItemId: $('.product ', this).val(),
-                            Quantity: parseInt($('.quantity', this).val()),
-                            Rate: parseFloat($('.rate', this).val()),
-                            TotalAmount: parseFloat($('.FTotal', this).val()),
-                            Total: parseFloat($('.FTotal', this).val()),
-                            Vat: parseFloat($('.VAT', this).val()),
-                            QutationID: $('#QutationID').val(),
-                            QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                            Qutation_ID: $('#Qutation_ID').val()
-                        }
-                        list.push(orderItem);
-                    }
-                }
-            });
-
-            if (list.length == 0) {
-
-                $("#orderItemError").text("At least one order item required.");
-                isAllValid = false;
+            if (valid != true) {
+                return true;
             }
-
-            if (isAllValid) {
-                $(this).val("please wait...");
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#QutationID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
-                $.ajax({
-                    url: "/MVCQutation/AddOrEdit",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.Status == "Success") {
-                            list = [];
-                            $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
-                            $('#orderdetailsitems').empty();
-                            $("#SubmitEdit").val('Save Draft');
-                            swal({
-                                title: 'Invoice!',
-                                text: 'Invoice save successfully!',
-                                type: 'success'
-                            },
-                             function (isconform) {
-                                 window.location.href = window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
-                             });
-
+            else {
+                var isAllValid = validateQutationAddOrEdit();
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems .tbody > tr').each(function (index, ele) {
+                    {
+                        if ($('#SelectProductQutation', this).val() == '0' ||
+                                 (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                                 $('.rate', this).val() == "" ||
+                                 isNaN($('.rate', this).val())
+                                 ) {
+                            errorItemCount++;
+                            $(this).addClass('error');
                         }
-                        else if (result.Status == "Fail") {
-                            //alert(result.messa)
+                        else {
+                            var orderItem = {
+                                ItemId: $('.product ', this).val(),
+                                Quantity: parseInt($('.quantity', this).val()),
+                                Rate: parseFloat($('.rate', this).val()),
+                                TotalAmount: parseFloat($('.FTotal', this).val()),
+                                Total: parseFloat($('.FTotal', this).val()),
+                                Vat: parseFloat($('.VAT', this).val()),
+                                QutationID: $('#QutationID').val(),
+                                QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                                Qutation_ID: $('#Qutation_ID').val()
+                            }
+                            list.push(orderItem);
                         }
-
-
-                    },
-                    error: function (errormessage) {
-                        alert(errormessage.responseText);
                     }
                 });
+
+                if (list.length == 0) {
+
+                    $("#orderItemError").text("At least one order item required.");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+                    $(this).val("please wait...");
+                    var empObj = {
+                        Qutation_ID: $('#Qutation_ID').val(),
+                        RefNumber: $('#RefNumber').val(),
+                        QutationDate: $('#QutationDate').val(),
+                        DueDate: $('#DueDate').val(),
+                        SubTotal: $('#SubTotal').text(),
+                        DiscountAmount: $('#DiscountAmount').val(),
+                        QutationID: $('#QutationID').val(),
+                        TotalVat6: $('#BTW6').text(),
+                        TotalVat21: $('#BTW21').text(),
+                        Total: $('#gtotal').text(),
+                        TotalAmount: $('#gtotal').text(),
+                        CustomerNote: $('#CustomerNote').val(),
+                        ConatctId: $('#contactId').val(),
+                        QutationDetailslist: list
+                    };
+                    $.ajax({
+                        url: "/MVCQutation/AddOrEdit",
+                        data: JSON.stringify(empObj),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.Status == "Success") {
+                                list = [];
+                                $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
+                                $('#orderdetailsitems').empty();
+                                $("#SubmitEdit").val('Save Draft');
+                                swal({
+                                    title: 'Invoice!',
+                                    text: 'Invoice save successfully!',
+                                    type: 'success'
+                                },
+                                 function (isconform) {
+                                     window.location.href = window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                                 });
+
+                            }
+                            else if (result.Status == "Fail") {
+                                //alert(result.messa)
+                            }
+
+
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+                    });
+                }
             }
         });
 
@@ -1243,8 +1249,15 @@
 
         $("#Submit").click(function () {
 
+            var valid = validateQutationAddOrEdit();
+            if (valid != true) {
 
-            debugger;
+                return true;
+            }
+            else {
+
+            
+    
             var QutationIdd;
             var isAllValid = true;
             $('#orderItemError').text('');
@@ -1342,102 +1355,112 @@
                                    errormessage.responseText,
                                  'danger'
                             )
-                        }
+                    }
                 });
-             }
-
+            }
+           }
         });
 
 
         /// save ptint and send it to your self
         $('#saveprintandsendtoyourself').click(function () {
-            var QutationIdd;
-            var isAllValid = true;
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody >tr ').each(function (index, ele) {
 
-                if ($('#SelectProductQutation', this).val() == '0' ||
-                           (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                           $('.rate', this).val() == "" ||
-                           isNaN($('.rate', this).val())
-                           ) {
-                    errorItemCount++;
-                    $(this).addClass('error');
-                }
-                else {
-                    {
-                        var orderItem = {
-                            ItemId: $('.product ', this).val(),
-                            Quantity: parseInt($('.quantity', this).val()),
-                            Rate: parseFloat($('.rate', this).val()),
-                            TotalAmount: parseFloat($('.FTotal', this).val()),
-                            Total: parseFloat($('.FTotal', this).val()),
-                            Vat: parseFloat($('.VAT', this).val()),
-                            QutationID: $('#QutationID').val(),
-                            QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                            Qutation_ID: $('#Qutation_ID').val()
-                        }
-                        list.push(orderItem);
-                    }
-                }
-            });
+            var valid = validateQutationAddOrEdit();
 
-            if (list.length == 0) {
-
-                $("#orderItemError").text("At least one order item required.");
-                isAllValid = false;
+            if (valid != true) {
+                return true;
             }
+            else {
 
-            if (isAllValid) {
-                $(this).val("please wait...");
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#QutationID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    ConatctId: $('#contactId').val(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    QutationDetailslist: list
-                };
-                $.ajax({
-                    url: "/MVCQutation/savePrintAndSentItToYourSenf",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        QutationIdd = result.QutationId;
-                        localStorage.setItem('path', result.path);
-                        if (result.Status == "Success") {
 
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            },
-                            function (isconform) {
-                                window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
-                            });
-                        }
-                        else if (result.Status == "Fail") {
-                            alert("Fail to Process")
-                        }
-                    },
+                var QutationIdd;
+                var isAllValid = true;
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems .tbody >tr ').each(function (index, ele) {
 
-                    error: function (errormessage) {
-
+                    if ($('#SelectProductQutation', this).val() == '0' ||
+                               (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                               $('.rate', this).val() == "" ||
+                               isNaN($('.rate', this).val())
+                               ) {
+                        errorItemCount++;
+                        $(this).addClass('error');
                     }
-
+                    else {
+                        {
+                            var orderItem = {
+                                ItemId: $('.product ', this).val(),
+                                Quantity: parseInt($('.quantity', this).val()),
+                                Rate: parseFloat($('.rate', this).val()),
+                                TotalAmount: parseFloat($('.FTotal', this).val()),
+                                Total: parseFloat($('.FTotal', this).val()),
+                                Vat: parseFloat($('.VAT', this).val()),
+                                QutationID: $('#QutationID').val(),
+                                QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                                Qutation_ID: $('#Qutation_ID').val()
+                            }
+                            list.push(orderItem);
+                        }
+                    }
                 });
+
+                if (list.length == 0) {
+
+                    $("#orderItemError").text("At least one order item required.");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+                    $(this).val("please wait...");
+                    var empObj = {
+                        Qutation_ID: $('#Qutation_ID').val(),
+                        RefNumber: $('#RefNumber').val(),
+                        QutationDate: $('#QutationDate').val(),
+                        DueDate: $('#DueDate').val(),
+                        SubTotal: $('#SubTotal').text(),
+                        DiscountAmount: $('#DiscountAmount').val(),
+                        QutationID: $('#QutationID').val(),
+                        TotalVat6: $('#BTW6').text(),
+                        TotalVat21: $('#BTW21').text(),
+                        Total: $('#gtotal').text(),
+                        TotalAmount: $('#gtotal').text(),
+                        ConatctId: $('#contactId').val(),
+                        CustomerNote: $('#CustomerNote').val(),
+                        QutationDetailslist: list
+                    };
+                    $.ajax({
+                        url: "/MVCQutation/savePrintAndSentItToYourSenf",
+                        data: JSON.stringify(empObj),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            QutationIdd = result.QutationId;
+                            localStorage.setItem('path', result.path);
+                            if (result.Status == "Success") {
+
+                                swal({
+                                    title: 'Qutation!',
+                                    text: 'Qutation save successfully!',
+                                    type: 'success'
+                                },
+                                function (isconform) {
+                                    window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                                });
+                            }
+                            else if (result.Status == "Fail") {
+                                alert("Fail to Process")
+                            }
+                        },
+
+                        error: function (errormessage) {
+
+                        }
+
+                    });
+                }
             }
 
         });
@@ -1462,105 +1485,24 @@
 
         $("#saveEmail").click(function () {
 
-            debugger;
-            var QutationIdd;
-            var isAllValid = true;
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
+            var valid = validateQutationAddOrEdit();
 
-                if ($('#SelectProductQutation', this).val() == '0' ||
-                            (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                            $('.rate', this).val() == "" ||
-                            isNaN($('.rate', this).val())
-                            ) {
-                    errorItemCount++;
-                    $(this).addClass('error');
-                }
-                else {
-                    var orderItem = {
-                        ItemId: $('.product ', this).val(),
-                        Quantity: parseInt($('.quantity', this).val()),
-                        Rate: parseFloat($('.rate', this).val()),
-                        TotalAmount: parseFloat($('.FTotal', this).val()),
-                        Total: parseFloat($('.FTotal', this).val()),
-                        Vat: parseFloat($('.VAT', this).val()),
-                        QutationID: $('#QutationID').val(),
-                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                        Qutation_ID: $('#Qutation_ID').val()
-                    }
-                    list.push(orderItem);
-                }
-            });
-
-            if (list.length == 0) {
-
-                $("#orderItemError").text("At least one order item required.");
-                isAllValid = false;
+            if (valid != true) {
+                return true;
             }
+            else {
+                var QutationIdd;
+                var isAllValid = true;
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
-            if (isAllValid) {
-                $(this).val("please wait...");
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#QutationID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
-                $.ajax({
-                    url: "/MVCQutation/SaveEmailAdd",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-
-                        if (result.Status == "Success") {
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            },
-                            function (isconform) {
-                                window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
-                            });
-                        }
-                        else if (result.Status == "Fail") {
-                            alert(result.Message);
-                        }
-
-                    },
-                    error: function (errormessage) {
-                        alert(errormessage.responseText);
-                   }
-
-                });
-            }
-        });
-
-        $("#saveEmailedit").click(function () {
-            var isAllValid = true;
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody > tr').each(function (index, ele) {
-                {
                     if ($('#SelectProductQutation', this).val() == '0' ||
-                             (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                             $('.rate', this).val() == "" ||
-                             isNaN($('.rate', this).val())
-                             ) {
+                                (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                                $('.rate', this).val() == "" ||
+                                isNaN($('.rate', this).val())
+                                ) {
                         errorItemCount++;
                         $(this).addClass('error');
                     }
@@ -1578,158 +1520,264 @@
                         }
                         list.push(orderItem);
                     }
-                }
-            });
-
-            if (list.length == 0) {
-
-                $("#orderItemError").text("At least one order item required.");
-                isAllValid = false;
-            }
-
-            if (isAllValid) {
-                $(this).val("please wait...");
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#QutationID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
-                $.ajax({
-                    url: "/MVCQutation/SaveEmail",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.Status == "Success") {
-                            swal({
-                                title: 'Invoice!',
-                                text: 'Invoice save successfully!',
-                                type: 'success'
-                            },
-                                 function (isconform) {
-                                     window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
-                                 });
-
-
-                        }
-                        else if (result.Status == "Fail") {
-                            alert(result.Message);
-
-                        }
-                        // $("#genratePdf").submit();
-                        list = [];
-                        //$('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
-                        //$('#orderdetailsitems').empty();
-                        //$("#SubmitEdit").val('Save Draft');
-                    },
-                    error: function (errormessage) {
-                        alert(errormessage.responseText);
-                    }
-
                 });
 
+                if (list.length == 0) {
+
+                    $("#orderItemError").text("At least one order item required.");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+                    $(this).val("please wait...");
+                    var empObj = {
+                        Qutation_ID: $('#Qutation_ID').val(),
+                        RefNumber: $('#RefNumber').val(),
+                        QutationDate: $('#QutationDate').val(),
+                        DueDate: $('#DueDate').val(),
+                        SubTotal: $('#SubTotal').text(),
+                        DiscountAmount: $('#DiscountAmount').val(),
+                        QutationID: $('#QutationID').val(),
+                        TotalVat6: $('#BTW6').text(),
+                        TotalVat21: $('#BTW21').text(),
+                        Total: $('#gtotal').text(),
+                        TotalAmount: $('#gtotal').text(),
+                        CustomerNote: $('#CustomerNote').val(),
+                        ConatctId: $('#contactId').val(),
+                        QutationDetailslist: list
+                    };
+                    $.ajax({
+                        url: "/MVCQutation/SaveEmailAdd",
+                        data: JSON.stringify(empObj),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+
+                            if (result.Status == "Success") {
+                                swal({
+                                    title: 'Qutation!',
+                                    text: 'Qutation save successfully!',
+                                    type: 'success'
+                                },
+                                function (isconform) {
+                                    window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                                });
+                            }
+                            else if (result.Status == "Fail") {
+                                alert(result.Message);
+                            }
+
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+
+                    });
+                }
+            }
+        });
+
+        $("#saveEmailedit").click(function () {
+
+            var valid = validateQutationAddOrEdit();
+
+            if (valid != true) {
+                return true;
+            }
+            else {
+
+
+                var isAllValid = true;
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems .tbody > tr').each(function (index, ele) {
+                    {
+                        if ($('#SelectProductQutation', this).val() == '0' ||
+                                 (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                                 $('.rate', this).val() == "" ||
+                                 isNaN($('.rate', this).val())
+                                 ) {
+                            errorItemCount++;
+                            $(this).addClass('error');
+                        }
+                        else {
+                            var orderItem = {
+                                ItemId: $('.product ', this).val(),
+                                Quantity: parseInt($('.quantity', this).val()),
+                                Rate: parseFloat($('.rate', this).val()),
+                                TotalAmount: parseFloat($('.FTotal', this).val()),
+                                Total: parseFloat($('.FTotal', this).val()),
+                                Vat: parseFloat($('.VAT', this).val()),
+                                QutationID: $('#QutationID').val(),
+                                QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                                Qutation_ID: $('#Qutation_ID').val()
+                            }
+                            list.push(orderItem);
+                        }
+                    }
+                });
+
+                if (list.length == 0) {
+
+                    $("#orderItemError").text("At least one order item required.");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+                    $(this).val("please wait...");
+                    var empObj = {
+                        Qutation_ID: $('#Qutation_ID').val(),
+                        RefNumber: $('#RefNumber').val(),
+                        QutationDate: $('#QutationDate').val(),
+                        DueDate: $('#DueDate').val(),
+                        SubTotal: $('#SubTotal').text(),
+                        DiscountAmount: $('#DiscountAmount').val(),
+                        QutationID: $('#QutationID').val(),
+                        TotalVat6: $('#BTW6').text(),
+                        TotalVat21: $('#BTW21').text(),
+                        Total: $('#gtotal').text(),
+                        TotalAmount: $('#gtotal').text(),
+                        CustomerNote: $('#CustomerNote').val(),
+                        ConatctId: $('#contactId').val(),
+                        QutationDetailslist: list
+                    };
+                    $.ajax({
+                        url: "/MVCQutation/SaveEmail",
+                        data: JSON.stringify(empObj),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result.Status == "Success") {
+                                swal({
+                                    title: 'Invoice!',
+                                    text: 'Invoice save successfully!',
+                                    type: 'success'
+                                },
+                                     function (isconform) {
+                                         window.location.href = "/MvcQutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                                     });
+
+
+                            }
+                            else if (result.Status == "Fail") {
+                                alert(result.Message);
+
+                            }
+                            // $("#genratePdf").submit();
+                            list = [];
+                            //$('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
+                            //$('#orderdetailsitems').empty();
+                            //$("#SubmitEdit").val('Save Draft');
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+
+                    });
+
+                }
             }
 
         });
 
         $('#saveprintandsendtoyourselfsave').click(function () {
-            debugger;
-            var QutationIdd;
-            var isAllValid = true;
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
-                if ($('#SelectProductQutation', this).val() == '0' ||
-                            (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                            $('.rate', this).val() == "" ||
-                            isNaN($('.rate', this).val())
-                            ) {
-                    errorItemCount++;
-                    $(this).addClass('error');
-                }
-                else {
-                    var orderItem = {
-                        ItemId: $('.product ', this).val(),
-                        Quantity: parseInt($('.quantity', this).val()),
-                        Rate: parseFloat($('.rate', this).val()),
-                        TotalAmount: parseFloat($('.FTotal', this).val()),
-                        Total: parseFloat($('.FTotal', this).val()),
-                        Vat: parseFloat($('.VAT', this).val()),
-                        QutationID: $('#QutationID').val(),
-                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                        Qutation_ID: $('#Qutation_ID').val()
-                    }
-                    list.push(orderItem);
-                }
-            });
+            var valid = validateQutationAddOrEdit();
 
-            if (list.length == 0) {
-
-                $("#orderItemError").text("At least one order item required.");
-                isAllValid = false;
+            if (valid != true) {
+                return true;
             }
+            else {
 
-            if (isAllValid) {
-                $(this).val("please wait...");
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#QutationID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
-                $.ajax({
-                    url: "/MVCQutation/savePrintAndSentItToYouronsave",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        QutationIdd = result.QutationId;
-                        localStorage.setItem('path', result.path);
-                        if (result.Status == "Success") {
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            },
-                            function (isconform) {
-                                window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
-                            });
-                        }
-                        else if (result.Status == "Fail") {
+                debugger;
+                var QutationIdd;
+                var isAllValid = true;
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
-                        }
-                    },
-
-                    error: function (errormessage) {
-
+                    if ($('#SelectProductQutation', this).val() == '0' ||
+                                (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                                $('.rate', this).val() == "" ||
+                                isNaN($('.rate', this).val())
+                                ) {
+                        errorItemCount++;
+                        $(this).addClass('error');
                     }
-
+                    else {
+                        var orderItem = {
+                            ItemId: $('.product ', this).val(),
+                            Quantity: parseInt($('.quantity', this).val()),
+                            Rate: parseFloat($('.rate', this).val()),
+                            TotalAmount: parseFloat($('.FTotal', this).val()),
+                            Total: parseFloat($('.FTotal', this).val()),
+                            Vat: parseFloat($('.VAT', this).val()),
+                            QutationID: $('#QutationID').val(),
+                            QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                            Qutation_ID: $('#Qutation_ID').val()
+                        }
+                        list.push(orderItem);
+                    }
                 });
+
+                if (list.length == 0) {
+
+                    $("#orderItemError").text("At least one order item required.");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+                    $(this).val("please wait...");
+                    var empObj = {
+                        Qutation_ID: $('#Qutation_ID').val(),
+                        RefNumber: $('#RefNumber').val(),
+                        QutationDate: $('#QutationDate').val(),
+                        DueDate: $('#DueDate').val(),
+                        SubTotal: $('#SubTotal').text(),
+                        DiscountAmount: $('#DiscountAmount').val(),
+                        QutationID: $('#QutationID').val(),
+                        TotalVat6: $('#BTW6').text(),
+                        TotalVat21: $('#BTW21').text(),
+                        Total: $('#gtotal').text(),
+                        TotalAmount: $('#gtotal').text(),
+                        CustomerNote: $('#CustomerNote').val(),
+                        ConatctId: $('#contactId').val(),
+                        QutationDetailslist: list
+                    };
+                    $.ajax({
+                        url: "/MVCQutation/savePrintAndSentItToYouronsave",
+                        data: JSON.stringify(empObj),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            QutationIdd = result.QutationId;
+                            localStorage.setItem('path', result.path);
+                            if (result.Status == "Success") {
+                                swal({
+                                    title: 'Qutation!',
+                                    text: 'Qutation save successfully!',
+                                    type: 'success'
+                                },
+                                function (isconform) {
+                                    window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                                });
+                            }
+                            else if (result.Status == "Fail") {
+
+                            }
+                        },
+
+                        error: function (errormessage) {
+
+                        }
+
+                    });
+                }
             }
 
         });
@@ -2527,7 +2575,7 @@
         //  });
 
 
-      
+
 
 
 
@@ -2579,7 +2627,7 @@
                         ChangeTotalOnItemCahe(Current);
                         $('#Rate').val(resultData);
 
-                        
+
 
 
 
@@ -2643,5 +2691,3 @@
 
 
 </script>
-
-
