@@ -32,11 +32,13 @@ namespace InvoiceDiskLast.Controllers
                 {
                     //var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal", new SqlParameter("@FromDate", FDate),new SqlParameter("@ToDate", TDate)).ToList<TransactionModel>();
 
-                   List<TransactionModel> Journal = db.AccountTransictionTables.Where(t => t.TransictionDate < FDate && t.TransictionDate > TDate).Select(c => new TransactionModel {
+                   List<TransactionModel> Journal = db.AccountTransictionTables.ToList()/*Where(t => t.TransictionDate < FDate && t.TransictionDate > TDate)*/.Select(c => new TransactionModel {
                        TranDate = c.TransictionDate,
                        AmountDebit = c.Dr,
-                       AmountCredit = c.Cr,
+                       AmountCredit = c.Cr,        
+                       AccountCode= c.AccountTable.AccountCode,
                        AccountTitle = c.AccountTable.AccountTitle
+                      
                    }).ToList();
 
                     return Ok(Journal);
