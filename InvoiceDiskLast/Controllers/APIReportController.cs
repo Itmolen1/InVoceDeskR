@@ -10,14 +10,14 @@ using System.Web.Http;
 
 namespace InvoiceDiskLast.Controllers
 {
-   // [RoutePrefix("api/APIReport")]
+    // [RoutePrefix("api/APIReport")]
     public class APIReportController : ApiController
     {
         private DBEntities db = new DBEntities();
         SqlParameter _Prameter;
 
 
-   
+
 
         [Route("api/GetJournal/{ToDate:long}/{FromDate:long}")]
         public IHttpActionResult Getjournal(long FromDate, long ToDate)
@@ -32,12 +32,15 @@ namespace InvoiceDiskLast.Controllers
                 {
                     //var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal", new SqlParameter("@FromDate", FDate),new SqlParameter("@ToDate", TDate)).ToList<TransactionModel>();
 
-                   List<TransactionModel> Journal = db.AccountTransictionTables.Where(t => t.TransictionDate < FDate && t.TransictionDate > TDate).Select(c => new TransactionModel {
-                       TranDate = c.TransictionDate,
-                       AmountDebit = c.Dr,
-                       AmountCredit = c.Cr,
-                       AccountTitle = c.AccountTable.AccountTitle
-                   }).ToList();
+                    List<TransactionModel> Journal = db.AccountTransictionTables.Where(t => t.TransictionDate <= FDate && t.TransictionDate >= TDate).Select(c => new TransactionModel
+                    {
+                        TranDate = c.TransictionDate,
+                        AmountDebit = c.Dr,
+                        AmountCredit = c.Cr,
+                        AccountCode = c.AccountTable.AccountCode,
+                        AccountTitle = c.AccountTable.AccountTitle
+
+                    }).ToList();
 
                     return Ok(Journal);
                 }
@@ -53,7 +56,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 return null;
             }
-            
+
         }
 
         public DateTime ConvertLongToDate(long Date)

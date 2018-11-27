@@ -6,6 +6,10 @@
 }
 
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
 <style>
     .table th, .table td {
         border: none !important;
@@ -46,7 +50,7 @@
                     </div>
                 </div>
             </div>
-        }
+         }
     </div>
 
     <div class="col-md-2"></div>
@@ -84,7 +88,7 @@
 
 
 
-            <table class="table" id="orderdetailsitemsp">
+            <table class="table" id="journalList">
                 <thead style="border-bottom:1px solid">
 
                     <tr style="border-top:1px solid">
@@ -96,16 +100,23 @@
                 </thead>
 
                 <tbody>
-                   @{ 
-                            if (Model._TransactionList != null)
-                            {
-                                foreach (var item in Model._TransactionList)
-                                {
-                                    Dr = Dr + item.AmountDebit;
-                                    Cr = Cr + item.AmountCredit;                   
+                   @{    string Tdate = "";
+
+                       if (Model._TransactionList != null)
+                       {
+                           foreach (var item in Model._TransactionList)
+                           {
+                               Dr = Dr + item.AmountDebit;
+                               Cr = Cr + item.AmountCredit;
 
                                     <tr>
-                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate.</td>
+
+                                        @if (item.TranDate != null)
+                                        {
+                                            Tdate = item.TranDate.Value.ToShortDateString().ToString();
+                                        }
+
+                                        <td style="border-right:1px solid !important;" colspan="2">@Tdate</td>
                                         <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
                                         <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
                                         <td colspan="1" style="text-align:right">@item.AmountCredit</td>
@@ -113,10 +124,10 @@
                                     </tr>
 
                                 }
-                            }
-                       
-                        else
-                        {
+                       }
+
+                       else
+                       {
                             <tr>
                                 <td><h4>No record found</h4> </td>
                             </tr>
@@ -144,3 +155,13 @@
    
     <div class="col-md-2 col-lg-2 col-sm-0"></div>
 </div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+   
+    });
+
+
+
+</script>

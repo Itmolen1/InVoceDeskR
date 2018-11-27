@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
-    //[SessionExpireAttribute]
+    [SessionExpireAttribute]
     public class ReportsController : Controller
     {
         MVCCompanyInfoModel _company = new MVCCompanyInfoModel();
@@ -24,18 +24,21 @@ namespace InvoiceDiskLast.Controllers
 
         public string SaveOnPathe(string ReportName, DateTime FromDate, DateTime Todate)
         {
+
+            TempData["FromDate"] = FromDate;
+            TempData["ToDate"] = Todate;
+
             string pdfname = "";
 
             try
             {
                 CompanyID = Convert.ToInt32(Session["CompayID"]);
-
                 long FromDa = Convert.ToDateTime(FromDate).Ticks;
                 long TDate = Convert.ToDateTime(Todate).Ticks;
 
+
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDa + "/" + TDate).Result;
                 ViewBag.JournalList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
-
 
                 CompanyId = Convert.ToInt32(Session["CompayID"]);
 
@@ -44,7 +47,7 @@ namespace InvoiceDiskLast.Controllers
                 TempData["Compantinfo"] = _company;
                 TempData.Keep();
 
-                string companyName = ReportName + "-" + FromDate.ToString("yyyy-MM-dd") + "-" + Todate.ToString("yyyy-MM-dd");
+                string companyName = ReportName + "-" + "joyrnal1223.pdf";
                 var root = Server.MapPath("/PDF/");
                 var path = Path.Combine(root, companyName);
                 pdfname = path;
@@ -63,6 +66,8 @@ namespace InvoiceDiskLast.Controllers
                         if (System.IO.File.Exists(path))
                         {
                             FileInfo info = new FileInfo(path);
+                            pdfname = path;
+
                             if (!IsFileLocked(info)) info.Delete();
                         }
                     }
@@ -131,11 +136,28 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
+
+
+
                 if (_searchModel.FromDate > _searchModel.Todate)
                 {
                     ViewBag.massage = "From Date must be Less from To Date";
-                    _searchModel._TransactionList = null;
-                    return View(_searchModel);
+
+                    if (TempData["Compantinfo"] == null)
+                    {
+                        CompanyId = Convert.ToInt32(Session["CompayID"]);
+
+                        HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
+                        _company = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                        TempData["Compantinfo"] = _company;
+                        TempData.Keep();
+                    }
+
+
+                    _model.FromDate = _searchModel.FromDate;
+                    _model.Todate = _searchModel.Todate;
+
+                    return View(_model);
                 }
                 else
                 {
@@ -174,18 +196,20 @@ namespace InvoiceDiskLast.Controllers
                 throw EX;
             }
 
+            _model.FromDate = _searchModel.FromDate;
+            _model.Todate = _searchModel.Todate;
+
+
             return View(_model);
         }
-
 
 
         int Contectid, CompanyID = 0;
 
 
-
-
         public ActionResult Journal()
         {
+            long lFromDate, lTDate = 0;
 
             if (Session["CompayID"] != null)
             {
@@ -196,20 +220,32 @@ namespace InvoiceDiskLast.Controllers
                 TempData["Compantinfo"] = _company;
                 TempData.Keep();
             }
+            if (TempData["FromDate"] != null)
+            {
+                _SearchModel.FromDate = (DateTime)TempData["FromDate"];
+                TempData["FromDate"] = null;
+            }
+            else
+            {
+                _SearchModel.FromDate = DateTime.Now;
+            }
+            if (TempData["ToDate"] != null)
+            {
+                _SearchModel.Todate = (DateTime)TempData["Todate"];
+                TempData["ToDate"] = null;
+            }
+            else
+            {
+                _SearchModel.Todate = DateTime.Now;
+            }
 
-
-            _SearchModel.FromDate = DateTime.Now;
-            _SearchModel.Todate = DateTime.Now.AddDays(-20);
-            long FromDate = DateTime.Now.Ticks;
-            DateTime dt = DateTime.Now.AddDays(-20);
-            long TDate = DateTime.Now.AddDays(-20).Ticks;
-
+            lFromDate = _SearchModel.FromDate.Ticks;
+            lTDate = _SearchModel.Todate.Ticks;
             try
             {
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + FromDate + "/" + TDate).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetJournal/" + lFromDate + "/" + lTDate).Result;
                 _SearchModel._TransactionList = response.Content.ReadAsAsync<List<TransactionModel>>().Result;
-                _SearchModel.Todate = DateTime.Now.AddDays(-20);
+
                 return View(_SearchModel);
             }
             catch (Exception)
@@ -284,128 +320,126 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult ReportByEmail()
         {
+            EmailModel EmailModel = new EmailModel();
             try
             {
-                SearchModel _SearcModel = new SearchModel();
 
+                if (TempData["Pathe"] != null)
+                {
+                    EmailModel.Attachment = TempData["Pathe"].ToString();
+                }
+
+                if (Session["CompayID"] == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+                var CompanyName = Session["CompanyName"];
+
+                var contact = Session["CompanyContact"];
+
+                var companyEmail = Session["CompanyEmail"];
+
+                if (companyEmail == null)
+                {
+                    companyEmail = "Company Email";
+                }
+
+                if (CompanyName == null)
+                {
+                    CompanyName = "Nocompany";
+                }
+                EmailModel.EmailText = @"Geachte heer" + "Boss" + "." +
+                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
+                "." + "Graag horen we of u hiermee akkoord gaat." +
+                "." + "De offerte vindt u als bijlage bij deze email." +
+                "..Met vriendelijke groet." +
+                "Conatct Name" + "." +
+                CompanyName.ToString() + "." +
+                companyEmail.ToString();
+                string strToProcess = EmailModel.EmailText;
+                string result = strToProcess.Replace(".", " \r\n");
+                EmailModel.EmailText = result;
+                EmailModel.From = "infouurtjefactuur@gmail.com";
 
             }
             catch (Exception)
             {
 
-                throw;
+            }
+            return View(EmailModel);
+        }
+
+
+
+
+
+        [HttpPost]
+        public ActionResult InvoicebyEmail(EmailModel email)
+        {
+            var idd = Session["ClientID"];
+            var cdd = Session["CompayID"];
+            if (Session["ClientID"] != null && Session["CompayID"] != null)
+            {
+                Contectid = Convert.ToInt32(Session["ClientID"]);
+                CompanyID = Convert.ToInt32(Session["CompayID"]);
             }
 
-            return View();
-        }
+            TempData["EmailMessge"] = "";
 
-        public ActionResult BalanceSheet()
-        {
-            return View();
-        }
-
-
-       
-        public class modelcheck
-        {
-            public List<ControlAccountTable> CAT { get; set; }
-            public List<HeadAccountTable> HAT { get; set; }
-            public List<AccountTable> AAT { get; set; }
-            public List<AccountTransictionTable> ATT { get; set; }
-        }
-
-        [HttpGet]
-        public ActionResult BalanceSheetbyDate()
-        {
-
-            #region
-            List<Control_Head_Account_tran_ViewModel> listAc = new List<Control_Head_Account_tran_ViewModel>();
-            List<Control_Head_Account_tran_ViewModel> listAc2 = new List<Control_Head_Account_tran_ViewModel>();
-
-
-            List<ControlAccountTable> LCAT = new List<ControlAccountTable>();
-            List<HeadAccountTable> LHT = new List<HeadAccountTable>();
-            List<AccountTable> LAT = new List<AccountTable>();
-            List<AccountTransictionTable> LTT = new List<AccountTransictionTable>();
-
-            List<object> acc = new List<object>();
-
-            #endregion
+            EmailModel emailModel = new EmailModel();
+            var fileName = email.Attachment;
             try
             {
-
-                DBEntities db = new DBEntities();
-
-                LCAT = db.ControlAccountTables.ToList();
-
-                LHT = db.HeadAccountTables.ToList();
-                LAT = db.AccountTables.ToList();
-                LTT = db.AccountTransictionTables.ToList();
-
-                double drr = 0.00;
-                double Crr = 0.00;
-                string Actitle = "";
-                string Ca = "";
-                string HA = "";
-                string AC = "";
-                foreach (var itmen in LCAT)
+                if (email.Attachment.Contains(".pdf"))
                 {
-                    listAc.Add(new Control_Head_Account_tran_ViewModel { ControlAccountId = itmen.ControlAccountId, ControleAccountTitile = itmen.ControleAccountTitile });
+                    email.Attachment = email.Attachment.Replace(".pdf", "");
+                }
+                if (email.ToEmail.Contains(','))
+                {
+                    var p = email.Attachment.Split('.');
 
-
-                    Ca = itmen.ControleAccountTitile;
-
-
-                    foreach (var item in LHT.Where(x => x.FK_ControlAccountID == itmen.ControlAccountId))
+                    var root = Server.MapPath("/PDF/");
+                    var pdfname = String.Format("{0}.pdf", p);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    string[] EmailArray = email.ToEmail.Split(',');
+                    if (EmailArray.Count() > 0)
                     {
-                        HA = item.HeadAccountTitle;
-                        listAc.Add(new Control_Head_Account_tran_ViewModel {ControleAccountTitile = item.ControlAccountTable.ControleAccountTitile, HeadAccountId = item.HeadAccountId, HeadAccountTitle = item.HeadAccountTitle });
-                        foreach (var items in LAT.Where(x => x.FK_HeadAccountId == item.HeadAccountId))
+                        foreach (var item in EmailArray)
                         {
-                            AC = items.AccountTitle;
-                            listAc.Add(new Control_Head_Account_tran_ViewModel {ControleAccountTitile = itmen.ControleAccountTitile, AccountId = items.AccountId, AccountTitle = items.AccountTitle });
-
-                           //listAc2 = listAc.Where()
-
-                            foreach (var itemt in LTT.Where(x => x.FK_AccountID == items.AccountId))
-                            {
-
-                                int id = (int)items.AccountId;
-
-                                drr = drr+Convert.ToDouble(itemt.Dr);
-                                Crr = Crr+ Convert.ToDouble(itemt.Cr);
-                                Actitle = itemt.AccountTable.AccountTitle;
-                               
-                            }
-
-                           
-                            if(listAc2.Any(c => c.HeadAccountTitle == HA)) 
-                            {
-                                HA = "";
-                            }
-
-
-                            listAc2.Add(new Control_Head_Account_tran_ViewModel { ControleAccountTitile = Ca,HeadAccountTitle = HA, AccountTitle = AC, AmountDebit = drr, AmountCredit = Crr });
-
+                            emailModel.From = email.From;
+                            emailModel.ToEmail = item;
+                            emailModel.Attachment = email.Attachment;
+                            emailModel.EmailBody = email.EmailText;
+                            bool result = EmailController.email(emailModel);
                         }
                     }
                 }
-                List<Control_Head_Account_tran_ViewModel> listAcz = new List<Control_Head_Account_tran_ViewModel>();
-                //listAcz = listAc.Where(c => c.ControleAccountTitile != null && c.HeadAccountTitle != null && c.AccountTitle != null).ToList();
-                //return View(listAc);
-                return Json(listAc2, JsonRequestBehavior.AllowGet);
+                else
+                {
+                    var root = Server.MapPath("/PDF/");
+                    var pdfname = String.Format("{0}.pdf", email.Attachment);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    emailModel.From = email.From;
+                    emailModel.ToEmail = email.ToEmail;
+                    emailModel.Attachment = email.Attachment;
+                    emailModel.EmailBody = email.EmailText;
+                    bool result = EmailController.email(emailModel);
+                    TempData["EmailMessge"] = "Email Send successfully";
 
+                    return RedirectToAction("Journal");
+                }
             }
             catch (Exception ex)
             {
-                ex.ToString();
-               
+
+                TempData["Message"] = "Email Send Succssfully";
+                email.Attachment = fileName;
             }
+            return View(email);
 
-            return Json(listAc2, JsonRequestBehavior.AllowGet);
         }
-
-
-
     }
 }
