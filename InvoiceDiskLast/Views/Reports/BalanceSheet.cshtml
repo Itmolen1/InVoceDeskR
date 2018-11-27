@@ -1,0 +1,174 @@
+﻿
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-1">
+                    <button class="btn btn-success input-sm"><i class="fa fa-print" style="margin-right:5px;color:yellow"></i>Print</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-success input-sm" style="margin-right:5px"><i class="fa fa-envelope" style="margin-right:5px;color:yellow"></i>send by e-mail</button>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control input-sm" />
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="border:1px solid; text-align:center">
+                    Balance Sheet<br />
+                    <span>11/26/2018</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <table class="table table-bordered table-striped" style="margin-top:5px" id="BalanceSheetTable">
+
+                        <tr style="text-align:center">
+                            <th>
+                                Assets
+                            </th>
+                            <th>
+                                Dr
+                            </th>
+                            <th>
+                                Cr
+                            </th>
+                        </tr>
+
+                        <tbody></tbody>
+
+
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <table id="tbl2" class="table table-bordered table-striped" style="margin-top:5px">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Liabilities
+                                </th>
+                                <th>
+                                    Dr
+                                </th>
+                                <th>
+                                    Cr
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 pull-right">
+                  20000
+              </div>  
+                <div class="col-md-6 pull-right">
+                  <span id="SumofDr"></span>
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+
+
+<script>
+    var count = 1;
+    var count2 = 1;
+    var count3 = 1;
+    var sumofDRAsset = 0;
+    var sumofCrAsset = 0;
+    $(document).ready(function () {
+
+        //var d = new Date();
+
+
+        $.ajax({
+            url: '/Reports/BalanceSheetbyDate',
+            method: 'Get',
+            success: function (response) {
+                console.log(response);
+                var trHTML = '';
+
+                $.each(response, function (i, item) {
+                  
+                    if (count == 1) {
+                        // alert(count);
+                        if (item.ControleAccountTitile == 'Assets') {
+                            $('#BalanceSheetTable').append('<tr><td>'
+                                + item.ControleAccountTitile + '</td><td></td><td></td></tr>');
+                            count = 2;
+                        }
+
+                    }
+                    if (item.ControleAccountTitile == 'Assets') {
+
+                        $('#BalanceSheetTable').append('<tr><td>'
+                              + item.HeadAccountTitle +  '</td><td></td><td></td></tr>');
+                    }
+
+
+                    if (item.ControleAccountTitile == 'Assets') {
+                        $('#BalanceSheetTable').append('<tr><td>'
+                              + item.AccountTitle + '</td><td>' + item.AmountDebit + '</td><td>' + item.AmountCredit + '</td></tr>');
+                        sumofDRAsset = sumofDRAsset + item.AmountDebit;
+                    }
+                    if (count2 == 1) {
+
+                        if (item.ControleAccountTitile != null && item.ControleAccountTitile == 'Liabilites' || item.ControleAccountTitile == 'Equity') {
+
+                            $('#tbl2').append('<tr><td>'
+                                + item.ControleAccountTitile + '</td><td></td><td></td></tr>');
+                            count2 = 2;
+                        }
+
+                    }
+                    if (count3 == 1 && item.ControleAccountTitile == 'Equity') {
+                        if (item.ControleAccountTitile != null && item.ControleAccountTitile == 'Liabilites' || item.ControleAccountTitile == 'Equity') {
+
+                            $('#tbl2').append('<tr><td>'
+                                + item.ControleAccountTitile + '</td><td></td><td></td></tr>');
+                            count3 = 2;
+                        }
+                    }
+                    if (item.HeadAccountTitle != null && item.ControleAccountTitile == 'Liabilites' || item.ControleAccountTitile == 'Equity') {
+
+                        $('#tbl2').append('<tr><td>'
+                              + item.HeadAccountTitle + '</td><td></td><td></td></tr>');
+                    }
+                    if (item.AccountTitle != null && item.ControleAccountTitile == 'Liabilites' || item.ControleAccountTitile == 'Equity') {
+                        $('#tbl2').append('<tr><td>'
+                              + item.AccountTitle + '</td><td>' + item.AmountDebit + '</td><td>' + item.AmountCredit + '<td></tr>');
+                    }
+
+                    
+                });
+
+                $('#SumofDr').val(sumofDRAsset +'as');
+            },
+            error: function (e) {
+                $("#BalanceSheetTable").html(e.responseText);
+            }
+
+        });
+
+    });
+</script>
+
