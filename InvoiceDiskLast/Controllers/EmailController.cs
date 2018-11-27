@@ -26,7 +26,7 @@ namespace InvoiceDiskLast.Controllers
             //Array.ForEach(Directory.GetFiles("~/PDF/10161 - My Company.pdf"), System.IO.File.Delete);
         }
 
-
+       // E:\InvoiceDeskR\InvoiceDiskLast\PDF\Journal-2018-11-19-2018-11-21
 
         public static bool email(EmailModel emailmodel)
         {

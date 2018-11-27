@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-        }
+         }
     </div>
 
     <div class="col-md-2"></div>
@@ -100,16 +100,23 @@
                 </thead>
 
                 <tbody>
-                   @{ 
-                            if (Model._TransactionList != null)
-                            {
-                                foreach (var item in Model._TransactionList)
-                                {
-                                    Dr = Dr + item.AmountDebit;
-                                    Cr = Cr + item.AmountCredit;                   
+                   @{    string Tdate = "";
+
+                       if (Model._TransactionList != null)
+                       {
+                           foreach (var item in Model._TransactionList)
+                           {
+                               Dr = Dr + item.AmountDebit;
+                               Cr = Cr + item.AmountCredit;
 
                                     <tr>
-                                        <td style="border-right:1px solid !important;" colspan="2">@item.TranDate.</td>
+
+                                        @if (item.TranDate != null)
+                                        {
+                                            Tdate = item.TranDate.Value.ToShortDateString().ToString();
+                                        }
+
+                                        <td style="border-right:1px solid !important;" colspan="2">@Tdate</td>
                                         <td style="border-right:1px solid !important" colspan="10">@item.AccountCode  @item.AccountTitle</td>
                                         <td style="border-right:1px solid !important;text-align:right" colspan="1">@item.AmountDebit</td>
                                         <td colspan="1" style="text-align:right">@item.AmountCredit</td>
@@ -117,10 +124,10 @@
                                     </tr>
 
                                 }
-                            }
-                       
-                        else
-                        {
+                       }
+
+                       else
+                       {
                             <tr>
                                 <td><h4>No record found</h4> </td>
                             </tr>
