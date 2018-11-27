@@ -29,26 +29,33 @@
         @using (Html.BeginForm("Journal", "Reports", FormMethod.Post, new { id = "frmsearch" }))
         {
             <div class="row">
-                <div class="col-sm-1">
-                    @Html.ActionLink("PrintK", actionName: "PrintJournal", controllerName: "Reports", routeValues: new { FromDate = Model.FromDate, Todate = Model.Todate }, htmlAttributes: null)              
-                  </div>
-
+              
                 <div class="col-sm-1">From:</div>
-                <div class="col-sm-3">@Html.EditorFor(model => model.FromDate, new { @class = "input-sm" })</div>
+                <div class="col-sm-3">@Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control" }})</div>
                 <div class="col-sm-1">
                     To:
                 </div>
-                <div class="col-sm-3">@Html.EditorFor(model => model.Todate, new { @class = "input-sm" })</div>
+                <div class="col-sm-3">@Html.EditorFor(model => model.Todate, new { htmlAttributes = new { @class = "form-control" } })
+                
+                </div>
                 
                 
-                <button type="submit" class="btn btn-primary btn-sm" name="SendEmail" value="SendEmail"><i class="fa ti-face-smile"></i>send by email</button>
+                @*<button type="submit" class="btn btn-primary btn-sm" name="SendEmail" value="SendEmail"><i class="fa fa-envelope" style="margin-right:5px"></i>send by email</button>*@
                 <div class="col-sm-1">
+                    @Html.ActionLink("Print", actionName: "PrintJournal", controllerName: "Reports", routeValues: new { FromDate = Model.FromDate, Todate = Model.Todate }, htmlAttributes: new { @class = "  btn btn-success btn-sm" })
+                </div>
+
+                
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary btn-sm" name="SendEmail" value="SendEmail"><i class="fa fa-envelope"></i>send by email</button>
+                </div>
                     
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
+                      
                         <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>Search</button>
                       
                     </div>
-                </div>
+                
             </div>
          }
     </div>
