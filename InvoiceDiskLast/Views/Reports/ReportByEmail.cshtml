@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
-            @using (Html.BeginForm("InvoicebyEmail", "Reports", FormMethod.Post, new { id = "frmSendEmail" }))
+            @using (Html.BeginForm("ReportByEmail", "Reports", FormMethod.Post, new { id = "frmSendEmail" }))
             {
                 <div class="row">
 
@@ -36,7 +36,7 @@
                                     @Html.TextAreaFor(Model => Model.EmailText, new { @class = "form-control textarea_editor", @rows = "15", @cols = "50", placeholder = "Enter text ..." })
                                 </div>
                                 <h4><i class="ti-link"></i><label>@Model.Attachment</label></h4>
-                                @Html.HiddenFor(Model => Model.Attachment)
+                                  @Html.HiddenFor(Model => Model.Attachment)
                                 <hr />
                                 <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i>Send</button>
                                 <button class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i>Discard</button>

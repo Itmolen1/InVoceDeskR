@@ -47,7 +47,7 @@ namespace InvoiceDiskLast.Controllers
                 TempData["Compantinfo"] = _company;
                 TempData.Keep();
 
-                string companyName = ReportName + "-" + "joyrnal1223.pdf";
+                string companyName = ReportName + "-" + FromDate + "-" + Todate + ".pdf";
                 var root = Server.MapPath("/PDF/");
                 var path = Path.Combine(root, companyName);
                 pdfname = path;
@@ -269,14 +269,12 @@ namespace InvoiceDiskLast.Controllers
 
                 if (Session["CompayID"] != null)
                 {
-
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
                 else
                 {
                     return RedirectToAction("Index", "Login");
                 }
-
                 long FromDa = Convert.ToDateTime(FromDate).Ticks;
                 long TDate = Convert.ToDateTime(Todate).Ticks;
 
@@ -293,7 +291,7 @@ namespace InvoiceDiskLast.Controllers
                     TempData.Keep();
                 }
 
-                string PdfName = "journal" + "-" + _company.CompanyName + ".pdf";
+                string PdfName = "journal" + "-" + FromDate + "-" + Todate + ".pdf";
 
                 return new Rotativa.PartialViewAsPdf("~/Views/Reports/JournalPartialView.cshtml")
                 {
@@ -317,10 +315,10 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
+        EmailModel EmailModel = new EmailModel();
         public ActionResult ReportByEmail()
         {
-            EmailModel EmailModel = new EmailModel();
+
             try
             {
 
@@ -328,6 +326,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     EmailModel.Attachment = TempData["Pathe"].ToString();
                 }
+
 
                 if (Session["CompayID"] == null)
                 {
@@ -375,8 +374,9 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email)
+        public ActionResult ReportByEmail(EmailModel email)
         {
+
             var idd = Session["ClientID"];
             var cdd = Session["CompayID"];
             if (Session["ClientID"] != null && Session["CompayID"] != null)
