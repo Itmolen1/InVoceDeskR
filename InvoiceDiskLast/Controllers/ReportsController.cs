@@ -441,5 +441,112 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
 
         }
+
+
+        public ActionResult BalanceSheet()
+        {
+            return View();
+        }
+
+
+
+        public class modelcheck
+        {
+            public List<ControlAccountTable> CAT { get; set; }
+            public List<HeadAccountTable> HAT { get; set; }
+            public List<AccountTable> AAT { get; set; }
+            public List<AccountTransictionTable> ATT { get; set; }
+        }
+
+        [HttpGet]
+        public ActionResult BalanceSheetbyDate()
+        {
+
+            #region
+            List<Control_Head_Account_tran_ViewModel> listAc = new List<Control_Head_Account_tran_ViewModel>();
+            List<Control_Head_Account_tran_ViewModel> listAc2 = new List<Control_Head_Account_tran_ViewModel>();
+
+
+            List<ControlAccountTable> LCAT = new List<ControlAccountTable>();
+            List<HeadAccountTable> LHT = new List<HeadAccountTable>();
+            List<AccountTable> LAT = new List<AccountTable>();
+            List<AccountTransictionTable> LTT = new List<AccountTransictionTable>();
+
+            List<object> acc = new List<object>();
+
+            #endregion
+            try
+            {
+
+                DBEntities db = new DBEntities();
+
+                LCAT = db.ControlAccountTables.ToList();
+
+                LHT = db.HeadAccountTables.ToList();
+                LAT = db.AccountTables.ToList();
+                LTT = db.AccountTransictionTables.ToList();
+
+                double drr = 0.00;
+                double Crr = 0.00;
+                string Actitle = "";
+                string Ca = "";
+                string HA = "";
+                string AC = "";
+                foreach (var itmen in LCAT)
+                {
+                    listAc.Add(new Control_Head_Account_tran_ViewModel { ControlAccountId = itmen.ControlAccountId, ControleAccountTitile = itmen.ControleAccountTitile });
+
+
+                    Ca = itmen.ControleAccountTitile;
+
+
+                    foreach (var item in LHT.Where(x => x.FK_ControlAccountID == itmen.ControlAccountId))
+                    {
+                        HA = item.HeadAccountTitle;
+                        listAc.Add(new Control_Head_Account_tran_ViewModel { ControleAccountTitile = item.ControlAccountTable.ControleAccountTitile, HeadAccountId = item.HeadAccountId, HeadAccountTitle = item.HeadAccountTitle });
+                        foreach (var items in LAT.Where(x => x.FK_HeadAccountId == item.HeadAccountId))
+                        {
+                            AC = items.AccountTitle;
+                            listAc.Add(new Control_Head_Account_tran_ViewModel { ControleAccountTitile = itmen.ControleAccountTitile, AccountId = items.AccountId, AccountTitle = items.AccountTitle });
+
+                            //listAc2 = listAc.Where()
+
+                            foreach (var itemt in LTT.Where(x => x.FK_AccountID == items.AccountId))
+                            {
+
+                                int id = (int)items.AccountId;
+
+                                drr = drr + Convert.ToDouble(itemt.Dr);
+                                Crr = Crr + Convert.ToDouble(itemt.Cr);
+                                Actitle = itemt.AccountTable.AccountTitle;
+
+                            }
+
+
+                            if (listAc2.Any(c => c.HeadAccountTitle == HA))
+                            {
+                                HA = "";
+                            }
+
+
+                            listAc2.Add(new Control_Head_Account_tran_ViewModel { ControleAccountTitile = Ca, HeadAccountTitle = HA, AccountTitle = AC, AmountDebit = drr, AmountCredit = Crr });
+
+                        }
+                    }
+                }
+                List<Control_Head_Account_tran_ViewModel> listAcz = new List<Control_Head_Account_tran_ViewModel>();
+                //listAcz = listAc.Where(c => c.ControleAccountTitile != null && c.HeadAccountTitle != null && c.AccountTitle != null).ToList();
+                //return View(listAc);
+                return Json(listAc2, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+
+            }
+
+            return Json(listAc2, JsonRequestBehavior.AllowGet);
+        }
     }
 }
