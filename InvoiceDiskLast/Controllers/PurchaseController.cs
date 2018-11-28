@@ -308,7 +308,7 @@ namespace InvoiceDiskLast.Controllers
                     q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
                     purchaseviewModel.PurchaseDate = InvoiceDate;
                     purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-                    purchaseviewModel.Purchase_ID = q.PurchaseID;
+                    purchaseviewModel.Purchase_ID = "QUO-"+q.PurchaseID;
                     return View(purchaseviewModel);
                 }
                 else

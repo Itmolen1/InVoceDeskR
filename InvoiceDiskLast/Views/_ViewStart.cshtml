@@ -1,3 +1,251 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<div class="modal fade" id="QutationContactModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Create Qutation</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <select id="SelectContacts1" class="form-control"></select>
+                <hr />
+                <select id="SelectTypeQutation" class="form-control">
+                    <option value="0">Select Type</option>
+                    <option value="1">Good</option>
+                    <option value="2">Services</option>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="QutationClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right"></i></button>
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="VenderSelectModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Create Invoice</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <select id="venderSelect" class="form-control"></select>
+                <hr />
+                <select id="SelectTypeQutation1" class="form-control">
+                    <option value="0">Select Type</option>
+                      <option value="1">Good</option>
+                    <option value="2">Services</option>
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="VenderClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right" style="padding-left: 10px"></i></button>
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
+
+             </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function LoadContacts() {
+
+        $("#SelectContacts1").find("option").remove();
+
+        $("#SelectContacts1").prepend("<option value=0>" + 'Select Client' + "</option>");
+        $("#SelectContacts1").append("<option value=AddNewClientSelect>" + 'Add New Client' + "</option>");
+
+        $.ajax({
+            url: "/MVCClient/GetContacts",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $.each(data, function (key, item) {
+
+                    $('#SelectContacts1').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+    function LoadVernder() {
+        $("#venderSelect").find("option").remove();
+        $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
+        $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
+
+        $.ajax({
+            url: "/Purchase/GetVender",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+    $('#venderSelect').change(function () {
+
+        var value = $(this).val();
+        if (value == "AddNewVenderSelect") {
+            showRequiredModel = "";
+            $('#VenderSelectModel').modal('hide');
+            $('#ModelHeading').text("Maak nieuwe vender");
+            $("#TypeContacts").find("option").remove();
+            $("#TypeContacts").prepend("<option value=Vender>" + 'verkoper' + "</option>");
+            $('#CreateNewContactModal1')
+            .modal('show');
+
+        }
+
+    });
+
+    $('#VenderClientNext').click(function () {
+        var serviceOrgoo = "";
+        var value = $('#venderSelect').val();
+        serviceOrgoo = $('#SelectTypeQutation1 option:selected').text();
+        var TypeValue = $('#SelectTypeQutation1').val();
+        if (value > 0) {
+            if (TypeValue == 0)
+            {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Please select Type to continue',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                })
+            }
+            else
+            {
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'GET',
+                    data: {
+                        id: value
+                    },
+                    success: function (data) {
+
+                        if (serviceOrgoo == "Good") {
+                            serviceOrgoo = "";
+
+                            window.location.href = "/Purchase/AddOrEdit"
+                        }
+                        else if (serviceOrgoo == "Services") {
+                            serviceOrgoo = "";
+
+                            window.location.href = "/MvcInvoiceServices/AddOrEdit/0"
+                        }
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        }
+        else {
+            $.toast({
+                heading: 'Information',
+                text: 'Please select Vender to continue',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            });
+        }
+    });
+
+
+    $('#SelectProductQutation').change(function () {
+
+        var value = $(this).val();
+        if (value == "AddNewProductSelect") {
+
+            $('#CreateNewProductModalAdd').modal('show');
+
+        }
+
+    });
+
+    $('#QutationClientNext').click(function () {
+
+        var qutationGoodOrService = $('#SelectTypeQutation').val();
+
+        var value = $('#SelectContacts1').val();
+       
+
+        if (value > 0) {
+
+            if (qutationGoodOrService == 0) {
+                $.toast({
+                    heading: 'Information',
+                    text: 'Please select Type to continue',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            }
+            else {
+                $.ajax({
+                    url: '/MVCClient/AddOrEdit',
+                    type: 'GET',
+                    data: {
+                        id: value
+                    },
+                    success: function (data) {
+
+                        if (qutationGoodOrService == "1") {
+                            window.location.href = "/MVCQutation/AddOrEdit"
+                        }
+                        else if (qutationGoodOrService == "2") {
+                            window.location.href = "/QutationService/AddOrEdit/0"
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        }
+        else {
+            $.toast({
+                heading: 'Information',
+                text: 'Please select client to continue',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            });
+        }
+    });
+</script>

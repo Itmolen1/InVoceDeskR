@@ -4,7 +4,7 @@
 
 
 
-<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</a>
+<button class="btn btn-info" id="AddNewQutationFromQutaion"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button>
 
 
 
@@ -109,14 +109,12 @@
         });
 
 
+        $('#AddNewQutationFromQutaion').click(function () {
+            LoadContacts();
+            $('#QutationContactModel').modal('show');
+        });
+
     });
-
-
-   
-
-
-
-
 
 
     function EditQutation(QutationId) {
@@ -133,8 +131,6 @@
         });
     }
 
-
-
     function ViewQutationDetail(QutationId) {
 
         $.ajax({
@@ -149,15 +145,6 @@
             }
         });
     }
-
-
-
-
-
-
-
-
-
 
 
     function EditService(QutationId) {
@@ -195,3 +182,5 @@
 
 
 </script>
+
+
