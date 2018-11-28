@@ -467,6 +467,8 @@
                             @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
                             <br />
                             @Contectdatas.PostalCode
+                            <br />
+                            @Contectdatas.PostalCode
 
 
 
@@ -479,57 +481,57 @@
                             <h5 style="margin-left:125px">@CompanyDatas.CompanyName</h5>
                             <hr />
                             <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2 pull-left">Kvk nr:</div>
+                              
+                                <div class="col-sm-4 text-right">Kvk nr:</div>
                                 <div class="col-sm-8">@CompanyDatas.KVK</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3"><div class="pull-right"> BTW nr:</div></div>
+                               
+                                <div class="col-sm-4"><div class="text-right"> BTW nr:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.BTW</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2 pull-right"><div class="pull-right">Bank:</div></div>
+                            
+                                <div class="col-sm-4 text-right"><div class="pull-right">Bank:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.BankName</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2 pull-right"><div class="pull-right">IBAN:</div></div>
+                              
+                                <div class="col-sm-4 text-right"><div class="pull-right">IBAN:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2 pull-right"><div class="pull-right">BIC:</div></div>
+                               
+                                <div class="col-sm-4 text-right"><div class="pull-right">BIC:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.BIC</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2"><div class="pull-right">Tel:</div></div>
+                               
+                                <div class="col-sm-4"><div class="text-right">Tel:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2"><div class="pull-right">Cel:</div></div>
+                              
+                                <div class="col-sm-4"><div class="text-right">Cel:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3 pull-right"><div class="pull-right">E-mail:</div></div>
+                               
+                                <div class="col-sm-4 text-right"><div class="pull-right">E-mail:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3 pull-right"><div class="pull-right">Website:</div></div>
+                              
+                                <div class="col-sm-4 text-right"><div class="pull-right">Website:</div></div>
                                 <div class="col-sm-8">@CompanyDatas.Website</div>
                             </div>
 
                             <div class="row">
 
-                                <div class="col-sm-4 pull-right"><div class="pull-right">Bezoekadres:</div></div>
+                                <div class="col-sm-4 text-right">Bezoekadres:</div>
                                 <div class="col-sm-8">
                                     @CompanyDatas.CompanyAddress<br />
                                     @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
@@ -551,7 +553,7 @@
                                     <div class="col-sm-2">Qutation Date:</div>
                                     <div class="col-sm-3">
 
-                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "QutationDate" } })
+                                        @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker", id = "QutationDate" } })
                                         @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
                                     </div>
@@ -575,7 +577,7 @@
                                     <div class="col-sm-2">Due Date:</div>
                                     <div class="col-sm-3">
 
-                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "DueDate", title = "Due Date" } })
+                                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker", id = "DueDate", title = "Due Date" } })
                                         @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
 
                                     </div>
@@ -645,6 +647,18 @@
 
                                             </tr>
 
+                                                    <select id="SelectVAT" class="VAT form-control" style="width:80px;font-size:12px">
+                                                        <option>0</option>
+                                                        <option>6</option>
+                                                        <option>21</option>
+                                                    </select>
+
+                                                </td>
+                                                <td>
+
+                                                    <input type="button" id="add" value="add" class="btn btn-success" style="width:80px" />
+
+                                            </tr>
                                         </thead>
                                         <tbody class="tbody">
 
