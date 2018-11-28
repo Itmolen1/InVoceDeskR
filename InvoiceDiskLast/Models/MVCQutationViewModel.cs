@@ -44,7 +44,7 @@ namespace InvoiceDiskLast.Models
 
         public int ConatctId{ get; set; }
 
-
+        public string Type { get; set; }
         public string ItemName { get; set; }
         public List<QutationDetailsTable> QutationDetailslist { get; set; }
 

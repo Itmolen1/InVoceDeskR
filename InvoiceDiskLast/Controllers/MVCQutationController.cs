@@ -76,15 +76,11 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception ex)
             {
                 return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
-
-                //return  Json(ex.ToString(), JsonRequestBehavior.AllowGet);
-
             }
         }
 
         int Contectid = 0;
         int CompanyID = 0;
-        //MVCQutation/AddOrEdit
 
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
@@ -232,7 +228,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                     mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                   
+
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -443,7 +439,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.EmailBody = email.EmailText;
                     bool result = EmailController.email(emailModel);
                     TempData["EmailMessge"] = "Email Send successfully";
-                 }
+                }
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
                 MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
@@ -476,10 +472,6 @@ namespace InvoiceDiskLast.Controllers
 
             return View(email);
         }
-
-
-
-
 
         public bool PerformTransaction(MVCQutationModel purchaseViewModel, int CompanyId)
         {
@@ -556,8 +548,6 @@ namespace InvoiceDiskLast.Controllers
             }
             return TransactionResult;
         }
-
-
 
 
         public ActionResult Print(int? QutationID)
@@ -665,7 +655,6 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
         public string PrintView(int quttationId)
         {
             string pdfname;
@@ -1009,7 +998,6 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
         [HttpPost]
         public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1212,7 +1200,6 @@ namespace InvoiceDiskLast.Controllers
             }
             return new JsonResult { Data = new { Status = "Success", QutationId = Qid } };
         }
-
         public string SetPdfName(string FilePath)
         {
             int CompanyId = 0;
@@ -1361,7 +1348,6 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
         }
 
-
         [HttpPost]
         public ActionResult savePrintAndSentItToYouronsave(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1476,8 +1462,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
         [HttpPost]
         public JsonResult ProductPricebyId(int ProductId)
         {
@@ -1489,6 +1473,86 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+        #region  qutation invoice all process
+
+        public ActionResult ServiceInvoice()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetQuataionServiceList()
+        {
+            string Type = "Services";
+
+            List<MVCQutationViewModel> quationList = new List<MVCQutationViewModel>();
+            try
+            {
+                #region
+                int recordsTotal = 0;
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                var sortColumn = Request.Form.GetValues("columns[" +
+                Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                string search = Request.Form.GetValues("search[value]")[0];
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                int companyId = Convert.ToInt32(Session["CompayID"]);
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
+
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type).Result;
+                quationList = respose.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+
+                List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                    {
+                        quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
+                       || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
+                       || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+                       || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())
+
+                      ).ToList();
+
+                    }
+                }
+
+                recordsTotal = recordsTotal = quationList.Count();
+                var data = quationList.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult ServiceViewPrint(int Id)
+        {
+            return View();
+        }
+
+
+        public ActionResult GoodsInvoice()
+        {
+            return View();
+        }
+
+        public ActionResult GoodViewPrint(int Id)
+        {
+            return View();
+        }
+
+        #endregion end qutation service 
 
 
         public class VatModel

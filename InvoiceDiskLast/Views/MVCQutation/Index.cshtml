@@ -4,7 +4,7 @@
 
 
 
-<button class="btn btn-info" id="AddNewQutationFromQutaion"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button>
+<a href="@Url.Action("Index","Home")" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</a>
 
 
 
@@ -36,14 +36,12 @@
     </thead>
     <tbody></tbody>
 </table>
-<div id="loaderQuationList"></div>
-@*<label>dhj</label>*@
 
 
 
 <script type="text/javascript">
     $(document).ready(function () {
-     
+
         $("#QutationListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -77,13 +75,39 @@
                        }, "autoWidth": true
                    },
                      { "data": "Type", "name": "Type", "autoWidth": true },
-                    { "data": "Status", "name": "Status", "autoWidth": true },
+                     {
+                         render: function (data, type, row) {
 
-                    //{
-                    //    render: function (data, type, row) {
-                    //        return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
-                    //    }
-                    //}
+
+                             switch (row.Status) {
+
+                             
+
+                                 case "open":
+                                     return "<td><span label label-primary'>" + row.Status + "</span></td>"
+                                     break;
+
+                                 case "pending":
+                                     return "<td><span class='label label-info'>" + row.Status + "</span></td>"
+                                     break;
+
+                                 case "rejected":
+
+                                     return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
+                                     break;
+
+                                 case "accepted":
+                                     return "<td><span class='label label-success>" + row.Status + "</span></td>"
+                                     break;
+                             }
+                         }
+                     },
+
+                        //{
+                        //    render: function (data, type, row) {
+                        //        return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
+                        //    }
+                        //}
 
 
                     {
@@ -109,12 +133,14 @@
         });
 
 
-        $('#AddNewQutationFromQutaion').click(function () {
-            LoadContacts();
-            $('#QutationContactModel').modal('show');
-        });
-
     });
+
+
+
+
+
+
+
 
 
     function EditQutation(QutationId) {
@@ -131,6 +157,8 @@
         });
     }
 
+
+
     function ViewQutationDetail(QutationId) {
 
         $.ajax({
@@ -145,6 +173,15 @@
             }
         });
     }
+
+
+
+
+
+
+
+
+
 
 
     function EditService(QutationId) {
@@ -182,5 +219,3 @@
 
 
 </script>
-
-

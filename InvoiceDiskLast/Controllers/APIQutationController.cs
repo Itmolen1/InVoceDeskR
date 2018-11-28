@@ -34,7 +34,6 @@ namespace InvoiceDiskLast.Controllers
                 IDS = headerValues.FirstOrDefault();
                 id = Convert.ToInt32(IDS);
             }
-
             var Qutationob = db.QutationTables.Where(x => x.CompanyId == id).Select(c => new MVCQutationModel
             {
 
@@ -49,10 +48,10 @@ namespace InvoiceDiskLast.Controllers
                 DiscountAmount = c.DiscountAmount,
                 TotalAmount = c.TotalAmount,
                 CustomerNote = c.CustomerNote,
-                Status = c.Status,
+                Status = (c.Status).Trim(),
                 UserId = c.UserId,
                 ContactId = c.ContactId,
-                Type=c.Type
+                Type = c.Type
             }).ToList();
 
             return Ok(Qutationob);
@@ -222,15 +221,15 @@ namespace InvoiceDiskLast.Controllers
                 {
                     QutationID = p.QutationID,
                     Qutation_ID = p.Qutation_ID,
-                    QutationDate =p.QutationDate,
+                    QutationDate = p.QutationDate,
                     DueDate = p.DueDate,
                     RefNumber = p.RefNumber,
                     SubTotal = p.SubTotal,
                     Status = p.Status,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
-                    Type=p.Type,
-                
+                    Type = p.Type,
+
 
                 }).ToList();
 
@@ -243,9 +242,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
 
         [Route("api/QutationOrderListByStatus12/{Status:alpha}")]
         public IHttpActionResult GetQutationOrderListByStatus12(string Status)
@@ -286,6 +282,45 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
+
+
+
+
+        #region
+        [Route("api/GetQuatationSerViceList/{Type:alpha}")]
+        public IHttpActionResult GetQutationListForInvoiceService(string Type)
+        {
+            List<MVCQutationViewModel> _qutationList = new List<MVCQutationViewModel>();
+            try
+            {
+                _qutationList = db.QutationTables.Where(q => q.Type == Type).Select(p => new MVCQutationViewModel
+                {
+                    QutationID = p.QutationID,
+                    Qutation_ID = p.Qutation_ID,
+                    QutationDate = p.QutationDate,
+                    DueDate = p.DueDate,
+                    RefNumber = p.RefNumber,
+                    SubTotal = p.SubTotal,
+                    Status = (p.Status).Trim(),
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+                    Type = p.Type
+                }).ToList();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                
+            }
+
+            return Ok(_qutationList);
+
+
+        }
+
+        #endregion
+
+
 
     }
 }
