@@ -223,41 +223,7 @@
                                                 </th>
 
                                             </tr>
-                                            <tr id="mainrow">
-                                                <td>
-                                                    <select id="SelectProductQutation" class="product form-control pClass" style="font-size:12px"></select>
-                                                </td>
-                                                <td>
-                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "QuantityE" } })
-                                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                                                </td>
-                                                <td>
 
-
-                                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rate form-control", id = "Rate" } })
-                                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-
-
-                                                </td>
-                                                <td>
-
-                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotalE", @readonly = "readonly" } })
-                                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                                                </td>
-                                                <td>
-
-                                                    <select id="SelectVAT" class="VAT form-control" style="width:80px;font-size:12px">
-                                                        <option>0</option>
-                                                        <option>6</option>
-                                                        <option>21</option>
-                                                    </select>
-
-                                                </td>
-                                                <td>
-
-                                                    <input type="button" id="add" value="add" class="btn btn-success" style="width:80px;font-size:12px" />
-
-                                            </tr>
 
                                         </thead>
                                         <tbody class="tbody">
@@ -267,60 +233,94 @@
                                                 foreach (var item in ViewBag.QutationDatailsList)
                                                 {
 
-                                                    <tr id="@item.QutationDetailId">
+                                            <tr id="@item.QutationDetailId">
 
-                                                        <td>
+                                                <td>
 
-                                                            <select Id="SelectProductQutation" class="product form-control pClass" style="width:216px !important;font-size:12px">
-                                                                <option value="0">Select Item..</option>
-                                                                @foreach (var product in ViewBag.Product)
+                                                    <select Id="SelectProductQutation" class="product form-control pClass" style="width:216px !important;font-size:12px">
+                                                        <option value="0">Select Item..</option>
+                                                        @foreach (var product in ViewBag.Product)
                                                                 {
-                                                                    <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                                <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                                 }
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="quantity form-control" id="Quantity" value="@item.Quantity" style="font-size:12px" />
-                                                        </td>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="quantity form-control" id="Quantity" value="@item.Quantity" style="font-size:12px" />
+                                                </td>
 
-                                                        <td>
-                                                            <input type="text" class="rate form-control" id="Rate" value="@item.Rate" style="font-size:12px" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="FTotal form-control" id="FTotal" value="@item.Total" readonly="readonly" style="font-size:12px" />
+                                                <td>
+                                                    <input type="text" class="rate form-control" id="Rate" value="@item.Rate" style="font-size:12px" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="FTotal form-control" id="FTotal" value="@item.Total" readonly="readonly" style="font-size:12px" />
 
-                                                        </td>
-                                                        <td>
-                                                            <select id="SelectVAT" name="NewsCategoriesID" class="VAT  form-control" style="width:80px;font-size:12px">
+                                                </td>
+                                                <td>
+                                                    <select id="SelectVAT" name="NewsCategoriesID" class="VAT  form-control" style="width:80px;font-size:12px">
 
-                                                                @foreach (var item1 in ViewBag.VatDrop)
+                                                        @foreach (var item1 in ViewBag.VatDrop)
                                                                 {
-                                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                                <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
                                                                 }
-                                                            </select>
+                                                    </select>
 
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
-                                                        </td>
-                                                        <td>
-                                                            <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+                                                </td>
+                                                <td>
+                                                    <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
 
-                                                        </td>
-                                                        <td>
-                                                            <input type="hidden" class="QutationID" value="@item.QutationID" />
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" class="QutationID" value="@item.QutationID" />
 
-                                                        </td>
+                                                </td>
 
 
-                                                    </tr>
+                                            </tr>
                                                 }
                                             }
 
 
 
                                         </tbody>
+                                        <tr id="mainrow">
+                                            <td>
+                                                <select id="SelectProductQutation" class="product form-control pClass" style="font-size:12px"></select>
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "QuantityE" } })
+                                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td>
 
+
+                                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rate form-control", id = "Rate" } })
+                                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+
+                                            </td>
+                                            <td>
+
+                                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotalE", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td>
+
+                                                <select id="SelectVAT" class="VAT form-control" style="width:80px;font-size:12px">
+                                                    <option>0</option>
+                                                    <option>6</option>
+                                                    <option>21</option>
+                                                </select>
+
+                                            </td>
+                                            <td>
+
+                                                <input type="button" id="add" value="add" class="btn btn-success" style="width:80px;font-size:12px" />
+
+                                        </tr>
                                     </table>
                                 </div>
                                 <div class="row">
@@ -644,41 +644,7 @@
                                                 </th>
 
                                             </tr>
-                                            <tr id="mainrow">
-                                                <td>
-                                                    <select id="SelectProductQutation" class="product form-control pClass" style="width: 235px;font-size:12px"></select>
-                                                </td>
-                                                <td>
-                                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "Quantity" } })
-                                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                                                </td>
-                                                <td>
 
-
-                                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rate form-control", id = "Rate" } })
-                                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-
-
-                                                </td>
-                                                <td>
-
-                                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal", @readonly = "readonly" } })
-                                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                                                </td>
-                                                <td>
-
-                                                    <select id="SelectVAT" class="VAT form-control" style="width:80px;font-size:12px">
-                                                        <option>0</option>
-                                                        <option>6</option>
-                                                        <option>21</option>
-                                                    </select>
-
-                                                </td>
-                                                <td>
-
-                                                    <input type="button" id="add" value="add" class="btn btn-success" style="width:80px" />
-
-                                            </tr>
                                         </thead>
                                         <tbody class="tbody">
 
@@ -739,7 +705,41 @@
                                             }
 
                                         </tbody>
+                                        <tr id="mainrow">
+                                            <td>
+                                                <select id="SelectProductQutation" class="product form-control pClass" style="width: 235px;font-size:12px"></select>
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control", id = "Quantity" } })
+                                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td>
 
+
+                                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rate form-control", id = "Rate" } })
+                                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+
+                                            </td>
+                                            <td>
+
+                                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control", id = "FTotal", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                            </td>
+                                            <td>
+
+                                                <select id="SelectVAT" class="VAT form-control" style="width:80px;font-size:12px">
+                                                    <option>0</option>
+                                                    <option>6</option>
+                                                    <option>21</option>
+                                                </select>
+
+                                            </td>
+                                            <td>
+
+                                                <input type="button" id="add" value="add" class="btn btn-success" style="width:80px" />
+
+                                        </tr>
                                     </table>
                                 </div>
                                 <div class="row">
@@ -845,8 +845,8 @@
                     </div>
                 </div>
             </div>
-         </div>
-         
+        </div>
+
     }
 </body>
 
@@ -871,7 +871,7 @@
                         <div class="col-sm-6">
                             <div class="form-group m-b-40">
                                 <input type="text" class="form-control " id="Description" data-toggle="tooltip" data-placement="bottom" title="Product Description!!" placeholder="Description">
-                             
+
                             </div>
                         </div>
                     </div>
@@ -880,13 +880,13 @@
                         <div class="col-sm-6">
                             <div class="form-group m-b-40">
                                 <input type="text" class="form-control " id="SalePrice" data-toggle="tooltip" data-placement="bottom" title="Sale Price!!" placeholder="Sales Price">
-                               
+
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group m-b-40">
                                 <input type="text" class="form-control " id="PurchasePrice" data-toggle="tooltip" data-placement="bottom" title="Purchase Price!!" placeholder="Purchase Price">
-                               
+
                             </div>
                         </div>
                     </div>
@@ -895,7 +895,7 @@
                         <div class="col-sm-6">
                             <div class="form-group m-b-40">
                                 <input type="text" class="form-control " id="OpeningQuantity" data-toggle="tooltip" data-placement="bottom" title="Opening Quantity!!" placeholder="Opening Qunatity">
-                               
+
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -970,25 +970,26 @@
             currentRow1 = $(this).closest("tr");
 
             var isAllValid = true;
-            if ($("#SelectProductQutation").val() == "0") {
+            if ($("#mainrow #SelectProductQutation").val() == "0") {
                 isAllValid = false;
                 alert("Please select Item");
                 return;
             }
 
             var isAllValid = true;
-            if ($(".quantity").val() == 0) {
+            if ($("#mainrow .quantity").val() == 0) {
                 isAllValid = false;
 
                 alert("Please provide quantity");
                 return;
             }
             var isAllValid = true;
-            if ($(".rate").val() == 0) {
+            if ($("#mainrow .rate").val() == 0) {
                 isAllValid = false;
                 alert("Please select provide rate");
                 return;
             }
+
 
 
             if (isAllValid) {
@@ -1010,19 +1011,20 @@
 
                 $(".FTotal").prop('disabled', true);
 
-                $('#SelectProductQutation').val('0');
-                $('#Quantity').val('');
-                $('#Rate').val('');
-                $('#FTotal').val('');
-
+                $('#mainrow #SelectProductQutation').val('0');
+                $('#mainrow #QuantityE').val('');
+                $('#mainrow #Rate').val('');
+                $('#mainrow .FTotal').val('');
+                $('#mainrow .quantity').val('');
+                
                 if ($('#orderItemError').text != '') {
                     $('#orderItemError').text('');
                 }
-
+                $('#mainrow #SelectVAT').val(0);
                 calculatevat();
                 SUMOFALLPRODUCT();
                 sumofGrandModel();
-                $('#SelectVAT').val(0);
+               
             }
         });
 
@@ -1232,109 +1234,109 @@
             }
             else {
 
-            
-    
-            var QutationIdd;
-            var isAllValid = true;
-            $('#orderItemError').text('');
-            var list = [];
-            var errorItemCount = 0;
-            $('#orderdetailsitems .tbody tr').each(function (index, ele) {
 
-                if ($('#SelectProductQutation', this).val() == '0' ||
-                            (parseInt($('.quantity', this).val()) || 0) == 0 ||
-                            $('.rate', this).val() == "" ||
-                            isNaN($('.rate', this).val())
-                            ) {
-                    errorItemCount++;
-                    $(this).addClass('error');
-                }
-                else {
-                    var orderItem = {
-                        ItemId: $('.product ', this).val(),
-                        Quantity: parseInt($('.quantity', this).val()),
-                        Rate: parseFloat($('.rate', this).val()),
-                        TotalAmount: parseFloat($('.FTotal', this).val()),
-                        Total: parseFloat($('.FTotal', this).val()),
-                        Vat: parseFloat($('.VAT', this).val()),
-                        QutationID: $('#QutationID').val(),
-                        QutationDetailId: parseInt($('.QutationDetailId', this).val()),
-                        Qutation_ID: $('#Qutation_ID').val()
+
+                var QutationIdd;
+                var isAllValid = true;
+                $('#orderItemError').text('');
+                var list = [];
+                var errorItemCount = 0;
+                $('#orderdetailsitems .tbody tr').each(function (index, ele) {
+
+                    if ($('#SelectProductQutation', this).val() == '0' ||
+                                (parseInt($('.quantity', this).val()) || 0) == 0 ||
+                                $('.rate', this).val() == "" ||
+                                isNaN($('.rate', this).val())
+                                ) {
+                        errorItemCount++;
+                        $(this).addClass('error');
                     }
-                    list.push(orderItem);
-                }
-            });
-
-            if (list.length == 0) {
-
-                $("#orderItemError").text("At least one order item required.");
-                isAllValid = false;
-            }
-
-            if (isAllValid) {
-                $(this).val("please wait...");
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#QutationID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
-                $.ajax({
-                    url: "/MVCQutation/Save",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-
-                        console.log(result);
-
-                        if (result.Status == "Success") {
-
-                            $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
-                            $('#orderdetailsitems').empty();
-                            $("#Submit").val('Save');
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            },
-                      function (isconform) {
-                          window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
-                      });
+                    else {
+                        var orderItem = {
+                            ItemId: $('.product ', this).val(),
+                            Quantity: parseInt($('.quantity', this).val()),
+                            Rate: parseFloat($('.rate', this).val()),
+                            TotalAmount: parseFloat($('.FTotal', this).val()),
+                            Total: parseFloat($('.FTotal', this).val()),
+                            Vat: parseFloat($('.VAT', this).val()),
+                            QutationID: $('#QutationID').val(),
+                            QutationDetailId: parseInt($('.QutationDetailId', this).val()),
+                            Qutation_ID: $('#Qutation_ID').val()
                         }
-
-                        else if (result.Status == "Fail") {
-                            $("#Submit").val('Save');
-                            swal(
-                                 'Qutation!',
-                                   result.message,
-                                 'danger'
-                            )
-                        }
-
-                    },
-                    error: function (errormessage) {
-                        $("#Submit").val('Save');
-                        swal(
-                                 'Qutation!',
-                                   errormessage.responseText,
-                                 'danger'
-                            )
+                        list.push(orderItem);
                     }
                 });
+
+                if (list.length == 0) {
+
+                    $("#orderItemError").text("At least one order item required.");
+                    isAllValid = false;
+                }
+
+                if (isAllValid) {
+                    $(this).val("please wait...");
+                    var empObj = {
+                        Qutation_ID: $('#Qutation_ID').val(),
+                        RefNumber: $('#RefNumber').val(),
+                        QutationDate: $('#QutationDate').val(),
+                        DueDate: $('#DueDate').val(),
+                        SubTotal: $('#SubTotal').text(),
+                        DiscountAmount: $('#DiscountAmount').val(),
+                        QutationID: $('#QutationID').val(),
+                        TotalVat6: $('#BTW6').text(),
+                        TotalVat21: $('#BTW21').text(),
+                        Total: $('#gtotal').text(),
+                        TotalAmount: $('#gtotal').text(),
+                        CustomerNote: $('#CustomerNote').val(),
+                        ConatctId: $('#contactId').val(),
+                        QutationDetailslist: list
+                    };
+                    $.ajax({
+                        url: "/MVCQutation/Save",
+                        data: JSON.stringify(empObj),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+
+                            console.log(result);
+
+                            if (result.Status == "Success") {
+
+                                $('#Qutation_ID,#RefNumber,#SubTotal,#DiscountAmount,#Vat,#TotalAmount,#CustomerNote').val('');
+                                $('#orderdetailsitems').empty();
+                                $("#Submit").val('Save');
+                                swal({
+                                    title: 'Qutation!',
+                                    text: 'Qutation save successfully!',
+                                    type: 'success'
+                                },
+                          function (isconform) {
+                              window.location.href = "/MvcQutation/ViewQuation?quautionId=" + result.QutationId;
+                          });
+                            }
+
+                            else if (result.Status == "Fail") {
+                                $("#Submit").val('Save');
+                                swal(
+                                     'Qutation!',
+                                       result.message,
+                                     'danger'
+                                )
+                            }
+
+                        },
+                        error: function (errormessage) {
+                            $("#Submit").val('Save');
+                            swal(
+                                     'Qutation!',
+                                       errormessage.responseText,
+                                     'danger'
+                                )
+                        }
+                    });
+                }
             }
-           }
         });
 
 
@@ -1758,13 +1760,13 @@
 
         function LoadProduct() {
 
-            if ($('#SelectProductQutation').has('option').length > 0) {
+            if ($('#mainrow #SelectProductQutation').has('option').length > 0) {
                 return;
             }
             else {
-                $("#SelectProductQutation").find("option").remove();
-                $("#SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
-                $("#SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+                $("#mainrow #SelectProductQutation").find("option").remove();
+                $("#mainrow #SelectProductQutation").prepend("<option value=0>" + 'Select Item' + "</option>");
+                $("#mainrow #SelectProductQutation").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
                 $.ajax({
                     url: "/MVCProduct/GetProduct",
@@ -1777,7 +1779,7 @@
 
                         $.each(data, function (key, item) {
 
-                            $('#SelectProductQutation').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                            $('#mainrow #SelectProductQutation').append($('<option></option>').val(item.ProductId).html(item.ProductName));
 
                         });
 
@@ -2136,49 +2138,49 @@
         })
 
 
-        $(document).ready(function () {
-            $("#CompanyListTable").DataTable({
-                // "processing": true, // for show progress bar
-                processing: true,
-                "language": {
-                    "processing": $('#loader').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-                },
-                "serverSide": true, // for process server side
-                "filter": false, // this is for disable filter (search box)
-                "orderMulti": false, // for disable multiple column at once
+        //$(document).ready(function () {
+        //    $("#CompanyListTable").DataTable({
+        //        // "processing": true, // for show progress bar
+        //        processing: true,
+        //        "language": {
+        //            "processing": $('#loader').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+        //        },
+        //        "serverSide": true, // for process server side
+        //        "filter": false, // this is for disable filter (search box)
+        //        "orderMulti": false, // for disable multiple column at once
 
-                searching: true,
-                "ajax": {
-                    "url": "/Company/Index1",
-                    "type": "POST",
-                    "datatype": "json"
-                },
-                "columns": [
-                        { "data": "CompanyId", "name": "CompanyId", "autoWidth": true },
-                        { "data": "CompanyName", "name": "CompanyName", "autoWidth": true },
-                        { "data": "CompanyAddress", "name": "CompanyAddress", "autoWidth": true },
-                        { "data": "CompanyPhone", "name": "CompanyPhone", "autoWidth": true },
-                        { "data": "CompanyCell", "name": "CompanyCell", "autoWidth": true },
-                        { "data": "CompanyEmail", "name": "CompanyEmail", "autoWidth": true },
-                        { "data": "CompanyTRN", "name": "CompanyTRN", "autoWidth": true },
-                        {
-                            'data': 'CompanyLogo',
-                            render: function (logo) {
-                                if (logo) {
-                                    return '<img height="25px" width="25px" src="' + logo + '" />'
-                                }
-                                else { return 'No Image'; }
-                            }
-                        },
-                      {
-                          render: function (data, type, row) {
-                              return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="fa fa-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye- Open"></i></a>'
-                          }
-                      }
+        //        searching: true,
+        //        "ajax": {
+        //            "url": "/Company/Index1",
+        //            "type": "POST",
+        //            "datatype": "json"
+        //        },
+        //        "columns": [
+        //                { "data": "CompanyId", "name": "CompanyId", "autoWidth": true },
+        //                { "data": "CompanyName", "name": "CompanyName", "autoWidth": true },
+        //                { "data": "CompanyAddress", "name": "CompanyAddress", "autoWidth": true },
+        //                { "data": "CompanyPhone", "name": "CompanyPhone", "autoWidth": true },
+        //                { "data": "CompanyCell", "name": "CompanyCell", "autoWidth": true },
+        //                { "data": "CompanyEmail", "name": "CompanyEmail", "autoWidth": true },
+        //                { "data": "CompanyTRN", "name": "CompanyTRN", "autoWidth": true },
+        //                {
+        //                    'data': 'CompanyLogo',
+        //                    render: function (logo) {
+        //                        if (logo) {
+        //                            return '<img height="25px" width="25px" src="' + logo + '" />'
+        //                        }
+        //                        else { return 'No Image'; }
+        //                    }
+        //                },
+        //              {
+        //                  render: function (data, type, row) {
+        //                      return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="fa fa-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye- Open"></i></a>'
+        //                  }
+        //              }
 
-                ]
-            });
-        });
+        //        ]
+        //    });
+        //});
 
 
         $('#CompanySitting').click(function () {
@@ -2561,7 +2563,7 @@
         }
 
 
-        $('.pClass').change(function () {
+        $('#mainrow .pClass').change(function () {
             var Current = $(this).closest('tr');
 
             var value = $(this).val();
@@ -2584,7 +2586,7 @@
                     data: { 'ProductId': productId },
                     success: function (resultData) {
                         ChangeTotalOnItemCahe(Current);
-                        $('#Rate').val(resultData);
+                        $('#mainrow #Rate').val(resultData);
 
 
 
