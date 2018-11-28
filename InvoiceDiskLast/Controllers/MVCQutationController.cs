@@ -655,6 +655,9 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
+
+
+
         public string PrintView(int quttationId)
         {
             string pdfname;
@@ -1538,7 +1541,92 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult ServiceViewPrint(int Id)
         {
-            return View();
+            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
+            try
+            {
+
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                    MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+
+                    HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                    MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                  
+
+
+                    ViewBag.Contentdata = contectmodel;
+                    ViewBag.Companydata = companyModel;
+                   
+
+                    if (Id == 0)
+                    {
+                        int id3 = 0;
+                        MVCQutationModel q = new MVCQutationModel();
+                        HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GetQuationCount/").Result;
+                        q = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
+                        quutionviewModel.Qutation_ID = q.Qutation_ID;
+                        return View(quutionviewModel);
+                    }
+                    else
+                    {
+                        
+
+                        List<VatModel> model = new List<VatModel>();
+                        model.Add(new VatModel() { Vat1 = 0, Name = "0" });
+
+                        model.Add(new VatModel() { Vat1 = 6, Name = "6" });
+                        model.Add(new VatModel() { Vat1 = 21, Name = "21" });
+
+                        ViewBag.VatDrop = model;
+
+                        HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Services").Result;
+                        List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
+                        ViewBag.Product = productModel;
+
+                        HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + Id.ToString()).Result;
+                        MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                        quutionviewModel.QutationID = ob.QutationID;
+                        quutionviewModel.Qutation_ID = ob.Qutation_ID;
+                        quutionviewModel.QutationDate = ob.QutationDate;
+                        quutionviewModel.RefNumber = ob.RefNumber;
+                        quutionviewModel.DueDate = ob.DueDate;
+                        quutionviewModel.CustomerNote = ob.CustomerNote;
+                        quutionviewModel.SubTotal = ob.SubTotal;
+                        quutionviewModel.TotalAmount = ob.TotalAmount;
+                        quutionviewModel.TotalVat21 = (ob.TotalVat21 != null ? (float)(ob.TotalVat21) : (float)0.00);
+                        quutionviewModel.TotalVat6 = (ob.TotalVat6 != null ? (float)(ob.TotalVat6) : (float)0.00);
+                        quutionviewModel.ConatctId = (int)ob.ContactId;
+                        HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + Id.ToString()).Result;
+                        List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+                        ViewBag.Contentdata = contectmodel;
+                        ViewBag.Companydata = companyModel;
+                        ViewBag.QutationDatailsList1 = QutationModelDetailsList;
+                        return View(quutionviewModel);
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }     
+            return View(quutionviewModel);
         }
 
 
@@ -1546,6 +1634,63 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public JsonResult GetQuataionGoodsList()
+        {
+            string Type = "Goods";
+
+            List<MVCQutationViewModel> quationList = new List<MVCQutationViewModel>();
+            try
+            {
+                #region
+                int recordsTotal = 0;
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                var sortColumn = Request.Form.GetValues("columns[" +
+                Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                string search = Request.Form.GetValues("search[value]")[0];
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                int companyId = Convert.ToInt32(Session["CompayID"]);
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
+
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type).Result;
+                quationList = respose.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+
+                List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                    {
+                        quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
+                       || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
+                       || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+                       || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())
+
+                      ).ToList();
+
+                    }
+                }
+
+                recordsTotal = recordsTotal = quationList.Count();
+                var data = quationList.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         public ActionResult GoodViewPrint(int Id)
         {

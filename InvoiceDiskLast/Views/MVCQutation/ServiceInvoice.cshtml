@@ -76,8 +76,6 @@
                          //"data": "Status", "name": "Status", "autoWidth": true
                          render: function (data, type, row) {
 
-
-
                              switch (row.Status) {
 
                                  case "open":
@@ -91,7 +89,7 @@
 
                                  case "rejected":
 
-                                     return "<td><span class='label label-danger>" + row.Status + "</span></td>"
+                                     return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
                                      break;
 
                                  case "accepted":
@@ -106,7 +104,7 @@
                               switch (row.Type) {
 
                                   case "Services":
-                                      return '</button><a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye">View and Print Invoice</i></a>'
+                                      return '</button><a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View and Print Invoice</i></a>'
                                       break
                               }
                           }
@@ -150,7 +148,7 @@
                 Qutationid: QutationId
             },
             success: function (data) {
-                window.location.href = "/MVCQutation/ViewQuation?quautionId=" + QutationId;
+                window.location.href = "/MVCQutation/ServiceViewPrint?Id=" + QutationId;
 
             }
         });
