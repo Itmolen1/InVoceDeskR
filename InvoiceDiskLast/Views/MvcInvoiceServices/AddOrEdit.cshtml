@@ -214,41 +214,7 @@
 
                                     </tr>
 
-                                    <tr id="mainrow">
-                                        <td>
-                                            <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
-                                            @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
-                                        </td>
-                                        <td>
 
-
-                                            @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
-                                            @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
-
-
-                                        </td>
-                                        <td>
-
-                                            @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal", @readonly = "readonly" } })
-                                            @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
-                                        </td>
-                                        <td>
-
-                                            <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
-                                                <option>0</option>
-                                                <option>6</option>
-                                                <option>21</option>
-                                            </select>
-
-                                        </td>
-                                        <td>
-
-                                            <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
-
-                                    </tr>
                                 </thead>
 
                                 <tbody>
@@ -312,7 +278,41 @@
 
 
                                 </tbody>
+                                <tr id="mainrow">
+                                    <td>
+                                        <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
+                                        @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
 
+
+                                        @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
+                                        @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+
+
+                                    </td>
+                                    <td>
+
+                                        @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+
+                                        <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
+                                            <option>0</option>
+                                            <option>6</option>
+                                            <option>21</option>
+                                        </select>
+
+                                    </td>
+                                    <td>
+
+                                        <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
+
+                                </tr>
                             </table>
                         </div>
                         <div class="row">
@@ -735,15 +735,23 @@
         currentRow1 = $(this).closest("tr");
 
         var isAllValid = true;
-        if ($("#SelectProductQutationp").val() == "0") {
+        if ($("mainrow #SelectProductQutationp").val() == "0") {
             isAllValid = false;
             alert("Please select Item");
             return;
         }
 
-        if ($(".PurchaseQuantity").val() == 0) {
+
+        if ($("#mainrow .PurchaseItemRate").val() == 0) {
+            isAllValid = false;
+            alert("Please select itemrate");
+            return;
+        }
+
+        if ($("#mainrow .PurchaseQuantity").val() == 0) {
             isAllValid = false;
             alert("Please select quantity");
+            return;
         }
 
         if (isAllValid) {
@@ -757,11 +765,11 @@
             $('span.error', $newRowp).remove();
             $('#orderdetailsitemsp').append($newRowp);
 
-            $('thead #SelectProductQutationp').val('0');
-            $('thead #PurchaseQuantity ').val('');
-            $('thead #PurchaseItemRate ').val('');
-            $('thead #PurchaseTotal ').val('');
-            $('thead #VATp ').val('0');
+            $('#mainrow #SelectProductQutationp').val('0');
+            $('#mainrow #PurchaseQuantity ').val('');
+            $('#mainrow #PurchaseItemRate ').val('');
+            $('#mainrow #PurchaseTotal ').val('');
+            $('#mainrow #VATp ').val('0');
 
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
@@ -771,7 +779,7 @@
             sumofGrandModelp();
 
 
-            $('#SelectVATp').val(0);
+            $('#mainrow #SelectVATp').val(0);
         }
     });
     //end of adding row
@@ -837,7 +845,7 @@
     })
 
     $(document).on('keyup', "#orderdetailsitemsp tbody .PurchaseItemRate", function () {
-        alert();
+
         currentRow1 = $(this).closest("tr");
         var currentRow = $(this).closest("tr");
         var quantity = currentRow.find("td:eq(1)").find('input').val(); // get current row 1st TD value
@@ -962,9 +970,9 @@
 
     function LoadProductSelect() {
         LoadProductUnitPurchase();
-        $("thead #SelectProductQutationp").find("option").remove();
-        $("thead #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("thead #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $("#mainrow #SelectProductQutationp").find("option").remove();
+        $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
         $.ajax({
             url: "/MVCProduct/GetProduct",
@@ -975,7 +983,7 @@
             data: { ProductStatus: "Services" },
             success: function (data) {
                 $.each(data, function (key, item) {
-                    $('thead #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                    $('#mainrow #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
                 });
             },
             Error: function (errormessage) {
@@ -985,7 +993,7 @@
     }
 
     // product price by id
-    $('thead .pClassp').change(function () {
+    $('#mainrow .pClassp').change(function () {
 
 
         var value = $(this).val();
@@ -1007,7 +1015,7 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
-                    $('thead #PurchaseItemRate ').val(resultData);
+                    $('#mainrow #PurchaseItemRate ').val(resultData);
                 },
                 error: function (errormessage) {
                     // alert(errormessage)
@@ -1019,22 +1027,20 @@
     //end
 
     //number validation
-    $("thead .PurchaseQuantity").on("keypress keyup blur", function (event) {
-        //this.value = this.value.replace(/[^0-9\.]/g,'');
+    $("#mainrow .PurchaseQuantity").on("keypress keyup blur", function (event) {        
         $(this).val($(this).val().replace(/[^0-9]/g, ''));
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
             event.preventDefault();
         }
     });
-    $("thead #PurchaseItemRate").on("keypress keyup blur", function (event) {
-        //this.value = this.value.replace(/[^0-9\.]/g,'');
+    $("#mainrow #PurchaseItemRate").on("keypress keyup blur", function (event) {
+       
         $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
         if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
             event.preventDefault();
         }
     });
     //end of number validation
-
 
     //saving detail
     $("#Submitp").click(function () {
@@ -1048,7 +1054,7 @@
             $('#orderItemError').text('');
             var list = [];
             var errorItemCount = 0;
-            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+            $('#orderdetailsitemsp > tbody > tr ').not("tr:last").each(function (index, ele) {
                 if ($('#SelectProductQutationp', this).val() == '0' ||
                     (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
                     $('.ratep', this).val() == "" ||
@@ -1160,7 +1166,7 @@
             var list = [];
             var errorItemCount = 0;
 
-            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+            $('#orderdetailsitemsp > tbody > tr ').not("tr:last").each(function (index, ele) {
 
                 if ($('#SelectProductQutationp', this).val() == '0' ||
                     (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
@@ -1279,7 +1285,7 @@
             var list = [];
             var errorItemCount = 0;
 
-            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+            $('#orderdetailsitemsp > tbody > tr ').not("tr:last").each(function (index, ele) {
 
                 if ($('#SelectProductQutationp', this).val() == '0' ||
                     (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
@@ -1433,9 +1439,7 @@
 
         $(document).on('click', '#RemoveEdit1', function () {
 
-
             var row = $(this).closest('tr');
-
             var PurchaseOrderId = $('#PurchaseOrderID').val();
             var purchaseTotal = row.find('td').find('.PurchaseTotal').val();
             var vat = row.find('td').find('#SelectVATp').val();
@@ -1528,9 +1532,9 @@
 
     function LoadProductAdding1() {
         debugger;
-        $("thead #SelectProductQutationp").find("option").remove();
-        $("thead #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("thead #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $("#mainrow #SelectProductQutationp").find("option").remove();
+        $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
         $.ajax({
             url: "/MVCProduct/GetProduct",
@@ -1543,7 +1547,7 @@
 
                 $.each(data, function (key, item) {
 
-                    $('thead #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                    $('#mainrow #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
 
                 });
 
@@ -1661,9 +1665,6 @@
         $('#CreateNewProductModalAdd').modal('show');
         $('#UnitModelPurchase').modal('hide');
     });
-
-
-
 
 
 </script>
