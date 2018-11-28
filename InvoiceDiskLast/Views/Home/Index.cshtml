@@ -2,169 +2,44 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         <button type="button" id="btn-QutationNew" class="btn btn-info "><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button> 
         <button type="button" id="btn-InvoiceNew" class="btn btn-primary "><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Invoice</button>
+        <button type="button" id="btn-NewPurchase" class="btn btn-primary "><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Purchase</button>
       
     </div>
     
-    <div class="col-sm-9">    
+    <div class="col-sm-6">    
     </div>
 </div>
 
-<input hidden id="userid" />
-<input hidden id="ImageSRC" />
-<div id="UserInfoModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="VenderSelectModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" style="color:skyblue">User Inforamtion</h4>
+                <h4 class="modal-title" id="myModalLabel">Create Invoice</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">Fisrt Name:</div>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                            <input class="form-control" type="text" required id="txtFname" placeholder="First Name" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">Insertion:</div>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="txtInsertion" placeholder="insertion" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">Last Name:</div>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                            <input class="form-control" type="text" required id="txtLname" placeholder="Last Name" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">E-mail:</div>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="txtEmail" placeholder="Email" disabled="disabled" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">DOB:</div>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                            <input class="form-control" type="date" required id="TxtDob" placeholder="Date of Birth" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="form-group">gender:</div>
-                    </div>
-                    <div class="col-sm-7">
-                        <div class="form-group">
-                            <label class="btn btn-success"><input type="radio" name="gender" value="1"> Male</label>
-                            <label class="btn btn-success"><input type="radio" name="gender" value="2"> Female</label>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3">
-                    </div>
-                    <div class="col-sm-7">
-                        <div class="form-group">
-                            <a href="#" id="changeImage">Change Image</a> | <a href="#" id="changePWD">Change Password</a>
-                        </div>
-                    </div>
-                </div>
+                <select id="venderSelect" class="form-control"></select>
+                <hr />
+                <select id="SelectTypeQutation1" class="form-control">
+                    <option value="0">Select Type</option>
+                    <option value="1">Good</option>
+                    <option value="2">Services</option>
+                </select>
             </div>
+
             <div class="modal-footer">
-                <button type="button" id="SaveuserInfo" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelserInfo" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                <button type="button" id="VenderClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right" style="padding-left: 10px"></i></button>
+                <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
+
             </div>
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
-
-<div id="ImageModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" style="color:skyblue">Change Image</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <div class="mydiv">
-                                <img id="Useimage" alt="user Image" style="min-height:50px; min-width:100px; max-height:200px; max-width:200px; border:1px groove" /><br />
-                            </div>
-                            <input type="file" id="uploadimg" class="btn btn-success" style="width:200px" />
-                        </div>
-                    </div>
-
-                    <div class="col-sm-">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="SaveuserImage" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelserImage" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div id="ChangePasswordModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" style="color:skyblue">Change Image</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="recoverform">
-                    <div class="form-group ">
-                        <div class="col-xs-12">
-                            <input class="form-control" id="CurrentPassword" type="password" required="" placeholder="Current Password">
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-xs-12">
-                            <input class="form-control" id="NewPassowrd" type="password" required="" placeholder="New Password">
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <div class="col-xs-12">
-                            <input class="form-control" id="ConfirmPassword" type="password" required="" placeholder="Confirm Password">
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="SaveChangePassword" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelChangePassword" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-
-@*load view Here*@
 
 <div class="modal fade bs-example-modal-lg" id="CreateNewContactModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
@@ -312,59 +187,12 @@
     <!-- /.modal-dialog -->
 </div>
 
-@*vender model*@
 
-<div class="modal fade bs-example-modal-lg" id="AddNewVenderModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">Maak nieuwe factuur</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h4>Naam van de verkoper:</h4>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required id="VenderName" placeholder="Naam van de verkoper">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h4>Adres:</h4>
-                    </div>
-                    <div class="col-sm-9">
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required id="VenderAddress" placeholder="Adres">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="SaveVender" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-save" style="padding-right: 10px"></i>opslaan</button>
-                <button type="button"  class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Dichtbij</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
+@*load view Here*@
 
 @* selection model*@
 
-
-
 <script>
-
-
     $(document).ready(function () {
         $('#btn-QutationNew').click(function () {
 
@@ -372,211 +200,24 @@
             $('#QutationContactModel').modal('show');
         });
 
-        $('#SelectContacts1').change(function () {
-
-            showRequiredModel = "QutationContactModel";
-            var value = $(this).val();
-            if (value == "AddNewClientSelect") {
-
-                $('#QutationContactModel').modal('hide');
-
-                $('#ModelHeading').text("Maak nieuwe klant");
-                $("#TypeContacts").find("option").remove();
-                $("#TypeContacts").prepend("<option value=Customer>" + 'Klant' + "</option>");
-                $('#CreateNewContactModal1')
-
-
-                .modal('show');
-
-            }
-
-        });
-
-
-        $(document).ready(function () {
-
             $('#btn-InvoiceNew').click(function () {
                 LoadVernder();
                 $('#VenderSelectModel').modal('show');
             });
 
-
-        });
-
     });
+    $('#venderSelect').change(function () {
 
+        var value = $(this).val();
+        if (value == "AddNewVenderSelect") {
+            //showRequiredModel = "";
+            $('#VenderSelectModel').modal('hide');
+            $('#ModelHeading').text("Maak nieuwe vender");
+            $("#TypeContacts").find("option").remove();
+            $("#TypeContacts").prepend("<option value=Vender>" + 'verkoper' + "</option>");
+            $('#CreateNewContactModal1').modal('show');
 
-    $('#SaveNewContacts').click(function () {
-        var res = validateContactQutation();
-        if (res == false) {
-            return false;
-        }
-        else {
-
-            $.ajax({
-                url: '/MVCClient/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ContactName: $('#ContactName').val(),
-                    ContactAddress: $('#ContactAddress').val(),
-                    Type: $('#TypeContacts option:selected').val(),
-                    StreetNumber: $('#StreetNumber').val(),
-                    PostalCode: $('#PostalCode').val(),
-                    City: $('#City').val(),
-                    LandLine: $('#LandLine').val(),
-                    telephone: $('#telephone').val(),
-                    Mobile: $('#Mobile').val(),
-                    Website: $('#Website').val(),
-                    BillingEmail: $('#BillingEmail').val(),
-                    Remarks: $('#Remarks').val(),
-                    Status: $('#Status option:selected').text(),
-                    Company_Id: localStorage.getItem('CompanyID')
-                },
-                success: function (response) {
-                    if (response == '201') {
-
-                        if (showRequiredModel == "QutationContactModel")
-                        {
-                            $('#QutationContactModel').modal('show');
-                            $('#CreateNewContactModal1').modal('hide');
-                        }
-                        else
-                        {
-                            $('#VenderSelectModel').modal('show');
-                            $('#CreateNewContactModal1').modal('hide');
-                        }
-
-                        clearContectTextBox1();
-                        SuccessInsertConatct1();
-                        LoadContactsQuIndex();
-                        LoadVernder();
-                    }
-                    else {
-                        alert(response);
-                    }
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
         }
 
     });
-
-    function clearContectTextBox1() {
-        $('#ContactsId').val("");
-        $('#ContactName').val("");
-        $('#ContactAddress').val("");
-        $('#Type').val("");
-        $('#StreetNumber').val("");
-        $('#PostalCode').val("");
-        $('#City').val("");
-
-        $('#LandLine').val("");
-        $('#telephone').val("");
-        $('#Mobile').val("");
-        $('#Website').val("");
-        $('#BillingEmail').val("");
-        $('#BillingEmail').val("");
-
-        $('#UpdateContacts').hide();
-        $('#SaveNewContacts').show();
-        //$('#Name').css('border-color', 'lightgrey');
-        //$('#Age').css('border-color', 'lightgrey');
-        //$('#State').css('border-color', 'lightgrey');
-        //$('#Country').css('border-color', 'lightgrey');
-    }
-
-    function SuccessInsertConatct1() {
-        $.toast({
-            heading: 'Success',
-            text: 'Opration Successfully completed',
-            icon: 'info',
-            loader: true,        // Change it to false to disable loader
-            loaderBg: '#9EC600'  // To change the background
-        })
-    }
-
-    function validateContactQutation() {
-        var isValid = true;
-        if ($('#ContactName').val().trim() == "") {
-            $('#ContactName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ContactName').css('border-color', 'lightgrey');
-        }
-        if ($('#ContactAddress').val().trim() == "") {
-            $('#ContactAddress').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ContactAddress').css('border-color', 'lightgrey');
-        }
-
-        return isValid;
-    }
-
-    $(document).ready(function () {
-        $("input[type='radio']").click(function () {
-            var radioValue = $("input[name='ClientType']:checked").val();
-            if (radioValue == "Private") {
-                $('#rowiddd').hide(1000);
-                $('#rowiddd2').show(1000);
-
-            }
-            else {
-                $('#rowiddd2').hide(1000);
-                $('#rowiddd').show(1000);
-
-
-            }
-        });
-
-        $('#rowiddd2').hide();
-
-    });
-
-    $('#CancelContactsQt').click(function ()
-    {
-        if (showRequiredModel == "QutationContactModel") {
-
-            $('#QutationContactModel').modal('show');
-            $('#CreateNewContactModal1').modal('hide');
-        }
-        else {
-            $('#VenderSelectModel').modal('show');
-            $('#CreateNewContactModal1').modal('hide');
-        }
-    });
-
-    function LoadContactsQuIndex() {
-
-        $("#SelectContacts1").find("option").remove();
-
-        $("#SelectContacts1").prepend("<option value=0>" + 'Select Client' + "</option>");
-        $("#SelectContacts1").append("<option value=AddNewClientSelect>" + 'Add New Client' + "</option>");
-
-        $.ajax({
-            url: "/MVCClient/GetContacts",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-                $.each(data, function (key, item) {
-
-                    $('#SelectContacts1').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
-
-                });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
-
 </script>
