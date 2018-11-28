@@ -135,10 +135,6 @@ namespace InvoiceDiskLast.Controllers
             SearchModel _model = new SearchModel();
             try
             {
-
-
-
-
                 if (_searchModel.FromDate > _searchModel.Todate)
                 {
                     ViewBag.massage = "From Date must be Less from To Date";
@@ -494,6 +490,9 @@ namespace InvoiceDiskLast.Controllers
                 string AC = "";
                 foreach (var itmen in LCAT)
                 {
+                    drr = 0.00;
+                    Crr = 0.00;
+
                     listAc.Add(new Control_Head_Account_tran_ViewModel { ControlAccountId = itmen.ControlAccountId, ControleAccountTitile = itmen.ControleAccountTitile });
 
 

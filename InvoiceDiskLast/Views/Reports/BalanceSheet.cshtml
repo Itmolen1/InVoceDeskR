@@ -72,11 +72,20 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6 pull-right">
-                  20000
-              </div>  
-                <div class="col-md-6 pull-right">
-                  <span id="SumofDr"></span>
+                <div class="col-md-3 pull-right">
+                    <span id="AssetDr"></span>
+                </div>
+                <div class="col-md-3 pull-right">
+                    <span id="AssetCr"></span>
+                </div>
+
+
+                <div class="col-md-3 pull-right">
+                    <span id="LiabilitDr"></span>
+                </div>
+
+                <div class="col-md-3 pull-right">
+                    <span id="LiabilitCr"></span>
                 </div>
             </div>
 
@@ -90,14 +99,15 @@
     
 
 <script>
+
+    var SumOfAssetDr, SumOfAssetCr, SumOfLiabbilityDr, SumOfLiabbilityCr = 0;
+
     var count = 1;
     var count2 = 1;
     var count3 = 1;
     var sumofDRAsset = 0;
     var sumofCrAsset = 0;
     $(document).ready(function () {
-
-        //var d = new Date();
 
 
         $.ajax({
@@ -108,7 +118,7 @@
                 var trHTML = '';
 
                 $.each(response, function (i, item) {
-                  
+
                     if (count == 1) {
                         // alert(count);
                         if (item.ControleAccountTitile == 'Assets') {
@@ -121,14 +131,29 @@
                     if (item.ControleAccountTitile == 'Assets') {
 
                         $('#BalanceSheetTable').append('<tr><td>'
-                              + item.HeadAccountTitle +  '</td><td></td><td></td></tr>');
+                              + item.HeadAccountTitle + '</td><td></td><td></td></tr>');
                     }
 
 
                     if (item.ControleAccountTitile == 'Assets') {
                         $('#BalanceSheetTable').append('<tr><td>'
                               + item.AccountTitle + '</td><td>' + item.AmountDebit + '</td><td>' + item.AmountCredit + '</td></tr>');
-                        sumofDRAsset = sumofDRAsset + item.AmountDebit;
+
+                        if (!NAN(item.AmountDebit)) {
+                            alert(SumOfAssetDr);
+                            SumOfAssetDr =parseFloat(SumOfAssetDr + item.AmountDebit);
+                            $('#AssetDr').text(SumOfAssetDr);
+                           
+
+                        }
+                        if (!NaN(item.AmountCredit)) {
+
+                            SumOfAssetCr = parseFloat(SumOfAssetCr + item.AmountCredit);
+                        }
+
+
+                      
+                        $('#AssetCr').text(SumOfAssetCr);
                     }
                     if (count2 == 1) {
 
@@ -155,13 +180,21 @@
                     }
                     if (item.AccountTitle != null && item.ControleAccountTitile == 'Liabilites' || item.ControleAccountTitile == 'Equity') {
                         $('#tbl2').append('<tr><td>'
-                              + item.AccountTitle + '</td><td>' + item.AmountDebit + '</td><td>' + item.AmountCredit + '<td></tr>');
-                    }
+                            + item.AccountTitle + '</td><td>' + item.AmountDebit + '</td><td>' + item.AmountCredit + '<td></tr>');
 
-                    
+                        if (!NAN(item.AmountCredit)) {
+                            SumOfLiabbilityCr = SumOfLiabbilityCr + item.AmountCredit;
+                            $('#LiabilitDr').text(SumOfLiabbilityDr);
+                        }
+                        if (!NaN(item.AmountDebit)) {
+
+                            SumOfLiabbilityDr = SumOfLiabbilityDr + item.AmountDebit;
+                             $('#LiabilitCr').text(SumOfLiabbilityCr);
+                        }
+                    }
                 });
 
-                $('#SumofDr').val(sumofDRAsset +'as');
+                $('#SumofDr').val(sumofDRAsset + 'as');
             },
             error: function (e) {
                 $("#BalanceSheetTable").html(e.responseText);
