@@ -26,7 +26,6 @@
 
 }
 
-
 <div class="container">
 
     @*<input type="hidden"  value=" " id="PurchaseOrderID"/>*@
@@ -143,7 +142,7 @@
                             <div class="col-sm-2">Qutation Date:</div>
                             <div class="col-sm-4">
 
-                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "QutationDate" } })
+                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker", id = "QutationDate" } })
                                 @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-sm-6"></div>
@@ -163,7 +162,7 @@
                             <div class="col-sm-2">Due Date:</div>
                             <div class="col-sm-4">
 
-                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "DueDate", title = "Due Date", required = "required" } })
+                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker", id = "DueDate", title = "Due Date", required = "required" } })
                                 @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
 
                             </div>
@@ -573,18 +572,16 @@
 </div>
 
 
+@*<script>
+    $(document).ready(function () {
+        $('#QutationDate').bootstrapMaterialDatePicker({ weekStart: 0, time: false });
+        $('#QutationDate').bootstrapMaterialDatePicker({ weekStart: 0, time: false });
 
-
-
-
-
-
-
-
-
-
-
+    });
+</script>*@
 <script type="text/javascript">
+
+    
     var currentRow1 = "";
     var r = "";
 
@@ -1004,6 +1001,7 @@
         calculatevatp();
         SUMOFALLPRODUCTp();
         sumofGrandModelp();
+       
     });
 
     $(document).ready(function () {
@@ -1795,4 +1793,8 @@
         });
     });
 
+
+    
 </script>
+
+
