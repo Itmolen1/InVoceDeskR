@@ -184,7 +184,8 @@
 
                         <div class="row">
                             <table class="table" id="orderdetailsitemsp">
-                                <thead class="thead-dark">
+                              
+                                  <thead class="thead-dark">
                                     <tr>
                                         <th>
                                             Goods
@@ -213,7 +214,7 @@
 
                                     </tr>
 
-                                 
+
                                 </thead>
 
                                 <tbody>
@@ -274,46 +275,46 @@
                                         }
                                     }
 
-
-
                                 </tbody>
-                                <tr id="mainrow">
-                                    <td>
-                                        <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
-                                        @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
-                                    </td>
-                                    <td>
+                              
+                             
+                                    <tr id="mainrow">
+                                        <td>
+                                            <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
+                                            @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                                        </td>
+                                        <td>
 
 
-                                        @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
-                                        @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                                            @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
+                                            @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
 
 
-                                    </td>
-                                    <td>
+                                        </td>
+                                        <td>
 
-                                        @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal" } })
-                                        @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
-                                    </td>
-                                    <td>
+                                            @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal" } })
+                                            @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                        </td>
+                                        <td>
 
-                                        <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
-                                            <option>0</option>
-                                            <option>6</option>
-                                            <option>21</option>
-                                        </select>
+                                            <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
+                                                <option>0</option>
+                                                <option>6</option>
+                                                <option>21</option>
+                                            </select>
 
-                                    </td>
-                                    <td>
+                                        </td>
+                                        <td>
 
-                                        <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
+                                            <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
 
-                                </tr>
-
-                            </table>
+                                    </tr>
+                               
+                            </table >
                         </div>
                         <div class="row">
                             <div id="OrderItems">
@@ -737,16 +738,22 @@
         currentRow1 = $(this).closest("tr");
 
         var isAllValid = true;
-        if ($("#SelectProductQutationp").val() == "0") {
+        if ($("#mainrow #SelectProductQutationp").val() == "0") {
             isAllValid = false;
             alert("Please select Item");
             return;
         }
 
-        if ($(".PurchaseQuantity").val() == 0) {
+        if ($("#mainrow .PurchaseQuantity").val() == 0) {
             isAllValid = false;
             alert("Please select quantity");
         }
+
+        if ($("#mainrow .PurchaseItemRate").val() == 0) {
+            isAllValid = false;
+            alert("please provide Item rate");
+        }
+
 
         if (isAllValid) {
             var $newRowp = $("#mainrow").clone().removeAttr('id');
@@ -759,11 +766,11 @@
             $('span.error', $newRowp).remove();
             $('#orderdetailsitemsp').append($newRowp);
 
-            $('#SelectProductQutationp').not("tbody").val('0');
-            $('thead #PurchaseQuantity ').val('');
-            $('thead #PurchaseItemRate ').val('');
-            $('thead #PurchaseTotal ').val('');
-            $('thead #VATp ').val('0');
+            $('#mainrow #SelectProductQutationp').not("tbody").val('0');
+            $('#mainrow #PurchaseQuantity ').val('');
+            $('#mainrow #PurchaseItemRate ').val('');
+            $('#mainrow #PurchaseTotal ').val('');
+            $('#mainrow #VATp ').val('0');
 
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
@@ -773,7 +780,7 @@
             sumofGrandModelp();
 
 
-            $('#SelectVATp').val(0);
+            $('#mainrow #SelectVATp').val(0);
         }
     });
     //end of adding row
@@ -965,9 +972,10 @@
     function LoadProductSelect()
     {
         LoadProductUnitPurchase();
-        $("#SelectProductQutationp").find("option").remove();
-        $("#SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $("#mainrow #SelectProductQutationp").find("option").remove();
+        $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
 
         $.ajax({
             url: "/MVCProduct/GetProduct",
@@ -978,7 +986,7 @@
             dataType: "json",
             success: function (data) {
                 $.each(data, function (key, item) {
-                    $('#SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                    $('#mainrow #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
                 });
             },
             Error: function (errormessage) {
@@ -1060,19 +1068,18 @@
     $("#Submitp").click(function () {
         var ValidOrNot=validateQutationAddOrEdit();
 
+        debugger;
+
         if(ValidOrNot!=true){
             return true;
         }
         else{
 
-
-
-
             var isAllValid = true;
             $('#orderItemError').text('');
             var list = [];
             var errorItemCount = 0;
-            $('#orderdetailsitemsp > tbody > tr ').each(function (index, ele) {
+            $('#orderdetailsitemsp > tbody > tr').not("tr:last").each(function (index, ele) {
                 if ($('#SelectProductQutationp', this).val() == '0' ||
                     (parseInt($('.PurchaseQuantity', this).val()) || 0) == 0 ||
                     $('.ratep', this).val() == "" ||
