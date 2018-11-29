@@ -207,7 +207,7 @@
 
                                 </thead>
 
-                                <tbody>
+                                <tbody class="tbody">
 
 
                                     @if (ViewBag.PurchaseDatailsList != null)
@@ -500,7 +500,7 @@
         //if (!isNaN(grandtotal) && grandtotal.length != 0) {
     }
     function calculatevatp() {
-        if ($('#orderdetailsitemsp tbody tr').length == 0) {
+        if ($('#orderdetailsitemsp .tbody tr').length == 0) {
             $('#btwop').text('0.00');
             $('#BTW6p').text('0.00');
             $('#BTW21p').text('0.00');
@@ -604,7 +604,7 @@
             $("#BTW21p").text('0.00');
         }
 
-        if ($('#orderdetailsitemsp tbody tr').length == 0) {
+        if ($('#orderdetailsitemsp .tbody tr').length == 0) {
 
             $('#SubTotalp').text();
             $('#TotalBTWp').text();
@@ -702,7 +702,7 @@
 
                 var BTW21 = $('#BTW21p').text();
                 $('#BTW21p').text();
-                $('#BTW21p').text(parseFloat(BTW21 - totalvat21.toFixed(2)));
+                $('#BTW21p').text(parseFloat(BTW21 - totalvat21).toFixed(2));
 
             }
         }
@@ -710,7 +710,7 @@
         SUMOFALLPRODUCTp();
         sumofGrandModelp();
 
-        if ($('#orderdetailsitemsp tbody tr').length == 0) {
+        if ($('#orderdetailsitemsp .tbody tr').length == 0) {
             $('#SubTotalp').text('0.00');
             $('#TotalBTWp').text('0.00');
             $('#gtotalp').text('0.00');
@@ -736,7 +736,7 @@
         var quantity = $(this).val();  // get current row 1st TD value
         var Price = currentRow.find("td:eq(2)").find('input').val();
         var total = quantity * Price;
-        currentRow.find('td:eq(3)').find('input').val(total);
+        currentRow.find('td:eq(3)').find('input').val(total.toFixed(2));
     })
 
     $(document).on('keyup', "#orderdetailsitemsp tbody .PurchaseItemRate", function () {
@@ -746,7 +746,7 @@
         var quantity = currentRow.find("td:eq(1)").find('input').val(); // get current row 1st TD value
         var Price = $(this).val();
         var total = quantity * Price;
-        currentRow.find('td:eq(3)').find('input').val(total);
+        currentRow.find('td:eq(3)').find('input').val(total.toFixed(2));
         var sum = 0;
         var vatValue = currentRow1.find('.VATp option:selected').val();
         if (vatValue == 0) {
@@ -971,7 +971,7 @@
                     }
                     list.push(orderItem);
                 }
-            });
+            }); PurchaseItemRate
 
             if (errorItemCount > 0) {
                 $("#orderItemError").text(errorItemCount + "Invalid entry in order itme list.");
@@ -1322,7 +1322,7 @@
     $(document).ready(function () {
 
         $(document).on('click', '#RemoveEdit1', function () {
-
+            debugger;
             var row = $(this).closest('tr');
             var PurchaseOrderId = $('#PurchaseOrderID').val();
             var purchaseTotal = row.find('td').find('.PurchaseTotal').val();
@@ -1344,6 +1344,7 @@
                 data: purchase,
                 success: function (data) {
                     if (data.Status == "Success") {
+                      
                         $("#" + PurchaseOrderDetailId).remove();
                         calculatevatp();
                         SUMOFALLPRODUCTp();

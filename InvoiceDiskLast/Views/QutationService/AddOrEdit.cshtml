@@ -498,83 +498,13 @@
         btw21p = isNaN(btw21p) ? 0 : btw21p;
         totalbtwp = isNaN(totalbtwp) ? 0 : totalbtwp;
         grandtotalp = parseFloat(btw6p) + parseFloat(btw21p) + parseFloat(totalbtwp);
+
         var t = parseFloat(grandtotalp);
         $('#gtotalp').text(t.toFixed(2));
         //
         //if (!isNaN(grandtotal) && grandtotal.length != 0) {
     }
-    function calculatevatp() {
-        if ($('#QutationServiceDetail tbody tr').length == 0) {
-            $('#btwop').text('0.00');
-            $('#BTW6p').text('0.00');
-            $('#BTW21p').text('0.00');
-            $('#gtotalp').val('0.00');
-
-            $('#TotalBTWp').text('0.00');
-            $('#TotalBTWp').text('0.00');
-            $('#SubTotalp').text('0.00');
-
-        }
-        else {
-
-            var sum0 = 0;
-            var total0 = 0;
-            $('#QutationServiceDetail tbody tr').each(function () {
-                $('#BTW0p').text();
-
-                r = $(this).closest('tr');
-                var value = r.find('.VATp  option:selected').val();
-                if (r.find('.VATp   option:selected').val() == 0) {
-                    total0 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total0) && total0.length != 0) {
-                        sum0 += parseInt(total0);
-                    }
-                    var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
-                    var totalr = Math.round(totalvat0, 2);
-                    $('#BTW0p').text(totalvat0.toFixed(2));
-                }
-                else {
-                    $('#BTW0p').text('0.00');
-                }
-            })
-        }
-
-        var sum6 = 0;
-        var total6 = 0;
-        $('#QutationServiceDetail tbody tr').each(function () {
-            var r = $(this).closest('tr');
-            var value = r.find('.VATp   option:selected').val();
-            if (r.find('.VATp   option:selected').val() == 6) {
-                total6 = r.find('td:eq(3)').find('input').val();
-                if (!isNaN(total6) && total6.length != 0) {
-                    sum6 += parseInt(total6);
-                }
-                var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
-                var totalr = Math.round(totalvat6, 2);
-                $('#BTW6p').text(totalvat6.toFixed(2));
-            }
-        })
-
-        var sum21 = 0;
-        var total21 = 0;
-        $('#QutationServiceDetail tbody  tr ').each(function () {
-            //$('#BTW21').text();
-            var r = $(this).closest('tr');
-            var value = r.find('.VATp   option:selected').val();
-            if (r.find('.VATp   option:selected').val() == 21) {
-
-                total21 = r.find('td:eq(3)').find('input').val();
-                if (!isNaN(total21) && total21.length != 0) {
-                    sum21 += parseInt(total21);
-                }
-                var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
-
-                $('#BTW21p').text(totalvat21.toFixed(2));
-            }
-
-        })
-        RowCountep();
-    }
+ 
     function RowCountep() {
 
         var rowCount6 = 0;
@@ -583,12 +513,9 @@
 
         $('#QutationServiceDetail tbody tr td').each(function () {
 
-
             var EquationResult = $(this).find('.VATp').val();
-
             if (EquationResult == 6) {
                 rowCount6++;
-
             }
             else if (EquationResult == 21) {
                 rowCount21++;
@@ -608,7 +535,7 @@
             $("#BTW21p").text('0.00');
         }
 
-        if ($('#QutationServiceDetail tbody tr').length == 0) {
+        if ($('#QutationServiceDetail .tbody tr').length == 0) {
 
             $('#SubTotalp').text();
             $('#TotalBTWp').text();
@@ -670,12 +597,12 @@
             $('span.error', $newRowp).remove();
             $('#QutationServiceDetail').append($newRowp);
 
-            $('#mainrow #SelectProductQutationp').val('0');
+            $('#mainrow  #SelectProductQutationp').val('0');
             $('#mainrow .Quantity ').val('');
             $('#mainrow .PurchaseItemRate ').val('');
-            $('#mainrow .PurchaseTotal ').val('');
-            $('#mainrow #VATp ').val('0');
-            $('#mainrow .PurchaseTotal ').val('0');
+            $('#mainrow  #PurchaseTotal ').val('');
+            $('#mainrow  #VATp ').val('0');
+           
 
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
@@ -702,17 +629,16 @@
             $('#BTW6p').text();
             $('#BTW6p').text(parseInt(BTW6 - totalvat6.toFixed(2)));
 
-        }
+         }
         if (vat == 21) {
             var currentRow = $(this).closest('tr');
             var vat21 = currentRow.find('.VATp  option:selected').val();
             var Total21 = currentRow.find('.PurchaseTotal').val();
             if (vat == 21) {
                 var totalvat21 = parseFloat(Total21 / 100) * 21 + (Total21 - Total21);
-
                 var BTW21 = $('#BTW21p').text();
                 $('#BTW21p').text();
-                $('#BTW21p').text(parseFloat(BTW21 - totalvat21.toFixed(2)));
+                $('#BTW21p').text(parseFloat(BTW21  - totalvat21).toFixed(2));
 
             }
         }
@@ -720,7 +646,10 @@
         SUMOFALLPRODUCTp();
         sumofGrandModelp();
 
-        if ($('#QutationServiceDetail tbody tr').length == 0) {
+        if ($('#QutationServiceDetail .tbody tr').length == 0) {
+            
+            debugger;
+
             $('#SubTotalp').text('0.00');
             $('#TotalBTWp').text('0.00');
             $('#gtotalp').text('0.00');
@@ -752,7 +681,7 @@
 
 
 
-    $(document).on('keyup', " thead .Quantity", function () {
+    $(document).on('keyup', " #mainrow .Quantity", function () {
 
         debugger;
         var currentRow = $(this).closest("tr");
@@ -762,7 +691,7 @@
         currentRow.find('td:eq(3)').find('input').val(total);
     })
 
-    $(document).on('keyup', " thead .PurchaseItemRate", function () {
+    $(document).on('keyup', "#mainrow .PurchaseItemRate", function () {
 
         debugger;
         var currentRow = $(this).closest("tr");
@@ -1526,11 +1455,93 @@
         });
     }
 
-    
+   
 
-    $(document).ready(function () {
+ 
+
+     function calculatevatp() {
+        if ($('#QutationServiceDetail .tbody tr').length == 0) {
+
+            $('#btwop').text('0.00');
+            $('#BTW6p').text('0.00');
+            $('#BTW21p').text('0.00');
+            $('#gtotalp').val('0.00');
+
+            $('#TotalBTWp').text('0.00');
+            $('#TotalBTWp').text('0.00');
+            $('#SubTotalp').text('0.00');
+
+        }
+        else {
+
+            var sum0 = 0;
+            var total0 = 0;
+            $('#QutationServiceDetail tbody tr').each(function () {
+                $('#BTW0p').text();
+
+                r = $(this).closest('tr');
+                var value = r.find('.VATp  option:selected').val();
+                if (r.find('.VATp   option:selected').val() == 0) {
+                    total0 = r.find('td:eq(3)').find('input').val();
+                    if (!isNaN(total0) && total0.length != 0) {
+                        sum0 += parseInt(total0);
+                    }
+                    var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
+                    var totalr = Math.round(totalvat0, 2);
+                    $('#BTW0p').text(totalvat0.toFixed(2));
+                }
+                else {
+                    $('#BTW0p').text('0.00');
+                }
+            })
+        }
+
+        var sum6 = 0;
+        var total6 = 0;
+        $('#QutationServiceDetail tbody tr').each(function () {
+            var r = $(this).closest('tr');
+            var value = r.find('.VATp   option:selected').val();
+            if (r.find('.VATp   option:selected').val() == 6) {
+                total6 = r.find('td:eq(3)').find('input').val();
+                if (!isNaN(total6) && total6.length != 0) {
+                    sum6 += parseInt(total6);
+                }
+                var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
+                var totalr = Math.round(totalvat6, 2);
+                $('#BTW6p').text(totalvat6.toFixed(2));
+            }
+        })
+
+        var sum21 = 0;
+        var total21 = 0;
+        $('#QutationServiceDetail tbody  tr ').each(function () {
+            //$('#BTW21').text();
+            var r = $(this).closest('tr');
+            var value = r.find('.VATp   option:selected').val();
+            if (r.find('.VATp   option:selected').val() == 21) {
+
+                total21 = r.find('td:eq(3)').find('input').val();
+                if (!isNaN(total21) && total21.length != 0) {
+                    sum21 += parseInt(total21);
+                }
+                var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
+
+                $('#BTW21p').text(totalvat21.toFixed(2));
+            }
+
+        })
+        RowCountep();
+    }
+
+
+
+       $(document).ready(function () {
 
         $(document).on('click', '#RemoveEdit2', function () {
+
+
+            debugger;
+
             var row = $(this).closest('tr');
 
             var QIDId = row.find('td').find('.QutationDetailId').val();
@@ -1552,14 +1563,16 @@
                 dataType: "json",
                 data: data,
                 success: function (data) {
+
                     if (data.Status == "Success") {
+                  
                         $("#" + QIDId).remove();
-                        calculatevat();
-                        SUMOFALLPRODUCT();
-                        sumofGrandModel();
+                        calculatevatp();
+                        SUMOFALLPRODUCTp();
+                        sumofGrandModelp();
                         swal({
-                            title: 'Qutation!',
-                            text: 'Qutation delete successfully!',
+                            title: 'service!',
+                            text: 'service delete successfully!',
                             type: 'success'
                         });
                     }
@@ -1579,10 +1592,14 @@
 
             });
         });
+
+
+
+
+
+           
+  
     });
-
-
-    
 </script>
 
 

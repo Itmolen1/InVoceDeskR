@@ -1522,7 +1522,7 @@ namespace InvoiceDiskLast.Controllers
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
 
-                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type + "/" + CompanyID).Result;
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type + "/" + cdd).Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
@@ -1640,7 +1640,7 @@ namespace InvoiceDiskLast.Controllers
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
 
-                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type + "/" + CompanyID).Result;
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type + "/" + cdd).Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();

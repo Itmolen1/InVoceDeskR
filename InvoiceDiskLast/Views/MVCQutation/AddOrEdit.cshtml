@@ -947,6 +947,8 @@
         $(document).ready(function () {
 
             $(document).on('click', '#RemoveEdit', function () {
+                debugger;
+
                 var row = $(this).closest('tr');
 
                 var QIDId = row.find('td').find('.QutationDetailId').val();
@@ -1098,6 +1100,9 @@
 
 
         $('#orderdetailsitems').on('click', '.remove', function () {
+
+            debugger;
+
             var currentRow = $(this).closest('tr');
             var vat = currentRow.find('.VAT  option:selected').val();
             var Total = currentRow.find('.FTotal').val();
@@ -1118,7 +1123,7 @@
 
                     var BTW21 = $('#BTW21').text();
                     $('#BTW21').text();
-                    $('#BTW21').text(parseFloat(BTW21 - totalvat21.toFixed(2)));
+                    $('#BTW21').text(parseFloat(BTW21 - totalvat21).toFixed(2));
 
                 }
             }
