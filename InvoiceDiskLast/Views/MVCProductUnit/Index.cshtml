@@ -56,7 +56,17 @@
             "columns": [
                     { "data": "ProductUnitID", "name": "ProductUnitID", "autoWidth": true },// key for edit delete
                     { "data": "ProductUnit", "name": "ProductUnit", "autoWidth": true },
-                    { "data": "ProductUnit", "name": "ProductUnit", "autoWidth": true },
+                     {
+                         render: function (data, type, row) {
+                             if (row.Status == true) {
+                                 return '<label class="switch"><input type="checkbox" onclick="EditClinetStatus(' + row.ProductUnitID + "," + row.Status + ')" checked><span class="slider round"></span></label>'
+
+                             }
+                             else {
+                                 return '<label class="switch"><input type="checkbox" onclick="EditClinetStatus(' + row.ProductUnitID + "," + row.Status + ')"><span class="slider round"></span></label>'
+                             }
+                         }
+                     },
                    
                     {
                         render: function (data, type, row) {
@@ -81,24 +91,14 @@
                 console.log(resultDataView);
                 $('#ProductUnit').val(resultDataView.ProductUnit);
                 $('#productubitId').val(resultDataView.ProductUnitID);
-
-
-                var st = resultDataView.Status;
-               
-                if (st == true)
-                {
-                   
-                    $('#SelectUnitStatus').val('1');
+                var st = resultDataView.Status;               
+                if (resultDataView.Status == true) {
+                    $('#SelectUnitStatus').val("1");
                 }
-                else
-                {
-                    $('#SelectUnitStatus').val('0');
+                else {
+                    $('#SelectUnitStatus').val("0");
                 }
-                //$('#SelectUnitStatus').text(resultDataView.Status);
-               
-               
-
-                $('#SelectUnitStatus').val(resultDataView.Status);
+             
                 $('#SaveUnit').hide();
                 $('#updateUnit').show();
                 $('#UnitModel').modal('show');
@@ -126,6 +126,31 @@
 
     $('#UpdateProductUnit').click(function () {
 
-
+        var dataUnit = {
+            ProductUnit: $('#ProductUnit').val(),
+            Status:  $('#SelectUnitStatus option:selected').text(),
+           
+            ProductUnitID: $('#productubitId').val()
+        }
+        $.ajax({
+            url: "/MVCProductUnit/AddorEdit",
+            type: "POST",
+            data: dataUnit,
+            success: function (dat) {
+                $('#productUnitTable').DataTable().ajax.reload();
+                CleartUnitTextBox();
+                $('#UnitModel').modal('hide');              
+                $.toast({
+                    heading: 'Success',
+                    text: 'Your opration has been successfuly completed `Thank you`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            },
+            Error: function (err) {
+                alert("erro");
+            }
+        });
     });
 </script>

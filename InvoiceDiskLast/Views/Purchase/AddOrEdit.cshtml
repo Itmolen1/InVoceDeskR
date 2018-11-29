@@ -862,12 +862,12 @@
 
     $(document).ready(function () {
         localStorage.removeItem("drpstatusvalue");
-        LoadProductSelect();
+        LoadProductSelect("Good");
 
     });
 
 
-    function LoadProductSelect()
+    function LoadProductSelect(pTypeGoodServices)
     {
         LoadProductUnitPurchase();
 
@@ -879,7 +879,7 @@
             url: "/MVCProduct/GetProduct",
             type: "Get",
             async: false,
-            data: {ProductStatus: "Good"},
+            data: {ProductStatus: pTypeGoodServices},
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (data) {
@@ -894,7 +894,7 @@
     }
 
     // product price by id
-    $('.pClassp').change(function () {
+    $('#mainrow .pClassp').change(function () {
 
         var currentRow=$(this).closest('tr');
 
@@ -902,6 +902,13 @@
         if (value == "AddNewProductSelect") {
             LoadProductUnit();
             //  $('#VenderSelectModel').modal('hide');
+            $('#UpdateProId').hide();          
+            $('select#Type option').each(function () {
+                if ($(this).text() == "Good") {
+                    this.selected = true;
+                    return;
+                }
+            });
             $('#CreateNewProductModal').modal('show');
         }
         else if (value == "0") {

@@ -894,6 +894,14 @@
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
             LoadProductUnit();
+            $('#UpdateProId').hide();
+            $('#SAveProdID').show();
+            $('select#Type option').each(function () {
+                if ($(this).text() == "Services") {
+                    this.selected = true;
+                    return;
+                }
+            });
             //  $('#VenderSelectModel').modal('hide');
             $('#CreateNewProductModal').modal('show');
         }
@@ -1382,7 +1390,7 @@
    
 
 
-    function LoadProductAdding1() {
+    function LoadProductAdding1(PtypeGoodServices) {
        
         $("#mainrow #SelectProductQutationp").find("option").remove();
         $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
@@ -1394,7 +1402,7 @@
             async: false,
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            data: { ProductStatus: 'Service' },
+            data: { ProductStatus: PtypeGoodServices },
             success: function (data) {
 
                 $.each(data, function (key, item) {

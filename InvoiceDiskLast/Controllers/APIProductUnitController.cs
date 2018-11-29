@@ -19,12 +19,14 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
        
        
-       [Route("api/GetProductUnit/{CompanyID:int}")]
-        public IHttpActionResult GetProductUnitTables(int CompanyID)
+       [Route("api/GetProductUnit/{CompanyID:int}/{Option:alpha}")]
+        public IHttpActionResult GetProductUnitTables(int CompanyID, string Option)
         {
           try
             {
-               List<MVCProductUnitModel> obProductUnit = db.ProductUnitTables.Where(x => x.CompanyId == CompanyID && x.Status == true).Select(c => new MVCProductUnitModel
+                if(Option == "All")
+                {
+                    List<MVCProductUnitModel> obProductUnit = db.ProductUnitTables.Where(x => x.CompanyId == CompanyID).Select(c => new MVCProductUnitModel
                     {
                         ProductUnitID = c.ProductUnitID,
                         ProductUnit = c.ProductUnit,
@@ -32,6 +34,21 @@ namespace InvoiceDiskLast.Controllers
                     }).ToList();
 
                     return Ok(obProductUnit);
+                }
+                else
+                {                  
+                        List<MVCProductUnitModel> obProductUnit = db.ProductUnitTables.Where(x => x.CompanyId == CompanyID && x.Status == true).Select(c => new MVCProductUnitModel
+                        {
+                            ProductUnitID = c.ProductUnitID,
+                            ProductUnit = c.ProductUnit,
+                            Status = c.Status,
+                        }).ToList();
+
+                        return Ok(obProductUnit);
+                    
+                }
+
+              
                 
             }
             catch (Exception ex)

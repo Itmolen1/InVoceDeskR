@@ -1671,8 +1671,8 @@
 
         });
 
-        function LoadProduct() {
-
+        function LoadProduct(PgoodServices) {
+            PgoodServices = "Good";
             if ($('#mainrow #SelectProductQutation').has('option').length > 0) {
                 return;
             }
@@ -1687,7 +1687,7 @@
                     async: false,
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
-                    data: { ProductStatus: "Good" },
+                    data: { ProductStatus: PgoodServices },
                     success: function (data) {
 
                         $.each(data, function (key, item) {
@@ -2167,7 +2167,16 @@
 
                 var value = $(this).val();
                 if (value == "AddNewPUnitSelect") {
-
+                    LoadProductUnit();
+                    //  $('#VenderSelectModel').modal('hide');
+                    $('#UpdateProId').hide();
+                    $('#SAveProdID').show();
+                    $('select#Type option').each(function () {
+                        if ($(this).text() == "Good") {
+                            this.selected = true;
+                            return;
+                        }
+                    });
                     $('#CreateNewProductModal').modal('hide');
                     $('#UnitModel').modal('show');
                 }
@@ -2336,6 +2345,9 @@
             var value = $(this).val();
             if (value == "AddNewProductSelect") {
                 LoadProductUnit();
+
+                $('#UpdateProId').hide();
+                $('#SAveProdID').show();
                 $('#CreateNewProductModal').modal('show');
             }
             else if (value == "0") {

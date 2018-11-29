@@ -42,7 +42,7 @@ namespace InvoiceDiskLast.Controllers
 
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnit/" + CompanyId).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnit/" + CompanyId + "/All").Result;
                 ProductunitList = response.Content.ReadAsAsync<List<MVCProductUnitModel>>().Result;
                 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -87,7 +87,7 @@ namespace InvoiceDiskLast.Controllers
         {
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnit/"+ CompanyId).Result;
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnit/"+ CompanyId +"/status").Result;
 
             var ProductUnitList = response.Content.ReadAsAsync<IEnumerable<MVCProductUnitModel>>().Result;
 

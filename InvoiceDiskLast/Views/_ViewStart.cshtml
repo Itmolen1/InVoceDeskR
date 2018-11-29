@@ -601,10 +601,12 @@
     }
 
     $('#venderSelect').change(function () {
-
+        showRequiredModel = "";
+        showRequiredModel = "PurchaseContactModel";
         var value = $(this).val();
         if (value == "AddNewVenderSelect") {
-            //showRequiredModel = "";
+           
+
             $('#VenderSelectModel').modal('hide');
             $('#ModelHeading').text("Maak nieuwe vender");
             $("#TypeContacts").find("option").remove();
@@ -865,18 +867,22 @@
 
     $('#CancelContactsQt').click(function () {
         if (showRequiredModel == "QutationContactModel") {
-
-            $('#QutationContactModel').modal('show');
             $('#CreateNewContactModal1').modal('hide');
+            $('#QutationContactModel').modal('show');
+           
+        }       
+        else if(showRequiredModel == "PurchaseContactModel") {
+            $('#CreateNewContactModal1').modal('hide');
+            $('#VenderSelectModel').modal('show');           
         }
-        else {
-            $('#VenderSelectModel').modal('show');
+        else if(showRequiredModel == "ContactModel")
+        {
             $('#CreateNewContactModal1').modal('hide');
         }
     });
 
     $('#SelectContacts1').change(function () {
-
+        showRequiredModel = "";
         showRequiredModel = "QutationContactModel";
         var value = $(this).val();
         if (value == "AddNewClientSelect") {
@@ -1060,6 +1066,10 @@
                                     CleartProdctTextBox();
                                     $('#CreateNewProductModal').modal('hide');
                                     SuccessInsertProduct();
+                                    LoadProductSelect("Good");
+                                    LoadProductAdding1("Services");
+                                    LoadProduct("Good");
+                                    LoadProductSelect();
                                 }
                             },
                             error: function () {
@@ -1079,4 +1089,95 @@
             type: "success",
         });
     }
+
+
+    function validateProduct() {
+        var isValid = true;
+        if ($('#ProductName').val().trim() == "") {
+            $('#ProductName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductName').css('border-color', 'lightgrey');
+        }
+        if ($('#SalePrice').val().trim() == "") {
+            $('#SalePrice').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePrice').val().trim() == "") {
+            $('#PurchasePrice').css('border-color', 'Red');
+            $('#PurchasePrice').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#OpeningQuantity').val() == "") {
+            $('#OpeningQuantity').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+        }
+        if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
+            if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+                $('#SalePrice').css('border-color', 'Red');
+                $('#PurchasePrice').css('border-color', 'Red');
+                isValid == false;
+                $.toast({
+                    heading: 'Sale amount less',
+                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+            }
+            else {
+                $('#PurchasePrice').css('border-color', 'lightgrey');
+                $('#SalePrice').css('border-color', 'lightgrey');
+            }
+        }
+        //if ($('#ProductUnitSelect').val() == 0) {
+        //    $('#ProductUnitSelect').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        //}
+
+        if ($('#VatValue').val() == "Select") {
+            $('#VatValue').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#VatValue').css('border-color', 'lightgrey');
+        }
+
+        if ($('#ProductUnitSelect').val() == 0) {
+            $('#ProductUnitSelect').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+
+    $('#ProductUnitSelect').change(function () {
+
+        var value = $(this).val();
+        if (value == "AddNewPUnitSelect") {
+            $('#CreateNewProductModal').modal('hide');
+
+            $('#SaveUnit').show();
+            $('#updateUnit').hide();
+
+            $('#UnitModel').modal('show');
+        }
+    });
 </script>

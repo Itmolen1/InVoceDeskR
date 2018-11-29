@@ -168,6 +168,7 @@ namespace InvoiceDiskLast.Controllers
                 int VatValue = ProductModel.VatValue;
                 if (ProductModel.ProductId == null)
                 {
+                    ProductModel.ProductStatus = true;
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
 
                    
