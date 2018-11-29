@@ -1,76 +1,47 @@
 ﻿
 @{
-    ViewBag.Title = "ViewQuation";
-}
-@model InvoiceDiskLast.Models.MVCQutationViewModel
-
-@{
 
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
-    var QutationModel = ViewBag.QutationDat;
+    var purchaseModel = ViewBag.Purchase;
 }
 
 
-<div class="row">
-    @if (TempData["EmailMessge"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong>@TempData["EmailMessge"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
-</div>
 
-<body class="well">
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+
+<body>
     <div class="row">
         <div class="col-lg-2 col-md-2 col-sm-1"></div>
-        <div class="col-lg-8 col-md-8 col-sm-10">
+        <div class="col-lg-8 col-md-8 col-sm-10" style="background-color:white">
             <div class="row" style="margin-left:0px;margin-right:0px;">
-
-                @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
-                {
-                    <input type="hidden" name="FilePath" id="FilePath" />
-                    <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
-                }
-
 
 
                 <div class="row" style="margin-left:0px;margin-right:0px;">
 
                     <div class="btn-group">
 
-                        <div class="dropdown">
-                            <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
-                                <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
-                                Send
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
+                     
 
-                                <li>@Html.ActionLink("Send qutation by Email", "InvoicebyEmail", "MVCQutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
-                                <li class="divider"></li>
-                                <li><a href="#"></a></li>
-                                <li class="divider"></li>
-                                <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
-                            </ul>
-                        </div>
                         <div style="margin-left:3px">
                             <div class="btn-group">
                                 <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                                @Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                                @Html.ActionLink("print concept", "Print", "MvcInvoiceServices", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
                             </div>
                         </div>
+                      
                         <div style="margin-left:3px">
-                            <a href="/MVCQutation/AddOrEdit/@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+                            <a href="/Purchase/InvoiceService/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
                         </div>
 
-                        <div style="margin-left:3px">
-                            <a href="/MVCQutation/Index/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
-                        </div>
+
                     </div>
+
+
                 </div>
             </div>
             <div style="margin-top:10px;border: 1px solid #CECECE;">
@@ -177,10 +148,17 @@
                 <div class="row">
                     <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
                     <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
-                        <label>Qutation Date:</label>
+                        <label>Factuurdatum</label>
                     </div>
+                    @{ 
+                        DateTime pdate = new DateTime();
+                        pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
+                        DateTime pddate = new DateTime();
+                        pddate= Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+                    }
+
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@QutationModel.QutationDate</label><br />
+                        <label>@pdate.ToShortDateString()</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>
@@ -188,10 +166,10 @@
                 <div class="row">
                     <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
                     <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
-                        <label>Qutation Number:</label>
+                        <label>Factuurnummer</label>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@QutationModel.RefNumber</label><br />
+                        <label>@purchaseModel.PurchaseRefNumber</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>
@@ -199,152 +177,184 @@
                 <div class="row">
                     <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
                     <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
-                        <label>Due Date:</label>
+                        <label>Vervalidatum</label>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@QutationModel.DueDate</label><br />
+                        <label>@pddate.ToShortDateString()</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>
 
 
-                <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
-                    ontvangt de offerte van ons voor de onderstaande services.
 
-                    <table id="mytable" class="table table-bordred table-striped table-responsive">
+                <div class="row" style="margin-right:66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                    will receive the invoice from us for the services below.
+
+                    <table id="mytable" class="table table-bordred">
                         <thead>
                             <tr>
-                                <th class="col-sm-4">
-                                    Product Name
+                                <th>
+                                    Services
                                 </th>
-                                <th class="col-sm-2">
-                                    Quantity
+                                <th>
+                                    Number of hour
                                 </th>
-                                <th class="col-sm-2">
-                                    Price
+                                <th>
+                                    Hourly rate
                                 </th>
-                                <th class="col-sm-2">
+                                <th>
                                     Total
                                 </th>
-                                <th class="col-sm-1">
-                                    Vat
+                                <th>
+                                    Vat %
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            @if (ViewBag.QutationDatailsList != null)
+                            @{
+
+                                int rowcount = 0;
+
+                            }
+
+                            @if (ViewBag.PurchaseDatailsList != null)
                             {
-                                foreach (var item in ViewBag.QutationDatailsList)
+                                foreach (var item in ViewBag.PurchaseDatailsList)
                                 {
-                                    <tr id="mainrow">
+                                    rowcount += 1;
+
+                                    <tr>
                                         <td>
-                                            @item.ItemName
+                                            @item.PurchaseItemName
                                         </td>
                                         <td>
-                                            @item.Quantity
-                                        </td>
-                                        <td>
-                                            @item.Rate
-                                        </td>
-                                        <td>
-                                            @item.Total
-                                        </td>
-                                        <td>
-                                            @item.Vat
+                                            @item.PurchaseQuantity
                                         </td>
 
+                                        <td>
+                                            @item.PurchaseItemRate
+                                        </td>
+                                        <td>
+                                            @item.PurchaseTotal
+
+                                        </td>
+                                        <td>
+                                            @item.PurchaseVatPercentage
+
+                                        </td>
 
                                     </tr>
                                 }
                             }
-
                         </tbody>
 
                     </table>
-                    <div class="col-lg-8 col-md-6 col-sm-2 col-xs-0"></div>
+                    <div class="col-md-8"></div>
 
-                    <div class="col-lg-4 col-md-8 col-sm-10">
+
+
+                    <div class="col-md-4">
                         <div class="row">
-                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                <label class="tex-right">Total excl. VAT:	€	</label>
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">Total excl. VAT:	€	</label>
                             </div>
-                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                <label class="text-right">@QutationModel.SubTotal</label>
-                            </div>
-                            <div class="col-lg-0 col-md-0 col-sm-0">
+                            <div class="col-sm-5">
+                                <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
                             </div>
                         </div>
 
                         <div class="row">
-                            @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+
+                            @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
                             {
-                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                    <label class="text-right">VAT 6%:	€	</label>
+
+
+                                <div class="col-sm-6">
+                                    <label class="tex pull-right">VAT 6%:	€	</label>
                                 </div>
-                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                    <label class="text-right">@QutationModel.TotalVat6</label>
-                                </div>
-                                <div class="col-lg-0 col-md-0 col-sm-0">
+                                <div class="col-sm-5 ">
+                                    <label class="tex pull-right">@purchaseModel.Vat6</label>
                                 </div>
                             }
                         </div>
 
                         <div class="row">
-                            @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+
+                            @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
                             {
-                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <div class="col-sm-6">
                                     <label class="tex pull-right">VAT 21%:	€</label>
                                 </div>
-                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                    <label class="tex pull-right">@QutationModel.TotalVat21</label>
-                                </div>
-                                <div class="col-lg-0 col-md-0 col-sm-0">
+                                <div class="col-sm-5">
+                                    <label class="tex pull-right">@purchaseModel.Vat21</label>
+
                                 </div>
                             }
+
+
                         </div>
                         <hr />
                         <div class="row">
-                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                <label class="text-right">Grand Total:</label>
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">Grand Total:</label>
                             </div>
 
-                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                <label class="text-right">€:@QutationModel.TotalAmount</label>
+                            <div class="col-sm-5">
+                                <label class="tex  pull-right">€:@purchaseModel.PurchaseTotoalAmount</label>
 
-                            </div>
-                            <div class="col-lg-0 col-md-0 col-sm-0">
                             </div>
                         </div>
-
                     </div>
-                    <div class="col-lg-7"> We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.</div>
-                    <div class="col-lg-5"></div>
 
-                    <div class="col-lg-7"> Met vriendelijke groet</div>
-                    <div class="col-lg-5"></div>
-
-                    <div class="col-lg-7" style="margin-top:10px"><b>@Contectdatas.ContactName</b></div>
-                    <div class="col-lg-5"></div>
-                    <div class="col-lg-7"><b>@CompanyDatas.CompanyName</b></div>
-                    <div class="col-lg-5"></div>
-                    <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
                 </div>
+
+
+
+
+
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+                    We hope that everything is clear. If you have any questions, please let us know.
+                </div>
+
+
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+                    With kind regards,
+                </div>
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+                    <label><b>@Contectdatas.ContactName</b></label>
+                </div>
+
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+                    <label><b>@CompanyDatas.CompanyName</b> </label>
+                </div>
+                <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+
         </div>
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
     </div>
 </body>
-<script>
+
+<script type="text/javascript">
+
 
     $(document).ready(function () {
-        var patth = localStorage.getItem('path');
-        $("#FilePath").val(patth);
-
-        if ($("#FilePath").val().length > 0) {
-            $('#DownloadFile1').submit();
+        var patth = localStorage.getItem('path1');
+        $("#FilePath1").val(patth);
+        if ($('input#FilePath1').val() == "") {
         }
-        $("#FilePath").val('');
-        localStorage.removeItem('path');
-    })
+        else {
+            $('#DownloadFileInvoice').submit();
+            $("#FilePath1").val('');
+            localStorage.removeItem('path1');
+        }
+    });
+
+
+
+
+
+
+
 </script>

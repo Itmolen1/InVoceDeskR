@@ -285,9 +285,6 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                //select* from ProductTable as p inner join PurchaseOrderDetailsTable as pdetain on p.ProductId=pdetain.PurchaseItemId
-                // inner join PurchaseOrderTable as po on  pdetain.PurchaseId=po.PurchaseOrderID where p.Type='Sirvice' and po.Status='Open'
-
                 ob = (from p in db.ProductTables
                       join pdet in db.PurchaseOrderDetailsTables on p.ProductId equals pdet.PurchaseItemId
                       join po in db.PurchaseOrderTables on pdet.PurchaseId equals po.PurchaseOrderID
@@ -311,24 +308,6 @@ namespace InvoiceDiskLast.Controllers
                           AddedDate = p.AddedDate,
                       }).ToList();
 
-                //ob = db.PurchaseOrderTables.Where(p => p.CompanyId == id && p.Status.ToLower() == Status.ToLower()).ToList().Select(p => new MvcPurchaseModel
-                //{
-                //    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
-                //    PurchaseID = p.PurchaseID,
-                //    PurchaseDate = (DateTime)p.PurchaseDate,
-                //    PurchaseDueDate = p.PurchaseDueDate,
-                //    PurchaseRefNumber = p.PurchaseRefNumber,
-                //    PurchaseSubTotal = p.PurchaseSubTotal,
-                //    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
-                //    PurchaseDiscountAmount = p.PurchaseOrderID,
-                //    PurchaseVatPercentage = p.PurchaseVatPercentage,
-                //    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
-                //    PurchaseVenderNote = p.PurchaseVenderNote,
-                //    Status = p.Status,
-                //    CompanyId = p.CompanyId,
-                //    UserId = p.UserId,
-                //    AddedDate = p.AddedDate,
-                //}).ToList();
 
                 return Ok(ob);
             }
@@ -342,10 +321,105 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-      
-  
 
-       
+        [Route("api/GetPurchaseServiceList/{type:alpha}/{CompanyId:int}")]
+        public IHttpActionResult GetPurchaseServiceList1(string type, int CompanyId)
+        {
+            object ob = new object();
+            try
+            {
+
+                IEnumerable<string> headerValues;
+                //var DBLIST = "";
+                var IDS = "";
+                var Status = "";
+
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                }
+                int id = Convert.ToInt32(IDS);
+
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId && p.Type== type).ToList().Select(p => new MvcPurchaseModel
+                {
+                    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
+                    PurchaseID = p.PurchaseID,
+                    PurchaseDate = (DateTime)p.PurchaseDate,
+                    PurchaseDueDate = p.PurchaseDueDate,
+                    PurchaseRefNumber = p.PurchaseRefNumber,
+                    PurchaseSubTotal = p.PurchaseSubTotal,
+                    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
+                    PurchaseDiscountAmount = p.PurchaseOrderID,
+                    PurchaseVatPercentage = p.PurchaseVatPercentage,
+                    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
+                    PurchaseVenderNote = p.PurchaseVenderNote,
+                    Status = p.Status,
+                    Type = p.Type,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+
+                    AddedDate = p.AddedDate,
+                }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Ok(ob);
+
+        }
+
+        [Route("api/GetPurchaseGoodsList/{type:alpha}/{CompanyId:int}")]
+        public IHttpActionResult GetPurchaseGoodsList1(string type, int CompanyId)
+        {
+            object ob = new object();
+            try
+            {
+
+                IEnumerable<string> headerValues;
+                //var DBLIST = "";
+                var IDS = "";
+                var Status = "";
+
+                if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("CompayID", out headerValues))
+                {
+                    IDS = headerValues.FirstOrDefault();
+                }
+                int id = Convert.ToInt32(IDS);
+
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId && p.Type == type).ToList().Select(p => new MvcPurchaseModel
+                {
+                    PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
+                    PurchaseID = p.PurchaseID,
+                    PurchaseDate = (DateTime)p.PurchaseDate,
+                    PurchaseDueDate = p.PurchaseDueDate,
+                    PurchaseRefNumber = p.PurchaseRefNumber,
+                    PurchaseSubTotal = p.PurchaseSubTotal,
+                    PurchaseDiscountPercenteage = p.PurchaseDiscountPercenteage,
+                    PurchaseDiscountAmount = p.PurchaseOrderID,
+                    PurchaseVatPercentage = p.PurchaseVatPercentage,
+                    PurchaseTotoalAmount = p.PurchaseTotoalAmount,
+                    PurchaseVenderNote = p.PurchaseVenderNote,
+                    Status = p.Status,
+                    Type = p.Type,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+
+                    AddedDate = p.AddedDate,
+                }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Ok(ob);
+
+        }
+
 
     }
 }

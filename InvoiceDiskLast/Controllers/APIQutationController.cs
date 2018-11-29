@@ -287,13 +287,13 @@ namespace InvoiceDiskLast.Controllers
 
 
         #region
-        [Route("api/GetQuatationSerViceList/{Type:alpha}")]
-        public IHttpActionResult GetQutationListForInvoiceService(string Type)
+        [Route("api/GetQuatationSerViceList/{Type:alpha}/{CompanyId:int}")]
+        public IHttpActionResult GetQutationListForInvoiceService(string Type, int CompanyId)
         {
             List<MVCQutationViewModel> _qutationList = new List<MVCQutationViewModel>();
             try
             {
-                _qutationList = db.QutationTables.Where(q => q.Type == Type).Select(p => new MVCQutationViewModel
+                _qutationList = db.QutationTables.Where(q => q.Type == Type && q.CompanyId== CompanyId).Select(p => new MVCQutationViewModel
                 {
                     QutationID = p.QutationID,
                     Qutation_ID = p.Qutation_ID,
