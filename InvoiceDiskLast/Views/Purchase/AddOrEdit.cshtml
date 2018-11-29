@@ -181,8 +181,8 @@
 
                         <div class="row">
                             <table class="table" id="orderdetailsitemsp">
-                              
-                                  <thead class="thead-dark">
+
+                                <thead class="thead-dark">
                                     <tr>
                                         <th>
                                             Goods
@@ -214,7 +214,7 @@
 
                                 </thead>
 
-                                <tbody>
+                                <tbody class="tbody">
 
 
                                     @if (ViewBag.PurchaseDatailsList != null)
@@ -273,45 +273,45 @@
                                     }
 
                                 </tbody>
-                              
-                             
-                                    <tr id="mainrow">
-                                        <td>
-                                            <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
-                                            @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
-                                        </td>
-                                        <td>
 
 
-                                            @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
-                                            @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                                <tr id="mainrow">
+                                    <td>
+                                        <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
+                                        @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
 
 
-                                        </td>
-                                        <td>
+                                        @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
+                                        @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
 
-                                            @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal" } })
-                                            @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
-                                        </td>
-                                        <td>
 
-                                            <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
-                                                <option>0</option>
-                                                <option>6</option>
-                                                <option>21</option>
-                                            </select>
+                                    </td>
+                                    <td>
 
-                                        </td>
-                                        <td>
+                                        @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal" } })
+                                        @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
 
-                                            <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
+                                        <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
+                                            <option>0</option>
+                                            <option>6</option>
+                                            <option>21</option>
+                                        </select>
 
-                                    </tr>
-                               
-                            </table >
+                                    </td>
+                                    <td>
+
+                                        <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
+
+                                </tr>
+
+                            </table>
                         </div>
                         <div class="row">
                             <div id="OrderItems">
@@ -507,7 +507,7 @@
         //if (!isNaN(grandtotal) && grandtotal.length != 0) {
     }
     function calculatevatp() {
-        if ($('#orderdetailsitemsp tbody tr').length == 0) {
+        if ($('#orderdetailsitemsp .tbody tr').length == 0) {
             $('#btwop').text('0.00');
             $('#BTW6p').text('0.00');
             $('#BTW21p').text('0.00');
@@ -611,12 +611,12 @@
             $("#BTW21p").text('0.00');
         }
 
-        if ($('#orderdetailsitemsp tbody tr').length == 0) {
+        if ($('#orderdetailsitemsp .tbody tr').length == 0) {
 
-            $('#SubTotalp').text();
-            $('#TotalBTWp').text();
-            $('#gtotalp').text('');
-            $('#gtotalp').val('');
+            $('#SubTotalp').text('0.00');
+            $('#TotalBTWp').text('0.00');
+            $('#gtotalp').text('0.00');
+            $('#gtotalp').val('0.00');
             $('#btwop').text('0.00');
             $('#BTW6p').text('0.00');
             $('#BTW21p').text('0.00');
@@ -632,7 +632,7 @@
     //adding Row
     $("#addpuchase").click(function () {
 
-      
+
         currentRow1 = $(this).closest("tr");
 
         var isAllValid = true;
@@ -714,7 +714,7 @@
         SUMOFALLPRODUCTp();
         sumofGrandModelp();
 
-        if ($('#orderdetailsitemsp tbody tr').length == 0) {
+        if ($('#orderdetailsitemsp .tbody tr').length == 0) {
             $('#SubTotalp').text('0.00');
             $('#TotalBTWp').text('0.00');
             $('#gtotalp').text('0.00');
@@ -940,7 +940,7 @@
 
 
     function ChangeTotalOnItemCahe(currentRow) {
-       
+
         var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
         var Price = currentRow.find("td:eq(2)").find('input').val();
         var total = quantity * Price;
@@ -973,7 +973,7 @@
     $("#Submitp").click(function () {
         var ValidOrNot=validateQutationAddOrEdit();
 
-       
+
 
         if(ValidOrNot!=true){
             return true;
@@ -1386,7 +1386,7 @@
 
 
 
-    
+
 
     function validateQutationAddOrEdit() {
         var isValid = true;
@@ -1426,7 +1426,7 @@
 
 
     function LoadProductAdding1() {
-       
+
         $("#SelectProductQutationp").find("option").remove();
         $("#SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
         $("#SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
@@ -1492,7 +1492,7 @@
         });
     }-
 
-    
+
     $(document).ready(function () {
 
         var PurchaseDate=@Html.Raw(Json.Encode(Model.PurchaseDate));
