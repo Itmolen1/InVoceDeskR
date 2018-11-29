@@ -470,102 +470,9 @@
 
 
 
-<div class="modal fade bs-example-modal-lg" id="CreateNewProductModalAdd" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabe1lPur" style="color:skyblue">Add New Product</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <form class="floating-labels">
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="ProductName" data-toggle="tooltip" data-placement="bottom" title="Product Name!!">
-                                <span class="bar"></span>
-                                <label for="input5">Product Name</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="Description" data-toggle="tooltip" data-placement="bottom" title="Product Description!!">
-                                <span class="bar"></span>
-                                <label for="input5"> Product Description</label>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="SalePrice" data-toggle="tooltip" data-placement="bottom" title="Sale Price!!">
-                                <span class="bar"></span>
-                                <label for="input5">Sale Price</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="PurchasePrice" data-toggle="tooltip" data-placement="bottom" title="Purchase Price!!">
-                                <span class="bar"></span>
-                                <label for="input5">Purchase Price</label>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group m-b-40">
-                                <input type="text" class="form-control " id="OpeningQuantity" data-toggle="tooltip" data-placement="bottom" title="Opening Quantity!!">
-                                <span class="bar"></span>
-                                <label for="input5">Opening Quantity</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="col-sm-12">
-                                <select class="form-control p-0" id="ProductUnitSelectPurchase"></select>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="SaveNewProductModelp" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Save Product</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductModel" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-<div id="UnitModelPurchase" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Add new unit</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="SaveNewProductUnitPurchase" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnitPurchase" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 
 
 <script type="text/javascript">
@@ -725,8 +632,7 @@
     //adding Row
     $("#addpuchase").click(function () {
 
-        debugger;
-
+      
         currentRow1 = $(this).closest("tr");
 
         var isAllValid = true;
@@ -996,7 +902,7 @@
         if (value == "AddNewProductSelect") {
             LoadProductUnitPurchase();
             //  $('#VenderSelectModel').modal('hide');
-            $('#CreateNewProductModalAdd').modal('show');
+            $('#CreateNewProductModal').modal('show');
         }
         else if (value == "0") {
 
@@ -1027,7 +933,7 @@
 
 
     function ChangeTotalOnItemCahe(currentRow) {
-        debugger;
+       
         var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
         var Price = currentRow.find("td:eq(2)").find('input').val();
         var total = quantity * Price;
@@ -1060,7 +966,7 @@
     $("#Submitp").click(function () {
         var ValidOrNot=validateQutationAddOrEdit();
 
-        debugger;
+       
 
         if(ValidOrNot!=true){
             return true;
@@ -1473,39 +1379,7 @@
 
 
 
-    $('#SaveNewProductModelp').click(function () {
-        $.ajax({
-            url: '/MVCProduct/AddOrEdit',
-            type: 'POST',
-            data: {
-                ProductName: $('#ProductName').val(),
-                Description: $('#Description').val(),
-                SalePrice: $('#SalePrice').val(),
-                PurchasePrice: $('#PurchasePrice').val(),
-                Type: $('#Type').val(),
-                OpeningQuantity: $('#OpeningQuantity').val(),
-                OpeningStockValue: $('#OpeningStockValue').val()
-
-            },
-            success: function (data) {
-                $('#CreateNewProductModalAdd').modal('hide');
-                LoadProductAdding1();
-                $.toast({
-                    heading: 'Success',
-                    text: 'Your opration has been successfuly completed `loader`',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                });
-
-                //$("#productTable").ajax.reload();
-                //SuccessInsert();
-            },
-            error: function () {
-                alert("error");
-            }
-        });
-    });
+    
 
     function validateQutationAddOrEdit() {
         var isValid = true;
@@ -1545,7 +1419,7 @@
 
 
     function LoadProductAdding1() {
-        debugger;
+       
         $("#SelectProductQutationp").find("option").remove();
         $("#SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
         $("#SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
@@ -1578,8 +1452,8 @@
         var value = $(this).val();
         if (value == "AddNewPUnitSelect") {
 
-            $('#CreateNewProductModalAdd').modal('hide');
-            $('#UnitModelPurchase').modal('show');
+            $('#CreateNewProductModal').modal('hide');
+            $('#UnitModel').modal('show');
         }
 
     });
@@ -1611,76 +1485,7 @@
         });
     }-
 
-    $('#SaveNewProductUnitPurchase').click(function () {
-
-        $.ajax({
-            url: "/MVCProductUnit/CheckUnitStatus",
-            type: "POST",
-            data: { name: $('#ProductUnit').val() },
-            success: function (Resultdat) {
-
-                console.log(Resultdat);
-                if (Resultdat == "Found") {
-                    $.toast({
-                        heading: 'Already exist',
-                        text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#FF0000'  // To change the background
-                    });
-                }
-                else {
-                    var dataUnit = {
-
-                        ProductUnit: $('#ProductUnit').val(),
-                        Status: "true"
-                    }
-                    $.ajax({
-                        url: "/MVCProductUnit/AddorEdit",
-                        type: "POST",
-                        data: dataUnit,
-                        success: function (dat) {
-                            CleartUnitTextBoxPurchase();
-                            $('#UnitModelPurchase').modal('hide');
-                            LoadProductSelect();
-                            $('#CreateNewProductModalAdd').modal('show');
-                            $.toast({
-                                heading: 'Success',
-                                text: 'Your opration has been successfuly completed `Thank you`',
-                                icon: 'info',
-                                loader: true,        // Change it to false to disable loader
-                                loaderBg: '#9EC600'  // To change the background
-                            });
-                        },
-                        Error: function (err) {
-                            alert("erro");
-                        }
-
-                    });
-                }
-
-            },
-            Error: function (err) {
-                alert("erro");
-            }
-
-        });
-
-
-    });
-
-    function CleartUnitTextBoxPurchase() {
-        $('#ProductUnit').val("")
-    }
-
-    $('#CancelProductUnitPurchase').click(function () {
-        CleartUnitTextBoxPurchase();
-        $('#CreateNewProductModalAdd').modal('show');
-        $('#UnitModelPurchase').modal('hide');
-    });
-
-
-
+    
     $(document).ready(function () {
 
         var PurchaseDate=@Html.Raw(Json.Encode(Model.PurchaseDate));
