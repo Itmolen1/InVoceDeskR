@@ -386,7 +386,6 @@ namespace InvoiceDiskLast.Controllers
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 
-
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quautionId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 

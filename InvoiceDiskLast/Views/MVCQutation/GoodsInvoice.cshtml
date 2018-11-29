@@ -107,7 +107,7 @@
                               switch (row.Type) {
 
                                   case "Goods":
-                                      return '</button><a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye">View and Print Invoice</i></a>'
+                                      return '</button><a href="#" class="btn btn-info btn-sm" onclick="ViewQutationGood(' + row.QutationID + ')"><i class="fa fa-eye">View and Print Invoice</i></a>'
                                       break
                               }
                           }
@@ -121,24 +121,20 @@
 
 
 
+    function ViewQutationGood(QutationId) {
 
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/MVCQutation/GoodViewPrint?Id=" + QutationId;
 
-
-
-
-    //function EditQutation(QutationId) {
-
-    //    $.ajax({
-    //        url: '/MVCClient/AddOrEditQutation',
-    //        type: 'GET',
-    //        data: {
-    //            Qutationid: QutationId
-    //        },
-    //        success: function (data) {
-    //            window.location.href = "/MVCQutation/AddOrEdit/" + QutationId;
-    //        }
-    //    });
-    //}
+            }
+        });
+    }
 
 
 
