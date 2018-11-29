@@ -1493,6 +1493,18 @@ namespace InvoiceDiskLast.Controllers
             List<MVCQutationViewModel> quationList = new List<MVCQutationViewModel>();
             try
             {
+
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+
+
                 #region
                 int recordsTotal = 0;
                 var draw = Request.Form.GetValues("draw").FirstOrDefault();
@@ -1510,7 +1522,7 @@ namespace InvoiceDiskLast.Controllers
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
 
-                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type).Result;
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type + "/" + CompanyID).Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
@@ -1594,6 +1606,20 @@ namespace InvoiceDiskLast.Controllers
         {
             string Type = "Goods";
 
+
+
+            var idd = Session["ClientID"];
+            var cdd = Session["CompayID"];
+
+
+            if (Session["ClientID"] != null && Session["CompayID"] != null)
+            {
+                Contectid = Convert.ToInt32(Session["ClientID"]);
+                CompanyID = Convert.ToInt32(Session["CompayID"]);
+            }
+
+
+
             List<MVCQutationViewModel> quationList = new List<MVCQutationViewModel>();
             try
             {
@@ -1614,7 +1640,7 @@ namespace InvoiceDiskLast.Controllers
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
 
-                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type).Result;
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetQuatationSerViceList/" + Type + "/" + CompanyID).Result;
                 quationList = respose.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
                 List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();

@@ -308,7 +308,7 @@ namespace InvoiceDiskLast.Controllers
                     q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
                     purchaseviewModel.PurchaseDate = InvoiceDate;
                     purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-                    purchaseviewModel.Purchase_ID = "QUO-"+q.PurchaseID;
+                    purchaseviewModel.Purchase_ID = "QUO-" + q.PurchaseID;
                     return View(purchaseviewModel);
                 }
                 else
@@ -850,6 +850,7 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+
         public ActionResult Print(int? purchaseOrderId)
         {
             try
@@ -918,6 +919,7 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
+
 
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
@@ -1001,6 +1003,8 @@ namespace InvoiceDiskLast.Controllers
 
             return View(email);
         }
+
+
         public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
         {
             bool TransactionResult = false;
@@ -1395,28 +1399,22 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success" } };
         }
 
-
         public ActionResult Design()
         {
             return View();
         }
 
-
         public class VatModel
         {
             public int Vat1 { get; set; }
             public string Name { get; set; }
-
         }
-
 
         public ActionResult PurchaseList()
         {
             return View();
 
         }
-
-
 
 
         [HttpPost]
@@ -1430,7 +1428,7 @@ namespace InvoiceDiskLast.Controllers
                 MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
                 if (res.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    
+
                     foreach (var item in TransactionModel)
                     {
                         string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
@@ -1460,6 +1458,232 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
+
+
+
+
+
+
+
+        #region
+
+        public ActionResult InvoiceSerVice()
+        {
+            return View();
+        }
+        [HttpPost]
+        public JsonResult GetPurchaseServiceList(string Type)
+        {
+            IEnumerable<MvcPurchaseModel> PurchaseList;
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                var sortColumn = Request.Form.GetValues("columns[" +
+                Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                string search = Request.Form.GetValues("search[value]")[0];
+
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
+
+                int companyId = Convert.ToInt32(Session["CompayID"]);
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseServiceList/" + Type + "/" + companyId).Result;
+                PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
+
+
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+                    PurchaseList = PurchaseList.Where(p => p.PurchaseOrderID.ToString().Contains(search)
+                  || p.PurchaseRefNumber != null && p.PurchaseRefNumber.ToLower().Contains(search.ToLower())
+                  || p.PurchaseDate != null && p.PurchaseDate.ToString().ToLower().Contains(search.ToLower())
+                  || p.PurchaseDueDate != null && p.PurchaseDueDate.ToString().ToLower().Contains(search.ToLower())
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+                  || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
+                }
+
+
+
+                int recordsTotal = recordsTotal = PurchaseList.Count();
+                var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+                return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+        public ActionResult ViewAndPrintInvoiceService(int Id)
+        {
+
+            if (Id == 0 || Id == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            try
+            {
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + Id.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + Id.ToString()).Result;
+                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = ob;
+                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return View();
+        }
+
+
+
+        public ActionResult InvoiceGoods()
+        {
+            return View();
+        }
+
+
+
+        public ActionResult ViewAndPrintInvoiceGood(int Id)
+        {
+            if (Id == null && Id==0)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            try
+            {
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + Id.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + Id.ToString()).Result;
+                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = ob;
+                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+
+                return View();
+            }
+            catch (Exception ex) { }
+
+            return View();
+        }
+
+
+        //[HttpPost]
+        //public JsonResult GetPurchaseGoodList()
+        //{
+        //    IEnumerable<MvcPurchaseModel> PurchaseList;
+        //    try
+        //    {
+        //        var draw = Request.Form.GetValues("draw").FirstOrDefault();
+        //        var start = Request.Form.GetValues("start").FirstOrDefault();
+        //        var length = Request.Form.GetValues("length").FirstOrDefault();
+        //        var sortColumn = Request.Form.GetValues("columns[" +
+        //        Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+        //        var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+        //        string search = Request.Form.GetValues("search[value]")[0];
+
+        //        int pageSize = length != null ? Convert.ToInt32(length) : 0;
+        //        int skip = start != null ? Convert.ToInt32(start) : 0;
+
+        //        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+        //        int CompanyId = Convert.ToInt32(Session["CompayID"]);
+        //        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
+
+        //        int companyId = Convert.ToInt32(Session["CompayID"]);
+
+        //        HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseGoodsList/" + StatusEnum.Goods + "/" + companyId).Result;
+        //        PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
+
+
+        //        if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+        //        {
+        //            PurchaseList = PurchaseList.Where(p => p.PurchaseOrderID.ToString().Contains(search)
+        //          || p.PurchaseRefNumber != null && p.PurchaseRefNumber.ToLower().Contains(search.ToLower())
+        //          || p.PurchaseDate != null && p.PurchaseDate.ToString().ToLower().Contains(search.ToLower())
+        //          || p.PurchaseDueDate != null && p.PurchaseDueDate.ToString().ToLower().Contains(search.ToLower())
+        //          || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+        //          || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
+        //          || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
+        //        }
+
+
+
+        //        int recordsTotal = recordsTotal = PurchaseList.Count();
+        //        var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
+        //        return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write(ex.ToString());
+        //        return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+
+        //}
+
+
+
+        #endregion
+
     }
 
 }
