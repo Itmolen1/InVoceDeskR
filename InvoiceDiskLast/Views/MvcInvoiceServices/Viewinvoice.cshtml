@@ -176,13 +176,36 @@
                     </div>
                 </div>
 
+                        
+            <div class="row">
+                <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <label style="color:skyblue">Purchase Order:</label>
+                    </div>
+                    <div class="col-md-7"></div>
+
+                </div>
+
+            
                 <div class="row">
                     <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
-                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
-                        <label>Factuurdatum</label>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">                      
+
+                        <label>Purchase Date:</label>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@purchaseModel.PurchaseDate</label><br />
+
+                        @{ 
+                            DateTime pdate = new DateTime();
+                            pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
+
+                            DateTime dDate = new DateTime();
+                            dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+
+
+                        }
+
+                        <label>@pdate.ToShortDateString()</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>
@@ -190,7 +213,7 @@
                 <div class="row">
                     <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
                     <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
-                        <label>Factuurnummer</label>
+                        <label>Refrence Number:</label>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
                         <label>@purchaseModel.PurchaseRefNumber</label><br />
@@ -201,10 +224,10 @@
                 <div class="row">
                     <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
                     <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
-                        <label>Vervalidatum</label>
+                        <label>Due date:</label>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@purchaseModel.PurchaseDueDate</label><br />
+                        <label>@dDate.ToShortDateString()</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>

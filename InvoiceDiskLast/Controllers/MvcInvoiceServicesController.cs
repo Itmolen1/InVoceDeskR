@@ -845,7 +845,7 @@ namespace InvoiceDiskLast.Controllers
                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
 
-                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
+                return new Rotativa.PartialViewAsPdf("~/Views/MvcInvoiceServices/Viewpp.cshtml")
                 {
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
