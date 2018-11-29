@@ -321,12 +321,30 @@
                         <div class="form-group ">
                             <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
                         </div>
+                        <hr />
+                        <div class="form-group ">
+                            <select id="SelectUnitStatus" class="form-control">
+                                <option value="1" selected="selected">True</option>
+                                <option value="0">False</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                <div class="row">
+                    <div class="col-md-12">
+                  
+                    <div id="SaveUnit">
+                        <button type="button" id="SaveNewProductUnit" class="btn btn-success"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                        <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                    </div>
+                        <div id="updateUnit">
+                            <button type="button" id="UpdateProductUnit" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                            <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -964,6 +982,8 @@
     function CleartUnitTextBox()
     {
         $('#ProductUnit').val('');
+        $('#productubitId').val('');
+        
     }
 
     function LoadProductUnit() {

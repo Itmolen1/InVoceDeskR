@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<button id="CreateNewProductUnit" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
+
+<input type="hidden" id="productubitId"/>
+<div class="row">
+    <div class="col-lg-2"></div>
+        <div class="col-xs-12 col-lg-8">
+            <div class="table-responsive">
+                <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="productUnitTable">
+
+                    <thead class="table-heading" style="background-color:black;color:white">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    <div class="col-lg-2"></div>
+    </div>
+<script>
+    $(document).ready(function () {
+
+        $("#productUnitTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            //"language": {
+            //    "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            //},
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+
+            "ajax": {
+                "url": "/MVCProductUnit/ListProductUnit",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                    { "data": "ProductUnitID", "name": "ProductUnitID", "autoWidth": true },// key for edit delete
+                    { "data": "ProductUnit", "name": "ProductUnit", "autoWidth": true },
+                    { "data": "ProductUnit", "name": "ProductUnit", "autoWidth": true },
+                   
+                    {
+                        render: function (data, type, row) {
+                            return '<div class="pull-right"><a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProductUnit(' + row.ProductUnitID + ')"><i class="fa fa-pencil" style="margin-right:5px"></i>Edit</a></div>'
+
+                        }
+                    }
+            ]
+        });
+
+    });
+
+
+
+    function EditProductUnit(id)
+    {
+        $.ajax({
+            url: "/MVCProductUnit/AddOrEdit/" + id,
+            type: "GET",
+            dataType: "json",
+            success: function (resultDataView) {
+                console.log(resultDataView);
+                $('#ProductUnit').val(resultDataView.ProductUnit);
+                $('#productubitId').val(resultDataView.ProductUnitID);
+
+
+                var st = resultDataView.Status;
+               
+                if (st == true)
+                {
+                   
+                    $('#SelectUnitStatus').val('1');
+                }
+                else
+                {
+                    $('#SelectUnitStatus').val('0');
+                }
+                //$('#SelectUnitStatus').text(resultDataView.Status);
+               
+               
+
+                $('#SelectUnitStatus').val(resultDataView.Status);
+                $('#SaveUnit').hide();
+                $('#updateUnit').show();
+                $('#UnitModel').modal('show');
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+
+      
+    }
+
+
+    $('#CreateNewProductUnit').click(function () { 
+        {
+            CleartUnitTextBox();
+        $('#SaveUnit').show();
+        $('#updateUnit').hide();
+        $('#UnitModel').modal('show');
+    }
+    });
+
+
+    $('#UpdateProductUnit').click(function () {
+
+
+    });
+</script>

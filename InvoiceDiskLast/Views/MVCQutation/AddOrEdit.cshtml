@@ -2050,52 +2050,6 @@
             currentRow.find('td:eq(3)').find('input').val(total);
         })
 
-
-        //$(document).ready(function () {
-        //    $("#CompanyListTable").DataTable({
-        //        // "processing": true, // for show progress bar
-        //        processing: true,
-        //        "language": {
-        //            "processing": $('#loader').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-        //        },
-        //        "serverSide": true, // for process server side
-        //        "filter": false, // this is for disable filter (search box)
-        //        "orderMulti": false, // for disable multiple column at once
-
-        //        searching: true,
-        //        "ajax": {
-        //            "url": "/Company/Index1",
-        //            "type": "POST",
-        //            "datatype": "json"
-        //        },
-        //        "columns": [
-        //                { "data": "CompanyId", "name": "CompanyId", "autoWidth": true },
-        //                { "data": "CompanyName", "name": "CompanyName", "autoWidth": true },
-        //                { "data": "CompanyAddress", "name": "CompanyAddress", "autoWidth": true },
-        //                { "data": "CompanyPhone", "name": "CompanyPhone", "autoWidth": true },
-        //                { "data": "CompanyCell", "name": "CompanyCell", "autoWidth": true },
-        //                { "data": "CompanyEmail", "name": "CompanyEmail", "autoWidth": true },
-        //                { "data": "CompanyTRN", "name": "CompanyTRN", "autoWidth": true },
-        //                {
-        //                    'data': 'CompanyLogo',
-        //                    render: function (logo) {
-        //                        if (logo) {
-        //                            return '<img height="25px" width="25px" src="' + logo + '" />'
-        //                        }
-        //                        else { return 'No Image'; }
-        //                    }
-        //                },
-        //              {
-        //                  render: function (data, type, row) {
-        //                      return '<a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="Edit(' + row.CompanyId + ')"><i class="fa fa-pencil "></i></a>|<a href="#" class="btn btn-danger btn-xs" onclick="DeleteCompany(' + row.CompanyId + ')"><i class="glyphicon glyphicon-trash"></i></a>|<a href="#" class="btn btn-success btn-xs" onclick="Delete(' + row.CompanyId + ')"><i class="glyphicon glyphicon-eye- Open"></i></a>'
-        //                  }
-        //              }
-
-        //        ]
-        //    });
-        //});
-
-
         $('#CompanySitting').click(function () {
             window.location.href = "/MVCComapny/Index";
         });
@@ -2381,6 +2335,7 @@
 
             var value = $(this).val();
             if (value == "AddNewProductSelect") {
+                LoadProductUnit();
                 $('#CreateNewProductModal').modal('show');
             }
             else if (value == "0") {

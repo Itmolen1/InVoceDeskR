@@ -21,6 +21,67 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        public ActionResult ListProductUnit()
+        {
+            #region
+
+            List<MVCProductUnitModel> ProductunitList = new List<MVCProductUnitModel>();
+            
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                var sortColumn = Request.Form.GetValues("columns[" +
+                Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                string search = Request.Form.GetValues("search[value]")[0];
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetProductUnit/" + CompanyId).Result;
+                ProductunitList = response.Content.ReadAsAsync<List<MVCProductUnitModel>>().Result;
+                
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                    {
+                        ProductunitList = ProductunitList.Where(p => p.ProductUnitID.ToString().Contains(search)                       
+                       || p.ProductUnit != null && p.ProductUnit.ToString().ToLower().Contains(search.ToLower())).ToList();
+                    }
+                }
+                switch (sortColumn)
+                {
+                    case "ProductUnitID":
+                        ProductunitList = ProductunitList.OrderBy(c => c.ProductUnitID).ToList();
+                        break;
+                    case "ProductUnit":
+                        ProductunitList = ProductunitList.OrderBy(c => c.ProductUnit).ToList();
+                        break;  
+                    default:
+                        ProductunitList = ProductunitList.OrderByDescending(c => c.ProductUnit).ToList();
+                        break;
+                }
+
+
+                int recordsTotal = recordsTotal = ProductunitList.Count();
+                var data = ProductunitList.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return View();
+            #endregion
+
+        }
+
         [HttpGet]
         public ActionResult GetProductUnit()
         {
@@ -39,7 +100,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddorEdit(int id =0)
+        public ActionResult AddorEdit(int id)
         {
             if(id == 0)
             { 

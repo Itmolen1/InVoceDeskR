@@ -42,6 +42,30 @@ namespace InvoiceDiskLast.Controllers
            
         }
 
+        [Route("api/GetProductUnitByID/{id:int}")]
+        public IHttpActionResult GetProductUnitbyId(int id)
+        {
+            try
+            {
+                MVCProductUnitModel obProductUnit = db.ProductUnitTables.Where(x => x.ProductUnitID == id).Select(c => new MVCProductUnitModel
+                {
+                    ProductUnitID = c.ProductUnitID,
+                    ProductUnit = c.ProductUnit,
+                    Status = c.Status,
+                    CompanyId = c.CompanyId,
+                }).FirstOrDefault();
+
+                return Ok(obProductUnit);
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+
+            }
+
+        }
+
         //[Route("api/students/{id:int}")]
         //public IHttpActionResult GetProductUnitTables(int id)
         //{

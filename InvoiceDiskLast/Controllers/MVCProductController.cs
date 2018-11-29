@@ -19,6 +19,8 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult GetProductlist()
         {
+            #region
+
             List<MVCProductModel> ProductList = new List<MVCProductModel>();
             List<MVCProductModel> ProductList1 = new List<MVCProductModel>();
             try
@@ -94,6 +96,7 @@ namespace InvoiceDiskLast.Controllers
                 ex.ToString();
             }
             return View();
+            #endregion
         }
         //ujhy6t7y67y
 
