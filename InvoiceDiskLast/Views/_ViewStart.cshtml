@@ -227,69 +227,78 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="ProductName" placeholder="Product Name" />
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="Description" placeholder="Description" />
-                        </div>
+                    <div class="col-sm-12">
+                        <select class="form-control p-0" id="Type">
+                            <option value="0" selected>Select Type</option>
+                            <option value="Good">Good</option>
+                            <option value="Services">Services</option>
+                        </select><span class="bar"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="SalePrice" placeholder="Sale Price" />
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="PurchasePrice" placeholder="Purchase Price" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <select class="form-control p-0" id="Type">
-                                    <option value="Good" selected>Good</option>
-                                    <option value="Services">Services</option>
-                                </select><span class="bar"></span>
+                <hr />
+
+                <div id="GoodDiv">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="ProductName" placeholder="Product Name" />
                             </div>
                         </div>
-
-
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="OpeningQuantity" placeholder="Opening Quantity" />
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="Description" placeholder="Description" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-
-                    <div class="col-sm-4">
-                        <select class="form-control p-0" id="ProductUnitSelect"></select>
-                    </div>
-
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <input class="form-control" type="text" required id="OpeningStockValue" placeholder="Opening Stock Value" />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="SalePrice" placeholder="Sale Price" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="PurchasePrice" placeholder="Purchase Price" />
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="form-group ">
-                            <select class="form-control p-0" id="VatValue">
-                                <option value="Select">Select vat Value</option>
-                                <option value="0">0%</option>
-                                <option value="6">6%</option>
-                                <option value="21">21%</option>
-                            </select>
+                    <div class=""></div>
+
+
+                    <div id="GoodsDiveUnit">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <select class="form-control p-0" id="ProductUnitSelect"></select>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" required id="OpeningQuantity" placeholder="Opening Quantity" />
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input class="form-control" type="text" required id="OpeningStockValue" placeholder="Opening Stock Value" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6" id="VatValueDiv">
+                            <div class="form-group">
+                                <select class="form-control p-0" id="VatValue">
+                                    <option value="Select">Select vat Value</option>
+                                    <option value="0">0%</option>
+                                    <option value="6">6%</option>
+                                    <option value="21">21%</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -334,11 +343,11 @@
             <div class="modal-footer">
                 <div class="row">
                     <div class="col-md-12">
-                  
-                    <div id="SaveUnit">
-                        <button type="button" id="SaveNewProductUnit" class="btn btn-success"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                        <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
-                    </div>
+
+                        <div id="SaveUnit">
+                            <button type="button" id="SaveNewProductUnit" class="btn btn-success"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                            <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                        </div>
                         <div id="updateUnit">
                             <button type="button" id="UpdateProductUnit" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
                             <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
@@ -546,6 +555,28 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script>
+
+    $('#Type').change(function () {
+        if ($(this).val() == "Good")
+        {
+            ChangeBorderColorProductModel();
+            $('#GoodsDiveUnit').show(1000);
+            $('#OpeningStockValue').show(1000);
+            $('#VatValueDiv').removeClass();
+            $('#VatValueDiv').addClass('col-sm-6');
+
+        }
+        else if ($(this).val() == "Services")
+        {
+            ChangeBorderColorProductModel();
+            $('#GoodsDiveUnit').hide(1000);
+            $('#OpeningStockValue').hide(1000);
+            $('#VatValueDiv').removeClass();
+            $('#VatValueDiv').addClass('col-sm-12');
+        }
+    });
+
+
     function LoadContacts() {
 
         $("#SelectContacts1").find("option").remove();
@@ -605,7 +636,7 @@
         showRequiredModel = "PurchaseContactModel";
         var value = $(this).val();
         if (value == "AddNewVenderSelect") {
-           
+
 
             $('#VenderSelectModel').modal('hide');
             $('#ModelHeading').text("Maak nieuwe vender");
@@ -616,7 +647,7 @@
         }
 
     });
-    
+
 
     $('#VenderClientNext').click(function () {
         var serviceOrgoo = "";
@@ -678,7 +709,7 @@
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
-
+                       
             $('#CreateNewProductModal').modal('show');
 
         }
@@ -690,7 +721,7 @@
         var qutationGoodOrService = $('#SelectTypeQutation').val();
 
         var value = $('#SelectContacts1').val();
-       
+
 
         if (value > 0) {
 
@@ -869,11 +900,11 @@
         if (showRequiredModel == "QutationContactModel") {
             $('#CreateNewContactModal1').modal('hide');
             $('#QutationContactModel').modal('show');
-           
-        }       
+
+        }
         else if(showRequiredModel == "PurchaseContactModel") {
             $('#CreateNewContactModal1').modal('hide');
-            $('#VenderSelectModel').modal('show');           
+            $('#VenderSelectModel').modal('show');
         }
         else if(showRequiredModel == "ContactModel")
         {
@@ -989,7 +1020,7 @@
     {
         $('#ProductUnit').val('');
         $('#productubitId').val('');
-        
+
     }
 
     function LoadProductUnit() {
@@ -1026,7 +1057,29 @@
     }
 
     $('#SaveNewProduct').click(function () {
-        var validdatep = validateProduct();
+
+        var validdatep;
+
+        if ($('#Type').val() == 0) {
+            validdatep = false;
+            $.toast({
+                heading: 'Select type',
+                text: 'Please select type `Goods/Services`',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#FF0000'  // To change the background
+            });
+            return;
+        }
+        else if ($('#Type').val() == "Good") {
+            validdatep = validateProduct();
+
+        }
+        else if ($('#Type').val() == "Services")
+        {
+            validdatep = validateProductService();
+
+        }
         if (validdatep == true) {
             $.ajax({
                 url: "/MVCProduct/GetProductByName",
@@ -1090,9 +1143,9 @@
         });
     }
 
-
     function validateProduct() {
         var isValid = true;
+
         if ($('#ProductName').val().trim() == "") {
             $('#ProductName').css('border-color', 'Red');
             isValid = false;
@@ -1164,6 +1217,80 @@
             $('#ProductUnitSelect').css('border-color', 'lightgrey');
         }
 
+        return isValid;
+    }
+
+    function ChangeBorderColorProductModel() {
+        $('#ProductName').css('border-color', 'lightgrey');
+        $('#SalePrice').css('border-color', 'lightgrey');
+        $('#PurchasePrice').css('border-color', 'lightgrey');
+        $('#OpeningQuantity').css('border-color', 'lightgrey');
+        $('#PurchasePrice').css('border-color', 'lightgrey');
+        $('#SalePrice').css('border-color', 'lightgrey');
+        $('#VatValue').css('border-color', 'lightgrey');   
+        $('#ProductUnitSelect').css('border-color', 'lightgrey');    
+    }
+
+
+    function validateProductService() {
+
+        if ($('#ProductName').val().trim() == "") {
+            $('#ProductName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductName').css('border-color', 'lightgrey');
+        }
+
+        if ($('#SalePrice').val().trim() == "") {
+            $('#SalePrice').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePrice').val().trim() == "") {
+            $('#PurchasePrice').css('border-color', 'Red');
+            $('#PurchasePrice').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+        }
+
+        if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
+            if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+                $('#SalePrice').css('border-color', 'Red');
+                $('#PurchasePrice').css('border-color', 'Red');
+                isValid == false;
+                $.toast({
+                    heading: 'Sale amount less',
+                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+            }
+            else {
+                $('#PurchasePrice').css('border-color', 'lightgrey');
+                $('#SalePrice').css('border-color', 'lightgrey');
+            }
+        }
+        //if ($('#ProductUnitSelect').val() == 0) {
+        //    $('#ProductUnitSelect').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        //}
+
+        if ($('#VatValue').val() == "Select") {
+            $('#VatValue').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#VatValue').css('border-color', 'lightgrey');
+        }
         return isValid;
     }
 
