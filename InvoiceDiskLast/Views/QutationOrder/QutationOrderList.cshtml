@@ -704,7 +704,11 @@
                 {
                     render: function (data, type, row) {
 
+                        alert(row.Status);
+
                         switch (row.Status) {
+
+                          
 
                             case "open":
 
@@ -720,7 +724,8 @@
                                 break;
 
                             case "accepted":
-                                return "<td><span class='label label-success>" + row.Status + "</span></td>"
+
+                                return  "<td><span class='label label-success'>" +row.Status + "</span></td>"
                                 break;
                         }
                     }
@@ -897,6 +902,10 @@
 
 
     function updateStatus(Id, Status, Message) {
+
+
+        alert(Status);
+
 
         var Data = JSON.stringify({
             QutationId: Id,
