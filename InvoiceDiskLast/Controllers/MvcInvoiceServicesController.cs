@@ -865,6 +865,100 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+        public ActionResult PurchaseInvoiceSerVicePrint(int? purchaseOrderId)
+        {
+            try
+            {
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+                if (Session["ClientID"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+
+
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
+                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+
+                DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
+                DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
+                TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
+                string diffDate = ts.Days.ToString();
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = ob;
+                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+
+                string PdfName = purchaseOrderId + "-" + companyModel.CompanyName + ".pdf";
+
+                //  string CustomSwitches = string.Format("--header-html \"{0} \" " +
+
+                string cutomswitches = "";
+                cutomswitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                   DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                  " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+
+
+                return new Rotativa.PartialViewAsPdf("~/Views/MvcInvoiceServices/PurchaseInvoiceServicePrint.cshtml")
+                {
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+
+                    FileName = PdfName,
+
+                    PageHeight = 40,
+                    CustomSwitches = cutomswitches,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
+                };
+            }
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+
+
+
+
+
+
+
+
+
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
 
