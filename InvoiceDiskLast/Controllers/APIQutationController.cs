@@ -293,7 +293,7 @@ namespace InvoiceDiskLast.Controllers
             List<MVCQutationViewModel> _qutationList = new List<MVCQutationViewModel>();
             try
             {
-                _qutationList = db.QutationTables.Where(q => q.Type == Type && q.CompanyId== CompanyId).Select(p => new MVCQutationViewModel
+                _qutationList = db.QutationTables.Where(q => q.Type == Type && q.CompanyId== CompanyId && q.Status=="accepted").Select(p => new MVCQutationViewModel
                 {
                     QutationID = p.QutationID,
                     Qutation_ID = p.Qutation_ID,
