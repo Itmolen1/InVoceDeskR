@@ -4,8 +4,8 @@
 @model InvoiceDiskLast.Models.UserModels
 
 @{
-    Layout = null;  
- }
+    Layout = null;
+}
 
 <head>
     <meta charset="utf-8">
@@ -15,8 +15,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-   
-   
+
+
 
     <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/logo-icon.png">
     <title>Factuur Baheer Systeem</title>
@@ -37,18 +37,18 @@
     <![endif]-->
 </head>
 
-    <body>
-        <div class="preloader">
-            <div class="loader">
-                <div class="loader__figure"></div>
-                <p class="loader__label">bezig met laden...</p>
-            </div>
+<body>
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">bezig met laden...</p>
         </div>
+    </div>
 
-        <section id="wrapper" style="margin-left:0px">
+    <section id="wrapper" style="margin-left:0px">
         <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
             <div class="login-box card" style="margin-top:-100px">
-                <div class="card-body" style="margin-top:0px; " >
+                <div class="card-body" style="margin-top:0px; ">
                     <form action="/Captcha/Index" method="post" class="form-horizontal form-material" id="loginform">
                         <h3 class="box-title m-b-20">Aanmelden</h3>
                         <div class="form-group ">
@@ -61,25 +61,26 @@
                         <div class="form-group">
                             <div class="col-xs-12">
                                 @*<input class="form-control" type="password" required id="txtPassword" placeholder="Password">*@
-                                @Html.PasswordFor(Model => Model.Password, new { @class = " form-control", required = "required" })
+                                @Html.EditorFor(Model => Model.Password, new { htmlAttributes = new { @type = "password", @class = " form-control", required = "required" } })
                                 @Html.ValidationMessageFor(Model => Model.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
-                                <div class="col-xs-12 ti-align-center">
-                                    @Html.Captcha(5)                                                                     
-                                </div>
+                            <div class="col-xs-12 ti-align-center">
+                                @Html.Captcha(5)
+                            </div>
                             <div style="color:red">
                                 @ViewBag.ErrorMessage
                             </div>
-                            </div>
-                       
+                        </div>
+
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    @Html.CheckBoxFor(Model => Model.Rememberme, new { @class = "custom-control-input", id = "customCheck1" })
+                                    @*<input type="checkbox" class="custom-control-input" id="customCheck1">*@
                                     <label class="custom-control-label" for="customCheck1">Onthoud mij</label>
-                                    <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Vergat pwd?</a>
+                                    <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Forgot Password?</a>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +88,7 @@
                             <div class="col-xs-12 p-b-20">
 
                                 <input type="submit" id="btnLogin" class="btn btn-block btn-lg btn-info btn-rounded" value="Login" />
-                              
+
                             </div>
                         </div>
                         <div class="row">
@@ -104,7 +105,7 @@
                             </div>
                         </div>
                     </form>
-                    <form  class="form-horizontal" id="recoverform" action="/Captcha/CheckEmail" method="post">
+                    <form class="form-horizontal" id="recoverform" action="/Captcha/CheckEmail" method="post">
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <h3>Herstel wachtwoord</h3>
@@ -114,13 +115,13 @@
                         <div class="form-group ">
                             <div class="col-xs-12 us">
                                 @*<input class="form-control" type="text" id="UserEmail" required placeholder="Email">
-                                @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control", required = "required" })
-                                @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })*@
+                                    @Html.TextBoxFor(Model => Model.Username, new { @class = " form-control", required = "required" })
+                                    @Html.ValidationMessageFor(Model => Model.Username, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                         <div class="form-group text-center m-t-20">
                             <div class="col-xs-12">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" id="Emailrest">Reset</button>                              
+                                <button type="submit" class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" id="Emailrest">Reset</button>
                             </div>
                         </div>
                     </form>
@@ -128,52 +129,52 @@
             </div>
         </div>
 
-      
+
     </section>
     <br />
-    <br /> 
-        <script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
-        <script src="~/assets/node_modules/popper/popper.min.js"></script>
-        <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
-        <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
-        <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
-        @*<script src="https://www.google.com/recaptcha/api.js" async defer></script>*@
+    <br />
+    <script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/node_modules/popper/popper.min.js"></script>
+    <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/assets/node_modules/sweetalert/jquery.sweet-alert.custom.js"></script>
+    <script src="~/assets/node_modules/sweetalert/sweetalert.min.js"></script>
+    <script src="~/assets/node_modules/toast-master/js/jquery.toast.js"></script>
+    @*<script src="https://www.google.com/recaptcha/api.js" async defer></script>*@
 
 
 
 
-        <script>
+    <script>
         $(document).ready(function () {
-            $('#CaptchaInputText').addClass('form-control').attr("required", "true");           
-
-           
-        $(function () {
-            $(".preloader").fadeOut();
-        });
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-
-        // ==============================================================
-        // Login and Recover Password
-        // ==============================================================
-        $('#to-recover').on("click", function () {
-            $("#loginform").slideUp();
-            $('.us').append($("#use"));
-            $("#recoverform").fadeIn();
-        });
-        });
+            $('#CaptchaInputText').addClass('form-control').attr("required", "true");
 
 
-        //$('#Emailrest').click(function () {         
+            $(function () {
+                $(".preloader").fadeOut();
+            });
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+
+            // ==============================================================
+            // Login and Recover Password
+            // ==============================================================
+            $('#to-recover').on("click", function () {
+                $("#loginform").slideUp();
+                $('.us').append($("#use"));
+                $("#recoverform").fadeIn();
+            });
+        });
+
+
+        //$('#Emailrest').click(function () {
         //    $.ajax({
         //        url: '/Captcha/CheckEmail',
         //        type: 'POST',
         //        data: {
-        //            UserEmail: $('#UserEmail').val()                   
+        //            UserEmail: $('#UserEmail').val()
         //        },
-        //        success: function (data) 
+        //        success: function (data)
         //        {
         //            if (data == "Success")
         //            {
@@ -186,7 +187,7 @@
         //                        forgotpassword: 1
         //                    },
         //                    success: function (result) {
-                              
+
         //                        if (result == "Success") {
         //                            alert('res');
         //                            window.location.href = "/Login/ResitPasswordSuccess"
@@ -209,14 +210,13 @@
         //                    loaderBg: '#FF0000'  // To change the background
         //                });
         //            }
-                  
+
         //        }
         //    });
         //});
-       
-        </script>
- </body>
 
-   
-   
-   
+    </script>
+</body>
+
+
+

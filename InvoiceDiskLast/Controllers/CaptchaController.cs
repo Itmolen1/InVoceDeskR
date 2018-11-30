@@ -18,13 +18,36 @@ namespace InvoiceDiskLast.Controllers
     public class CaptchaController : Controller
     {
         DBEntities db = new DBEntities();
-        
+
         public ActionResult Index()
         {
-            if(TempData["EmailNotExist"] != null)
+            UserModels model = new UserModels();
+
+            if (TempData["EmailNotExist"] != null)
             {
                 ViewBag.ErrorMessage = TempData["EmailNotExist"].ToString();
             }
+
+            try
+            {
+                 if (Request.Cookies["Login"] != null)
+                {
+                    model.Username = Request.Cookies["Login"].Values["UserName"];
+                    model.Password = Request.Cookies["Login"].Values["Password"];
+                    model.Rememberme = Convert.ToBoolean(Request.Cookies["Login"].Values["RememberMe"]);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+            return View(model);
+
+
             return View();
         }
 
@@ -39,8 +62,8 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult Index(UserModels user)
         {
 
-            HttpResponseMessage messageConformed = GlobalVeriables.WebApiClient.PostAsJsonAsync("AccountCheckStatus",user).Result;
-           
+            HttpResponseMessage messageConformed = GlobalVeriables.WebApiClient.PostAsJsonAsync("AccountCheckStatus", user).Result;
+
             if (messageConformed.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 ViewBag.ErrorMessage = "E-mail not conformed until! Please Conform";
@@ -96,10 +119,27 @@ namespace InvoiceDiskLast.Controllers
                         Session["ApiAccessToken"] = token.AccessToken;
                     }
 
+                    if (user.Rememberme)
+                    {
+
+                        HttpCookie cookie = new HttpCookie("Login");
+                        cookie.Values.Add("UserName", user.Username);
+                        cookie.Values.Add("Password", user.Password);
+                        cookie.Values.Add("RememberMe", user.Rememberme.ToString());
+                        cookie.Expires = DateTime.Now.AddDays(1);
+                        Response.Cookies.Add(cookie);
+                    }
+                    else
+                    {
+                        HttpCookie cookie = new HttpCookie("Login");
+                        cookie.Expires = DateTime.Now.AddDays(-1);
+                        Response.Cookies.Add(cookie);
+                    }
+
                     #endregion
                     if (Session["ApiAccessToken"] != null)
                     {
-                        
+
                         //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
                         string name = userInfo.username.ToString();
                         Session["username"] = name;
@@ -127,7 +167,8 @@ namespace InvoiceDiskLast.Controllers
                             HttpResponseMessage responseUser = GlobalVeriables.WebApiClient.GetAsync("GetUserInfo/" + compnyID).Result;
                             UserModel usermodel = responseUser.Content.ReadAsAsync<UserModel>().Result;
 
-                          
+                            Session["imageurl"] = usermodel.ImageUrl;
+                            Session["UName"] = usermodel.UserFname + " " + usermodel.UserLname;
                             return RedirectToAction("Index", "Home");
 
                         }
@@ -160,7 +201,7 @@ namespace InvoiceDiskLast.Controllers
         //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name+ "/"+id).Result;
         //     return response.Content.ToString();
         // }
-      
+
         public string Test1(string Email)
         {
 
@@ -175,7 +216,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         //for forgot pasword
-       
+
         [HttpPost]
         public ActionResult CheckEmail(UserModels UserEmail)
         {
@@ -189,7 +230,7 @@ namespace InvoiceDiskLast.Controllers
 
                 //return Json("Success", JsonRequestBehavior.AllowGet);
 
-                return RedirectToAction("ResitPasswordSuccess","Login");
+                return RedirectToAction("ResitPasswordSuccess", "Login");
             }
             TempData["EmailNotExist"] = "Email Not Exist!";
             return RedirectToAction(nameof(Index));
@@ -199,7 +240,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult RestPassword(string Code)
         {
-           
+
             if (Code != null)
             {
 
@@ -212,15 +253,15 @@ namespace InvoiceDiskLast.Controllers
             {
                 TempData["EmailNotExist"] = "Not a vlaid user!";
                 return RedirectToAction(nameof(Index));
-            }              
-       }
-           
-  
+            }
+        }
+
+
 
         [HttpPost]
         public ActionResult RestPassword(RestPasswordModel model)
         {
-            if(model.NewPassword != model.ConfirmPassword)
+            if (model.NewPassword != model.ConfirmPassword)
             {
                 return View(model);
             }
@@ -231,7 +272,7 @@ namespace InvoiceDiskLast.Controllers
             md.Email = model.Email;
             md.Code = model.Codes;
 
-           HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/RestSetPassword", md).Result;
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("Account/RestSetPassword", md).Result;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return RedirectToAction(nameof(Index));
@@ -263,11 +304,11 @@ namespace InvoiceDiskLast.Controllers
             //    return Json(isValid);
             //}
 
-        
-            return Json(!db.AspNetUsers.Any(x => x.UserName == username),JsonRequestBehavior.AllowGet);
-       
 
-            }
+            return Json(!db.AspNetUsers.Any(x => x.UserName == username), JsonRequestBehavior.AllowGet);
+
+
+        }
     }
     public class UserInfo
     {

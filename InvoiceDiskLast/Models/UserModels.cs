@@ -13,11 +13,13 @@ namespace InvoiceDiskLast.Models
         public string UserLname { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public Nullable<bool> RememberMe { get; set; }
+       
         public Nullable<int> Gender { get; set; }
         public string DOB { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> UserAuthorityID { get; set; }
+
+        public bool Rememberme { get; set; }
 
         public string GuidToken { get; set; }
     }
