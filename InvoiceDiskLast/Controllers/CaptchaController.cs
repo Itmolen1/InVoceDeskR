@@ -127,8 +127,7 @@ namespace InvoiceDiskLast.Controllers
                             HttpResponseMessage responseUser = GlobalVeriables.WebApiClient.GetAsync("GetUserInfo/" + compnyID).Result;
                             UserModel usermodel = responseUser.Content.ReadAsAsync<UserModel>().Result;
 
-                            Session["imageurl"]  = usermodel.ImageUrl;
-                            Session["UName"] = usermodel.UserFname + " " + usermodel.UserLname;
+                          
                             return RedirectToAction("Index", "Home");
 
                         }
