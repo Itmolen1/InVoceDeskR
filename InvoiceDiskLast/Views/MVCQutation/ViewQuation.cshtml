@@ -188,8 +188,16 @@
                     <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
                         <label>Qutation Date:</label>
                     </div>
+
+                    @{
+                        DateTime qdate = new DateTime();
+                        DateTime qddate = new DateTime();
+                        qdate = Convert.ToDateTime(QutationModel.QutationDate);
+                        qddate = Convert.ToDateTime(QutationModel.DueDate);
+                    }
+
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@QutationModel.QutationDate</label><br />
+                        <label>@qdate.ToShortDateString()</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>
@@ -211,7 +219,7 @@
                         <label>Due Date:</label>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                        <label>@QutationModel.DueDate</label><br />
+                        <label>@qddate.ToShortDateString()</label><br />
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-3"></div>
                 </div>
@@ -224,7 +232,7 @@
                         <thead>
                             <tr>
                                 <th class="col-sm-4">
-                                    Product Name
+                                    Goods
                                 </th>
                                 <th class="col-sm-2">
                                     Quantity
