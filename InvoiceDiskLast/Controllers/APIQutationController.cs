@@ -293,7 +293,7 @@ namespace InvoiceDiskLast.Controllers
             List<MVCQutationViewModel> _qutationList = new List<MVCQutationViewModel>();
             try
             {
-                _qutationList = db.QutationTables.Where(q => q.Type == Type && q.CompanyId== CompanyId && q.Status=="accepted").Select(p => new MVCQutationViewModel
+                _qutationList = db.QutationTables.Where(q => q.Type == Type && q.CompanyId == CompanyId && q.Status == "accepted").Select(p => new MVCQutationViewModel
                 {
                     QutationID = p.QutationID,
                     Qutation_ID = p.Qutation_ID,
@@ -310,7 +310,7 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception)
             {
                 return BadRequest();
-                
+
             }
 
             return Ok(_qutationList);
@@ -319,6 +319,82 @@ namespace InvoiceDiskLast.Controllers
         }
 
         #endregion
+
+
+
+        [Route("api/CheckProductQuantity/{ProductId:int}")]
+        public IHttpActionResult GetCheckQuantity(int ProductId)
+        {
+            MVCQutationViewModel _MvcQuatation = new MVCQutationViewModel();
+
+            int PurchaseQuantity = 0;
+            int qutationquantity = 0;
+
+            try
+            {
+                PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
+                 qutationquantity = Convert.ToInt32(db.QutationDetailsTables.Where(t => t.ItemId == ProductId).Sum(i => i.Quantity));
+                _MvcQuatation.QuantityRemaing = PurchaseQuantity - qutationquantity;
+
+                return Ok(_MvcQuatation);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+        }
+
+
+
+        [Route("api/GetProductQuantit/{ProductId:int}")]
+        public IHttpActionResult GetProductQuantityPurchase(int ProductId)
+        {
+            MVCQutationViewModel _MvcQuatation = new MVCQutationViewModel();
+
+            int PurchaseQuantity = 0;
+           
+            try
+            {
+                PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
+                _MvcQuatation.QuantityRemaing = PurchaseQuantity;
+
+                return Ok(_MvcQuatation);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+        }
+
+
+        [Route("api/GetQuatationListForQuantityCheck/{QutationId:int}")]
+        public IHttpActionResult GetQutationDetailList(int QutationId)
+        {
+            List<MVCQutationViewModel> _MvcQutationViewModel = new List<MVCQutationViewModel>();
+
+            try
+            {
+                _MvcQutationViewModel = (from c in db.QutationDetailsTables
+                                         where c.QutationID == QutationId
+                                         group c by c.ItemId into g
+                                         select new MVCQutationViewModel
+                                         {
+                                             ItemId = g.Key,
+                                             QuantityRemaing = g.Sum(oi => oi.Quantity)
+                                         }).ToList();
+
+
+
+                return Ok(_MvcQutationViewModel);
+            }
+            catch (Exception)
+            {
+            }
+
+            return Ok();
+        }
 
 
 
