@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
-
+        //yhthbtyhtyhtyh
 
         [HttpPost]
         public JsonResult IndexQutation()
