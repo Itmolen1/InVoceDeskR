@@ -931,6 +931,8 @@ namespace InvoiceDiskLast.Controllers
             {
 
                 email.Attachment = PrintView((int)purchaseOrderId);
+                HttpContext.Items["FilePath"] = email.Attachment;
+
 
                 if (Session["CompayID"] == null)
                 {
@@ -1082,6 +1084,7 @@ namespace InvoiceDiskLast.Controllers
             return TransactionResult;
         }
 
+        [DeleteFileClass]
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
@@ -1150,6 +1153,9 @@ namespace InvoiceDiskLast.Controllers
                 {
                     TempData["EmailMessge"] = "Your transaction is not perform with success";
                 }
+
+               
+
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
             }
             catch (Exception ex)
