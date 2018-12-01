@@ -1,13 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-
-    var cont = ViewContext.RouteData.Values["controller"].ToString();
-    if (cont == "Captcha")
-    {
-        return;
-    }
+    
 }
+
+@{ 
+    if (ViewContext.RouteData.Values["controller"].ToString() != "Captcha" || ViewContext.RouteData.Values["controller"].ToString() == "Login")
+    {
 
 <div class="modal fade" id="QutationContactModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -551,6 +549,10 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+        }
+
+    }
+
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>

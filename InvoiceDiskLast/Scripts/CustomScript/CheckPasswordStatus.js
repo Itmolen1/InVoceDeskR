@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    debugger;
+   
     $('#txtPassword').keyup(function () {
         $('#result').html(checkStrength($('#txtPassword').val()))
     })
