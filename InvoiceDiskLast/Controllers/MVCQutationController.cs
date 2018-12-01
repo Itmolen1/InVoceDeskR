@@ -21,7 +21,7 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
-      
+
 
         [HttpPost]
         public JsonResult IndexQutation()
@@ -612,12 +612,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
-
-
-
-
         public ActionResult PrintQutationInvoiceGood(int? QutationID)
         {
 
@@ -689,7 +683,23 @@ namespace InvoiceDiskLast.Controllers
 
 
 
+        public ActionResult CheckItemQuantity(int ItemId)
+        {
+            MVCQutationViewModel _mvcQuatationViewModel23 = new MVCQutationViewModel();
 
+            try
+            {
+                HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("CheckProductQuantity/" + ItemId).Result;
+                _mvcQuatationViewModel23 = _response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
+                return Json(_mvcQuatationViewModel23.QuantityRemaing, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public ActionResult ViewQuation(int? quautionId)
         {

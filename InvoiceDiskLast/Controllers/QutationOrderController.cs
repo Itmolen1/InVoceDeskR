@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,7 +13,7 @@ namespace InvoiceDiskLast.Controllers
     [SessionExpire]
     public class QutationOrderController : Controller
     {
-       
+
         // GET: QutationOrder
         int Contectid, CompanyID = 0;
 
@@ -82,7 +83,54 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult UpdateOrderStaus(int QutationId, string Status)
         {
+
+
             QutationOrderStatusTable orderstatusModel = new QutationOrderStatusTable();
+
+            List<MVCQutationViewModel> _QutationList = new List<MVCQutationViewModel>();
+            MVCQutationViewModel _mvcQuatationViewModel23 = new MVCQutationViewModel();
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("<table style='width:100%'; border:'.5' border-style:groove'>");
+                sb.Append("<tr><th colspan='2'>ItemId</th><th colspan='2'>SaleQuantity</th><th colspan='2'>Purchase Quantity</th><th colspan='2' style='color:red;' />Exeed Quantity</th></tr>");
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetQuatationListForQuantityCheck/" + QutationId).Result;
+                _QutationList = response.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+                if (_QutationList.Count > 0 && _QutationList != null)
+                {
+                    foreach (var item in _QutationList)
+                    {
+                        _mvcQuatationViewModel23 = null;
+                        HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetProductQuantit/" + item.ItemId).Result;
+                        _mvcQuatationViewModel23 = _response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
+
+                        if (item.QuantityRemaing > _mvcQuatationViewModel23.QuantityRemaing)
+                        {
+                            sb.Append("<tr><td colspan='2'>" + item.ItemId + "</td><td colspan='2'>" + item.QuantityRemaing + "</td><td colspan='2'>" + _mvcQuatationViewModel23.QuantityRemaing + "</td><td colspan='2'>" + (item.QuantityRemaing - _mvcQuatationViewModel23.QuantityRemaing) + "</td><td>");
+                        }
+                    }
+
+                    sb.Append("</table>");
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+
+
+
+
+
+
+
 
             try
             {
@@ -113,12 +161,12 @@ namespace InvoiceDiskLast.Controllers
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             return new JsonResult { Data = new { Status = "Success", Message = "Status is change successfully" } };
-                          
+
                         }
                         else
                         {
                             return new JsonResult { Data = new { Status = "Fail", Message = "Fail to change status" } };
-                          
+
                         }
                     }
                 }

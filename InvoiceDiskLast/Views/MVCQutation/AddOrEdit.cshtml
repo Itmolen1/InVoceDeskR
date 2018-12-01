@@ -853,13 +853,34 @@
 
 
 
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="myModalLabel">Entered quantity Exceeded</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
-
+            </div>
+            <div class="modal-body">
+                <h6>would you like to continue</h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" id="modal-btn-si">Continue</button>
+                <button type="button" class="btn btn-default btn-sm" id="modal-btn-no">No</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 
 <script>
+
+
+
+
+
 
     var currentRow1 = "";
     var r = "";
@@ -947,7 +968,7 @@
         $(document).ready(function () {
 
             $(document).on('click', '#RemoveEdit', function () {
-               
+
 
                 var row = $(this).closest('tr');
 
@@ -1101,7 +1122,7 @@
 
         $('#orderdetailsitems').on('click', '.remove', function () {
 
-           
+
 
             var currentRow = $(this).closest('tr');
             var vat = currentRow.find('.VAT  option:selected').val();
@@ -1586,7 +1607,7 @@
             }
             else {
 
-               
+
                 var QutationIdd;
                 var isAllValid = true;
                 $('#orderItemError').text('');
@@ -2047,94 +2068,71 @@
             }
         }
 
+        var quantityRemain = 0;
+
         $('#Quantity').keyup(function () {
+            quantityRemain = 0;
+            debugger;
+
             var currentRow = $(this).closest("tr");
+            var productId = currentRow.find('#SelectProductQutation').val();
             var quantity = $(this).val();  // get current row 1st TD value
+            quantityRemain = CheckQuantity(productId);
+
+            if (quantity > quantityRemain) {
+                $('#mi-modal').modal('show');
+
+            }
+            else {
+                var Price = currentRow.find("td:eq(2)").find('input').val();
+                var total = quantity * Price;
+                currentRow.find('td:eq(3)').find('input').val(total);
+            }
+        })
+
+
+        $("#modal-btn-si").on("click", function () {
+
             var Price = currentRow.find("td:eq(2)").find('input').val();
             var total = quantity * Price;
             currentRow.find('td:eq(3)').find('input').val(total);
-        })
 
-        $('#CompanySitting').click(function () {
-            window.location.href = "/MVCComapny/Index";
+            $('#mi-modal').modal('hide');
+
         });
 
-        $('#AccountSitting').click(function () {
+        $("#modal-btn-no").on("click", function () {
 
+            $('#mainrow #SelectProductQutation').val('0');
+            $('#mainrow #QuantityE').val('');
+            $('#mainrow #Rate').val('');
+            $('#mainrow .FTotal').val('');
+            $('#mainrow .quantity').val('');
+            $('#mi-modal').modal('hide');
+        });
+
+
+        function CheckQuantity(productId) {
             $.ajax({
-                url: "/UserInfo/GetUserByCompayId",
-                type: 'Post',
-                success: function (Userdata) {
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Data loaded successfuly `Loaded`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#9EC600'  // To change the background
-                    });
-
-                    $('#userid').val(Userdata.UserId);
-                    $('#txtFname').val(Userdata.UserFname);
-                    $('#txtInsertion').val(Userdata.Insertion);
-                    $('#txtLname').val(Userdata.UserLname);
-                    $('#txtEmail').val(Userdata.Username);
-                    $('#TxtDob').val(Userdata.DOB);
-                    var gen = Userdata.Gender;
-                    if (gen == 1) {
-                        $('input:radio[name="gender"]').filter('[value="1"]').attr('checked', true);
-                    }
-                    else {
-                        $('input:radio[name="gender"]').filter('[value="2"]').attr('checked', true);
-                    }
-
-                    $('#UserInfoModel').modal('show');
+                url: '/MvcQutation/CheckItemQuantity',
+                type: 'GET',
+                contentType: "application/json",
+                dataType: 'json',
+                async: false,
+                data: { ItemId: productId },
+                success: function (daa) {
+                    quantityRemain = daa;
                 }
-            });
+            })
+            return quantityRemain;
 
-        });
-
-        $('#SaveuserInfo').click(function () {
-
-            Userdata = {
-                UserFname: $('#txtFname').val(),
-                Insertion: $('#txtInsertion').val(),
-                UserLname: $('#txtLname').val(),
-                Gender: $("input[name='gender']:checked").val(),
-                DOB: $('#TxtDob').val(),
-                UserId: $('#userid').val()
-            },
-
-            $.ajax({
-                url: "/UserInfo/UpdateUserInfo",
-                type: 'Post',
-                data: Userdata,
-                success: function (response) {
-                    if (response == "Ok") {
-                        $.toast({
-                            heading: 'Success',
-                            text: 'Information updated successfuly `Updated`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#9EC600'  // To change the background
-                        });
-                        $('#UserInfoModel').modal('hide');
-                    }
-                },
-                error: function (error) {
-                    alert('somthing going wrong');
-                },
-            });
-        });
-
-        function Edit(companyId) {
-
-            window.location.href = "Company/AddOrEdit/" + companyId;
         }
+
 
         $(document).ready(function () {
 
 
-           
+
 
 
             $(document).ready(function () {
@@ -2188,9 +2186,9 @@
 
             });
 
-            
 
-           
+
+
 
             $('#CreateNewContacts').click(function () {
                 $('#UpdateContacts').hide();
@@ -2388,7 +2386,7 @@
 
 
         function ChangeTotalOnItemCahe(currentRow) {
-           
+
             var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
             var Price = currentRow.find("td:eq(2)").find('input').val();
             var total = quantity * Price;
@@ -2400,10 +2398,6 @@
 
 
 
-        function GetProductPriceById(ProductId) {
-
-
-        }
 
         function CleartProdctTextBox() {
             $('#ProductName').val("");
