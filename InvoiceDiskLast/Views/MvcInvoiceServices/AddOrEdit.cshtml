@@ -893,17 +893,31 @@
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
-            LoadProductUnit();
-            $('#UpdateProId').hide();
-            $('#SAveProdID').show();
-            $('select#Type option').each(function () {
+            //LoadProductUnit();
+            //$('#UpdateProId').hide();
+            //$('#SAveProdID').show();
+            //$('select#Type option').each(function () {
+            //    if ($(this).text() == "Services") {
+            //        this.selected = true;
+            //        return;
+            //    }
+            //});
+            ////  $('#VenderSelectModel').modal('hide');
+            //$('#CreateNewProductModal').modal('show');
+
+
+            $('#TypeGoodsServices').attr('disabled', false);
+            $('select#TypeGoodsServices option').each(function () {
                 if ($(this).text() == "Services") {
                     this.selected = true;
                     return;
                 }
             });
-            //  $('#VenderSelectModel').modal('hide');
-            $('#CreateNewProductModal').modal('show');
+            ShowServiceGood("Services");
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').attr('disabled', 'disabled');
+            $('#CreateNewProductModalGoods').modal('show');
         }
         else if (value == "0") {
 

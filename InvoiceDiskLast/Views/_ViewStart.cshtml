@@ -170,6 +170,29 @@
 
     });
 
+    $('#TypeGoodsServices').change(function () {   
+        GoodsService = "";
+        GoodsService = $('#TypeGoodsServices').val();        
+        ShowServiceGood(GoodsService);
+        
+  
+    });
+
+    function ShowServiceGood(goodservice) {
+        GoodsServicess = "";
+        GoodsServicess = goodservice;
+        if (GoodsServicess == "Good") {
+            LoadProductUnitGoods();
+            $('#DivServiceBody').hide(1000);
+            $('#DivGoodBody').show(1000);           
+        }
+        else {            
+            $('#DivGoodBody').hide(1000);
+            $('#DivServiceBody').show(1000);
+        }
+    }
+
+
     $('#QutationClientNext').click(function () {
 
         var qutationGoodOrService = $('#SelectTypeQutation').val();
@@ -481,6 +504,7 @@
 
     }
 
+    //old product unit Load Code
     function LoadProductUnit() {
         $("#ProductUnitSelect").find("option").remove();
         $("#ProductUnitSelect").prepend("<option value=0>" + 'Select Unit' + "</option>");
@@ -504,6 +528,30 @@
         });
     }
 
+    //New product unit Load Code
+    function LoadProductUnitGoods() {
+        $("#ProductUnitSelectGoods").find("option").remove();
+        $("#ProductUnitSelectGoods").prepend("<option value=0>" + 'Select Unit' + "</option>");
+        $("#ProductUnitSelectGoods").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+        $.ajax({
+            url: "/MVCProductUnit/GetProductUnit",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#ProductUnitSelectGoods').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
     function CleartProdctTextBox() {
         $('#ProductName').val("");
         $('#Description').val("");
@@ -514,6 +562,17 @@
         $('#VatValue').val("Select");
     }
 
+
+    function CleartProdctTextBoxGoods() {
+        $('#ProductNameGoods').val("");
+        $('#DescriptionGoods').val("");
+        $('#SalePriceGoods').val("");
+        $('#PurchasePriceGoods').val("");
+        $('#OpeningQuantityGoods').val("");
+        $('#ProductUnitSelectGoods').val("0");
+       
+    }
+    //old Code Insert product
     $('#SaveNewProduct').click(function () {
 
         var validdatep;
@@ -593,6 +652,177 @@
         }
     });
 
+    function validateProductGoods() {
+        var isValid = true;
+
+        if ($('#ProductNameGoods').val().trim() == "") {
+            $('#ProductNameGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductNameGoods').css('border-color', 'lightgrey');
+        }
+        if ($('#SalePriceGoods').val().trim() == "") {
+            $('#SalePriceGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePriceGoods').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePriceGoods').val().trim() == "") {
+            $('#PurchasePriceGoods').css('border-color', 'Red');
+            $('#PurchasePriceGoods').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePriceGoods').css('border-color', 'lightgrey');
+        }
+        if ($('#OpeningQuantityGoods').val() == "") {
+            $('#OpeningQuantityGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+        }
+        if (($('#SalePriceGoods').val().trim() != "" && $('#PurchasePriceGoods').val().trim() != "")) {
+            if (parseFloat($('#SalePriceGoods').val()) < parseFloat($('#PurchasePriceGoods').val())) {
+                $('#SalePriceGoods').css('border-color', 'Red');
+                $('#PurchasePriceGoods').css('border-color', 'Red');
+                isValid == false;
+                $.toast({
+                    heading: 'Sale amount less',
+                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+            }
+            else {
+                $('#PurchasePriceGoods').css('border-color', 'lightgrey');
+                $('#SalePriceGoods').css('border-color', 'lightgrey');
+            }
+        }
+        //if ($('#ProductUnitSelect').val() == 0) {
+        //    $('#ProductUnitSelect').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        //}
+
+
+        if ($('#ProductUnitSelectGoods').val() == 0) {
+            $('#ProductUnitSelectGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductUnitSelectGoods').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    //New Code Insert Product
+
+    $('#SaveNewProductGoods').click(function () {
+
+        var IsValid;
+        if(GoodsServicess == "Good")
+        {            
+            IsValid = validateProductGoods();
+
+            if (IsValid == true)
+            {
+                var pValid = checkProductByName($('#ProductNameGoods').val());
+                if (pValid == true)
+                {
+                    
+                    var dss = {
+                        ProductName: $('#ProductNameGoods').val(),
+                        Description: $('#DescriptionGoods').val(),
+                        SalePrice: $('#SalePriceGoods').val(),
+                        PurchasePrice: $('#PurchasePriceGoods').val(),
+                        Type: GoodsServicess,
+                        OpeningQuantity: $('#OpeningQuantityGoods').val(),
+                        ProductUnit: $('#ProductUnitSelectGoods').val(),
+                    }
+
+                    $.ajax({
+                        url: "/MVCProduct/AddOrEdit",
+                        type: "POST",
+                        asyn: false,
+                        data: dss,
+                        success: function (data) {
+                            if (data == "Created") {
+                                $('#productTable').DataTable().ajax.reload();
+                                CleartProdctTextBoxGoods();
+                                $('#CreateNewProductModalGoods').modal('hide');
+                                SuccessInsertProduct();
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
+            }               
+       
+            else
+            {
+           
+                IsValid = validateProductServices();
+            }
+
+           
+        }
+        else if(GoodsServicess = "Services")
+        {
+            debugger;
+            alert(GoodsServicess);
+            IsValid = validateProductServices();
+            if(IsValid == true)
+            {
+                var pValid = checkProductByName($('#ProductNameService').val());
+                if(pValid == true)
+                {
+                    var dss = {
+                        ProductName: $('#ProductNameService').val(),
+                        Description: $('#DescriptionService').val(),
+                        SalePrice: $('#SalePriceService').val(),
+                        PurchasePrice: $('#PurchasePriceService').val(),
+                        Type: GoodsServicess,                        
+                    }
+                    $.ajax({
+                        url: "/MVCProduct/AddOrEdit",
+                        type: "POST",
+                        asyn: false,
+                        data: dss,
+                        success: function (data) {
+                            if (data == "Created") {
+                                $('#productTable').DataTable().ajax.reload();
+                                ClearTextBoxesServices();
+                                $('#CreateNewProductModalGoods').modal('hide');
+                                SuccessInsertProduct();
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+
+    function ClearTextBoxesServices()
+    {
+        $('#ProductNameService').val('');
+        $('#DescriptionService').val('');
+        $('#SalePriceService').val('');
+        $('#PurchasePriceService').val('');
+    }
+
     function SuccessInsertProduct() {
         swal({
             title: "Congratulations!!!!",
@@ -601,157 +831,248 @@
         });
     }
 
-    function validateProduct() {
-        var isValid = true;
 
-        if ($('#ProductName').val().trim() == "") {
-            $('#ProductName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ProductName').css('border-color', 'lightgrey');
-        }
-        if ($('#SalePrice').val().trim() == "") {
-            $('#SalePrice').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#SalePrice').css('border-color', 'lightgrey');
-        }
-        if ($('#PurchasePrice').val().trim() == "") {
-            $('#PurchasePrice').css('border-color', 'Red');
-            $('#PurchasePrice').focus();
-            isValid = false;
-        }
-        else {
-            $('#PurchasePrice').css('border-color', 'lightgrey');
-        }
-        if ($('#OpeningQuantity').val() == "") {
-            $('#OpeningQuantity').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#OpeningQuantity').css('border-color', 'lightgrey');
-        }
-        if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
-            if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+    function checkProductByName(PName) {
+        debugger;
+        var Result = true;
+        $.ajax({
+            url: "/MVCProduct/GetProductByName",
+            type: "POST",
+            asyn: false,
+            data: {
+                ProductName: PName,
+                ProductStatus: "All"
+            },
+            success: function (Resultdat) {
+                
+                if (Resultdat == "Found") {
+                    $.toast({
+                        heading: 'Already exist',
+                        text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                    Result = false;                   
+                  
+                    
+                }
+                else {
+                   
+                    Result = true;
+                }
+            }
+
+        });
+        return Result;
+    }
+
+
+
+        function validateProduct() {
+            var isValid = true;
+
+            if ($('#ProductName').val().trim() == "") {
+                $('#ProductName').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#ProductName').css('border-color', 'lightgrey');
+            }
+            if ($('#SalePrice').val().trim() == "") {
                 $('#SalePrice').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#SalePrice').css('border-color', 'lightgrey');
+            }
+            if ($('#PurchasePrice').val().trim() == "") {
                 $('#PurchasePrice').css('border-color', 'Red');
-                isValid == false;
-                $.toast({
-                    heading: 'Sale amount less',
-                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#FF0000'  // To change the background
-                });
+                $('#PurchasePrice').focus();
+                isValid = false;
             }
             else {
                 $('#PurchasePrice').css('border-color', 'lightgrey');
-                $('#SalePrice').css('border-color', 'lightgrey');
             }
-        }
-        //if ($('#ProductUnitSelect').val() == 0) {
-        //    $('#ProductUnitSelect').css('border-color', 'Red');
-        //    isValid = false;
-        //}
-        //else {
-        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
-        //}
+            if ($('#OpeningQuantity').val() == "") {
+                $('#OpeningQuantity').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#OpeningQuantity').css('border-color', 'lightgrey');
+            }
+            if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
+                if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+                    $('#SalePrice').css('border-color', 'Red');
+                    $('#PurchasePrice').css('border-color', 'Red');
+                    isValid == false;
+                    $.toast({
+                        heading: 'Sale amount less',
+                        text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                }
+                else {
+                    $('#PurchasePrice').css('border-color', 'lightgrey');
+                    $('#SalePrice').css('border-color', 'lightgrey');
+                }
+            }
+            //if ($('#ProductUnitSelect').val() == 0) {
+            //    $('#ProductUnitSelect').css('border-color', 'Red');
+            //    isValid = false;
+            //}
+            //else {
+            //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+            //}
 
-        if ($('#VatValue').val() == "Select") {
-            $('#VatValue').css('border-color', 'Red');
-            isValid = false;
+            if ($('#VatValue').val() == "Select") {
+                $('#VatValue').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#VatValue').css('border-color', 'lightgrey');
+            }
+
+            if ($('#ProductUnitSelect').val() == 0) {
+                $('#ProductUnitSelect').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#ProductUnitSelect').css('border-color', 'lightgrey');
+            }
+
+            return isValid;
         }
-        else {
+
+
+       
+
+        function ChangeBorderColorProductModel() {
+            $('#ProductName').css('border-color', 'lightgrey');
+            $('#SalePrice').css('border-color', 'lightgrey');
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+            $('#SalePrice').css('border-color', 'lightgrey');
             $('#VatValue').css('border-color', 'lightgrey');
-        }
-
-        if ($('#ProductUnitSelect').val() == 0) {
-            $('#ProductUnitSelect').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
             $('#ProductUnitSelect').css('border-color', 'lightgrey');
         }
 
-        return isValid;
-    }
+        //OLD 
+        function validateProductService() {
 
-    function ChangeBorderColorProductModel() {
-        $('#ProductName').css('border-color', 'lightgrey');
-        $('#SalePrice').css('border-color', 'lightgrey');
-        $('#PurchasePrice').css('border-color', 'lightgrey');
-        $('#OpeningQuantity').css('border-color', 'lightgrey');
-        $('#PurchasePrice').css('border-color', 'lightgrey');
-        $('#SalePrice').css('border-color', 'lightgrey');
-        $('#VatValue').css('border-color', 'lightgrey');   
-        $('#ProductUnitSelect').css('border-color', 'lightgrey');    
-    }
+            if ($('#ProductName').val().trim() == "") {
+                $('#ProductName').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#ProductName').css('border-color', 'lightgrey');
+            }
 
-
-    function validateProductService() {
-
-        if ($('#ProductName').val().trim() == "") {
-            $('#ProductName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ProductName').css('border-color', 'lightgrey');
-        }
-
-        if ($('#SalePrice').val().trim() == "") {
-            $('#SalePrice').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#SalePrice').css('border-color', 'lightgrey');
-        }
-        if ($('#PurchasePrice').val().trim() == "") {
-            $('#PurchasePrice').css('border-color', 'Red');
-            $('#PurchasePrice').focus();
-            isValid = false;
-        }
-        else {
-            $('#PurchasePrice').css('border-color', 'lightgrey');
-        }
-
-        if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
-            if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+            if ($('#SalePrice').val().trim() == "") {
                 $('#SalePrice').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#SalePrice').css('border-color', 'lightgrey');
+            }
+            if ($('#PurchasePrice').val().trim() == "") {
                 $('#PurchasePrice').css('border-color', 'Red');
-                isValid == false;
-                $.toast({
-                    heading: 'Sale amount less',
-                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#FF0000'  // To change the background
-                });
+                $('#PurchasePrice').focus();
+                isValid = false;
             }
             else {
                 $('#PurchasePrice').css('border-color', 'lightgrey');
-                $('#SalePrice').css('border-color', 'lightgrey');
             }
-        }
-        //if ($('#ProductUnitSelect').val() == 0) {
-        //    $('#ProductUnitSelect').css('border-color', 'Red');
-        //    isValid = false;
-        //}
-        //else {
-        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
-        //}
 
-        if ($('#VatValue').val() == "Select") {
-            $('#VatValue').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#VatValue').css('border-color', 'lightgrey');
-        }
-        return isValid;
-    }
+            if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
+                if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+                    $('#SalePrice').css('border-color', 'Red');
+                    $('#PurchasePrice').css('border-color', 'Red');
+                    isValid == false;
+                    $.toast({
+                        heading: 'Sale amount less',
+                        text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                }
+                else {
+                    $('#PurchasePrice').css('border-color', 'lightgrey');
+                    $('#SalePrice').css('border-color', 'lightgrey');
+                }
+            }
+            //if ($('#ProductUnitSelect').val() == 0) {
+            //    $('#ProductUnitSelect').css('border-color', 'Red');
+            //    isValid = false;
+            //}
+            //else {
+            //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+            //}
 
+            if ($('#VatValue').val() == "Select") {
+                $('#VatValue').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#VatValue').css('border-color', 'lightgrey');
+            }
+            return isValid;
+        }
+
+        //New
+        function validateProductServices() {
+
+            var isValid = true;
+            if ($('#ProductNameService').val().trim() == "") {
+                $('#ProductNameService').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#ProductNameService').css('border-color', 'lightgrey');
+            }
+
+            if ($('#SalePriceService').val().trim() == "") {
+                $('#SalePriceService').css('border-color', 'Red');
+                isValid = false;
+            }
+            else {
+                $('#SalePriceService').css('border-color', 'lightgrey');
+            }
+            if ($('#PurchasePriceService').val().trim() == "") {
+                $('#PurchasePriceService').css('border-color', 'Red');
+                $('#PurchasePriceService').focus();
+                isValid = false;
+            }
+            else {
+                $('#PurchasePriceService').css('border-color', 'lightgrey');
+            }
+
+            if (($('#SalePriceService').val().trim() != "" && $('#PurchasePriceService').val().trim() != "")) {
+                if (parseFloat($('#SalePriceService').val()) < parseFloat($('#PurchasePriceService').val())) {
+                    $('#SalePriceService').css('border-color', 'Red');
+                    $('#PurchasePriceService').css('border-color', 'Red');
+                    isValid == false;
+                    $.toast({
+                        heading: 'Sale amount less',
+                        text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                }
+                else {
+                    $('#PurchasePriceService').css('border-color', 'lightgrey');
+                    $('#SalePriceService').css('border-color', 'lightgrey');
+                }
+            }
+
+            return isValid;
+        }
+  
 
     $('#ProductUnitSelect').change(function () {
 

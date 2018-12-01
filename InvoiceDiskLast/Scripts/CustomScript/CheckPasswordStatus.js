@@ -38,11 +38,11 @@
             $('#result').removeClass()
             $('#result').addClass('good').css('color','skyblue')
             return 'Good'
-        } else {
+        } else if (strength == 4) {
             $('#result').removeClass()
             $('#result').addClass('strong').css('color','Green')
             return 'Strong'
-        }
+        }       
     }
    
 });
