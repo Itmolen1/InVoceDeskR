@@ -22,7 +22,8 @@ namespace InvoiceDiskLast.Controllers
 
         public IHttpActionResult GetProductTables(int CompanyId, string status)
         {
-
+            
+           
             List<ProductTable> i = new List<ProductTable>();
 
             // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
@@ -42,10 +43,11 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
-                    OpeningStockValue = c.OpeningStockValue,
+                    OpeningStockValue = c.OpeningStockValue,  //pt. - qt.CheckItemQuantity(),pt
                     ProductStatus = c.ProductStatus,
-                    VatsValue = c.VatsValue
-                }).ToList();
+                    VatsValue = c.VatsValue,
+                  
+            }).ToList();
 
                 return Ok(ob);
             }
@@ -72,6 +74,9 @@ namespace InvoiceDiskLast.Controllers
                 return Ok(ob);
             }
         }
+
+        
+
 
         [Route("api/APIProductByProductID/{id:int}")]
         // GET: api/APIProduct/5

@@ -143,13 +143,14 @@ namespace InvoiceDiskLast.Controllers
         {
             
             List<MVCProductUnitModel> ProductUnitmodel = new List<MVCProductUnitModel>();
-            
+            MVCProductUnitModel ProductunitModel = new MVCProductUnitModel();
+            ProductunitModel.ProductUnit = name;
 
             if (name != null)
             {
                 CheckUnit1 objectcount = new CheckUnit1();
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);              
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductUnitByName/" + name.ToString() + "/" + CompanyId).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIProductUnitByName/" + CompanyId, ProductunitModel).Result;
 
                 objectcount = response.Content.ReadAsAsync<CheckUnit1>().Result;
                 
@@ -167,6 +168,40 @@ namespace InvoiceDiskLast.Controllers
                 return Json("NotFound Name", JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+
+        public ActionResult UpdateUnitStatus(int id, bool ProductUnitStatus)
+        {
+            MVCProductUnitModel ProductunitModel = new MVCProductUnitModel();
+            ProductunitModel.ProductUnitID = id;
+            
+            try
+            {
+                if (ProductUnitStatus == true)
+                {
+                    ProductunitModel.Status = false;
+                }
+                else
+                {
+                    ProductunitModel.Status = true;
+                }
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("UpdateUnitStatus/", ProductunitModel).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return Json("Ok", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return View();
         }
 
     }

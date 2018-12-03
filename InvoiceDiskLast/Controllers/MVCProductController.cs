@@ -17,10 +17,10 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-        public ActionResult GetProductlist()
+        public ActionResult GetProductlist() 
         {
             #region
-
+            MVCProductController pt = new MVCProductController();
             List<MVCProductModel> ProductList = new List<MVCProductModel>();
             List<MVCProductModel> ProductList1 = new List<MVCProductModel>();
             try
@@ -41,6 +41,12 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/All").Result;
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
+
+                foreach (var i in ProductList)
+                {
+                    i.OpeningStockValue = pt.GetStockValueQuantity(i.ProductId);
+                  
+                }
                 ViewBag.count = 23;
 
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -53,7 +59,7 @@ namespace InvoiceDiskLast.Controllers
                        || p.SalePrice != null && p.SalePrice.ToString().ToLower().Contains(search.ToLower())
                         //|| p.Prod != null && p.AddedDate.ToString().ToLower().Contains(search.ToLower())
                        || p.PurchasePrice != null && p.PurchasePrice.ToString().ToLower().Contains(search.ToLower())
-                       || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())
+                       || p.Type != null && p.Type.ToString().ToLower().Contains(search.ToLower())                     
                        || p.ProductStatus != null && p.ProductStatus   .ToString().ToLower().Contains(search.ToLower())).ToList();
                     }
                 }
@@ -250,6 +256,10 @@ namespace InvoiceDiskLast.Controllers
                 else
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutAPIProduct/" + ProductModel.ProductId, ProductModel).Result;
+                    if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return Json("Updated", JsonRequestBehavior.AllowGet);
+                    }
                 }
 
                 return RedirectToAction("Index");
@@ -296,6 +306,35 @@ namespace InvoiceDiskLast.Controllers
                 ex.ToString();
             }
             return View();
+        }
+
+
+        public int GetStockValueQuantity(int? id)
+        {
+            try
+            {
+                MVCQutationViewModel _QutationList = new MVCQutationViewModel();
+                MVCPurchaseDetailsModel PurchaseModel = new MVCPurchaseDetailsModel();
+
+                //api in api/Qutation
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetSaleItemQty/" + id).Result;
+                _QutationList = response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
+
+                
+                //api in api/purchase
+                HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseItQTY/" + id).Result;
+                PurchaseModel = _response.Content.ReadAsAsync<MVCPurchaseDetailsModel>().Result;
+               
+
+                int result = Convert.ToInt32(PurchaseModel.PurchaseQuantity) - Convert.ToInt32(_QutationList.Quantity);
+                
+                return result;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+
         }
     }
 }

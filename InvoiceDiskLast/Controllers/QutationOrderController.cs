@@ -121,17 +121,7 @@ namespace InvoiceDiskLast.Controllers
 
                 throw;
             }
-
-
-
-
-
-
-
-
-
-
-
+            
             try
             {
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
@@ -493,13 +483,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
-
-
-
-
-
         [HttpPost]
         public JsonResult GetPendingItem(int PurchaseId)
         {
@@ -615,6 +598,9 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
+
+
+       
 
     }
 }

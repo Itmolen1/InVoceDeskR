@@ -421,5 +421,27 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        [Route("api/GetPurchaseItQTY/{id:int}")]
+        public IHttpActionResult GetSaleQuantity(int id)
+        {
+            MVCPurchaseDetailsModel _MvcPurchaseDetailsModel = new MVCPurchaseDetailsModel();
+            try
+            {
+                _MvcPurchaseDetailsModel = db.PurchaseOrderDetailsTables.Where(x => x.PurchaseItemId == id).Select(c => new MVCPurchaseDetailsModel
+                {
+
+                    PurchaseQuantity = c.PurchaseQuantity
+                }).FirstOrDefault();
+
+                return Ok(_MvcPurchaseDetailsModel);
+            }
+
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+        }
+
     }
 }
