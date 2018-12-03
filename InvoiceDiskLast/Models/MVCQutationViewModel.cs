@@ -43,8 +43,15 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> Total { get; set; }
         public int ConatctId { get; set; }
         public string Type { get; set; }
-        public string  ItemName { get; set; }
-        public int ? QuantityRemaing { get; set; }
+        public string ItemName { get; set; }
+        public int? QuantityRemaing { get; set; }
+
+
+        public int ExeecdQuantity { get; set; }
+
+        public int SaleQuantity { get; set; }
+
+
         public List<QutationDetailsTable> QutationDetailslist { get; set; }
 
     }

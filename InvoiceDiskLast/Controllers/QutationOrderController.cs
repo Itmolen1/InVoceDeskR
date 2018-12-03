@@ -81,95 +81,111 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public JsonResult UpdateOrderStaus(int QutationId, string Status)
+        public JsonResult UpdateOrderStaus(int QutationId, string Status, string Type)
         {
 
+            bool IsExceded = false;
+
+            List<MVCQutationViewModel> _QuatationModel = new List<MVCQutationViewModel>();
 
             QutationOrderStatusTable orderstatusModel = new QutationOrderStatusTable();
 
             List<MVCQutationViewModel> _QutationList = new List<MVCQutationViewModel>();
             MVCQutationViewModel _mvcQuatationViewModel23 = new MVCQutationViewModel();
-            try
+
+
+            if (Type == "Goods")
             {
-                StringBuilder sb = new StringBuilder();
-
-                sb.Append("<table style='width:100%'; border:'.5' border-style:groove'>");
-                sb.Append("<tr><th colspan='2'>ItemId</th><th colspan='2'>SaleQuantity</th><th colspan='2'>Purchase Quantity</th><th colspan='2' style='color:red;' />Exeed Quantity</th></tr>");
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetQuatationListForQuantityCheck/" + QutationId).Result;
-                _QutationList = response.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
-                if (_QutationList.Count > 0 && _QutationList != null)
+                try
                 {
-                    foreach (var item in _QutationList)
+                    //Api/apiQuatation
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetQuatationListForQuantityCheck/" + QutationId).Result;
+                    _QutationList = response.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+                    if (_QutationList.Count > 0 && _QutationList != null)
                     {
-                        _mvcQuatationViewModel23 = null;
-                        HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetProductQuantit/" + item.ItemId).Result;
-                        _mvcQuatationViewModel23 = _response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
-
-                        if (item.QuantityRemaing > _mvcQuatationViewModel23.QuantityRemaing)
+                        IsExceded = true;
+                        foreach (var items in _QutationList)
                         {
-                            sb.Append("<tr><td colspan='2'>" + item.ItemId + "</td><td colspan='2'>" + item.QuantityRemaing + "</td><td colspan='2'>" + _mvcQuatationViewModel23.QuantityRemaing + "</td><td colspan='2'>" + (item.QuantityRemaing - _mvcQuatationViewModel23.QuantityRemaing) + "</td><td>");
-                        }
-                    }
+                            _mvcQuatationViewModel23 = null;
+                            HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetProductQuantit/" + items.ItemId).Result;
+                            _mvcQuatationViewModel23 = _response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
 
-                    sb.Append("</table>");
-                }
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-            try
-            {
-                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
-                MVCQutationModel qutationModel = res.Content.ReadAsAsync<MVCQutationModel>().Result;
-                qutationModel.Status = Status;
-
-                if (qutationModel == null)
-                {
-                    return new JsonResult { Data = new { Status = "Fail", Message = "No record Found" } };
-                }
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + QutationId, qutationModel).Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                    if (qutationModel != null)
-                    {
-                        orderstatusModel.Fk_QutationID = qutationModel.QutationID;
-                        orderstatusModel.Status = Status;
-                        orderstatusModel.CreateDate = DateTime.Now;
-                        orderstatusModel.CompanyId = Convert.ToInt32(Session["CompayID"]);
-                        orderstatusModel.UserId = 1;
-                        orderstatusModel.Type = "Qutation";
-                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("postOrderStatus", orderstatusModel).Result;
-
-                        if (response2.StatusCode == System.Net.HttpStatusCode.OK)
-                        {
-                            return new JsonResult { Data = new { Status = "Success", Message = "Status is change successfully" } };
-
-                        }
-                        else
-                        {
-                            return new JsonResult { Data = new { Status = "Fail", Message = "Fail to change status" } };
-
+                            if (items.QuantityRemaing >(_mvcQuatationViewModel23.QuantityRemaing!=null? _mvcQuatationViewModel23.QuantityRemaing:0))
+                            {
+                                MVCProductViewModel productModel = new MVCProductViewModel();
+                                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + items.ItemId).Result;
+                                 productModel = response1.Content.ReadAsAsync<MVCProductViewModel>().Result;                               
+                                _QuatationModel.Add(new MVCQutationViewModel {ItemName=productModel.ProductName != null ? productModel.ProductName : "", ItemId = items.ItemId, SaleQuantity = Convert.ToInt32(items.QuantityRemaing), Quantity = Convert.ToInt32(_mvcQuatationViewModel23.QuantityRemaing), ExeecdQuantity = Convert.ToInt32(items.QuantityRemaing - (_mvcQuatationViewModel23.QuantityRemaing!=null? _mvcQuatationViewModel23.QuantityRemaing:0) ) });
+                            }
                         }
                     }
                 }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+
+                if (IsExceded == true)
+                {
+                    return new JsonResult { Data = new { Status = "Exceeded", Message = _QuatationModel } };
+                }
+
             }
-            catch (Exception ex)
+            else
             {
 
-                return new JsonResult { Data = new { Status = "Fail", ex.Message } };
-            }
+                try
+                {
+                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
+                    MVCQutationModel qutationModel = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+                    qutationModel.Status = Status;
 
+                    if (qutationModel == null)
+                    {
+                        return new JsonResult { Data = new { Status = "Fail", Message = "No record Found" } };
+                    }
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + QutationId, qutationModel).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+                        if (qutationModel != null)
+                        {
+                            orderstatusModel.Fk_QutationID = qutationModel.QutationID;
+                            orderstatusModel.Status = Status;
+                            orderstatusModel.CreateDate = DateTime.Now;
+                            orderstatusModel.CompanyId = Convert.ToInt32(Session["CompayID"]);
+                            orderstatusModel.UserId = 1;
+                            orderstatusModel.Type = "Qutation";
+                            HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("postOrderStatus", orderstatusModel).Result;
+
+                            if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                return new JsonResult { Data = new { Status = "Success", Message = "Status is change successfully" } };
+
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", Message = "Fail to change status" } };
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    return new JsonResult { Data = new { Status = "Fail", ex.Message } };
+                }
+
+               
+            }
             return Json("", JsonRequestBehavior.AllowGet);
         }
-
 
 
         [HttpPost]
@@ -483,6 +499,13 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+
+
+
+
+
+
         [HttpPost]
         public JsonResult GetPendingItem(int PurchaseId)
         {
@@ -598,9 +621,6 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
-       
 
     }
 }
