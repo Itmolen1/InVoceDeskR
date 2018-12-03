@@ -59,11 +59,11 @@
                      {
                          render: function (data, type, row) {
                              if (row.Status == true) {
-                                 return '<label class="switch"><input type="checkbox" onclick="EditClinetStatus(' + row.ProductUnitID + "," + row.Status + ')" checked><span class="slider round"></span></label>'
+                                 return '<label class="switch"><input type="checkbox" onclick="EditProductUnitStatus(' + row.ProductUnitID + "," + row.Status + ')" checked><span class="slider round"></span></label>'
 
                              }
                              else {
-                                 return '<label class="switch"><input type="checkbox" onclick="EditClinetStatus(' + row.ProductUnitID + "," + row.Status + ')"><span class="slider round"></span></label>'
+                                 return '<label class="switch"><input type="checkbox" onclick="EditProductUnitStatus(' + row.ProductUnitID + "," + row.Status + ')"><span class="slider round"></span></label>'
                              }
                          }
                      },
@@ -79,7 +79,31 @@
 
     });
 
+    function EditProductUnitStatus(id, ProductunitStatus) {
+        var answer = confirm('Are you sure you want to change the status of the Unit?');
+        if (answer) {
+            $.ajax({
+                url: "/MVCProductUnit/UpdateUnitStatus",
+                type: "Post",
+                async: false,
+                dataType: "json",
+                data: { id: id, ProductUnitStatus: ProductunitStatus },
+                success: function (data) {
+                    if (data == "Ok")
+                        $('#productUnitTable').DataTable().ajax.reload();
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+            });
 
+        }
+        else
+        {
+            return;
+        }
+
+    }
 
     function EditProductUnit(id)
     {

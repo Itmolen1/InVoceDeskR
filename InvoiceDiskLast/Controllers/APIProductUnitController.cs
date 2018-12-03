@@ -89,11 +89,11 @@ namespace InvoiceDiskLast.Controllers
         //    return Ok(id);
         //}
 
-        [Route("api/APIProductUnitByName/{name:alpha}/{CompanyID:int}")]
-        public IHttpActionResult GetProductUnitTables(string name,int CompanyID)
+        [Route("api/APIProductUnitByName/{CompanyID:int}")]
+        public IHttpActionResult PostProductUnitTables(ProductUnitTable productUnitTable, int CompanyID)
         {
             CheckUnit1 ch = new CheckUnit1();
-            bool resut =  db.ProductUnitTables.Count(e => e.ProductUnit == name && e.CompanyId == CompanyID) > 0;
+            bool resut =  db.ProductUnitTables.Count(e => e.ProductUnit == productUnitTable.ProductUnit && e.CompanyId == CompanyID) > 0;
 
             if (resut == true)
             {
@@ -185,6 +185,32 @@ namespace InvoiceDiskLast.Controllers
             db.SaveChanges();
 
             return Ok(productUnitTable);
+        }
+
+        [Route("api/UpdateUnitStatus")]
+        public IHttpActionResult PostProductUnitStatus(ProductUnitTable productUnittable)
+        {
+            ProductUnitTable productUnitTable = db.ProductUnitTables.Find(productUnittable.ProductUnitID);
+            if (productUnitTable == null)
+            {
+                return NotFound();
+            }
+
+            ProductUnitTable productunitTables = db.ProductUnitTables.Where(c => c.ProductUnitID == productUnittable.ProductUnitID).FirstOrDefault();
+            productunitTables.Status = productUnittable.Status;
+
+            db.Entry(productunitTables).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+
+            }
+
         }
 
         protected override void Dispose(bool disposing)

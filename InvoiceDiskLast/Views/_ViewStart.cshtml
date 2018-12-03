@@ -444,8 +444,10 @@
 
     $('#CancelProductUnit').click(function () {
         CleartUnitTextBox();
-        $('#CreateNewProductModal').modal('show');
+        ShowServiceGood(GoodsService);
         $('#UnitModel').modal('hide');
+        $('#CreateNewProductModalGoods').modal('show');
+       
     });
 
     $('#SaveNewProductUnit').click(function () {
@@ -468,15 +470,18 @@
                         ProductUnit: $('#ProductUnit').val(),
                         Status: "true"
                     }
-                    $.ajax({
+                    $.ajax({                        
                         url: "/MVCProductUnit/AddorEdit",
                         type: "POST",
                         data: dataUnit,
                         success: function (dat) {
                             CleartUnitTextBox();
-                            $('#UnitModel').modal('hide');
+                            $('#UnitModel').modal('hide');                            
                             LoadProductUnit();
-                            $('#CreateNewProductModal').modal('show');
+                            if (GoodsService == "Good") {
+                                ShowServiceGood(GoodsService);                               
+                                $('#CreateNewProductModalGoods').modal('show');
+                            }
                             $.toast({
                                 heading: 'Success',
                                 text: 'Your opration has been successfuly completed `Thank you`',
@@ -777,8 +782,6 @@
         }
         else if(GoodsServicess = "Services")
         {
-            debugger;
-            alert(GoodsServicess);
             IsValid = validateProductServices();
             if(IsValid == true)
             {
@@ -833,7 +836,7 @@
 
 
     function checkProductByName(PName) {
-        debugger;
+     
         var Result = true;
         $.ajax({
             url: "/MVCProduct/GetProductByName",
@@ -1074,11 +1077,11 @@
         }
   
 
-    $('#ProductUnitSelect').change(function () {
+        $('#ProductUnitSelectGoods').change(function () {
 
         var value = $(this).val();
         if (value == "AddNewPUnitSelect") {
-            $('#CreateNewProductModal').modal('hide');
+            $('#CreateNewProductModalGoods').modal('hide');
 
             $('#SaveUnit').show();
             $('#updateUnit').hide();

@@ -407,6 +407,28 @@ namespace InvoiceDiskLast.Controllers
             return Ok();
         }
 
+        [Route("api/GetSaleItemQty/{id:int}")]
+        public IHttpActionResult GetSaleQuantity(int id)
+        {
+            MVCQutationViewModel _MvcQutationViewModel = new MVCQutationViewModel();
+            try
+            {
+                _MvcQutationViewModel = db.QutationDetailsTables.Where(x => x.ItemId == id && x.QutationID == x.QutationTable.QutationID).Select(c => new MVCQutationViewModel
+                {
+
+                    Quantity = c.Quantity
+                }).FirstOrDefault();
+
+                return Ok(_MvcQutationViewModel);
+            }
+
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+        }
+
 
 
     }
