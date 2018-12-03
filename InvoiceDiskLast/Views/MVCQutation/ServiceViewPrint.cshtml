@@ -22,21 +22,35 @@
             <div class="col-lg-2 col-md-2 col-sm-1"></div>
             <div class="col-lg-8 col-md-8 col-sm-10">
                 <div class="row" style="margin-left:0px;margin-right:0px;">
-            
-                   <div class="row" style="margin-left:0px;margin-right:0px;">
 
-                       <div class="btn-group">
-                         
+                    <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                        <div class="btn-group">
+
                             <div style="margin-left:3px">
+
+
                                 <div class="btn-group">
                                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
                                     @Html.ActionLink("print Invoice", "QuataionServicePrint", "QutationService", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
                                 </div>
                             </div>
-                          
-                            <div style="margin-left:3px">
-                                <a href="/MVCQutation/ServiceInvoice/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
-                            </div>
+
+                            @if (ViewBag.Link != null)
+                            {
+                                <div style="margin-left:3px">
+                                    <a href="@ViewBag.Link" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="margin-left:3px">
+                                    <a href="/MVCQutation/ServiceInvoice/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                                </div>
+                            }
+
+
+
                         </div>
                     </div>
                 </div>
@@ -158,11 +172,11 @@
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-right">
 
-                            @{ 
+                            @{
                                 DateTime qutationDate = new DateTime();
                                 DateTime qutationDueDate = new DateTime();
                                 qutationDate = Convert.ToDateTime(QutationModel.QutationDate);
-                                qutationDueDate= Convert.ToDateTime(QutationModel.DueDate);
+                                qutationDueDate = Convert.ToDateTime(QutationModel.DueDate);
 
                             }
                             <label>@qutationDate.ToShortDateString()</label><br />
@@ -198,7 +212,7 @@
 
                         <table id="mytable" class="table table-bordred table-striped table-responsive">
                             <thead>
-                               
+
                                 <tr>
                                     <th class="col-sm-3">
                                         Services
@@ -319,7 +333,7 @@
                         <div class="col-lg-7"><b>@CompanyDatas.CompanyName</b></div>
                         <div class="col-lg-5"></div>
 
-                     
+
                         <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
 
                     </div>
@@ -328,18 +342,18 @@
             </div>
         </div>
     </body>
-}
-catch (global::System.Exception)
-{
+                                }
+                                catch (global::System.Exception)
+                                {
 
 
-}
+                                }
 
 
 <script>
 
     $(document).ready(function () {
-       
+
         var patth = localStorage.getItem('path1');
         $("#FilePath").val(patth);
 

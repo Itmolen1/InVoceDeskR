@@ -356,8 +356,18 @@ namespace InvoiceDiskLast.Controllers
            
             try
             {
-                PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
-                _MvcQuatation.QuantityRemaing = PurchaseQuantity;
+
+                var q= (from p in db.PurchaseOrderTables
+                         join pd in db.PurchaseOrderDetailsTables on p.PurchaseOrderID equals pd.PurchaseId
+                         where p.Status == "accepted" && pd.PurchaseItemId == ProductId
+                         select pd).Sum(i=>i.PurchaseQuantity);
+
+                             
+
+
+
+               // PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
+                _MvcQuatation.QuantityRemaing = q;
 
                 return Ok(_MvcQuatation);
             }
@@ -371,7 +381,7 @@ namespace InvoiceDiskLast.Controllers
 
         [Route("api/GetQuatationListForQuantityCheck/{QutationId:int}")]
         public IHttpActionResult GetQutationDetailList(int QutationId)
-        {
+            {
             List<MVCQutationViewModel> _MvcQutationViewModel = new List<MVCQutationViewModel>();
 
             try
@@ -380,9 +390,10 @@ namespace InvoiceDiskLast.Controllers
                                          where c.QutationID == QutationId
                                          group c by c.ItemId into g
                                          select new MVCQutationViewModel
-                                         {
+                                         {                                           
                                              ItemId = g.Key,
-                                             QuantityRemaing = g.Sum(oi => oi.Quantity)
+                                             QuantityRemaing = g.Sum(oi => oi.Quantity), 
+                                                                                          
                                          }).ToList();
 
 
