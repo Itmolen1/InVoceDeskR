@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<input type="hidden" id="ProductId" />
+<input type="hidden" id="ProductId"/>
 
 <div id="ProductViewModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -143,7 +143,13 @@
                     { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
                     { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
                     { "data": "Type", "name": "Type", "autoWidth": true },
-                    { "data": "OpeningStockValue", "name": "OpeningStockValue", "autoWidth": true },
+                   // { "data": "OpeningStockValue", "name": "OpeningStockValue", "autoWidth": true },
+                    {
+                        render: function(data, type,row)
+                        {
+                            return "<td style='text-align:center'><span class='label label-primary'>" + row.OpeningStockValue + "</span></td>"
+                        }
+                    },
                     {
                          render: function(data, type,row)
                          {

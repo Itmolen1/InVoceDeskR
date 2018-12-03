@@ -333,7 +333,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
-                 qutationquantity = Convert.ToInt32(db.QutationDetailsTables.Where(t => t.ItemId == ProductId).Sum(i => i.Quantity));
+                qutationquantity = Convert.ToInt32(db.QutationDetailsTables.Where(t => t.ItemId == ProductId).Sum(i => i.Quantity));
                 _MvcQuatation.QuantityRemaing = PurchaseQuantity - qutationquantity;
 
                 return Ok(_MvcQuatation);
@@ -353,20 +353,18 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationViewModel _MvcQuatation = new MVCQutationViewModel();
 
             int PurchaseQuantity = 0;
-           
+
             try
             {
 
-                var q= (from p in db.PurchaseOrderTables
+                var q = (from p in db.PurchaseOrderTables
                          join pd in db.PurchaseOrderDetailsTables on p.PurchaseOrderID equals pd.PurchaseId
                          where p.Status == "accepted" && pd.PurchaseItemId == ProductId
-                         select pd).Sum(i=>i.PurchaseQuantity);
-
-                             
+                         select pd).Sum(i => i.PurchaseQuantity);
 
 
 
-               // PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
+                // PurchaseQuantity = Convert.ToInt32(db.PurchaseOrderDetailsTables.Where(t => t.PurchaseItemId == ProductId).Sum(i => i.PurchaseQuantity));
                 _MvcQuatation.QuantityRemaing = q;
 
                 return Ok(_MvcQuatation);
@@ -381,7 +379,7 @@ namespace InvoiceDiskLast.Controllers
 
         [Route("api/GetQuatationListForQuantityCheck/{QutationId:int}")]
         public IHttpActionResult GetQutationDetailList(int QutationId)
-            {
+        {
             List<MVCQutationViewModel> _MvcQutationViewModel = new List<MVCQutationViewModel>();
 
             try
@@ -390,10 +388,10 @@ namespace InvoiceDiskLast.Controllers
                                          where c.QutationID == QutationId
                                          group c by c.ItemId into g
                                          select new MVCQutationViewModel
-                                         {                                           
+                                         {
                                              ItemId = g.Key,
-                                             QuantityRemaing = g.Sum(oi => oi.Quantity), 
-                                                                                          
+                                             QuantityRemaing = g.Sum(oi => oi.Quantity),
+
                                          }).ToList();
 
 
@@ -407,29 +405,28 @@ namespace InvoiceDiskLast.Controllers
             return Ok();
         }
 
-        [Route("api/GetSaleItemQty/{id:int}")]
-        public IHttpActionResult GetSaleQuantity(int id)
+        [Route("api/GetSaleItemQty/{id:int}/{companyid:int}")]
+        public IHttpActionResult GetSaleQuantity(int id, int companyid)
         {
             MVCQutationViewModel _MvcQutationViewModel = new MVCQutationViewModel();
-            try
-            {
-                _MvcQutationViewModel = db.QutationDetailsTables.Where(x => x.ItemId == id && x.QutationID == x.QutationTable.QutationID).Select(c => new MVCQutationViewModel
+                try
                 {
 
-                    Quantity = c.Quantity
-                }).FirstOrDefault();
+                    var q = (from p in db.QutationTables
+                             join pd in db.QutationDetailsTables on p.QutationID equals pd.QutationID
+                             where p.Status == "accepted" && pd.QutationID == id && p.CompanyId == companyid
+                             select pd).Sum(i => i.Quantity);
 
-                return Ok(_MvcQutationViewModel);
-            }
+                    _MvcQutationViewModel.QuantityRemaing = q;
 
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
+                    return Ok(_MvcQutationViewModel);
+                }
 
-        }
-
-
-
+                catch (Exception ex)
+                {
+                    return NotFound();
+                }
+          
+            }            
     }
 }

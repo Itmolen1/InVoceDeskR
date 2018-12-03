@@ -313,16 +313,17 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
+                int CompanyId = 1003;
                 MVCQutationViewModel _QutationList = new MVCQutationViewModel();
                 MVCPurchaseDetailsModel PurchaseModel = new MVCPurchaseDetailsModel();
 
                 //api in api/Qutation
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetSaleItemQty/" + id).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetSaleItemQty/" + id+ "/" + CompanyId).Result;
                 _QutationList = response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
 
                 
                 //api in api/purchase
-                HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseItQTY/" + id).Result;
+                HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseItemQTY/" + id + "/" + CompanyId).Result;
                 PurchaseModel = _response.Content.ReadAsAsync<MVCPurchaseDetailsModel>().Result;
                
 
@@ -330,7 +331,7 @@ namespace InvoiceDiskLast.Controllers
                 
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return 0;
             }
