@@ -900,16 +900,22 @@
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
-            LoadProductUnit();
-            //  $('#VenderSelectModel').modal('hide');
-            $('#UpdateProId').hide();          
-            $('select#Type option').each(function () {
-                if ($(this).text() == "Good") {
-                    this.selected = true;
-                    return;
-                }
-            });
-            $('#CreateNewProductModal').modal('show');
+            //LoadProductUnit();          
+            //$('#UpdateProId').hide();          
+            //$('select#Type option').each(function () {
+            //    if ($(this).text() == "Good") {
+            //        this.selected = true;
+            //        return;
+            //    }
+            //});
+            //$('#CreateNewProductModal').modal('show');
+            ShowServiceGood("Good");
+            $('#TypeGoodsServices').attr('disabled', false);
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').attr('disabled', 'disabled');              
+            $('#CreateNewProductModalGoods').modal('show');
+
         }
         else if (value == "0") {
 

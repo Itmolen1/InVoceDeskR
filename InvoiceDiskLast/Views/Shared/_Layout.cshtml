@@ -600,6 +600,116 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+
+    @*Product Model For Good*@
+    <div class="modal fade bs-example-modal-lg" id="CreateNewProductModalGoods" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel" style="color:skyblue">Add New Product</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select class="form-control p-0" id="TypeGoodsServices">
+                                <option value="0">Select Type</option>
+                                <option value="Good" selected="selected">Good</option>
+                                <option value="Services">Services</option>
+                            </select><span class="bar"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="DivGoodBody">                       
+                      
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="ProductNameGoods" placeholder="Product Name" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="DescriptionGoods" placeholder="Description" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="SalePriceGoods" placeholder="Sale Price" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="PurchasePriceGoods" placeholder="Purchase Price" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <select class="form-control p-0" id="ProductUnitSelectGoods"></select>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="OpeningQuantityGoods" placeholder="Opening Quantity" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>  
+
+                    <div id="DivServiceBody">
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="ProductNameService" placeholder="Service Name" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="DescriptionService" placeholder="Description" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="SalePriceService" placeholder="Sale Hourly Price" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group ">
+                                    <input class="form-control" type="text" required id="PurchasePriceService" placeholder="Purchase Hourly  Price" />
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                   
+
+                </div>
+                <div class="modal-footer">
+                    <div id="SAveProdIDGoods">
+                        <button type="button" id="SaveNewProductGoods" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save Product</button>
+                    </div>
+                    <div id="UpdateProIdGoods">
+                        <button type="button" id="UpdateProductGoods" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
+                    </div>
+                    <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @**@
+
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -1084,8 +1194,9 @@
 </body>
 </html>
 <script>
-    $(document).ready(function () {
-       
+    var GoodsServicess = "";
+    GoodsService = "Good"
+    $(document).ready(function () {       
         GetUserInfo();
     });
 
@@ -1117,8 +1228,7 @@
             }
         });
     }
-
-
+   
     $('#changeImage').click(function () {
         $.ajax({
             url: "/UserInfo/GetUserByCompayId",
