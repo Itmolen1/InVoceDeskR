@@ -1638,15 +1638,10 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        public ActionResult ServiceViewPrint(int Id,string Flage)
+        public ActionResult ServiceViewPrint(int Id)
         {
             try
             {
-                if (Flage != "" && Flage== "viewInvoice")
-                {
-                    ViewBag.Link = "/QutationOrder/QutationOrderList";
-                }
-
                 
 
                 var idd = Session["ClientID"];

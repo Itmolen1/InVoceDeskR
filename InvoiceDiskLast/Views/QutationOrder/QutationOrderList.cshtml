@@ -827,7 +827,7 @@
 
 
         function ViewInvoice(qutationId, Type) {
-            alert(Type);
+          
             $.ajax({
                 url: '/MVCClient/AddOrEditQutation',
                 type: 'GET',
@@ -836,18 +836,15 @@
                 },
                 success: function (data) {
                     if (Type == "Goods") {
-                        alert(Type);
-
-                        href = "/MVCQutation/ServiceViewPrint?Id=" + qutationId + "&Flage=" + "viewInvoice";
+                    
+                        
+                        href = "/MVCQutation/GoodViewPrint?Id=" + qutationId;
                         window.open(href, '_blank');
-
                     }
                     else if (Type == "Services") {
-                       
-
-                        window.location.href = "/MVCQutation/ServiceViewPrint?Id=" + qutationId + "&Flage=" + "viewInvoice";
+                        href = "/MVCQutation/ServiceViewPrint?Id=" + qutationId;
+                        window.open(href, '_blank');
                     }
-
                 }
             });
         }

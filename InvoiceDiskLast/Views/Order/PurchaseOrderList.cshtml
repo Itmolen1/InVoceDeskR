@@ -530,7 +530,7 @@
                                   break;
 
                               case "accepted":
-                                 return "<td><span class='label label-success'>" + row.Status + "</span></td>"
+                                  return "<td><span class='label label-success'>" + row.Status + "</span></td>"
                                   break;
                           }
                       }
@@ -555,7 +555,7 @@
 
 
                               case "accepted":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ')"><i class="fa fa-eye"> View Invoice</i></button>'
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye"> View Invoice</i></button>'
                                   break
                           }
 
@@ -565,6 +565,32 @@
             ]
         });
     }
+
+
+
+    function ViewInvoice(PurchaseOrderID, Type) {
+
+        $.ajax({
+            url: '/Purchase/AddOrEditPurchase',
+            type: 'GET',
+            data: {
+                purchaseId: PurchaseOrderID
+            },
+            success: function (data) {
+                if (Type == "Goods") {
+                    href = "/Purchase/ViewAndPrintInvoiceGood?Id=" + PurchaseOrderID;
+                    window.open(href, '_blank');
+                }
+                else if (Type == "Services") {
+                    href = "/Purchase/ViewAndPrintInvoiceService?Id=" + PurchaseOrderID;
+                    window.open(href, '_blank');
+                }
+            }
+        });
+    }
+
+
+
     function loadPendingTable(id) {
         $("#PendingTable").DataTable({
             //"processing": true, // for show progress bar
@@ -637,7 +663,7 @@
     }
 
 
-    
+
 
 
     function Reopen(id) {
@@ -734,7 +760,7 @@
     }
 
     function updateStatus(Id, Status, Message) {
-       
+
         var Data = JSON.stringify({
             purchaseId: Id,
             Status: Status,
@@ -781,7 +807,7 @@
 
 
     function AddPending() {
-       
+
         var ddddd = {
             Purchase_QuataionId: $("#txtpurchaseId").val(),
             FromDate: $("#txtfromdate").val(),
@@ -818,7 +844,7 @@
     }
 
     function LoadAssetDropDown() {
-       
+
 
         var drppayment = $('#drppaymentDebit');
 
@@ -865,7 +891,7 @@
                 alert(Error)
             },
         });
-        
+
     });
 
 
@@ -974,7 +1000,7 @@
     });
 
     $('#btnSave').click(function () {
-       
+
         if ($('#tableAccountinfo #tbleAccount tr').length > 0) {
             PayTransaction();
         }
