@@ -17,7 +17,7 @@ namespace InvoiceDiskLast.Controllers
 
     public class APIPurchaseController : ApiController
     {
-        SqlParameter _Prameter;
+        
         private DBEntities db = new DBEntities();
 
         [ResponseType(typeof(MvcPurchaseModel))]
@@ -421,17 +421,18 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [Route("api/GetPurchaseItQTY/{id:int}")]
-        public IHttpActionResult GetSaleQuantity(int id)
+        [Route("api/GetPurchaseItemQTY/{id:int}/{companyid:int}")]
+        public IHttpActionResult GetSaleQuantity(int id, int companyid)
         {
             MVCPurchaseDetailsModel _MvcPurchaseDetailsModel = new MVCPurchaseDetailsModel();
             try
             {
-                _MvcPurchaseDetailsModel = db.PurchaseOrderDetailsTables.Where(x => x.PurchaseItemId == id).Select(c => new MVCPurchaseDetailsModel
-                {
-
-                    PurchaseQuantity = c.PurchaseQuantity
-                }).FirstOrDefault();
+                var q = (from p in db.PurchaseOrderTables
+                         join pd in db.PurchaseOrderDetailsTables on p.PurchaseOrderID equals pd.PurchaseId
+                         where p.Status == "accepted" && pd.PurchaseItemId == id && p.CompanyId == companyid
+                         select pd).Sum(i => i.PurchaseQuantity);
+              
+                _MvcPurchaseDetailsModel.PurchaseQuantity = q;
 
                 return Ok(_MvcPurchaseDetailsModel);
             }

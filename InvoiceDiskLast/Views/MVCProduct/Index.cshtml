@@ -28,10 +28,10 @@
                         <th>
                             Type
                         </th>
-                        <th>
-                           Opening Stock Value
+                        <th style="text-align:center">
+                           Availible Stock
                         </th>
-                        <th>
+                        <th style="text-align:center">
                             Status
                         </th>
                         <th class="text-right">Action</th>
@@ -50,7 +50,7 @@
     </div>
 </div>
 
-<input type="hidden" id="ProductId" />
+<input type="hidden" id="ProductId"/>
 
 <div id="ProductViewModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -143,7 +143,13 @@
                     { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
                     { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
                     { "data": "Type", "name": "Type", "autoWidth": true },
-                    { "data": "OpeningStockValue", "name": "OpeningStockValue", "autoWidth": true },
+                   // { "data": "OpeningStockValue", "name": "OpeningStockValue", "autoWidth": true },
+                    {
+                        render: function(data, type,row)
+                        {
+                            return "<div style='text-align:center'><td><span class='label label-primary'>" + row.OpeningStockValue + "</span></td></div>"
+                        }
+                    },
                     {
                          render: function(data, type,row)
                          {
@@ -153,7 +159,7 @@
                              }
                              else
                              {
-                                 return '<label class="switch"><input type="checkbox" onclick="DeleteProductNow(' + row.ProductId + "," + row.ProductStatus + ')" name="ProStatus"><span class="slider round"></span></label>'
+                                 return '<label class="switch" style="text-align:center"><input type="checkbox" onclick="DeleteProductNow(' + row.ProductId + "," + row.ProductStatus + ')" name="ProStatus"><span class="slider round"></span></label>'
                              }
                          }
                      },

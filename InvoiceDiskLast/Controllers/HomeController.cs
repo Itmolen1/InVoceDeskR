@@ -8,16 +8,16 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
 
-    [SessionExpireAttribute]
+    //[SessionExpireAttribute]
     public class HomeController : Controller
     {
      
         public ActionResult Index()
         {
-
-            return View();
-           
+            return View();           
         }
+
+       
         public ActionResult IndexTestSamar()
         {
             ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar";
@@ -29,6 +29,11 @@ namespace InvoiceDiskLast.Controllers
         {
             ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar changes";
 
+            return View();
+        }
+
+        public ActionResult Test()
+        {
             return View();
         }
     }
