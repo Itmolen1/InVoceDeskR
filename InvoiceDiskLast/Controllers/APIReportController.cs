@@ -14,15 +14,11 @@ namespace InvoiceDiskLast.Controllers
     public class APIReportController : ApiController
     {
         private DBEntities db = new DBEntities();
-        SqlParameter _Prameter;
-
-
 
 
         [Route("api/GetJournal/{ToDate:long}/{FromDate:long}")]
         public IHttpActionResult Getjournal(long FromDate, long ToDate)
         {
-
             if (FromDate.ToString() != null)
             {
 
@@ -30,8 +26,6 @@ namespace InvoiceDiskLast.Controllers
                 var TDate = ConvertLongToDate(ToDate);
                 try
                 {
-                    //var Journal = db.Database.SqlQuery<TransactionModel>("exec dbo.Sp_GetJournal", new SqlParameter("@FromDate", FDate),new SqlParameter("@ToDate", TDate)).ToList<TransactionModel>();
-
                     List<TransactionModel> Journal = db.AccountTransictionTables.Where(t => t.TransictionDate <= FDate && t.TransictionDate >= TDate).Select(c => new TransactionModel
                     {
                         TranDate = c.TransictionDate,
@@ -57,6 +51,47 @@ namespace InvoiceDiskLast.Controllers
                 return null;
             }
 
+        }
+
+        [Route("api/GetTrialBalance/{fromDate:long}/{Todate:long}")]
+        public IHttpActionResult GetTrialBalance(long Date)
+        {
+
+            //Select T.FK_AccountID, Ac.AccountTitle,T.TransictionDate,SUM(T.Dr) As TotalDebit, SUM(T.Cr) as TotalCredit from AccountTransictionTable as T
+            //inner join AccountTable as Ac on T.FK_AccountID = Ac.AccountId
+            //group by T.FK_AccountID, Ac.AccountTitle, T.TransictionDate
+
+            List<TransactionModel> _TransactionList = new List<TransactionModel>();
+            try
+            {
+
+                DateTime DateConverted = new DateTime();
+
+                DateConverted = ConvertLongToDate(Date);
+
+               _TransactionList = (from T in db.AccountTransictionTables
+                                    join Ac in db.AccountTables on T.FK_AccountID equals Ac.AccountId
+                                    where T.TransictionDate== DateConverted
+                                    select new { T.FK_AccountID, Ac.AccountTitle, T.TransictionDate, T.Dr, T.Cr } into x
+                                    group x by new { x.FK_AccountID, x.AccountTitle, x.TransictionDate } into g
+                                    select new TransactionModel
+                                    {
+                                        TranDate = g.Key.TransictionDate,
+                                        AccountTitle = g.Key.AccountTitle,
+                                        AmountCredit = g.Sum(i => i.Cr),
+                                        AmountDebit = g.Sum(i => i.Dr),
+                                    }).ToList();
+
+                return Ok(_TransactionList);
+
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                throw;
+            }
+
+            return Ok();
         }
 
         public DateTime ConvertLongToDate(long Date)

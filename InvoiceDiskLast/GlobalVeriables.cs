@@ -15,12 +15,9 @@ namespace InvoiceDiskLast
         {
             string url = System.Configuration.ConfigurationManager.AppSettings["url"];
             WebApiClient.BaseAddress = new Uri(url+"/api/");
-
-            //WebApiClient.BaseAddress = new Uri("http://uurtjefactuur.nl/api/");
-          
+            //WebApiClient.BaseAddress = new Uri("http://uurtjefactuur.nl/api/");         
             WebApiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
           
-
         }
     }
 }

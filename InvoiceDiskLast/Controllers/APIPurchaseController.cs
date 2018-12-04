@@ -14,7 +14,7 @@ using System.Web.Http.Description;
 namespace InvoiceDiskLast.Controllers
 {
 
-    
+
     public class APIPurchaseController : ApiController
     {
         
@@ -135,7 +135,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 int id = Convert.ToInt32(IDS);
 
-                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId).ToList().Select(p => new MvcPurchaseModel
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId && p.Status != "accepted").ToList().Select(p => new MvcPurchaseModel
                 {
                     PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
@@ -340,7 +340,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 int id = Convert.ToInt32(IDS);
 
-                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId && p.Type== type && p.Status=="accepted").ToList().Select(p => new MvcPurchaseModel
+                ob = db.PurchaseOrderTables.Where(p => p.CompanyId == CompanyId && p.Type == type && p.Status == "accepted").ToList().Select(p => new MvcPurchaseModel
                 {
                     PurchaseOrderID = Convert.ToInt32(p.PurchaseOrderID),
                     PurchaseID = p.PurchaseID,
