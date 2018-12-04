@@ -107,6 +107,22 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        public ActionResult GetTrialBalance()
+        {
+            try
+            {
+              // HttpRequestMessage _Apiresponse= GlobalVeriables.WebApiClient
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View();
+        }
+
+
 
         public static Boolean IsFileLocked(FileInfo file)
         {
