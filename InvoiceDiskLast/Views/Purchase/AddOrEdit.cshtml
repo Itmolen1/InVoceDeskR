@@ -24,6 +24,389 @@
 }
 
 
+<div class="row">
+    <div class="col-2 b-r">
+        two
+    </div>
+    <div class="col-8 b-r" style="border:1px solid Silver">
+        <div class="container">
+
+            <div class="row" style="margin-top:35px">
+                <div class="col-12 b-r HeadText">
+                    <label>Purchase Order</label>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-7 b-r">
+                   
+                        <img src="@Url.Content("/Images/"+@CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+                  
+                    <div class="row clientInfo" style="margin-top:30px">
+                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 b-r">@Contectdatas.ContactAddress
+                        <br />
+                        @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                    </div>
+
+
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-3 b-r">
+                            Purchase Date:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker", id = "PurchaseDate" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Purchase Number:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseID", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                        </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Due Date:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker", id = "PurchaseDueDate", title = "Due Date", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseDueDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Refrence Number:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseRefNumber", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseRefNumber, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                        </div>
+                </div>
+
+                <div class="col-5 b-r">
+                    <div class="row">
+                        <div class="col-3 b-r"></div>
+                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
+                        <div class="col-2 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Kvk nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Bank:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">IBAN:</div>
+                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BIC:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Telephone:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">E-mail:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Website:</div>
+                        <div class="col-7 b-r">@CompanyDatas.Website</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Address:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyAddress<br />
+                        @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
+                        </div>
+                    </div>                
+                </div>
+            </div>
+
+            <hr />
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table" id="orderdetailsitemsp">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Goods
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+
+                                </th>
+
+                            </tr>
+
+
+                        </thead>
+                        <tbody class="tbody">
+
+
+                            @if (ViewBag.PurchaseDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.PurchaseDatailsList)
+                                {
+
+                                    <tr id="@item.PurchaseOrderDetailsId" class="PurchaseOrderDetailsId">
+
+                                        <td>
+
+                                            <select Id="SelectProductQutationp" class="productp form-control pClassp" style="width:216px !important; font-size:12px">
+                                                <option value="0">Select Item..</option>
+                                                @foreach (var product in ViewBag.Product)
+                                                {
+                                                    <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="PurchaseQuantity form-control" id="Quantityp" value="@item.PurchaseQuantity" `style="font-size:12px" />
+                                        </td>
+
+                                        <td>
+                                            <input type="text" class="PurchaseItemRate  form-control" id="Ratep" value="@item.PurchaseItemRate" style="font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="PurchaseTotal  form-control" id="FTotalp" value="@item.PurchaseTotal" readonly="readonly" style="font-size:12px" />
+
+                                        </td>
+                                        <td>
+                                            <select id="SelectVATp" name="NewsCategoriesID" class="VATp  form-control" style="width:80px; font-size:12px;">
+
+                                                @foreach (var item1 in ViewBag.VatDrop)
+                                                {
+                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
+                                                }
+                                            </select>
+
+                                        </td>
+                                        <td>
+                                            <button type="button" id="RemoveEdit1" class="btn btn-danger" style="font-size:12px">Remove</button>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
+
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="PurchaseOrderID" value="@item.PurchaseOrderID" />
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                        <tr id="mainrow">
+                            <td>
+                                <select id="SelectProductQutationp" class="productp form-control pClassp" style="font-size:12px"></select>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantity form-control", id = "PurchaseQuantity" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+
+                                @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control", id = "PurchaseItemRate" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+
+
+                            </td>
+                            <td>
+
+                                @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control", id = "PurchaseTotal" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+                                <select id="SelectVATp" class="VATp form-control" style="width:80px;font-size:12px">
+                                    <option>0</option>
+                                    <option>6</option>
+                                    <option>21</option>
+                                </select>
+
+                            </td>
+                            <td>
+
+                                <input type="button" id="addpuchase" value="add" class="btn btn-success" style="width:80px" />
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-7 b-r">
+                    <div class="row">
+                        <div class="col-3 b-r">Customer Notes:</div>
+                        <div class="col-9 b-r">
+                            @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseVenderNote" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 b-r">
+                    <div class="row">
+                        <div class="col-4 b-r text-right">Sub Total:</div>
+                        <div class="col-7 b-r text-right">@if (Model.PurchaseSubTotal != 0)
+                        {
+                            <label id="SubTotalp">@Model.PurchaseSubTotal</label>
+                        }
+                        else
+                        {
+                            <label id="SubTotalp"></label>
+                        }</div>
+                        <div class="col-1 b-r">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4 b-r text-right">Total excel BTW:</div>
+                        <div class="col-7 b-r text-right">
+                            @if (Model.PurchaseSubTotal != 0)
+                            {
+                                <label id="TotalBTWp">@Model.PurchaseSubTotal</label>
+                            }
+                            else
+                            {
+                                <label id="TotalBTWp">0.00</label>
+                            }
+                    </div>
+                    <div class="col-1 b-r">
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col-4 b-r text-right">BTW0%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="btwop"></label>
+                    </div>
+                    <div class="col-1 b-r">
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col-4 b-r text-right">BTW 6%:</div>
+                        <div class="col-7 b-r text-right">
+                          @if (Model.Vat6 != 0)
+                          {
+                            <label id="BTW6p">@Model.Vat6</label>
+                          }
+                          else
+                          {
+
+                            <label id="BTW6p">0.00</label>
+                          }
+                    </div>
+                    <div class="col-1 b-r">
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col-4 b-r text-right">BTW 21%:</div>
+                        <div class="col-7 b-r text-right">
+                            @if (Model.Vat21 != 0)
+                            {
+                                <label id="BTW21p">@Model.Vat21</label>
+                            }
+                            else
+                            {
+                                <label id="BTW21p">0.00</label>
+                            }
+                        </div>
+                        <div class="col-1 b-r">
+                        </div>
+                    </div>
+
+                    <div class="row Grand-color">
+                        <div class="col-4 b-r text-right">Grand Total:</div>
+                        <div class="col-7 b-r text-right">
+                           @if (Model.PurchaseTotoalAmount != 0)
+                           {
+                            <label id="gtotalp">@Model.PurchaseTotoalAmount</label>
+                           }
+                           else
+                           {
+                            <label id="gtotalp">0.00</label>
+                           }
+                        </div>
+                        <div class="col-1 b-r">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12 b-r">
+                    <div class="pull-right btn-margin-Bottom">
+                        <button id="Submitp" type="button"  class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save draft</button>
+                        <button id="saveEmailp" type="button" class="btn btn-success" style="margin:0px 5px" ><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + email</button>
+                        <button id="SaveEmailPrintPrintp" type="button"  class="btn btn-success" style="margin:0px 5px" ><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
+
+
+</div>
+               
+                 </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-2 b-r">
+        two
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
 
 <script type="text/javascript">
     var currentRow1 = "";

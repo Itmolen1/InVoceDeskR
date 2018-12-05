@@ -38,8 +38,9 @@
                     </div>
                     <hr />
                     <div class="row">
-                        <div class="col-7 b-r">
-                            <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none" />
+                        <div class="col-7 b-r">                           
+                                <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+                           
                             <div class="row clientInfo" style="margin-top:50px">
                                 <div class="col-12 b-r">@Contectdatas.ContactName</div>
                             </div>
@@ -362,7 +363,9 @@
                     <hr />
                     <div class="row">
                         <div class="col-7 b-r">
-                            <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none" />
+                         
+                                <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+                         
                             <div class="row clientInfo" style="margin-top:50px">
                                 <div class="col-12 b-r">@Contectdatas.ContactName</div>
                             </div>
@@ -1903,14 +1906,16 @@
         }
 
         var quantityRemain = 0;
-
+        var currentRow;
+        var quantity;
         $('#Quantity').keyup(function () {
             quantityRemain = 0;
             debugger;
 
-            var currentRow = $(this).closest("tr");
+             currentRow = $(this).closest("tr");
             var productId = currentRow.find('#SelectProductQutation').val();
-            var quantity = $(this).val();  // get current row 1st TD value
+             quantity = $(this).val();  // get current row 1st TD value
+
             quantityRemain = CheckQuantity(productId);
 
             if (quantity > quantityRemain) {
@@ -1924,7 +1929,6 @@
             }
         })
 
-
         $("#modal-btn-si").on("click", function () {
 
             var Price = currentRow.find("td:eq(2)").find('input').val();
@@ -1935,6 +1939,7 @@
 
         });
 
+       
         $("#modal-btn-no").on("click", function () {
 
             $('#mainrow #SelectProductQutation').val('0');
