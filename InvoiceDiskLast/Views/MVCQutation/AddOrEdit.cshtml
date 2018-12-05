@@ -4,7 +4,6 @@
     ViewBag.Title = "AddOrEdit";
 }
 
-
 <style>
     .pt-3-half {
         padding-top: 1.4rem;
@@ -14,7 +13,6 @@
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 
     @{
 
@@ -32,6 +30,7 @@
             </div>
             <div class="col-8 b-r" style="border:1px solid Silver">
                 <div class="container">
+
                     <div class="row" style="margin-top:35px">
                         <div class="col-12 b-r HeadText">
                             <label>Qutation</label>
@@ -150,7 +149,6 @@
                             </div>
                         </div>
                     </div>
-
                     <hr />
                     <div class="row">
                         <div class="col-12 b-r">
@@ -336,9 +334,7 @@
                             <!---->
 
                         </div>
-                    </div>
-                    
-                  
+                    </div>   
 
                 </div>
             </div>
@@ -349,7 +345,7 @@
     }
     else
     {
-        @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { id = "qutationId" } })
+        @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { id = "qutationId" }})
         <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
         <div class="row">
             <div class="col-2 b-r">
@@ -477,7 +473,6 @@
                         </div>
                     </div>
                 </div>
-
                     <hr />
                     <div class="row">
                         <div class="col-12 b-r">
@@ -691,10 +686,8 @@
                 <div class="btn-group">
                     <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
                 </div>
-
                 <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
                 <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
-
              </div>
         </div>
         <div class="col-2 b-r"></div>
@@ -706,7 +699,6 @@
             <div class="modal-header">
                 <h6 class="modal-title" id="myModalLabel">Entered quantity Exceeded</h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-
             </div>
             <div class="modal-body">
                 <h6>would you like to continue</h6>
@@ -723,11 +715,6 @@
 
 
 <script>
-
-
-
-
-
 
     var currentRow1 = "";
     var r = "";
@@ -776,7 +763,7 @@
             if (isAllValid) {
                 var $newRow = $("#mainrow").clone().removeAttr('id');
                 $('.product', $newRow).val($("#SelectProductQutation").val());
-                $('.VAT', $newRow).val($("#SelectVAT").val());
+                $('.VAT', $newRow).val($("#mainrow #SelectVAT").val());
 
                 //Replace add button with remove button
                 $("#add", $newRow).addClass('remove').val('Remove').removeClass('btn-success').addClass('btn-danger');
@@ -1011,8 +998,8 @@
         });
 
 
-        $("#Submit").click(function () {
-
+        $("#Submit").click(function () {  
+    
             var valid = validateQutationAddOrEdit();
             if (valid != true) {
 
