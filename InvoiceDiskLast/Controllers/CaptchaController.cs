@@ -287,25 +287,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult CheckUsername(string username)
         {
-
-            //HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetUserbyEmail/" + username).Result;
-
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //{
-
-            //    bool isValid = false;
-            //    return Json(isValid);
-
-            //}
-            //else
-            //{
-            //    bool isValid = true;
-            //    return Json(isValid);
-            //}
-
-
             return Json(!db.AspNetUsers.Any(x => x.UserName == username), JsonRequestBehavior.AllowGet);
-
 
         }
     }
