@@ -192,7 +192,7 @@
         }
     }
 
-
+   
     $('#QutationClientNext').click(function () {
 
         var qutationGoodOrService = $('#SelectTypeQutation').val();
@@ -245,6 +245,8 @@
     });
 
     $('#SaveNewContacts').click(function () {
+
+        $('#SaveNewContacts').attr('disabled', 'disabled');
         var res = validateContactQutation();
         if (res == false) {
             return false;
@@ -271,13 +273,14 @@
                     
                 },
                 success: function (response) {
+                   
                     if (response == '201') {
 
                         if (showRequiredModel == "QutationContactModel") {
                             $('#QutationContactModel').modal('show');
                             $('#CreateNewContactModal1').modal('hide');
                         }
-                        else if (showRequiredModel = "PurchaseContatcModel") {
+                        else if (showRequiredModel == "PurchaseContatcModel") {
                             $('#VenderSelectModel').modal('show');
                             $('#CreateNewContactModal1').modal('hide');
                         }
@@ -300,7 +303,7 @@
                 }
             });
         }
-
+        $('#SaveNewContacts').attr('disabled', false);
     });
 
     function clearContectTextBox1() {
@@ -329,7 +332,6 @@
 
     function SuccessInsertConatct1() {
         $.toast({
-            heading: 'Success',
             text: 'Opration Successfully completed',
             icon: 'info',
             loader: true,        // Change it to false to disable loader
@@ -763,6 +765,7 @@
                                 CleartProdctTextBoxGoods();
                                 $('#CreateNewProductModalGoods').modal('hide');
                                 SuccessInsertProduct();
+
                             }
                         },
                         error: function () {
@@ -828,7 +831,7 @@
 
     function SuccessInsertProduct() {
         swal({
-            title: "Congratulations!!!!",
+            title: "Success",
             text: "Your data has been saved successfully",
             type: "success",
         });

@@ -104,7 +104,7 @@ namespace InvoiceDiskLast.Controllers
                     _QutationList = response.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
                     if (_QutationList.Count > 0 && _QutationList != null)
                     {
-                        IsExceded = true;
+                       
                         foreach (var items in _QutationList)
                         {
                             _mvcQuatationViewModel23 = null;
@@ -113,6 +113,7 @@ namespace InvoiceDiskLast.Controllers
 
                             if (items.QuantityRemaing >(_mvcQuatationViewModel23.QuantityRemaing!=null? _mvcQuatationViewModel23.QuantityRemaing:0))
                             {
+                                IsExceded = true;
                                 MVCProductViewModel productModel = new MVCProductViewModel();
                                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + items.ItemId).Result;
                                  productModel = response1.Content.ReadAsAsync<MVCProductViewModel>().Result;                               
@@ -132,8 +133,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     return new JsonResult { Data = new { Status = "Exceeded", Message = _QuatationModel } };
                 }
-
-            }
+            
             else
             {
 
@@ -181,8 +181,8 @@ namespace InvoiceDiskLast.Controllers
 
                     return new JsonResult { Data = new { Status = "Fail", ex.Message } };
                 }
+                }
 
-               
             }
             return Json("", JsonRequestBehavior.AllowGet);
         }
@@ -304,10 +304,7 @@ namespace InvoiceDiskLast.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
 
         }
-
-
-
-
+        
 
         [HttpPost]
         public ActionResult DeleteQuatation(int QutationId, int QutationDetailID, int vat, decimal total)
