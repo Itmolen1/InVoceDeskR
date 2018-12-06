@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
             this.AccountTransictionTables = new HashSet<AccountTransictionTable>();
         }
     
-        public int? PayementTremId { get; set; }
+        public int PayementTremId { get; set; }
         public string PaymentTerm { get; set; }
         public Nullable<int> FK_CompanyID { get; set; }
         public Nullable<int> AddebBy { get; set; }

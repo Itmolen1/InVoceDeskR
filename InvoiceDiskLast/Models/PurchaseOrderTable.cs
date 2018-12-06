@@ -17,8 +17,8 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PurchaseOrderTable()
         {
-            this.PurchaseOrderDetailsTables = new HashSet<PurchaseOrderDetailsTable>();
             this.OrderStatusTables = new HashSet<OrderStatusTable>();
+            this.PurchaseOrderDetailsTables = new HashSet<PurchaseOrderDetailsTable>();
         }
     
         public int PurchaseOrderID { get; set; }
@@ -43,8 +43,8 @@ namespace InvoiceDiskLast.Models
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderStatusTable> OrderStatusTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
     }
 }

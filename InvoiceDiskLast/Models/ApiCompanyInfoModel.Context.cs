@@ -28,7 +28,6 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<ComapnyInfo> ComapnyInfoes { get; set; }
         public virtual DbSet<QutationDetailsTable> QutationDetailsTables { get; set; }
         public virtual DbSet<QutationTable> QutationTables { get; set; }
-        public virtual DbSet<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
         public virtual DbSet<PurchaseOrderTable> PurchaseOrderTables { get; set; }
         public virtual DbSet<UserTable> UserTables { get; set; }
         public virtual DbSet<ContactsTable> ContactsTables { get; set; }
@@ -43,5 +42,6 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<QutationOrderStatusTable> QutationOrderStatusTables { get; set; }
         public virtual DbSet<AccountTransictionTable> AccountTransictionTables { get; set; }
         public virtual DbSet<ProductTable> ProductTables { get; set; }
+        public virtual DbSet<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
     }
 }
