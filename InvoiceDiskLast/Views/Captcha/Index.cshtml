@@ -94,7 +94,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
                                 <div class="social">
-                                    <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook"></i> </a>
+                                    <a href="javascript:void(0)" class="btn  btn-facebook" data-toggle="tooltip" title="Login with Facebook"> <i aria-hidden="true" class="fa fa-facebook" id="LoginWithFacebook"></i> </a>
                                     <a href="javascript:void(0)" class="btn btn-googleplus" data-toggle="tooltip" title="Login with Google"> <i aria-hidden="true" id="LoginWithGoogle" class="fa fa-google-plus"></i> </a>
                                 </div>
                             </div>
@@ -167,54 +167,16 @@
         });
 
 
-        //$('#Emailrest').click(function () {
-        //    $.ajax({
-        //        url: '/Captcha/CheckEmail',
-        //        type: 'POST',
-        //        data: {
-        //            UserEmail: $('#UserEmail').val()
-        //        },
-        //        success: function (data)
-        //        {
-        //            if (data == "Success")
-        //            {
-        //                alert("success");
-        //                $.ajax({
-        //                    url: '/Login/VerifyEmail',
-        //                    method: 'Get',
-        //                    data: {
-        //                        Email: $('#UserEmail').val(),
-        //                        forgotpassword: 1
-        //                    },
-        //                    success: function (result) {
+        $('#LoginWithGoogle').click(function () {
+            window.location.href = "/api/Account/ExternalLogin?provider=Google&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Fuurtjefactuur.nl&state=cl_crBap2KOPNZCfILYwCOai_VoIrpy4AG2ENbqtJyk1","State=cl_crBap2KOPNZCfILYwCOai_VoIrpy4AG2ENbqtJyk1";
+            //window.location.href = "https://www.googleapis.com/auth/plus.login";
 
-        //                        if (result == "Success") {
-        //                            alert('res');
-        //                            window.location.href = "/Login/ResitPasswordSuccess"
-        //                        }
-        //                    },
-        //                    error: function (jqHXR) {
-        //                        if (jqHXR.status == '400') {
-        //                            Isvalid = false;
-        //                            FailRegistration();
-        //                        }
-        //                    }
-        //                });
-        //            }
-        //            else {
-        //                $.toast({
-        //                    heading: 'Failed',
-        //                    text: 'Email not Exist!',
-        //                    icon: 'info',
-        //                    loader: true,        // Change it to false to disable loader
-        //                    loaderBg: '#FF0000'  // To change the background
-        //                });
-        //            }
+        });
 
-        //        }
-        //    });
-        //});
+        $('#LoginWithFacebook').click(function () {
 
+            window.location.href = "/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=http%3A%2F%2Fuurtjefactuur.nl&state=cl_crBap2KOPNZCfILYwCOai_VoIrpy4AG2ENbqtJyk1","State=cl_crBap2KOPNZCfILYwCOai_VoIrpy4AG2ENbqtJyk1";
+        });
     </script>
 </body>
 
