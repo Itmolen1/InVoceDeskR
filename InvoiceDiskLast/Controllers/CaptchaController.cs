@@ -60,7 +60,7 @@ namespace InvoiceDiskLast.Controllers
 
         [HttpPost]
         public ActionResult Index(UserModels user)
-        {
+         {
 
             HttpResponseMessage messageConformed = GlobalVeriables.WebApiClient.PostAsJsonAsync("AccountCheckStatus", user).Result;
 

@@ -221,10 +221,6 @@
 </script>
 
 
-
-
-
-
 <input type="hidden" id="ContactsId" />
 
 
@@ -301,74 +297,9 @@
 
     });
 
-    function SuccessInsertConatct() {
-        swal({
-            title: "Congratulations!!!!",
-            text: "Your data has been saved successfully",
-            type: "success",
-
-        });
-    }
-    @*Contact or client Script*@
-
-    $('#SaveNewContacts').click(function () {
-
-        var billingAd;
-        if ($('#BillingEmail').val().trim() != "") {
-            billingAd = $('#BillingEmail').val();
-        }
-        else {
-            billingAd = $('#BillingEmailv').val();
-        }
-
-
-        var res = validateContact();
-        if (res == false) {
-            return false;
-        }
-        else {
-
-            $.ajax({
-                url: '/MVCClient/AddOrEdit',
-                type: 'POST',
-                data: {
-                    ContactName: $('#ContactName').val(),
-                    ContactAddress: $('#ContactAddress').val(),
-                    Type: $('#TypeContacts option:selected').val(),
-                    StreetNumber: $('#StreetNumber').val(),
-                    PostalCode: $('#PostalCode').val(),
-                    City: $('#City').val(),
-                    LandLine: $('#LandLine').val(),
-                    telephone: $('#telephone').val(),
-                    Mobile: $('#Mobile').val(),
-                    Website: $('#Website').val(),
-                    BillingEmail: billingAd,
-                    Remarks: $('#Remarks').val(),
-                    Status: $('#Status option:selected').text(),
-                    Company_Id: localStorage.getItem('CompanyID'),
-                    PersonCompany: $("input[name='ClientType']:checked").val(),
-                    Remarks: $('#Remarks').text()
-
-
-                },
-                success: function (response) {
-                    if (response == '201') {
-                        $('#CreateNewContactModal1').modal('hide');
-
-                        clearContectTextBox();
-                        SuccessInsertConatct();
-                    }
-                    else {
-                        alert(response);
-                    }
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-        }
-
-    });
+    
+   
+    
 
     $('#UpdateContacts').click(function () {
 
@@ -605,6 +536,15 @@
             error: function (errormessage) {
                 alert(errormessage.responseText);
             }
+        });
+    }
+
+    function SuccessInsertConatct() {
+        swal({
+            title: "Congratulations!!!!",
+            text: "Your data has been saved successfully",
+            type: "success",
+
         });
     }
 
