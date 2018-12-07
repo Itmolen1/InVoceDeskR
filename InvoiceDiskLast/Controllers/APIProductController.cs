@@ -22,8 +22,8 @@ namespace InvoiceDiskLast.Controllers
 
         public IHttpActionResult GetProductTables(int CompanyId, string status)
         {
-            
-           
+
+
             List<ProductTable> i = new List<ProductTable>();
 
             // DBLIST = db.ProductTables.Where(x => x.Company_ID == id).ToList();
@@ -46,8 +46,8 @@ namespace InvoiceDiskLast.Controllers
                     OpeningStockValue = c.OpeningStockValue,  //pt. - qt.CheckItemQuantity(),pt
                     ProductStatus = c.ProductStatus,
                     VatsValue = c.VatsValue,
-                  
-            }).ToList();
+
+                }).ToList();
 
                 return Ok(ob);
             }
@@ -75,7 +75,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        
+
 
 
         [Route("api/APIProductByProductID/{id:int}")]
@@ -154,7 +154,7 @@ namespace InvoiceDiskLast.Controllers
                     throw;
                 }
             }
-          
+
         }
 
         // POST: api/APIProduct
@@ -172,8 +172,14 @@ namespace InvoiceDiskLast.Controllers
 
 
             return Ok(productTable);
-           // return CreatedAtRoute("DefaultApi", new { id = productTable.ProductId }, productTable);
+            // return CreatedAtRoute("DefaultApi", new { id = productTable.ProductId }, productTable);
         }
+
+
+
+
+
+
 
         // DELETE: api/APIProduct/5
         [Route("api/DeleteProduct/{id:int}/{ProductStatus:alpha}")]
@@ -188,7 +194,7 @@ namespace InvoiceDiskLast.Controllers
 
             ProductTable productTables = db.ProductTables.Where(c => c.ProductId == id).FirstOrDefault();
             productTables.ProductStatus = productStatus;
-            
+
             db.Entry(productTables).State = EntityState.Modified;
             try
             {
@@ -216,5 +222,35 @@ namespace InvoiceDiskLast.Controllers
         {
             return db.ProductTables.Count(e => e.ProductId == id) > 0;
         }
+
+
+        public IHttpActionResult GetStockList()
+        {
+     //Select pt.PurchaseItemId,p.ProductName, SUM(pt.PurchaseQuantity) as purchaseQuantity,SUM(qt.Quantity) as SaleQuantity,
+     //SUM(pt.PurchaseQuantity) - SUM(qt.Quantity) as RemainingQuantity
+     //from[dbo].[PurchaseOrderDetailsTable] as pt
+     //inner join PurchaseOrderTable as po on po.PurchaseOrderID = pt.PurchaseId
+     //inner join QutationDetailsTable as qt on pt.PurchaseItemId = qt.ItemId
+     //inner join QutationTable as qtp on qtp.QutationID = qt.QutationID
+     //inner join ProductTable as p on p.ProductId = pt.PurchaseItemId
+     //where po.Type = 'Goods' And po.Status = 'accepted'
+     //and qtp.Type = 'Goods' And po.Status = 'accepted'
+     //Group by pt.PurchaseItemId,ProductName
+
+
+            try
+            {
+                var Query= db.PurchaseOrderDetailsTables.ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+         return Ok();
+        }
+
     }
 }

@@ -1,0 +1,474 @@
+﻿
+@{
+    ViewBag.Title = "StockList";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
+
+<div class="row">
+    <div class="col-xs-12 col-lg-12">
+        <div class="table-responsive">
+            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="productTable">
+
+                <thead class="table-heading" style="background-color:black;color:white">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Sale Price
+                        </th>
+                        <th>
+                            Purchase Price
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th style="text-align:center">
+                            Availible Stock
+                        </th>
+                        <th style="text-align:center">
+                            Status
+                        </th>
+                        <th class="text-right">Action</th>
+                    </tr>
+
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="preloader" id="loadingDiv">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">loading...</p>
+    </div>
+</div>
+
+<input type="hidden" id="ProductId" />
+
+<div id="ProductViewModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color:skyblue">Product Details...</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">Product Name:</div>
+                            <div class="col-sm-9"><label id="ProductNamev" style="margin-left:5px"></label></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Unit:</div>
+                            <div class="col-sm-3"><label id="Unit" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Type:</div>
+                            <div class="col-sm-3"><label id="TypeV" style="margin-left:5px"></label></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Sale Price:</div>
+                            <div class="col-sm-3"><label id="SPrice" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Purchase Price:</div>
+                            <div class="col-sm-3"><label id="PPrice" style="margin-left:5px"></label></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Open Stock Val:</div>
+                            <div class="col-sm-3"><label id="OpenSV" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Opening QTY:</div>
+                            <div class="col-sm-3"><label id="openQTY" style="margin-left:5px"></label></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Added Date:</div>
+                            <div class="col-sm-3"><label id="AddedDate" style="margin-left:5px"></label></div>
+                            <div class="col-sm-3">Current Status:</div>
+                            <div class="col-sm-3"><label id="CState" style="margin-left:5px"></label></div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-3">Description:</div>
+                            <div class="col-sm-9"><textarea id="Desc" class="form-control" style="margin-left:5px"></textarea></div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" id="SaveNewProductUnit" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>*@
+
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelViewProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#productTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            //"language": {
+            //    "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            //},
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+
+            "ajax": {
+                "url": "/MVCProduct/GetProductlist",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                    { "data": "ProductId", "name": "ProductId", "autoWidth": true },// key for edit delete
+                    { "data": "ProductName", "name": "ProductName", "autoWidth": true },
+                    { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
+                    { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
+                    { "data": "Type", "name": "Type", "autoWidth": true },
+                   // { "data": "OpeningStockValue", "name": "OpeningStockValue", "autoWidth": true },
+                    {
+                        render: function(data, type,row)
+                        {
+                            return "<div style='text-align:center'><td><span class='label label-primary'>" + row.OpeningStockValue + "</span></td></div>"
+                        }
+                    },
+                    {
+                         render: function(data, type,row)
+                         {
+                             if (row.ProductStatus == true) {
+                                 return '<label class="switch"><input type="checkbox" name="ProStatus" onclick="DeleteProductNow(' + row.ProductId + "," + row.ProductStatus + ')"  checked><span class="slider round"></span></label>'
+
+                             }
+                             else
+                             {
+                                 return '<label class="switch" style="text-align:center"><input type="checkbox" onclick="DeleteProductNow(' + row.ProductId + "," + row.ProductStatus + ')" name="ProStatus"><span class="slider round"></span></label>'
+                             }
+                         }
+                     },
+
+                    {
+                        render: function (data, type, row) {
+                            return '<div class="pull-right"><a href="#" class="btn btn-info btn-xs" data-id="Id" onclick="EditProduct(' + row.ProductId + ')"><i class="fa fa-pencil" style="margin-right:5px"></i>Edit</a>|<a href="#" class="btn btn-success btn-xs" onclick="ProductViewModel(' + row.ProductId + ')"><i class="fa fa-eye" style="margin-right:5px"></i>View</a></div>'
+
+                        }
+                    }
+            ]
+        });
+
+    });
+
+    $(document).ready(function () {
+        $('#CreateNewProduct').click(function () {
+            $('#UpdateProId').hide();
+            $('#SAveProdID').show();
+            //LoadProductUnit();
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+
+            //$('#CreateNewProductModal').modal('show');
+
+            ShowServiceGood(GoodsService);
+            $('#CreateNewProductModalGoods').modal('show');
+        });
+
+        //old Update
+        $('#UpdateProduct').click(function () {
+            var validdatep = validateProduct();
+            if (validdatep == true) {
+                $.ajax({
+                    url: '/MVCProduct/AddOrEdit',
+                    type: 'POST',
+                    data: {
+                        ProductId: $('#ProductId').val(),
+                        ProductName: $('#ProductName').val(),
+                        Description: $('#Description').val(),
+                        SalePrice: $('#SalePrice').val(),
+                        PurchasePrice: $('#PurchasePrice').val(),
+                        Type: $('#Type').val(),
+                        OpeningQuantity: $('#OpeningQuantity').val(),
+                        ProductUnit: $('#ProductUnitSelect').val(),
+                        OpeningStockValue: $('#OpeningStockValue').val()
+                    },
+                    success: function (data) {
+                        $('#CreateNewProductModal').modal('hide');
+                        $('#productTable').DataTable().ajax.reload();
+                        SuccessUpdate();
+                        clearProductTextBox();
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        });
+
+    });
+
+    //New Update
+    $('#UpdateProductGoods').click(function () {
+
+
+        var IsValid;
+        if (GoodsServicess == "Good") {
+            IsValid = validateProductGoods();
+            if (IsValid == true) {
+
+                    var dss = {
+                        ProductId: $('#ProductId').val(),
+                        ProductName: $('#ProductNameGoods').val(),
+                        Description: $('#DescriptionGoods').val(),
+                        SalePrice: $('#SalePriceGoods').val(),
+                        PurchasePrice: $('#PurchasePriceGoods').val(),
+                        Type: GoodsServicess,
+                        OpeningQuantity: $('#OpeningQuantityGoods').val(),
+                        ProductUnit: $('#ProductUnitSelectGoods').val(),
+                        ProductStatus: $('#ProductStatusGoods option:selected').text(),
+                    }
+                    $.ajax({
+                        url: "/MVCProduct/AddOrEdit",
+                        type: "POST",
+                        asyn: false,
+                        data: dss,
+                        success: function (data) {
+                            if (data == "Updated") {
+                                $('#productTable').DataTable().ajax.reload();
+                                CleartProdctTextBoxGoods();
+                                $('#CreateNewProductModalGoods').modal('hide');
+                                $.toast({
+                                    heading: 'Information',
+                                    text: 'Update Successfully completed',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+
+            }
+        }
+        else if (GoodsServicess == "Services")
+        {
+            IsValid = validateProductServices();
+            if (IsValid == true)
+            {
+                var dss = {
+                    ProductId: $('#ProductId').val(),
+                    ProductName: $('#ProductNameService').val(),
+                    Description: $('#DescriptionService').val(),
+                    SalePrice: $('#SalePriceService').val(),
+                    PurchasePrice: $('#PurchasePriceService').val(),
+                    Type: GoodsServicess,
+                    ProductStatus: $('#ProductStatusGoods option:selected').text(),
+                }
+                $.ajax({
+                    url: "/MVCProduct/AddOrEdit",
+                    type: "POST",
+                    asyn: false,
+                    data: dss,
+                    success: function (data) {
+                        if (data == "Updated") {
+                            $('#productTable').DataTable().ajax.reload();
+                            CleartProdctTextBoxGoods();
+                            $('#CreateNewProductModalGoods').modal('hide');
+                            $.toast({
+                                heading: 'Information',
+                                text: 'Update Successfully completed',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        }
+
+    });
+
+    function EditProduct(ProductId) {
+
+        $.ajax({
+            url: "/MVCProduct/AddOrEdit/" + ProductId,
+            type: "GET",
+            dataType: "json",
+            asyn: false,
+            success: function (resultData) {
+                CleartProdctTextBoxGoods();
+                if (resultData.Type == "Good") {
+                    $('#TypeGoodsServices').attr('disabled', 'disabled');
+                    GoodsServicess = "";
+                    GoodsServicess = "Good";
+                    ShowServiceGood(GoodsServicess)
+                    $('#ProductId').val(resultData.ProductId);
+                    $('#ProductNameGoods').val(resultData.ProductName);
+                    $('#DescriptionGoods').val(resultData.Description);
+                    $('#SalePriceGoods').val(resultData.SalePrice);
+                    $('#PurchasePriceGoods').val(resultData.PurchasePrice);
+                    $('select#TypeGoodsServices option').each(function () {
+                        if ($(this).text() == resultData.Type) {
+                            this.selected = true;
+                            return;
+                        }
+                    });
+
+                    $('select#ProductUnitSelectGoods option').each(function () {
+                        if ($(this).val() == resultData.ProductUnit) {
+                            this.selected = true;
+                            return;
+                        }
+                    });
+                    if (resultData.ProductStatus == true)
+                    {
+                        $('#ProductStatusGoods').val(1);
+                    }
+                    else
+                    {
+                        $('#ProductStatusGoods').val(0);
+                    }
+                    //$('#UpdateProId').show();
+                    //$('#SAveProdID').hide();
+                    $('#DivGoodBody').show();
+                    $('#DivServiceBody').hide();
+
+
+
+                }
+
+                else if (resultData.Type == "Services")
+                {
+
+                    GoodsServicess = "";
+                    GoodsServicess = "Services";
+                    $('select#TypeGoodsServices option').each(function () {
+                        if ($(this).text() == resultData.Type) {
+                            this.selected = true;
+                            return;
+                        }
+                    });
+
+                    if (resultData.ProductStatus == true)
+                    {
+                        $('#ProductStatusGoods').val(1);
+                    }
+                    else
+                    {
+                        $('#ProductStatusGoods').val(0);
+                    }
+
+                    if (resultData.ProductStatus == true) {
+                        $('#ProductStatusService').val(1);
+                    }
+                    else {
+                        $('#ProductStatusService').val(0);
+                    }
+                    $('#ProductId').val(resultData.ProductId);
+                    $('#ProductNameService').val(resultData.ProductName);
+                    $('#DescriptionService').val(resultData.Description);
+                    $('#SalePriceService').val(resultData.SalePrice);
+                    $('#PurchasePriceService').val(resultData.PurchasePrice);
+
+                    $('#DivGoodBody').hide();
+                    $('#DivServiceBody').show();
+
+
+
+
+                }
+                else
+                {
+                    alert(resultData.Type);
+                }
+                $('#UpdateProIdGoods').show();
+                $('#SAveProdIDGoods').hide();
+                $('#CreateNewProductModalGoods').modal('show');
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    function ProductViewModel(ProductId)
+    {
+        $.ajax({
+            url: "/MVCProduct/AddOrEdit/" + ProductId,
+            type: "GET",
+            dataType: "json",
+            success: function (resultDataView) {
+                $('#ProductNamev').text(resultDataView.ProductName);
+                $('#Unit').text(resultDataView.ProductUnitName);
+                $('#TypeV').text(resultDataView.Type);
+                $('#SPrice').text(resultDataView.SalePrice);
+                $('#PPrice').text(resultDataView.PurchasePrice);
+                $('#OpenSV').text(resultDataView.OpeningStockValue);
+                $('#openQTY').text(resultDataView.OpeningQuantity);
+                $('#CState').text(resultDataView.ProductStatus);
+
+                if(resultDataView.ProductStatus == true)
+                {
+                    $('#CState').css('color', 'green');
+                }
+                else
+                {
+                    $('#CState').css('color', 'Red');
+                }
+                $('#Desc').val(resultDataView.Description);
+                $('#ProductViewModel').modal('show');
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    }
+
+   // <input type='checkbox' name='chkBestSeller' value='Best Seller'/>
+
+    function DeleteProductNow(id, ProductStatus) {
+        var answer = confirm('Are you sure you want to change the status of the product?');
+        if (answer) {
+            $.ajax({
+                url: "/MVCProduct/Delete",
+                type: "Post",
+                async: false,
+                dataType: "json",
+                data: { id: id, ProductStatus: ProductStatus },
+                success: function (data) {
+                    if (data == "ok")
+                    $('#productTable').DataTable().ajax.reload();
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+        });
+
+        }
+
+    }
+
+</script>

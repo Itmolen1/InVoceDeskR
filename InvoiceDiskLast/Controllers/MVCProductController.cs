@@ -337,5 +337,20 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+
+
+        public ActionResult StockList()
+        {
+            return View();
+        }
+
+        //api/product
+        public ActionResult GetItemStok()
+        {
+            return View();
+        }
+
+
+
     }
 }
