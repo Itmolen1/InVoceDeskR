@@ -287,8 +287,15 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult CheckUsername(string username)
         {
-            return Json(!db.AspNetUsers.Any(x => x.UserName == username), JsonRequestBehavior.AllowGet);
-
+            try
+            {
+                return Json(!db.AspNetUsers.Any(x => x.UserName == username), JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                ex.ToString();
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
         }
     }
     public class UserInfo
