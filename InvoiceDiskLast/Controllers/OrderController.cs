@@ -22,7 +22,10 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
+        public ActionResult Result()
+        {
+            return View();
+        }
         public ActionResult PurchaseOrderList()
         {
 
