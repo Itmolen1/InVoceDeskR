@@ -25,7 +25,7 @@ namespace InvoiceDiskLast
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Captcha", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "landing", action = "Index", id = UrlParameter.Optional }
             );
 
 

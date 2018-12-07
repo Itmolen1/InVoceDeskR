@@ -245,8 +245,7 @@
     });
 
     $('#SaveNewContacts').click(function () {
-
-        $('#SaveNewContacts').attr('disabled', 'disabled');
+       
         var res = validateContactQutation();
         if (res == false) {
             return false;
@@ -303,7 +302,7 @@
                 }
             });
         }
-        $('#SaveNewContacts').attr('disabled', false);
+      
     });
 
     function clearContectTextBox1() {
@@ -324,10 +323,7 @@
 
         $('#UpdateContacts').hide();
         $('#SaveNewContacts').show();
-        //$('#Name').css('border-color', 'lightgrey');
-        //$('#Age').css('border-color', 'lightgrey');
-        //$('#State').css('border-color', 'lightgrey');
-        //$('#Country').css('border-color', 'lightgrey');
+       
     }
 
     function SuccessInsertConatct1() {
@@ -579,85 +575,7 @@
         $('#ProductUnitSelectGoods').val("0");
        
     }
-    //old Code Insert product
-    $('#SaveNewProduct').click(function () {
-
-        var validdatep;
-
-        if ($('#Type').val() == 0) {
-            validdatep = false;
-            $.toast({
-                heading: 'Select type',
-                text: 'Please select type `Goods/Services`',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#FF0000'  // To change the background
-            });
-            return;
-        }
-        else if ($('#Type').val() == "Good") {
-            validdatep = validateProduct();
-
-        }
-        else if ($('#Type').val() == "Services")
-        {
-            validdatep = validateProductService();
-
-        }
-        if (validdatep == true) {
-            $.ajax({
-                url: "/MVCProduct/GetProductByName",
-                type: "POST",
-                data: {
-                    ProductName: $('#ProductName').val(),
-                    ProductStatus: "All"
-                },
-                success: function (Resultdat) {
-                    if (Resultdat == "Found") {
-                        $.toast({
-                            heading: 'Already exist',
-                            text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
-                            icon: 'info',
-                            loader: true,        // Change it to false to disable loader
-                            loaderBg: '#FF0000'  // To change the background
-                        });
-                    }
-                    else {
-                        $.ajax({
-                            url: '/MVCProduct/AddOrEdit',
-                            type: 'POST',
-                            data: {
-                                ProductName: $('#ProductName').val(),
-                                Description: $('#Description').val(),
-                                SalePrice: $('#SalePrice').val(),
-                                PurchasePrice: $('#PurchasePrice').val(),
-                                Type: $('#Type').val(),
-                                OpeningQuantity: $('#OpeningQuantity').val(),
-                                ProductUnit: $('#ProductUnitSelect').val(),
-                                OpeningStockValue: $('#OpeningStockValue').val(),
-                                VatValue: $('#VatValue').val()
-                            },
-                            success: function (data) {
-                                if (data == "Created") {
-                                    $('#productTable').DataTable().ajax.reload();
-                                    CleartProdctTextBox();
-                                    $('#CreateNewProductModal').modal('hide');
-                                    SuccessInsertProduct();
-                                    LoadProductSelect("Good");
-                                    LoadProductAdding1("Services");
-                                    LoadProduct("Good");
-                                    LoadProductSelect();
-                                }
-                            },
-                            error: function () {
-                                alert("error");
-                            }
-                        });
-                    }
-                }
-            });
-        }
-    });
+    
 
     function validateProductGoods() {
         var isValid = true;
@@ -733,7 +651,8 @@
 
     $('#SaveNewProductGoods').click(function () {
 
-        var IsValid;
+       
+            var IsValid;
         if(GoodsServicess == "Good")
         {            
             IsValid = validateProductGoods();
@@ -783,7 +702,7 @@
 
            
         }
-        else if(GoodsServicess = "Services")
+        else if(GoodsServicess == "Services")
         {
             IsValid = validateProductServices();
             if(IsValid == true)
