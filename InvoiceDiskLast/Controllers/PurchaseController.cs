@@ -549,7 +549,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
-                if (purchaseViewModel.PurchaseOrderID == 0)
+                if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID==null)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
                     IEnumerable<string> headerValues;

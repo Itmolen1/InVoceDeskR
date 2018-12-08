@@ -37,7 +37,7 @@ namespace InvoiceDiskLast.Controllers
                     ProductName = c.ProductName,
                     Description = c.Description,
                     SalePrice = c.SalePrice,
-                    PurchasePrice = c.PurchasePrice,
+                   
                     Type = c.Type,
                     OpeningQuantity = c.OpeningQuantity,
                     AddedBy = c.AddedBy,

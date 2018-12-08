@@ -26,6 +26,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> ProductUnit { get; set; }
         public Nullable<bool> ProductStatus { get; set; }
+       
         public virtual ProductUnitTable ProductUnitTable { get; set; }
     }
 }

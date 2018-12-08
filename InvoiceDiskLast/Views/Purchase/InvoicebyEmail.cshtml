@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "InvoicebyEmail";
 }
-
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <div class="container">
 
 
@@ -28,37 +29,92 @@
                             <div class="card-body">
                                 <h3 class="card-title">Compose New Message<div class="pull-right" style="color:skyblue"> Invoice-@Model.invoiceId</div></h3>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(Model => Model.From, new { @class = "form-control",  @readonly = "readonly", @title="From" })
-                                </div>
-                                 <div class="form-group">
-                                     @Html.TextBoxFor(Model => Model.ToEmail, new { @class = "form-control", @required = "required", @placeholder="To" })
+                                    @Html.TextBoxFor(Model => Model.From, new { @class = "form-control", @readonly = "readonly", @title = "From" })
                                 </div>
                                 <div class="form-group">
-                                    @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control", @placeholder="Topic"})
+                                    @Html.TextBoxFor(Model => Model.ToEmail, new { @class = "form-control", @required = "required", @placeholder = "To" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control", @placeholder = "Topic" })
                                 </div>
                                 <div class="form-group">
                                     @Html.TextAreaFor(Model => Model.EmailText, new { @class = "form-control textarea_editor", @rows = "15", @cols = "50", placeholder = "Enter text ..." })
-                                    @*<textarea class="textarea_editor form-control" rows="15" placeholder="Enter text ..."></textarea>*@
+
                                 </div>
-                                <h4><i class="ti-link"></i><label>@Model.Attachment</label></h4>
+
+
+                                <h4><i class="ti-link"></i><label>@Model.Attachment</label>add</h4>
+
+
+                                <div class="btn btn-default image-preview-input">
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                    <span class="image-preview-input-title">Choose File</span>
+                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" id="CFileUpload1" /> <!-- rename it -->
+                                </div>
+                                <table class="table table-hover" id="participantTable">
+
+                                    <tbody id="upload"></tbody>
+
+
+                                </table>
+
+
                                 @Html.HiddenFor(Model => Model.Attachment)
 
-                                @*<form action="#" class="dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple />
-                                    </div>
-                                </form>*@
+
                                 <hr />
                                 <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i>Send</button>
                                 <a href="/Purchase/AddOrEdit/@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i>Discard</a>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             }
         </div>
         <div class="col-sm-1"></div>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    $('#btnadd').click(function () {
+        $('#Idd').append("<input type='file' calss='form-control'></input>");
+    });
+
+
+
+    $(document).ready(function () {
+
+        //$("#CFileUpload1").change(function () {
+            
+
+        //    $('#upload').append("<tr><td><input  type='text' placeholder='Name'></td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
+        //});
+
+        $("#CFileUpload1").change(function () {
+            readURL(this);
+        });
+
+
+        function readURL(input) {
+            debugger;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                    alert(e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+
+                $('#upload').append("<tr><td>" + input.files[0] + "</td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
+
+            }
+        }
+
+    });
+</script>
+
 
