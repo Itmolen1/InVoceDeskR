@@ -37,9 +37,8 @@ namespace InvoiceDiskLast.Controllers
                     ProductName = c.ProductName,
                     Description = c.Description,
                     SalePrice = c.SalePrice,
-                   
-                    Type = c.Type,
-                    OpeningQuantity = c.OpeningQuantity,
+                    PurchasePrice = c.PurchasePrice,
+                    Type = c.Type,                   
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,                  
@@ -60,8 +59,7 @@ namespace InvoiceDiskLast.Controllers
                     Description = c.Description,
                     SalePrice = c.SalePrice,
                     PurchasePrice = c.PurchasePrice,
-                    Type = c.Type,
-                    OpeningQuantity = c.OpeningQuantity,
+                    Type = c.Type,                    
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,                    
@@ -92,8 +90,7 @@ namespace InvoiceDiskLast.Controllers
                     Description = c.Description,
                     SalePrice = c.SalePrice,
                     PurchasePrice = c.PurchasePrice,
-                    Type = c.Type,
-                    OpeningQuantity = c.OpeningQuantity,
+                    Type = c.Type,                    
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
@@ -160,15 +157,17 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ProductTable))]
         public IHttpActionResult PostProductTable(ProductTable productTable)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+
+                db.ProductTables.Add(productTable);
+                db.SaveChanges();
+
             }
+            catch(Exception ex)
+            {
 
-            db.ProductTables.Add(productTable);
-            db.SaveChanges();
-
-
+            }
             return Ok(productTable);
             // return CreatedAtRoute("DefaultApi", new { id = productTable.ProductId }, productTable);
         }
@@ -224,16 +223,6 @@ namespace InvoiceDiskLast.Controllers
         [Route("api/GetStockItemList/{CompanyId:int}")]
         public IHttpActionResult GetStockList(int CompanyId)
         {
-            //Select pt.PurchaseItemId,p.ProductName, SUM(pt.PurchaseQuantity) as purchaseQuantity,SUM(qt.Quantity) as SaleQuantity,
-            //SUM(pt.PurchaseQuantity) - SUM(qt.Quantity) as RemainingQuantity
-            //from[dbo].[PurchaseOrderDetailsTable] as pt
-            //inner join PurchaseOrderTable as po on po.PurchaseOrderID = pt.PurchaseId
-            //inner join QutationDetailsTable as qt on pt.PurchaseItemId = qt.ItemId
-            //inner join QutationTable as qtp on qtp.QutationID = qt.QutationID
-            //inner join ProductTable as p on p.ProductId = pt.PurchaseItemId
-            //where po.Type = 'Goods' And po.Status = 'accepted'
-            //and qtp.Type = 'Goods' And po.Status = 'accepted'
-            //Group by pt.PurchaseItemId,ProductName
 
             try
             {
@@ -242,7 +231,7 @@ namespace InvoiceDiskLast.Controllers
 
                     PurchaseItemId = C.PurchaseItemId,
                     ProductName=C.ProductName,
-                    PurchaseQuantity = C.purchaseQuantity,
+                    PurchaseQuantity = C.PurchaseQuantity,
                     SaleQuantity = C.SaleQuantity,
                     RemaingQuantity = C.RemainingQuantity,
                 }).ToList();

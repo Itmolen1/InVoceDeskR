@@ -20,13 +20,12 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> SalePrice { get; set; }
         public Nullable<double> PurchasePrice { get; set; }
         public string Type { get; set; }
-        public Nullable<int> OpeningQuantity { get; set; }
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> Company_ID { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> ProductUnit { get; set; }
         public Nullable<bool> ProductStatus { get; set; }
-       
+    
         public virtual ProductUnitTable ProductUnitTable { get; set; }
     }
 }

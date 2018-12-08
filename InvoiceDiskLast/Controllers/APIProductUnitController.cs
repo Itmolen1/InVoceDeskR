@@ -160,15 +160,18 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ProductUnitTable))]
         public IHttpActionResult PostProductUnitTable(ProductUnitTable productUnitTable)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+
+                db.ProductUnitTables.Add(productUnitTable);
+                db.SaveChanges();
+
+                return CreatedAtRoute("DefaultApi", new { id = productUnitTable.ProductUnitID }, productUnitTable);
             }
-
-            db.ProductUnitTables.Add(productUnitTable);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = productUnitTable.ProductUnitID }, productUnitTable);
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
 

@@ -42,8 +42,6 @@ namespace InvoiceDiskLast.Controllers
                 ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
 
 
-                ViewBag.count = 23;
-
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
 
@@ -166,13 +164,13 @@ namespace InvoiceDiskLast.Controllers
                 ProductModel.AddedBy = 1;
                 ProductModel.Company_ID = CompanyId;
                 ProductModel.AddedDate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
-
+             
                 if (ProductModel.ProductId == null)
                 {
                     ProductModel.ProductStatus = true;
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
+                    
                 }
-
                 else
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutAPIProduct/" + ProductModel.ProductId, ProductModel).Result;
@@ -181,15 +179,14 @@ namespace InvoiceDiskLast.Controllers
                         return Json("Updated", JsonRequestBehavior.AllowGet);
                     }
                 }
-            }
-            catch(Exception ex)
-            {
-
-            }
 
                 return RedirectToAction("Index");
-            
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         [HttpPost]
         public ActionResult Delete(int id, bool ProductStatus)
