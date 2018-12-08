@@ -10,6 +10,8 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using InvoiceDiskLast.Providers;
 using InvoiceDiskLast.Models;
+using Microsoft.Owin.Security.Facebook;
+using InvoiceDiskLast.Facebook;
 
 namespace InvoiceDiskLast
 {
@@ -59,11 +61,25 @@ namespace InvoiceDiskLast
             //    appId: "",
             //    appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            var facebookOption = new FacebookAuthenticationOptions()
+            {
+                AppId = "499894347199275",
+                AppSecret = "809a5c83a7fc63a7581f9165bc07c417",
+                BackchannelHttpHandler = new FacebookBackChannelHandler(),
+                UserInformationEndpoint = "https://graph.facebook.com/v2.4/me?fields=id,email"
+            };
+            facebookOption.Scope.Add("email");
+
+            app.UseFacebookAuthentication(facebookOption);
+
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                //ClientId = "141882646015-s9cfl494l86h67s2d46ic1p5o864njjb.apps.googleusercontent.com",
+                //ClientSecret = "WP7yHqXmpeDte-LIgawd4KgT"
+
+                ClientId = "540724603773-hf7hsb4p46ftvrr2ss0g4332ll0vk7el.apps.googleusercontent.com",
+                ClientSecret = "e5xH8f54boSwZeC1SSF0osxy"
+            });
         }
     }
 }
