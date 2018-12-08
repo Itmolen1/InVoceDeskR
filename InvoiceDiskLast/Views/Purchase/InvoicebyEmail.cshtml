@@ -47,13 +47,15 @@
 
 
                                 <div class="btn btn-default image-preview-input">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                  
                                     <span class="image-preview-input-title">Choose File</span>
                                     <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" id="CFileUpload1" /> <!-- rename it -->
                                 </div>
                                 <table class="table table-hover" id="participantTable">
 
-                                    <tbody id="upload"></tbody>
+                                    <tbody id="upload">
+
+                                    </tbody>
 
 
                                 </table>
@@ -87,32 +89,39 @@
     $(document).ready(function () {
 
         //$("#CFileUpload1").change(function () {
-            
+
 
         //    $('#upload').append("<tr><td><input  type='text' placeholder='Name'></td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
         //});
 
         $("#CFileUpload1").change(function () {
-            readURL(this);
+            var Data = $('#CFileUpload1').val();
+            $('#upload').append("<tr><td><input type='text' claass='form-control' value='" + Data + "' name='FileName'></td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
         });
 
 
-        function readURL(input) {
-            debugger;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                
-                reader.onload = function (e) {
-                    $('#blah').attr('src', e.target.result);
-                    alert(e.target.result);
-                }
+        $(document).on('click', '.remove', function () {
+            $(this).parent().parent().remove();
+        });
 
-                reader.readAsDataURL(input.files[0]);
+       
 
-                $('#upload').append("<tr><td>" + input.files[0] + "</td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
+        //function readURL(input) {
+        //    debugger;
+        //    if (input.files && input.files[0]) {
+        //        var reader = new FileReader();
 
-            }
-        }
+        //        reader.onload = function (e) {
+        //            $('#blah').attr('src', e.target.result);
+
+        //        }
+
+        //        reader.readAsDataURL(input.files[0]);
+
+
+
+        //    }
+        //}
 
     });
 </script>

@@ -1086,8 +1086,26 @@ namespace InvoiceDiskLast.Controllers
 
         [DeleteFileClass]
         [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email)
+        public ActionResult InvoicebyEmail(EmailModel email, List<FileNam> _FileName,FormCollection form)
         {
+            
+
+            if (Request.Form["FileName"] != null)
+            {
+                var fileName2 = Request.Form["FileName"];
+
+            }
+            foreach (string key in form.AllKeys)
+            {
+                string values = form[key];
+                string[] valueArray = values.Split(',');
+
+                string v = valueArray[0];
+
+                //further processing.
+            }
+
+
             var idd = Session["ClientID"];
             var cdd = Session["CompayID"];
             if (Session["ClientID"] != null && Session["CompayID"] != null)
