@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     
     public partial class UserTable
     {
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public string UserFname { get; set; }
         public string Insertion { get; set; }
         public string UserLname { get; set; }
