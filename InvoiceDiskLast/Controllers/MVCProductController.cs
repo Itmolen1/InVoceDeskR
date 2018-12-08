@@ -105,7 +105,7 @@ namespace InvoiceDiskLast.Controllers
 
 
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyId + "/" + ProductStatus.ToString()).Result;
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIProductAdd/" + CompanyId + "/" + ProductStatus.ToString()).Result;
             List<MVCProductModel> ProductList = response.Content.ReadAsAsync<List<MVCProductModel>>().Result;
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -169,6 +169,8 @@ namespace InvoiceDiskLast.Controllers
                 {
                     ProductModel.ProductStatus = true;
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostProduct", ProductModel).Result;
+
+                    return Json("Created",JsonRequestBehavior.AllowGet);
                     
                 }
                 else

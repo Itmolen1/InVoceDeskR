@@ -189,36 +189,7 @@
             $('#CreateNewProductModalGoods').modal('show');
         });
 
-        //old Update
-        $('#UpdateProduct').click(function () {
-            var validdatep = validateProduct();
-            if (validdatep == true) {
-                $.ajax({
-                    url: '/MVCProduct/AddOrEdit',
-                    type: 'POST',
-                    data: {
-                        ProductId: $('#ProductId').val(),
-                        ProductName: $('#ProductName').val(),
-                        Description: $('#Description').val(),
-                        SalePrice: $('#SalePrice').val(),
-                        PurchasePrice: $('#PurchasePrice').val(),
-                        Type: $('#Type').val(),
-                        OpeningQuantity: $('#OpeningQuantity').val(),
-                        ProductUnit: $('#ProductUnitSelect').val(),
-                        OpeningStockValue: $('#OpeningStockValue').val()
-                    },
-                    success: function (data) {
-                        $('#CreateNewProductModal').modal('hide');
-                        $('#productTable').DataTable().ajax.reload();
-                        SuccessUpdate();
-                        clearProductTextBox();
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-            }
-        });
+       
 
     });
 
