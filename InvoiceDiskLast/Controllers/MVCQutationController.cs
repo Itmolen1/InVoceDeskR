@@ -118,7 +118,7 @@ namespace InvoiceDiskLast.Controllers
 
                     if (id == 0)
                     {
-                        int id3 = 0;
+                       
                         MVCQutationModel q = new MVCQutationModel();
                         HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GetQuationCount/").Result;
                         q = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
