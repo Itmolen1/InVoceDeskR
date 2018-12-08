@@ -170,6 +170,8 @@
           <Property Name="AddedDate" Type="date" />
           <Property Name="ProductUnit" Type="int" />
           <Property Name="ProductStatus" Type="bit" />
+          <Property Name="OpeningStockValue" Type="int" />
+          <Property Name="VatsValue" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="ProductUnitTable">
           <Key>
@@ -489,7 +491,7 @@
               <RowType>
                 <Property Name="PurchaseItemId" Type="int" />
                 <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
-                <Property Name="PurchaseQuantity" Type="int" />
+                <Property Name="purchaseQuantity" Type="int" />
                 <Property Name="SaleQuantity" Type="int" />
                 <Property Name="RemainingQuantity" Type="int" />
               </RowType>
@@ -715,7 +717,7 @@
             <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
           </AssociationSet>
           <FunctionImport Name="GetStockItem" IsComposable="true" ReturnType="Collection(APIcompanyModel.GetStockItem_Result)">
-          <Parameter Name="ComapniId" Mode="In" Type="Int32" />
+            <Parameter Name="ComapniId" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
@@ -1156,6 +1158,8 @@
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="ProductUnit" Type="Int32" />
           <Property Name="ProductStatus" Type="Boolean" />
+          <Property Name="OpeningStockValue" Type="Int32" />
+          <Property Name="VatsValue" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
         </EntityType>
         <Association Name="FK_ProductTable_ProductUnitTable">
@@ -1483,6 +1487,8 @@
           <EntitySetMapping Name="ProductTables">
             <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
               <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="VatsValue" ColumnName="VatsValue" />
+                <ScalarProperty Name="OpeningStockValue" ColumnName="OpeningStockValue" />
                 <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
                 <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />

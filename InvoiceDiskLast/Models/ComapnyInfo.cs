@@ -28,7 +28,7 @@ namespace InvoiceDiskLast.Models
             this.UserTables = new HashSet<UserTable>();
         }
     
-        public int? CompanyID { get; set; }
+        public int CompanyID { get; set; }
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string CompanyPhone { get; set; }
