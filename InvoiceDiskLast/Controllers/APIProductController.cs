@@ -223,33 +223,42 @@ namespace InvoiceDiskLast.Controllers
             return db.ProductTables.Count(e => e.ProductId == id) > 0;
         }
 
-
-        public IHttpActionResult GetStockList()
+        [Route("api/GetStockItemList/{CompanyId:int}")]
+        public IHttpActionResult GetStockList(int CompanyId)
         {
-     //Select pt.PurchaseItemId,p.ProductName, SUM(pt.PurchaseQuantity) as purchaseQuantity,SUM(qt.Quantity) as SaleQuantity,
-     //SUM(pt.PurchaseQuantity) - SUM(qt.Quantity) as RemainingQuantity
-     //from[dbo].[PurchaseOrderDetailsTable] as pt
-     //inner join PurchaseOrderTable as po on po.PurchaseOrderID = pt.PurchaseId
-     //inner join QutationDetailsTable as qt on pt.PurchaseItemId = qt.ItemId
-     //inner join QutationTable as qtp on qtp.QutationID = qt.QutationID
-     //inner join ProductTable as p on p.ProductId = pt.PurchaseItemId
-     //where po.Type = 'Goods' And po.Status = 'accepted'
-     //and qtp.Type = 'Goods' And po.Status = 'accepted'
-     //Group by pt.PurchaseItemId,ProductName
-
+            //Select pt.PurchaseItemId,p.ProductName, SUM(pt.PurchaseQuantity) as purchaseQuantity,SUM(qt.Quantity) as SaleQuantity,
+            //SUM(pt.PurchaseQuantity) - SUM(qt.Quantity) as RemainingQuantity
+            //from[dbo].[PurchaseOrderDetailsTable] as pt
+            //inner join PurchaseOrderTable as po on po.PurchaseOrderID = pt.PurchaseId
+            //inner join QutationDetailsTable as qt on pt.PurchaseItemId = qt.ItemId
+            //inner join QutationTable as qtp on qtp.QutationID = qt.QutationID
+            //inner join ProductTable as p on p.ProductId = pt.PurchaseItemId
+            //where po.Type = 'Goods' And po.Status = 'accepted'
+            //and qtp.Type = 'Goods' And po.Status = 'accepted'
+            //Group by pt.PurchaseItemId,ProductName
 
             try
             {
-                var Query= db.PurchaseOrderDetailsTables.ToList();
+                var Query = db.GetStockItem(CompanyId).Select(C => new StockViewModel
+                {
+
+                    PurchaseItemId = C.PurchaseItemId,
+                    ProductName=C.ProductName,
+                    PurchaseQuantity = C.purchaseQuantity,
+                    SaleQuantity = C.SaleQuantity,
+                    RemaingQuantity = C.RemainingQuantity,
+                }).ToList();
+
+                return Ok(Query);
             }
             catch (Exception)
             {
-
+                NotFound();
                 throw;
             }
 
 
-         return Ok();
+
         }
 
     }

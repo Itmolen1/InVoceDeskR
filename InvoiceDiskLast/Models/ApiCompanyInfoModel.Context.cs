@@ -12,6 +12,8 @@ namespace InvoiceDiskLast.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class DBEntities : DbContext
     {
@@ -43,5 +45,15 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<AccountTransictionTable> AccountTransictionTables { get; set; }
         public virtual DbSet<ProductTable> ProductTables { get; set; }
         public virtual DbSet<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
+    
+        [DbFunction("DBEntities", "GetStockItem")]
+        public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)
+        {
+            var comapniIdParameter = comapniId.HasValue ?
+                new ObjectParameter("ComapniId", comapniId) :
+                new ObjectParameter("ComapniId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetStockItem_Result>("[DBEntities].[GetStockItem](@ComapniId)", comapniIdParameter);
+        }
     }
 }

@@ -484,6 +484,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetStockItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ComapniId" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="PurchaseItemId" Type="int" />
+                <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+                <Property Name="purchaseQuantity" Type="int" />
+                <Property Name="SaleQuantity" Type="int" />
+                <Property Name="RemainingQuantity" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
         <EntityContainer Name="APIcompanyModelStoreContainer">
           <EntitySet Name="AccountTable" EntityType="Self.AccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccountTransictionTable" EntityType="Self.AccountTransictionTable" Schema="dbo" store:Type="Tables" />
@@ -702,6 +716,9 @@
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
             <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
           </AssociationSet>
+          <FunctionImport Name="GetStockItem" IsComposable="true" ReturnType="Collection(APIcompanyModel.GetStockItem_Result)">
+            <Parameter Name="ComapniId" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1195,6 +1212,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetStockItem_Result">
+          <Property Type="Int32" Name="PurchaseItemId" Nullable="true" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="purchaseQuantity" Nullable="true" />
+          <Property Type="Int32" Name="SaleQuantity" Nullable="true" />
+          <Property Type="Int32" Name="RemainingQuantity" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1494,6 +1518,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetStockItem" FunctionName="APIcompanyModel.Store.GetStockItem">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APIcompanyModel.GetStockItem_Result">
+                <ScalarProperty Name="PurchaseItemId" ColumnName="PurchaseItemId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="purchaseQuantity" ColumnName="purchaseQuantity" />
+                <ScalarProperty Name="SaleQuantity" ColumnName="SaleQuantity" />
+                <ScalarProperty Name="RemainingQuantity" ColumnName="RemainingQuantity" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
