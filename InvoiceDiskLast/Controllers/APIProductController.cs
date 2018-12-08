@@ -40,10 +40,9 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
-                    OpeningStockValue = c.OpeningStockValue,  //pt. - qt.CheckItemQuantity(),pt
+                
                     ProductStatus = c.ProductStatus,
-                    VatsValue = c.VatsValue,
-
+                 
                 }).ToList();
 
                 return Ok(ob);
@@ -63,9 +62,9 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
-                    OpeningStockValue = c.OpeningStockValue,
+                 
                     ProductStatus = c.ProductStatus,
-                    VatsValue = c.VatsValue
+                   
                 }).ToList();
 
                 return Ok(ob);
@@ -91,9 +90,9 @@ namespace InvoiceDiskLast.Controllers
                     AddedBy = c.AddedBy,
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
-                    OpeningStockValue = c.OpeningStockValue,
+                   
                     ProductStatus = c.ProductStatus,
-                    VatsValue = c.VatsValue
+                    
                 }).ToList();
 
                 return Ok(ob);
@@ -126,10 +125,10 @@ namespace InvoiceDiskLast.Controllers
                     Company_ID = c.Company_ID,
                     AddedDate = c.AddedDate,
                     ProductUnit = c.ProductUnit,
-                    OpeningStockValue = c.OpeningStockValue,
+                 
                     ProductUnitName = c.ProductUnitTable.ProductUnit,
                     ProductStatus = c.ProductStatus,
-                    VatsValue = c.VatsValue
+                   
 
 
                 }).FirstOrDefault();
