@@ -74,8 +74,11 @@ namespace InvoiceDiskLast
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "141882646015-s9cfl494l86h67s2d46ic1p5o864njjb.apps.googleusercontent.com",
-                ClientSecret = "WP7yHqXmpeDte-LIgawd4KgT"
+                //ClientId = "141882646015-s9cfl494l86h67s2d46ic1p5o864njjb.apps.googleusercontent.com",
+                //ClientSecret = "WP7yHqXmpeDte-LIgawd4KgT"
+
+                ClientId = "540724603773-hf7hsb4p46ftvrr2ss0g4332ll0vk7el.apps.googleusercontent.com",
+                ClientSecret = "e5xH8f54boSwZeC1SSF0osxy"
             });
         }
     }

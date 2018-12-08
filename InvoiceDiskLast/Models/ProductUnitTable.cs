@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
             this.ProductTables = new HashSet<ProductTable>();
         }
     
-        public int ProductUnitID { get; set; }
+        public int? ProductUnitID { get; set; }
         public string ProductUnit { get; set; }
         public Nullable<bool> Status { get; set; }
         public Nullable<int> CompanyId { get; set; }

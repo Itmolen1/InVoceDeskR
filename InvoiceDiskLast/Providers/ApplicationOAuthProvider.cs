@@ -79,7 +79,7 @@ namespace InvoiceDiskLast.Providers
         {
             if (context.ClientId == _publicClientId)
             {
-                Uri expectedRootUri = new Uri(context.Request.Uri, "/Captcha/Index");
+                Uri expectedRootUri = new Uri(context.Request.Uri, "/Captcha");
 
                 if (expectedRootUri.AbsoluteUri == context.RedirectUri)
                 {
