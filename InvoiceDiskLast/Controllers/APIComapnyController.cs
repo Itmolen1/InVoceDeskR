@@ -118,39 +118,37 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ComapnyInfo))]
         public IHttpActionResult PostComapnyInfo(MVCCompanyInfoModel MVCcomapnyInfo)
          {
-            ComapnyInfo comapnyInfo = new ComapnyInfo();
-            comapnyInfo.CompanyName = MVCcomapnyInfo.CompanyName;
-            comapnyInfo.CompanyLogo = MVCcomapnyInfo.CompanyLogo;
-            comapnyInfo.CompanyAddress = MVCcomapnyInfo.CompanyAddress;
-
-            comapnyInfo.StreetNumber = MVCcomapnyInfo.StreetNumber;
-            comapnyInfo.PostalCode = MVCcomapnyInfo.PostalCode;
-            comapnyInfo.CompanyCity = MVCcomapnyInfo.CompanyCity;
-            comapnyInfo.CompanyCountry = MVCcomapnyInfo.CompanyCountry;
-            comapnyInfo.CompanyPhone = MVCcomapnyInfo.CompanyPhone;
-            comapnyInfo.CompanyCell = MVCcomapnyInfo.CompanyCell;           
-            comapnyInfo.CompanyEmail = MVCcomapnyInfo.CompanyEmail;
-            comapnyInfo.Website = MVCcomapnyInfo.Website;
-            comapnyInfo.BankName = MVCcomapnyInfo.BankName;
-            comapnyInfo.IBANNumber = MVCcomapnyInfo.IBANNumber;
-            comapnyInfo.BIC = MVCcomapnyInfo.BIC;
-            comapnyInfo.KVK = MVCcomapnyInfo.KVK;
-            comapnyInfo.BTW = MVCcomapnyInfo.BTW;
-            comapnyInfo.UserName = MVCcomapnyInfo.UserName;
-
-
-            if (!ModelState.IsValid)
+            try
             {
+                ComapnyInfo comapnyInfo = new ComapnyInfo();
+                comapnyInfo.CompanyName = MVCcomapnyInfo.CompanyName;
+                comapnyInfo.CompanyLogo = MVCcomapnyInfo.CompanyLogo;
+                comapnyInfo.CompanyAddress = MVCcomapnyInfo.CompanyAddress;
 
-                return BadRequest(ModelState);
+                comapnyInfo.StreetNumber = MVCcomapnyInfo.StreetNumber;
+                comapnyInfo.PostalCode = MVCcomapnyInfo.PostalCode;
+                comapnyInfo.CompanyCity = MVCcomapnyInfo.CompanyCity;
+                comapnyInfo.CompanyCountry = MVCcomapnyInfo.CompanyCountry;
+                comapnyInfo.CompanyPhone = MVCcomapnyInfo.CompanyPhone;
+                comapnyInfo.CompanyCell = MVCcomapnyInfo.CompanyCell;
+                comapnyInfo.CompanyEmail = MVCcomapnyInfo.CompanyEmail;
+                comapnyInfo.Website = MVCcomapnyInfo.Website;
+                comapnyInfo.BankName = MVCcomapnyInfo.BankName;
+                comapnyInfo.IBANNumber = MVCcomapnyInfo.IBANNumber;
+                comapnyInfo.BIC = MVCcomapnyInfo.BIC;
+                comapnyInfo.KVK = MVCcomapnyInfo.KVK;
+                comapnyInfo.BTW = MVCcomapnyInfo.BTW;
+                comapnyInfo.UserName = MVCcomapnyInfo.UserName;
+                
+                db.ComapnyInfoes.Add(comapnyInfo);
+                db.SaveChanges();
+                return CreatedAtRoute("DefaultApi", new { id = comapnyInfo.CompanyID }, comapnyInfo);
             }
-
-           db.ComapnyInfoes.Add(comapnyInfo);
-            db.SaveChanges();
-
-
-
-            return CreatedAtRoute("DefaultApi", new { id = comapnyInfo.CompanyID }, comapnyInfo);
+            catch(Exception)
+            {
+                return BadRequest();
+            }
+            
         }
 
        

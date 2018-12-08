@@ -15,8 +15,8 @@ namespace InvoiceDiskLast.Models
     {
         public Nullable<int> PurchaseItemId { get; set; }
         public string ProductName { get; set; }
-        public Nullable<int> purchaseQuantity { get; set; }
         public Nullable<int> SaleQuantity { get; set; }
         public Nullable<int> RemainingQuantity { get; set; }
+        public Nullable<int> PurchaseQuantity { get; set; }
     }
 }

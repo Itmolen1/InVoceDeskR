@@ -164,14 +164,11 @@
           <Property Name="SalePrice" Type="float" />
           <Property Name="PurchasePrice" Type="float" />
           <Property Name="Type" Type="nvarchar" MaxLength="20" />
-          <Property Name="OpeningQuantity" Type="int" />
           <Property Name="AddedBy" Type="int" />
           <Property Name="Company_ID" Type="int" />
           <Property Name="AddedDate" Type="date" />
           <Property Name="ProductUnit" Type="int" />
           <Property Name="ProductStatus" Type="bit" />
-          <Property Name="OpeningStockValue" Type="int" />
-          <Property Name="VatsValue" Type="nvarchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="ProductUnitTable">
           <Key>
@@ -491,7 +488,7 @@
               <RowType>
                 <Property Name="PurchaseItemId" Type="int" />
                 <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
-                <Property Name="purchaseQuantity" Type="int" />
+                <Property Name="PurchaseQuantity" Type="int" />
                 <Property Name="SaleQuantity" Type="int" />
                 <Property Name="RemainingQuantity" Type="int" />
               </RowType>
@@ -702,11 +699,6 @@
             <End Role="PaymentTermTable" EntitySet="PaymentTermTables" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
           </AssociationSet>
-          <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
-          <AssociationSet Name="FK_ProductTable_ProductUnitTable" Association="APIcompanyModel.FK_ProductTable_ProductUnitTable">
-            <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
-            <End Role="ProductTable" EntitySet="ProductTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="UserTable" EntitySet="UserTables" />
@@ -717,8 +709,13 @@
             <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
           </AssociationSet>
           <FunctionImport Name="GetStockItem" IsComposable="true" ReturnType="Collection(APIcompanyModel.GetStockItem_Result)">
-            <Parameter Name="ComapniId" Mode="In" Type="Int32" />
+          <Parameter Name="ComapniId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="ProductTables" EntityType="APIcompanyModel.ProductTable" />
+          <AssociationSet Name="FK_ProductTable_ProductUnitTable" Association="APIcompanyModel.FK_ProductTable_ProductUnitTable">
+            <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
+            <End Role="ProductTable" EntitySet="ProductTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1142,36 +1139,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="ProductTable">
-          <Key>
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="SalePrice" Type="Double" />
-          <Property Name="PurchasePrice" Type="Double" />
-          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="OpeningQuantity" Type="Int32" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="Company_ID" Type="Int32" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="ProductUnit" Type="Int32" />
-          <Property Name="ProductStatus" Type="Boolean" />
-          <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
-        </EntityType>
-        <Association Name="FK_ProductTable_ProductUnitTable">
-          <End Type="APIcompanyModel.ProductUnitTable" Role="ProductUnitTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductUnitTable">
-              <PropertyRef Name="ProductUnitID" />
-            </Principal>
-            <Dependent Role="ProductTable">
-              <PropertyRef Name="ProductUnit" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
           <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
@@ -1213,10 +1180,39 @@
         <ComplexType Name="GetStockItem_Result">
           <Property Type="Int32" Name="PurchaseItemId" Nullable="true" />
           <Property Type="String" Name="ProductName" Nullable="true" MaxLength="100" />
-          <Property Type="Int32" Name="purchaseQuantity" Nullable="true" />
           <Property Type="Int32" Name="SaleQuantity" Nullable="true" />
           <Property Type="Int32" Name="RemainingQuantity" Nullable="true" />
+          <Property Type="Int32" Name="PurchaseQuantity" Nullable="true" />
         </ComplexType>
+        <EntityType Name="ProductTable">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="SalePrice" Type="Double" />
+          <Property Name="PurchasePrice" Type="Double" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="Company_ID" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <Property Name="ProductUnit" Type="Int32" />
+          <Property Name="ProductStatus" Type="Boolean" />
+          <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
+        </EntityType>
+        <Association Name="FK_ProductTable_ProductUnitTable">
+          <End Type="APIcompanyModel.ProductUnitTable" Role="ProductUnitTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductUnitTable">
+              <PropertyRef Name="ProductUnitID" />
+            </Principal>
+            <Dependent Role="ProductTable">
+              <PropertyRef Name="ProductUnit" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1482,24 +1478,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProductTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
-              <MappingFragment StoreEntitySet="ProductTable">
-                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
-                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="OpeningQuantity" ColumnName="OpeningQuantity" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
-                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PurchaseOrderDetailsTables">
             <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderDetailsTable">
               <MappingFragment StoreEntitySet="PurchaseOrderDetailsTable">
@@ -1519,12 +1497,29 @@
               <ComplexTypeMapping TypeName="APIcompanyModel.GetStockItem_Result">
                 <ScalarProperty Name="PurchaseItemId" ColumnName="PurchaseItemId" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="purchaseQuantity" ColumnName="purchaseQuantity" />
                 <ScalarProperty Name="SaleQuantity" ColumnName="SaleQuantity" />
                 <ScalarProperty Name="RemainingQuantity" ColumnName="RemainingQuantity" />
+                <ScalarProperty Name="PurchaseQuantity" ColumnName="PurchaseQuantity" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="ProductTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.ProductTable">
+              <MappingFragment StoreEntitySet="ProductTable">
+                <ScalarProperty Name="ProductStatus" ColumnName="ProductStatus" />
+                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="Company_ID" ColumnName="Company_ID" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="SalePrice" ColumnName="SalePrice" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

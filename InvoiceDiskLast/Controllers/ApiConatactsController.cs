@@ -160,15 +160,17 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(ContactsTable))]
         public IHttpActionResult PostContactsTable(ContactsTable contactsTable)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                db.ContactsTables.Add(contactsTable);
+                db.SaveChanges();
+
+                return CreatedAtRoute("DefaultApi", new { id = contactsTable.ContactsId }, contactsTable);
             }
-
-            db.ContactsTables.Add(contactsTable);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = contactsTable.ContactsId }, contactsTable);
+            catch(Exception ex)
+            {
+               return BadRequest();
+            }
         }
 
         // DELETE: api/ApiConatacts/5

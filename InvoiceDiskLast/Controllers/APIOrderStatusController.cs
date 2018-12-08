@@ -38,10 +38,7 @@ namespace InvoiceDiskLast.Controllers
         [Route("api/Addpending")]
         public IHttpActionResult PostPendingtable(PendingTable pendintTable)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+           
             try
             {
                 db.PendingTables.Add(pendintTable);

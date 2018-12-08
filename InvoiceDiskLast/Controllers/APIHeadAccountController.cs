@@ -63,16 +63,17 @@ namespace InvoiceDiskLast.Controllers
 
         public IHttpActionResult PostHeadAccount(HeadAccountTable headAccountTable)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                db.HeadAccountTables.Add(headAccountTable);
+                db.SaveChanges();
+
+                return Created("DefaultAPi", headAccountTable);
             }
-
-            db.HeadAccountTables.Add(headAccountTable);
-            db.SaveChanges();
-
-            return Created("DefaultAPi", headAccountTable);
-
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
             // return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
         }
 

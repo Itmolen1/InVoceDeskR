@@ -38,17 +38,12 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
+                
                     db.PaymentTermTables.Add(paymentTable);
                     db.SaveChanges();
 
                     return Ok(paymentTable);
-                }
-                else
-                {
-                    return BadRequest();
-                }
+               
             }
             catch(Exception ex)
             {
