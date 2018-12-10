@@ -549,7 +549,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
-                if (purchaseViewModel.PurchaseOrderID == 0)
+                if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID==null)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
                     IEnumerable<string> headerValues;
@@ -1086,8 +1086,26 @@ namespace InvoiceDiskLast.Controllers
 
         [DeleteFileClass]
         [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email)
+        public ActionResult InvoicebyEmail(EmailModel email, List<FileNam> _FileName,FormCollection form)
         {
+            
+
+            if (Request.Form["FileName"] != null)
+            {
+                var fileName2 = Request.Form["FileName"];
+
+            }
+            foreach (string key in form.AllKeys)
+            {
+                string values = form[key];
+                string[] valueArray = values.Split(',');
+
+                string v = valueArray[0];
+
+                //further processing.
+            }
+
+
             var idd = Session["ClientID"];
             var cdd = Session["CompayID"];
             if (Session["ClientID"] != null && Session["CompayID"] != null)
