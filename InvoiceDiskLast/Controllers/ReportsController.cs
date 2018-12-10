@@ -12,6 +12,7 @@ namespace InvoiceDiskLast.Controllers
     [SessionExpireAttribute]
     public class ReportsController : Controller
     {
+        List<AttakmentList> _attackmentList = new List<AttakmentList>();
         MVCCompanyInfoModel _company = new MVCCompanyInfoModel();
         SearchModel _SearchModel = new SearchModel();
         int CompanyId = 0;
@@ -111,7 +112,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-              // HttpRequestMessage _Apiresponse= GlobalVeriables.WebApiClient
+                // HttpRequestMessage _Apiresponse= GlobalVeriables.WebApiClient
             }
             catch (Exception)
             {
@@ -431,7 +432,7 @@ namespace InvoiceDiskLast.Controllers
                             emailModel.ToEmail = item;
                             emailModel.Attachment = email.Attachment;
                             emailModel.EmailBody = email.EmailText;
-                            bool result = EmailController.email(emailModel);
+                            bool result = EmailController.email(emailModel, _attackmentList);
                         }
                     }
                 }
@@ -445,7 +446,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.ToEmail = email.ToEmail;
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
-                    bool result = EmailController.email(emailModel);
+                    bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
 
                     return RedirectToAction("Journal");

@@ -13,7 +13,7 @@ namespace InvoiceDiskLast.Controllers
     public class QutationServiceController : Controller
     {
         int Contectid, CompanyID = 0;
-
+        List<AttakmentList> _attackmentList = new List<AttakmentList>();
         // GET: QutationService
         public ActionResult Index()
         {
@@ -973,7 +973,7 @@ namespace InvoiceDiskLast.Controllers
                             emailModel.ToEmail = item;
                             emailModel.Attachment = email.Attachment;
                             emailModel.EmailBody = email.EmailText;
-                            bool result = EmailController.email(emailModel);
+                            bool result = EmailController.email(emailModel, _attackmentList);
                         }
                     }
                 }
@@ -987,7 +987,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.ToEmail = email.ToEmail;
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
-                    bool result = EmailController.email(emailModel);
+                    bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
 

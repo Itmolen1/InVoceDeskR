@@ -15,6 +15,8 @@ namespace InvoiceDiskLast.Controllers
     {
         int Contectid, CompanyID = 0;
 
+        List<AttakmentList> _attackmentList = new List<AttakmentList>();
+
         // GET: MvcServices
         public ActionResult Index()
         {
@@ -1229,7 +1231,7 @@ namespace InvoiceDiskLast.Controllers
                             emailModel.ToEmail = item;
                             emailModel.Attachment = email.Attachment;
                             emailModel.EmailBody = email.EmailText;
-                            bool result = EmailController.email(emailModel);
+                            bool result = EmailController.email(emailModel, _attackmentList);
                         }
                     }
                 }
@@ -1243,7 +1245,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.ToEmail = email.ToEmail;
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
-                    bool result = EmailController.email(emailModel);
+                    bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
 
 
@@ -1363,7 +1365,7 @@ namespace InvoiceDiskLast.Controllers
             return TransactionResult;
         }
 
-        
+
         [HttpPost]
         public ActionResult DeleteInvoice(int PurchaseOrderId, int purchaseOrderDetailId, int vat, decimal total)
         {
