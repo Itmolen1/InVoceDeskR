@@ -3,9 +3,6 @@
     
 }
 
-
-
-
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script>
@@ -289,9 +286,17 @@
                         }
 
                         clearContectTextBox1();
-                        SuccessInsertConatct1();
+                        //SuccessInsertConatct1();
                         LoadContactsQuIndex();
                         LoadVernder();
+
+                        $.toast({
+                            heading: 'Opration Success',
+                            text: 'Data Saved Successfull',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
                     }
                     else {
                         alert(response);
@@ -653,9 +658,8 @@
     //New Code Insert Product
 
     $('#SaveNewProductGoods').click(function () {
-
        
-            var IsValid;
+        var IsValid;
         if(GoodsServicess == "Good")
         {            
             IsValid = validateProductGoods();
@@ -686,7 +690,13 @@
                                 $('#productTable').DataTable().ajax.reload();
                                 CleartProdctTextBoxGoods();
                                 $('#CreateNewProductModalGoods').modal('hide');
-                                SuccessInsertProduct();
+                                $.toast({
+                                    heading: 'Opration Success',
+                                    text: 'Data Saved Successfull',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
 
                             }
                         },
@@ -707,6 +717,7 @@
         }
         else if(GoodsServicess == "Services")
         {
+           
             IsValid = validateProductServices();
             if(IsValid == true)
             {
@@ -716,8 +727,7 @@
                     var dss = {
                         ProductName: $('#ProductNameService').val(),
                         Description: $('#DescriptionService').val(),
-                        SalePrice: $('#SalePriceService').val(),
-                        PurchasePrice: $('#PurchasePriceService').val(),
+                        SalePrice: $('#SalePriceService').val(),                        
                         Type: GoodsServicess,                        
                     }
                     $.ajax({
@@ -730,7 +740,13 @@
                                 $('#productTable').DataTable().ajax.reload();
                                 ClearTextBoxesServices();
                                 $('#CreateNewProductModalGoods').modal('hide');
-                                SuccessInsertProduct();
+                                $.toast({
+                                    heading: 'Opration Success',
+                                    text: 'Data Saved Successfull',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                })
                             }
                         },
                         error: function () {
@@ -740,8 +756,9 @@
                 }
             }
         }
-    });
 
+        LoadProductSelect();
+    });
 
     function ClearTextBoxesServices()
     {
@@ -758,7 +775,6 @@
             type: "success",
         });
     }
-
 
     function checkProductByName(PName) {
      
@@ -795,9 +811,7 @@
         return Result;
     }
 
-
-
-        function validateProduct() {
+    function validateProduct() {
             var isValid = true;
 
             if ($('#ProductName').val().trim() == "") {
@@ -874,10 +888,7 @@
             return isValid;
         }
 
-
-       
-
-        function ChangeBorderColorProductModel() {
+    function ChangeBorderColorProductModel() {
             $('#ProductName').css('border-color', 'lightgrey');
             $('#SalePrice').css('border-color', 'lightgrey');
             $('#PurchasePrice').css('border-color', 'lightgrey');
@@ -887,72 +898,8 @@
             $('#VatValue').css('border-color', 'lightgrey');
             $('#ProductUnitSelect').css('border-color', 'lightgrey');
         }
-
-        //OLD 
-        function validateProductService() {
-
-            if ($('#ProductName').val().trim() == "") {
-                $('#ProductName').css('border-color', 'Red');
-                isValid = false;
-            }
-            else {
-                $('#ProductName').css('border-color', 'lightgrey');
-            }
-
-            if ($('#SalePrice').val().trim() == "") {
-                $('#SalePrice').css('border-color', 'Red');
-                isValid = false;
-            }
-            else {
-                $('#SalePrice').css('border-color', 'lightgrey');
-            }
-            if ($('#PurchasePrice').val().trim() == "") {
-                $('#PurchasePrice').css('border-color', 'Red');
-                $('#PurchasePrice').focus();
-                isValid = false;
-            }
-            else {
-                $('#PurchasePrice').css('border-color', 'lightgrey');
-            }
-
-            if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
-                if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
-                    $('#SalePrice').css('border-color', 'Red');
-                    $('#PurchasePrice').css('border-color', 'Red');
-                    isValid == false;
-                    $.toast({
-                        heading: 'Sale amount less',
-                        text: 'Sale Amount must be greater from Purchase amount `Amount`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#FF0000'  // To change the background
-                    });
-                }
-                else {
-                    $('#PurchasePrice').css('border-color', 'lightgrey');
-                    $('#SalePrice').css('border-color', 'lightgrey');
-                }
-            }
-            //if ($('#ProductUnitSelect').val() == 0) {
-            //    $('#ProductUnitSelect').css('border-color', 'Red');
-            //    isValid = false;
-            //}
-            //else {
-            //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
-            //}
-
-            if ($('#VatValue').val() == "Select") {
-                $('#VatValue').css('border-color', 'Red');
-                isValid = false;
-            }
-            else {
-                $('#VatValue').css('border-color', 'lightgrey');
-            }
-            return isValid;
-        }
-
-        //New
-        function validateProductServices() {
+   //New
+    function validateProductServices() {
 
             var isValid = true;
             if ($('#ProductNameService').val().trim() == "") {
@@ -970,39 +917,11 @@
             else {
                 $('#SalePriceService').css('border-color', 'lightgrey');
             }
-            if ($('#PurchasePriceService').val().trim() == "") {
-                $('#PurchasePriceService').css('border-color', 'Red');
-                $('#PurchasePriceService').focus();
-                isValid = false;
-            }
-            else {
-                $('#PurchasePriceService').css('border-color', 'lightgrey');
-            }
-
-            if (($('#SalePriceService').val().trim() != "" && $('#PurchasePriceService').val().trim() != "")) {
-                if (parseFloat($('#SalePriceService').val()) < parseFloat($('#PurchasePriceService').val())) {
-                    $('#SalePriceService').css('border-color', 'Red');
-                    $('#PurchasePriceService').css('border-color', 'Red');
-                    isValid == false;
-                    $.toast({
-                        heading: 'Sale amount less',
-                        text: 'Sale Amount must be greater from Purchase amount `Amount`',
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#FF0000'  // To change the background
-                    });
-                }
-                else {
-                    $('#PurchasePriceService').css('border-color', 'lightgrey');
-                    $('#SalePriceService').css('border-color', 'lightgrey');
-                }
-            }
-
+            
             return isValid;
         }
   
-
-        $('#ProductUnitSelectGoods').change(function () {
+    $('#ProductUnitSelectGoods').change(function () {
 
         var value = $(this).val();
         if (value == "AddNewPUnitSelect") {
@@ -1013,5 +932,33 @@
 
             $('#UnitModel').modal('show');
         }
-    });
+        });
+
+    function LoadProductSelect() {
+
+            PGoodService = "Services";
+
+            LoadProductUnitPurchase();
+            $("#mainrow #SelectProductQutationp").find("option").remove();
+            $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
+            $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+            $.ajax({
+                url: "/MVCProduct/GetProduct",
+                type: "Get",
+                async: false,
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: { ProductStatus: PGoodService },
+
+                success: function (data) {
+                    $.each(data, function (key, item) {
+                        $('#mainrow #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                    });
+                },
+                Error: function (errormessage) {
+                    alert(errormessage);
+                }
+            });
+        }
 </script>

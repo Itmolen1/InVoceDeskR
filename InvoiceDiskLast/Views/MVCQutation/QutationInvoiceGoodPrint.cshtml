@@ -15,258 +15,232 @@
     <title></title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <style>
-        tr {
-            page-break-inside: avoid;
-        }
-    </style>
+
+    <link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
 </head>
 <body>
-
-    <div style="margin-top:10px;">
-     
-        <div class="row">
-            <div class="col-xs-1"></div>
-            <div class="col-xs-3">
-                <div class="mydiv">
-                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none; margin-top:50px" />
-                </div>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-
-
-                @Contectdatas.ContactName
-                <br />
-                @Contectdatas.ContactAddress
-                <br />
-                @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
-                <br />
-                @Contectdatas.PostalCode
-
-                <div></div>
-
-            </div>
-            <div class="col-xs-3"></div>
-            <div class="col-xs-5">
-                <br />
-                <br />
-                <br />
-                <h5 style="margin-left:125px">@CompanyDatas.CompanyName</h5>
-                <hr />
-
-                <div class="row">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-3 text-right">Kvk nr:</div>
-                    <div class="col-xs-7">@CompanyDatas.KVK</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-3 text-right">BTW nr:</div>
-                    <div class="col-xs-7">@CompanyDatas.BTW</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-2 text-right">Bank:</div>
-                    <div class="col-xs-7">@CompanyDatas.BankName</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-2 text-right">IBAN:</div>
-                    <div class="col-xs-7">@CompanyDatas.IBANNumber</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-2 text-right">BIC:</div>
-                    <div class="col-xs-7">@CompanyDatas.BIC</div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-2 text-right">Tel:</div>
-                    <div class="col-xs-7">@CompanyDatas.CompanyPhone</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-2 text-right">Cel:</div>
-                    <div class="col-xs-7">@CompanyDatas.CompanyCell</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-3 text-right">E-mail:</div>
-                    <div class="col-xs-7">@CompanyDatas.CompanyEmail</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-3 text-right">Website:</div>
-                    <div class="col-xs-7">@CompanyDatas.Website</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-4 text-right">
-                        Bezoekadres:
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="container">
+                <div class="row" style="margin-top:35px">
+                    <div class="col-xs-12 HeadText">
+                        Invoice
                     </div>
+                </div>
+                <hr />
+                <div class="row">
                     <div class="col-xs-7">
-                        @CompanyDatas.CompanyAddress<br />
-                        @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
-                        @CompanyDatas.CompanyCountry
+                        <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+
+                        <div class="row clientInfo" style="margin-top:50px">
+                            <div class="col-xs-12">@Contectdatas.ContactName</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">@Contectdatas.ContactAddress <br />@Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                        </div>
+
+
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-xs-4">
+                                Qutation Date:
+                            </div>
+                            <div class="col-xs-6">
+                                @QutationModel.QutationDate
+                            </div>
+                            <div class="col-xs-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                Invoice Number:
+                            </div>
+                            <div class="col-xs-6">
+                                @QutationModel.RefNumber
+                            </div>
+                            <div class="col-xs-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                Due Date:
+                            </div>
+                            <div class="col-xs-6">
+                                @QutationModel.DueDate
+                            </div>
+                            <div class="col-xs-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                Reference No:
+                            </div>
+                            <div class="col-xs-6">
+                                @QutationModel.RefNumber
+                            </div>
+                            <div class="col-xs-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-5">
+                        <div class="row">
+                            <div class="col-xs-3"></div>
+                            <div class="col-xs-7 CmpColor">@CompanyDatas.CompanyName</div>
+                            <div class="col-xs-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Kvk nr:</div>
+                            <div class="col-xs-7">@CompanyDatas.KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">BTW nr:</div>
+                            <div class="col-xs-7">@CompanyDatas.BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Bank:</div>
+                            <div class="col-xs-7">@CompanyDatas.BankName</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">IBAN No:</div>
+                            <div class="col-xs-7">@CompanyDatas.IBANNumber</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">BIC No:</div>
+                            <div class="col-xs-7">@CompanyDatas.BIC</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Telephone:</div>
+                            <div class="col-xs-7">@CompanyDatas.CompanyPhone</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Cell No:</div>
+                            <div class="col-xs-7">@CompanyDatas.CompanyCell</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">E-mail:</div>
+                            <div class="col-xs-7">@CompanyDatas.CompanyEmail</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Website:</div>
+                            <div class="col-xs-7">@CompanyDatas.Website</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Address:</div>
+                            <div class="col-xs-7">
+                                @CompanyDatas.CompanyAddress<br />
+                                @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
+                                @CompanyDatas.CompanyCountry
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-
-            </div>
-        </div>
-        <div class="row" style="margin-right: 0px;margin-left: 50px;">
-
-            <label style="margin-left:16px"><b>Qutation order</b></label>
-
-        </div>
-        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
-
-            <div class="col-xs-2">
-                <label>Qutation Date:</label><br />
-                <label>Qutation Number:</label><br />
-                <label>Due Date:</label>
-            </div>
-            <div class="col-xs-3">
-                <label>@QutationModel.QutationDate</label><br />
-                <label>@QutationModel.RefNumber</label><br />
-                <label>@QutationModel.DueDate</label>
-            </div>
-        </div>
-        <div class="row" style="margin-right: 50px; margin-left:50px;">
-            will receive the quotation from us for the services below.
-           
-                <table id="mytable" class="table table-bordred table-striped table-responsive">
-                    <thead>
-                        <tr>
-                            <th class="col-xs-4">
-                                Goods
-                            </th>
-                            <th class="col-xs-2">
-                                Quantity
-                            </th>
-                            <th class="col-xs-2">
-                                Prijs
-                            </th>
-                            <th class="col-xs-2">
-                                Totaal
-                            </th>
-                            <th class="col-xs-1">
-                                Vat
-                            </th>
-                            <th class="col-xs-1">
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @{
-                            int rowcount = 0;
-                        }
-
-
-                        @if (ViewBag.QutationDatailsList != null)
-                        {
-                            foreach (var item in ViewBag.QutationDatailsList)
-                            {
-                                rowcount += 1;
+                <hr />
+                <div class="row">
+                    <div class="col-xs-12">
+                        will receive the Invoice from us for the Goods below.
+                        <table id="mytable" class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        @item.ItemName
-                                    </td>
-                                    <td>
-                                        @item.Quantity
-                                    </td>
-                                    <td>
-                                        @item.Rate
-                                    </td>
-                                    <td>
-                                        @item.Total
-                                    </td>
-                                    <td>
-                                        @item.Vat
-                                    </td>
-
-                                    <td>
-                                        <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
-                                    </td>
+                                    <th class="col-xs-4">
+                                        Goods
+                                    </th>
+                                    <th class="col-xs-2">
+                                        Quantity
+                                    </th>
+                                    <th class="col-xs-2">
+                                        Prijs
+                                    </th>
+                                    <th class="col-xs-2">
+                                        Totaal
+                                    </th>
+                                    <th class="col-xs-2">
+                                        Vat
+                                    </th>
                                 </tr>
-                            }
-                        }
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    int rowcount = 0;
+                                }
 
 
-                    </tbody>
-                </table>
+                                @if (ViewBag.QutationDatailsList != null)
+                                {
+                                    foreach (var item in ViewBag.QutationDatailsList)
+                                    {
+                                        rowcount += 1;
+                                        <tr>
+                                            <td>
+                                                @item.ItemName
+                                            </td>
+                                            <td>
+                                                @item.Quantity
+                                            </td>
+                                            <td>
+                                                @item.Rate
+                                            </td>
+                                            <td>
+                                                @item.Total
+                                            </td>
+                                            <td>
+                                                @item.Vat
+                                            </td>
+                                        </tr>
+                                    }
+                                }
 
-
-            <div class="col-xs-8"></div>
-
-            <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-xs-6"></div>
-                    <div class="col-xs-3">
-                        <label class="tex pull-right">Total excl. VAT:€</label>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-xs-3">
-                        <label class="tex pull-right">@QutationModel.SubTotal</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-6"></div>
-                    @if(QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
-                    {
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">VAT 6%:	€	</label>
-                        </div>
-                        <div class="col-xs-3 ">
-                            <label class="tex pull-right">@QutationModel.TotalVat6</label>
-                        </div>
-                    }
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-6"></div>
-                    @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
-                    {
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">VAT 21%:	€</label>
-                        </div>
-                        <div class="col-xs-3">
-                            <label class="tex pull-right">@QutationModel.TotalVat21</label>
-
-                        </div>
-                    }
-
-
                 </div>
                 <hr />
                 <div class="row">
-                    <div class="col-xs-6"></div>
-                    <div class="col-xs-3">
-                        <label class="tex pull-right">Grand Total:€</label>
+                    <div class="col-xs-7">
                     </div>
+                    <div class="col-xs-5">
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Sub Total:</div>
+                            <div class="col-xs-7 text-right"><span id="SubTotal">@QutationModel.SubTotal</span></div>
 
-                    <div class="col-xs-3">
-                        <label class="tex  pull-right">@QutationModel.TotalAmount</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5 text-right">Total excel BTW:</div>
+                            <div class="col-xs-7 text-right"><span id="TotalBTW">@QutationModel.SubTotal</span></div>
+                        </div>
+                        @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-5 text-right">
+                                    <label class="tex pull-right">VAT 6%:€</label>
+                                </div>
+                                <div class="col-xs-7 text-right">
+                                    <label class="tex pull-right">@QutationModel.TotalVat6</label>
+                                </div>
+                            </div>
+                        }
+
+                        @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                        {
+                            <div class="row">
+                                <div class="col-xs-5 text-right">
+                                    <label class="tex pull-right">VAT 21%:€</label>
+                                </div>
+                                <div class="col-xs-7 text-right">
+                                    <label class="tex pull-right">@QutationModel.TotalVat21</label>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row Grand-color">
+                            <div class="col-xs-5 text-right">Grand Total:</div>
+                            <div class="col-xs-7 text-right">
+                                <label id="BTW21">&euro;:@QutationModel.TotalAmount</label>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </body>
 </html>
+

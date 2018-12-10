@@ -784,33 +784,7 @@
     });
 
 
-    function LoadProductSelect() {
-        
-        PGoodService = "Services";
-        
-        LoadProductUnitPurchase();
-        $("#mainrow #SelectProductQutationp").find("option").remove();
-        $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
-
-        $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            data: { ProductStatus: PGoodService },
-
-            success: function (data) {
-                $.each(data, function (key, item) {
-                    $('#mainrow #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-        });
-    }
+   
 
     // product price by id
     $('#mainrow .pClassp').change(function () {

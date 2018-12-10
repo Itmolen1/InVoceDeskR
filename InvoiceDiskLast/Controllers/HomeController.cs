@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
 
-    //[SessionExpireAttribute]
+    [SessionExpireAttribute]
     public class HomeController : Controller
     {
      
