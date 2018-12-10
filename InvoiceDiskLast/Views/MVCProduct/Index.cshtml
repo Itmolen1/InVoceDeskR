@@ -27,10 +27,7 @@
                         </th>
                         <th>
                             Type
-                        </th>
-                        <th style="text-align:center">
-                           Availible Stock
-                        </th>
+                        </th>                      
                         <th style="text-align:center">
                             Status
                         </th>
@@ -143,13 +140,7 @@
                     { "data": "SalePrice", "name": "SalePrice", "autoWidth": true },
                     { "data": "PurchasePrice", "name": "PurchasePrice", "autoWidth": true },
                     { "data": "Type", "name": "Type", "autoWidth": true },
-                   // { "data": "OpeningStockValue", "name": "OpeningStockValue", "autoWidth": true },
-                    {
-                        render: function(data, type,row)
-                        {
-                            return "<div style='text-align:center'><td><span class='label label-primary'>" + row.OpeningStockValue + "</span></td></div>"
-                        }
-                    },
+                  
                     {
                          render: function(data, type,row)
                          {
@@ -189,36 +180,7 @@
             $('#CreateNewProductModalGoods').modal('show');
         });
 
-        //old Update
-        $('#UpdateProduct').click(function () {
-            var validdatep = validateProduct();
-            if (validdatep == true) {
-                $.ajax({
-                    url: '/MVCProduct/AddOrEdit',
-                    type: 'POST',
-                    data: {
-                        ProductId: $('#ProductId').val(),
-                        ProductName: $('#ProductName').val(),
-                        Description: $('#Description').val(),
-                        SalePrice: $('#SalePrice').val(),
-                        PurchasePrice: $('#PurchasePrice').val(),
-                        Type: $('#Type').val(),
-                        OpeningQuantity: $('#OpeningQuantity').val(),
-                        ProductUnit: $('#ProductUnitSelect').val(),
-                        OpeningStockValue: $('#OpeningStockValue').val()
-                    },
-                    success: function (data) {
-                        $('#CreateNewProductModal').modal('hide');
-                        $('#productTable').DataTable().ajax.reload();
-                        SuccessUpdate();
-                        clearProductTextBox();
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-            }
-        });
+       
 
     });
 

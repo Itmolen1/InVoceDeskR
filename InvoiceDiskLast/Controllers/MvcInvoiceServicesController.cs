@@ -943,7 +943,7 @@ namespace InvoiceDiskLast.Controllers
 
                     PageHeight = 40,
                     CustomSwitches = cutomswitches,
-                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
+                    PageMargins = new Rotativa.Options.Margins(5, 0, 10, 0)
                 };
             }
             catch (Exception ex)

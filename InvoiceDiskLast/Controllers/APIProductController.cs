@@ -71,6 +71,37 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+        [Route("api/APIProductAdd/{CompanyId:int}/{status:alpha}")]
+        [ResponseType(typeof(List<MVCProductModel>))]
+
+        public IHttpActionResult GetProductTablesAdd(int CompanyId, string status)
+        {
+            try
+            {
+                var ob = db.ProductTables.Where(x => x.Company_ID == CompanyId && x.Type.ToLower() == status.ToLower() && x.ProductStatus == true).Select(c => new MVCProductModel
+                {
+
+                    ProductId = c.ProductId,
+                    ProductName = c.ProductName,
+                    Description = c.Description,
+                    SalePrice = c.SalePrice,
+                    PurchasePrice = c.PurchasePrice,
+                    Type = c.Type,
+                    AddedBy = c.AddedBy,
+                    Company_ID = c.Company_ID,
+                    AddedDate = c.AddedDate,
+                    ProductStatus = c.ProductStatus,
+
+                }).ToList();
+
+                return Ok(ob);
+            }
+            catch(Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
 
 
 
@@ -116,6 +147,11 @@ namespace InvoiceDiskLast.Controllers
                 throw EX;
             }
         }
+
+
+
+
+
 
         [Route("api/PutAPIProduct/{id:int}")]
         [ResponseType(typeof(void))]
