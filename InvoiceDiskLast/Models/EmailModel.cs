@@ -23,12 +23,12 @@ namespace InvoiceDiskLast.Models
 
         public int invoiceId { get; set; }
 
-        public List<FileNam> FileNameList { get; set; }
+       
     }
 
 
-    public class FileNam
+    public class AttakmentList
     {
-        public string FileName { get; set; }
+        public string Attckment { get; set; }
     }
 }

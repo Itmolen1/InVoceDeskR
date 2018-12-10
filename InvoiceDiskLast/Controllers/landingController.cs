@@ -9,6 +9,8 @@ namespace InvoiceDiskLast.Controllers
 {
     public class landingController : Controller
     {
+        List<AttakmentList> _attacklist = new List<AttakmentList>();
+
         // GET: landing
         public ActionResult Index()
         {
@@ -37,7 +39,7 @@ namespace InvoiceDiskLast.Controllers
                       "</body>" +
                       "</html>";
                 emailmodel.EmailBody = htmlString;
-                EmailController.email(emailmodel);
+                EmailController.email(emailmodel, _attacklist);
 
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
