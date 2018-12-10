@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -549,7 +551,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
-                if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID==null)
+                if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID == null)
                 {
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
                     IEnumerable<string> headerValues;
@@ -825,6 +827,53 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult UploadFiles()
+        {
+            try
+            {
+                string FileName = "";
+                string Path1 = "";
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+
+                    HttpPostedFileBase file = files[i];
+                    string fname;
+
+                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                    {
+                        string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                        fname = testfiles[testfiles.Length - 1];
+                    }
+                    else
+                    {
+                        fname = file.FileName;
+                        FileName = file.FileName;
+                    }
+                    fname = Path.Combine(Server.MapPath("/PDF/"), fname);
+                    if (System.IO.File.Exists(fname))
+                    {
+                        System.IO.File.Delete(fname);
+                    }
+                    else
+                    {
+
+                        Path1 = fname;
+                        file.SaveAs(fname);
+                    }
+                }
+
+                return new JsonResult { Data = new { FilePath = Path1, FileName = FileName } };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         [DeleteFileClass]
         [HttpPost]
         public FileResult DownloadFile(string FilePath1)
@@ -1084,26 +1133,32 @@ namespace InvoiceDiskLast.Controllers
             return TransactionResult;
         }
 
-        [DeleteFileClass]
+        //[DeleteFileClass]
         [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email, List<FileNam> _FileName,FormCollection form)
+        public ActionResult InvoicebyEmail(EmailModel email)
         {
-            
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
 
-            if (Request.Form["FileName"] != null)
+            if (Request.Form["FilePath"] != null)
             {
-                var fileName2 = Request.Form["FileName"];
+                var fileName2 = Request.Form["FilePath"];
 
+                string[] valueArray = fileName2.Split(',');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+                    _attackmentList = new List<AttakmentList>();
+                    foreach (var itemm in valueArray)
+                    {
+                        if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = itemm });
+                        }
+                    }
+                }
             }
-            foreach (string key in form.AllKeys)
-            {
-                string values = form[key];
-                string[] valueArray = values.Split(',');
 
-                string v = valueArray[0];
-
-                //further processing.
-            }
 
 
             var idd = Session["ClientID"];
@@ -1124,6 +1179,8 @@ namespace InvoiceDiskLast.Controllers
                 {
                     email.Attachment = email.Attachment.Replace(".pdf", "");
                 }
+
+
                 if (email.ToEmail.Contains(','))
                 {
                     var p = email.Attachment.Split('.');
@@ -1133,6 +1190,8 @@ namespace InvoiceDiskLast.Controllers
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
                     string[] EmailArray = email.ToEmail.Split(',');
+                    _attackmentList.Add(new AttakmentList { Attckment = email.Attachment });
+
                     if (EmailArray.Count() > 0)
                     {
                         foreach (var item in EmailArray)
@@ -1141,7 +1200,7 @@ namespace InvoiceDiskLast.Controllers
                             emailModel.ToEmail = item;
                             emailModel.Attachment = email.Attachment;
                             emailModel.EmailBody = email.EmailText;
-                            bool result = EmailController.email(emailModel);
+                            bool result = EmailController.email(emailModel, _attackmentList);
                         }
                     }
                 }
@@ -1151,11 +1210,14 @@ namespace InvoiceDiskLast.Controllers
                     var pdfname = String.Format("{0}.pdf", email.Attachment);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
+
+                    _attackmentList.Add(new AttakmentList { Attckment = path });
+
                     emailModel.From = email.From;
                     emailModel.ToEmail = email.ToEmail;
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
-                    bool result = EmailController.email(emailModel);
+                    bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
 
@@ -1172,7 +1234,9 @@ namespace InvoiceDiskLast.Controllers
                     TempData["EmailMessge"] = "Your transaction is not perform with success";
                 }
 
-               
+                var folderPath = Server.MapPath("/PDF/");
+
+                clearFolder(folderPath);
 
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
             }
@@ -1192,7 +1256,19 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
         }
 
+        private void clearFolder(string FolderName)
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(FolderName);
 
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+        }
         public string PrintView(int purchaseOrderId)
         {
             string pdfname;
@@ -1673,7 +1749,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult ViewAndPrintInvoiceGood(int Id)
         {
-            if (Id == null && Id==0)
+            if (Id == null && Id == 0)
             {
                 return RedirectToAction("Index", "Login");
             }

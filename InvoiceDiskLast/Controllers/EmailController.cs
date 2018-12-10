@@ -28,12 +28,12 @@ namespace InvoiceDiskLast.Controllers
 
         // E:\InvoiceDeskR\InvoiceDiskLast\PDF\Journal-2018-11-19-2018-11-21
 
-        public static bool email(EmailModel emailmodel)
+        public static bool email(EmailModel emailmodel, List<AttakmentList> _StringList)
         {
             bool emailstatus = false;
             try
             {
-              
+
                 string bodyhtml = emailmodel.EmailBody;
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
@@ -48,13 +48,29 @@ namespace InvoiceDiskLast.Controllers
                 mail.IsBodyHtml = true;
 
                 mail.Body = bodyhtml;
-                if (emailmodel.Attachment != null)
-                {
-                    System.Net.Mail.Attachment attachment;
-                    attachment = new System.Net.Mail.Attachment(emailmodel.Attachment);
-                    mail.Attachments.Add(attachment);
-                }
 
+
+                if (_StringList != null && _StringList.Count() > 0)
+                {
+                    foreach (var item in _StringList)
+                    {
+                        string attt = item.Attckment;
+
+                        mail.Attachments.Add(new System.Net.Mail.Attachment(item.Attckment.ToString()));
+
+                    }
+                }
+                else
+                {
+
+                    if (emailmodel.Attachment != null)
+                    {
+                        System.Net.Mail.Attachment attachment;
+                        attachment = new System.Net.Mail.Attachment(emailmodel.Attachment);
+                        mail.Attachments.Add(attachment);
+
+                    }
+                }
                 //Gmail Port
                 //SmtpServer.Port = 587;
                 SmtpServer.Credentials = new System.Net.NetworkCredential("infouurtjefactuur@gmail.com", "samar12345");
@@ -63,7 +79,7 @@ namespace InvoiceDiskLast.Controllers
                 SmtpServer.Send(mail);
                 emailstatus = true;
                 mail.Dispose();
-                // DeleteFiles(emailmodel.Attachment);
+                //DeleteFiles(emailmodel.Attachment);
             }
 
             catch (Exception)

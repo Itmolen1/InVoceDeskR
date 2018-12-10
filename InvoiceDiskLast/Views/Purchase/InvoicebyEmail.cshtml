@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
-            @using (Html.BeginForm("InvoiceByEmail", "purchase", FormMethod.Post, new { id = "frmSendEmail" }))
+            @using (Html.BeginForm("InvoiceByEmail", "purchase", FormMethod.Post, new { id = "frmSendEmail", enctype = "multipart/form-data" }))
             {
                 <div class="row">
                     @*<h2 id="">Invoice-@Model.invoiceId</h2>*@
@@ -47,15 +47,13 @@
 
 
                                 <div class="btn btn-default image-preview-input">
-                                  
-                                    <span class="image-preview-input-title">Choose File</span>
-                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" id="CFileUpload1" /> <!-- rename it -->
+                                    <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty" />
+                                    @*<span class="image-preview-input-title">Choose File</span>
+                                        <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" id="CFileUpload1" />*@ <!-- rename it -->
                                 </div>
                                 <table class="table table-hover" id="participantTable">
 
-                                    <tbody id="upload">
-
-                                    </tbody>
+                                    <tbody id="upload"></tbody>
 
 
                                 </table>
@@ -80,50 +78,73 @@
 
 
 <script type="text/javascript">
-    $('#btnadd').click(function () {
-        $('#Idd').append("<input type='file' calss='form-control'></input>");
+
+    $('#txtUploadFile').on('change', function (e) {
+        var fileUpload = $("#txtUploadFile").get(0);
+        var files = fileUpload.files;
+
+        var IsvalidSixze = validateFileSize();
+
+        if (IsvalidSixze == false) {
+            return true;
+        }
+        else {
+
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                url: '/Purchase/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                async: false,
+                success: function (result) {
+                    console.log(result);
+
+                    if (result != "") {
+                        $('#upload').append("<tr><td><input type='text' class='form-control' value='" + result.FileName + "' name='FileName' readonly> <input type='hidden' class='form-control' value='" + result.FilePath + "' name='FilePath'></td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
     });
 
 
+    function validateFileSize() {
+        debugger;
+        var Isvalid = true;
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            //get the file size and file type from file input field
+            var fsize = $('#txtUploadFile')[0].files[0].size;
+            var ftype = $('#txtUploadFile')[0].files[0].type;
+            var fname = $('#txtUploadFile')[0].files[0].name;
 
-    $(document).ready(function () {
+            if (fsize > 1048576) //do something if file size more than 1 mb (1048576)
+            {
+                Isvalid = false;
 
-        //$("#CFileUpload1").change(function () {
+                alert("Type :" + ftype + " | " + fsize + " bites\n(File: " + fname + ") Too big!");
+            }
+            else {
+                Isvalid = true;
 
+            }
+        }
 
-        //    $('#upload').append("<tr><td><input  type='text' placeholder='Name'></td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
-        //});
-
-        $("#CFileUpload1").change(function () {
-            var Data = $('#CFileUpload1').val();
-            $('#upload').append("<tr><td><input type='text' claass='form-control' value='" + Data + "' name='FileName'></td><td><button class='btn btn-danger remove' type='button'>Remove</button></td></tr>")
-        });
-
-
-        $(document).on('click', '.remove', function () {
-            $(this).parent().parent().remove();
-        });
-
-       
-
-        //function readURL(input) {
-        //    debugger;
-        //    if (input.files && input.files[0]) {
-        //        var reader = new FileReader();
-
-        //        reader.onload = function (e) {
-        //            $('#blah').attr('src', e.target.result);
-
-        //        }
-
-        //        reader.readAsDataURL(input.files[0]);
+        return Isvalid ;
+    }
 
 
 
-        //    }
-        //}
 
+    $(document).on('click', '.remove', function () {
+        $(this).parent().parent().remove();
     });
+
 </script>
-
-
