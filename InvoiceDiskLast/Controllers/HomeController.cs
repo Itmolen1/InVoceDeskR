@@ -1,4 +1,5 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,13 @@ namespace InvoiceDiskLast.Controllers
 {
 
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class HomeController : Controller
     {
      
         public ActionResult Index()
         {
-            return View();           
+            return View();
         }
 
        
