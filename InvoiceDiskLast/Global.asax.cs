@@ -12,8 +12,7 @@ namespace InvoiceDiskLast
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        
-      
+       
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -35,5 +34,8 @@ namespace InvoiceDiskLast
             System.Web.HttpContext.Current.SetSessionStateBehavior(
                 SessionStateBehavior.Required);
         }
+
+
+
     }
 }
