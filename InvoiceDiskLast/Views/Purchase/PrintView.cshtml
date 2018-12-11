@@ -1,212 +1,244 @@
-﻿
+﻿ @{
+     var Contectdatas = ViewBag.Contentdata;
+     var CompanyDatas = ViewBag.Companydata;
+     var purchaseModel = ViewBag.Purchase;
+   }
+
+<div class="row">
+    <div class="col-xs-2">
+        @*two*@
+    </div>
+    <div class="col-xs-8" style="border:1px solid Silver">
+        <div class="container">
+
+            <div class="row" style="margin-top:35px">
+                <div class="col-xs-12 HeadText">
+                    <label>Bill</label>
+                </div>
+            </div>
+            <hr />
             <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-6">
+                <div class="col-xs-7">
+                    <img class="mydiv" src="~/images/logon1.png183807568.png" />
+                    <div class="row clientInfo" style="margin-top:30px">
+                        <div class="col-xs-12">@Contectdatas.ContactName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @Contectdatas.ContactAddress
+                        <br />
+                        @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                        <br />
+                        @Contectdatas.PostalCode
+                    </div>
+                </div>
+
+
+                <div class="row" style="margin-top:20px">
+                    <div class="col-xs-4">
+                        Invoice Date:
+                    </div>
                     @{
-
-                        var Contectdatas = ViewBag.Contentdata;
-                        var CompanyDatas = ViewBag.Companydata;
-                        var purchaseModel = ViewBag.Purchase;
+                        DateTime pdate = new DateTime();
+                        pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
+                        DateTime pddate = new DateTime();
+                        pddate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
                     }
-
-
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-6">
-                            <img src="@Url.Content(CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
-                        </div>
+                    <div class="col-xs-6">
+                        pdate
                     </div>
-
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                            <div class="col-sm-1">
-                                <h5 style="font-size:10px;">@CompanyDatas.CompanyName</h5>
-                                <h5 style="font-size:10px;">@CompanyDatas.CompanyAddress</h5>
-                              
-                                    @{
-                                        string value = CompanyDatas.CompanyPhone;
-                                        if (value != null)
-                                        {
-                                            <h5 style="font-size:10px;">@value</h5>
-                                        }
-                                        else
-                                        {
-                                            <h5 style="font-size:10px;"></h5>
-                                        }
-                                    }
-                                           
-                                <h5 style="font-size:10px;">@CompanyDatas.CompanyEmail</h5>
-
-                            </div>
-                        <div class="col-sm-2"></div>
-                            <div class="col-sm-2">
-                                <h5 style="font-size:10px;">@Contectdatas.ContactName</h5>
-                                <h5 style="font-size:10px;">@Contectdatas.ContactAddress</h5>
-                                <h5 style="font-size:10px;">@Contectdatas.BillingEmail</h5>
-                                <h5 style="font-size:10px;">@Contectdatas.BillingVatTRN</h5>
-                            </div>
-                        </div>
-
-
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-6">
-                            <h4 style="color:skyblue;font-size:10px;">Qutation Invoice</h4>
-
-                            <div class="form-horizontal">
-
-                                <div class="row">
-                                    <div class="col-sm-2" style="font-size:10px;">Invoice Date:</div>
-                                    <div class="col-sm-4">
-                                        <label style="font-size:10px;">@purchaseModel.PurchaseDate</label>
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top:3px">
-                                    <div class="col-sm-3" style="font-size:10px;">Invoice Number:</div>
-                                    <div class="col-sm-3">
-                                        <label style="font-size:10px;">@purchaseModel.PurchaseRefNumber</label>
-                                    </div>
-                                    <div class="col-sm-6"></div>
-                                </div>
-                                <div class="row" style="margin-top:3px">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-4">Invoice period:</div>
-                                            <div class="col-sm-4" style="font-size:10px;">
-                                                <label>@purchaseModel.PurchaseDate</label>
-                                            </div>
-
-                                            <div class="col-sm-4" style="font-size:10px;">
-                                                <label>@purchaseModel.PurchaseDueDate</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6"></div>
-                                </div>
-
-                                <div class="row" style="margin-top:3px">
-                                    <div class="col-sm-3" style="font-size:10px;">Refrence Number:</div>
-                                    <div class="col-sm-4">
-                                        <label style="font-size:10px;">@purchaseModel.PurchaseRefNumber</label>
-
-                                    </div>
-                                    <div class="col-sm-6"></div>
-                                </div>
-
-                                <div class="row" style="margin-top:3px">
-                                    <div class="col-sm-2"><a href="#" style="font-size:10px;"> Add VAT:</a></div>
-                                    <div class="col-sm-4">
-
-                                    </div>
-                                    <div class="col-sm-6"></div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                    <table id="mytable" class="table table-bordred table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th class="col-sm-4">
-                                                    Decription
-                                                </th>
-                                                <th class="col-sm-2">
-                                                    Quantity
-                                                </th>
-                                                <th class="col-sm-2">
-                                                    Price
-                                                </th>
-                                                <th class="col-sm-2">
-                                                    Total
-                                                </th>
-                                                <th class="col-sm-1">
-                                                    Vat
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            @if (ViewBag.PurchaseDatailsList != null)
-                                            {
-                                                foreach (var item in ViewBag.PurchaseDatailsList)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @item.PurchaseItemName
-                                                        </td>
-                                                        <td>
-                                                            @item.PurchaseQuantity
-                                                        </td>
-
-                                                        <td>
-                                                            @item.PurchaseItemRate
-                                                        </td>
-                                                        <td>
-                                                            @item.PurchaseTotal
-
-                                                        </td>
-                                                        <td>
-                                                            @item.PurchaseVatPercentage
-
-                                                        </td>
-
-                                                    </tr>
-                                                }
-                                            }
-                                        </tbody>
-
-                                    </table>
-
-
-                                    <div id="OrderItems">
-                                        <table class="table table-responsive" id="orderdetailsitems"></table>
-                                        <span id="orderItemError" style="color:red"></span>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                                
-
-
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                    </div>
-                                    <div class="col-sm-2">Sub Total:</div>
-                                    <div class="col-sm-2">
-                                        <label id="SubTotal">@purchaseModel.PurchaseSubTotal</label>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                    </div>
-                                    <div class="col-sm-2"></div>
-                                    <div class="col-sm-2">
-                                        <label id="TotalBTW"></label>
-
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-2">Customer Note:</div>
-                                    <div class="col-sm-6">
-                                        <label>@purchaseModel.PurchaseVenderNote</label>
-                                    </div>
-                                    <div class="col-sm-2">Total:</div>
-                                    <div class="col-sm-2">
-                                        <span class="form-inline">&euro;</span><label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label>
-
-                                    </div>
-                                </div>
-                           
-
-                        </div>
+                    <div class="col-xs-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        Invoice Number:
                     </div>
-
+                    <div class="col-xs-8">
+                        @purchaseModel.PurchaseID
+                    </div>
                 </div>
-                <div class="col-sm-1">
-
+                <div class="row">
+                    <div class="col-xs-4">
+                        Due Date:
+                    </div>
+                    <div class="col-xs-8">
+                        pddate
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        Reference Number:
+                    </div>
+                    <div class="col-xs-8">
+                        @purchaseModel.PurchaseRefNumber
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-5">
+                <div class="row">
+                    <div class="col-3 b-r"></div>
+                    <div class="col-xs-7 CmpColor">@CompanyDatas.CompanyName</div>
+                    <div class="col-xs-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">kvk nr:</div>
+                    <div class="col-xs-7">@CompanyDatas.KVK</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">BTW nr:</div>
+                    <div class="col-xs-7">@CompanyDatas.BTW</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">IBAN:</div>
+                    <div class="col-xs-7">@CompanyDatas.IBANNumber</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">BIC:</div>
+                    <div class="col-xs-7">@CompanyDatas.BIC</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">Telephone:</div>
+                    <div class="col-xs-7">@CompanyDatas.CompanyPhone</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">Cell:</div>
+                    <div class="col-xs-7">@CompanyDatas.CompanyCell</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">E-mail:<</div>
+                    <div class="col-xs-7">@CompanyDatas.CompanyEmail</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">Website:</div>
+                    <div class="col-xs-7">@CompanyDatas.Website</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 text-right">Address:</div>
+                    <div class="col-xs-7">
+                        @CompanyDatas.CompanyAddress<br />
+                    @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                    @CompanyDatas.CompanyCountry
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" style="margin-top:10px">
+        <div class="col-xs-12">
+            will receive the bill from us for the Goods below.
+            <table class="table QTtable" style="overflow: scroll">
+                <thead class="thead-dark">
+                    <tr>
+                        <th width="350px">
+                            Goods
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th>
+                            Vat%
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int rowcount = 0;
+                    }
+                    @if (ViewBag.PurchaseDatailsList != null)
+                    {
+                        foreach (var item in ViewBag.PurchaseDatailsList)
+                        {
+                            rowcount += 1;
+
+                            <tr>
+                                <td>
+                                    @item.PurchaseItemName
+                                </td>
+                                <td>
+                                    @item.PurchaseQuantity
+                                </td>
+
+                                <td>
+                                    @item.PurchaseItemRate
+                                </td>
+                                <td>
+                                    @item.PurchaseTotal
+
+                                </td>
+                                <td>
+                                    @item.PurchaseVatPercentage
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-6">
+
+        </div>
+        <div class="col-xs-5">
+            <div class="row">
+                <div class="col-xs-4 text-right">Total excl. VAT:€</div>
+                <div class="col-xs-7 text-right">@purchaseModel.PurchaseSubTotal</div>
+                <div class="col-xs-1">
+                </div>
+            </div>
+
+            @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
+            {
+                <div class="row">
+                    <div class="col-xs-4 text-right">VAT 6%:€</div>
+                    <div class="col-xs-7 text-right">@purchaseModel.Vat6</div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+            }
+            @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
+            {
+                <div class="row">
+                    <div class="col-xs-4 text-right">VAT 21%:€</div>
+                    <div class="col-xs-7 text-right">@purchaseModel.Vat21</div>
+                    <div class="col-xs-1">
+                    </div>
+                </div>
+            }
+            <hr />
+            <div class="row Grand-color">
+                <div class="col-xs-4 text-right">Grand Total</div>
+                <div class="col-xs-7 text-right">&euro;:@purchaseModel.PurchaseTotoalAmount</div>
+                <div class="col-xs-1">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-1">
+
+        </div>
+    </div>
+</div>
+</div>
+<div class="col-xs-2">
+    @*two*@
+</div>
+</div>
+
+
+
+
+                   
+                   
 
              

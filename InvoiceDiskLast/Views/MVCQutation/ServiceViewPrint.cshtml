@@ -17,206 +17,148 @@
 
 @try
 {
-    <body class="well">
-        <div class="row">
-            <div class="col-lg-2 col-md-2 col-sm-1"></div>
-            <div class="col-lg-8 col-md-8 col-sm-10">
-                <div class="row" style="margin-left:0px;margin-right:0px;">
+    <div class="row">
+        <div class="col-2 b-r">
+            @*two*@
+        </div>
+        <div class="col-8 b-r" style="border:1px solid Silver">
+            <div class="container">
 
-                    <div class="row" style="margin-left:0px;margin-right:0px;">
+                <div class="row" style="margin-top:35px">
+                    <div class="col-12 b-r HeadText">
+                        <label>Qutation invoice</label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-7 b-r">
+                        <img src="@Url.Content("~/Images/"+ CompanyDatas.CompanyLogo)" id="targetImg" />
+                        <div class="row clientInfo" style="margin-top:30px">
+                            <div class="col-12 b-r">@Contectdatas.ContactName</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 b-r">
+                                @Contectdatas.ContactAddress
+                                <br />
+                                @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
 
-                        <div class="btn-group">
+                            </div>
+                        </div>
 
-                            <div style="margin-left:3px">
 
-
-                                <div class="btn-group">
-                                    <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                                    @Html.ActionLink("print Invoice", "QuataionServicePrint", "QutationService", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
-                                </div>
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-4 b-r">
+                                Invoice Date:
                             </div>
 
-                            <div style="margin-left:3px">
-                                <a href="/MVCQutation/ServiceInvoice/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                            @{
+                                DateTime Qdate = new DateTime();
+                                Qdate = Convert.ToDateTime(QutationModel.QutationDate);
+                                DateTime Qddate = new DateTime();
+                                Qddate = Convert.ToDateTime(QutationModel.DueDate);
+                            }
+                            <div class="col-6 b-r">
+                                @Qdate.ToShortDateString();
                             </div>
+                            <div class="col-2 b-r"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 b-r">
+                                Invoice Number:
+                            </div>
+                            <div class="col-8 b-r">
+                                @QutationModel.Qutation_ID
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 b-r">
+                                Due Date:
+                            </div>
+                            <div class="col-8 b-r">
+                                @Qddate.ToShortDateString();
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 b-r">
+                                Reference Number:
+                            </div>
+                            <div class="col-8 b-r">
+                                @QutationModel.RefNumber
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="col-5 b-r">
+                        <div class="row">
+                            <div class="col-3 b-r"></div>
+                            <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
+                            <div class="col-2 b-r"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">kvk nr:</div>
+                            <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">BTW nr:</div>
+                            <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">IBAN:</div>
+                            <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">BIC:</div>
+                            <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">Telephone:</div>
+                            <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">Cell:</div>
+                            <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">E-mail:<</div>
+                            <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">Website:</div>
+                            <div class="col-7 b-r">@CompanyDatas.Website</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5 b-r text-right">Address:</div>
+                            <div class="col-7 b-r">
+                                @CompanyDatas.CompanyAddress<br />
+                                @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                                @CompanyDatas.CompanyCountry
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div style="margin-top:10px;border: 1px solid #CECECE;">
-                    <div class="row">
-                        <div class="col-sm-1"></div>
-                        <div class="col-sm-3">
-                            <div class="mydiv">
-                                <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none;  margin-top:50px" />
-                            </div>
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
 
-                            @if (Contectdatas.ContactName != null)
-                            { @Contectdatas.ContactName}
-                            @*@(Contectdatas.ContactName!= null && Contectdatas.ContactName != "" ? Contectdatas.ContactName:"")*@
-
-                            <br />
-                            @Contectdatas.ContactAddress
-                            <br />
-                            @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
-                            <br />
-                            @Contectdatas.PostalCode
-
-
-                        </div>
-                        <div class="col-sm-4"></div>
-                        <div class="col-sm-4">
-                            <br />
-                            <br />
-                            <br />
-                            <div class="row">
-                                <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
-                                <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue"><b>@CompanyDatas.CompanyName</b></div>
-                                <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
-                            </div>
-
-                            <hr />
-                            <div class="row">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3 text-right">Kvk nr:</div>
-                                <div class="col-sm-8">@CompanyDatas.KVK</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4"><div class="pull-right"> BTW nr:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.BTW</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.BankName</div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-sm-4 pull-right"><div class="text-right">IBAN:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-sm-4 pull-right"><div class="text-right">BIC:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.BIC</div>
-                            </div>
-                            <div class="row">
-
-                                <div class="col-sm-4"><div class="text-right">Tel:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-2"></div>
-                                <div class="col-sm-2"><div class="text-right">Cel:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col-sm-4 pull-right"><div class="text-right">E-mail:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.CompanyEmail</div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-1"></div>
-                                <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
-                                <div class="col-sm-8">@CompanyDatas.Website</div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col-sm-4 pull-right"><div class="text-right">Bezoekadres:</div></div>
-                                <div class="col-sm-8">
-                                    @CompanyDatas.CompanyAddress<br />
-                                    @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
-                                    @CompanyDatas.CompanyCountry
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-4">
-                            <label style="color:skyblue">Qutation invoice:</label>
-                        </div>
-                        <div class="col-md-7"></div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
-                        <div class="col-lg-2 col-md-4 col-sm-3 col-xs-6 text-left">
-                            <label>Invoice Date:</label>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-right">
-
-                            @{
-                                DateTime qutationDate = new DateTime();
-                                DateTime qutationDueDate = new DateTime();
-                                qutationDate = Convert.ToDateTime(QutationModel.QutationDate);
-                                qutationDueDate = Convert.ToDateTime(QutationModel.DueDate);
-
-                            }
-                            <label>@qutationDate.ToShortDateString()</label><br />
-                        </div>
-                        <div class="col-lg-6 col-md-4 col-sm-3"></div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
-                        <div class="col-lg-2 col-md-4 col-sm-44 col-xs-6 text-left">
-                            <label>Invoice Refrence No:</label>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                            <label>@QutationModel.RefNumber</label><br />
-                        </div>
-                        <div class="col-lg-6 col-md-3 col-sm-2"></div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
-                        <div class="col-lg-3 col-md-5 col-sm-4 col-xs-6 text-left">
-                            <label>Invoice Due Date:</label>
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
-                            <label>@qutationDueDate.ToShortDateString();</label><br />
-                        </div>
-                        <div class="col-lg-6 col-md-2 col-sm-3"></div>
-                    </div>
-
-
-                    <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
-                        ontvangt de offerte van ons voor de onderstaande services.
-
-                        <table id="mytable" class="table table-bordred table-striped table-responsive">
+              
+                <div class="row" style="margin-top:10px">
+                    <div class="col-12 b-r">
+                        will receive the Invoice from us for the Services below.
+                        <table id="mytable" class="table table-bordred table-striped">
                             <thead>
 
                                 <tr>
-                                    <th class="col-sm-3">
+                                    <th width="400px">
                                         Services
                                     </th>
-                                    <th class="col-sm-3">
+                                    <th >
                                         Number of hour
                                     </th>
-                                    <th class="col-sm-2">
+                                    <th>
                                         Hourly rate
                                     </th>
-                                    <th class="col-sm-2">
+                                    <th>
                                         Total
                                     </th>
-                                    <th class="col-sm-1">
-                                        Vat %
+                                    <th>
+                                        Vat%
                                     </th>
                                 </tr>
                             </thead>
@@ -251,90 +193,61 @@
                             </tbody>
 
                         </table>
-                        <div class="col-lg-8 col-md-6 col-sm-2 col-xs-0"></div>
-
-                        <div class="col-lg-4 col-md-8 col-sm-10">
-                            <div class="row">
-                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                    <label class="tex-right">Total excl. VAT:	€	</label>
-                                </div>
-                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                    <label class="text-right">@QutationModel.SubTotal</label>
-                                </div>
-                                <div class="col-lg-0 col-md-0 col-sm-0">
-                                </div>
-                            </div>
-
-                            <div class="row">
-
-                                @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
-                                {
-                                    <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                        <label class="text-right">VAT 6%:	€	</label>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                        <label class="text-right">@QutationModel.TotalVat6</label>
-                                    </div>
-                                    <div class="col-lg-0 col-md-0 col-sm-0">
-                                    </div>
-                                }
-                            </div>
-
-                            <div class="row">
-
-                                @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
-                                {
-                                    <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                        <label class="tex pull-right">VAT 21%:	€</label>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                        <label class="tex pull-right">@QutationModel.TotalVat21</label>
-                                    </div>
-                                    <div class="col-lg-0 col-md-0 col-sm-0">
-                                    </div>
-
-                                }
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
-                                    <label class="text-right">Eindtotaal:€</label>
-                                </div>
-
-                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
-                                    <label class="text-right">€:@QutationModel.TotalAmount</label>
-
-                                </div>
-                                <div class="col-lg-0 col-md-0 col-sm-0">
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="col-lg-7"> We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.</div>
-                        <div class="col-lg-5"></div>
-
-                        <div class="col-lg-7"> Met vriendelijke groet</div>
-                        <div class="col-lg-5"></div>
-
-                        <div class="col-lg-7" style="margin-top:10px"><b>@Contectdatas.ContactName</b></div>
-                        <div class="col-lg-5"></div>
-                        <div class="col-lg-7"><b>@CompanyDatas.CompanyName</b></div>
-                        <div class="col-lg-5"></div>
-
-
-                        <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
-
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-1"></div>
+                <hr />
+                <div class="row">
+                    <div class="col-6 b-r">
+                      
+                    </div>
+                    <div class="col-5 b-r">
+                        <div class="row">
+                            <div class="col-4 b-r text-right">Total excl. VAT:&euro;</div>
+                            <div class="col-7 b-r text-right">@QutationModel.SubTotal</div>
+                            <div class="col-1 b-r">
+                            </div>
+                        </div>
+                        @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                        {
+                        <div class="row">
+                            <div class="col-4 b-r text-right">VAT 6%:&euro;</div>
+                            <div class="col-7 b-r text-right">@QutationModel.TotalVat6</div>
+                            <div class="col-1 b-r">
+                            </div>
+                        </div>
+                        }
+
+                        @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                        {
+                        <div class="row">
+                            <div class="col-4 b-r text-right">VAT 21%:&euro;</div>
+                            <div class="col-7 b-r text-right">@QutationModel.TotalVat21</div>
+                            <div class="col-1 b-r">
+                            </div>
+                        </div>
+                        }
+
+                        <hr />
+                        <div class="row Grand-color">
+                            <div class="col-4 b-r text-right">Grand Total:</div>
+                            <div class="col-7 b-r text-right">&euro;:@QutationModel.TotalAmount</div>
+                            <div class="col-1 b-r">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-6 b-r"></div>
+                </div>
             </div>
         </div>
-    </body>
-                                }
-                                catch (global::System.Exception)
-                                {
-                                }
+        <div class="col-2 b-r">
+            @*two*@
+        </div>
+    </div>
+}
+catch (global::System.Exception)
+{
+}
 
 
 <script>
