@@ -109,6 +109,15 @@
           <Property Name="ControleAccountTitile" Type="varchar" MaxLength="20" />
           <Property Name="ControlAcooountDescription" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="DirectoryTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefrenceId" Type="int" />
+          <Property Name="DirectoryPath" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
         <EntityType Name="HeadAccountTable">
           <Key>
             <PropertyRef Name="HeadAccountId" />
@@ -502,6 +511,7 @@
           <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ControlAccountTable" EntityType="Self.ControlAccountTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DirectoryTable" EntityType="Self.DirectoryTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HeadAccountTable" EntityType="Self.HeadAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderStatusTable" EntityType="Self.OrderStatusTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTermTable" EntityType="Self.PaymentTermTable" Schema="dbo" store:Type="Tables" />
@@ -716,6 +726,7 @@
             <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
             <End Role="ProductTable" EntitySet="ProductTables" />
           </AssociationSet>
+          <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1213,6 +1224,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DirectoryTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefrenceId" Type="Int32" />
+          <Property Name="DirectoryPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1517,6 +1537,16 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DirectoryTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.DirectoryTable">
+              <MappingFragment StoreEntitySet="DirectoryTable">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DirectoryPath" ColumnName="DirectoryPath" />
+                <ScalarProperty Name="RefrenceId" ColumnName="RefrenceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
