@@ -1,10 +1,23 @@
 ﻿
-<div class="btn btn-default image-preview-input">
-    <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty" />
+
+<div class="row">
+    <div class="col-8 b-r">
+        <table class="table table-hover" id="participantTable">
+            <tbody id="upload"></tbody>
+        </table>
+    </div>
+    <div class="col-4 b-r"></div>
 </div>
-<table class="table table-hover" id="participantTable">
-    <tbody id="upload"></tbody>
-</table>
+<div class="row">
+    <div class="col-8 b-r">
+      
+        <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty btn btn-success" style="width:500px" />
+    </div>
+    <div class="col-4 b-r"></div>
+</div>
+
+
+
 
 <script type="text/javascript">
 
@@ -31,10 +44,10 @@
                 data: fileData,
                 async: false,
                 success: function (result) {
-                    console.log(result);
-
+                   
                     if (result != "") {
-                        $('#upload').append("<tr><td><input type='text' class='form-control col-sm-6 FileName' value='" + result.FileName + "' name='FileName' readonly> <input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td><td><button class='btn btn-danger col-sm-4 btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td></tr>")
+                        $('#upload').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
+                        var fileUpload = $("#txtUploadFile").val('');
                     }
                 },
                 error: function (err) {
@@ -45,8 +58,7 @@
     });
 
 
-    function validateFileSize() {
-        debugger;
+    function validateFileSize() {     
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             //get the file size and file type from file input field
@@ -69,8 +81,7 @@
 
 
     $(document).on('click', '.remove', function () {
-        $(this).parent().parent().remove();
-        debugger;
+        $(this).parent().parent().remove();      
         var current = $(this).closest("tr");
         var FileName1 = current.find(".FileName").val();
         $.ajax({
