@@ -111,7 +111,9 @@ namespace InvoiceDiskLast.Controllers
                             HttpResponseMessage _response = GlobalVeriables.WebApiClient.GetAsync("GetProductQuantit/" + items.ItemId).Result;
                             _mvcQuatationViewModel23 = _response.Content.ReadAsAsync<MVCQutationViewModel>().Result;
 
-                            if (items.QuantityRemaing >(_mvcQuatationViewModel23.QuantityRemaing!=null? _mvcQuatationViewModel23.QuantityRemaing:0))
+                            _mvcQuatationViewModel23.QuantityRemaing=(_mvcQuatationViewModel23.QuantityRemaing != null ? _mvcQuatationViewModel23.QuantityRemaing : 0);
+
+                            if (items.QuantityRemaing >(_mvcQuatationViewModel23.QuantityRemaing))
                             {
                                 IsExceded = true;
                                 MVCProductViewModel productModel = new MVCProductViewModel();

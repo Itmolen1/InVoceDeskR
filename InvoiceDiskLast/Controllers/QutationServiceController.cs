@@ -776,7 +776,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-         public ActionResult QuataionServicePrint(int? QutationID)
+        public ActionResult QuataionServicePrint(int? QutationID)
         {
             try
             {
@@ -854,19 +854,15 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult InvoicebyEmail(int? QutationId)
         {
 
-
-
             EmailModel email = new EmailModel();
             try
             {
-
                 email.Attachment = PrintView((int)QutationId);
-
+                HttpContext.Items["FilePath"] = email.Attachment;
                 if (Session["CompayID"] == null)
                 {
                     return RedirectToAction("Index", "Login");
                 }
-
                 var CompanyName = Session["CompanyName"];
 
                 if (CompanyName == null)
@@ -892,16 +888,10 @@ namespace InvoiceDiskLast.Controllers
                     id = Convert.ToInt32(Session["ClientID"]);
                 }
 
-
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-
-
-
-
                 email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
-
 
                 ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
 
@@ -911,21 +901,13 @@ namespace InvoiceDiskLast.Controllers
 
 
                 "..Met vriendelijke groet." +
-
                 mvcContactModel.ContactName + "." +
-
                 CompanyName.ToString() + "." +
-
                 contact.ToString() + "." +
-
                 companyEmail.ToString();
-
                 string strToProcess = email.EmailText;
                 string result = strToProcess.Replace(".", " \r\n");
-
                 email.EmailText = result;
-
-
                 email.invoiceId = (int)QutationId;
                 email.From = "infouurtjefactuur@gmail.com";
             }
@@ -944,6 +926,33 @@ namespace InvoiceDiskLast.Controllers
             TempData["EmailMessge"] = "";
             EmailModel emailModel = new EmailModel();
             var fileName = email.Attachment;
+
+
+            TempData["EmailMessge"] = "";
+
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
+
+            if (Request.Form["FilePath"] != null)
+            {
+                var fileName2 = Request.Form["FilePath"];
+
+                string[] valueArray = fileName2.Split(',');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+                    _attackmentList = new List<AttakmentList>();
+                    foreach (var itemm in valueArray)
+                    {
+                        if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = itemm });
+                        }
+                    }
+                }
+            }
+
+
 
             if (Session["CompayID"] != null)
             {
@@ -973,6 +982,7 @@ namespace InvoiceDiskLast.Controllers
                             emailModel.ToEmail = item;
                             emailModel.Attachment = email.Attachment;
                             emailModel.EmailBody = email.EmailText;
+                            _attackmentList.Add(new AttakmentList { Attckment = email.Attachment });
                             bool result = EmailController.email(emailModel, _attackmentList);
                         }
                     }
@@ -987,6 +997,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.ToEmail = email.ToEmail;
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
+                    _attackmentList.Add(new AttakmentList { Attckment = emailModel.Attachment });
                     bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
@@ -1004,7 +1015,8 @@ namespace InvoiceDiskLast.Controllers
 
                 }
 
-
+                var folderPath = Server.MapPath("/PDF/");
+                EmailController.clearFolder(folderPath);
                 return RedirectToAction("ViewServiceQutation", new { quautionId = email.invoiceId });
             }
             catch (Exception ex)

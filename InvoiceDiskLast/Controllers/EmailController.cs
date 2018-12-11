@@ -92,5 +92,21 @@ namespace InvoiceDiskLast.Controllers
 
             return emailstatus;
         }
+
+
+
+        public static void clearFolder(string FolderName)
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(FolderName);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+        }
     }
 }

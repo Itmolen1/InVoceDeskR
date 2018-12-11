@@ -38,8 +38,12 @@
                             @Html.TextAreaFor(Model => Model.EmailText, new { @class = "textarea_editor form-control", @rows = "15", @cols = "50", @placeholder = "Enter text ..." })
                            
                         </div>
+
                         <h4><i class="ti-link"></i> <label>@Model.Attachment</label>
-                         @Html.HiddenFor(Model => Model.Attachment);</h4>                    
+                         @Html.HiddenFor(Model => Model.Attachment);</h4> 
+                        
+                        @Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml");
+                                           
                         <hr />
                         <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i> Send</button>
                         <a href="/MvcQutation/AddOrEdit/@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i> Discard</a>
@@ -54,3 +58,6 @@
 
 
 </div>
+
+
+
