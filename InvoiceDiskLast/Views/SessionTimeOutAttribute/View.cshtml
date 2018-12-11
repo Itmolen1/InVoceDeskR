@@ -4862,3 +4862,1740 @@
 
 </body>
 </html>
+
+@*Purchase/PirnPurchaseInvoiceGood*@
+
+<html>
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <style>
+        tr {
+            page-break-inside: avoid;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div style="margin-top:10px;">
+
+        <div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-3">
+                <div class="mydiv">
+                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none; margin-top:50px;" />
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
+
+                @Contectdatas.ContactName
+                <br />
+                @Contectdatas.ContactAddress
+                <br />
+                @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                <br />
+                @Contectdatas.PostalCode
+
+                <div></div>
+
+            </div>
+            <div class="col-xs-3"></div>
+            <div class="col-xs-5">
+                <br />
+                <br />
+                <br />
+                <h5 style="margin-left:125px">@CompanyDatas.CompanyName</h5>
+
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-3 text-right">Kvk nr:</div>
+                    <div class="col-xs-7">@CompanyDatas.KVK</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-3 text-right">BTW nr:</div>
+                    <div class="col-xs-7">@CompanyDatas.BTW</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-2 text-right">Bank:</div>
+                    <div class="col-xs-7">@CompanyDatas.BankName</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-2 text-right">IBAN:</div>
+                    <div class="col-xs-7">@CompanyDatas.IBANNumber</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-2 text-right">BIC:</div>
+                    <div class="col-xs-7">@CompanyDatas.BIC</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-2 text-right">Tel:</div>
+                    <div class="col-xs-7">@CompanyDatas.CompanyPhone</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-2 text-right">Cel:</div>
+                    <div class="col-xs-7">@CompanyDatas.CompanyCell</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-3 text-right">E-mail:</div>
+                    <div class="col-xs-7">@CompanyDatas.CompanyEmail</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-3 text-right">Website:</div>
+                    <div class="col-xs-7">@CompanyDatas.Website</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-4 text-right">
+                        Bezoekadres:
+                    </div>
+                    <div class="col-xs-7">
+                        @CompanyDatas.CompanyAddress<br />
+                        @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                        @CompanyDatas.CompanyCountry
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="row" style="margin-right: 0px;margin-left: 50px;">
+
+            <label style="margin-left:16px"><b>Bill</b></label>
+
+        </div>
+        <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+
+            <div class="col-xs-2">
+                <label>Purchase Date:</label><br />
+                <label>Purchase number:</label><br />
+                <label>Due Date:</label>
+            </div>
+            <div class="col-xs-3">
+                <label>@purchaseModel.PurchaseDate</label><br />
+                <label>@purchaseModel.PurchaseRefNumber</label><br />
+                <label>@purchaseModel.PurchaseDueDate</label>
+            </div>
+        </div>
+        <div class="row" style="margin-right: 50px; margin-left:50px;">
+            will receive the quotation from us for the services below.
+
+            <table id="mytable" class="table  table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th class="col-xs-4">
+                            Goods
+                        </th>
+                        <th class="col-xs-2">
+                            Quantity
+                        </th>
+                        <th class="col-xs-2">
+                            Price
+                        </th>
+                        <th class="col-xs-2">
+                            Total
+                        </th>
+                        <th class="col-xs-1">
+                            Vat
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+                        int rowcount = 0;
+                    }
+
+
+                    @if (ViewBag.PurchaseDatailsList != null)
+                    {
+                        foreach (var item in ViewBag.PurchaseDatailsList)
+                        {
+                            rowcount += 1;
+                            @*if (rowcount == 17)
+                                {
+                                    rowcount = 0;
+                                    <tr style="padding-top:120px;-webkit-break-after: always;margin-left:100px;z-index: 10;"></tr>
+                                }*@
+                            <tr>
+                                <td>
+                                    @item.PurchaseItemName
+                                </td>
+                                <td>
+                                    @item.PurchaseQuantity
+                                </td>
+
+                                <td>
+                                    @item.PurchaseItemRate
+                                </td>
+                                <td>
+                                    @item.PurchaseTotal
+
+                                </td>
+                                <td>
+                                    @item.PurchaseVatPercentage
+
+                                </td>
+
+                            </tr>
+
+
+                        }
+                    }
+
+
+                </tbody>
+
+            </table>
+
+
+
+
+
+            <div class="col-xs-8"></div>
+
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-xs-6"></div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">Total excl. VAT:€</label>
+                    </div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6"></div>
+                    @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
+                    {
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">VAT 6%:	€	</label>
+                        </div>
+                        <div class="col-xs-3 ">
+                            <label class="tex pull-right">@purchaseModel.Vat6</label>
+                        </div>
+                    }
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6"></div>
+                    @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
+                    {
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">VAT 21%:	€</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label class="tex pull-right">@purchaseModel.Vat21</label>
+
+                        </div>
+                    }
+
+
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-xs-6"></div>
+                    <div class="col-xs-3">
+                        <label class="tex pull-right">Grand Total:€</label>
+                    </div>
+
+                    <div class="col-xs-3">
+                        <label class="tex  pull-right">@purchaseModel.PurchaseTotoalAmount</label>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</body>
+</html>
+
+@*Purchase/ViewAndPrintInvoiceGood*@
+<body class="well">
+
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        <div class="col-lg-8 col-md-8 col-sm-10">
+            <div class="row">
+
+                <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                    <div class="btn-group">
+
+                        <div style="margin-left:3px">
+                            <div class="btn-group">
+                                <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
+                                @Html.ActionLink("print Invoice", "PirnPurchaseInvoiceGood", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
+                            </div>
+                        </div>
+
+
+                        <div style="margin-left:3px">
+                            <a href="/Purchase/InvoiceGoods/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Bake To List</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+    </div>
+</body>
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-1"></div>
+    <div class="col-lg-8 col-md-8 col-sm-10">
+        <div style="margin-top:10px;border: 1px solid #CECECE;">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-3">
+                    <div class="mydiv">
+                        <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none;  margin-top:50px" />
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+
+                    @Contectdatas.ContactName
+                    <br />
+                    @Contectdatas.ContactAddress
+                    <br />
+                    @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                    <br />
+                    @Contectdatas.PostalCode
+
+
+
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <br />
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
+                        <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue">
+                        <b>@CompanyDatas.CompanyName</b></div>
+                        <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
+                    </div>
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3 text-right">Kvk nr:</div>
+                        <div class="col-sm-8">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"><div class="pull-right"> BTW nr:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4 pull-right"><div class="text-right">IBAN:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4 pull-right"><div class="text-right">BIC:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4"><div class="text-right">Tel:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"><div class="text-right">Cel:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-4 pull-right"><div class="text-right">E-mail:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.CompanyEmail</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
+                        <div class="col-sm-8">@CompanyDatas.Website</div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-sm-4 pull-right"><div class="text-right">Bezoekadres:</div></div>
+                        <div class="col-sm-8">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                            @CompanyDatas.CompanyCountry
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <label style="color:skyblue">Bill:</label>
+                </div>
+                <div class="col-md-7"></div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                    <label>invoice Date:</label>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                    <label>@purchaseModel.PurchaseDate</label><br />
+                </div>
+                <div class="col-lg-7 col-md-4 col-sm-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                    <label>invoice Number</label>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                    <label>@purchaseModel.PurchaseRefNumber</label><br />
+                </div>
+                <div class="col-lg-7 col-md-4 col-sm-3"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                    <label>Due Date:</label>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                    <label>@purchaseModel.PurchaseDueDate</label><br />
+                </div>
+                <div class="col-lg-7 col-md-4 col-sm-3"></div>
+            </div>
+            <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                will receive the invoice from us for the services below.
+
+                <table id="mytable" class="table table-bordred">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-4">
+                                Product Name
+                            </th>
+                            <th class="col-sm-2">
+                                Quantity
+                            </th>
+                            <th class="col-sm-2">
+                                Price
+                            </th>
+                            <th class="col-sm-2">
+                                Total
+                            </th>
+                            <th class="col-sm-1">
+                                Vat
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+
+                            int rowcount = 0;
+
+                        }
+
+                        @if (ViewBag.PurchaseDatailsList != null)
+                        {
+                            foreach (var item in ViewBag.PurchaseDatailsList)
+                            {
+                                rowcount += 1;
+
+                                <tr>
+                                    <td>
+                                        @item.PurchaseItemName
+                                    </td>
+                                    <td>
+                                        @item.PurchaseQuantity
+                                    </td>
+
+                                    <td>
+                                        @item.PurchaseItemRate
+                                    </td>
+                                    <td>
+                                        @item.PurchaseTotal
+
+                                    </td>
+                                    <td>
+                                        @item.PurchaseVatPercentage
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+                <div class="col-md-8"></div>
+
+
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="tex pull-right">Total excl. VAT:€	</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
+                        {
+
+
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">VAT 6%:€	</label>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <label class="tex pull-right">@purchaseModel.Vat6</label>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row">
+
+                        @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
+                        {
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">VAT 21%:€</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">@purchaseModel.Vat21</label>
+
+                            </div>
+                        }
+
+
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="tex pull-right">Grand Total:</label>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="tex  pull-right">€:@purchaseModel.PurchaseTotoalAmount</label>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+                We hope that everything is clear. If you have any questions, please let us know.
+            </div>
+
+
+            <div class="row" style="margin-right: 0px;margin-left: 50px">
+                With kind regards,
+            </div>
+            <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+                <label><b>@Contectdatas.ContactName</b></label>
+            </div>
+
+            <div class="row" style="margin-right:0px;margin-left: 50px">
+                <label><b>@CompanyDatas.CompanyName</b> </label>
+            </div>
+            <hr style="border:solid 1px; margin-left:30px;margin-right:30px" />
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-1"></div>
+</div>
+
+@*Purchase/ViewAndPrintInvoiceGood*@
+<body>
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        <div class="col-lg-8 col-md-8 col-sm-10" style="background-color:white">
+            <div class="row" style="margin-left:0px;margin-right:0px;">
+
+
+                <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                    <div class="btn-group">
+
+
+
+                        <div style="margin-left:3px">
+                            <div class="btn-group">
+                                <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
+                                @Html.ActionLink("print concept", "PurchaseInvoiceSerVicePrint", "MvcInvoiceServices", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
+                            </div>
+                        </div>
+
+                        <div style="margin-left:3px">
+                            <a href="/Purchase/InvoiceService/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                       
+                         </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div style="margin-top:10px;border: 1px solid #CECECE;">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <div class="mydiv">
+                            <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none;  margin-top:50px" />
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        @Contectdatas.ContactName
+                        <br />
+                        @Contectdatas.ContactAddress
+                        <br />
+                        @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                        <br />
+                        @Contectdatas.PostalCode
+
+
+
+                    </div>
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <br />
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
+                            <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue"><b>@CompanyDatas.CompanyName</b></div>
+                            <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 text-right">Kvk nr:</div>
+                            <div class="col-sm-8">@CompanyDatas.KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BankName</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">IBAN:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">BIC:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BIC</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4"><div class="text-right">Tel:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><div class="text-right">Cel:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">E-mail:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyEmail</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.Website</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">Bezoekadres:</div></div>
+                            <div class="col-sm-8">
+                                @CompanyDatas.CompanyAddress<br />
+                                @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                                @CompanyDatas.CompanyCountry
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <label style="color:skyblue">Bill:</label>
+                    </div>
+                    <div class="col-md-7"></div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                        <label>invoce Date:</label>
+                    </div>
+                    @{
+                        DateTime pdate = new DateTime();
+                        pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
+                        DateTime pddate = new DateTime();
+                        pddate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+                    }
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@pdate.ToShortDateString()</label><br />
+                    </div>
+                    <div class="col-lg-7 col-md-4 col-sm-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                        <label>Invoice Number:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@purchaseModel.PurchaseRefNumber</label><br />
+                    </div>
+                    <div class="col-lg-7 col-md-4 col-sm-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                        <label>Due Date</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@pddate.ToShortDateString()</label><br />
+                    </div>
+                    <div class="col-lg-7 col-md-4 col-sm-3"></div>
+                </div>
+
+
+
+                <div class="row" style="margin-right:66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                    will receive the invoice from us for the services below.
+
+                    <table id="mytable" class="table table-bordred">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Services
+                                </th>
+                                <th>
+                                    Number of hour
+                                </th>
+                                <th>
+                                    Hourly rate
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat %
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+
+                                int rowcount = 0;
+
+                            }
+
+                            @if (ViewBag.PurchaseDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.PurchaseDatailsList)
+                                {
+                                    rowcount += 1;
+
+                                    <tr>
+                                        <td>
+                                            @item.PurchaseItemName
+                                        </td>
+                                        <td>
+                                            @item.PurchaseQuantity
+                                        </td>
+
+                                        <td>
+                                            @item.PurchaseItemRate
+                                        </td>
+                                        <td>
+                                            @item.PurchaseTotal
+
+                                        </td>
+                                        <td>
+                                            @item.PurchaseVatPercentage
+
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+                    <div class="col-md-8"></div>
+
+
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">Total excl. VAT:	€	</label>
+                            </div>
+                            <div class="col-sm-5">
+                                <label class="tex pull-right">@purchaseModel.PurchaseSubTotal</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
+                            {
+
+
+                                <div class="col-sm-6">
+                                    <label class="tex pull-right">VAT 6%:	€	</label>
+                                </div>
+                                <div class="col-sm-5 ">
+                                    <label class="tex pull-right">@purchaseModel.Vat6</label>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="row">
+
+                            @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
+                            {
+                                <div class="col-sm-6">
+                                    <label class="tex pull-right">VAT 21%:	€</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="tex pull-right">@purchaseModel.Vat21</label>
+
+                                </div>
+                            }
+
+
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="tex pull-right">Grand Total:</label>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <label class="tex  pull-right">€:@purchaseModel.PurchaseTotoalAmount</label>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+                    We hope that everything is clear. If you have any questions, please let us know.
+                </div>
+
+
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 20px;">
+                    With kind regards,
+                </div>
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+                    <label><b>@Contectdatas.ContactName</b></label>
+                </div>
+
+                <div class="row" style="margin-right: 0px;margin-left: 50px; margin-top: 10px;">
+                    <label><b>@CompanyDatas.CompanyName</b> </label>
+                </div>
+                <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
+            </div>
+
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+    </div>
+</body>
+
+@*MVCQutation/ViewAndPrintInvoiceService*@
+
+<body class="well">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        <div class="col-lg-8 col-md-8 col-sm-10">
+            <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                    <div class="btn-group">
+
+                        <div style="margin-left:3px">
+
+
+                            <div class="btn-group">
+                                <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
+                                @Html.ActionLink("print Invoice", "QuataionServicePrint", "QutationService", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                            </div>
+                        </div>
+
+                        <div style="margin-left:3px">
+                            <a href="/MVCQutation/ServiceInvoice/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px;border: 1px solid #CECECE;">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <div class="mydiv">
+                            <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none;  margin-top:50px" />
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        @if (Contectdatas.ContactName != null)
+                        { @Contectdatas.ContactName}
+                        @*@(Contectdatas.ContactName!= null && Contectdatas.ContactName != "" ? Contectdatas.ContactName:"")*@
+
+                        <br />
+                        @Contectdatas.ContactAddress
+                        <br />
+                        @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                        <br />
+                        @Contectdatas.PostalCode
+
+
+                    </div>
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <br />
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
+                            <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue"><b>@CompanyDatas.CompanyName</b></div>
+                            <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 text-right">Kvk nr:</div>
+                            <div class="col-sm-8">@CompanyDatas.KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BankName</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">IBAN:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">BIC:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BIC</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4"><div class="text-right">Tel:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><div class="text-right">Cel:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">E-mail:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyEmail</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.Website</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">Bezoekadres:</div></div>
+                            <div class="col-sm-8">
+                                @CompanyDatas.CompanyAddress<br />
+                                @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                                @CompanyDatas.CompanyCountry
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <label style="color:skyblue">Qutation invoice:</label>
+                    </div>
+                    <div class="col-md-7"></div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-2 col-md-4 col-sm-3 col-xs-6 text-left">
+                        <label>Invoice Date:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 text-right">
+
+                        @{
+                            DateTime qutationDate = new DateTime();
+                            DateTime qutationDueDate = new DateTime();
+                            qutationDate = Convert.ToDateTime(QutationModel.QutationDate);
+                            qutationDueDate = Convert.ToDateTime(QutationModel.DueDate);
+
+                        }
+                        <label>@qutationDate.ToShortDateString()</label><br />
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-2 col-md-4 col-sm-44 col-xs-6 text-left">
+                        <label>Invoice Refrence No:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@QutationModel.RefNumber</label><br />
+                    </div>
+                    <div class="col-lg-6 col-md-3 col-sm-2"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-3 col-md-5 col-sm-4 col-xs-6 text-left">
+                        <label>Invoice Due Date:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@qutationDueDate.ToShortDateString();</label><br />
+                    </div>
+                    <div class="col-lg-6 col-md-2 col-sm-3"></div>
+                </div>
+
+
+                <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                    ontvangt de offerte van ons voor de onderstaande services.
+
+                    <table id="mytable" class="table table-bordred table-striped table-responsive">
+                        <thead>
+
+                            <tr>
+                                <th class="col-sm-3">
+                                    Services
+                                </th>
+                                <th class="col-sm-3">
+                                    Number of hour
+                                </th>
+                                <th class="col-sm-2">
+                                    Hourly rate
+                                </th>
+                                <th class="col-sm-2">
+                                    Total
+                                </th>
+                                <th class="col-sm-1">
+                                    Vat %
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (ViewBag.QutationDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.QutationDatailsList)
+                                {
+                                    <tr id="mainrow">
+                                        <td>
+                                            @item.ItemName
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.Rate
+                                        </td>
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            @item.Vat
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+                    <div class="col-lg-8 col-md-6 col-sm-2 col-xs-0"></div>
+
+                    <div class="col-lg-4 col-md-8 col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <label class="tex-right">Total excl. VAT:	€	</label>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                <label class="text-right">@QutationModel.SubTotal</label>
+                            </div>
+                            <div class="col-lg-0 col-md-0 col-sm-0">
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                            {
+                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                    <label class="text-right">VAT 6%:	€	</label>
+                                </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                        <label class="text-right">@QutationModel.TotalVat6</label>
+                                    </div>
+                                    <div class="col-lg-0 col-md-0 col-sm-0">
+                                    </div>
+                            }
+                        </div>
+
+                        <div class="row">
+
+                            @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                            {
+                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                    <label class="tex pull-right">VAT 21%:	€</label>
+                                </div>
+                                    <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                        <label class="tex pull-right">@QutationModel.TotalVat21</label>
+                                    </div>
+                                    <div class="col-lg-0 col-md-0 col-sm-0">
+                                    </div>
+
+                            }
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <label class="text-right">Eindtotaal:€</label>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                <label class="text-right">€:@QutationModel.TotalAmount</label>
+
+                            </div>
+                            <div class="col-lg-0 col-md-0 col-sm-0">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-7"> We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.</div>
+                    <div class="col-lg-5"></div>
+
+                    <div class="col-lg-7"> Met vriendelijke groet</div>
+                    <div class="col-lg-5"></div>
+
+                    <div class="col-lg-7" style="margin-top:10px"><b>@Contectdatas.ContactName</b></div>
+                    <div class="col-lg-5"></div>
+                    <div class="col-lg-7"><b>@CompanyDatas.CompanyName</b></div>
+                    <div class="col-lg-5"></div>
+
+
+                    <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
+
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        </div>
+    </div>
+</body>
+
+@*MVCQUtation/GoodViewPrint*@
+
+<body class="well">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        <div class="col-lg-8 col-md-8 col-sm-10">
+            <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                <div class="row" style="margin-left:0px;margin-right:0px;">
+
+                    <div class="btn-group">
+
+                        <div style="margin-left:3px">
+                            <div class="btn-group">
+                                <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
+                                @Html.ActionLink("print", "PrintQutationInvoiceGood", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                            </div>
+                        </div>
+
+
+                        <div style="margin-left:3px">
+                            <a href="/MVCQutation/GoodsInvoice/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px;border: 1px solid #CECECE;">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                        <div class="mydiv">
+                            <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" style="border:none;  margin-top:50px" />
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                        @Contectdatas.ContactName
+                        <br />
+                        @Contectdatas.ContactAddress
+                        <br />
+                        @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City,
+                        <br />
+                        @Contectdatas.PostalCode
+
+
+
+                    </div>
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        <br />
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-2 col-md-4 col-lg-4"></div>
+                            <div class="col-xs-8 col-sm-10 col-md-8 col-lg-6 text-left" style="color:skyblue"><b>@CompanyDatas.CompanyName</b></div>
+                            <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2"></div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 text-right">Kvk nr:</div>
+                            <div class="col-sm-8">@CompanyDatas.KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><div class="pull-right"> BTW nr:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2 pull-right"><div class="text-right">Bank:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BankName</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">IBAN:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.IBANNumber</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">BIC:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.BIC</div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-4"><div class="text-right">Tel:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyPhone</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><div class="text-right">Cel:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyCell</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">E-mail:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.CompanyEmail</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-3 pull-right"><div class="text-right">Website:</div></div>
+                            <div class="col-sm-8">@CompanyDatas.Website</div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4 pull-right"><div class="text-right">Bezoekadres:</div></div>
+                            <div class="col-sm-8">
+                                @CompanyDatas.CompanyAddress<br />
+                                @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                                @CompanyDatas.CompanyCountry
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                        <label>Qutation Date:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@QutationModel.QutationDate</label><br />
+                    </div>
+                    <div class="col-lg-7 col-md-4 col-sm-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                        <label>Qutation Number:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@QutationModel.RefNumber</label><br />
+                    </div>
+                    <div class="col-lg-7 col-md-4 col-sm-3"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-sm-0 col-xs-0"></div>
+                    <div class="col-lg-1 col-md-3 col-sm-3 col-xs-6 text-left">
+                        <label>Due Date:</label>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 text-right">
+                        <label>@QutationModel.DueDate</label><br />
+                    </div>
+                    <div class="col-lg-7 col-md-4 col-sm-3"></div>
+                </div>
+
+
+                <div class="row" style="margin-right: 66px;margin-left: 50px; margin-top: 50px; margin-bottom:50px;">
+                    ontvangt de offerte van ons voor de onderstaande services.
+
+                    <table id="mytable" class="table table-bordred table-striped table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-4">
+                                    Product Name
+                                </th>
+                                <th class="col-sm-2">
+                                    Quantity
+                                </th>
+                                <th class="col-sm-2">
+                                    Price
+                                </th>
+                                <th class="col-sm-2">
+                                    Total
+                                </th>
+                                <th class="col-sm-1">
+                                    Vat
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (ViewBag.QutationDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.QutationDatailsList)
+                                {
+                                    <tr id="mainrow">
+                                        <td>
+                                            @item.ItemName
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.Rate
+                                        </td>
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            @item.Vat
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+                    <div class="col-lg-8 col-md-6 col-sm-2 col-xs-0"></div>
+
+                    <div class="col-lg-4 col-md-8 col-sm-10">
+                        <div class="row">
+                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <label class="tex-right">Total excl. VAT:	€	</label>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                <label class="text-right">@QutationModel.SubTotal</label>
+                            </div>
+                            <div class="col-lg-0 col-md-0 col-sm-0">
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                            {
+                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                    <label class="text-right">VAT 6%:	€	</label>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                    <label class="text-right">@QutationModel.TotalVat6</label>
+                                </div>
+                                <div class="col-lg-0 col-md-0 col-sm-0">
+                                </div>
+                            }
+                        </div>
+
+                        <div class="row">
+
+                            @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                            {
+                                <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                    <label class="tex pull-right">VAT 21%:	€</label>
+                                </div>
+                                <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                    <label class="tex pull-right">@QutationModel.TotalVat21</label>
+                                </div>
+                                <div class="col-lg-0 col-md-0 col-sm-0">
+                                </div>
+
+                            }
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-9 col-md-6 col-sm-7 col-xs-6">
+                                <label class="text-right">Grand Total:</label>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-sm-5 col-xs-6">
+                                <label class="text-right">€:@QutationModel.TotalAmount</label>
+
+                            </div>
+                            <div class="col-lg-0 col-md-0 col-sm-0">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-7"> We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.</div>
+                    <div class="col-lg-5"></div>
+
+                    <div class="col-lg-7"> Met vriendelijke groet</div>
+                    <div class="col-lg-5"></div>
+
+                    <div class="col-lg-7" style="margin-top:10px"><b>@Contectdatas.ContactName</b></div>
+                    <div class="col-lg-5"></div>
+                    <div class="col-lg-7"><b>@CompanyDatas.CompanyName</b></div>
+                    <div class="col-lg-5"></div>
+
+
+                    <hr style="border:solid 1px; margin-left:30px;margin-right:30px; margin-bottom:50px" />
+
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        </div>
+    </div>
+</body>
+
+@*Purchase/Print*@
+
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-6">
+        <img src="@Url.Content(CompanyDatas.CompanyLogo)" class="img-responsive" id="targetImg" style="height:100px; width:100px;border:none" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-1">
+        <h5 style="font-size:10px;">@CompanyDatas.CompanyName</h5>
+        <h5 style="font-size:10px;">@CompanyDatas.CompanyAddress</h5>
+
+        @{
+            string value = CompanyDatas.CompanyPhone;
+            if (value != null)
+            {
+                <h5 style="font-size:10px;">@value</h5>
+            }
+            else
+            {
+                <h5 style="font-size:10px;"></h5>
+            }
+        }
+
+        <h5 style="font-size:10px;">@CompanyDatas.CompanyEmail</h5>
+
+    </div>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-2">
+        <h5 style="font-size:10px;">@Contectdatas.ContactName</h5>
+        <h5 style="font-size:10px;">@Contectdatas.ContactAddress</h5>
+        <h5 style="font-size:10px;">@Contectdatas.BillingEmail</h5>
+        <h5 style="font-size:10px;">@Contectdatas.BillingVatTRN</h5>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-6">
+        <h4 style="color:skyblue;font-size:10px;">Qutation Invoice</h4>
+
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-2" style="font-size:10px;">Invoice Date:</div>
+                <div class="col-sm-4">
+                    <label style="font-size:10px;">@purchaseModel.PurchaseDate</label>
+                </div>
+            </div>
+            <div class="row" style="margin-top:3px">
+                <div class="col-sm-3" style="font-size:10px;">Invoice Number:</div>
+                <div class="col-sm-3">
+                    <label style="font-size:10px;">@purchaseModel.PurchaseRefNumber</label>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+            <div class="row" style="margin-top:3px">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4">Invoice period:</div>
+                        <div class="col-sm-4" style="font-size:10px;">
+                            <label>@purchaseModel.PurchaseDate</label>
+                        </div>
+
+                        <div class="col-sm-4" style="font-size:10px;">
+                            <label>@purchaseModel.PurchaseDueDate</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+
+            <div class="row" style="margin-top:3px">
+                <div class="col-sm-3" style="font-size:10px;">Refrence Number:</div>
+                <div class="col-sm-4">
+                    <label style="font-size:10px;">@purchaseModel.PurchaseRefNumber</label>
+
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+
+            <div class="row" style="margin-top:3px">
+                <div class="col-sm-2"><a href="#" style="font-size:10px;"> Add VAT:</a></div>
+                <div class="col-sm-4">
+
+                </div>
+                <div class="col-sm-6"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table id="mytable" class="table table-bordred table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-sm-4">
+                            Decription
+                        </th>
+                        <th class="col-sm-2">
+                            Quantity
+                        </th>
+                        <th class="col-sm-2">
+                            Price
+                        </th>
+                        <th class="col-sm-2">
+                            Total
+                        </th>
+                        <th class="col-sm-1">
+                            Vat
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (ViewBag.PurchaseDatailsList != null)
+                    {
+                        foreach (var item in ViewBag.PurchaseDatailsList)
+                        {
+                            <tr>
+                                <td>
+                                    @item.PurchaseItemName
+                                </td>
+                                <td>
+                                    @item.PurchaseQuantity
+                                </td>
+
+                                <td>
+                                    @item.PurchaseItemRate
+                                </td>
+                                <td>
+                                    @item.PurchaseTotal
+
+                                </td>
+                                <td>
+                                    @item.PurchaseVatPercentage
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+
+            <div id="OrderItems">
+                <table class="table table-responsive" id="orderdetailsitems"></table>
+                <span id="orderItemError" style="color:red"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-2">Sub Total:</div>
+        <div class="col-sm-2">
+            <label id="SubTotal">@purchaseModel.PurchaseSubTotal</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+            <label id="TotalBTW"></label>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-2">Customer Note:</div>
+        <div class="col-sm-6">
+            <label>@purchaseModel.PurchaseVenderNote</label>
+        </div>
+        <div class="col-sm-2">Total:</div>
+        <div class="col-sm-2">
+            <span class="form-inline">&euro;</span><label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label>
+
+        </div>
+    </div>
+
+
+</div>

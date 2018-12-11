@@ -26,7 +26,7 @@
             <div class="container">
                 <div class="row" style="margin-top:35px">
                     <div class="col-xs-12 HeadText">
-                        Invoice
+                        Bill
                     </div>
                 </div>
                 <hr />
@@ -44,10 +44,10 @@
 
                         <div class="row" style="margin-top:20px">
                             <div class="col-xs-4">
-                                Qutation Date:
+                                Invoice Date:
                             </div>
                             <div class="col-xs-6">
-                                @QutationModel.QutationDate
+                                @purchaseModel.PurchaseDate
                             </div>
                             <div class="col-xs-2"></div>
                         </div>
@@ -56,7 +56,7 @@
                                 Invoice Number:
                             </div>
                             <div class="col-xs-6">
-                                @QutationModel.RefNumber
+                                @purchaseModel.PurchaseID
                             </div>
                             <div class="col-xs-2"></div>
                         </div>
@@ -65,7 +65,7 @@
                                 Due Date:
                             </div>
                             <div class="col-xs-6">
-                                @QutationModel.DueDate
+                               @purchaseModel.PurchaseDueDate
                             </div>
                             <div class="col-xs-2"></div>
                         </div>
@@ -74,7 +74,7 @@
                                 Reference No:
                             </div>
                             <div class="col-xs-6">
-                                @QutationModel.RefNumber
+                               @purchaseModel.PurchaseRefNumber
                             </div>
                             <div class="col-xs-2"></div>
                         </div>
@@ -136,7 +136,7 @@
                 <hr />
                 <div class="row">
                     <div class="col-xs-12">
-                        will receive the Purchase Order from us for the services below.
+                        will receive the Purchase Invoice from us for the services below.
                         <table id="mytable" class="table table-bordered">
                             <thead>
                                 <tr>
@@ -164,26 +164,26 @@
                                 }
 
 
-                                @if (ViewBag.QutationDatailsList != null)
+                                @if (ViewBag.PurchaseDatailsList != null)
                                 {
-                                    foreach (var item in ViewBag.QutationDatailsList)
+                                    foreach (var item in ViewBag.PurchaseDatailsList)
                                     {
                                         rowcount += 1;
                                         <tr>
                                             <td>
-                                                @item.ItemName
+                                                @item.PurchaseItemName
                                             </td>
                                             <td>
-                                                @item.Quantity
+                                                @item.PurchaseQuantity
                                             </td>
                                             <td>
-                                                @item.Rate
+                                                @item.PurchaseItemRate
                                             </td>
                                             <td>
-                                                @item.Total
+                                                @item.PurchaseTotal
                                             </td>
                                             <td>
-                                                @item.Vat
+                                                @item.PurchaseVatPercentage
                                             </td>
                                         </tr>
                                     }
@@ -200,33 +200,33 @@
                     <div class="col-xs-5">
                         <div class="row">
                             <div class="col-xs-5 text-right">Sub Total:</div>
-                            <div class="col-xs-7 text-right"><span id="SubTotal">@QutationModel.SubTotal</span></div>
+                            <div class="col-xs-7 text-right"><span id="SubTotal">@purchaseModel.PurchaseSubTotal</span></div>
 
                         </div>
                         <div class="row">
                             <div class="col-xs-5 text-right">Total excel BTW:</div>
-                            <div class="col-xs-7 text-right"><span id="TotalBTW">@QutationModel.SubTotal</span></div>
+                            <div class="col-xs-7 text-right"><span id="TotalBTW">@purchaseModel.PurchaseSubTotal</span></div>
                         </div>
-                        @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                        @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
                         {
                             <div class="row">
                                 <div class="col-xs-5 text-right">
                                     <label class="tex pull-right">VAT 6%:€</label>
                                 </div>
                                 <div class="col-xs-7 text-right">
-                                    <label class="tex pull-right">@QutationModel.TotalVat6</label>
+                                    <label class="tex pull-right">@purchaseModel.Vat6</label>
                                 </div>
                             </div>
                         }
 
-                        @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                        @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
                         {
                             <div class="row">
                                 <div class="col-xs-5 text-right">
                                     <label class="tex pull-right">VAT 21%:€</label>
                                 </div>
                                 <div class="col-xs-7 text-right">
-                                    <label class="tex pull-right">@QutationModel.TotalVat21</label>
+                                    <label class="tex pull-right">@purchaseModel.Vat21</label>
                                 </div>
                             </div>
                         }
@@ -234,7 +234,7 @@
                         <div class="row Grand-color">
                             <div class="col-xs-5 text-right">Grand Total:</div>
                             <div class="col-xs-7 text-right">
-                                <label id="BTW21">&euro;:@QutationModel.TotalAmount</label>
+                                <label id="BTW21">&euro;:@purchaseModel.PurchaseTotoalAmount</label>
                             </div>
                         </div>
 

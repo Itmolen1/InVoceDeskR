@@ -46,6 +46,8 @@ namespace InvoiceDiskLast.Controllers
                     PurchaseTotal = pd.PurchaseTotal,
                     PurchaseVatPercentage = pd.PurchaseVatPercentage,
                     PurchaseId = pd.PurchaseId,
+                    Purchase_ID = pd.PurchaseOrderTable.PurchaseID
+                    
                 }).ToList();
 
                 return Ok(query);

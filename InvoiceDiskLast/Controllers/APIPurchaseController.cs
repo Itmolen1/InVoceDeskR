@@ -44,6 +44,7 @@ namespace InvoiceDiskLast.Controllers
                 puchaseorder.CompanyId = ob.CompanyId;
                 puchaseorder.VenderId = ob.VenderId;
                 puchaseorder.Type = ob.Type;
+                puchaseorder.PurchaseID = ob.PurchaseID;
 
                 if (puchaseorder == null)
                 {
