@@ -827,6 +827,30 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+        [HttpGet]
+        public ActionResult deleteFile(string FileName)
+        {
+            try
+            {
+                var root = Server.MapPath("/PDF/");             
+                var path = Path.Combine(root, FileName);                            
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                throw;
+            }           
+        }
+
+
+
+
         [HttpPost]
         public ActionResult UploadFiles()
         {
@@ -1055,85 +1079,6 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
         }
 
-
-        public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
-        {
-            bool TransactionResult = false;
-            try
-            {
-                string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-                AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
-                accountTransictiontable.TransictionDate = DateTime.Now;
-                accountTransictiontable.FK_AccountID = 4002;
-                //with tax
-                accountTransictiontable.Cr = purchaseViewModel.PurchaseTotoalAmount;
-                accountTransictiontable.Dr = 0.00;
-                accountTransictiontable.TransictionNumber = base64Guid;
-                accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
-                accountTransictiontable.TransictionType = "Purchase";
-                accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
-                accountTransictiontable.AddedBy = 1;
-                accountTransictiontable.FK_CompanyId = CompanyId;
-                accountTransictiontable.FKPaymentTerm = 1;
-                accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseTotoalAmount.ToString() + "On invoice genrattion";
-                HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
-                if (responses.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-                    TransactionResult = true;
-                    accountTransictiontable.TransictionDate = DateTime.Now;
-                    accountTransictiontable.FK_AccountID = 4003;
-                    accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
-                    accountTransictiontable.Cr = 0.00;
-                    accountTransictiontable.TransictionNumber = base64Guid1;
-                    accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
-                    accountTransictiontable.TransictionType = "Purchase";
-                    accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
-                    accountTransictiontable.AddedBy = 1;
-                    accountTransictiontable.FK_CompanyId = CompanyId;
-                    accountTransictiontable.FKPaymentTerm = 1;
-                    accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseSubTotal.ToString() + "On invoice genrattion";
-                    HttpResponseMessage responses2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
-
-                    if (responses2.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        string base64Guid2 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-                        TransactionResult = true;
-                        accountTransictiontable.TransictionDate = DateTime.Now;
-                        accountTransictiontable.FK_AccountID = 3005;
-                        accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
-                        accountTransictiontable.Cr = 0.00;
-                        accountTransictiontable.TransictionNumber = base64Guid2;
-                        accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
-                        accountTransictiontable.TransictionType = "Purchase";
-                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
-                        accountTransictiontable.AddedBy = 1;
-                        accountTransictiontable.FK_CompanyId = CompanyId;
-                        accountTransictiontable.FKPaymentTerm = 1;
-                        double TotalVat = Convert.ToDouble(purchaseViewModel.Vat21 + purchaseViewModel.Vat6);
-                        accountTransictiontable.Dr = TotalVat;
-                        accountTransictiontable.Description = "Total + Vat ,Invoice created at Invoice" + TotalVat + "On invoice genrattion";
-
-                        HttpResponseMessage responses3 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
-                        if (responses3.StatusCode == System.Net.HttpStatusCode.OK)
-                        {
-                            return TransactionResult = true;
-                        }
-
-                    }
-                }
-            }
-
-
-            catch (Exception)
-            {
-
-                return TransactionResult = false;
-            }
-            return TransactionResult;
-        }
-
-        //[DeleteFileClass]
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
@@ -1236,7 +1181,7 @@ namespace InvoiceDiskLast.Controllers
 
                 var folderPath = Server.MapPath("/PDF/");
 
-                clearFolder(folderPath);
+                EmailController.clearFolder(folderPath);
 
                 return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
             }
@@ -1256,19 +1201,86 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
         }
 
-        private void clearFolder(string FolderName)
+        public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
         {
-            System.IO.DirectoryInfo di = new DirectoryInfo(FolderName);
+            bool TransactionResult = false;
+            try
+            {
+                string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                AccountTransictionTable accountTransictiontable = new AccountTransictionTable();
+                accountTransictiontable.TransictionDate = DateTime.Now;
+                accountTransictiontable.FK_AccountID = 4002;
+                //with tax
+                accountTransictiontable.Cr = purchaseViewModel.PurchaseTotoalAmount;
+                accountTransictiontable.Dr = 0.00;
+                accountTransictiontable.TransictionNumber = base64Guid;
+                accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                accountTransictiontable.TransictionType = "Purchase";
+                accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                accountTransictiontable.AddedBy = 1;
+                accountTransictiontable.FK_CompanyId = CompanyId;
+                accountTransictiontable.FKPaymentTerm = 1;
+                accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseTotoalAmount.ToString() + "On invoice genrattion";
+                HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                if (responses.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string base64Guid1 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                    TransactionResult = true;
+                    accountTransictiontable.TransictionDate = DateTime.Now;
+                    accountTransictiontable.FK_AccountID = 4003;
+                    accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
+                    accountTransictiontable.Cr = 0.00;
+                    accountTransictiontable.TransictionNumber = base64Guid1;
+                    accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                    accountTransictiontable.TransictionType = "Purchase";
+                    accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                    accountTransictiontable.AddedBy = 1;
+                    accountTransictiontable.FK_CompanyId = CompanyId;
+                    accountTransictiontable.FKPaymentTerm = 1;
+                    accountTransictiontable.Description = "Total + Invoice ,Invoice created at Invoice" + purchaseViewModel.PurchaseSubTotal.ToString() + "On invoice genrattion";
+                    HttpResponseMessage responses2 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
 
-            foreach (FileInfo file in di.GetFiles())
-            {
-                file.Delete();
+                    if (responses2.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        string base64Guid2 = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                        TransactionResult = true;
+                        accountTransictiontable.TransictionDate = DateTime.Now;
+                        accountTransictiontable.FK_AccountID = 3005;
+                        accountTransictiontable.Dr = purchaseViewModel.PurchaseSubTotal;
+                        accountTransictiontable.Cr = 0.00;
+                        accountTransictiontable.TransictionNumber = base64Guid2;
+                        accountTransictiontable.TransictionRefrenceId = purchaseViewModel.PurchaseOrderID.ToString();
+                        accountTransictiontable.TransictionType = "Purchase";
+                        accountTransictiontable.CreationTime = DateTime.Now.TimeOfDay;
+                        accountTransictiontable.AddedBy = 1;
+                        accountTransictiontable.FK_CompanyId = CompanyId;
+                        accountTransictiontable.FKPaymentTerm = 1;
+                        double TotalVat = Convert.ToDouble(purchaseViewModel.Vat21 + purchaseViewModel.Vat6);
+                        accountTransictiontable.Dr = TotalVat;
+                        accountTransictiontable.Description = "Total + Vat ,Invoice created at Invoice" + TotalVat + "On invoice genrattion";
+
+                        HttpResponseMessage responses3 = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", accountTransictiontable).Result;
+                        if (responses3.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            return TransactionResult = true;
+                        }
+
+                    }
+                }
             }
-            foreach (DirectoryInfo dir in di.GetDirectories())
+
+
+            catch (Exception)
             {
-                dir.Delete(true);
+
+                return TransactionResult = false;
             }
+            return TransactionResult;
         }
+
+        //[DeleteFileClass]
+       
+   
         public string PrintView(int purchaseOrderId)
         {
             string pdfname;

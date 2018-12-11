@@ -389,6 +389,31 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
+            var root  = Server.MapPath("/PDF/");
+
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
+
+            if (Request.Form["FilePath"] != null)
+            {
+                var fileName2 = Request.Form["FilePath"];
+
+                string[] valueArray = fileName2.Split(',');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+                    _attackmentList = new List<AttakmentList>();
+                    foreach (var itemm in valueArray)
+                    {
+                        if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = itemm });
+                        }
+                    }
+                }
+            }
+
+
             TempData["EmailMessge"] = "";
             EmailModel emailModel = new EmailModel();
 
@@ -407,10 +432,11 @@ namespace InvoiceDiskLast.Controllers
                 if (email.ToEmail.Contains(','))
                 {
                     var p = email.Attachment.Split('.');
-                    var root = Server.MapPath("/PDF/");
+                   
                     var pdfname = String.Format("{0}.pdf", p);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
+                    _attackmentList.Add(new AttakmentList { Attckment = email.Attachment });
                     string[] EmailArray = email.ToEmail.Split(',');
                     if (EmailArray.Count() > 0)
                     {
@@ -420,13 +446,12 @@ namespace InvoiceDiskLast.Controllers
                             emailModel.ToEmail = item;
                             emailModel.Attachment = email.Attachment;
                             emailModel.EmailBody = email.EmailText;
-                            bool result = EmailController.email(emailModel,_attackmentList);
+                            bool result = EmailController.email(emailModel, _attackmentList);
                         }
                     }
                 }
                 else
-                {
-                    var root = Server.MapPath("/PDF/");
+                {                 
                     var pdfname = String.Format("{0}.pdf", email.Attachment);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -434,6 +459,7 @@ namespace InvoiceDiskLast.Controllers
                     emailModel.ToEmail = email.ToEmail;
                     emailModel.Attachment = email.Attachment;
                     emailModel.EmailBody = email.EmailText;
+                    _attackmentList.Add(new AttakmentList { Attckment = emailModel.Attachment });
                     bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
@@ -450,7 +476,8 @@ namespace InvoiceDiskLast.Controllers
                     TempData["EmailMessge"] = "Your transaction is not perform with success";
 
                 }
-
+                var folderPath = Server.MapPath("/PDF/");
+              EmailController.clearFolder(folderPath);
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
             }
             catch (Exception ex)
@@ -469,6 +496,9 @@ namespace InvoiceDiskLast.Controllers
 
             return View(email);
         }
+
+
+        
 
         public bool PerformTransaction(MVCQutationModel purchaseViewModel, int CompanyId)
         {
@@ -595,7 +625,7 @@ namespace InvoiceDiskLast.Controllers
 
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
-                    PageMargins = new Rotativa.Options.Margins(5,0, 10, 0),
+                    PageMargins = new Rotativa.Options.Margins(5, 0, 10, 0),
 
                     PageHeight = 40,
                     CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:\n  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)\n" + "  Printed date: " +
@@ -677,12 +707,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
-
-
-
-
         public ActionResult CheckItemQuantity(int ItemId)
         {
             MVCQutationViewModel _mvcQuatationViewModel23 = new MVCQutationViewModel();
@@ -741,8 +765,6 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
 
         public string PrintView(int quttationId)
         {
@@ -1642,7 +1664,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                
+
 
                 var idd = Session["ClientID"];
                 var cdd = Session["CompayID"];

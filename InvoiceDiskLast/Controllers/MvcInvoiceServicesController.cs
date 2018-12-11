@@ -866,19 +866,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         public ActionResult PurchaseInvoiceSerVicePrint(int? purchaseOrderId)
         {
             try
@@ -953,14 +940,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
 
@@ -999,7 +978,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     id = Convert.ToInt32(Session["ClientID"]);
                 }
-                id = 4019;
+              
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -1047,22 +1026,138 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
         }
 
+        [HttpPost]
+        public ActionResult InvoicebyEmail(EmailModel email)
+        {
+            TempData["EmailMessge"] = "";
+
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
+
+            if (Request.Form["FilePath"] != null)
+            {
+                var fileName2 = Request.Form["FilePath"];
+
+                string[] valueArray = fileName2.Split(',');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+                    _attackmentList = new List<AttakmentList>();
+                    foreach (var itemm in valueArray)
+                    {
+                          if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = itemm });
+                        }
+                    }
+                }
+            }
+
+            var idd = Session["ClientID"];
+            var cdd = Session["CompayID"];
+
+            if (Session["ClientID"] != null && Session["CompayID"] != null)
+            {
+                Contectid = Convert.ToInt32(Session["ClientID"]);
+                CompanyID = Convert.ToInt32(Session["CompayID"]);
+            }           
+            EmailModel emailModel = new EmailModel();
+            var fileName = email.Attachment;
+            try
+            {
+                if (email.Attachment.Contains(".pdf"))
+                {
+                    email.Attachment = email.Attachment.Replace(".pdf", "");
+                }
+                if (email.ToEmail.Contains(','))
+                {
+                    var p = email.Attachment.Split('.');
+                    var root = Server.MapPath("/PDF/");
+                    var pdfname = String.Format("{0}.pdf", p);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+
+                    string[] EmailArray = email.ToEmail.Split(',');
+                    if (EmailArray.Count() > 0)
+                    {
+                        foreach (var item in EmailArray)
+                        {
+                            emailModel.From = email.From;
+                            emailModel.ToEmail = item;
+                            emailModel.Attachment = email.Attachment;
+                            emailModel.EmailBody = email.EmailText;
+
+                            _attackmentList.Add(new AttakmentList { Attckment = emailModel.Attachment });
+                            bool result = EmailController.email(emailModel, _attackmentList);
+                        }
+                    }
+                }
+                else
+                {
+                    var root = Server.MapPath("/PDF/");
+                    var pdfname = String.Format("{0}.pdf", email.Attachment);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    emailModel.From = email.From;
+                    emailModel.ToEmail = email.ToEmail;
+                    emailModel.Attachment = email.Attachment;
+                    emailModel.EmailBody = email.EmailText;
+                    _attackmentList.Add(new AttakmentList { Attckment = emailModel.Attachment });
+                    bool result = EmailController.email(emailModel, _attackmentList);
+                    TempData["EmailMessge"] = "Email Send successfully";
+
+                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + email.invoiceId.ToString()).Result;
+                    MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                    if (PerformTransaction(ob, CompanyID))
+                    {
+                        TempData["EmailMessge"] = "Email Send Succssfully";
+                    }
+                    else
+                    {
+                        TempData["EmailMessge"] = "Your transaction is not perform with success";
+                    }
+                }
+
+                var folderPath = Server.MapPath("/PDF/");
+                EmailController.clearFolder(folderPath);
+                //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
+                return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
+            }
+            catch (Exception ex)
+            {
+                email.Attachment = fileName;
+                TempData["EmailMessge"] = ex.Message.ToString();
+                TempData["Error"] = ex.Message.ToString();
+            }
+
+            if (TempData["Path"] == null)
+            {
+                TempData["Path"] = fileName;
+            }
+
+            TempData["Message"] = "Email Send Succssfully";
+            email.Attachment = fileName;
+
+            return View(email);
+        }
+
+
         public string PrintView(int purchaseOrderId)
         {
             string pdfname;
+
+            var root = Server.MapPath("/PDF/");
             try
             {
                 var idd = Session["ClientID"];
                 var cdd = Session["CompayID"];
-
 
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
                     Contectid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
-
-
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -1078,31 +1173,22 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
-
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.Purchase = ob;
                 ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
 
-
-
                 DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
                 DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
                 TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
                 string diffDate = ts.Days.ToString();
-
-
-
-
                 string companyName = purchaseOrderId + "-" + companyModel.CompanyName;
-                var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
                 path = Path.GetFullPath(path);
 
                 string subPath = "/PDF"; // your code goes here
-                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
-
+                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));            
                 if (!exists)
                 {
                     System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
@@ -1111,35 +1197,28 @@ namespace InvoiceDiskLast.Controllers
                 {
                     try
                     {
-
                         if (System.IO.File.Exists(path))
                         {
                             FileInfo info = new FileInfo(path);
-
                             if (!IsFileLocked(info)) info.Delete();
-
                         }
                     }
                     catch (System.IO.IOException e)
                     {
-
                     }
                 }
 
                 var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/MvcInvoiceServices/Viewpp.cshtml")
                 {
-
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
                     PageHeight = 40,
-
                     SaveOnServerPath = path, // Save your place
 
                     CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
                     DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                    " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
-
                 };
                 // This section allows you to save without downloading 
                 pdfResult.BuildPdf(this.ControllerContext);
@@ -1187,107 +1266,7 @@ namespace InvoiceDiskLast.Controllers
             return false;
         }
 
-        [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email)
-        {
-
-
-            var idd = Session["ClientID"];
-            var cdd = Session["CompayID"];
-            if (Session["ClientID"] != null && Session["CompayID"] != null)
-            {
-                Contectid = Convert.ToInt32(Session["ClientID"]);
-                CompanyID = Convert.ToInt32(Session["CompayID"]);
-            }
-
-
-
-            TempData["EmailMessge"] = "";
-
-            EmailModel emailModel = new EmailModel();
-            var fileName = email.Attachment;
-            try
-            {
-                if (email.Attachment.Contains(".pdf"))
-                {
-                    email.Attachment = email.Attachment.Replace(".pdf", "");
-                }
-
-                if (email.ToEmail.Contains(','))
-                {
-                    var p = email.Attachment.Split('.');
-
-                    var root = Server.MapPath("/PDF/");
-                    var pdfname = String.Format("{0}.pdf", p);
-                    var path = Path.Combine(root, pdfname);
-                    email.Attachment = path;
-
-                    string[] EmailArray = email.ToEmail.Split(',');
-                    if (EmailArray.Count() > 0)
-                    {
-                        foreach (var item in EmailArray)
-                        {
-                            emailModel.From = email.From;
-                            emailModel.ToEmail = item;
-                            emailModel.Attachment = email.Attachment;
-                            emailModel.EmailBody = email.EmailText;
-                            bool result = EmailController.email(emailModel, _attackmentList);
-                        }
-                    }
-                }
-                else
-                {
-                    var root = Server.MapPath("/PDF/");
-                    var pdfname = String.Format("{0}.pdf", email.Attachment);
-                    var path = Path.Combine(root, pdfname);
-                    email.Attachment = path;
-                    emailModel.From = email.From;
-                    emailModel.ToEmail = email.ToEmail;
-                    emailModel.Attachment = email.Attachment;
-                    emailModel.EmailBody = email.EmailText;
-                    bool result = EmailController.email(emailModel, _attackmentList);
-                    TempData["EmailMessge"] = "Email Send successfully";
-
-
-                    HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + email.invoiceId.ToString()).Result;
-                    MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-
-                    if (PerformTransaction(ob, CompanyID))
-                    {
-
-                        TempData["EmailMessge"] = "Email Send Succssfully";
-
-                    }
-                    else
-                    {
-                        TempData["EmailMessge"] = "Your transaction is not perform with success";
-                    }
-
-                }
-                //return RedirectToAction("ViewQuation", "MVCQutation", new { @id = id });
-                return RedirectToAction("Viewinvoice", new { purchaseOrderId = email.invoiceId });
-
-
-            }
-            catch (Exception ex)
-            {
-                email.Attachment = fileName;
-                TempData["EmailMessge"] = ex.Message.ToString();
-                TempData["Error"] = ex.Message.ToString();
-            }
-
-            if (TempData["Path"] == null)
-            {
-                TempData["Path"] = fileName;
-            }
-
-            TempData["Message"] = "Email Send Succssfully";
-            email.Attachment = fileName;
-
-            return View(email);
-        }
-
-
+      
         public bool PerformTransaction(MvcPurchaseModel purchaseViewModel, int CompanyId)
         {
             bool TransactionResult = false;
@@ -1364,7 +1343,6 @@ namespace InvoiceDiskLast.Controllers
             }
             return TransactionResult;
         }
-
 
         [HttpPost]
         public ActionResult DeleteInvoice(int PurchaseOrderId, int purchaseOrderDetailId, int vat, decimal total)

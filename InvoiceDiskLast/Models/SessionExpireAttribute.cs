@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.Models
     public class SessionExpireAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
+        {    
             HttpContext ctx = HttpContext.Current;
             if (HttpContext.Current.Session["CompayID"] == null && HttpContext.Current.Session["ApiAccessToken"] == null)
             {
@@ -26,7 +26,7 @@ namespace InvoiceDiskLast.Models
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.Current.Session["ApiAccessToken"].ToString());
             }
 
-              clearFolder();
+            //  clearFolder();
 
             base.OnActionExecuting(filterContext);
         }
