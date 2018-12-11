@@ -999,7 +999,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     id = Convert.ToInt32(Session["ClientID"]);
                 }
-                id = 4019;
+               
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
