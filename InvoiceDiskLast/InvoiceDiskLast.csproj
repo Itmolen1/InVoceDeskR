@@ -257,6 +257,7 @@
     <Compile Include="Controllers\ApiCompanyStatusController.cs" />
     <Compile Include="Controllers\ApiConatactsController.cs" />
     <Compile Include="Controllers\APIControlAccountController.cs" />
+    <Compile Include="Controllers\APIErrorLogController.cs" />
     <Compile Include="Controllers\APIOrderStatusController.cs" />
     <Compile Include="Controllers\APIPaymentTermController.cs" />
     <Compile Include="Controllers\APIProductController.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Controllers\ConfirmEmailController.cs" />
     <Compile Include="Controllers\DirectoryAPIController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\GenrateInvoiceController.cs" />
     <Compile Include="Controllers\GetQuationCountController.cs" />
@@ -348,6 +350,9 @@
     </Compile>
     <Compile Include="Models\DirectoryViewModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\ExceptionLogger.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\GetStockItem_Result.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
@@ -700,6 +705,11 @@
     <Content Include="assets\images\alert\model.png" />
     <Content Include="assets\images\alert\model2.png" />
     <Content Include="assets\images\alert\model3.png" />
+    <Content Include="assets\images\background\error-bg.jpg" />
+    <Content Include="assets\images\background\img5.jpg" />
+    <Content Include="assets\images\background\img5.png" />
+    <Content Include="assets\images\background\login-register.jpg" />
+    <Content Include="assets\images\background\socialbg.jpg" />
     <Content Include="assets\images\big\background\error-bg.jpg" />
     <Content Include="assets\images\big\background\img5.jpg" />
     <Content Include="assets\images\big\background\img5.png" />
@@ -1279,12 +1289,15 @@
     <Content Include="Views\Shared\UploadFilePartialView.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Exception\Index.cshtml" />
+    <Content Include="Views\Shared\ServerErrorView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ErrorLog\" />
     <Folder Include="PDF\" />
     <Folder Include="Views\APIPaymentTerm\" />
     <Folder Include="Views\Email\" />
+    <Folder Include="Views\Error\" />
     <Folder Include="Views\GenrateInvoice\" />
     <Folder Include="Views\MVCCompany\" />
     <Folder Include="Views\MvcPaymentTerm\" />
@@ -1298,6 +1311,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{8520487A-E6E6-427B-A983-79E572F1F819}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
