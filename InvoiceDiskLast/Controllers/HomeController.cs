@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,20 +10,34 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
 
-    [SessionExpireAttribute]
+    //[SessionExpireAttribute]
+   [RouteNotFoundAttribute]
     public class HomeController : Controller
     {
+        private Ilog _iLog;
      
         public ActionResult Index()
         {
-            return View();           
+            return View();
         }
 
-       
+        public HomeController()
+        {
+            _iLog = Log.GetInstance;
+        }
+
+
+        //protected override void OnException(ExceptionContext filterContext)
+        //{
+        //    _iLog.LogException(filterContext.Exception.ToString());
+        //    filterContext.ExceptionHandled = true;
+        //    this.View("Error").ExecuteResult(this.ControllerContext);
+        //}
         public ActionResult IndexTestSamar()
         {
             ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar";
 
+            int k = Convert.ToInt32("sadadasd");
             return View();
         }
 

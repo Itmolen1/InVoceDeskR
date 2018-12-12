@@ -118,6 +118,17 @@
           <Property Name="DirectoryPath" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
+        <EntityType Name="ExceptionLogger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExceptionMessage" Type="nvarchar" MaxLength="450" />
+          <Property Name="ControllerName" Type="varchar" MaxLength="50" />
+          <Property Name="MethodName" Type="varchar" MaxLength="50" />
+          <Property Name="ExceptionStackTrace" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateTime" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="HeadAccountTable">
           <Key>
             <PropertyRef Name="HeadAccountId" />
@@ -512,6 +523,7 @@
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ControlAccountTable" EntityType="Self.ControlAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DirectoryTable" EntityType="Self.DirectoryTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExceptionLogger" EntityType="Self.ExceptionLogger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HeadAccountTable" EntityType="Self.HeadAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderStatusTable" EntityType="Self.OrderStatusTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTermTable" EntityType="Self.PaymentTermTable" Schema="dbo" store:Type="Tables" />
@@ -727,6 +739,7 @@
             <End Role="ProductTable" EntitySet="ProductTables" />
           </AssociationSet>
           <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
+          <EntitySet Name="ExceptionLoggers" EntityType="APIcompanyModel.ExceptionLogger" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1233,6 +1246,17 @@
           <Property Name="DirectoryPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
         </EntityType>
+        <EntityType Name="ExceptionLogger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExceptionMessage" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MethodName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ExceptionStackTrace" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1547,6 +1571,18 @@
                 <ScalarProperty Name="DirectoryPath" ColumnName="DirectoryPath" />
                 <ScalarProperty Name="RefrenceId" ColumnName="RefrenceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExceptionLoggers">
+            <EntityTypeMapping TypeName="APIcompanyModel.ExceptionLogger">
+              <MappingFragment StoreEntitySet="ExceptionLogger">
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="ExceptionStackTrace" ColumnName="ExceptionStackTrace" />
+                <ScalarProperty Name="MethodName" ColumnName="MethodName" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="ExceptionMessage" ColumnName="ExceptionMessage" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
