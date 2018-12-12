@@ -11,24 +11,7 @@ namespace InvoiceDiskLast.Controllers
     public class DirectoryAPIController : ApiController
     {
         private DBEntities db = new DBEntities();
-        [Route("api/CreateDirecoty")]
-        public IHttpActionResult PostDirEctory(DirectoryTable _directory)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    db.DirectoryTables.Add(_directory);
-                    db.SaveChanges();
-                }
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return NotFound();
-                throw ex;
-            }
-        }
+
 
         [Route("api/CheckForDirectoryExist/{RefrenceId:int}")]
         public IHttpActionResult GetDirectory(int RefrenceId)
@@ -51,6 +34,50 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
+
+
+        [Route("api/CreateDirecoty")]
+        public IHttpActionResult POSTtDirEctory(DirectoryTable _directory)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    db.DirectoryTables.Add(_directory);
+                    db.SaveChanges();
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+                throw ex;
+            }
+        }
+
+
+        [Route("api/GetDirectory/{RefrenceId:int}")]
+        public IHttpActionResult GetDirectorPath(int RefrenceId)
+        {
+            DirectoryViewModel _cviewModel = new DirectoryViewModel();
+            try
+            {
+                _cviewModel = db.DirectoryTables.Where(d => d.RefrenceId == RefrenceId).Select(D => new DirectoryViewModel
+                {
+                    DirectoryPath = D.DirectoryPath
+                }).FirstOrDefault();
+
+                return Ok(_cviewModel);
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+                throw ex;
+            }
+        }
+
+
 
     }
 }

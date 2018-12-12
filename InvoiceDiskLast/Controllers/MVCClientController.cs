@@ -166,27 +166,25 @@ namespace InvoiceDiskLast.Controllers
                 mvcContactModel.Addeddate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                 mvcContactModel.Type = mvcContactModel.Type;
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("ApiConatacts", mvcContactModel).Result;
-
                 return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
             }
             else
             {
-
                 mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]);
                 mvcContactModel.UserId = 1;
                 mvcContactModel.Addeddate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("ApiConatacts/" + mvcContactModel.ContactsId, mvcContactModel).Result;
-
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("CheckForDirectoryExist/" + 1.ToString()).Result;
-
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("CheckForDirectoryExist/" + mvcContactModel.ContactsId).Result;
                 DirectoryTable _Directory = new DirectoryTable();
-
                 if (directory.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                 }
                 else
                 {
                     _Directory.IsActive = true;
+                    _Directory.DirectoryPath = CreatDirectoryClass.CreateDirecotyFolder((int)mvcContactModel.ContactsId, mvcContactModel.ContactName);
+                    _Directory.RefrenceId = mvcContactModel.ContactsId;
+
                     HttpResponseMessage directoryResponse = GlobalVeriables.WebApiClient.PostAsJsonAsync("CreateDirecoty", _Directory).Result;
 
                 }
@@ -231,6 +229,188 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
+
+
+        public class IFormFile
+        {
+
+            public HttpPostedFile file { get; set; }
+        }
+
+
+
+
+        public ActionResult ViewDesign()
+        {
+
+            string d = "";
+
+            try
+            {
+                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
+
+                DirectoryViewModel _Directory = new DirectoryViewModel();
+
+                int ClientId = 0;
+                
+                    ClientId = Convert.ToInt32(Session["ClientId"]);
+
+                    HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + 43).Result;
+                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+
+                  d = _Directory.DirectoryPath.ToString();
+
+
+
+
+
+                if (_Directory.DirectoryPath != null)
+                {
+                    DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                    FileInfo[] info = dir.GetFiles("*.*");
+
+                    foreach (FileInfo f in info)
+                    {
+                        string Name = f.Name;
+
+                      
+
+                        _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = d });
+
+                    }
+
+                    ViewBag.TreeView = _DirectoryList;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadFiles()
+        {
+            var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG" };
+
+            DirectoryViewModel _Directory = new DirectoryViewModel();
+
+            try
+            {
+                if (Session["ClientId"] != null)
+                {
+                    int Client = Convert.ToInt32(Session["ClientId"]);
+                    HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + 43).Result;
+                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+                }
+
+                if (_Directory.DirectoryPath != null)
+                {
+                    string folderPAth = Server.MapPath(_Directory.DirectoryPath);
+                    HttpFileCollectionBase files = Request.Files;
+                    if (System.IO.Directory.Exists(folderPAth))
+                    {
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            HttpPostedFileBase file = files[i];
+                            FileInfo fi = new FileInfo(file.FileName);
+                            string ext = fi.Extension;
+                            if (allowedExtensions.Contains(ext))
+                            {
+                                string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+
+                                var FileName = file.FileName.Replace(ext, "");
+
+                                string FileNameSetting = FileName + dateTime + ext;
+
+                                file.SaveAs(folderPAth + FileNameSetting);
+                            }
+                        }
+                    }
+                    return Json("UploadSuccess", JsonRequestBehavior.AllowGet);
+
+                }
+                else
+                {
+                    return Json("NotExist", JsonRequestBehavior.AllowGet);
+                }
+            }
+
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+        }
+
+
+        [HttpPost]
+        public ActionResult UploadFile(FormCollection from)
+        {
+
+
+
+            var file = from["file"];
+
+
+            if (Request.Form["file"] != null)
+            {
+                var fileName2 = Request.Form["file"];
+
+                string[] valueArray = fileName2.Split(',');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+
+                    foreach (var itemm in valueArray)
+                    {
+                        if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+                        {
+
+                        }
+                    }
+                }
+            }
+
+
+
+            //for (int i = 0; i < Request.Files.Count; i++)
+            //{
+            //    var file = Request.Files[i];
+
+            //    if (file != null && file.ContentLength > 0)
+            //    {
+            //        var fileName = Path.GetFileName(file.FileName);
+            //FileDetail fileDetail = new FileDetail()
+            //{
+            //    FileName = fileName,
+            //    Extension = Path.GetExtension(fileName),
+            //    Id = Guid.NewGuid()
+            //};
+            // fileDetails.Add(fileDetail);
+            // var path = Path.Combine(Server.MapPath("~/App_Data/Upload/"), fileDetail.Id + fileDetail.Extension);
+            // file.SaveAs(path);
+
+
+            return View();
+        }
+
+
+
+
+
+
+
+
 
 
         public string C()

@@ -26,7 +26,7 @@ namespace InvoiceDiskLast.Models
                 {
                     System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp));
 
-                    Result = HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp);
+                    Result ="/DirectoryFolder/" + FOLDERp+"/";
                 }
             }
             catch (Exception)

@@ -1,0 +1,21 @@
+
+ALTER FUNCTION [dbo].[GetStockItem](@ComapniId int)
+
+ RETURNS TABLE  
+ As
+ Return
+
+Select a.PurchaseItemId,i.ProductName,Sum(QuantityPurchased) as PurchaseQuantity,Sum(QuantitySold) as SaleQuantity, (Sum(QuantityPurchased) - Sum(QuantitySold)) as RemainingQuantity
+From 
+(
+SELECT  pt.PurchaseItemId, pt.PurchaseQuantity AS QuantityPurchased, 0 AS QuantitySold FROM PurchaseOrderDetailsTable pt 
+
+UNION ALL
+
+Select  st.ItemId, 0 AS QuantityPurchased, st.Quantity AS QuantitySold From QutationDetailsTable st 
+
+
+) a
+Join ProductTable i On a.PurchaseItemId = i.ProductId
+--WHERE a.TransactionDate Between @START and @END 
+GROUP BY a.PurchaseItemId, i.ProductName 

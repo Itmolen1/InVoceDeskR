@@ -10,5 +10,7 @@ namespace InvoiceDiskLast.Models
         public int Id { get; set; }
         public int RefrenceId { get; set; }
         public string DirectoryPath { get; set; }
+
+        public string FileFolderPathe { get; set; }
     }
 }
