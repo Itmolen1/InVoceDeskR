@@ -411,16 +411,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
-
-
-
-
-
-
-
-
+        
         public string C()
         {
             var id = Session["SessionID"];
