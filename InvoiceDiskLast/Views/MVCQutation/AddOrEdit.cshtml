@@ -1550,7 +1550,7 @@
 
         });
 
-        function LoadProduct(PgoodServices) {
+        function LoadProduct() {
             PgoodServices = "Good";
             if ($('#mainrow #SelectProductQutation').has('option').length > 0) {
                 return;
@@ -2228,9 +2228,6 @@
                         $('#mainrow #Rate').val(resultData);
 
 
-
-
-
                     },
                     error: function (errormessage) {
                         //alert(errormessage)
@@ -2242,18 +2239,11 @@
 
 
         function ChangeTotalOnItemCahe(currentRow) {
-
             var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
             var Price = currentRow.find("td:eq(2)").find('input').val();
             var total = quantity * Price;
             currentRow.find('td:eq(3)').find('input').val(total);
-
-        }
-
-
-
-
-
+       }
 
         function CleartProdctTextBox() {
             $('#ProductName').val("");
@@ -2262,12 +2252,8 @@
             $('#PurchasePrice').val("");
             $('#OpeningQuantity').val("");
             $('#ProductUnitSelect').val("0");
-
         }
-
-
         /// numver validatio for input
-
         $(".quantity ").on("keypress keyup blur", function (event) {
             //this.value = this.value.replace(/[^0-9\.]/g,'');
             $(this).val($(this).val().replace(/[^0-9]/g, ''));
