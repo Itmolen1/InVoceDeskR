@@ -1,4 +1,7 @@
-﻿using InvoiceDiskLast.Models;
+﻿
+using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +14,18 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class GenrateInvoiceController : ApiController
     {
+        private Ilog _iLog;
         // GET: GenrateInvoice
-       
+
         private DBEntities db = new DBEntities();
 
-
+        public GenrateInvoiceController()
+        {
+            _iLog = Log.GetInstance;
+        }
         [ResponseType(typeof(MvcPurchaseModel))]
         public IHttpActionResult GetQutationCount()
         {

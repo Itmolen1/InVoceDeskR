@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,18 +9,22 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [RouteNotFoundAttribute]
     public class landingController : Controller
     {
         List<AttakmentList> _attacklist = new List<AttakmentList>();
 
+        private Ilog _iLog;
+        public landingController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: landing
         public ActionResult Index()
         {
             return View();
         }
-
-
-
+        
         [HttpPost]
         public ActionResult FeedBack(Feedback feedBackModel)
         {
@@ -44,9 +50,8 @@ namespace InvoiceDiskLast.Controllers
                 return Json("Success", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
-
             {
-                throw ex;
+                
                 return Json("Fail", JsonRequestBehavior.AllowGet);
             }
         }

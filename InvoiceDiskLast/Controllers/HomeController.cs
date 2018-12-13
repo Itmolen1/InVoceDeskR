@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
 
-    //[SessionExpireAttribute]
+   [SessionExpireAttribute]
    [RouteNotFoundAttribute]
     public class HomeController : Controller
     {
@@ -25,9 +25,7 @@ namespace InvoiceDiskLast.Controllers
         {
             _iLog = Log.GetInstance;
         }
-
-
-        //protected override void OnException(ExceptionContext filterContext)
+                
         //{
         //    _iLog.LogException(filterContext.Exception.ToString());
         //    filterContext.ExceptionHandled = true;
@@ -36,8 +34,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult IndexTestSamar()
         {
             ViewBag.Title = "Home Page Rukhsar Test Repo Rukhsar";
-
-            int k = Convert.ToInt32("sadadasd");
+            //int k = Convert.ToInt32("sadadasd");
             return View();
         }
 

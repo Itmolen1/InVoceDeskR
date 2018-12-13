@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,14 @@ using System.Web.Http.Description;
 namespace InvoiceDiskLast.Controllers
 {
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class GetQuationCountController : ApiController
     {
+        private Ilog _iLog;
+        public GetQuationCountController()
+        {
+            _iLog = Log.GetInstance;
+        }
         private DBEntities db = new DBEntities();
 
      

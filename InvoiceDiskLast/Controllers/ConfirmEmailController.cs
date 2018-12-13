@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,12 +13,16 @@ using System.Web.Http.Description;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [RouteNotFoundAttribute]
     [RoutePrefix("api/ConfirmEmail")]
     public class ConfirmEmailController : ApiController
     {
         private DBEntities db = new DBEntities();
-
-
+        private Ilog _iLog;
+        public ConfirmEmailController()
+        {
+            _iLog = Log.GetInstance;
+        }
         public IHttpActionResult Get()
         {
             return null;

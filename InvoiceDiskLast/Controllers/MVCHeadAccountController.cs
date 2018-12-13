@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +10,22 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class MVCHeadAccountController : Controller
     {
-        [SessionExpireAttribute]
+        private Ilog _iLog;
+        
         // GET: MVCHeadAccount
         public ActionResult Index()
         {
             return View();
         }
 
+        public MVCHeadAccountController()
+        {
+            _iLog = Log.GetInstance;
+        }
 
         [HttpPost]
         public ActionResult GetHeadAccountList1(int ControlACid)

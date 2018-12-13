@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +15,15 @@ namespace InvoiceDiskLast.Controllers
 
 
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class OrderController : Controller
     {
+        private Ilog _iLog;
+
+        public OrderController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: OrderStatu
         public ActionResult Index()
         {

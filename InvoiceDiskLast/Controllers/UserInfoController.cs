@@ -1,4 +1,7 @@
-﻿using InvoiceDiskLast.Models;
+﻿
+using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,8 +17,14 @@ using System.Web.Script.Serialization;
 namespace InvoiceDiskLast.Controllers
 {
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class UserInfoController : Controller
     {
+        private Ilog _iLog;
+        public UserInfoController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: UserInfo
         public ActionResult Index()
         {
