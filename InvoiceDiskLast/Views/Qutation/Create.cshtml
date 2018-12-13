@@ -1,0 +1,498 @@
+﻿@model InvoiceDiskLast.Models.MVCQutationViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Contectdatas = ViewBag.Contentdata;
+    var CompanyDatas = ViewBag.Companydata;
+}
+
+<div class="row">
+    <div class="col-2 b-r">
+        @*two*@
+    </div>
+    <div class="col-8 b-r" style="border:1px solid Silver">
+        <div class="container">
+
+            <div class="row" style="margin-top:10px">
+                <div class="col-7 b-r">
+
+                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+                 
+                    <div class="row clientInfo">
+                        <div class="col-12 b-r HeadText">Qutation</div>
+                    </div>
+                    <div class="row clientInfo" style="margin-top:10px">
+                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 b-r">@Contectdatas.ContactAddress <br />@Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                    </div>
+
+
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-3 b-r">
+                            Qutation Date:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "QutationDate" } })
+                            @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Qutation Number:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
+                            @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Due Date:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
+                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Reference No:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
+                            @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                </div>
+
+                <div class="col-5 b-r">
+                    <div class="row" style="margin-top:33px">
+                        <div class="col-3 b-r"></div>
+                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
+                        <div class="col-2 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Kvk nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Bank:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">IBAN No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BIC No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Telephone:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Cell No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">E-mail:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Website:</div>
+                        <div class="col-7 b-r">@CompanyDatas.Website</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Address:</div>
+                        <div class="col-7 b-r">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
+                            @CompanyDatas.CompanyCountry
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table" id="orderdetailsitems">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Goods
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat
+                                </th>
+                                <th>
+                                    Sub
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+
+
+                            @if (ViewBag.QutationDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.QutationDatailsList)
+                                {
+
+                                    <tr id="@item.QutationDetailId">
+
+                                        <td>
+
+                                            <select Id="SelectProductQutation" class="product form-control Input-height" style="width:300px !important;font-size:12px">
+                                                <option value="0">Select Item..</option>
+                                                @foreach (var product in ViewBag.Product)
+                                                {
+                                                    <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="quantity form-control Input-height" id="Quantity" value="@item.Quantity" style="font-size:12px" />
+                                        </td>
+
+                                        <td> 
+                                            <input type="text" class="rate form-control Input-height" id="Rate" value="@item.Rate" style="font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="FTotal form-control Input-height" id="FTotal" value="@item.Total" readonly="readonly" style="font-size:12px" />
+
+                                        </td>
+                                        <td>
+                                            <select id="SelectVAT" name="NewsCategoriesID" class="VAT  form-control Input-height" style="width:80px;font-size:12px">
+
+                                                @foreach (var item1 in ViewBag.VatDrop)
+                                                {
+                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                }
+                                            </select>
+
+                                        </td>
+                                        <td>
+                                            <button type="button" id="RemoveEdit" class="btn btn-danger">Remove</button>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+
+                                        </td>
+                                        <td>
+                                            <input type="hidden" class="QutationID" value="@item.QutationID" />
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                        <tr id="mainrow">
+                            <td>
+                                <select id="SelectProductQutation" class="product form-control pClass Input-height" style="width: 300px;font-size:12px"></select>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantity form-control Input-height", id = "Quantity" } })
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+
+                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rate form-control Input-height", id = "Rate" } })
+                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+
+                            </td>
+                            <td>
+
+                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotal form-control Input-height", id = "FTotal", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+                                <select id="SelectVAT" class="VAT form-control Input-height" style="width:80px;font-size:12px">
+                                    <option>0</option>
+                                    <option>6</option>
+                                    <option>21</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" readonly id="RowTotal" class="form-control Input-height" style="width:60px"/>
+                            </td>
+                            <td>
+
+                                <input type="button" id="add" value="+" class="btn-height" style="width:50px" />
+
+                        </tr>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-1 b-r"></div>
+                    <div class="col-11 b-r">
+                        <div id="OrderItems">
+                            <table class="table" id="orderdetailsitems"></table>
+                            <span id="orderItemError" style="color:red"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+          
+            <hr />
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table" id="QutationServiceDetail">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Services
+                                </th>
+                                <th>
+                                    Number Of hour
+                                </th>
+                                <th>
+                                    Hourly rate
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat %
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                                <th>
+
+                                </th>
+                                <th>
+
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+
+                            @if (ViewBag.QutationDatailsList != null)
+                            {
+                                if (ViewBag.QutationDatailsList != null)
+                                {
+                                    foreach (var item in ViewBag.QutationDatailsList)
+                                    {
+
+                                        <tr id="@item.QutationDetailId">
+
+                                            <td>
+
+                                                <select Id="SelectProductQutationp" class="productp form-control pClass Input-height" style="width:300px !important; font-size:12px">
+                                                    <option value="0">Select Item..</option>
+                                                    @foreach (var product in ViewBag.Product)
+                                                    {
+                                                        <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="quantity form-control Input-height" id="QuantityE" value="@item.Quantity" style="font-size:12px" />
+                                            </td>
+
+                                            <td>
+                                                <input type="text" class="PurchaseItemRate  rate form-control Input-height" id="Rate" value="@item.Rate" style="font-size:12px" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="PurchaseTotal  FTotal form-control Input-height" id="FTotal" value="@item.Total" readonly="readonly" style="font-size:12px" />
+
+                                            </td>
+                                            <td>
+                                                <select id="SelectVAT" name="NewsCategoriesID" class="VATp  form-control Input-height" style="width:80px;font-size:12px">
+
+                                                    @foreach (var item1 in ViewBag.VatDrop)
+                                                    {
+                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                    }
+                                                </select>
+
+                                            </td>
+                                            <td>
+                                                <button type="button" id="RemoveEdit2" class="btn btn-danger">Remove</button>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+
+                                            </td>
+                                            <td>
+                                                <input type="hidden" class="QutationID" value="@item.QutationID" />
+
+                                            </td>
+
+
+                                        </tr>
+                                    }
+                                }
+                            }
+
+                        </tbody>
+                        <tr id="mainrow">
+                            <td>
+                                <select id="SelectProductQutationp" class="productp form-control pClassp Input-height" style="width:300px !important; font-size:12px"></select>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "Quantity form-control Input-height", id = "QuantityE" } })
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+
+                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRate form-control Input-height", id = "RateE" } })
+                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+
+
+                            </td>
+                            <td>
+
+                                @Html.EditorFor(model => model.SubTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control Input-height", id = "PurchaseTotal", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.SubTotal, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+                                <select id="SelectVATp" class="VATp form-control Input-height" style="width:80px;font-size:12px">
+                                    <option>0</option>
+                                    <option>6</option>
+                                    <option>21</option>
+                                </select>
+
+                            </td>
+                            <td>
+
+                                <input type="button" id="addpuchase1" value="+" class="btn-height" style="width:50px" />
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-1 b-r">
+                    <div class="col-11 b-r">
+                        <div class="row">
+                            <div id="OrderItems">
+                                <table class="table" id="QutationServiceDetail"></table>
+                                <span id="orderItemError" style="color:red"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-8 b-r">
+                    <div class="row">
+                        <div class="col-3 b-r">Customer Notes:</div>
+                        <div class="col-9 b-r">
+                            @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
+                            @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 b-r">
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Sub Total:</div>
+                        <div class="col-7 b-r text-right"><label id="SubTotal">@Model.SubTotal</label></div>
+                     
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Totaal excel btw:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="TotalBTW">@Model.SubTotal</label>
+                        </div>                       
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW0%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="btwo">0.00</label>
+                        </div>                      
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW 6%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="BTW6">@Model.TotalVat6</label>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW 21%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="BTW21">@Model.TotalVat21</label>
+                        </div>                     
+                    </div>
+
+                    <div class="row Grand-color">
+                        <div class="col-5 b-r text-right">Grand Total:</div>
+                        <div class="col-7 b-r text-right">
+                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@Model.TotalAmount</label>
+                        </div>                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-2 b-r">
+        @*two*@
+    </div>
+</div>
+
+<div class="row" style="margin-top:5px">
+    <div class="col-2 b-r"></div>
+    <div class="col-8 b-r">
+        <div class="pull-right">
+            <div class="btn-group">
+                <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+            </div>
+            <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+            <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
+        </div>
+    </div>
+    <div class="col-2 b-r"></div>
+</div>
+
+
+
+
