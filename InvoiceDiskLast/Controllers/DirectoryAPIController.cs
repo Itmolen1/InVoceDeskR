@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,16 @@ using System.Web.Http;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [RouteNotFoundAttribute]
     public class DirectoryAPIController : ApiController
     {
         private DBEntities db = new DBEntities();
 
+        private Ilog _iLog;
+        public DirectoryAPIController()
+        {
+            _iLog = Log.GetInstance;
+        }
 
         [Route("api/CheckForDirectoryExist/{RefrenceId:int}")]
         public IHttpActionResult GetDirectory(int RefrenceId)

@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,15 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class MvcPaymentTermController : Controller
     {
+        private Ilog _iLog;
+        public MvcPaymentTermController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: MvcPaymentTerm
         public ActionResult Index()
         {

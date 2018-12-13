@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +14,15 @@ using static System.Net.Mime.MediaTypeNames;
 namespace InvoiceDiskLast.Controllers
 {
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class EmailController : Controller
     {
+        private Ilog _iLog;
+
+        public EmailController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: Email
         public ActionResult Index()
         {

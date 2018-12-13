@@ -11,14 +11,21 @@ using System.Net.Http.Headers;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using InvoiceDiskLast.MISC;
+using Logger;
 
 namespace InvoiceDiskLast.Controllers
 {
-
+    [RouteNotFoundAttribute]
     public class CaptchaController : Controller
     {
         DBEntities db = new DBEntities();
 
+        private Ilog _iLog;
+        public CaptchaController()
+        {
+            _iLog = Log.GetInstance;
+        }
         public ActionResult Index()
         {
             UserModels model = new UserModels();

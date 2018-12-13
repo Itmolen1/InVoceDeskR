@@ -6,13 +6,21 @@ using System.Web;
 using System.Web.Mvc;
 using InvoiceDiskLast.Models;
 using System.IO;
+using InvoiceDiskLast.MISC;
+using Logger;
 
 namespace InvoiceDiskLast.Controllers
 {
 
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class MVCClientController : Controller
     {
+        private Ilog _iLog;
+        public MVCClientController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: MVCClient
         public ActionResult Index()
         {

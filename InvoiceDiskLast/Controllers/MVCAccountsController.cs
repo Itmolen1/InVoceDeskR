@@ -5,12 +5,20 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using InvoiceDiskLast.Models;
+using InvoiceDiskLast.MISC;
+using Logger;
 
 namespace InvoiceDiskLast.Controllers
 {
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class MVCAccountsController : Controller
     {
+        private Ilog _iLog;
+        public MVCAccountsController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: MVCAccounts
         public ActionResult Index()
         {
