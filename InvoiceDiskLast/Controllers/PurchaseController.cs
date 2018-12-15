@@ -60,37 +60,7 @@ namespace InvoiceDiskLast.Controllers
                   || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
                   || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
                 }
-
-
-                //    switch (sortColumn)
-                //{
-                //    case "ContactName":
-                //        ContactsList = ContactsList.OrderBy(c => c.ContactName);
-                //        break;
-                //    case "Type":
-                //        ContactsList = ContactsList.OrderBy(c => c.Type);
-                //        break;
-
-
-                //    case "BillingPersonName":
-                //        ContactsList = ContactsList.OrderBy(c => c.BillingPersonName);
-                //        break;
-
-                //    case "BillingCompanyName":
-                //        ContactsList = ContactsList.OrderBy(c => c.BillingCompanyName);
-                //        break;
-
-                //    case "BillingVatTRN":
-
-                //        ContactsList = ContactsList.OrderBy(c => c.BillingVatTRN);
-                //        break;
-
-                //    default:
-                //        ContactsList = ContactsList.OrderByDescending(c => c.ContactsId);
-                //        break;
-                //}
-
-
+                
                 int recordsTotal = recordsTotal = PurchaseList.Count();
                 var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
@@ -104,6 +74,44 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+     
+
+        public ActionResult Create()
+        {
+            MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
+            try
+            {
+                Contectid = 3;
+                CompanyID = Convert.ToInt32(Session["CompayID"]);
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                DateTime InvoiceDate = new DateTime();
+                InvoiceDate = DateTime.Now;
+                purchaseviewModel.PurchaseDate = InvoiceDate;
+                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+
+                MvcPurchaseModel q = new MvcPurchaseModel();
+                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
+                q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                purchaseviewModel.PurchaseDate = InvoiceDate;
+                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+                purchaseviewModel.Purchase_ID = q.PurchaseID;
+                return View(purchaseviewModel);
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+           
+        }
 
 
         public ActionResult GetVender()
@@ -827,8 +835,6 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
-
         [HttpGet]
         public ActionResult deleteFile(string FileName)
         {
@@ -847,9 +853,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }           
         }
-
-
-
 
         [HttpPost]
         public ActionResult UploadFiles()
@@ -897,7 +900,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
         [DeleteFileClass]
         [HttpPost]
         public FileResult DownloadFile(string FilePath1)
@@ -922,7 +924,6 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
-
 
         public ActionResult Print(int? purchaseOrderId)
         {
@@ -992,7 +993,6 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
-
 
         public ActionResult InvoicebyEmail(int? purchaseOrderId)
         {
@@ -1278,8 +1278,7 @@ namespace InvoiceDiskLast.Controllers
             return TransactionResult;
         }
 
-        //[DeleteFileClass]
-       
+        //[DeleteFileClass]       
    
         public string PrintView(int purchaseOrderId)
         {
@@ -1376,7 +1375,6 @@ namespace InvoiceDiskLast.Controllers
             return pdfname;
         }
 
-
         public static Boolean IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
@@ -1403,7 +1401,6 @@ namespace InvoiceDiskLast.Controllers
             //file is not locked
             return false;
         }
-
 
         [HttpPost]
         public ActionResult DeleteInvoice(int PurchaseOrderId, int purchaseOrderDetailId, int vat, decimal total)
@@ -1528,7 +1525,6 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
         [HttpPost]
         public ActionResult Trasactionpayment(List<TransactionModel> TransactionModel)
         {
@@ -1570,13 +1566,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
-
-
-
-
-
+        
         #region
 
         public ActionResult InvoiceSerVice()
