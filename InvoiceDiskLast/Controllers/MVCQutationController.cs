@@ -58,7 +58,7 @@ namespace InvoiceDiskLast.Controllers
 
                         quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
                        || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
-                       || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.QutationDate != null && p.DueDate.ToString().ToLower().Contains(search.ToLower())
                        || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
                        || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())
 

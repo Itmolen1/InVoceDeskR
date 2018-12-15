@@ -67,9 +67,10 @@
             },
             "columns": [
                    { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
-                     {
-                         "data": "PurchaseDate", "type": "date ",
+                     {                        
+                         "data": "PurchaseDate", "type": "date ",                         
                          "render": function (value) {
+
                              if (value === null) return "";
                              var pattern = /Date\(([^)]+)\)/;//date format from server side
                              var results = pattern.exec(value);
@@ -147,6 +148,14 @@
         });
     });
 
+
+    function DateDiff(fromdate, todate) {
+        var start = fromdate;
+        var end = todate;
+
+        var diff = new Date(end - start);
+
+    }
 
     function EditPurchase(PurchaseId) {
         $.ajax({

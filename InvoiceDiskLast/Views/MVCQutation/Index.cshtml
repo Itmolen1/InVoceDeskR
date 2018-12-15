@@ -38,8 +38,10 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function () {       
 
+        var Diff;
+        var statusoption;
         $("#QutationListTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -54,36 +56,40 @@
                 "url": "/MVCQutation/IndexQutation",
                 "type": "POST",
                 "datatype": "json"
-            },
-            "columns": [
+            },           
+            "columns": [         
                     { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
                     { "data": "Qutation_ID", "name": "Qutation_ID", "autoWidth": true },
                     { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
-
-
-                   {
-                       "data": "QutationDate", "type": "date ",
+                    {
+                       "data": "DueDate", "type": "date ",
+                      
                        "render": function (value) {
                            if (value === null) return "";
                            var pattern = /Date\(([^)]+)\)/;//date format from server side
                            var results = pattern.exec(value);
                            var dt = new Date(parseFloat(results[1]));
-
+                         
+                            Diff = parseInt(DateDiff((dt.getMonth() + 1) + "/" + (dt.getDate()) + "/" + (dt.getFullYear())));                        
+                          
                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
                        }, "autoWidth": true
                    },
                      { "data": "Type", "name": "Type", "autoWidth": true },
                      {
                          render: function (data, type, row) {
-
-
                              switch (row.Status) {
 
                                  case "open":
-                                                                        
-                                     return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
-                                     break;
-
+                                     if (Diff < 5) {
+                                         return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                         break;
+                                     }
+                                     else
+                                     {
+                                         return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                         break;
+                                     }
                                  case "pending":
                                      return "<td><span class='label label-info'>" + row.Status + "</span></td>"
                                      break;
@@ -99,16 +105,8 @@
                          }
                      },
 
-                        //{
-                        //    render: function (data, type, row) {
-                        //        return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="EditQuatation(' + row.QutationID + ')"><i class="fa fa-pencil"></i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="DeleteQutation(' + row.QutationID + ')"><i class="fa fa-trash"></i></a>|<a href="#" class="btn btn-success btn-sm" onclick="Delete(' + row.QutationID + ')"><i class="fa fa-eye"></i></a>'
-                        //    }
-                        //}
-
-
                     {
                         render: function (data, type, row) {
-
 
                             switch (row.Type) {
                                 case "Goods":
@@ -118,13 +116,14 @@
                                 case "Services":
                                     return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditService(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>'
                                     break
-
                             }
 
+                            if (statusoption == "open") {
+                                alert(statusoption);
+                                '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditService(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>'
+                            }
                         }
-
                     }
-
             ]
         });
 
@@ -134,6 +133,29 @@
         });
 
     });
+
+
+
+    function DateDiff(todate) {
+
+        var d = new Date();
+        var curr_date = d.getDate();
+        var curr_month = d.getMonth() + 1;
+        var curr_year = d.getFullYear();
+       // alert(todate);
+        var start = new Date();
+        var end = todate;
+
+        var diff = new Date(end - start);
+        var gg = curr_month + "/" + curr_date + "/" + curr_year
+
+
+        var todates = new Date(todate);
+        var FromDate = new Date(gg);
+        var timeDiff = Math.abs(FromDate.getTime() - todates.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays;
+    }
 
 
     function EditQutation(QutationId) {
@@ -181,7 +203,7 @@
         });
     }
 
-
+  
 
     function ViewServiceDetail(QutationId) {
 
