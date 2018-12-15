@@ -177,13 +177,14 @@
 
     function ShowServiceGood(goodservice) {
         GoodsServicess = "";
+        
         GoodsServicess = goodservice;
         if (GoodsServicess == "Good") {
             LoadProductUnitGoods();
             $('#DivServiceBody').hide(1000);
             $('#DivGoodBody').show(1000);           
         }
-        else {            
+        else {         
             $('#DivGoodBody').hide(1000);
             $('#DivServiceBody').show(1000);
         }
@@ -688,7 +689,7 @@
                         success: function (data) {
                             if (data == "Created") {
                                 $('#productTable').DataTable().ajax.reload();
-                                CleartProdctTextBoxGoods();
+                                CleartProdctTextBoxGoods();                              
                                 $('#CreateNewProductModalGoods').modal('hide');
                                 $.toast({
                                     heading: 'Opration Success',
@@ -696,8 +697,8 @@
                                     icon: 'info',
                                     loader: true,        // Change it to false to disable loader
                                     loaderBg: '#9EC600'  // To change the background
-                                });
-
+                                });                                
+                                LoadProductG();
                             }
                         },
                         error: function () {
@@ -746,7 +747,8 @@
                                     icon: 'info',
                                     loader: true,        // Change it to false to disable loader
                                     loaderBg: '#9EC600'  // To change the background
-                                })
+                                });
+                                LoadProductS();
                             }
                         },
                         error: function () {
@@ -938,7 +940,7 @@
 
             PGoodService = "Services";
 
-            LoadProductUnitPurchase();
+            //LoadProductUnitPurchase();
             $("#mainrow #SelectProductQutationp").find("option").remove();
             $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
             $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
@@ -960,5 +962,6 @@
                     alert(errormessage);
                 }
             });
-        }
+    }
+
 </script>
