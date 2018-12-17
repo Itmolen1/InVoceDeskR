@@ -588,23 +588,6 @@
     <!-- /.modal-dialog -->
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="modal fade bs-example-modal-lg" id="ExceedItemModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -642,7 +625,7 @@
         <!-- /.modal-content -->
     </div>
 
-
+</div>
 
 
 
@@ -654,10 +637,19 @@
 
         $(document).ready(function () {
 
+            var stat= '@ViewBag.ststus';
 
-
-            LoadQutationOrderTable("open");
-
+            if (stat != "" && stat != null)
+            {
+                LoadQutationOrderTable(stat);
+            }
+            else
+            {
+                LoadQutationOrderTable("open");
+            }
+           
+               
+          
 
             $('#btnqutation').click(function () {
                 if ($('#drppaymentDebitq option:selected').text() == $('#drpAccountCreditq option:selected').text()) {
@@ -1041,6 +1033,7 @@
 
 
         $('#drpstatus').change(function () {
+                      
             var status = $('#drpstatus option:selected').text();
             LoadQutationOrderTable(status);
         });

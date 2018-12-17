@@ -3,8 +3,25 @@
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 
-
-<button class="btn btn-info" id="AddNewQutationFromQutaion"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button>
+<div class="row">
+    <div class="col-2 b-r">
+    <button class="btn btn-info" id="AddNewQutationFromQutaion"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button>
+    </div> 
+        <div class="col-2 b-r">          
+         
+            <div id="five_day_table">               
+                <div class="r-cl"><span></span>5 Day Remaining</div>                       
+            </div>
+        </div>
+    <div class="col-2 b-r">
+        <div id="five_day_table">           
+            <div class="m-cl"><span></span>1 day Remaining</div>
+        </div>
+    </div>
+    <div class="col-6 b-r">
+      
+    </div>
+</div>
 
 <table class="table" id="QutationListTable">
     <thead style="background-color:black;color:white">
@@ -38,11 +55,24 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {       
-
+    $(document).ready(function () {
+      
         var Diff;
         var statusoption;
-        $("#QutationListTable").DataTable({
+        var table = $("#QutationListTable").DataTable({
+            
+            "createdRow": function (row, data, dataIndex) {                
+            
+                if (parseInt(Diff) < 2) {
+                  
+                    $(row).addClass('RowRed');
+                }
+               else if (parseInt(Diff) < 5) {
+                 
+                    $(row).addClass('RowYello');
+                }
+              
+            },
             //"processing": true, // for show progress bar
             "processing": true,
             "language": {
@@ -56,38 +86,38 @@
                 "url": "/MVCQutation/IndexQutation",
                 "type": "POST",
                 "datatype": "json"
-            },           
-            "columns": [         
+            },
+            "columns": [
                     { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
                     { "data": "Qutation_ID", "name": "Qutation_ID", "autoWidth": true },
                     { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
                     {
-                       "data": "DueDate", "type": "date ",
-                      
-                       "render": function (value) {
-                           if (value === null) return "";
-                           var pattern = /Date\(([^)]+)\)/;//date format from server side
-                           var results = pattern.exec(value);
-                           var dt = new Date(parseFloat(results[1]));
-                         
-                            Diff = parseInt(DateDiff((dt.getMonth() + 1) + "/" + (dt.getDate()) + "/" + (dt.getFullYear())));                        
+                        "data": "DueDate", "type": "date ",
+
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var pattern = /Date\(([^)]+)\)/;//date format from server side
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+
+                            Diff = parseInt(DateDiff((dt.getMonth() + 1) + "/" + (dt.getDate()) + "/" + (dt.getFullYear())));
                           
-                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                       }, "autoWidth": true
-                   },
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        }, "autoWidth": true
+                    },
                      { "data": "Type", "name": "Type", "autoWidth": true },
-                     {
+                     {                        
                          render: function (data, type, row) {
                              switch (row.Status) {
-
                                  case "open":
-                                     if (Diff < 5) {
-                                         return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                     if (parseInt(Diff) < 5) {               
+
+                                         $(row).addClass('RowRed');
+                                         return "<td class='bgcolor'><span class='label label-primary'>" + row.Status + "</span></td>"
                                          break;
                                      }
-                                     else
-                                     {
-                                         return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                     else {
+                                         return "<td class='dd'><span class='label label-primary'>" + row.Status + "</span></td>"
                                          break;
                                      }
                                  case "pending":
@@ -103,8 +133,7 @@
                                      break;
                              }
                          }
-                     },
-
+                     },                     
                     {
                         render: function (data, type, row) {
 
@@ -123,9 +152,13 @@
                                 '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditService(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>'
                             }
                         }
+
                     }
             ]
+
         });
+
+       
 
         $('#AddNewQutationFromQutaion').click(function () {
             LoadContacts();
@@ -133,7 +166,9 @@
         });
 
     });
+    var diffDay;
 
+  
 
 
     function DateDiff(todate) {
@@ -142,7 +177,7 @@
         var curr_date = d.getDate();
         var curr_month = d.getMonth() + 1;
         var curr_year = d.getFullYear();
-       // alert(todate);
+        // alert(todate);
         var start = new Date();
         var end = todate;
 
@@ -153,8 +188,12 @@
         var todates = new Date(todate);
         var FromDate = new Date(gg);
         var timeDiff = Math.abs(FromDate.getTime() - todates.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+       
         return diffDays;
+
+       
     }
 
 
@@ -203,7 +242,7 @@
         });
     }
 
-  
+
 
     function ViewServiceDetail(QutationId) {
 

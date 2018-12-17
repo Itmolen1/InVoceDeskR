@@ -39,6 +39,7 @@
 
     <link href="~/Content/CustomRadio.css" rel="stylesheet" />
     <link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
+    <link href="~/Content/CustomeDataTable.css" rel="stylesheet" />
 
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -992,23 +993,33 @@
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-agenda"></i><span class="hide-menu">Account</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="/MVCHeadAccount/Index">Head Account</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-align-left"></i><span class="hide-menu">Report</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                @*<li>
-
-                                        <ul aria-expanded="false" class="collapse">
-                                            <li><a href="Report/Journal">Journal</a></li>
-                                            <li><a href="Report/Journal">Journal</a></li>
-                                            <li><a href="Report/Journal">Journal</a></li>
-                                            <li><a href="Report/Journal">Journal</a></li>
-                                        </ul>
-                                    </li>*@
+                                <li><a href="/MVCHeadAccount/Index">Account Section</a></li>
                                 <li><a href="/Reports/Journal">Journal</a></li>
                                 <li><a href="/Reports/BalanceSheet">Balance Sheet</a></li>
+                            </ul>
+                        </li>
+                       
+                        <li>
+                            <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-align-left"></i><span class="hide-menu">Reports <span class="badge badge-pill badge-info">25</span></span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                @*<li><a href="starter-kit.html">Starter Kit</a></li>
+                                <li><a href="pages-blank.html">Blank page</a></li>*@
+                                <li>
+                                    <a href="javascript:void(0)" class="has-arrow">Qutation <span class="badge badge-pill badge-success pull-right">6</span></a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="#" id="OpenQutation">Open</a></li>
+                                        <li><a href="#" id="AcceptedQutation">Accepted</a></li>
+                                        <li><a href="#" id="Pending">Pending</a></li>
+                                        <li><a href="#" id="Rejectd">Rejected</a></li>                                     
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" class="has-arrow">Invoice <span class="badge badge-pill badge-success pull-right">6</span></a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="pages-login.html">Paid</a></li>
+                                        <li><a href="pages-login-2.html">Un Paid</a></li>                                       
+                                    </ul>
+                                </li>                          
                             </ul>
                         </li>
                     </ul>
@@ -1207,9 +1218,14 @@
 <script>
     var GoodsServicess = "";
     GoodsService = "Good"
+    var QutationStatus;
     $(document).ready(function () {       
         GetUserInfo();
+       
     });
+
+
+   
 
     function GetUserInfo()
     {
@@ -1239,7 +1255,26 @@
             }
         });
     }
+
+    $('#OpenQutation').click(function () {
+      
+        window.location.href = "/QutationOrder/QutationOrderList?status=open";
+    });
+
+    $('#AcceptedQutation').click(function () {
    
+        window.location.href = "/QutationOrder/QutationOrderList?status=accepted";
+    });
+
+    $('#Pending').click(function () {
+
+        window.location.href = "/QutationOrder/QutationOrderList?status=Pending";
+    });
+    $('#Rejectd').click(function () {
+
+        window.location.href = "/QutationOrder/QutationOrderList?status=Rejectd";
+    });
+    
     $('#changeImage').click(function () {
         $.ajax({
             url: "/UserInfo/GetUserByCompayId",

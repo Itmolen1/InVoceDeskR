@@ -1,0 +1,215 @@
+﻿
+@{
+    ViewBag.Title = "QutationByStatus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+
+   
+}
+
+
+
+<table class="table" id="QutationOrderTableByStatus">
+    <thead style="background-color:black;color:white">
+        <tr>
+            <th>
+                Code
+            </th>
+
+            <th>
+                Date
+            </th>
+            <th>
+                DueDate
+            </th>
+            <th>
+                RefrenceNumber
+            </th>
+            <th>
+                Qutation Subtotal
+            </th>
+            <th>Type</th>
+            <th>
+                Status
+            </th>
+
+            <th>
+                Action
+            </th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        var status = '@ViewBag.ststus';
+      
+        LoadQutationOrderTable(status);
+
+
+        $('#btnqutation').click(function () {
+            if ($('#drppaymentDebitq option:selected').text() == $('#drpAccountCreditq option:selected').text()) {
+                alert('Account name canot be same');
+                return;
+            }
+
+
+            if ($('txttransactionDateDebitq').val() == 0) {
+                alert('txttransactionDateDebit  canot be null');
+                return;
+            }
+
+
+            if ($('#drpAccountDebitq').val() == 0) {
+                alert('drpAccountDebit  canot be null');
+                return;
+            }
+
+
+            if ($('#AmountDebitq').val() == 0 || $('#AmountDebitq').val() == 0.00) {
+                alert('debit amount canot be zero');
+                return;
+            }
+
+            if ($('#AmountCreditq').val() == 0 || $('#AmountCreditq').val() == 0.00) {
+                alert('AmountCredit canot be zero');
+                return;
+            }
+
+            if ($('#AmountDebitq').val() != $('#AmountCreditq').val()) {
+                alert('Amonnt are not same please checke');
+                return;
+            }
+
+            if ($('#tbleAccount tr').length == 2) {
+                alert("Please save and chhose another transiction");
+            }
+            else {
+
+                var AccountTable = $('#tbleAccount');
+                var AcciontName = $('#drppaymentDebitq option:selected').text();
+                var TID = $('#txttransactionIdq').val();
+                var ref = $('#txtrefrencenumberq').val();
+                var Amountdebit = $('#AmountDebitq').val();
+                var AmountCridit = $('#AmountCreditq').val();
+                var Tdate = $('#txttransactionDateDebitq').val();
+                var drpAccountCredit = $('#drpAccountCreditq option:selected').text();
+                var paymentTer = $('#drpAccountDebit option:selected').text();
+                AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+                AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+                $('#tableAccountinfo').css('visibility', 'visible');
+            }
+        });
+    });
+
+    function LoadQutationOrderTable(status) {
+        debugger;
+        $("#QutationOrderTableByStatus").DataTable({
+                //"processing": true, // for show progress bar
+                "processing": true,
+                "language": {
+                    //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+                },
+                "destroy": true,
+                "searching": true,
+                "autoWidth": false,
+                "serverSide": true, // for process server side
+                "filter": false, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+                    "url": "/QutationOrder/GetQutationOrderList",
+                    "type": "POST",
+                    data: { status: status },
+                    "datatype": "json"
+                },
+                "columns": [
+                      { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
+                        {
+                            "data": "QutationDate", "type": "date ",
+                            "render": function (value) {
+                                if (value === null) return "";
+                                var pattern = /Date\(([^)]+)\)/;//date format from server side
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                            }, "autoWidth": true
+                        },
+                       {
+                           "data": "DueDate", "type": "date ",
+                           "render": function (value) {
+                               if (value === null) return "";
+                               var pattern = /Date\(([^)]+)\)/;//date format from server side
+                               var results = pattern.exec(value);
+                               var dt = new Date(parseFloat(results[1]));
+                               return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                           }, "autoWidth": true
+                       },
+
+                      { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
+
+                    { "data": "SubTotal", "name": "SubTotal", "autoWidth": true },
+                    { "data": "Type", "name": "Type", "autoWidth": true },
+
+                    {
+                        render: function (data, type, row) {
+
+                            switch (row.Status) {
+
+                                case "open":
+
+                                    return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                    break;
+
+                                case "pending":
+                                    return "<td><span class='label label-info'>" + row.Status + "</span></td>"
+                                    break;
+
+                                case "rejected":
+                                    return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
+                                    break;
+
+                                case "accepted":
+
+                                    return "<td><span class='label label-success'>" + row.Status + "</span></td>"
+                                    break;
+                            }
+                        }
+                    },
+
+                    {
+                        render: function (data, type, row) {
+
+
+                            switch (row.Status) {
+                                case "open":
+                                    return '<button href="" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.SubTotal + ', \'' + row.Type + '\')"><i class="fa fa-check">proceed</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+
+                                    //return '<button class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.PurchaseSubTotal + ')"><i class="fa fa-check"> Record payment</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
+                                    break
+
+                                case "rejected":
+                                    return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-clock-o"> Re  Open</i></a>'
+                                    break
+
+
+                                case "pending":
+                                    return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re  Open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                    break
+
+
+                                case "accepted":
+                                    return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye"> View Invoice</i></a>'
+                                    break
+                            }
+
+                        }
+                    }
+                ]
+            });
+   }
+</script>
