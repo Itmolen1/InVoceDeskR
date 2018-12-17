@@ -159,57 +159,11 @@
                                 <th>
                                     Action
                                 </th>
-                              
+
                             </tr>
                         </thead>
-                        <tbody class="tbody">
 
-                            @if (ViewBag.QutationDatailsList != null)
-                            {
-                                foreach (var item in ViewBag.QutationDatailsList)
-                                {
-                                    <tr id="@item.QutationDetailId">
-                                        <td>
-                                            <select Id="SelectProductQutationG" class="product form-control Input-height" style="width:300px !important;font-size:12px">
-                                                <option value="0">Select Item..</option>
-                                                @foreach (var product in ViewBag.Product)
-                                                {
-                                                    <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
-                                                }
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="quantityG form-control Input-height" id="QuantityG" value="@item.Quantity" style="font-size:12px" />
-                                        </td>
-                                        <td>
-                                            <input type="text" class="rateG form-control Input-height" id="Rate" value="@item.Rate" style="font-size:12px" />
-                                        </td>
-                                        <td>
-                                            <input type="text" class="FTotalG form-control Input-height" id="FTotalG" value="@item.Total" readonly="readonly" style="font-size:12px" />
-                                        </td>
-                                        <td>
-                                            <select id="SelectVATG" name="NewsCategoriesID" class="VATG  form-control Input-height" style="width:80px;font-size:12px">
-
-                                                @foreach (var item1 in ViewBag.VatDrop)
-                                                {
-                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
-                                                }
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" id="RemoveEditG" class="btn btn-danger">Remove</button>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" class="QutationDetailIdG" value="@item.QutationDetailId" />
-                                        </td>
-                                        <td>
-                                            <input type="hidden" class="QutationIDG" value="@item.QutationID" />
-                                        </td>
-                                    </tr>
-                                }
-                            }
-
-                        </tbody>
+                        <tbody class="tbody"></tbody>
                         <tr id="mainrow">
                             <td>
                                 <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
@@ -234,7 +188,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" readonly id="RowTotalG" class="form-control Input-height" style="width:80px" />
+                                <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
                             </td>
                             <td>
                                 <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
@@ -242,15 +196,15 @@
                         </tr>
                     </table>
                 </div>
-                <div class="row">
-                    <div class="col-1 b-r"></div>
-                    <div class="col-11 b-r">
-                        <div id="OrderItems">
-                            <table class="table" id="orderdetailsitems"></table>
-                            <span id="orderItemError" style="color:red"></span>
+                @*<div class="row">
+                        <div class="col-1 b-r"></div>
+                        <div class="col-11 b-r">
+                            <div id="OrderItems">
+                                <table class="table" id="orderdetailsitemssss"></table>
+                                <span id="orderItemError" style="color:red"></span>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </div>*@
             </div>
 
 
@@ -261,11 +215,14 @@
                     <table class="table" id="QutationServiceDetail1">
                         <thead class="thead-dark">
                             <tr>
+                                <th>Date</th>
+
                                 <th>
                                     Services
                                 </th>
+                                <th>Decription</th>
                                 <th>
-                                    Number Of hour
+                                    hour
                                 </th>
                                 <th>
                                     Hourly rate
@@ -283,107 +240,56 @@
                                     Action
                                 </th>
 
-
-
                             </tr>
+
                         </thead>
-                        <tbody class="tbody">
-
-                            @if (ViewBag.QutationDatailsList != null)
-                            {
-                                foreach (var item in ViewBag.QutationDatailsList)
-                                {
-                                    <tr id="@item.QutationDetailId">
-                                        <td>
-                                            <select Id="SelectProductQutationS" class="productS form-control Input-height" style="width:300px !important;font-size:12px">
-                                                <option value="0">Select Item..</option>
-                                                @foreach (var product in ViewBag.Product)
-                                                {
-                                                    <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
-                                                }
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="quantityS form-control Input-height" id="QuantityS" value="@item.Quantity" style="font-size:12px" />
-                                        </td>
-                                        <td>
-                                            <input type="text" class="rateS form-control Input-height" id="RateS" value="@item.Rate" style="font-size:12px" />
-                                        </td>
-                                        <td>
-                                            <input type="text" class="FTotalS form-control Input-height" id="FTotalS" value="@item.Total" readonly="readonly" style="font-size:12px" />
-                                        </td>
-                                        <td>
-                                            <select id="SelectVATs" name="NewsCategoriesID" class="VATS  form-control Input-height" style="width:80px;font-size:12px">
-
-                                                @foreach (var item1 in ViewBag.VatDrop)
-                                                {
-                                                    <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
-                                                }
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" id="RemoveEditS" class="btn btn-danger">Remove</button>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" class="QutationDetailIdS" value="@item.QutationDetailId" />
-                                        </td>
-                                        <td>
-                                            <input type="hidden" class="QutationIDS" value="@item.QutationID" />
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
+                        <tbody class="tbody"></tbody>
                         <tr id="mainrow1">
                             <td>
-                                <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 300px;font-size:12px"></select>
+                                <input type="date" class="form-control Input-height MAterialDatepicker" />
+                            </td>
+
+                            <td>
+                                <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityS form-control Input-height", id = "QuantityS" } })
+                                <input type="text" class="form-control Input-height" />
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
                                 @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateS form-control Input-height", id = "RateS" } })
+                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
                                 @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalS form-control Input-height", id = "FTotalS", @readonly = "readonly" } })
+                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                <select id="SelectVATS" class="VATS form-control Input-height" style="width:60px;font-size:12px">
+                                <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
                                     <option>0</option>
                                     <option>6</option>
                                     <option>21</option>
                                 </select>
                             </td>
-                            @*<td>
-                                    <input type="text" readonly id="RowTotalS" class="form-control Input-height" style="width:60px" />
-                                </td>*@
                             <td>
-                                <input type="text" readonly id="RowTotalS" class="form-control Input-height" style="width:80px" />
+                                <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+
                             </td>
                             <td>
 
                                 <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
+
+                            </td>
 
                         </tr>
                     </table>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-1 b-r">
-                    <div class="col-11 b-r">
-                        <div class="row">
-                            <div id="OrderItems">
-                                <table class="table" id="QutationServiceDetail1"></table>
-                                <span id="orderItemError" style="color:red"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <hr />
             <div class="row">
                 <div class="col-8 b-r">
@@ -461,13 +367,13 @@
         LoadProductS();
         LoadProductG();
     });
-    //Goodgs
+
 
 
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
 
-        currentRow1 = $(this).closest("tr");      
+        currentRow1 = $(this).closest("tr");
         var VAT = Currentrow.find('.VATG').val();
         AddingVatValue(VAT, currentRow1);
 
@@ -502,7 +408,6 @@
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
             $('#orderdetailsitems').append($newRow);
-
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -511,33 +416,145 @@
             $('#mainrow .quantityG').val('');
             $('#mainrow #RowTotalG').val('');
 
+
+
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
             $('#mainrow #SelectVATG').val(0);
-
-           
-            calculatevatGoods();
-
-
+         
+            vat = currentRow1.find('.VATG').val();
+            RowSubTalSubtotal(vat, currentRow1);
         }
 
     });
 
-    $('#mainrow .quantityG').keyup(function () {
+    $('.quantityG').keyup(function () {
+
 
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
     });
 
-    $('#mainrow .rateG').keyup(function () {
+    $('.rateG').keyup(function () {
 
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
     });
+
+
+    $('.rateG').keyup(function () {
+
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+    });
+
+    var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
+     
+    $(document).on("keypress", ".tbody .rateG", function () {
+       
+        alert('hello');
+        Currentrow = $(this).closest("tr");
+        FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
+        FocuseInTotal = Currentrow.find('.RowTotalG').val();
+
+    });
+
+    
+
+    $(document).on("focusout", ".tbody .rateG", function () {
+        debugger;
+        Currentrow = $(this).closest("tr");
+        FocusOutSubTotal = Currentrow.find(".FTotalG").val();
+        FocusOutTotal = Currentrow.find('.RowTotalG').val();
+
+        var IncreasrTotal =0;
+        var SubToatl = 0;
+        
+        var FDescreaseTotal=0;
+        var DecreaseSubTotal = 0;
+
+        if (parseFloat(FocusOutTotal) > parseFloat(FocuseInTotal))
+        {
+            IncreasrTotal = parseFloat(FocusOutTotal) - parseFloat(FocuseInTotal);
+        }
+        if (parseFloat(FocusOutTotal) < parseFloat(FocuseInTotal)) {
+            FDescreaseTotal = parseFloat(FocuseInTotal) - parseFloat(FocusOutTotal);
+        }
+
+        if (parseFloat(FocusOutSubTotal) > parseFloat(FoucuseInSubTotal))
+        {
+            SubToatl = parseFloat(FocusOutSubTotal) - parseFloat(FoucuseInSubTotal);
+        }
+
+        if (parseFloat(FocusOutTotal) < parseFloat(FoucuseInSubTotal)) {
+            DecreaseSubTotal = parseFloat(FoucuseInSubTotal) - parseFloat(FocusOutSubTotal);
+        }
+
+        if (parseFloat(FDescreaseTotal) != 0 && parseFloat(DecreaseSubTotal) != 0)
+        {
+            GrandTotal("Rem", FDescreaseTotal, DecreaseSubTotal)
+        }
+
+        if (parseFloat(IncreasrTotal) != 0 && parseFloat(SubToatl) != 0)
+        {
+            GrandTotal("Add", IncreasrTotal, SubToatl)
+        }
+    });
+
+
+
+
+    $(document).on("keyup", ".tbody .rateG", function () {
+
+        debugger;
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+
+        var  Total = Currentrow.find(".FTotalG").val();
+        var   Subtotalwt = Currentrow.find('.RowTotalG').val();
+        GrandTotal("Add", Total, Subtotalwt);
+
+
+    });
+
+
+    $(document).on("keyup", ".tbody .quantityG", function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+    });
+
+
+
+    $(document).on("keyup", ".tbody .rateG", function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+    });
+
+
+
+    $(document).on("keyup", ".tbody .quantityG", function () {
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+    });
+
 
 
     function calculateTotalGoods(currentRow) {
+
+
         Quantity = Currentrow.find(".quantityG").val(),
         Price = Currentrow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -546,9 +563,13 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
+        // Currentrow.find('.FTotalG').val('');
+
+        Total = 0;
         Total = Currentrow.find(".FTotalG").val();
+
         if (parseInt(vat) == 0) {
-            Currentrow.find('#RowTotalG').val(Total);
+            Currentrow.find('.RowTotalG').val(Total);
             return;
         }
         var InputVatValue = parseFloat((Total / 100) * vat);
@@ -556,14 +577,20 @@
         var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
 
 
-        Currentrow.find('#RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
+        Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
 
-        //AsignValueT21(parseFloat(InputVatValue).toFixed(2), vat,'AddingVat');
     }
-    
 
-    $('#mainrow .VATG').change(function () {
-        debugger;
+
+    $(document).on('change', '.tbody .VATG', function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+
+    });
+
+    $('.tbody .VATG').change(function () {
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -571,25 +598,32 @@
     });
 
 
+
+
     function AddingVatValue(vat, CurrentRow) {
+
+        var Subtotalwt;
         debugger;
         Total = Currentrow.find(".FTotalG").val();
+        Subtotalwt = Currentrow.find('.RowTotalG').val();
+
         if (parseInt(vat) == 0) {
             Currentrow.find('#RowTotalG').val(Total);
+            GrandTotal("Add", Total, Subtotalwt);
             return;
         }
         var InputVatValue = parseFloat((Total / 100) * vat);
-
         var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
 
-
         Currentrow.find('#RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
-
         AsignValueT21(parseFloat(InputVatValue).toFixed(2), vat, 'AddingVat');
+
+        GrandTotal("Add", Total, Subtotalwt);
+
     }
 
     function RemovingVatValue(vat, CurrentRow) {
-        debugger;
+
         Total = Currentrow.find(".FTotalG").val();
         if (parseInt(vat) == 0) {
             Currentrow.find('#RowTotalG').val(Total);
@@ -605,12 +639,32 @@
         AsignValueT21(parseFloat(InputVatValue).toFixed(2), vat, 'Removing');
     }
 
-    //Services
 
-    $('#btnSerVice').click(function () {
+
+
+
+    $('#mainrow .VATG').change(function () {
 
 
         currentRow1 = $(this).closest("tr");
+        vat = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+    });
+
+
+
+    //Services
+
+    $('#btnSerVice').click(function () {
+        currentRow1 = $(this).closest("tr");
+
+
+        vat = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow1);
+
+
+        AddingVatValue(vat, currentRow1);
+
 
         var isAllValid = true;
         if ($("#mainrow1 #SelectProductQutationS").val() == "0") {
@@ -636,7 +690,7 @@
         if (isAllValid) {
             var $newRow = $("#mainrow1").clone().removeAttr('id');
             $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
-            $('.VATS', $newRow).val($("#mainrow1 #SelectVATS").val());
+            $('.VATG', $newRow).val($("#mainrow1 #SelectVATS").val());
 
             //Replace add button with remove button
             $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
@@ -649,71 +703,30 @@
 
             $('#QutationServiceDetail1').append($newRow);
 
-
-            $(".FTotalS").prop('disabled', true);
+            $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
-            $('#mainrow1 .quantityS').val('');
-            $('#mainrow1 #RateS').val('');
-            $('#mainrow1 .FTotalS').val('');
-            $('#mainrow1 .quantityS').val('');
-            $('#mainrow1 #RowTotalS').val('');
-
+            $('#mainrow1 .quantityG').val('');
+            $('#mainrow1 .rateG ').val('');
+            $('#mainrow1 #dddd').val('');
+            $('#mainrow1 #FTotalG').val('');
+            $('#mainrow1 .quantityG').val('');
+            $('#mainrow1 #FTotal').val('');
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
             $('#mainrow1 #SelectVATS').val(0);
 
-            calculatevatServices();
+
+
         }
     });
-    $('#mainrow1 .quantityS').keyup(function () {
-
-        debugger;
-        Currentrow = $(this).closest("tr");
-        calculateTotalService(Currentrow);
-    });
-
-    $('#mainrow1 .rateS').keyup(function () {
-
-        Currentrow = $(this).closest("tr");
-        calculateTotalService(Currentrow);
-    });
-
-    function calculateTotalService(currentRow) {
-        Quantity = Currentrow.find(".quantityS").val(),
-        Price = Currentrow.find('.rateS').val();
-        Total = parseFloat(Quantity * Price);
-        Currentrow.find('.FTotalS').val(Total);
-    }
-
-    function RowSubTalService(vat, CurrentRow) {
-        debugger
-        var Total1 = 0;
-        //Total = Currentrow.find(".FTotalS").val();
-        //var Total1 = parseFloat((Total / Total) * vat + 100);
-        //Currentrow.find('#RowTotalS').val(Total1.toFixed(2));
 
 
-        Total = Currentrow.find(".FTotalS").val();
-        if (parseInt(vat) == 0) {
-            Currentrow.find('#RowTotalS').val(Total);
-            return;
-        }
-        var InputVatValue = parseFloat((Total / 100) * vat);
-
-        var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
 
 
-        Currentrow.find('#RowTotalS').val(parseFloat(ValueWTV).toFixed(2));
-    }
-    
-    $('#mainrow1 .VATS').change(function () {
-        debugger;
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATS').val();
-        RowSubTalService(vat, Currentrow);
-    });
+
+
 
     function LoadProductG() {
         PgoodServices = "Good";
@@ -740,6 +753,7 @@
 
         });
     }
+
 
     function LoadProductS() {
         PgoodServices = "Services";
@@ -782,7 +796,7 @@
             $('#CreateNewProductModalGoods').modal('show');
         }
         else if (value == "0") {
-            alert(value);
+
             return;
         }
         else {
@@ -793,7 +807,7 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
-                    ChangeTotalOnItemCahe(Current);
+                    //  ChangeTotalOnItemCahe(Current);
                     $('#mainrow .rateG').val(resultData);
                 },
                 error: function (errormessage) {
@@ -818,7 +832,7 @@
             $('#CreateNewProductModalGoods').modal('show');
         }
         else if (value == "0") {
-            alert(value);
+
             return;
         }
         else {
@@ -829,8 +843,10 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
-                    ChangeTotalOnItemCahe(Current);
-                    $('#mainrow1 .rateS').val(resultData);
+                    // ChangeTotalOnItemCahe(Current);
+
+                    $('#mainrow1 .rateG').val(resultData);
+
                 },
                 error: function (errormessage) {
                     //alert(errormessage)
@@ -839,159 +855,89 @@
         }
     });
 
-    function ChangeTotalOnItemCahe(currentRow) {
-        var quantity = currentRow.find("td:eq(1)").find('input').val();  // get current row 1st TD value
-        var Price = currentRow.find("td:eq(2)").find('input').val();
-        var total = quantity * Price;
-        currentRow.find('td:eq(3)').find('input').val(total);
+
+
+
+    function GrandTotal(Flage, NewValue, Newvaluewt) {
+        debugger;
+        if (Flage == "Add") {
+
+            var Subtotal = $('#SubTotal').text();
+            if (Subtotal != "") {
+
+               var t = parseFloat(Subtotal) + parseFloat(NewValue);
+                $('#SubTotal').text(t.toFixed(2));
+            }
+            else {
+                $('#SubTotal').text(parseFloat(NewValue).toFixed(2));
+            }
+            var TotalWt = $('#TotalBTW').text();
+
+
+            if (TotalWt != "") {
+                var t = parseFloat(Subtotal) + parseFloat(Newvaluewt);
+                $('#TotalBTW').text(t.toFixed(2));
+            }
+            else {
+                $('#TotalBTW').text(parseFloat(Newvaluewt).toFixed(2));
+            }
+
+            var GTotal = $('#gtotal').text();
+
+            if (GTotal != "") {
+                var t = parseFloat(Subtotal) + parseFloat(Newvaluewt);
+                $('#gtotal').text(t.toFixed(2));
+            }
+            else {
+                $('#gtotal').text(parseFloat(Newvaluewt).toFixed(2));
+            }
+
+        }
+        else if (Flage == "Rem") {
+
+            var Subtotal = $('#SubTotal').text();
+            if (Subtotal != "") {
+                var t = parseFloat(Subtotal) - parseFloat(NewValue);
+                $('#SubTotal').text(t.toFixed(2));
+            }
+            else {
+                //$('#SubTotal').text(Subtotal.toFixed(2));
+            }
+            var TotalWt = $('#TotalBTW').text();
+
+
+            if (TotalWt != "") {
+                var t = parseFloat(Subtotal) - parseFloat(Newvaluewt);
+                $('#TotalBTW').text(t.toFixed(2));
+            }
+            else {
+                //$('#TotalBTW').text(Newvaluewt.toFixed(2));
+            }
+
+            var GTotal = $('#gtotal').text();
+
+
+            if (GTotal != "") {
+                var t = parseFloat(Subtotal) - parseFloat(Newvaluewt);
+                $('#gtotal').text(t.toFixed(2));
+            }
+            else {
+                //$('#gtotal').text('0.00');
+            }
+        }
+
     }
 
-    function calculatevatServices() {
-        if ($('#orderdetailsitems tr').length == 0) {
-            $('#btwo').text('0.00');
-            $('#BTW6').text('0.00');
-            $('#BTW21').text('0.00');
-        }
-        else {
 
-            var sum0 = 0;
-            var total0 = 0;
-            $('#orderdetailsitems tr').each(function () {
-                $('#BTW0').text();
+    function AsignValueT21(NewValue, Vat, InOrOut) {
 
-                r = $(this).closest('tr');
-                var value = r.find('.VATS  option:selected').val();
-                if (r.find('.VATS  option:selected').val() == 0) {
-                    total0 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total0) && total0.length != 0) {
-                        sum0 += parseInt(total0);
-                    }
-                    var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
-                    var totalr = Math.round(totalvat0, 2);
-                    $('#BTW0').text(totalvat0.toFixed(2));
-                }
-                else {
-                    $('#BTW0').text('0.00');
-                }
-            })
-        }
+        debugger;
 
-        var sum6 = 0;
-        var total6 = 0;
-        $('#orderdetailsitems tr').each(function () {
-            var r = $(this).closest('tr');
-            var value = r.find('.VATS  option:selected').val();
-            if (r.find('.VATS  option:selected').val() == 6) {
-                total6 = r.find('td:eq(3)').find('input').val();
-                if (!isNaN(total6) && total6.length != 0) {
-                    sum6 += parseInt(total6);
-                }
-                var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
-                var totalr = Math.round(totalvat6, 2);
-                $('#BTW6').text(totalvat6.toFixed(2));
-            }
-        })
-
-        var sum21 = 0;
-        var total21 = 0;
-        $('#orderdetailsitems tr').each(function () {
-            //$('#BTW21').text();
-            var r = $(this).closest('tr');
-            var value = r.find('.VATS  option:selected').val();
-            if (r.find('.VATS  option:selected').val() == 21) {
-
-                total21 = r.find('td:eq(3)').find('input').val();
-                if (!isNaN(total21) && total21.length != 0) {
-                    sum21 += parseInt(total21);
-                }
-                var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
-
-
-                alert($('#BTW21').val() + 'vat 21 values');
-                $('#BTW21').text(totalvat21.toFixed(2));
-            }
-
-        })
-        //RowCounte();
-    }
-
-    function calculatevatGoods() {
-        if ($('#orderdetailsitems tr').length == 0) {
-            $('#btwo').text('0.00');
-            $('#BTW6').text('0.00');
-            $('#BTW21').text('0.00');
-        }
-        else {
-
-            var sum0 = 0;
-            var total0 = 0;
-            alert($('#orderdetailsitems tr').length);
-            $('#orderdetailsitems tr').each(function () {
-                $('#BTW0').text();
-
-                r = $(this).closest('tr');
-                var value = r.find('.VATG option:selected').val();
-                if (r.find('.VATG option:selected').val() == 0) {
-                    total0 = r.find('td:eq(3)').find('input').val();
-                    if (!isNaN(total0) && total0.length != 0) {
-                        sum0 += parseInt(total0);
-                    }
-                    var totalvat0 = parseFloat(sum0 / 100 * 6 + sum0 - sum0);
-                    var totalr = Math.round(totalvat0, 2);
-                    $('#BTW0').text(totalvat0.toFixed(2));
-                }
-                else {
-                    $('#BTW0').text('0.00');
-                }
-            })
-        }
-
-        var sum6 = 0;
-        var total6 = 0;
-        $('#orderdetailsitems tr').each(function () {
-            var r = $(this).closest('tr');
-            var value = r.find('.VATG option:selected').val();
-            if (r.find('.VATG option:selected').val() == 6) {
-                total6 = r.find('td:eq(3)').find('input').val();
-                if (!isNaN(total6) && total6.length != 0) {
-                    sum6 += parseInt(total6);
-                }
-                var totalvat6 = parseFloat(sum6 / 100 * 6 + sum6 - sum6);
-                var totalr = Math.round(totalvat6, 2);
-                $('#BTW6').text(totalvat6.toFixed(2));
-            }
-        })
-
-        var sum21 = 0;
-        var total21 = 0;
-        $('#orderdetailsitems tr').each(function () {
-            //$('#BTW21').text();
-            var r = $(this).closest('tr');
-            var value = r.find('.VATG option:selected').val();
-            if (r.find('.VATG option:selected').val() == 21) {
-
-                total21 = r.find('td:eq(3)').find('input').val();
-                if (!isNaN(total21) && total21.length != 0) {
-                    sum21 += parseInt(total21);
-                }
-                var totalvat21 = parseFloat(sum21 / 100 * 21 + sum21 - sum21);
-
-                VAT21VALUE = parseFloat(totalvat21.toFixed(2));
-
-
-
-            }
-
-        });
-        //RowCounte();
-    }
-
-    function AsignValueT21(NewValue, Vat, InOrOut) {       
         if (InOrOut == 'AddingVat') {
             if (Vat == 21) {
                 var Currnt21Value = $('#BTW21').text();
 
-                if ((Currnt21Value) != '') {
+                if ((Currnt21Value) != "") {
                     var v = parseFloat(Currnt21Value) + parseFloat(NewValue);
                     $('#BTW21').text(parseFloat(v).toFixed(2));
                 }
@@ -1010,12 +956,11 @@
                 }
             }
         }
-        else if(InOrOut =="Removing")
-        {
+        else if (InOrOut == "Removing") {
             if (Vat == 21) {
                 var Currnt21Value = $('#BTW21').text();
 
-                if ((Currnt21Value) != '') {
+                if ((Currnt21Value) != "") {
                     var v = parseFloat(Currnt21Value) - parseFloat(NewValue);
                     $('#BTW21').text(parseFloat(v).toFixed(2));
                 }
@@ -1025,7 +970,7 @@
             }
             else if (Vat == 6) {
                 var Currnt21Value = $('#BTW6').text();
-                if ((Currnt21Value) != '') {
+                if ((Currnt21Value) != "") {
                     var v = parseFloat(Currnt21Value) - parseFloat(NewValue);
                     $('#BTW6').text(parseFloat(v).toFixed(2));
                 }
@@ -1037,15 +982,16 @@
     }
 
 
-    $('#orderdetailsitems').on('click', '.remove', function () {
-        debugger;
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();       
 
-       RemovingVatValue(VAT,currentRow);
+    $('#orderdetailsitems').on('click', '.remove', function () {
+
+        var currentRow = $(this).closest('tr');
+        var vat = currentRow.find('.VAT  option:selected').val();
+
+        RemovingVatValue(VAT, currentRow);
 
         $(this).parents('tr').remove();
-      
+
     });
 
 
