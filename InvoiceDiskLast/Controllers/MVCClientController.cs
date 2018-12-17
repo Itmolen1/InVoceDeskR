@@ -259,24 +259,58 @@ namespace InvoiceDiskLast.Controllers
                 DirectoryViewModel _Directory = new DirectoryViewModel();
                 HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-                d = _Directory.DirectoryPath.ToString();
-                string F = _Directory.DirectoryPath.ToString();
-                d = d.Substring(17);
-                ViewBag.Name = d.Replace("/", "");
 
-                if (_Directory.DirectoryPath != null)
+                if (_Directory == null)
                 {
-                    DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-                    FileInfo[] info = dir.GetFiles("*.*");
 
-                    foreach (FileInfo f in info)
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Id.ToString()).Result;
+                    MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                    CreatDirectoryClass.CreateDirecotyFolder(mvcContactModel.ContactsId, mvcContactModel.ContactName);
+
+                  
+                
+                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
                     {
-                        string Name = f.Name;
-                        _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-                    }
-                    ViewBag.TreeView = _DirectoryList;
-                }
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
 
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+                else
+                {
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
             }
             catch (Exception)
             {
@@ -302,11 +336,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     return Json("Fail", JsonRequestBehavior.AllowGet);
                 }
-
-
-
-
-
             }
             catch (Exception)
             {

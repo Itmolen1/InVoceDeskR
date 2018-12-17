@@ -23,12 +23,12 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        public ActionResult QutationOrderList()
+        public ActionResult QutationOrderList(string status)
         {
             PendingModel model = new PendingModel();
             model.FromDate = DateTime.Now;
             model.ToDate = DateTime.Now;
-
+            ViewBag.ststus = status;
             return View(model);
         }
 
@@ -496,15 +496,7 @@ namespace InvoiceDiskLast.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
 
         }
-
-
-
-
-
-
-
-
-
+        
         [HttpPost]
         public JsonResult GetPendingItem(int PurchaseId)
         {
@@ -618,6 +610,21 @@ namespace InvoiceDiskLast.Controllers
 
             return Json("Success", JsonRequestBehavior.AllowGet);
 
+            return View();
+        }
+
+
+        public ActionResult QutationByStatus(string status)
+        {
+            if(status == null)
+            {
+                ViewBag.ststus = "accepted";
+            }
+            else
+            {
+                ViewBag.ststus = status;
+            }
+            
             return View();
         }
 

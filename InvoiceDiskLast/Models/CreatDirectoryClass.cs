@@ -13,7 +13,7 @@ namespace InvoiceDiskLast.Models
         static string Result = "";
 
 
-        public static string CreateDirecotyFolder(int refrenceId, string Name)
+        public static string CreateDirecotyFolder(int? refrenceId, string Name)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace InvoiceDiskLast.Models
 
 
 
-        public static void AddDirectory(int Id, string Path)
+        public static void AddDirectory(int? Id, string Path)
         {
             try
             {
@@ -63,14 +63,13 @@ namespace InvoiceDiskLast.Models
 
 
 
+
         public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files)
         {
 
             bool Result = true;
 
             var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG",".txt" };
-
-
 
             try
             {
