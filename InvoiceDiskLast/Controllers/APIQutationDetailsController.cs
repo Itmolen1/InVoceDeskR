@@ -35,16 +35,19 @@ namespace InvoiceDiskLast.Controllers
 
             if (QTIDs != 0)
             {
-                var query = db.QutationDetailsTables.ToList().Where(c => c.QutationID == QTIDs).Select(pd => new {
+                var query = db.QutationDetailsTables.ToList().Where(c => c.QutationID == QTIDs).Select(pd => new
+                {
 
                     ItemId = pd.ItemId,
                     QutationID = pd.QutationID,
                     Rate = pd.Rate,
                     Quantity = pd.Quantity,
-                    Vat = pd.Vat,                 
+                    Vat = pd.Vat,
                     Total = pd.Total,
+                    Type = pd.Type,
+
                     QutationDetailId = pd.QutationDetailId
-                }).ToList();      
+                }).ToList();
 
 
                 return Ok(query);
@@ -67,6 +70,9 @@ namespace InvoiceDiskLast.Controllers
                                  Vat = pd.Vat,
                                  ItemName = p.ProductName,
                                  Total = pd.Total,
+                                 Type = pd.Type,
+                                 Description = pd.Description,
+                                 ServiceDate = pd.ServiceDate,
                                  QutationDetailId = pd.QutationDetailId
                              }).ToList();
 
@@ -141,7 +147,7 @@ namespace InvoiceDiskLast.Controllers
                 }
             }
 
-          
+
         }
 
         // POST: api/APIQutationDetail

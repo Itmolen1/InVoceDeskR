@@ -35,6 +35,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<float> TotalVat6 { get; set; }
         public Nullable<float> TotalVat21 { get; set; }
 
+        public Nullable<DateTime> ServiceDate { get; set; }
         public int? QutationDetailId { get; set; }
         public Nullable<int> ItemId { get; set; }
         public string Description { get; set; }
