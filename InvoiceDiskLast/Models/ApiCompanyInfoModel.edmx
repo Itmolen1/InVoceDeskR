@@ -247,6 +247,7 @@
           <Property Name="Rate" Type="float" />
           <Property Name="Total" Type="float" />
           <Property Name="Vat" Type="float" />
+          <Property Name="RowSubTotal" Type="float" />
           <Property Name="QutationID" Type="int" />
           <Property Name="Type" Type="nvarchar" MaxLength="20" />
           <Property Name="ServiceDate" Type="datetime" />
@@ -758,6 +759,7 @@
           <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationDetailsTable" ToRole="QutationTable" />
           <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ServiceDate" Type="DateTime" Precision="3" />
+          <Property Name="RowSubTotal" Type="Double" />
         </EntityType>
         <EntityType Name="QutationTable">
           <Key>
@@ -1297,6 +1299,7 @@
           <EntitySetMapping Name="QutationDetailsTables">
             <EntityTypeMapping TypeName="APIcompanyModel.QutationDetailsTable">
               <MappingFragment StoreEntitySet="QutationDetailsTable">
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
                 <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="QutationID" ColumnName="QutationID" />

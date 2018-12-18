@@ -24,7 +24,10 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> QutationID { get; set; }
         public string Type { get; set; }
         public Nullable<System.DateTime> ServiceDate { get; set; }
+        public Nullable<double> RowSubTotal { get; set; }
     
+
+
         public virtual QutationTable QutationTable { get; set; }
     }
 }

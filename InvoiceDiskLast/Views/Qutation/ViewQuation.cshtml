@@ -4,7 +4,6 @@
 @model InvoiceDiskLast.Models.MVCQutationViewModel
 
 @{
-
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
     var QutationModel = ViewBag.QutationDat;
@@ -43,7 +42,7 @@
             <div style="margin-left:3px">
                 <div class="btn-group">
                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print concept", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("print concept", "Print", "Qutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
                 </div>
             </div>
             <div style="margin-left:3px">
@@ -64,12 +63,8 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            <div class="row" style="margin-top:35px">
-                <div class="col-12 b-r HeadText">
-                    <label>Qutation</label>
-                </div>
-            </div>
-            <hr />
+         
+           
             @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
             {
                 <input type="hidden" name="FilePath" id="FilePath" />
@@ -79,7 +74,12 @@
                 <div class="col-7 b-r">
                     <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" />
 
-                    <div class="row clientInfo" style="margin-top:30px">
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-12 b-r HeadText">
+                            <label>Qutation</label>
+                        </div>
+                    </div>
+                    <div class="row clientInfo" style="margin-top:20px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
                     </div>
                     <div class="row">
@@ -129,7 +129,7 @@
                     </div>
                 </div>
 
-                <div class="col-5 b-r">
+                <div class="col-5 b-r" style="margin-top:40px">
                     <div class="row">
                         <div class="col-3 b-r"></div>
                         <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
@@ -182,75 +182,10 @@
                 </div>
             </div>
 
-            <hr />
+          <p></p>
             <div class="row">
                 <div class="col-12 b-r">
-                    ontvangt de offerte van ons voor de onderstaande services.
-                    <table id="mytable" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="col-sm-4">
-                                    Goods
-                                </th>
-                                <th class="col-sm-2">
-                                    Quantity
-                                </th>
-                                <th class="col-sm-2">
-                                    Price
-                                </th>
-                                <th class="col-sm-2">
-                                    Total
-                                </th>
-                                <th class="col-sm-1">
-                                    Vat
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (ViewBag.QutationDatailsList != null)
-                            {
-                                foreach (var item in ViewBag.QutationDatailsList)
-                                {
-                                    <tr id="mainrow">
-                                        <td>
-                                            @item.ItemName
-                                        </td>
-                                        <td>
-                                            @item.Quantity
-                                        </td>
-                                        <td>
-                                            @item.Rate
-                                        </td>
-                                        <td>
-                                            @item.Total
-                                        </td>
-                                        <td>
-                                            @item.Vat
-                                        </td>
-                                    </tr>
-                                }
-                            }
-
-                        </tbody>
-
-                    </table>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-            <hr />
-            <div class="row">
-                <div class="col-12 b-r">
-                    <table class="table" id="orderdetailsitems">
+                    <table class="table table-striped" id="orderdetailsitems">
                         <thead class="thead-dark">
                             <tr>
 
@@ -271,12 +206,9 @@
                                     Vat%
                                 </th>
                                 <th>
-                                    Sub
+                                   SubTotal
                                 </th>
-                                <th>
-                                    Action
-                                </th>
-
+                               
                             </tr>
                         </thead>
 
@@ -286,8 +218,8 @@
                             {
                                 foreach (var item in ViewBag.QutationDatailsList)
                                 {
-                                    if (item == "Goods")
-
+                                    if (item.Type == "Goods")
+                                    {
                                         <tr id="mainrow">
                                             <td>
                                                 @item.ItemName
@@ -298,13 +230,21 @@
                                             <td>
                                                 @item.Rate
                                             </td>
+                                            
+                                           
                                             <td>
                                                 @item.Total
                                             </td>
+
                                             <td>
                                                 @item.Vat
                                             </td>
+                                            <td>
+                                                @item.RowSubTotal
+                                            </td>
+
                                         </tr>
+                                    }
                                 }
                             }
 
@@ -316,11 +256,10 @@
             </div>
 
 
-            Service table
-            <hr />
+           
             <div class="row">
                 <div class="col-12 b-r">
-                    <table class="table" id="QutationServiceDetail1">
+                    <table class="table table-striped" id="QutationServiceDetail1">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Date</th>
@@ -342,11 +281,9 @@
                                     Vat %
                                 </th>
                                 <th>
-                                    Sub
+                                    SubTotal
                                 </th>
-                                <th>
-                                    Action
-                                </th>
+                              
 
                             </tr>
 
@@ -357,7 +294,7 @@
                             foreach (var item in ViewBag.QutationDatailsList)
                             {
                                 if (item.Type == "Service")
-
+                                {
                                     <tr id="mainrow">
                                         <td>
                                             @item.ServiceDate
@@ -382,18 +319,16 @@
                                         <td>
                                             @item.Vat
                                         </td>
+                                        <td>
+                                            @item.RowSubTotal
+                                        </td>
                                     </tr>
+                                }
                             }
                         }
                     </table>
                 </div>
             </div>
-
-
-            <hr />
-
-
-
             <hr />
             <div class="row">
                 <div class="col-7 b-r">

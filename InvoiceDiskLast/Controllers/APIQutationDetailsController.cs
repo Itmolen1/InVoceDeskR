@@ -71,6 +71,7 @@ namespace InvoiceDiskLast.Controllers
                                  ItemName = p.ProductName,
                                  Total = pd.Total,
                                  Type = pd.Type,
+                                 RowSubTotal = pd.RowSubTotal,
                                  Description = pd.Description,
                                  ServiceDate = pd.ServiceDate,
                                  QutationDetailId = pd.QutationDetailId
