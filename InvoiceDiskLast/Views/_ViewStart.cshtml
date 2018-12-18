@@ -193,23 +193,12 @@
    
     $('#QutationClientNext').click(function () {
 
-        var qutationGoodOrService = $('#SelectTypeQutation').val();
+        //var qutationGoodOrService = $('#SelectTypeQutation').val();
 
         var value = $('#SelectContacts1').val();
 
-
         if (value > 0) {
-
-            if (qutationGoodOrService == 0) {
-                $.toast({
-                    heading: 'Information',
-                    text: 'Please select Type to continue',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                });
-            }
-            else {
+           
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
                     type: 'GET',
@@ -218,28 +207,19 @@
                     },
                     success: function (data) {
 
-                        if (qutationGoodOrService == "1") {
-                            window.location.href = "/MVCQutation/AddOrEdit"
-                        }
-                        else if (qutationGoodOrService == "2") {
-                            window.location.href = "/QutationService/AddOrEdit/0"
-                        }
+                        window.location.href = "/Qutation/Create"
+                        //if (qutationGoodOrService == "1") {
+                        //    window.location.href = "/MVCQutation/AddOrEdit"
+                        //}
+                        //else if (qutationGoodOrService == "2") {
+                        //    window.location.href = "/QutationService/AddOrEdit/0"
+                        //}
                     },
                     error: function () {
                         alert("error");
                     }
                 });
             }
-        }
-        else {
-            $.toast({
-                heading: 'Information',
-                text: 'Please select client to continue',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            });
-        }
     });
 
     $('#SaveNewContacts').click(function () {
