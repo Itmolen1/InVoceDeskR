@@ -8,6 +8,8 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+
+    [SessionExpireAttribute]
     public class QutationController : Controller
     {
         // GET: Qutation
@@ -16,19 +18,15 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
         int Contactid, CompanyID;
-        public QutationController()
-        {
-            //Contactid = Convert.ToInt32(Session["ClientID"]);
-            //CompanyID = Convert.ToInt32(Session["CompayID"]);
-
-            Contactid = 33;
-            CompanyID = 1;
-        }
+      
           
         public ActionResult Create()
         {
-            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
 
+            Contactid = Convert.ToInt32(Session["ClientID"]);
+            CompanyID = Convert.ToInt32(Session["CompayID"]);
+
+            MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
            
             try
             {

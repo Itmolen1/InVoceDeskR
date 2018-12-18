@@ -10,8 +10,8 @@ using Logger;
 
 namespace InvoiceDiskLast.Controllers
 {
-    [SessionExpireAttribute]
-    [RouteNotFoundAttribute]
+    //[SessionExpireAttribute]
+    //[RouteNotFoundAttribute]
     public class MVCAccountsController : Controller
     {
         private Ilog _iLog;
@@ -185,7 +185,11 @@ namespace InvoiceDiskLast.Controllers
 
 
 
+        public  ActionResult Account()
+        {
 
+            return View();
+        }
 
 
 

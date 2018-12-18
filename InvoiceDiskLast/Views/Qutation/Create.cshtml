@@ -502,9 +502,6 @@
         }
     });
 
-
-
-
     $(document).on("keyup", ".tbody .rateG", function () {
 
         debugger;
@@ -531,8 +528,6 @@
         RowSubTalSubtotal(vat, Currentrow);
     });
 
-
-
     $(document).on("keyup", ".tbody .rateG", function () {
 
         Currentrow = $(this).closest("tr");
@@ -540,8 +535,6 @@
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
     });
-
-
 
     $(document).on("keyup", ".tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
@@ -562,7 +555,7 @@
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
-
+     
         // Currentrow.find('.FTotalG').val('');
 
         Total = 0;
@@ -582,23 +575,26 @@
     }
 
 
+    //not using
     $(document).on('change', '.tbody .VATG', function () {
-
+        alert('called');
+        debugger;
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
     });
 
+
+    //not using
     $('.tbody .VATG').change(function () {
 
+        alert('called');
+    
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
     });
-
-
-
 
     function AddingVatValue(vat, CurrentRow) {
 
@@ -640,18 +636,20 @@
     }
 
 
-
-
-
     $('#mainrow .VATG').change(function () {
 
+        currentRow1 = $(this).closest("tr");
+        vat = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+
+    });
+
+    $('#mainrow1 .VATG').change(function () {
 
         currentRow1 = $(this).closest("tr");
         vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
     });
-
-
 
     //Services
 
@@ -661,7 +659,6 @@
 
         vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, currentRow1);
-
 
         AddingVatValue(vat, currentRow1);
 
@@ -721,12 +718,6 @@
 
         }
     });
-
-
-
-
-
-
 
     function LoadProductG() {
         PgoodServices = "Good";
@@ -855,9 +846,6 @@
         }
     });
 
-
-
-
     function GrandTotal(Flage, NewValue, Newvaluewt) {
         debugger;
         if (Flage == "Add") {
@@ -980,7 +968,6 @@
             }
         }
     }
-
 
 
     $('#orderdetailsitems').on('click', '.remove', function () {
