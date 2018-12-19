@@ -435,8 +435,9 @@
             }
             $('#mainrow #SelectVATG').val(0);
 
-            debugger;
-
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
 
         }
 
@@ -579,14 +580,22 @@
 
 
     $('#mainrow1 .VATG').change(function () {
-
-        var Currentrow = $(this).closest("tr");
+      var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
-        
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
     });
 
+   
+
+
     
+
+
+
+
 
     $('.tbody .VATG').change(function () {
 
@@ -677,6 +686,10 @@
             $('#mainrow1 #RowTotalG').val('');
             $('#mainrow1 .RowTotalG').val('');
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG ').val('');
+
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
         }
     });
 
@@ -937,6 +950,7 @@
         })
         return TotalGood;
     }
+
     function TotalService() {
         var TotalService = 0;
         $('#QutationServiceDetail1 .tbody tr .FTotalG  ').each(function () {
