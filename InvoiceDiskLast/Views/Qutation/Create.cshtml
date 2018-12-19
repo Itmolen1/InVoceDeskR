@@ -39,7 +39,7 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "QutationDate" } })
+                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
                             @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
 
@@ -53,7 +53,7 @@
                         <div class="col-6 b-r">
                             @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
                             @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
-
+                         
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -63,7 +63,7 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
+                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
                             @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
 
 
@@ -250,7 +250,7 @@
                         <tbody class="tbody"></tbody>
                         <tr id="mainrow1">
                             <td>
-                                <input type="date" class="form-control Input-height MAterialDatepicker" />
+                                <input type="date" class="ServiceDate  form-control Input-height MAterialDatepicker" />
                             </td>
 
                             <td>
@@ -378,15 +378,7 @@
     $('#btnaddGoods').click(function () {
 
         currentRow1 = $(this).closest("tr");
-        var VAT = Currentrow.find('.VATG').val();
-
-
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, currentRow1);
-
-        CombineTotalAndSubtotal();
-        CombineTotal();
-        CalculateVateTotal();
+       
         // AddingVatValue(VAT, currentRow1);
 
         var isAllValid = true;
@@ -426,21 +418,25 @@
             $('#mainrow #RateG').val('');
             $('#mainrow .FTotalG').val('');
             $('#mainrow .quantityG').val('');
-            $('#mainrow .RowTotalG').val('');
-
-
-
+            
+            
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
             $('#mainrow #SelectVATG').val(0);
 
-            CombineTotalAndSubtotal();
-            CombineTotal();
-            CalculateVateTotal();
+           
 
         }
+        
+        var VAT = Currentrow.find('.VATG').val();
+       
+        RowSubTalSubtotal(VAT, currentRow1);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
 
+        $('#mainrow #RowTotalG').val('');
     });
 
     $('.quantityG').keyup(function () {
@@ -553,6 +549,8 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
+        debugger;
+
         Total = 0;
         Total = Currentrow.find(".FTotalG").val();
 
@@ -569,7 +567,9 @@
 
     $(document).on('change', '.tbody .VATG', function () {
 
-      var  Currentrow = $(this).closest("tr");
+        debugger;
+
+        Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
@@ -583,9 +583,9 @@
       var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
-        CombineTotalAndSubtotal();
-        CombineTotal();
-        CalculateVateTotal();
+        //CombineTotalAndSubtotal();
+        //CombineTotal();
+        //CalculateVateTotal();
     });
 
    
@@ -685,7 +685,7 @@
             $('#mainrow1 #SelectVATS').val(0);
             $('#mainrow1 #RowTotalG').val('');
             $('#mainrow1 .RowTotalG').val('');
-            $('#QutationServiceDetail1 #mainrow1 .RowTotalG ').val('');
+            $('#QutationServiceDetail1 #mainrow1 .RowTotalG').val('');
 
             CombineTotalAndSubtotal();
             CombineTotal();
@@ -1087,20 +1087,20 @@
                 Total  : parseFloat($(this).find('.FTotalG').val()),
                 Description: $(this).find('.Discription').val(),
                 Type: "Service",
-                ServiceDate: $(this).find('.MAterialDatepicker').val(),
+                ServiceDate: $(this).find('.ServiceDate').val(),
                 Vat: parseFloat($(this).find('.VATG').val()),
                 RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
             }
             list.push(orderItem);
 
         });
-
+         
 
         var empObj = {
             Qutation_ID: $('#Qutation_ID').val(),
             RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#dtp_QIiOF').val(),
-            DueDate: $('#dtp_oqDEi').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
             QutationID: $('#Qutation_ID').val(),
@@ -1112,8 +1112,7 @@
             ConatctId: $('#contactId').val(),
             QutationDetailslist: list
         };
-        console.log(list);
-
+       
         $.ajax({
             url: "/Qutation/SaveDraft",
             data: JSON.stringify(empObj),
