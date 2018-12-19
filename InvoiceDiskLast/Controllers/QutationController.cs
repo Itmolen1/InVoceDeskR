@@ -66,11 +66,7 @@ namespace InvoiceDiskLast.Controllers
            
             try
             {
-               
-                var idd = Session["ClientID"];
-                var cdd = Session["CompayID"];
-
-
+              
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
                     Contactid = Convert.ToInt32(Session["ClientID"]);
@@ -99,6 +95,7 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
+
             }
 
             return View();
@@ -109,9 +106,7 @@ namespace InvoiceDiskLast.Controllers
         {
 
             try
-            {
-                var idd = Session["ClientID"];
-                var cdd = Session["CompayID"];
+            {              
 
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
@@ -184,8 +179,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     companyId = Convert.ToInt32(Session["CompayID"]);
                 }
-
-
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
@@ -286,25 +279,23 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult EditQutation(int QutationId = 0)
         {
-
+          
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
 
             try
-            {
-                var idd = Session["ClientID"];
-                var cdd = Session["CompayID"];
+            {              
 
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
-                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    Contactid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
                 else
                 {
                     return RedirectToAction("Index", "Login");
                 }
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+           
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contactid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;

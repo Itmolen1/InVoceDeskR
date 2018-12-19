@@ -75,7 +75,14 @@ namespace InvoiceDiskLast.Controllers
                     DirectoryPath = D.DirectoryPath
                 }).FirstOrDefault();
 
-                return Ok(_cviewModel);
+                if (_cviewModel != null)
+                {
+                    return Ok(_cviewModel);
+                }
+                else
+                {
+                    return  NotFound();
+                }
 
             }
             catch (Exception ex)

@@ -76,8 +76,7 @@ namespace InvoiceDiskLast.Controllers
 
                             var path = Server.MapPath("/images/");
 
-
-
+                            
                             try
                             {
                                 if (!System.IO.Directory.Exists(path))

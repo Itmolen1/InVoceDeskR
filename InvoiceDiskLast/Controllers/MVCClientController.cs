@@ -260,8 +260,8 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
-                if (_Directory == null)
-                {
+                if (directory.StatusCode != System.Net.HttpStatusCode.OK)
+                { 
 
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Id.ToString()).Result;
                     MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
