@@ -16,19 +16,14 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
-        int Contactid, CompanyID;
-        public QutationController()
-        {
-            //Contactid = Convert.ToInt32(Session["ClientID"]);
-            //CompanyID = Convert.ToInt32(Session["CompayID"]);
-
-            Contactid = 33;
-            CompanyID = 1;
-        }
-
+       
+      
         public ActionResult Create()
         {
+            int Contactid, CompanyID;
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
+            Contactid = Convert.ToInt32(Session["ClientID"]);
+            CompanyID = Convert.ToInt32(Session["CompayID"]);
 
 
             try
@@ -64,23 +59,25 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        int Contectid = 0;
 
+        int Contactid = 0, CompanyID = 0;
         public ActionResult ViewQuation(int? quautionId)
         {
+           
             try
             {
+               
                 var idd = Session["ClientID"];
                 var cdd = Session["CompayID"];
 
 
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
-                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    Contactid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contactid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
@@ -118,7 +115,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (Session["ClientID"] != null && Session["CompayID"] != null)
                 {
-                    Contectid = Convert.ToInt32(Session["ClientID"]);
+                    Contactid = Convert.ToInt32(Session["ClientID"]);
                     CompanyID = Convert.ToInt32(Session["CompayID"]);
                 }
                 else
@@ -126,7 +123,7 @@ namespace InvoiceDiskLast.Controllers
                     return RedirectToAction("Index", "Login");
                 }
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contactid.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
