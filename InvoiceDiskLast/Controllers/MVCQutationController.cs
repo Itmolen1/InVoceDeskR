@@ -27,7 +27,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult IndexQutation()
         {
-            List<MVCQutationModel> quationList = new List<MVCQutationModel>();
+            List<QutationIndexViewModel> quationList = new List<QutationIndexViewModel>();
             try
             {
                 #region
@@ -48,19 +48,22 @@ namespace InvoiceDiskLast.Controllers
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", companyId.ToString());
 
                 HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("APIQutation").Result;
-                quationList = respose.Content.ReadAsAsync<List<MVCQutationModel>>().Result;
+                quationList = respose.Content.ReadAsAsync<List<QutationIndexViewModel>>().Result;
 
-                List<MVCQutationModel> quationList1 = new List<MVCQutationModel>();
+                List<QutationIndexViewModel> quationList1 = new List<QutationIndexViewModel>();
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                     {
 
-                        quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)
-                       || p.Qutation_ID != null && p.Qutation_ID.ToLower().Contains(search.ToLower())
-                       || p.QutationDate != null && p.DueDate.ToString().ToLower().Contains(search.ToLower())
+                        quationList = quationList.Where(p => p.QutationID.ToString().Contains(search)                    
+                       || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.DueDate != null && p.DueDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.CustomerName != null && p.CustomerName.ToString().ToLower().Contains(search.ToLower())
+                       || p.UserName != null && p.UserName.ToString().ToLower().Contains(search.ToLower())
+                       || p.Vat != null && p.Vat.ToString().ToLower().Contains(search.ToLower())
+                       || p.TotalAmount != null && p.TotalAmount.ToString().ToLower().Contains(search.ToLower())
                        || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
-                       || p.RefNumber != null && p.RefNumber.ToString().ToLower().Contains(search.ToLower())
 
                       ).ToList();
 
@@ -389,7 +392,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
-            var root  = Server.MapPath("/PDF/");
+            var root = Server.MapPath("/PDF/");
 
             List<AttakmentList> _attackmentList = new List<AttakmentList>();
             var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
@@ -432,7 +435,7 @@ namespace InvoiceDiskLast.Controllers
                 if (email.ToEmail.Contains(','))
                 {
                     var p = email.Attachment.Split('.');
-                   
+
                     var pdfname = String.Format("{0}.pdf", p);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -451,7 +454,7 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
                 else
-                {                 
+                {
                     var pdfname = String.Format("{0}.pdf", email.Attachment);
                     var path = Path.Combine(root, pdfname);
                     email.Attachment = path;
@@ -477,7 +480,7 @@ namespace InvoiceDiskLast.Controllers
 
                 }
                 var folderPath = Server.MapPath("/PDF/");
-              EmailController.clearFolder(folderPath);
+                EmailController.clearFolder(folderPath);
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
             }
             catch (Exception ex)
@@ -498,7 +501,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        
+
 
         public bool PerformTransaction(MVCQutationModel purchaseViewModel, int CompanyId)
         {

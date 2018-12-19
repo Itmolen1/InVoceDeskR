@@ -37,7 +37,9 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> ContactId { get; set; }
         public string Type { get; set; }
-    
+
+        public virtual ContactsTable Contactable { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationDetailsTable> QutationDetailsTables { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
