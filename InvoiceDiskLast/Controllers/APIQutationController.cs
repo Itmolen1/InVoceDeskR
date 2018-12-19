@@ -24,7 +24,7 @@ namespace InvoiceDiskLast.Controllers
         // GET: api/APIQutation
         public IHttpActionResult GetQutationTables()
         {
-            List<QutationTable> QutationModelObj = new List<QutationTable>();
+            List<QutationIndexViewModel> QutationModelObj = new List<QutationIndexViewModel>();
             IEnumerable<string> headerValues;
             //var DBLIST = "";
             var IDS = "";
@@ -34,7 +34,7 @@ namespace InvoiceDiskLast.Controllers
                 IDS = headerValues.FirstOrDefault();
                 id = Convert.ToInt32(IDS);
             }
-            var Qutationob = db.QutationTables.Where(x => x.CompanyId == id && x.Status !="accepted").Select(c => new MVCQutationModel
+            var Qutationob = db.QutationTables.Where(x => x.CompanyId == id && x.Status != "accepted").Select(c => new QutationIndexViewModel
             {
 
                 QutationID = c.QutationID,
@@ -42,16 +42,12 @@ namespace InvoiceDiskLast.Controllers
                 RefNumber = c.RefNumber,
                 QutationDate = c.QutationDate,
                 DueDate = c.DueDate,
-                SubTotal = c.SubTotal,
-                TotalVat6 = c.TotalVat6,
-                TotalVat21 = c.TotalVat21,
-                DiscountAmount = c.DiscountAmount,
+                Vat = c.TotalVat6 + c.TotalVat21,
                 TotalAmount = c.TotalAmount,
-                CustomerNote = c.CustomerNote,
                 Status = (c.Status).Trim(),
-                UserId = c.UserId,
-                ContactId = c.ContactId,
-                Type = c.Type
+                UserName = c.ComapnyInfo.UserName,
+                CustomerName = c.UserId.ToString(),       
+               
             }).ToList();
 
             return Ok(Qutationob);
@@ -303,8 +299,7 @@ namespace InvoiceDiskLast.Controllers
                     SubTotal = p.SubTotal,
                     Status = (p.Status).Trim(),
                     CompanyId = p.CompanyId,
-                    UserId = p.UserId,
-                    Type = p.Type
+                    UserId = p.UserId,                  
                 }).ToList();
             }
             catch (Exception)
