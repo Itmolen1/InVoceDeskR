@@ -60,7 +60,7 @@ namespace InvoiceDiskLast.Controllers
                   || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
                   || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
                 }
-                
+
                 int recordsTotal = recordsTotal = PurchaseList.Count();
                 var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
@@ -74,44 +74,44 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-     
-
-        public ActionResult Create()
-        {
-            MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
-            try
-            {
-                Contectid = 3;
-                CompanyID = Convert.ToInt32(Session["CompayID"]);
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
 
-                ViewBag.Contentdata = contectmodel;
-                ViewBag.Companydata = companyModel;
-                DateTime InvoiceDate = new DateTime();
-                InvoiceDate = DateTime.Now;
-                purchaseviewModel.PurchaseDate = InvoiceDate;
-                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+        //public ActionResult Create()
+        //{
+        //    MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
+        //    try
+        //    {
+        //        Contectid = 3;
+        //        CompanyID = Convert.ToInt32(Session["CompayID"]);
 
-                MvcPurchaseModel q = new MvcPurchaseModel();
-                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
-                q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-                purchaseviewModel.PurchaseDate = InvoiceDate;
-                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-                purchaseviewModel.Purchase_ID = q.PurchaseID;
-                return View(purchaseviewModel);
-            }
-            catch(Exception ex)
-            {
-                return null;
-            }
-           
-        }
+        //        HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+        //        MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+        //        HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+        //        MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+
+        //        ViewBag.Contentdata = contectmodel;
+        //        ViewBag.Companydata = companyModel;
+        //        DateTime InvoiceDate = new DateTime();
+        //        InvoiceDate = DateTime.Now;
+        //        purchaseviewModel.PurchaseDate = InvoiceDate;
+        //        purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+
+        //        MvcPurchaseModel q = new MvcPurchaseModel();
+        //        HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
+        //        q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+        //        purchaseviewModel.PurchaseDate = InvoiceDate;
+        //        purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+        //        purchaseviewModel.Purchase_ID = q.PurchaseID;
+        //        return View(purchaseviewModel);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return null;
+        //    }
+
+        //}
 
 
         public ActionResult GetVender()
@@ -840,8 +840,8 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                var root = Server.MapPath("/PDF/");             
-                var path = Path.Combine(root, FileName);                            
+                var root = Server.MapPath("/PDF/");
+                var path = Path.Combine(root, FileName);
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);
@@ -851,7 +851,7 @@ namespace InvoiceDiskLast.Controllers
             catch (Exception)
             {
                 throw;
-            }           
+            }
         }
 
         [HttpPost]
@@ -1279,7 +1279,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         //[DeleteFileClass]       
-   
+
         public string PrintView(int purchaseOrderId)
         {
             string pdfname;
@@ -1566,7 +1566,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-        
+
         #region
 
         public ActionResult InvoiceSerVice()
@@ -1853,6 +1853,53 @@ namespace InvoiceDiskLast.Controllers
 
         #endregion
 
-    }
 
+
+
+        public ActionResult Create()
+        {
+            MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
+            try
+            {
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", 1.ToString());
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + 1.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                DateTime InvoiceDate = new DateTime();
+                InvoiceDate = DateTime.Now;
+                purchaseviewModel.PurchaseDate = InvoiceDate;
+                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+
+                MvcPurchaseModel q = new MvcPurchaseModel();
+                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
+                q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+                purchaseviewModel.PurchaseDate = InvoiceDate;
+                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+                purchaseviewModel.Purchase_ID = q.PurchaseID;
+
+                return View(purchaseviewModel);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+
+        }
+
+
+    }
 }
