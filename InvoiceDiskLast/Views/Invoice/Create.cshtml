@@ -13,11 +13,11 @@
         @*two*@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
-        <div class="container">
-
+        <div class="container">         
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
-
+                   <input type="hidden" value="@Contectdatas.ContactsId" id ="ConatctId" />
+                    <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
@@ -578,7 +578,7 @@
 
 
     $('#mainrow1 .VATG').change(function () {
-      var Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         //CombineTotalAndSubtotal();
@@ -621,7 +621,7 @@
 
     $('#btnSerVice').click(function () {
 
-      var  currentRow1 = $(this).closest("tr");
+        var currentRow1 = $(this).closest("tr");
 
         vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, currentRow1);
@@ -754,7 +754,58 @@
 
 
 
-   
+    function LoadProductG() {
+        PgoodServices = "Good";
+
+        $("#mainrow #SelectProductQutationG").find("option").remove();
+        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+    function LoadProductS() {
+        PgoodServices = "Services";
+
+        $("#mainrow1 #SelectProductQutationS").find("option").remove();
+        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+
+                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
 
     $('#mainrow .pClassG').change(function () {
         var Current = $(this).closest('tr');
@@ -1031,7 +1082,7 @@
                 ItemId: $(this).find('.product').val(),
                 Quantity: parseInt($(this).find('.quantityG').val()),
                 Rate: parseFloat($(this).find('.rateG').val()),
-                Total  : parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
                 Description: $(this).find('.Discription').val(),
                 Type: "Service",
                 ServiceDate: $(this).find('.ServiceDate').val(),
@@ -1056,7 +1107,8 @@
             Total: $('#gtotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#contactId').val(),
+            ConatctId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyId').val(),
             QutationDetailslist: list
         };
 
@@ -1078,6 +1130,7 @@
                              window.location.href = "/Invoice/ViewInvoice?id=" + result.QutationId;
                          });
 
+
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
@@ -1093,63 +1146,172 @@
     }
 
 
-    $(document).ready(function () {
-        LoadProductS();
-        LoadProductG();
+
+    $('#saveEmail').click(function () {
+
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems .tbody tr').each(function () {
+
+            orderItem = {
+                ItemId: parseInt($(this).find('.product').val()),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                Rate: parseInt($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+
+        $('#QutationServiceDetail1 .tbody tr').each(function () {
+            orderItem = {
+                ItemId: $(this).find('.product').val(),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Rate: parseFloat($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Description: $(this).find('.Discription').val(),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyId').val(),
+            QutationDetailslist: list
+        };      
+        $.ajax({
+            url: "/Invoice/SaveEmail",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                          function (isconform) {
+                              window.location.href = "/Invoice/EmailInvoice/?id=" + result.QutationId;
+                     });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+            error: function (errormessage) {
+            }
+        });
     });
 
 
 
-    function LoadProductG() {
-        PgoodServices = "Good";
 
-        $("#mainrow #SelectProductQutationG").find("option").remove();
-        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+    $('#saveprintandsendtoyourselfsave').click(function () {
+
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems .tbody tr').each(function () {
+
+            orderItem = {
+                ItemId: parseInt($(this).find('.product').val()),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                Rate: parseInt($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+
+        $('#QutationServiceDetail1 .tbody tr').each(function () {
+            orderItem = {
+                ItemId: $(this).find('.product').val(),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Rate: parseFloat($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Description: $(this).find('.Discription').val(),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+            QutationDetailslist: list
+        };
 
         $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
+            url: "/Qutation/SaveEmailPrint",
+            data: JSON.stringify(empObj),
+            type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
-            data: { ProductStatus: PgoodServices },
-            success: function (data) {
-                $.each(data, function (key, item) {
-                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    QutationIdd = result.QutationId;
+                    localStorage.setItem('path', result.path);
+
+
+                        swal({
+                            title: 'Qutation!',
+                            text: 'Qutation save successfully!',
+                            type: 'success'
+                        },
+                        function (isconform) {
+                            window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                        });
+                    }
+                    else if (result.Status == "Fail") {
+
+                    }
             },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
-
-
-    function LoadProductS() {
-        PgoodServices = "Services";
-       
-        $("#mainrow1 #SelectProductQutationS").find("option").remove();
-        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
-
-        $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            data: { ProductStatus: PgoodServices },
-            success: function (data) {
-                $.each(data, function (key, item) {
-
-                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
+            error: function (errormessage) {
             }
         });
-    }
+    });
+
+
+
+
+
 </script>

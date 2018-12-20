@@ -1040,11 +1040,6 @@ namespace InvoiceDiskLast.Controllers
             return File(filepath, MimeMapping.GetMimeMapping(filepath), FilePath1);
         }
 
-
-
-
-
-
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1156,13 +1151,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
         }
-
-
-
-
-      
-
-
+        
         [HttpPost]
         public ActionResult SaveEmailEdit(MVCQutationViewModel MVCQutationViewModel)
         {

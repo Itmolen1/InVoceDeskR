@@ -1,6 +1,7 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -23,17 +24,14 @@ namespace InvoiceDiskLast.Controllers
 
             int Contactid, CompanyID;
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
-            //Contactid = Convert.ToInt32(Session["ClientID"]);
-            Contactid = 1;
-            //CompanyID = Convert.ToInt32(Session["CompayID"]);
-            CompanyID = 1;
-
+            Contactid = Convert.ToInt32(Session["ClientID"]);          
+            CompanyID = Convert.ToInt32(Session["CompayID"]);
             try
             {
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contactid.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
                 
                 DateTime qutatioDate = new DateTime();
@@ -68,12 +66,9 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-
-
-                int ? companyId = 1;
-
+                
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                mvcQutationModel.CompanyId = companyId;
+                mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
                 mvcQutationModel.UserId = 1;
                 mvcQutationModel.ContactId = 1;
 
@@ -399,9 +394,383 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        public ActionResult EmailInvoice()
+        public string PrintView(int id)
+        {
+            string pdfname;
+            try
+            {
+
+                HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + id.ToString()).Result;
+                MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + QutationModel.ContactId.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                int companyId = 0;
+                if (Session["CompayID"] != null)
+                {
+                    companyId = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+              
+
+                DateTime qutationDueDate = Convert.ToDateTime(QutationModel.DueDate); //mm/dd/yyyy
+                DateTime qutationDate = Convert.ToDateTime(QutationModel.QutationDate);//mm/dd/yyyy
+                TimeSpan ts = qutationDueDate.Subtract(qutationDate);
+                string diffDate = ts.Days.ToString();
+
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + id.ToString()).Result;
+                List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.QutationDat = QutationModel;
+                ViewBag.QutationDatailsList = QutationModelDetailsList;
+                string companyName = id + "-" + companyModel.CompanyName;
+
+
+
+                var root = Server.MapPath("/PDF/");
+                pdfname = String.Format("{0}.pdf", companyName);
+                var path = Path.Combine(root, pdfname);
+                path = Path.GetFullPath(path);
+
+                string subPath = "/PDF"; // your code goes here
+                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
+
+                if (!exists)
+                {
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    try
+                    {
+
+                        if (System.IO.File.Exists(path))
+                        {
+                            FileInfo info = new FileInfo(path);
+
+                            if (!IsFileLocked(info)) info.Delete();
+
+                        }
+                    }
+                    catch (System.IO.IOException e)
+                    {
+
+                    }
+                }
+
+
+                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Invoice/Printinvoice.cshtml")
+                {
+
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
+                    PageHeight = 40,
+
+                    SaveOnServerPath = path, // Save your place
+
+                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer.  (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + "  Printed date: " +
+                   DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                  " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+
+                };
+
+                pdfResult.BuildPdf(this.ControllerContext);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return pdfname;
+        }
+
+
+        public static Boolean IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = file.Open
+                (
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.None
+                );
+            }
+            catch (IOException ex)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
+
+        [HttpGet]
+        public ActionResult EmailInvoice(int? id)
         {
 
+
+            EmailModel email = new EmailModel();
+            try
+            {
+
+                email.Attachment = PrintView((int)id);
+
+                HttpContext.Items["FilePath"] = email.Attachment;
+                
+                var CompanyName = Session["CompanyName"];
+
+                if (CompanyName == null)
+                {
+                    CompanyName = "Nocompany";
+                }
+
+                var contact = Session["CompanyContact"];
+                var companyEmail = Session["CompanyEmail"];
+                if (contact == null)
+                {
+                    contact = "Company Contact";
+                }
+                if (companyEmail == null)
+                {
+                    companyEmail = "Company Email";
+                }
+
+                //id = /*Convert.ToInt32(Session["ClientID"]);*/1;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+                MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
+
+                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
+
+                "." + "Graag horen we of u hiermee akkoord gaat." +
+
+                "." + "De offerte vindt u als bijlage bij deze email." +
+
+
+                "..Met vriendelijke groet." +
+
+                mvcContactModel.ContactName + "." +
+
+                CompanyName.ToString() + "." +
+
+                contact.ToString() + "." +
+
+                companyEmail.ToString();
+
+                string strToProcess = email.EmailText;
+                string result = strToProcess.Replace(".", " \r");
+
+                email.EmailText = result;
+
+
+                email.invoiceId = (int)id;
+                email.From = "infouurtjefactuur@gmail.com";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return View(email);
+        }
+        [DeleteFileClass]
+        [HttpPost]
+        public ActionResult EmailInvoice(EmailModel email)
+        {
+            
+            var root = Server.MapPath("/PDF/");
+
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
+
+            if (Request.Form["FilePath"] != null)
+            {
+                var fileName2 = Request.Form["FilePath"];
+
+                string[] valueArray = fileName2.Split(',');
+
+                if (valueArray != null && valueArray.Count() > 0)
+                {
+                    _attackmentList = new List<AttakmentList>();
+                    foreach (var itemm in valueArray)
+                    {
+                        if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = itemm });
+                        }
+                    }
+                }
+            }
+            TempData["EmailMessge"] = "";
+            EmailModel emailModel = new EmailModel();
+
+          
+            var fileName = email.Attachment;
+            try
+            {
+                if (email.Attachment.Contains(".pdf"))
+                {
+                    email.Attachment = email.Attachment.Replace(".pdf", "");
+                }
+                if (email.ToEmail.Contains(','))
+                {
+                    var p = email.Attachment.Split('.');
+
+                    var pdfname = String.Format("{0}.pdf", p);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    _attackmentList.Add(new AttakmentList { Attckment = email.Attachment });
+                    string[] EmailArray = email.ToEmail.Split(',');
+                    if (EmailArray.Count() > 0)
+                    {
+                        foreach (var item in EmailArray)
+                        {
+                            emailModel.From = email.From;
+                            emailModel.ToEmail = item;
+                            emailModel.Attachment = email.Attachment;
+                            emailModel.EmailBody = email.EmailText;
+                            bool result = EmailController.email(emailModel, _attackmentList);
+                        }
+                    }
+                }
+                else
+                {
+                    var pdfname = String.Format("{0}.pdf", email.Attachment);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    emailModel.From = email.From;
+                    emailModel.ToEmail = email.ToEmail;
+                    emailModel.Attachment = email.Attachment;
+                    emailModel.EmailBody = email.EmailText;
+                    _attackmentList.Add(new AttakmentList { Attckment = emailModel.Attachment });
+                    bool result = EmailController.email(emailModel, _attackmentList);
+                    TempData["EmailMessge"] = "Email Send successfully";
+                }
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
+                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+
+
+                var folderPath = Server.MapPath("/PDF/");
+                EmailController.clearFolder(folderPath);
+                return RedirectToAction("ViewInvoice", new { id = email.invoiceId });
+            }
+            catch (Exception ex)
+            {
+                TempData["EmailMessge"] = ex.Message.ToString();
+                TempData["Error"] = ex.Message.ToString();
+            }
+
+            if (TempData["Path"] == null)
+            {
+                TempData["Path"] = fileName;
+            }
+
+            TempData["Message"] = "Email Send Succssfully";
+            email.Attachment = fileName;
+
+            return View(email);
+        }
+
+        [HttpPost]
+        public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
+        {
+           
+            MVCQutationModel mvcQutationModel = new MVCQutationModel();
+            try
+            {
+                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
+                mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
+                mvcQutationModel.UserId = 1;
+                mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
+
+                mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
+                mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
+                mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
+                mvcQutationModel.DueDate = MVCQutationViewModel.DueDate;
+                mvcQutationModel.SubTotal = MVCQutationViewModel.SubTotal;
+                mvcQutationModel.DiscountAmount = MVCQutationViewModel.DiscountAmount;
+                mvcQutationModel.TotalAmount = MVCQutationViewModel.TotalAmount;
+                mvcQutationModel.CustomerNote = MVCQutationViewModel.CustomerNote;
+                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
+                mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
+                mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
+                mvcQutationModel.Type = StatusEnum.Goods.ToString();
+                mvcQutationModel.Status = "accepted";
+                if (mvcQutationModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcQutationModel.TotalVat6 = vat61;
+                }
+
+                if (mvcQutationModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcQutationModel.TotalVat21 = vat21;
+                }
+
+                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
+                MVCQutationModel mvcQutationModels = response.Content.ReadAsAsync<MVCQutationModel>().Result;
+                if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist)
+                    {
+                        QutationDetailsTable QtDetails = new QutationDetailsTable();
+                        QtDetails.ItemId = Convert.ToInt32(QDTList.ItemId);
+                        QtDetails.QutationID = mvcQutationModels.QutationID;
+                        QtDetails.Description = QDTList.Description;
+                        QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                        QtDetails.Quantity = QDTList.Quantity;
+                        QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
+                        QtDetails.Total = Convert.ToDouble(QDTList.Total);
+                        QtDetails.ServiceDate = QDTList.ServiceDate;
+                        QtDetails.RowSubTotal = QDTList.RowSubTotal;
+
+                        QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
+                        QtDetails.Type = QDTList.Type;
+                        if (QtDetails.QutationDetailId == 0)
+                        {
+                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
+                        }
+                        else
+                        {
+                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+                        }
+                    }
+                    
+                    return new JsonResult { Data = new { Status = "Success", path = "", QutationId = mvcQutationModels.QutationID } };
+
+                }
+                else
+                {
+                    return Json("Fail", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
         }
     }
 }
