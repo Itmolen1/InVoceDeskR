@@ -335,11 +335,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult Edit(MVCQutationViewModel MVCQutationViewModel)
         {                    

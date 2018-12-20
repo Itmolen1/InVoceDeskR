@@ -1,0 +1,436 @@
+﻿
+@{
+    ViewBag.Title = "ViewInvoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model InvoiceDiskLast.Models.MVCQutationViewModel
+
+@{
+    var Contectdatas = ViewBag.Contentdata;
+    var CompanyDatas = ViewBag.Companydata;
+    var QutationModel = ViewBag.QutationDat;
+}
+
+<div class="row">
+    @if (TempData["EmailMessge"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong>@TempData["EmailMessge"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+</div>
+<div class="row" style="margin-bottom:5px">
+    <div class="col-2 b-r"></div>
+    <div class="col-8 b-r">
+        <div class="btn-group">
+
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
+                    <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
+                    Send
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+
+                    <li>@Html.ActionLink("Send qutation by Email", "InvoicebyEmail", "Qutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li class="divider"></li>
+                    <li><a href="#"></a></li>
+                    <li class="divider"></li>
+                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/Qutation/InvoicebyEmail/?QutationId=@QutationModel.QutationID">Send qutation by Email</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+            </div>
+            <div style="margin-left:3px">
+                <div class="btn-group">
+                    <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
+                    @Html.ActionLink("print Invoice", "Print", "Invoice", new { id = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                </div>
+            </div>
+            <div style="margin-left:3px">
+                <a href="/Invoice/Edit/?id=@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+
+
+            </div>
+
+            <div style="margin-left:3px">
+
+
+                <a href="/MVCQutation/Index/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-2 b-r"></div>
+</div>
+
+<div class="row">
+    <div class="col-2 b-r">
+        @*two*@
+    </div>
+    <div class="col-8 b-r" style="border:1px solid Silver">
+        <div class="container">
+
+
+            @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
+            {
+                <input type="hidden" name="FilePath" id="FilePath" />
+                <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
+            }
+            <div class="row">
+                <div class="col-7 b-r">
+                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" />
+
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-12 b-r HeadText">
+                            <label>Invoice</label>
+                        </div>
+                    </div>
+                    <div class="row clientInfo" style="margin-top:20px">
+                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 b-r">
+                            @Contectdatas.ContactAddress
+                            <br />
+                            @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
+                        </div>
+                    </div>
+                    @{
+                        DateTime qdate = new DateTime();
+                        DateTime qddate = new DateTime();
+                        qdate = Convert.ToDateTime(QutationModel.QutationDate);
+                        qddate = Convert.ToDateTime(QutationModel.DueDate);
+                    }
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-4 b-r">
+                            Invoice Date:
+                        </div>
+                        <div class="col-8 b-r">
+                            @qdate.ToShortDateString()
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 b-r">
+                            Invoice Number:
+                        </div>
+                        <div class="col-8 b-r">
+                            @QutationModel.Qutation_ID
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 b-r">
+                            Due Date:
+                        </div>
+                        <div class="col-8 b-r">
+                            @qddate.ToShortDateString()
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 b-r">
+                            Reference number:
+                        </div>
+                        <div class="col-8 b-r">
+                            @QutationModel.RefNumber
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-5 b-r" style="margin-top:40px">
+                    <div class="row">
+                        <div class="col-3 b-r"></div>
+                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
+                        <div class="col-2 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Kvk nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Bank:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">IBAN:</div>
+                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BIC:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Telephone:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Cell:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">E-mail:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Website:</div>
+                        <div class="col-7 b-r">@CompanyDatas.Website</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Address</div>
+                        <div class="col-7 b-r">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                            @CompanyDatas.CompanyCountry
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p></p>
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table table-striped" id="orderdetailsitems">
+                        <thead class="thead-dark">
+                            <tr>
+
+
+                                <th width="350px">
+                                    Goods
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat%
+                                </th>
+                                <th>
+                                    SubTotal
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody class="tbody">
+
+                            @if (ViewBag.QutationDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.QutationDatailsList)
+                                {
+                                    if (item.Type == "Goods")
+                                    {
+                                        <tr id="mainrow">
+                                            <td>
+                                                @item.ItemName
+                                            </td>
+                                            <td>
+                                                @item.Quantity
+                                            </td>
+                                            <td>
+                                                @item.Rate
+                                            </td>
+
+                                            <td>
+                                                @item.Total
+                                            </td>
+
+                                            <td>
+                                                @item.Vat
+                                            </td>
+                                            <td>
+                                                @item.RowSubTotal
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table table-striped" id="QutationServiceDetail1">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+
+                                <th>
+                                    Services
+                                </th>
+                                <th>Decription</th>
+                                <th>
+                                    hour
+                                </th>
+                                <th>
+                                    Hourly rate
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat %
+                                </th>
+                                <th>
+                                    SubTotal
+                                </th>
+
+
+                            </tr>
+
+                        </thead>
+                        <tbody class="tbody"></tbody>
+                        @if (ViewBag.QutationDatailsList != null)
+                        {
+                            foreach (var item in ViewBag.QutationDatailsList)
+                            {
+                                if (item.Type == "Service")
+                                {
+                                    <tr id="mainrow">
+                                        <td>
+                                            @item.ServiceDate
+                                        </td>
+
+                                        <td>
+                                            @item.ItemName
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.Rate
+                                        </td>
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            @item.Vat
+                                        </td>
+                                        <td>
+                                            @item.RowSubTotal
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-7 b-r">
+                </div>
+                <div class="col-5 b-r">
+                    <div class="row">
+                        <div class="col-4 b-r text-right">Total excl. VAT:€</div>
+                        <div class="col-7 b-r text-right">@QutationModel.SubTotal</div>
+                        <div class="col-1 b-r">
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                        {
+                            <div class="col-4 b-r text-right">VAT 6%:€</div>
+
+                            <div class="col-7 b-r text-right">@QutationModel.TotalVat6</div>
+                            <div class="col-1 b-r">
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row">
+                        @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                        {
+                            <div class="col-4 b-r text-right">VAT 21%:€</div>
+
+                            <div class="col-7 b-r text-right">@QutationModel.TotalVat21</div>
+                            <div class="col-1 b-r">
+                            </div>
+                        }
+                    </div>
+                    <div class="row Grand-color">
+                        <div class="col-4 b-r text-right">Grand Total:</div>
+                        <div class="col-7 b-r text-right">&euro;: @QutationModel.TotalAmount</div>
+                        <div class="col-1 b-r">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-8 b-r">
+                    We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
+                </div>
+                <div class="col-4 b-r"></div>
+            </div>
+            <div class="row">
+                <div class="col-8 b-r">
+                    Met vriendelijke groet.
+                </div>
+                <div class="col-4 b-r"></div>
+            </div>
+
+            <p></p>
+            <div class="row Grand-color-CompanyName">
+                <div class="col-6 b-r">@Contectdatas.ContactName</div>
+                <div class="col-6 b-r"></div>
+            </div>
+            <div class="row Grand-color-CompanyName">
+                <div class="col-6 b-r">@CompanyDatas.CompanyName</div>
+                <div class="col-6 b-r"></div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="col-2 b-r">
+        @*two*@
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        var patth = localStorage.getItem('path');
+        $("#FilePath").val(patth);
+
+        if ($("#FilePath").val().length > 0) {
+            $('#DownloadFile1').submit();
+        }
+        $("#FilePath").val('');
+        localStorage.removeItem('path');
+    })
+</script>

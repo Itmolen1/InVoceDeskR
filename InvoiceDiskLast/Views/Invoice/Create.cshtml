@@ -1,4 +1,5 @@
 ﻿@model InvoiceDiskLast.Models.MVCQutationViewModel
+
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,10 +7,6 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
-
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 
 <div class="row">
     <div class="col-2 b-r">
@@ -24,7 +21,7 @@
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Qutation</div>
+                        <div class="col-12 b-r HeadText">Invoice</div>
                     </div>
                     <div class="row clientInfo" style="margin-top:10px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
@@ -36,7 +33,7 @@
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
-                            Qutation Date:
+                           Invoice Date:
                         </div>
                         <div class="col-6 b-r">
                             @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
@@ -48,12 +45,12 @@
                     </div>
                     <div class="row">
                         <div class="col-3 b-r">
-                            Qutation Number:
+                            Invoice Number:
                         </div>
                         <div class="col-6 b-r">
                             @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
                             @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
-                         
+
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -308,13 +305,14 @@
                 <div class="col-4 b-r">
                     <div class="row">
                         <div class="col-5 b-r text-right">Sub Total:</div>
-                        <div class="col-7 b-r text-right"><label id="SubTotal">@*@Model.SubTotal*@</label></div>
+                        <div class="col-7 b-r text-right">
+                        <label id="SubTotal"></label></div>
 
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">Totaal excel btw:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="TotalBTW">@Model.SubTotal</label>
+                            <label id="TotalBTW"></label>
                         </div>
                     </div>
                     <div class="row">
@@ -326,20 +324,20 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">BTW 6%:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="BTW6">@Model.TotalVat6</label>
+                            <label id="BTW6"></label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">BTW 21%:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="BTW21">@Model.TotalVat21</label>
+                            <label id="BTW21"></label>
                         </div>
                     </div>
 
                     <div class="row Grand-color">
                         <div class="col-5 b-r text-right">Grand Total:</div>
                         <div class="col-7 b-r text-right">
-                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@Model.TotalAmount</label>
+                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal"></label>
                         </div>
                     </div>
                 </div>
@@ -378,7 +376,7 @@
     $('#btnaddGoods').click(function () {
 
         currentRow1 = $(this).closest("tr");
-       
+
         // AddingVatValue(VAT, currentRow1);
 
         var isAllValid = true;
@@ -418,19 +416,19 @@
             $('#mainrow #RateG').val('');
             $('#mainrow .FTotalG').val('');
             $('#mainrow .quantityG').val('');
-            
-            
+
+
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
             $('#mainrow #SelectVATG').val(0);
 
-           
+
 
         }
-        
+
         var VAT = Currentrow.find('.VATG').val();
-       
+
         RowSubTalSubtotal(VAT, currentRow1);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -588,10 +586,10 @@
         //CalculateVateTotal();
     });
 
-   
 
 
-    
+
+
 
 
 
@@ -756,58 +754,7 @@
 
 
 
-    function LoadProductG() {
-        PgoodServices = "Good";
-
-        $("#mainrow #SelectProductQutationG").find("option").remove();
-        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
-
-        $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            data: { ProductStatus: PgoodServices },
-            success: function (data) {
-                $.each(data, function (key, item) {
-                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
-
-
-    function LoadProductS() {
-        PgoodServices = "Services";
-
-        $("#mainrow1 #SelectProductQutationS").find("option").remove();
-        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
-
-        $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            data: { ProductStatus: PgoodServices },
-            success: function (data) {
-                $.each(data, function (key, item) {
-
-                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-        });
-    }
+   
 
     $('#mainrow .pClassG').change(function () {
         var Current = $(this).closest('tr');
@@ -1094,7 +1041,7 @@
             list.push(orderItem);
 
         });
-         
+
 
         var empObj = {
             Qutation_ID: $('#Qutation_ID').val(),
@@ -1112,9 +1059,9 @@
             ConatctId: $('#contactId').val(),
             QutationDetailslist: list
         };
-       
+
         $.ajax({
-            url: "/Qutation/SaveDraft",
+            url: "/Invoice/SaveDraft",
             data: JSON.stringify(empObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
@@ -1128,9 +1075,8 @@
                         type: 'success'
                     },
                          function (isconform) {
-                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                             window.location.href = "/Invoice/ViewInvoice?id=" + result.QutationId;
                          });
-
 
                 }
                 else if (result.Status == "Fail") {
@@ -1147,5 +1093,63 @@
     }
 
 
+    $(document).ready(function () {
+        LoadProductS();
+        LoadProductG();
+    });
 
+
+
+    function LoadProductG() {
+        PgoodServices = "Good";
+
+        $("#mainrow #SelectProductQutationG").find("option").remove();
+        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+    function LoadProductS() {
+        PgoodServices = "Services";
+       
+        $("#mainrow1 #SelectProductQutationS").find("option").remove();
+        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+
+                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
 </script>
