@@ -68,7 +68,6 @@ namespace InvoiceDiskLast.Controllers
                                  Rate = pd.Rate,
                                  Quantity = pd.Quantity,
                                  Vat = pd.Vat,
-                                 Type=pd.Type,
                                  ItemName = p.ProductName,
                                  Total = pd.Total,                               
                                  RowSubTotal = pd.RowSubTotal,
@@ -102,7 +101,6 @@ namespace InvoiceDiskLast.Controllers
                 ItemId = c.ItemId,
                 QutationID = c.QutationID,
                 Rate = c.Rate,
-                
                 Total = c.Total,
 
             }).ToList();

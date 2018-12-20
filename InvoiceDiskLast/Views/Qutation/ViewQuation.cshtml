@@ -8,10 +8,6 @@
     var CompanyDatas = ViewBag.Companydata;
     var QutationModel = ViewBag.QutationDat;
 }
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
-
 <div class="row">
     @if (TempData["EmailMessge"] != null)
     {
@@ -40,7 +36,7 @@
                     <li class="divider"></li>
                     <li><a href="#"></a></li>
                     <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "Qutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "MVCQutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
             <div style="margin-left:3px">
@@ -51,9 +47,9 @@
             </div>
             <div style="margin-left:3px">
                 <a href="/Qutation/EditQutation/?QutationId=@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
-
-
-            </div>
+          
+            
+              </div>
 
             <div style="margin-left:3px">
 
@@ -71,11 +67,11 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-
-
-            @using (Html.BeginForm("DownloadFile", "Qutation", FormMethod.Post, new { id = "DownloadFile1" }))
+         
+           
+            @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
             {
-                <input type="hidden" name="FilePath1" id="FilePath" />
+                <input type="hidden" name="FilePath" id="FilePath" />
                 <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
             }
             <div class="row">
@@ -190,241 +186,218 @@
                 </div>
             </div>
 
-            <p></p>
-
-            @{ 
-                List<InvoiceDiskLast.Models.MVCQutationViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.MVCQutationViewModel>();
-            }
-            @if (ViewBag.QutationDatailsList != null)
-            {
-                InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>;
-
-                InvoiceListGoods= InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
-
-                if (InvoiceListGoods != null && InvoiceListGoods.Count>0)
-                {
-                    <div class="row">
-                        <div class="col-12 b-r">
-                            <table class="table table-striped" id="orderdetailsitems">
-                                <thead class="thead-dark">
-                                    <tr>
+          <p></p>
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table table-striped" id="orderdetailsitems">
+                        <thead class="thead-dark">
+                            <tr>
 
 
-                                        <th>
-                                            Goods
-                                        </th>
-                                        <th>
-                                            Quantity
-                                        </th>
-                                        <th>
-                                            Price
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                        <th>
-                                            Vat%
-                                        </th>
-                                        <th>
-                                            SubTotal
-                                        </th>
+                                <th>
+                                    Goods
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat%
+                                </th>
+                                <th>
+                                   SubTotal
+                                </th>
+                               
+                            </tr>
+                        </thead>
 
-                                    </tr>
-                                </thead>
+                        <tbody class="tbody">
 
-                                <tbody class="tbody">
-
-
-                                    @foreach (var item in ViewBag.QutationDatailsList)
-                                    {
-                                        if (item.Type == "Goods")
-                                        {
-                                            <tr id="mainrow">
-                                                <td>
-                                                    @item.ItemName
-                                                </td>
-                                                <td>
-                                                    @item.Quantity
-                                                </td>
-                                                <td>
-                                                    @item.Rate
-                                                </td>
-
-                                                <td>
-                                                    @item.Total
-                                                </td>
-
-                                                <td>
-                                                    @item.Vat
-                                                </td>
-                                                <td>
-                                                    @item.RowSubTotal
-                                                </td>
-
-                                            </tr>
-                                        }
-                                    }
-
-
-                                </tbody>
-
-                            </table>
-                        </div>
-
-                    </div>
-                }
-
-
-            }
-
-                @if (ViewBag.QutationDatailsList != null)
-                {
-                    InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>;
-
-                    InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Service").ToList();
-
-                    if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
-                    {
-
-                    <div class="row">
-                        <div class="col-12 b-r">
-                            <table class="table table-striped" id="QutationServiceDetail1">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Date</th>
-
-                                        <th>
-                                            Services
-                                        </th>
-                                        <th>Decription</th>
-                                        <th>
-                                            hour
-                                        </th>
-                                        <th>
-                                            Hourly rate
-                                        </th>
-                                        <th>
-                                            Total
-                                        </th>
-                                        <th>
-                                            Vat %
-                                        </th>
-                                        <th>
-                                            SubTotal
-                                        </th>
-
-
-                                    </tr>
-
-                                </thead>
-                                <tbody class="tbody"></tbody>
-
-                                @foreach (var item in ViewBag.QutationDatailsList)
+                            @if (ViewBag.QutationDatailsList != null)
+                            {
+                                foreach (var item in ViewBag.QutationDatailsList)
                                 {
-                                    if (item.Type == "Service")
+                                    if (item.Type == "Goods")
                                     {
                                         <tr id="mainrow">
                                             <td>
-                                                @item.ServiceDate
-                                            </td>
-
-                                            <td>
                                                 @item.ItemName
                                             </td>
-                                            <td>
-                                                @item.Description
-                                            </td>
-
                                             <td>
                                                 @item.Quantity
                                             </td>
                                             <td>
                                                 @item.Rate
                                             </td>
+                                                                                       
                                             <td>
                                                 @item.Total
                                             </td>
+
                                             <td>
                                                 @item.Vat
                                             </td>
                                             <td>
                                                 @item.RowSubTotal
                                             </td>
+
                                         </tr>
                                     }
-
                                 }
-                            </table>
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+
+           
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table table-striped" id="QutationServiceDetail1">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+
+                                <th>
+                                    Services
+                                </th>
+                                <th>Decription</th>
+                                <th>
+                                    hour
+                                </th>
+                                <th>
+                                    Hourly rate
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat %
+                                </th>
+                                <th>
+                                    SubTotal
+                                </th>
+                              
+
+                            </tr>
+
+                        </thead>
+                        <tbody class="tbody"></tbody>
+                        @if (ViewBag.QutationDatailsList != null)
+                        {
+                            foreach (var item in ViewBag.QutationDatailsList)
+                            {
+                                if (item.Type == "Service")
+                                {
+                                    <tr id="mainrow">
+                                        <td>
+                                            @item.ServiceDate
+                                        </td>
+
+                                        <td>
+                                            @item.ItemName
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.Rate
+                                        </td>
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            @item.Vat
+                                        </td>
+                                        <td>
+                                            @item.RowSubTotal
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-7 b-r">
+                </div>
+                <div class="col-5 b-r">
+                    <div class="row">
+                        <div class="col-4 b-r text-right">Total excl. VAT:€</div>
+                        <div class="col-7 b-r text-right">@QutationModel.SubTotal</div>
+                        <div class="col-1 b-r">
                         </div>
                     </div>
-                    }
-                }
-                <hr />
-                <div class="row">
-                    <div class="col-7 b-r">
-                    </div>
-                    <div class="col-5 b-r">
-                        <div class="row">
-                            <div class="col-4 b-r text-right">Total excl. VAT:€</div>
-                            <div class="col-7 b-r text-right">@QutationModel.SubTotal</div>
+                    <div class="row">
+                        @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                        {
+                            <div class="col-4 b-r text-right">VAT 6%:€</div>
+
+                            <div class="col-7 b-r text-right">@QutationModel.TotalVat6</div>
                             <div class="col-1 b-r">
                             </div>
-                        </div>
-                        <div class="row">
-                            @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
-                            {
-                                <div class="col-4 b-r text-right">VAT 6%:€</div>
+                        }
+                    </div>
 
-                                <div class="col-7 b-r text-right">@QutationModel.TotalVat6</div>
-                                <div class="col-1 b-r">
-                                </div>
-                            }
-                        </div>
+                    <div class="row">
+                        @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                        {
+                            <div class="col-4 b-r text-right">VAT 21%:€</div>
 
-                        <div class="row">
-                            @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
-                            {
-                                <div class="col-4 b-r text-right">VAT 21%:€</div>
-
-                                <div class="col-7 b-r text-right">@QutationModel.TotalVat21</div>
-                                <div class="col-1 b-r">
-                                </div>
-                            }
-                        </div>
-                        <div class="row Grand-color">
-                            <div class="col-4 b-r text-right">Grand Total:</div>
-                            <div class="col-7 b-r text-right">&euro;: @QutationModel.TotalAmount</div>
+                            <div class="col-7 b-r text-right">@QutationModel.TotalVat21</div>
                             <div class="col-1 b-r">
                             </div>
+                        }
+                    </div>
+                    <div class="row Grand-color">
+                        <div class="col-4 b-r text-right">Grand Total:</div>
+                        <div class="col-7 b-r text-right">&euro;: @QutationModel.TotalAmount</div>
+                        <div class="col-1 b-r">
                         </div>
                     </div>
                 </div>
-                <hr />
-                <div class="row">
-                    <div class="col-8 b-r">
-                        We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
-                    </div>
-                    <div class="col-4 b-r"></div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-8 b-r">
+                    We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
                 </div>
-                <div class="row">
-                    <div class="col-8 b-r">
-                        Met vriendelijke groet.
-                    </div>
-                    <div class="col-4 b-r"></div>
+                <div class="col-4 b-r"></div>
+            </div>
+            <div class="row">
+                <div class="col-8 b-r">
+                    Met vriendelijke groet.
                 </div>
+                <div class="col-4 b-r"></div>
+            </div>
 
-                <p></p>
-                <div class="row Grand-color-CompanyName">
-                    <div class="col-6 b-r">@Contectdatas.ContactName</div>
-                    <div class="col-6 b-r"></div>
-                </div>
-                <div class="row Grand-color-CompanyName">
-                    <div class="col-6 b-r">@CompanyDatas.CompanyName</div>
-                    <div class="col-6 b-r"></div>
-                </div>
+            <p></p>
+            <div class="row Grand-color-CompanyName">
+                <div class="col-6 b-r">@Contectdatas.ContactName</div>
+                <div class="col-6 b-r"></div>
+            </div>
+            <div class="row Grand-color-CompanyName">
+                <div class="col-6 b-r">@CompanyDatas.CompanyName</div>
+                <div class="col-6 b-r"></div>
+            </div>
 
 
-</div>
+        </div>
     </div>
     <div class="col-2 b-r">
         @*two*@
