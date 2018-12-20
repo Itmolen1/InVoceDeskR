@@ -75,7 +75,7 @@ namespace InvoiceDiskLast.Controllers
                                  Description = pd.Description,
                                  ServiceDate = pd.ServiceDate,
                                  QutationDetailId = pd.QutationDetailId,
-                                 Type = pd.Type
+                               
                              }).ToList();
 
 

@@ -167,7 +167,7 @@ namespace InvoiceDiskLast.Controllers
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
                 quotionviewModel.QutationID = QutationModel.QutationID;
                 quotionviewModel.CompanyId = QutationModel.CompanyId;
-                quotionviewModel.ConatctId = QutationModel.ContactId;
+               // quotionviewModel.ConatctId = QutationModel.ContactId;
 
 
                 int? Contectid = QutationModel.ContactId;
@@ -399,9 +399,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        public ActionResult EmailInvoice()
-        {
-
-        }
+       
     }
 }

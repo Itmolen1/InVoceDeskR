@@ -7,14 +7,674 @@
     var CompanyDatas = ViewBag.Companydata;
 }
 
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
+            <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
+            <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
+            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
+            <div class="row" style="margin-top:10px">
+                <div class="col-7 b-r">
 
-          
+                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+
+                    <div class="row clientInfo">
+                        <div class="col-12 b-r HeadText">Qutation</div>
+                    </div>
+                    <div class="row clientInfo" style="margin-top:10px">
+                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 b-r">@Contectdatas.ContactAddress <br />@Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                    </div>
+
+
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-3 b-r">
+                            Qutation Date:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseDate  form-control MAterialDatepicker Input-height", id = "PurchaseDate" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Qutation Number:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseID", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Due Date:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "PurchaseDueDate", title = "Due Date", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseDueDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Reference No:
+                        </div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseRefNumber", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseRefNumber, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                </div>
+
+                <div class="col-5 b-r">
+                    <div class="row" style="margin-top:33px">
+                        <div class="col-3 b-r"></div>
+                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
+                        <div class="col-2 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Kvk nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Bank:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">IBAN No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BIC No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Telephone:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Cell No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">E-mail:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Website:</div>
+                        <div class="col-7 b-r">@CompanyDatas.Website</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Address:</div>
+                        <div class="col-7 b-r">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
+                            @CompanyDatas.CompanyCountry
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table" id="orderdetailsitems">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Goods
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat%
+                                </th>
+                                <th>
+                                    Sub
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody class="tbody"></tbody>
+                        <tr id="mainrow">
+                            <td>
+                                <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantityG form-control Input-height", id = "PurchaseQuantityG" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseItemRateG form-control Input-height", id = "PurchaseItemRateG" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control Input-height", id = "PurchaseTotalG" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                    <option>0</option>
+                                    <option>6</option>
+                                    <option>21</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                            </td>
+                            <td>
+                                <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+              
+            </div>
+
+
+            Service table
+            <hr />
+            <div class="row">
+                <div class="col-12 b-r">
+                    <table class="table" id="QutationServiceDetail1">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+
+                                <th>
+                                    Services
+                                </th>
+                                <th>Decription</th>
+                                <th>
+                                    hour
+                                </th>
+                                <th>
+                                    Hourly rate
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat %
+                                </th>
+                                <th>
+                                    Sub
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody class="tbody"></tbody>
+                        <tr id="mainrow1">
+                            <td>
+                                <input type="date" class="ServiceDate  form-control Input-height MAterialDatepicker" />
+                            </td>
+
+                            <td>
+                                <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
+                            </td>
+                            <td>
+                                <input type="text" class=" Discription form-control Input-height" />
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "PurchaseQuantityG form-control Input-height", id = "PurchaseQuantityS" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "PurchaseItemRateS" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                               @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "PurchaseTotal form-control Input-height", id = "PurchaseTotalS" } })
+                              @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                    <option>0</option>
+                                    <option>6</option>
+                                    <option>21</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+
+                            </td>
+                            <td>
+
+                                <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
+
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <hr />
+            <div class="row">
+                <div class="col-8 b-r">
+                    <div class="row">
+                        <div class="col-3 b-r">Customer Notes:</div>
+                        <div class="col-9 b-r">
+                           @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "PurchaseVenderNote" } })
+                        @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 b-r">
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Sub Total:</div>
+                        <div class="col-7 b-r text-right"><label id="SubTotal">@*@Model.SubTotal*@</label></div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Totaal excel btw:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="TotalBTW">@Model.PurchaseSubTotal</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW0%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="btwo">0.00</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW 6%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="BTW6">@Model.Vat6</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW 21%:</div>
+                        <div class="col-7 b-r text-right">
+                            <label id="BTW21">@Model.Vat21</label>
+                        </div>
+                    </div>
+
+                    <div class="row Grand-color">
+                        <div class="col-5 b-r text-right">Grand Total:</div>
+                        <div class="col-7 b-r text-right">
+                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@Model.PurchaseTotoalAmount</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-2 b-r">
+        @*two*@
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    var Currentrow, Total, vat, Price, Quantity = 0;
+    $(document).ready(function () {
+        LoadProductS();
+        LoadProductG();
+    });
+
+    function LoadProductG() {
+        PgoodServices = "Good";
+
+        $("#mainrow #SelectProductQutationG").find("option").remove();
+        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+    function LoadProductS() {
+        PgoodServices = "Services";
+
+        $("#mainrow1 #SelectProductQutationS").find("option").remove();
+        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+
+                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+    var VAT21VAlUE, VAT6VAlUE;
+    $('#btnaddGoods').click(function () {
+
+        currentRow1 = $(this).closest("tr");
+
+        // AddingVatValue(VAT, currentRow1);
+
+        var isAllValid = true;
+        if ($("#mainrow #SelectProductQutationG").val() == "0") {
+            isAllValid = false;
+            alert("Please select Item");
+            return;
+        }
+
+        var isAllValid = true;
+        if ($("#mainrow .quantityG").val() == 0) {
+            isAllValid = false;
+
+            alert("Please provide quantityG");
+            return;
+        }
+        var isAllValid = true;
+        if ($("#mainrow .rateG").val() == 0) {
+            isAllValid = false;
+            alert("Please select provide rate");
+            return;
+        }
+
+        if (isAllValid) {
+            var $newRow = $("#mainrow").clone().removeAttr('id');
+            $('#SelectProductQutationG', $newRow).val($("#SelectProductQutationG").val());
+            $('.VATG', $newRow).val($("#mainrow #SelectVATG").val());
+            //Replace add button with remove button
+            $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
+            //Remove id attribute from new clone row
+            $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
+            $('span.error', $newRow).remove();
+            $('#orderdetailsitems').append($newRow);
+            $(".FTotalG").prop('disabled', true);
+            $('#mainrow #SelectProductQutationG').val('0');
+            $('#mainrow .quantityG').val('');
+            $('#mainrow #RateG').val('');
+            $('#mainrow .FTotalG').val('');
+            $('#mainrow .quantityG').val('');
+
+
+            if ($('#orderItemError').text != '') {
+                $('#orderItemError').text('');
+            }
+            $('#mainrow #SelectVATG').val(0);
+
+
+
+        }
+
+        var VAT = Currentrow.find('.VATG').val();
+
+        RowSubTalSubtotal(VAT, currentRow1);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+        $('#mainrow #RowTotalG').val('');
+    });
+
+
+    $('.quantityG').keyup(function () {
+
+
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+
+
+    });
+
+    $('.rateG').keyup(function () {
+
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+
+
+    });
+
+
+    $('.rateG').keyup(function () {
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+
+    });
+
+    var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
+
+    $(document).on("keypress", ".tbody .rateG", function () {
+
+        Currentrow = $(this).closest("tr");
+        FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
+        FocuseInTotal = Currentrow.find('.RowTotalG').val();
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+    });
+
+
+
+
+
+
+    $(document).on("keyup", ".tbody .rateG", function () {
+
+        debugger;
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+        var Total = Currentrow.find(".FTotalG").val();
+        var Subtotalwt = Currentrow.find('.RowTotalG').val();
+        GrandTotal("Add", Total, Subtotalwt);
+
+    });
+
+
+    $(document).on("keyup", ".tbody .quantityG", function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+    $(document).on("keyup", ".tbody .rateG", function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+    $(document).on("keyup", ".tbody .quantityG", function () {
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+    function calculateTotalGoods(currentRow) {
+
+
+        Quantity = Currentrow.find(".quantityG").val(),
+        Price = Currentrow.find('.rateG').val();
+        Total = parseFloat(Quantity * Price);
+        Currentrow.find('.FTotalG').val(Total);
+    }
+
+    function RowSubTalSubtotal(vat, CurrentRow) {
+
+        debugger;
+
+        Total = 0;
+        Total = Currentrow.find(".FTotalG").val();
+
+        if (parseInt(vat) == 0) {
+            Currentrow.find('.RowTotalG').val(Total);
+            Currentrow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
+            return;
+        }
+        var InputVatValue = parseFloat((Total / 100) * vat);
+        var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
+        Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
+    }
+
+
+    $(document).on('change', '.tbody .VATG', function () {
+
+        debugger;
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+    });
+
+
+    $('#mainrow1 .VATG').change(function () {
+        var Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+        //CombineTotalAndSubtotal();
+        //CombineTotal();
+        //CalculateVateTotal();
+    });
+
+
+
+
+
+
+
+
+
+
+    $('.tbody .VATG').change(function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+    $('#mainrow .VATG').change(function () {
+
+        currentRow1 = $(this).closest("tr");
+        vat = currentRow1.find('.VATG').val();
+
+        RowSubTalSubtotal(vat, Currentrow);
+    });
+
+
+
+
+</script>
+
+
+
+@*<div class="row">
+    <div class="col-2 b-r">
+
+    </div>
+    <div class="col-8 b-r" style="border:1px solid Silver">
+        <div class="container">
+
+
             <div class="row">
 
                 <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
@@ -29,7 +689,7 @@
                             <label>Purchase Order</label>
                         </div>
                     </div>
-                 
+
 
                     <div class="row clientInfo" style="margin-top:10px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
@@ -160,7 +820,7 @@
                                 <th>
                                     Action
                                 </th>
-                              
+
                                 <th>
                                 </th>
                             </tr>
@@ -370,6 +1030,6 @@
         </div>
     </div>
     <div class="col-2 b-r">
-        @*two*@
+      
     </div>
-</div>
+</div>*@
