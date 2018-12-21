@@ -44,16 +44,18 @@
                 <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
 
                 <div class="col-7 b-r">
-                   
-                        <img src="@Url.Content("/Images/"+@CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-                  
+
+                    <img src="@Url.Content("/Images/"+@CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+
                     <div class="row clientInfo" style="margin-top:30px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
                     </div>
                     <div class="row">
-                        <div class="col-12 b-r">@Contectdatas.ContactAddress
-                        <br />
-                        @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                        <div class="col-12 b-r">
+                            @Contectdatas.ContactAddress
+                            <br />
+                            @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
+                        </div>
                     </div>
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
@@ -75,7 +77,7 @@
 
                         </div>
                         <div class="col-3 b-r"></div>
-                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-3 b-r">
                             Due Date:
@@ -96,7 +98,7 @@
 
                         </div>
                         <div class="col-3 b-r"></div>
-                        </div>
+                    </div>
                 </div>
 
                 <div class="col-5 b-r">
@@ -139,10 +141,11 @@
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">Address:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyAddress<br />
-                        @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
+                        <div class="col-7 b-r">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
                         </div>
-                    </div>                
+                    </div>
                 </div>
             </div>
 
@@ -289,14 +292,16 @@
                 <div class="col-5 b-r">
                     <div class="row">
                         <div class="col-4 b-r text-right">Sub Total:</div>
-                        <div class="col-7 b-r text-right">@if (Model.PurchaseSubTotal != 0)
-                        {
-                            <label id="SubTotalp">@Model.PurchaseSubTotal</label>
-                        }
-                        else
-                        {
-                            <label id="SubTotalp"></label>
-                        }</div>
+                        <div class="col-7 b-r text-right">
+                            @if (Model.PurchaseSubTotal != 0)
+                            {
+                                <label id="SubTotalp">@Model.PurchaseSubTotal</label>
+                            }
+                            else
+                            {
+                                <label id="SubTotalp"></label>
+                            }
+                        </div>
                         <div class="col-1 b-r">
                         </div>
                     </div>
@@ -312,36 +317,36 @@
                             {
                                 <label id="TotalBTWp">0.00</label>
                             }
+                        </div>
+                        <div class="col-1 b-r">
+                        </div>
                     </div>
-                    <div class="col-1 b-r">
-                    </div>
-                </div>
 
                     <div class="row">
                         <div class="col-4 b-r text-right">BTW0%:</div>
                         <div class="col-7 b-r text-right">
                             <label id="btwop"></label>
+                        </div>
+                        <div class="col-1 b-r">
+                        </div>
                     </div>
-                    <div class="col-1 b-r">
-                    </div>
-                </div>
 
                     <div class="row">
                         <div class="col-4 b-r text-right">BTW 6%:</div>
                         <div class="col-7 b-r text-right">
-                          @if (Model.Vat6 != 0)
-                          {
-                            <label id="BTW6p">@Model.Vat6</label>
-                          }
-                          else
-                          {
+                            @if (Model.Vat6 != 0)
+                            {
+                                <label id="BTW6p">@Model.Vat6</label>
+                            }
+                            else
+                            {
 
-                            <label id="BTW6p">0.00</label>
-                          }
+                                <label id="BTW6p">0.00</label>
+                            }
+                        </div>
+                        <div class="col-1 b-r">
+                        </div>
                     </div>
-                    <div class="col-1 b-r">
-                    </div>
-                </div>
 
                     <div class="row">
                         <div class="col-4 b-r text-right">BTW 21%:</div>
@@ -362,14 +367,14 @@
                     <div class="row Grand-color">
                         <div class="col-4 b-r text-right">Grand Total:</div>
                         <div class="col-7 b-r text-right">
-                           @if (Model.PurchaseTotoalAmount != 0)
-                           {
-                            <label id="gtotalp">@Model.PurchaseTotoalAmount</label>
-                           }
-                           else
-                           {
-                            <label id="gtotalp">0.00</label>
-                           }
+                            @if (Model.PurchaseTotoalAmount != 0)
+                            {
+                                <label id="gtotalp">@Model.PurchaseTotoalAmount</label>
+                            }
+                            else
+                            {
+                                <label id="gtotalp">0.00</label>
+                            }
                         </div>
                         <div class="col-1 b-r">
                         </div>
@@ -380,14 +385,14 @@
             <div class="row">
                 <div class="col-12 b-r">
                     <div class="pull-right btn-margin-Bottom">
-                        <button id="Submitp" type="button"  class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save draft</button>
-                        <button id="saveEmailp" type="button" class="btn btn-success" style="margin:0px 5px" ><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + email</button>
-                        <button id="SaveEmailPrintPrintp" type="button"  class="btn btn-success" style="margin:0px 5px" ><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
+                        <button id="Submitp" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save draft</button>
+                        <button id="saveEmailp" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + email</button>
+                        <button id="SaveEmailPrintPrintp" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
 
 
-</div>
-               
-                 </div>
+                    </div>
+
+                </div>
             </div>
 
         </div>
@@ -615,7 +620,7 @@
     //end of adding row
     $('#orderdetailsitemsp').on('click', '.remove', function () {
 
-       
+
         var isAllValid = true;
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VATp   option:selected').val();
@@ -666,7 +671,7 @@
     })
 
     $(document).on('keyup', "#orderdetailsitemsp tbody .PurchaseQuantity", function () {
-       
+
         var currentRow = $(this).closest("tr");
         var quantity = $(this).val();  // get current row 1st TD value
         var Price = currentRow.find("td:eq(2)").find('input').val();
@@ -831,8 +836,8 @@
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
-            //LoadProductUnit();          
-            //$('#UpdateProId').hide();          
+            //LoadProductUnit();
+            //$('#UpdateProId').hide();
             //$('select#Type option').each(function () {
             //    if ($(this).text() == "Good") {
             //        this.selected = true;
@@ -844,7 +849,7 @@
             $('#TypeGoodsServices').attr('disabled', false);
             $('#UpdateProIdGoods').hide();
             $('#SAveProdIDGoods').show();
-            $('#TypeGoodsServices').attr('disabled', 'disabled');              
+            $('#TypeGoodsServices').attr('disabled', 'disabled');
             $('#CreateNewProductModalGoods').modal('show');
 
         }
@@ -1092,9 +1097,7 @@
                     Vat6: $('#BTW6p').text(),
                     Vat21: $('#BTW21p').text(),
                     Purchase_ID: $('.Purchase_ID').val(),
-
                     PurchaseDetailslist: list
-
                 };
                 $.ajax({
                     url: "/Purchase/saveEmail",

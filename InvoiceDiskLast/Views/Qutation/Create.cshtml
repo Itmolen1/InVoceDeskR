@@ -7,6 +7,8 @@
     var CompanyDatas = ViewBag.Companydata;
 }
 
+
+
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -436,27 +438,20 @@
     });
 
     $('.quantityG').keyup(function () {
-
-
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
-
-
     });
 
     $('.rateG').keyup(function () {
 
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
-
-
     });
 
 
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
-
     });
 
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
@@ -473,33 +468,23 @@
     });
 
 
-
-
-
-
     $(document).on("keyup", ".tbody .rateG", function () {
-
-        debugger;
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
-
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
         GrandTotal("Add", Total, Subtotalwt);
-
     });
 
 
     $(document).on("keyup", ".tbody .quantityG", function () {
-
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
-
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -831,6 +816,7 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
+                  
                     //  ChangeTotalOnItemCahe(Current);
                     $('#mainrow .rateG').val(resultData);
                 },
@@ -1032,7 +1018,6 @@
     });
 
 
-
     $('#QutationServiceDetail1').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VAT  option:selected').val();
@@ -1041,7 +1026,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
 
 
 
