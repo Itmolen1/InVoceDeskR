@@ -42,7 +42,7 @@
                 </button>
                 <ul class="dropdown-menu">
 
-                    <li>@Html.ActionLink("Send Invoice by Email", "InvoicebyEmail", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink("Send Invoice by Email", "EmailBill", "Bills", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                     <li class="divider"></li>
                     <li><a href="#"></a></li>
                     <li class="divider"></li>
@@ -90,7 +90,7 @@
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-12 b-r HeadText">
-                            <label>Purchase</label>
+                            <label>Bill</label>
                         </div>
                     </div>
                     <div class="row clientInfo" style="margin-top:20px">
@@ -103,20 +103,20 @@
                             @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
                         </div>
                     </div>
-                    
-                            Purchase Date:
-                            @{
-                                DateTime pdate = new DateTime();
-                                pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
 
-                                DateTime dDate = new DateTime();
-                                dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+                    Purchase Date:
+                    @{
+                        DateTime pdate = new DateTime();
+                        pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
 
-                            }
-                    
+                        DateTime dDate = new DateTime();
+                        dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+
+                    }
+
                     <div class="row" style="margin-top:20px">
                         <div class="col-4 b-r">
-                            Purchase Date:
+                            Bill Date:
                         </div>
                         <div class="col-8 b-r">
                             @pdate.ToShortDateString()
@@ -124,7 +124,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4 b-r">
-                            Purchase Number:
+                            Bill Number:
                         </div>
                         <div class="col-8 b-r">
                             @purchaseModel.PurchaseOrderID
@@ -343,7 +343,7 @@
                                             </td>
 
                                             <td>
-                                               @item.PurchaseQuantity
+                                                @item.PurchaseQuantity
                                             </td>
                                             <td>
                                                 @item.PurchaseQuantity
@@ -382,7 +382,7 @@
                         {
                             <div class="col-4 b-r text-right">VAT 6%:€</div>
 
-                                <div class="col-7 b-r text-right">@purchaseModel.Vat6</div>
+                            <div class="col-7 b-r text-right">@purchaseModel.Vat6</div>
                                 <div class="col-1 b-r">
                                 </div>
                         }
@@ -393,7 +393,7 @@
                         {
                             <div class="col-4 b-r text-right">VAT 21%:€</div>
 
-                                <div class="col-7 b-r text-right">@purchaseModel.Vat21</div>
+                            <div class="col-7 b-r text-right">@purchaseModel.Vat21</div>
                                 <div class="col-1 b-r">
                                 </div>
                         }

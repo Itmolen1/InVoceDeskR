@@ -1,8 +1,4 @@
-﻿<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
-<label></label>
-
+﻿
 <div class="row">
     <div class="col-lg-3 col-md-6">
         <div class="card">
@@ -39,7 +35,7 @@
                                 <a href="#" id="btn-NewPurchase"><i class="fa fa-plus-circle" style="margin-right:5px"></i>New Purchase</a>                            
                              </div>
                             <div class="col-6">
-                                <a href="/Purchase/InvoiceSerVice"><span><i class="fa fa-plus-circle" style="margin-right:5px"></i>Bill Service</span></a>
+                                <a href="#" id="btn-NewBill"><span><i class="fa fa-plus-circle" style="margin-right:5px"></i>New Bill</span></a>
                                </div>
                         </div>
                     </div>
@@ -94,7 +90,7 @@
                 //LoadVernder();
                 //$('#VenderSelectModel').modal('show');
 
-                window.location.href = '/MVCQutation/ServiceInvoice'
+                window.location.href = '/MVCQutation/ServiceInvoice';
             });
 
             $('#btn-NewPurchase').click(function () {
@@ -102,6 +98,8 @@
                 showRequiredModel = "";
                 showRequiredModel = "PurchaseContatcModel";
                 LoadVernder();
+                $('#Purchase').show();
+                $('#Bill').hide();
                 $('#VenderSelectModel').modal('show');                
             });
 
@@ -111,14 +109,26 @@
             });
 
             $('#btn-NewInvoice').click(function () { 
-            {
+           
                 LoadContacts();
                 $('#quotation').hide();
                 $('#Invoice').show();
                 $('#QutationContactModel').modal('show');
-            }
-
             });
+
+            $('#btn-NewBill').click(function () {
+
+                showRequiredModel = "";
+                showRequiredModel = "PurchaseContatcModel";
+                LoadVernder();
+                $('#Purchase').hide();
+                $('#Bill').show();
+                $('#VenderSelectModel').modal('show');
+           
+        });
     });
+
+
+   
    
 </script>

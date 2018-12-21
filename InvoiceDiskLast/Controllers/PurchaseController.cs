@@ -1996,31 +1996,22 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult Viewinvoice1(int? purchaseOrderId)
         {
 
-            if (purchaseOrderId == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
 
             try
             {
-                //var idd = Session["ClientID"];
-                //var cdd = Session["CompayID"];
-
-
-                //if (Session["ClientID"] != null && Session["CompayID"] != null)
-                //{
-                //    Contectid = Convert.ToInt32(Session["ClientID"]);
-                //    CompanyID = Convert.ToInt32(Session["CompayID"]);
-                //}
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + 1.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
                 MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                int? Contectid = ob.VenderId;
+                int? CompanyID = ob.CompanyId;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+               
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 

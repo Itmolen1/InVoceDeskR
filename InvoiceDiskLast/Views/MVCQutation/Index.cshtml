@@ -169,6 +169,9 @@
 
         $('#AddNewQutationFromQutaion').click(function () {
             LoadContacts();
+
+            $('#quotation').show();
+            $('#Invoice').hide();
             $('#QutationContactModel').modal('show');
         });
 
@@ -196,14 +199,11 @@
         var FromDate = new Date(gg);
         var timeDiff = Math.abs(todates.getTime() -FromDate.getTime());
         diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
        
         return diffDays;
-
        
     }
-
-
+    
     function EditQutation(QutationId) {
 
         $.ajax({
@@ -213,11 +213,10 @@
                 Qutationid: QutationId
             },
             success: function (data) {
-                window.location.href = "/Qutation/Edit/" + QutationId;
+                window.location.href = "/Qutation/EditQutation/" + QutationId;
             }
         });
     }
-
 
 
     function ViewQutationDetail(QutationId) {
