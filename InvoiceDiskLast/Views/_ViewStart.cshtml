@@ -189,8 +189,34 @@
             $('#DivServiceBody').show(1000);
         }
     }
-
+    
    
+
+
+    $('#InvoiceClientNext').click(function () {
+
+        //var qutationGoodOrService = $('#SelectTypeQutation').val();
+
+        var value = $('#SelectContacts1').val();
+
+        if (value > 0) {
+
+            $.ajax({
+                url: '/MVCClient/AddOrEdit',
+                type: 'GET',
+                data: {
+                    id: value
+                },
+                success: function (data) {
+
+                    window.location.href = "/Invoice/Create"                 
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+    });
     $('#QutationClientNext').click(function () {
 
         //var qutationGoodOrService = $('#SelectTypeQutation').val();

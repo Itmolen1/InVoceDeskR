@@ -68,17 +68,16 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <select id="SelectContacts1" class="form-control"></select>
-                    @*<hr />
-                    <select id="SelectTypeQutation" class="form-control">
-                        <option value="0">Select Type</option>
-                        <option value="1">Good</option>
-                        <option value="2">Services</option>
-                    </select>*@
+                    <select id="SelectContacts1" class="form-control"></select>                  
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" id="QutationClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right"></i></button>
+                    <div id="quotation">
+                        <button type="button" id="QutationClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right"></i></button>
+                    </div>
+                    <div id="Invoice">
+                        <button type="button" id="InvoiceClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step d <i class="fa fa-angle-double-right"></i></button>
+                    </div>
                     <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -939,24 +938,15 @@
                             </ul>
                         </li>
                         <li>
-                            <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-clipboard"></i><span class="hide-menu">Qutation</span></a>
+                            <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-clipboard"></i><span class="hide-menu">Sale</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 @*<li><a href="/Qutation/Create">New Qutation</a></li>*@
                                 <li><a href="/MVCQutation/Index">Qutation</a></li>
-                                <li><a href="/QutationOrder/QutationOrderList">Qutation Order Status</a></li>
+                                <li><a href="/Invoice/Index">Invoice</a></li>
+                                <li><a href="/QutationOrder/QutationOrderList">Qutation Status</a></li>
                               
                             </ul>
                         </li>
-
-                        <li>
-                            <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-clipboard"></i><span class="hide-menu">Invoices</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="/MVCQutation/ServiceInvoice">Service Invoice</a></li>
-                                <li><a href="/MVCQutation/GoodsInvoice">Good Invoice</a></li>
-                            </ul>
-                        </li>
-
-
                         <li class="nav-small-cap"></li>
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-files"></i><span class="hide-menu">Client <span class="badge badge-pill badge-info">25</span></span></a>
@@ -1222,6 +1212,7 @@
     var GoodsServicess = "";
     GoodsService = "Good"
     var QutationStatus;
+    var InvoiceQutation = "";
     $(document).ready(function () {       
         GetUserInfo();
        
