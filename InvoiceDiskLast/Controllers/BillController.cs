@@ -60,6 +60,7 @@ namespace InvoiceDiskLast.Controllers
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
+                
                 int CompanyID = Convert.ToInt32(Session["CompayID"]);
 
                 purchasemodel.CompanyId = CompanyID;
@@ -115,6 +116,7 @@ namespace InvoiceDiskLast.Controllers
                         purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                         purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                         purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
+                        purchadeDetail.Type = purchasemodel.Status;
 
                         purchadeDetail.PurchaseId = purchasemodel.PurchaseOrderID;
 
@@ -142,6 +144,45 @@ namespace InvoiceDiskLast.Controllers
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
+        }
+
+        [HttpGet]
+        public ActionResult ViewBill(int id)
+        {
+            try
+            {
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + id.ToString()).Result;
+                MvcPurchaseModel PurchaseModel = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + id.ToString()).Result;
+                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+                //int? Contactid = QutationModel.ContactId;
+                int? Contactid = PurchaseModel.VenderId;
+
+                int? CompanyID = PurchaseModel.CompanyId;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contactid.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+              
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = PurchaseModel;
+                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
         }
     }
 }
