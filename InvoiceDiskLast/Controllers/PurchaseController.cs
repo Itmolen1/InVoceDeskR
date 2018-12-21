@@ -1901,5 +1901,134 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+        [HttpPost]
+        public ActionResult save1(MvcPurchaseViewModel purchaseViewModel)
+        {
+            var purchaseorderId = "";
+            int intpurchaseorderId = 0;
+            PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
+            try
+            {
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+
+                purchasemodel.CompanyId = CompanyID;
+                purchasemodel.UserId = 1;
+                purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
+                purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
+                purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
+                purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
+                purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
+                purchasemodel.PurchaseSubTotal = purchaseViewModel.PurchaseSubTotal;
+                purchasemodel.PurchaseDiscountAmount = purchaseViewModel.PurchaseDiscountAmount;
+                purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;
+                purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
+                purchasemodel.Vat6 = purchaseViewModel.Vat6;
+                purchasemodel.VenderId = Contectid;
+                purchasemodel.Vat21 = purchaseViewModel.Vat21;
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Goods.ToString();
+
+                if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID == null)
+                {
+
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
+                    IEnumerable<string> headerValues;
+                    var userId = string.Empty;
+                    if (response.Headers.TryGetValues("idd", out headerValues))
+                    {
+                        purchaseorderId = headerValues.FirstOrDefault();
+                    }
+                    intpurchaseorderId = Convert.ToInt32(purchaseorderId);
+
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                    {
+                        purchaseViewModel.PurchaseOrderID = intpurchaseorderId;
+
+                        foreach (var item in purchaseViewModel.PurchaseDetailslist)
+                        {
+                            PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
+                            purchadeDetail.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
+                            purchadeDetail.PurchaseItemId = item.PurchaseItemId;
+                            purchadeDetail.PurchaseDescription = item.PurchaseDescription;
+                            purchadeDetail.PurchaseQuantity = item.PurchaseQuantity;
+                            purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
+                            purchadeDetail.PurchaseTotal = item.PurchaseTotal;
+                            purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
+                            purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                            {
+                                purchadeDetail.PurchaseId = intpurchaseorderId;
+
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
+                            }
+                            else
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
+                            }
+                        }
+                    }
+                }
+
+                else
+                {
+                    if (purchaseViewModel.PurchaseOrderID != 0)
+                    {
+                        purchasemodel.PurchaseID = purchaseViewModel.Purchase_ID;
+                        intpurchaseorderId = Convert.ToInt32(purchaseViewModel.PurchaseOrderID);
+                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + purchasemodel.PurchaseOrderID, purchasemodel).Result;
+                        intpurchaseorderId = (int)purchaseViewModel.PurchaseOrderID;
+                        if (response2.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            foreach (var item in purchaseViewModel.PurchaseDetailslist)
+                            {
+                                PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
+                                purchadeDetail.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
+                                purchadeDetail.PurchaseItemId = item.PurchaseItemId;
+                                purchadeDetail.PurchaseDescription = item.PurchaseDescription;
+                                purchadeDetail.PurchaseQuantity = item.PurchaseQuantity;
+                                purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
+                                purchadeDetail.PurchaseTotal = item.PurchaseTotal;
+                                purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
+                                purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
+                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                                {
+                                    purchadeDetail.PurchaseId = intpurchaseorderId;
+
+                                    HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
+                                }
+                                else
+                                {
+                                    HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+
+
+
+
+
+            return new JsonResult { Data = new { Status = "Success", purchaseId = intpurchaseorderId } };
+        }
+
     }
 }

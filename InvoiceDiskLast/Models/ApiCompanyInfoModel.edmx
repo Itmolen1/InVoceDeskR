@@ -211,6 +211,8 @@
           <Property Name="PurchaseTotal" Type="float" />
           <Property Name="PurchaseVatPercentage" Type="float" />
           <Property Name="PurchaseId" Type="int" />
+          <Property Name="RowSubTotal" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Type" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="PurchaseOrderTable">
           <Key>
@@ -1194,6 +1196,8 @@
           <Property Name="PurchaseVatPercentage" Type="Double" />
           <Property Name="PurchaseId" Type="Int32" />
           <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderDetailsTable" ToRole="PurchaseOrderTable" />
+          <Property Name="RowSubTotal" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
           <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="0..1" />
@@ -1534,6 +1538,8 @@
           <EntitySetMapping Name="PurchaseOrderDetailsTables">
             <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderDetailsTable">
               <MappingFragment StoreEntitySet="PurchaseOrderDetailsTable">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
                 <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
                 <ScalarProperty Name="PurchaseVatPercentage" ColumnName="PurchaseVatPercentage" />
                 <ScalarProperty Name="PurchaseTotal" ColumnName="PurchaseTotal" />

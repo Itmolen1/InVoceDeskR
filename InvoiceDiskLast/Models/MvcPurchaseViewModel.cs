@@ -46,7 +46,7 @@ namespace InvoiceDiskLast.Models
 
         public Nullable<double> Vat6 { get; set; }
         public Nullable<double> Vat21 { get; set; }
-
+        public Nullable<decimal> RowSubTotal { get; set; }
         public List<PurchaseOrderDetailsTable> PurchaseDetailslist { get; set; }
 
     }
