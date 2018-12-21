@@ -34,6 +34,8 @@ namespace InvoiceDiskLast.Models
 
         public string PurchaseItemName { get; set; }
 
+        public string Type { get; set; }
+        public Nullable<DateTime> ServiceDate { get; set; }
 
         public int PurchaseOrderDetailsId { get; set; }
         public Nullable<int> PurchaseItemId { get; set; }

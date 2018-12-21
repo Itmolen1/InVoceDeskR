@@ -63,6 +63,8 @@ namespace InvoiceDiskLast.Controllers
                              where pd.PurchaseId == id
                              select new MvcPurchaseViewModel
                              {
+                                 Type = pd.Type,
+                                 ServiceDate = pd.ServiceDate,
                                  PurchaseItemId = pd.PurchaseItemId,
                                  PurchaseId = pd.PurchaseId,
                                  PurchaseItemRate = pd.PurchaseItemRate,
@@ -71,7 +73,8 @@ namespace InvoiceDiskLast.Controllers
                                  PurchaseItemName = p.ProductName,
                                  PurchaseTotal = pd.PurchaseTotal,
                                  PurchaseOrderID = (int)pd.PurchaseId,
-
+                                 PurchaseDescription = pd.PurchaseDescription,
+                                 RowSubTotal = pd.RowSubTotal,
                                  PurchaseOrderDetailsId =(int)pd.PurchaseOrderDetailsId
                              }).ToList();
 

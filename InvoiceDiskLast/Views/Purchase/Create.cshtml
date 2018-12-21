@@ -197,7 +197,7 @@
                         </tr>
                     </table>
                 </div>
-              
+
             </div>
 
 
@@ -257,8 +257,8 @@
                                 @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                               @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal" } })
-                              @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                             </td>
                             <td>
                                 <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -289,8 +289,8 @@
                     <div class="row">
                         <div class="col-3 b-r">Customer Notes:</div>
                         <div class="col-9 b-r">
-                           @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
-                        @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
+                            @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -1030,7 +1030,8 @@
             orderItem = {
                 PurchaseItemId: parseInt($(this).find('.product').val()),
                 PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                Type: "Goods",
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
                 PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                 PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                 Total: parseFloat($(this).find('.FTotalG').val()),
@@ -1043,24 +1044,21 @@
 
 
         var empObj = {
-           PurchaseId: $('#PurchaseId').val(),
-                    PurchaseID: $('#PurchaseID').val(),
-                    PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-                    PurchaseDate: $('#PurchaseDate').val(),
-                    PurchaseDueDate: $('#PurchaseDueDate').val(),
-                    PurchaseSubTotal: $('#SubTotalp').text(),
-                    PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-                    PurchaseOrderID: $('#PurchaseOrderID').val(),
-                    PurchaseTotoalAmount: $('#gtotalp').text(),
-                    PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-                    Vat6: $('#BTW6p').text(),
-                    Vat21: $('#BTW21p').text(),
-                    Purchase_ID: $('.Purchase_ID').val(),
-                    PurchaseDetailslist: list
+            PurchaseId: $('#PurchaseId').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('#PurchaseDate').val(),
+            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            Purchase_ID: $('.Purchase_ID').val(),
+            PurchaseDetailslist: list
         };
-
-
-       
 
         $.ajax({
             url: "/Purchase/save1",
@@ -1069,7 +1067,7 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                QutationIdd = result.QutationId;
+               
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1077,10 +1075,8 @@
                         type: 'success'
                     },
                          function (isconform) {
-                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
                          });
-
-
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
