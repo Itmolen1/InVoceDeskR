@@ -98,26 +98,37 @@
         }
 
     });
+    
+
+
+    $('#VenderClientNextBill').click(function () {
+        var serviceOrgoo = "";
+        var value = $('#venderSelect').val();       
+     
+        if (value > 0) {
+
+            $.ajax({
+                url: '/MVCClient/AddOrEdit',
+                type: 'GET',
+                data: {
+                    id: value
+                },
+                success: function (data) {
+                    window.location.href = "/Bills/Create";
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+          
+    });
 
 
     $('#VenderClientNext').click(function () {
         var serviceOrgoo = "";
         var value = $('#venderSelect').val();
-        serviceOrgoo = $('#SelectTypeQutation1 option:selected').text();
-        var TypeValue = $('#SelectTypeQutation1').val();
-        if (value > 0) {
-            if (TypeValue == 0)
-            {
-                $.toast({
-                    heading: 'Information',
-                    text: 'Please select Type to continue',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                })
-            }
-            else
-            {
+        if (value > 0) {           
                 $.ajax({
                     url: '/MVCClient/AddOrEdit',
                     type: 'GET',
@@ -126,33 +137,14 @@
                     },
                     success: function (data) {
 
-                        if (serviceOrgoo == "Good") {
-                            serviceOrgoo = "";
-
-                            window.location.href = "/Purchase/AddOrEdit"
-                        }
-                        else if (serviceOrgoo == "Services") {
-                            serviceOrgoo = "";
-
-                            window.location.href = "/MvcInvoiceServices/AddOrEdit/0"
-                        }
-
+                            window.location.href = "/Purchase/Create"
+                        
                     },
                     error: function () {
                         alert("error");
                     }
                 });
             }
-        }
-        else {
-            $.toast({
-                heading: 'Information',
-                text: 'Please select Vender to continue',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#9EC600'  // To change the background
-            });
-        }
     });
 
 

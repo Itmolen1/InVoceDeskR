@@ -10,6 +10,13 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
+@{
+    ViewBag.Title = "ViewQuation";
+}
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
 
 <div class="row">
     @if (TempData["EmailMessge"] != null)
@@ -35,26 +42,28 @@
                 </button>
                 <ul class="dropdown-menu">
 
-                    <li>@Html.ActionLink("Send Invoice by Email", "InvoicebyEmail", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
+                    <li>@Html.ActionLink("Send Invoice by Email", "EmailBill", "Bills", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                     <li class="divider"></li>
                     <li><a href="#"></a></li>
                     <li class="divider"></li>
                     <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
-
             <div style="margin-left:3px">
                 <div class="btn-group">
                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print concept", "PrintPurchase", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("print concept", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
                 </div>
             </div>
+            <div style="margin-left:3px">
+                <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
 
-            <div style="margin-left:3px">                
-                <a href="/Purchase/Edit/?Id=@purchaseModel.PurchaseOrderID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+
             </div>
 
             <div style="margin-left:3px">
+
+
                 <a href="/MVCQutation/Index/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
             </div>
         </div>
@@ -81,7 +90,7 @@
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-12 b-r HeadText">
-                            <label>Purchase</label>
+                            <label>Bill</label>
                         </div>
                     </div>
                     <div class="row clientInfo" style="margin-top:20px">
@@ -94,20 +103,20 @@
                             @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
                         </div>
                     </div>
-                    
-                            Purchase Date:
-                            @{
-                                DateTime pdate = new DateTime();
-                                pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
 
-                                DateTime dDate = new DateTime();
-                                dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+                    Purchase Date:
+                    @{
+                        DateTime pdate = new DateTime();
+                        pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
 
-                            }
-                    
+                        DateTime dDate = new DateTime();
+                        dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+
+                    }
+
                     <div class="row" style="margin-top:20px">
                         <div class="col-4 b-r">
-                            Purchase Date:
+                            Bill Date:
                         </div>
                         <div class="col-8 b-r">
                             @pdate.ToShortDateString()
@@ -115,7 +124,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4 b-r">
-                            Purchase Number:
+                            Bill Number:
                         </div>
                         <div class="col-8 b-r">
                             @purchaseModel.PurchaseOrderID
@@ -334,10 +343,10 @@
                                             </td>
 
                                             <td>
-                                               @item.PurchaseQuantity
+                                                @item.PurchaseQuantity
                                             </td>
                                             <td>
-                                                @item.PurchaseItemRate
+                                                @item.PurchaseQuantity
                                             </td>
                                             <td>
                                                 @item.PurchaseTotal
@@ -373,7 +382,7 @@
                         {
                             <div class="col-4 b-r text-right">VAT 6%:€</div>
 
-                                <div class="col-7 b-r text-right">@purchaseModel.Vat6</div>
+                            <div class="col-7 b-r text-right">@purchaseModel.Vat6</div>
                                 <div class="col-1 b-r">
                                 </div>
                         }
@@ -384,7 +393,7 @@
                         {
                             <div class="col-4 b-r text-right">VAT 21%:€</div>
 
-                                <div class="col-7 b-r text-right">@purchaseModel.Vat21</div>
+                            <div class="col-7 b-r text-right">@purchaseModel.Vat21</div>
                                 <div class="col-1 b-r">
                                 </div>
                         }

@@ -247,17 +247,16 @@
                 </div>
                 <div class="modal-body">
                     <select id="venderSelect" class="form-control"></select>
-                    <hr />
-                    <select id="SelectTypeQutation1" class="form-control">
-                        <option value="0">Select Type</option>
-                        <option value="1">Good</option>
-                        <option value="2">Services</option>
-                    </select>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" id="VenderClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right" style="padding-left: 10px"></i></button>
-                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
+                    <div id="Purchase">
+                        <button type="button" id="VenderClientNext" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right" style="padding-left: 10px"></i></button>
+                    </div>
+                    <div id="Bill">
+                        <button type="button" id="VenderClientNextBill" class="btn btn-info d-none d-lg-block m-l-15">Next Step <i class="fa fa-angle-double-right" style="padding-left: 10px"></i></button>
+                    </div>
+                        <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Cancel</button>
 
                 </div>
             </div>
@@ -1545,7 +1544,30 @@
 
     });
 
-   
+    function LoadVernder() {
+        $("#venderSelect").find("option").remove();
+        $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
+        $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
+
+        $.ajax({
+            url: "/Purchase/GetVender",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
 </script>
 
 
