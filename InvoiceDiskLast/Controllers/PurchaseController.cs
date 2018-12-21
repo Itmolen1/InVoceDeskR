@@ -585,7 +585,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0)
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -2051,15 +2051,15 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        public ActionResult Edit(int Id)
+        public ActionResult Edit(int Id = 0)
         {
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
 
             try
-            { 
+            {
                 ViewBag.VatDrop = GetVatList();
-                             
-                                           
+
+
                 HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + 1 + "/All").Result;
                 List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                 ViewBag.Product = productModel;
@@ -2097,11 +2097,12 @@ namespace InvoiceDiskLast.Controllers
                 purchaseviewModel.Vat6 = (int)ob.Vat6;
                 purchaseviewModel.CompanyId = ob.CompanyId;
                 purchaseviewModel.UserId = ob.UserId;
-           
+
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + Id.ToString()).Result;
                 List<MvcPurchaseViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = ob;
                 ViewBag.PurchaseDatailsList = QutationModelDetailsList;
 
                 return View(purchaseviewModel);
@@ -2114,5 +2115,149 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+        [HttpPost]
+        public ActionResult Edit(MvcPurchaseViewModel purchaseViewModel)
+        {
+
+
+            PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
+            try
+            {
+                if (Session["ClientId"] != null && Session["CompayID"] != null)
+                {
+                    Contectid = Convert.ToInt32(Session["ClientId"]);
+                    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                }
+                purchasemodel.CompanyId = 1;
+                purchasemodel.UserId = 1;
+                purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
+
+                purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
+                purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
+
+                purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
+                purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
+                purchasemodel.PurchaseSubTotal = purchaseViewModel.PurchaseSubTotal;
+                purchasemodel.PurchaseDiscountAmount = purchaseViewModel.PurchaseDiscountAmount;
+                purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;
+                purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
+                purchasemodel.Vat6 = purchaseViewModel.Vat6;
+                purchasemodel.VenderId = 1;
+                purchasemodel.Vat21 = purchaseViewModel.Vat21;
+                purchasemodel.Status = "open";
+                purchasemodel.Type = StatusEnum.Goods.ToString();
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + purchasemodel.PurchaseOrderID, purchasemodel).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    foreach (var item in purchaseViewModel.PurchaseDetailslist)
+                    {
+                        PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
+                        purchadeDetail.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
+                        purchadeDetail.PurchaseItemId = item.PurchaseItemId;
+                        purchadeDetail.PurchaseDescription = item.PurchaseDescription;
+                        purchadeDetail.PurchaseQuantity = item.PurchaseQuantity;
+                        purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
+                        purchadeDetail.Type = item.Type;
+                        purchadeDetail.RowSubTotal = item.RowSubTotal;
+                        purchadeDetail.PurchaseDescription = item.PurchaseDescription;
+                        purchasemodel.VenderId = 1;
+                        purchadeDetail.ServiceDate = item.ServiceDate;
+                        purchasemodel.CompanyId = 1;
+                        purchadeDetail.PurchaseTotal = item.PurchaseTotal;
+                        purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
+                        purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
+
+                        if (purchadeDetail.PurchaseOrderDetailsId == 0)
+                        {
+
+
+                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
+                        }
+                        else
+                        {
+                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
+                        }
+                    }
+
+                    return new JsonResult { Data = new { Status = "Success", purchaseId = purchasemodel.PurchaseOrderID } };
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+            return View();
+        }
+
+
+
+
+        public ActionResult PrintPurchase(int? purchaseOrderId)
+        {
+            
+            try
+            {
+                var idd = Session["ClientID"];
+                var cdd = Session["CompayID"];
+
+                //if (Session["ClientID"] != null && Session["CompayID"] != null)
+                //{
+                //    Contectid = Convert.ToInt32(Session["ClientID"]);
+                //    CompanyID = Convert.ToInt32(Session["CompayID"]);
+                //}
+                //else
+                //{
+                //    return RedirectToAction("Index", "Login");
+                //}
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + 1.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
+                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
+
+                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
+                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+                DateTime PurchaseDueDate = Convert.ToDateTime(ob.PurchaseDueDate); //mm/dd/yyyy
+                DateTime PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);//mm/dd/yyyy
+                TimeSpan ts = PurchaseDueDate.Subtract(PurchaseDate);
+                string diffDate = ts.Days.ToString();
+
+                ViewBag.Contentdata = contectmodel;
+                ViewBag.Companydata = companyModel;
+                ViewBag.Purchase = ob;
+                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
+                string PdfName = purchaseOrderId + "-" + companyModel.CompanyName + ".pdf";
+
+                string cutomswitches = "";
+                cutomswitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN: \n " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + " \n Printed date: " +
+                   DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                  " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"";
+
+                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/PrintPurchasePartialView.cshtml")
+                {
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+                    FileName = PdfName,
+                    PageHeight = 40,
+                    CustomSwitches = cutomswitches,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
+                };
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

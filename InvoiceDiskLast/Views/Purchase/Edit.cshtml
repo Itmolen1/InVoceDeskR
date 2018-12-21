@@ -3,16 +3,14 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 @{
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
+    var purchaseModel = ViewBag.Purchase;
 }
-
 
 
 <div class="row">
@@ -28,7 +26,7 @@
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
 
-                  
+
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
@@ -188,25 +186,25 @@
                                                         <option value="0">Select Item..</option>
                                                         @foreach (var product in ViewBag.Good)
                                                         {
-                                                            <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                            <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
+                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.PurchaseTotal" readonly="readonly" />
                                                 </td>
                                                 <td>
                                                     <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
                                                         @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
                                                     </select>
 
@@ -221,11 +219,11 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+                                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationID" value="@item.QutationID" />
+                                                    <input type="hidden" class="PurchaseOrderID" value="@item.PurchaseOrderID" />
                                                 </td>
 
                                             </tr>
@@ -244,16 +242,16 @@
                                 <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
-                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
-                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                             </td>
                             <td>
                                 <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -276,14 +274,14 @@
                     </table>
                 </div>
                 @*<div class="row">
-                <div class="col-1 b-r"></div>
-                <div class="col-11 b-r">
-                    <div id="OrderItems">
-                        <table class="table" id="orderdetailsitemssss"></table>
-                        <span id="orderItemError" style="color:red"></span>
-                    </div>
-                </div>
-            </div>*@
+                        <div class="col-1 b-r"></div>
+                        <div class="col-11 b-r">
+                            <div id="OrderItems">
+                                <table class="table" id="orderdetailsitemssss"></table>
+                                <span id="orderItemError" style="color:red"></span>
+                            </div>
+                        </div>
+                    </div>*@
             </div>
 
 
@@ -345,24 +343,24 @@
                                                         <option value="0">Select Item..</option>
                                                         @foreach (var product in ViewBag.Service)
                                                         {
-                                                            <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                            <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description" />
+                                                    <input type="text" class=" Discription form-control Input-height" value="@item.PurchaseDescription" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
+                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.PurchaseTotal" readonly="readonly" />
 
                                                 </td>
 
@@ -371,7 +369,7 @@
 
                                                         @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
                                                     </select>
 
@@ -387,10 +385,10 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+                                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
                                                 </td>
                                                 <td>
-                                                    <input type="hidden" class="QutationID" value="@item.QutationID" />
+                                                    <input type="hidden" class="PurchaseOrderID" value="@item.PurchaseOrderID" />
                                                 </td>
                                             </tr>
                                         }
@@ -415,16 +413,16 @@
                                 <input type="text" class=" Discription form-control Input-height" />
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
-                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
-                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                             </td>
                             <td>
                                 <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -453,8 +451,8 @@
                     <div class="row">
                         <div class="col-3 b-r">Customer Notes:</div>
                         <div class="col-9 b-r">
-                            @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
-                            @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
+                            @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -462,14 +460,14 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">Sub Total:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="SubTotal">@Pur.SubTotal</label>
+                            <label id="SubTotal">@purchaseModel.PurchaseSubTotal</label>
                         </div>
 
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">Totaal excel btw:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="TotalBTW">@QutationModel.SubTotal</label>
+                            <label id="TotalBTW">@purchaseModel.PurchaseSubTotal</label>
                         </div>
                     </div>
                     <div class="row">
@@ -481,20 +479,20 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">BTW 6%:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="BTW6">@QutationModel.TotalVat6</label>
+                            <label id="BTW6">@purchaseModel.Vat6</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">BTW 21%:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="BTW21">@QutationModel.TotalVat21</label>
+                            <label id="BTW21">@purchaseModel.Vat21</label>
                         </div>
                     </div>
 
                     <div class="row Grand-color">
                         <div class="col-5 b-r text-right">Grand Total:</div>
                         <div class="col-7 b-r text-right">
-                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@QutationModel.TotalAmount</label>
+                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label>
                         </div>
                     </div>
                 </div>
@@ -521,3 +519,1013 @@
     </div>
     <div class="col-2 b-r"></div>
 </div>
+
+
+
+
+
+<script type="text/javascript">
+
+    var Currentrow, currentRow1, Total, vat, Price, Quantity = 0;
+    $(document).ready(function () {
+        LoadProductS();
+        LoadProductG();
+    });
+
+    var VAT21VAlUE, VAT6VAlUE;
+
+    $('#btnaddGoods').click(function () {
+
+
+        debugger;
+        currentRow1 = $(this).closest("tr");
+
+        var VAT = currentRow1.find('.VATG').val();
+
+        RowSubTalSubtotal(VAT, currentRow1);
+      
+        var isAllValid = true;
+        if ($("#mainrow #SelectProductQutationG").val() == "0") {
+            isAllValid = false;
+            alert("Please select Item");
+            return;
+        }
+
+        var isAllValid = true;
+        if ($("#mainrow .quantityG").val() == 0) {
+            isAllValid = false;
+
+            alert("Please provide quantityG");
+            return;
+        }
+        var isAllValid = true;
+        if ($("#mainrow .rateG").val() == 0) {
+            isAllValid = false;
+            alert("Please select provide rate");
+            return;
+        }
+
+        if (isAllValid) {
+            var $newRow = $("#mainrow").clone().removeAttr('id');
+            $('#SelectProductQutationG', $newRow).val($("#SelectProductQutationG").val());
+            $('.VATG', $newRow).val($("#mainrow #SelectVATG").val());
+            //Replace add button with remove button
+            $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
+            //Remove id attribute from new clone row
+            $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
+            $('span.error', $newRow).remove();
+            $('#orderdetailsitems1').append($newRow);
+            $(".FTotalG").prop('disabled', true);
+            $('#mainrow #SelectProductQutationG').val('0');
+            $('#mainrow .quantityG').val('');
+            $('#mainrow #RateG').val('');
+            $('#mainrow .FTotalG').val('');
+            $('#mainrow .quantityG').val('');
+
+
+            if ($('#orderItemError').text != '') {
+                $('#orderItemError').text('');
+            }
+            $('#mainrow #SelectVATG').val(0);
+
+
+
+        }
+
+      
+
+        $('#mainrow #RowTotalG').val('');
+
+       
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+
+    });
+
+    $('.quantityG').keyup(function () {
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+    });
+
+    $('.rateG').keyup(function () {
+
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+    });
+
+
+    $('.rateG').keyup(function () {
+        Currentrow = $(this).closest("tr");
+        calculateTotalGoods(Currentrow);
+    });
+
+    var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
+
+    $(document).on("keypress", ".tbody .rateG", function () {
+
+        Currentrow = $(this).closest("tr");
+        FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
+        FocuseInTotal = Currentrow.find('.RowTotalG').val();
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+    });
+
+
+    $(document).on("keyup", ".tbody .rateG", function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+        var Total = Currentrow.find(".FTotalG").val();
+        var Subtotalwt = Currentrow.find('.RowTotalG').val();
+        GrandTotal("Add", Total, Subtotalwt);
+    });
+
+
+    $(document).on("keyup", ".tbody .quantityG", function () {
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+    $(document).on("keyup", ".tbody .rateG", function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+    $(document).on("keyup", ".tbody .quantityG", function () {
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find(".VATG").val();
+        calculateTotalGoods(Currentrow);
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+    function calculateTotalGoods(currentRow) {
+
+
+        Quantity = Currentrow.find(".quantityG").val(),
+        Price = Currentrow.find('.rateG').val();
+        Total = parseFloat(Quantity * Price);
+        Currentrow.find('.FTotalG').val(Total);
+    }
+
+    function RowSubTalSubtotal(vat, CurrentRow) {
+
+        debugger;
+
+        Total = 0;
+        Total = Currentrow.find(".FTotalG").val();
+
+        if (parseInt(vat) == 0) {
+            Currentrow.find('.RowTotalG').val(Total);
+            Currentrow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
+            return;
+        }
+        var InputVatValue = parseFloat((Total / 100) * vat);
+        var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
+        Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
+    }
+
+
+    $(document).on('change', '.tbody .VATG', function () {
+
+        debugger;
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+    });
+
+
+    $('#mainrow1 .VATG').change(function () {
+        var Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+
+    });
+
+
+    $('.tbody .VATG').change(function () {
+
+        Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+    $('#mainrow .VATG').change(function () {
+
+        currentRow1 = $(this).closest("tr");
+        vat = currentRow1.find('.VATG').val();
+
+        RowSubTalSubtotal(vat, Currentrow);
+    });
+
+    //Services
+
+
+    $('#btnSerVice').click(function () {
+
+        var currentRow1 = $(this).closest("tr");
+
+        vat = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow1);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+      
+        var isAllValid = true;
+        if ($("#mainrow1 #SelectProductQutationS").val() == "0") {
+            isAllValid = false;
+            alert("Please select Item");
+            return;
+        }
+
+        var isAllValid = true;
+        if ($("#mainrow1 .quantityS").val() == 0) {
+            isAllValid = false;
+
+            alert("Please provide quantity");
+            return;
+        }
+        var isAllValid = true;
+        if ($("#mainrow1 .rateS").val() == 0) {
+            isAllValid = false;
+            alert("Please select provide rate");
+            return;
+        }
+
+        if (isAllValid) {
+            var $newRow = $("#mainrow1").clone().removeAttr('id');
+            $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
+            $('.VATG', $newRow).val($("#mainrow1 #SelectVATS").val());
+
+            //Replace add button with remove button
+            $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
+
+            //Remove id attribute from new clone row
+
+            $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
+
+            $('span.error', $newRow).remove();
+
+            $('#QutationServiceDetail').append($newRow);
+
+            $(".FTotalG").prop('disabled', true);
+
+            $('#mainrow1 #SelectProductQutationS').val('0');
+            $('#mainrow1 .quantityG').val('');
+            $('#mainrow1 .rateG ').val('');
+
+            $('#mainrow1 #FTotalG').val('');
+            $('#mainrow1 .quantityG').val('');
+            $('#mainrow1 #FTotal').val('');
+            if ($('#orderItemError').text != '') {
+                $('#orderItemError').text('');
+            }
+            $('#mainrow1 #SelectVATS').val(0);
+            $('#mainrow1 #RowTotalG').val('');
+            $('#mainrow1 .RowTotalG').val('');
+            $('#QutationServiceDetail1 #mainrow1 .RowTotalG').val('');
+
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
+        }
+    });
+
+
+
+    function CalculateVateTotal() {
+        var Totalvat211, Totalvat6 = 0;
+        var t = 0;
+        $('#QutationServiceDetail .tbody tr .VATG').each(function () {
+
+            var Value = 0;
+            Value = $(this).val();
+
+            if (Value == 21) {
+
+                debugger;
+                if (!isNaN(parseFloat(Value))) {
+                    t += parseFloat(Value)
+                }
+            }
+
+
+            if (Value == 6) {
+                if (!isNaN(parseFloat(Value))) {
+                    Totalvat6 += parseFloat(Value);
+                }
+            }
+        });
+
+
+        $('#orderdetailsitems1 .tbody tr .VATG').each(function () {
+
+            var Value = $(this).val();
+
+            if (Value == 6) {
+
+                if (!isNaN(parseFloat(Value))) {
+                    Totalvat6 += parseFloat(Value);
+                }
+            }
+
+            if (Value == 21) {
+
+                if (!isNaN(parseFloat(Value))) {
+                    t += parseFloat(Value);
+                }
+            }
+        });
+
+
+        if (!isNaN(Totalvat6)) {
+            $('#BTW6').text(Totalvat6.toFixed(2));
+        }
+        if (!isNaN(t)) {
+            $('#BTW21').text(parseFloat(t).toFixed(2));
+        }
+    }
+
+
+    function LoadProductG() {
+        PgoodServices = "Good";
+
+        $("#mainrow #SelectProductQutationG").find("option").remove();
+        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+    function LoadProductS() {
+        PgoodServices = "Services";
+
+        $("#mainrow1 #SelectProductQutationS").find("option").remove();
+        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+
+                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
+
+    $('#mainrow .pClassG').change(function () {
+        var Current = $(this).closest('tr');
+
+        var value = $(this).val();
+        if (value == "AddNewProductSelect") {
+            ShowServiceGood("Good");
+
+            $('#TypeGoodsServices').attr('disabled', false);
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').val('Good');
+            $('#TypeGoodsServices').attr('disabled', 'disabled');
+            $('#CreateNewProductModalGoods').modal('show');
+        }
+        else if (value == "0") {
+
+            return;
+        }
+        else {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/MVCQutation/ProductPricebyId",
+                type: "POST",
+                cache: false,
+                data: { 'ProductId': productId },
+                success: function (resultData) {
+
+                    //  ChangeTotalOnItemCahe(Current);
+                    $('#mainrow .rateG').val(resultData);
+                },
+                error: function (errormessage) {
+                    //alert(errormessage)
+                }
+            });
+        }
+    });
+
+    $('#mainrow1 .pClassS').change(function () {
+        var Current = $(this).closest('tr');
+
+        var value = $(this).val();
+        if (value == "AddNewProductSelect") {
+            ShowServiceGood("Services");
+
+            $('#TypeGoodsServices').attr('disabled', false);
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').val('Services');
+            $('#TypeGoodsServices').attr('disabled', 'disabled');
+            $('#CreateNewProductModalGoods').modal('show');
+        }
+        else if (value == "0") {
+
+            return;
+        }
+        else {
+            var productId = $(this).val();
+            $.ajax({
+                url: "/MVCQutation/ProductPricebyId",
+                type: "POST",
+                cache: false,
+                data: { 'ProductId': productId },
+                success: function (resultData) {
+                    // ChangeTotalOnItemCahe(Current);
+
+                    $('#mainrow1 .rateG').val(resultData);
+
+                },
+                error: function (errormessage) {
+
+                }
+            });
+        }
+    });
+
+
+
+
+
+    function CombineTotalAndSubtotal() {
+
+        var SubTotalGoode, SubTotalService = 0;
+        debugger;
+        SubTotalGoode = AddSubtotalGoods();
+        SubTotalService = AddSubTotalService();
+        var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
+
+        $('#SubTotal').text(Total.toFixed(2));
+        $('#gtotal').text(Total.toFixed(2));
+
+    }
+
+
+    function CombineTotal() {
+
+        var TotalGoode, Total, TotalService1 = 0;
+
+        TotalGoode = totalGoods();
+        TotalService1 = TotalService();
+        Total = parseFloat(TotalGoode) + parseFloat(TotalService1);
+
+        $('#TotalBTW').text(Total.toFixed(2));
+    }
+
+    function AddSubtotalGoods() {
+        var SubTotalGood = 0;
+
+        $('#orderdetailsitems1 .tbody tr .RowTotalG').each(function () {
+            var Value = $(this).val();
+
+            if (!isNaN(parseFloat(Value))) {
+                SubTotalGood += parseFloat(Value)
+            }
+        })
+        return SubTotalGood;
+    }
+
+
+    function AddSubTotalService() {
+        var SubTotalService = 0;
+        $('#QutationServiceDetail .tbody tr .RowTotalG ').each(function () {
+            var Value = $(this).val();
+            if (!isNaN(Value)) {
+
+                SubTotalService += parseFloat(Value);
+            }
+        })
+        return SubTotalService;
+    }
+
+    function totalGoods() {
+        var TotalGood = 0;
+
+        $('#orderdetailsitems1 .tbody tr .FTotalG ').each(function () {
+            var Value = $(this).val();
+
+            if (!isNaN(parseFloat(Value))) {
+                TotalGood += parseFloat(Value)
+            }
+        })
+        return TotalGood;
+    }
+
+    function TotalService() {
+        var TotalService = 0;
+        $('#QutationServiceDetail .tbody tr .FTotalG  ').each(function () {
+            var Value = $(this).val();
+            if (!isNaN(Value)) {
+                TotalService += parseFloat(Value);
+            }
+        })
+        return TotalService;
+    }
+
+
+
+
+    function AsignValueT21(NewValue, Vat, InOrOut) {
+
+        debugger;
+
+        if (InOrOut == 'AddingVat') {
+            if (Vat == 21) {
+                var Currnt21Value = $('#BTW21').text();
+
+                if ((Currnt21Value) != "") {
+                    var v = parseFloat(Currnt21Value) + parseFloat(NewValue);
+                    $('#BTW21').text(parseFloat(v).toFixed(2));
+                }
+                else {
+                    $('#BTW21').text(NewValue);
+                }
+            }
+            else if (Vat == 6) {
+                var Currnt21Value = $('#BTW6').text();
+                if ((Currnt21Value) != '') {
+                    var v = parseFloat(Currnt21Value) + parseFloat(NewValue);
+                    $('#BTW6').text(parseFloat(v).toFixed(2));
+                }
+                else {
+                    $('#BTW6').text(NewValue);
+                }
+            }
+        }
+        else if (InOrOut == "Removing") {
+            if (Vat == 21) {
+                var Currnt21Value = $('#BTW21').text();
+
+                if ((Currnt21Value) != "") {
+                    var v = parseFloat(Currnt21Value) - parseFloat(NewValue);
+                    $('#BTW21').text(parseFloat(v).toFixed(2));
+                }
+                else {
+                    $('#BTW21').text(NewValue);
+                }
+            }
+            else if (Vat == 6) {
+                var Currnt21Value = $('#BTW6').text();
+                if ((Currnt21Value) != "") {
+                    var v = parseFloat(Currnt21Value) - parseFloat(NewValue);
+                    $('#BTW6').text(parseFloat(v).toFixed(2));
+                }
+                else {
+                    $('#BTW6').text(NewValue);
+                }
+            }
+        }
+    }
+
+
+
+    $('#orderdetailsitems1').on('click', '.remove', function () {
+
+        var currentRow = $(this).closest('tr');
+        var vat = currentRow.find('.VAT  option:selected').val();
+
+
+
+        $(this).parents('tr').remove();
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+
+    });
+
+
+    $('#QutationServiceDetail').on('click', '.remove', function () {
+        var currentRow = $(this).closest('tr');
+        var vat = currentRow.find('.VAT  option:selected').val();
+        $(this).parents('tr').remove();
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+
+    $('#Submit').click(function () {
+        debugger;
+        CreateQuation();
+    });
+
+
+
+
+
+    function CreateQuation() {
+
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems1 .tbody tr').each(function () {
+
+            orderItem = {
+                PurchaseItemId: parseInt($(this).find('.product').val()),
+                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
+                PurchaseOrderID: $('.PurchaseOrderID').val(),
+            }
+            list.push(orderItem);
+        });
+
+
+        $('#QutationServiceDetail .tbody tr').each(function () {
+
+            orderItem = {
+                PurchaseItemId: parseInt($(this).find('.product').val()),
+                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Service",
+                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                PurchaseDescription: $(this).find('.Discription').val(),
+                PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
+                PurchaseOrderID: $('.PurchaseOrderID').val(),
+
+            }
+            list.push(orderItem);
+
+        });
+
+
+
+
+        var empObj = {
+            PurchaseId: $('#PurchaseId').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('#PurchaseDate').val(),
+            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            Purchase_ID: $('.Purchase_ID').val(),
+            PurchaseDetailslist: list
+        };
+
+        $.ajax({
+            url: "/Purchase/Edit",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
+
+                         });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
+    }
+
+
+
+    $('#saveEmail').click(function () {
+
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems1 .tbody tr').each(function () {
+
+            orderItem = {
+                ItemId: parseInt($(this).find('.product').val()),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                Rate: parseInt($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+
+        $('#QutationServiceDetail .tbody tr').each(function () {
+            orderItem = {
+                ItemId: $(this).find('.product').val(),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Rate: parseFloat($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Description: $(this).find('.Discription').val(),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+            QutationDetailslist: list
+        };
+
+        console.log(empObj);
+        return true;
+
+        $.ajax({
+            url: "/Qutation/SaveEmail",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                          function (isconform) {
+                              window.location.href = "/Qutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                          });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+            error: function (errormessage) {
+            }
+        });
+    });
+
+
+    $('#saveprintandsendtoyourselfsave').click(function () {
+
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems1 .tbody tr').each(function () {
+
+            orderItem = {
+                ItemId: parseInt($(this).find('.product').val()),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                Rate: parseInt($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+
+        $('#QutationServiceDetail .tbody tr').each(function () {
+            orderItem = {
+                ItemId: $(this).find('.product').val(),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Rate: parseFloat($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseDescription: $(this).find('.Discription').val(),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+
+            }
+            list.push(orderItem);
+        });
+
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+            QutationDetailslist: list
+        };
+
+        $.ajax({
+            url: "/Qutation/SaveEmailPrint",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    QutationIdd = result.QutationId;
+                    localStorage.setItem('path', result.path);
+
+
+                    swal({
+                        title: 'Qutation!',
+                        text: 'Qutation save successfully!',
+                        type: 'success'
+                    },
+                    function (isconform) {
+                        window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                    });
+                }
+                else if (result.Status == "Fail") {
+
+                }
+            },
+            error: function (errormessage) {
+            }
+        });
+    });
+
+    var currentRow = "";
+
+    $(document).on('click', '#btnRemoveGood', function () {
+        var currentRow = $(this).closest('tr');
+        var row = $(this).closest('tr');
+         Remove(row);
+        $(this).closest("tr").remove();
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+    $(document).on('click', '#btnRemoveService', function () {       
+        var currentRow = $(this).closest('tr');
+        var row = $(this).closest('tr');
+        Remove(row);
+        $(this).closest("tr").remove();
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+    function Remove(currentRow) {
+
+
+        var PurchaseOrderId = $('#PurchaseOrderID').val();
+        var purchaseTotal = currentRow.find('.FTotalG').val();
+        var vat = currentRow.find('.VATG ').val();
+        var PurchaseOrderDetailId = currentRow.find('.PurchaseOrderDetailsId').val();
+
+        var purchase = JSON.stringify({
+            PurchaseOrderId: PurchaseOrderId,
+            purchaseOrderDetailId: PurchaseOrderDetailId,
+            vat: vat,
+            total: purchaseTotal
+        })
+
+      
+
+        $.ajax({
+            url: "/Purchase/DeleteInvoice",
+            type: "POST",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: purchase,
+            success: function (data) {
+                if (data.Status == "Success") {
+                                    
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    });
+
+                }
+                else if (data.Status == "Fail") {
+
+                    swal({
+                        title: 'Invoice!',
+                        text: 'fail to remove Invoice!',
+                        type: 'danger'
+                    });
+                }
+            },
+            Error: function (errormessage) {
+                swal({
+                    title: "Fail!",
+                    text: errormessage,
+                    icon: "danger",
+                });
+
+            }
+
+        });
+
+
+    }
+
+
+
+</script>

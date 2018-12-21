@@ -10,13 +10,6 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-@{
-    ViewBag.Title = "ViewQuation";
-}
-
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 
 <div class="row">
     @if (TempData["EmailMessge"] != null)
@@ -49,21 +42,19 @@
                     <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
             </div>
+
             <div style="margin-left:3px">
                 <div class="btn-group">
                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print concept", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("print concept", "PrintPurchase", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
                 </div>
             </div>
-            <div style="margin-left:3px">
-                <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
 
-
+            <div style="margin-left:3px">                
+                <a href="/Purchase/Edit/?Id=@purchaseModel.PurchaseOrderID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
             </div>
 
             <div style="margin-left:3px">
-
-
                 <a href="/MVCQutation/Index/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
             </div>
         </div>
@@ -346,7 +337,7 @@
                                                @item.PurchaseQuantity
                                             </td>
                                             <td>
-                                                @item.PurchaseQuantity
+                                                @item.PurchaseItemRate
                                             </td>
                                             <td>
                                                 @item.PurchaseTotal

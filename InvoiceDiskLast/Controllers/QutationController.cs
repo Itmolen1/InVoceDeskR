@@ -336,10 +336,8 @@ namespace InvoiceDiskLast.Controllers
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
-
                 IEnumerable<string> headerValues;
                 var userId = string.Empty;
-
                 if (response.Headers.TryGetValues("idd", out headerValues))
                 {
                     Qutationid = headerValues.FirstOrDefault();
@@ -374,8 +372,6 @@ namespace InvoiceDiskLast.Controllers
                         }
                     }
 
-
-
                     return new JsonResult { Data = new { Status = "Success", path = "", QutationId = Qid } };
 
                 }
@@ -392,10 +388,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
         int Contectid = 0;
-
 
         [HttpGet]
         public ActionResult EditQutation(int QutationId = 0)
@@ -467,7 +460,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
 
         [HttpPost]
         public ActionResult EditQutation(MVCQutationViewModel MVCQutationViewModel)
@@ -568,9 +560,6 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
-    
 
         public static Boolean IsFileLocked(FileInfo file)
         {
@@ -1353,6 +1342,10 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+
+
+
+    
 
     }
 }
