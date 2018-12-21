@@ -47,7 +47,7 @@
                             Bill Number:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
+                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Purchase_ID" } })
                             @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
 
 
@@ -443,8 +443,7 @@
 
 
     });
-
-
+    
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -464,11 +463,6 @@
 
     });
 
-
-
-
-
-
     $(document).on("keyup", ".tbody .rateG", function () {
 
         debugger;
@@ -483,8 +477,7 @@
         GrandTotal("Add", Total, Subtotalwt);
 
     });
-
-
+    
     $(document).on("keyup", ".tbody .quantityG", function () {
 
         Currentrow = $(this).closest("tr");
@@ -496,9 +489,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
+    
     $(document).on("keyup", ".tbody .rateG", function () {
 
         Currentrow = $(this).closest("tr");
@@ -510,9 +501,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
+    
     $(document).on("keyup", ".tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
@@ -523,9 +512,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
+    
     function calculateTotalGoods(currentRow) {
 
 
@@ -551,8 +538,7 @@
         var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
         Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
     }
-
-
+    
     $(document).on('change', '.tbody .VATG', function () {
 
         debugger;
@@ -565,8 +551,7 @@
         CalculateVateTotal();
 
     });
-
-
+    
     $('#mainrow1 .VATG').change(function () {
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -575,15 +560,6 @@
         //CombineTotal();
         //CalculateVateTotal();
     });
-
-
-
-
-
-
-
-
-
 
     $('.tbody .VATG').change(function () {
 
@@ -596,8 +572,6 @@
         CalculateVateTotal();
     });
 
-
-
     $('#mainrow .VATG').change(function () {
 
         currentRow1 = $(this).closest("tr");
@@ -605,10 +579,8 @@
 
         RowSubTalSubtotal(vat, Currentrow);
     });
-
-    //Services
-
-
+        //Services
+    
     $('#btnSerVice').click(function () {
 
         var currentRow1 = $(this).closest("tr");
@@ -681,13 +653,6 @@
         }
     });
 
-
-
-
-
-
-
-
     function CalculateVateTotal() {
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
@@ -741,9 +706,6 @@
         }
     }
 
-
-
-
     function LoadProductG() {
         PgoodServices = "Good";
 
@@ -769,8 +731,7 @@
 
         });
     }
-
-
+    
     function LoadProductS() {
         PgoodServices = "Services";
 
@@ -871,10 +832,6 @@
         }
     });
 
-
-
-
-
     function CombineTotalAndSubtotal() {
 
         var SubTotalGoode, SubTotalService = 0;
@@ -887,8 +844,7 @@
         $('#gtotal').text(Total.toFixed(2));
 
     }
-
-
+    
     function CombineTotal() {
 
         var TotalGoode, Total, TotalService1 = 0;
@@ -949,10 +905,7 @@
         })
         return TotalService;
     }
-
-
-
-
+    
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         debugger;
@@ -1005,8 +958,6 @@
         }
     }
 
-
-
     $('#orderdetailsitems').on('click', '.remove', function () {
 
         var currentRow = $(this).closest('tr');
@@ -1022,9 +973,7 @@
 
 
     });
-
-
-
+    
     $('#InvoiceServiceDetail1').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VAT  option:selected').val();
@@ -1033,22 +982,15 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
-
-
+        
     $('#Submit').click(function () {
 
         CreateInvoice();
     });
 
-
-
-
-
     function CreateInvoice() {
 
+        debugger;
         var list = [], orderItem, CurrentRow;
 
         $('#orderdetailsitems .tbody tr').each(function () {
@@ -1085,20 +1027,20 @@
 
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
-            DueDate: $('#DueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
+            Purchase_ID: $('#Purchase_ID').val(),
+            PurchaseRefNumber: $('#RefNumber').val(),
+            PurchaseDate: $('#QutationDate').val(),
+            PurchaseDueDate: $('#DueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountPercenteage: $('#DiscountAmount').val(),
+            PurchaseOrderID: $('#Purchase_ID').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
             Total: $('#gtotal').text(),
-            TotalAmount: $('#gtotal').text(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#contactId').val(),
-            QutationDetailslist: list
+            Contactid: $('#contactId').val(),
+            PurchaseDetailslist: list
         };
 
         $.ajax({
@@ -1108,7 +1050,7 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                QutationIdd = result.QutationId;
+                PurchaseOrderID = result.PurchaseOrderID;
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1116,7 +1058,8 @@
                         type: 'success'
                     },
                          function (isconform) {
-                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                             alert(result.PurchaseOrderID);
+                             //window.location.href = "/Bill/ViewBill/?id=" + result.PurchaseOrderID;
                          });
 
 
@@ -1133,8 +1076,6 @@
 
         });
     }
-
-
 
     $('#saveEmail').click(function () {
 
@@ -1171,13 +1112,13 @@
         });
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
+            Purchase_ID: $('#Purchase_ID').val(),
             RefNumber: $('#RefNumber').val(),
             QutationDate: $('#QutationDate').val(),
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
+            QutationID: $('#Purchase_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#gtotal').text(),
@@ -1213,10 +1154,7 @@
             }
         });
     });
-
-
-
-
+    
     $('#saveprintandsendtoyourselfsave').click(function () {
 
         var list = [], orderItem, CurrentRow;
@@ -1252,13 +1190,13 @@
         });
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
+            Purchase_ID: $('#Purchase_ID').val(),
             RefNumber: $('#RefNumber').val(),
             QutationDate: $('#QutationDate').val(),
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
+            QutationID: $('#Purchase_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#gtotal').text(),
@@ -1298,9 +1236,5 @@
             }
         });
     });
-
-
-
-
-
+    
 </script>

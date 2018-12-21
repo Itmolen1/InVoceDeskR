@@ -457,7 +457,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            purchadeDetail.Type = QDTList.Type;
+                            //purchadeDetail.Type = purchaseViewModel.Type;
                             if (purchadeDetail.PurchaseOrderDetailsId == 0)
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;

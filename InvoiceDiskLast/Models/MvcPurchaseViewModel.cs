@@ -43,6 +43,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> PurchaseTotal { get; set; }
         
         public Nullable<int> PurchaseId { get; set; }
+        public int Contactid { get; set; }
 
         public Nullable<double> Vat6 { get; set; }
         public Nullable<double> Vat21 { get; set; }
