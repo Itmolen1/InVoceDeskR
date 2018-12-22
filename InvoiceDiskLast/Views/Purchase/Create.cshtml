@@ -1005,6 +1005,12 @@
     });
 
 
+    $('#saveEmail').click(function () {
+        debugger;
+        SaveEmail();
+    });
+
+
 
     function CreatePurchase() {
 
@@ -1067,7 +1073,7 @@
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
-               
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1091,7 +1097,178 @@
         });
     }
 
+    function SaveEmail() {
 
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems .tbody tr').each(function () {
+            orderItem = {
+                PurchaseItemId: parseInt($(this).find('.product').val()),
+                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+
+        $('#QutationServiceDetail1 .tbody tr').each(function () {
+
+            orderItem = {
+                PurchaseItemId: parseInt($(this).find('.product').val()),
+                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+
+        var empObj = {
+            PurchaseId: $('#PurchaseId').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('#PurchaseDate').val(),
+            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            Purchase_ID: $('.Purchase_ID').val(),
+            PurchaseDetailslist: list
+        };
+
+
+
+
+        $.ajax({
+            url: "/Purchase/SaveEmail",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Purchase/InvoicebyEmail?purchaseOrderId=" + result.purchaseId;
+                         });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
+    }
+
+
+
+
+
+    $('#saveprintandsendtoyourselfsave').click(function () {
+        EmailPrint();
+    });
+
+    function EmailPrint() {
+        var list = [], orderItem, CurrentRow;
+
+        $('#orderdetailsitems .tbody tr').each(function () {
+            orderItem = {
+                PurchaseItemId: parseInt($(this).find('.product').val()),
+                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+        $('#QutationServiceDetail1 .tbody tr').each(function () {
+            orderItem = {
+                PurchaseItemId: parseInt($(this).find('.product').val()),
+                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+            }
+            list.push(orderItem);
+        });
+
+        var empObj = {
+            PurchaseId: $('#PurchaseId').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('#PurchaseDate').val(),
+            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            Purchase_ID: $('.Purchase_ID').val(),
+            PurchaseDetailslist: list
+        };
+
+
+
+        $.ajax({
+            url: "/Purchase/SaveEmailPrint",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                localStorage.setItem('path1', result.path);
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.PurchaseOrderId;
+                         });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+            error: function (errormessage) {
+            }
+        });
+    }
 
 </script>
 

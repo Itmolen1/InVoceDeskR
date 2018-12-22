@@ -172,7 +172,7 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+              
                 return BadRequest();
 
             }
