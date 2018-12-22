@@ -1921,9 +1921,6 @@ namespace InvoiceDiskLast.Controllers
 
         #endregion
 
-
-
-
         public ActionResult Create()
         {
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();

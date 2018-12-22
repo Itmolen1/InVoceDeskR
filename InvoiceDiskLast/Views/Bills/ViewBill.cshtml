@@ -29,34 +29,35 @@
         </div>
     }
 </div>
+
 <div class="row" style="margin-bottom:5px">
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
         <div class="btn-group">
 
             <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
+                <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
                     <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
                     Send
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu">
+              
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/Bills/EmailBill/?id=@purchaseModel.PurchaseOrderID">Send by Email</a>
+                    <a class="dropdown-item" href="/Bills/Print/?id=@purchaseModel.PurchaseOrderID">Print and send it yourself</a>
 
-                    <li>@Html.ActionLink("Send Invoice by Email", "EmailBill", "Bills", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
-                    <li class="divider"></li>
-                    <li><a href="#"></a></li>
-                    <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
-                </ul>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
             </div>
             <div style="margin-left:3px">
                 <div class="btn-group">
                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print concept", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("print concept", "Print", "Bills", new { id = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
                 </div>
             </div>
             <div style="margin-left:3px">
-                <a href="/Purchase/AddOrEdit/@purchaseModel.PurchaseOrderID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+                <a href="/Bills/Edit/@purchaseModel.PurchaseOrderID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
 
 
             </div>
@@ -77,7 +78,6 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-
 
             @using (Html.BeginForm("DownloadFile", "Purchase", FormMethod.Post, new { id = "DownloadFile1" }))
             {
@@ -219,8 +219,6 @@
                             <table class="table table-striped" id="orderdetailsitems">
                                 <thead class="thead-dark">
                                     <tr>
-
-
                                         <th>
                                             Goods
                                         </th>
@@ -239,13 +237,10 @@
                                         <th>
                                             SubTotal
                                         </th>
-
                                     </tr>
                                 </thead>
 
                                 <tbody class="tbody">
-
-
                                     @foreach (var item in ViewBag.PurchaseDatailsList)
                                     {
                                         if (item.Type == "Goods")
