@@ -88,7 +88,7 @@ namespace InvoiceDiskLast.Controllers
                         quutionviewModel.TotalAmount = ob.TotalAmount;
                         quutionviewModel.TotalVat21 = (ob.TotalVat21 != null ? (float)(ob.TotalVat21) : (float)0.00);
                         quutionviewModel.TotalVat6 = (ob.TotalVat6 != null ? (float)(ob.TotalVat6) : (float)0.00);
-                        quutionviewModel.ConatctId = (Contectid != null ? Contectid : 0);
+                        quutionviewModel.ConatctId = (Contectid != 0 ? Contectid : 0);
                         HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + id.ToString()).Result;
                         List<MVCQutationDetailsModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationDetailsModel>>().Result;
                         ViewBag.Contentdata = contectmodel;
@@ -177,7 +177,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(item.Rate);
                             QtDetails.Total = Convert.ToDouble(item.Total);
                             QtDetails.Vat = Convert.ToDouble(item.Vat);
-                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
+                            if (QtDetails.QutationDetailId == 0)
                             {
                                 QtDetails.QutationID = intQutationorderId;
 
@@ -212,7 +212,7 @@ namespace InvoiceDiskLast.Controllers
                                 qutationDetail.Total = item.Total;
                                 qutationDetail.Vat = item.Vat;
                                 qutationDetail.QutationID = MVCQutationViewModel.QutationID;
-                                if (qutationDetail.QutationDetailId == 0 || qutationDetail.QutationDetailId == null)
+                                if (qutationDetail.QutationDetailId == 0)
                                 {
                                     HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", qutationDetail).Result;
                                 }
@@ -337,7 +337,7 @@ namespace InvoiceDiskLast.Controllers
                                 qutationDetail.Total = item.Total;
                                 qutationDetail.Vat = item.Vat;
                                 qutationDetail.QutationID = MVCQutationViewModel.QutationID;
-                                if (qutationDetail.QutationDetailId == 0 || qutationDetail.QutationDetailId == null)
+                                if (qutationDetail.QutationDetailId ==0)
                                 {
                                     HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", qutationDetail).Result;
                                 }
@@ -497,7 +497,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                    catch (System.IO.IOException e)
+                    catch (System.IO.IOException )
                     {
 
                     }
@@ -1178,7 +1178,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(item.Rate);
                             QtDetails.Total = Convert.ToDouble(item.Total);
                             QtDetails.Vat = Convert.ToDouble(item.Vat);
-                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
+                            if (QtDetails.QutationDetailId == 0)
                             {
                                 QtDetails.QutationID = intQutationorderId;
 
@@ -1213,7 +1213,7 @@ namespace InvoiceDiskLast.Controllers
                                 qutationDetail.Total = item.Total;
                                 qutationDetail.Vat = item.Vat;
                                 qutationDetail.QutationID = MVCQutationViewModel.QutationID;
-                                if (qutationDetail.QutationDetailId == 0 || qutationDetail.QutationDetailId == null)
+                                if (qutationDetail.QutationDetailId == 0)
                                 {
                                     HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", qutationDetail).Result;
                                 }

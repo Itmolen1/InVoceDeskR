@@ -24,7 +24,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return Ok(exceptionLogger);
             }
-            catch(Exception ex)
+            catch(Exception )
             {
                 return BadRequest();
             }

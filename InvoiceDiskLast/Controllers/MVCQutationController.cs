@@ -106,8 +106,6 @@ namespace InvoiceDiskLast.Controllers
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
                     MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-
-
                     HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                     MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
@@ -247,7 +245,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
+                            if (QtDetails.QutationDetailId == 0)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -838,7 +836,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                    catch (System.IO.IOException e)
+                    catch (System.IO.IOException )
                     {
 
                     }
@@ -1177,7 +1175,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
+                            if (QtDetails.QutationDetailId == 0)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }
@@ -1428,7 +1426,7 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
 
-                            if (QtDetails.QutationDetailId == 0 || QtDetails.QutationDetailId == null)
+                            if (QtDetails.QutationDetailId == 0)
                             {
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
                             }

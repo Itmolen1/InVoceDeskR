@@ -32,7 +32,7 @@ namespace InvoiceDiskLast.Controllers
         {
 
             List<HeadAccountTable> HeadAccount = new List<HeadAccountTable>();
-            if (ControlACid == null)
+            if (ControlACid == 0)
             {
                 ControlACid = 0;
             }

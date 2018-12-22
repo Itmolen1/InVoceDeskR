@@ -33,7 +33,7 @@ namespace InvoiceDiskLast.Controllers
 
                     return Ok(AccountObj);
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     return NotFound();
                 }

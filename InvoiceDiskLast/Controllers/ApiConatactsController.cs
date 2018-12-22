@@ -29,7 +29,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 if (contactStatus != "All")
                 {
-                    var obvender = db.ContactsTables.Where(x => x.Company_Id == companyID && x.Type == contactStatus && x.ContactsId != null).Select(c => new MVCContactModel
+                    var obvender = db.ContactsTables.Where(x => x.Company_Id == companyID && x.Type == contactStatus && x.ContactsId != 0).Select(c => new MVCContactModel
                     {
                         ContactsId = c.ContactsId,
                         ContactName = c.ContactName,                       
@@ -112,7 +112,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 return Ok(Contactmodel);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return NotFound();
             }

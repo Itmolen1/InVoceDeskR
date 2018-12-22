@@ -61,7 +61,7 @@ namespace InvoiceDiskLast.Controllers
                 var query = db.PendingTables.Where(Q=>Q.Purchase_QuataionId==purchaseId).ToList();              
                 return Ok(query);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                return NotFound();
                

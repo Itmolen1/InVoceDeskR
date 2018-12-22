@@ -72,7 +72,7 @@ namespace InvoiceDiskLast.Controllers
                             if (!IsFileLocked(info)) info.Delete();
                         }
                     }
-                    catch (System.IO.IOException e)
+                    catch (System.IO.IOException )
                     {
 
                     }
@@ -138,7 +138,7 @@ namespace InvoiceDiskLast.Controllers
                     FileShare.None
                 );
             }
-            catch (IOException ex)
+            catch (IOException )
             {
                 return true;
             }

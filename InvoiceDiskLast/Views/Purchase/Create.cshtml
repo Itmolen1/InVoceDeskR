@@ -1189,12 +1189,13 @@
 
 
     $('#saveprintandsendtoyourselfsave').click(function () {
+        debugger;
         EmailPrint();
     });
 
     function EmailPrint() {
         var list = [], orderItem, CurrentRow;
-
+      
         $('#orderdetailsitems .tbody tr').each(function () {
             orderItem = {
                 PurchaseItemId: parseInt($(this).find('.product').val()),
@@ -1209,7 +1210,9 @@
             list.push(orderItem);
         });
 
+
         $('#QutationServiceDetail1 .tbody tr').each(function () {
+
             orderItem = {
                 PurchaseItemId: parseInt($(this).find('.product').val()),
                 PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
@@ -1223,6 +1226,7 @@
             }
             list.push(orderItem);
         });
+
 
         var empObj = {
             PurchaseId: $('#PurchaseId').val(),
@@ -1242,15 +1246,16 @@
         };
 
 
-
         $.ajax({
-            url: "/Purchase/SaveEmailPrint",
+            url: "/Purchase/SaveEmailPrint1",
             data: JSON.stringify(empObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
             success: function (result) {
                 localStorage.setItem('path1', result.path);
+               
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1263,10 +1268,14 @@
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
+
                 }
             },
+
             error: function (errormessage) {
+
             }
+
         });
     }
 

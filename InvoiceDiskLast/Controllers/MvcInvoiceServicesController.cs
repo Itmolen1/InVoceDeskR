@@ -144,7 +144,7 @@ namespace InvoiceDiskLast.Controllers
                 purchaseviewModel.PurchaseDate = InvoiceDate;
                 purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
 
-                if (id == 0 || id == null)
+                if (id == 0)
                 {
                     MvcPurchaseModel q = new MvcPurchaseModel();
                     HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
@@ -276,7 +276,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0 )
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -311,7 +311,7 @@ namespace InvoiceDiskLast.Controllers
                                 purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                                 purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                                 purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                                if (purchadeDetail.PurchaseOrderDetailsId == 0)
                                 {
                                     purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -397,7 +397,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0 )
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -432,7 +432,7 @@ namespace InvoiceDiskLast.Controllers
                                 purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                                 purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                                 purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                                if (purchadeDetail.PurchaseOrderDetailsId == 0)
                                 {
                                     purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -519,7 +519,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0 )
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
@@ -553,7 +553,7 @@ namespace InvoiceDiskLast.Controllers
                                 purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                                 purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                                 purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                                if (purchadeDetail.PurchaseOrderDetailsId == 0)
                                 {
                                     purchadeDetail.PurchaseId = intpurchaseorderId;
                                     HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
@@ -633,7 +633,7 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                            if (purchadeDetail.PurchaseOrderDetailsId == 0)
                             {
                                 purchadeDetail.PurchaseId = intpurchaseorderId;
 
@@ -669,7 +669,7 @@ namespace InvoiceDiskLast.Controllers
                                 purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                                 purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                                 purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
+                                if (purchadeDetail.PurchaseOrderDetailsId == 0)
                                 {
                                     purchadeDetail.PurchaseId = intpurchaseorderId;
                                     HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
@@ -1203,7 +1203,7 @@ namespace InvoiceDiskLast.Controllers
                             if (!IsFileLocked(info)) info.Delete();
                         }
                     }
-                    catch (System.IO.IOException e)
+                    catch (System.IO.IOException )
                     {
                     }
                 }

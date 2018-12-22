@@ -52,7 +52,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return Ok(HeadAccountObj);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return NotFound();
 

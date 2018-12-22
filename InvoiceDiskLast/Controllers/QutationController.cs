@@ -52,7 +52,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return View(quutionviewModel);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }
@@ -656,7 +656,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                    catch (System.IO.IOException e)
+                    catch (System.IO.IOException )
                     {
 
                     }
@@ -1010,25 +1010,30 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        [DeleteFileClass]
+
+
         [HttpPost]
+        [DeleteFileClass]
         public FileResult DownloadFile(string FilePath1)
         {
+
             string filepath = "";
             string FileName = FilePath1;
             try
             {
                 filepath = System.IO.Path.Combine(Server.MapPath("/PDF/"), FilePath1);
-                HttpContext.Items["FilePath"] = FilePath1;
+                HttpContext.Items["FilePath"] = filepath;
 
             }
             catch (Exception)
             {
             }
 
-            return File(filepath, MimeMapping.GetMimeMapping(filepath), FilePath1);
+            return File(filepath, MimeMapping.GetMimeMapping(filepath), FileName);
         }
 
+
+      
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
