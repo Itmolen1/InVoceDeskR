@@ -224,20 +224,22 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        // POST: api/APIQutation
+     
         [ResponseType(typeof(PurchaseOrderTable))]
-        public HttpResponseMessage PostQutationTable([FromBody] PurchaseOrderTable Purchasetable)
+        public IHttpActionResult PostPurchase([FromBody] PurchaseOrderTable Purchasetable)
         {
             using (DBEntities entities = new DBEntities())
             {
-                entities.PurchaseOrderTables.Add(Purchasetable);
+                Purchasetable = entities.PurchaseOrderTables.Add(Purchasetable);
                 entities.SaveChanges();
 
-                var massage = Request.CreateResponse(HttpStatusCode.Created, Purchasetable);
-                massage.Headers.Location = new Uri(Request.RequestUri + Purchasetable.PurchaseOrderID.ToString());
-                massage.Content.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
-                massage.RequestMessage.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
-                return massage;
+                //var massage = Request.CreateResponse(HttpStatusCode.Created, Purchasetable);
+                //massage.Headers.Location = new Uri(Request.RequestUri + Purchasetable.PurchaseOrderID.ToString());
+                //massage.Content.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
+                //massage.RequestMessage.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
+                //return massage;
+
+                return Ok(Purchasetable);
 
             }
         }

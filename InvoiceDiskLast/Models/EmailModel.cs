@@ -10,17 +10,10 @@ namespace InvoiceDiskLast.Models
         public string From { get; set; }
         public string ToEmail { get; set; }
         public string EmailBody { get; set; }
-
-
         public string Subject { get; set; }
-
         public string Attachment { get; set; }
-
         public string EmailText { get; set; }
-
-
         public string Topic { get; set; }
-
         public int invoiceId { get; set; }
 
        
