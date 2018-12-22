@@ -34,14 +34,14 @@
                     Send
                     <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu">
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/Qutation/InvoicebyEmail/?QutationId=@QutationModel.QutationID">Send by Email</a>
+                    <a class="dropdown-item" href="/Qutation/Print/?QutationID=@QutationModel.QutationID">Print and send it yourself</a>
 
-                    <li>@Html.ActionLink("Send qutation by Email", "InvoicebyEmail", "Qutation", new { QutationId = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
-                    <li class="divider"></li>
-                    <li><a href="#"></a></li>
-                    <li class="divider"></li>
-                    <li>@Html.ActionLink(" Print qutation and send it yourself ", "Print", "Qutation", new { QutationID = QutationModel.QutationID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
-                </ul>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div>
+                
             </div>
             <div style="margin-left:3px">
                 <div class="btn-group">
@@ -80,7 +80,7 @@
             }
             <div class="row">
                 <div class="col-7 b-r">
-                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" />
+                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-12 b-r HeadText">

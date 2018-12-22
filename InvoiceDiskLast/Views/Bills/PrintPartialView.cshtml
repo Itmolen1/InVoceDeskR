@@ -1,0 +1,379 @@
+﻿
+
+@{
+    ViewBag.Title = "ViewQuation";
+}
+@model InvoiceDiskLast.Models.MVCQutationViewModel
+
+@{
+    var Contectdatas = ViewBag.Contentdata;
+    var CompanyDatas = ViewBag.Companydata;
+    var purchaseModel = ViewBag.Purchase;
+}
+<html>
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="row">
+
+        <div class="col-xs-12 ">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-7 ">
+                        <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size"/>
+
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-xs-12  HeadText">
+                                <label>Bill</label>
+                            </div>
+                        </div>
+
+                        <div class="row clientInfo" style="margin-top:30px">
+                            <div class="col-xs-12 ">@Contectdatas.ContactName</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 ">
+                                @Contectdatas.ContactAddress
+                                <br />
+                                @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
+                            </div>
+                        </div>
+
+                        @{
+                            DateTime pdate = new DateTime();
+                            pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
+
+                            DateTime dDate = new DateTime();
+                            dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+
+
+                        }
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-xs-4 ">
+                                Bill Date:
+                            </div>
+                            <div class="col-xs-8 ">
+                                @pdate.ToShortDateString()
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 ">
+                                Bill Number:
+                            </div>
+                            <div class="col-xs-8 ">
+                                @purchaseModel.PurchaseOrderID
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 ">
+                                Due Date:
+                            </div>
+                            <div class="col-xs-8 ">
+                                @dDate.ToShortDateString()
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 ">
+                                Reference number:
+                            </div>
+                            <div class="col-xs-8 ">
+                                @purchaseModel.PurchaseRefNumber
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-5" style="margin-top:40px">
+                        <div class="row">
+                            <div class="col-xs-3 "></div>
+                            <div class="col-xs-7  CmpColor">@CompanyDatas.CompanyName</div>
+                            <div class="col-xs-2 "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Kvk nr:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.KVK</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">BTW nr:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.BTW</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Bank:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.BankName</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">IBAN:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.IBANNumber</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">BIC:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.BIC</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Telephone:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.CompanyPhone</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Cell:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.CompanyCell</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">E-mail:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.CompanyEmail</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Website:</div>
+                            <div class="col-xs-7 ">@CompanyDatas.Website</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Address</div>
+                            <div class="col-xs-7 ">
+                                @CompanyDatas.CompanyAddress<br />
+                                @CompanyDatas.PostalCode   @CompanyDatas.CompanyCity <br />
+                                @CompanyDatas.CompanyCountry
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                @{
+                    List<InvoiceDiskLast.Models.MvcPurchaseViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.MvcPurchaseViewModel>();
+                }
+
+                @if (ViewBag.PurchaseDatailsList != null)
+                {
+                    InvoiceListGoods = ViewBag.PurchaseDatailsList as List<InvoiceDiskLast.Models.MvcPurchaseViewModel>;
+                    InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
+
+                    if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
+
+                    {
+
+                        <div class="row">
+                            <div class="col-xs-12 ">
+                                <table class="table" id="orderdetailsitems">
+                                    <thead class="thead-dark">
+                                        <tr>
+
+
+                                            <th width="300px">
+                                                Goods
+                                            </th>
+                                            <th>
+                                                Quantity
+                                            </th>
+                                            <th>
+                                                Price
+                                            </th>
+                                            <th>
+                                                Total
+                                            </th>
+                                            <th>
+                                                Vat%
+                                            </th>
+                                            <th>
+                                                SubTotal
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="tbody">
+
+                                        @foreach (var item in ViewBag.PurchaseDatailsList)
+                                        {
+                                            if (item.Type == "Goods")
+                                            {
+                                                <tr id="mainrow">
+                                                    <td>
+                                                        @item.PurchaseItemName
+                                                    </td>
+                                                    <td>
+                                                        @item.PurchaseQuantity
+                                                    </td>
+                                                    <td>
+                                                        @item.PurchaseItemRate
+                                                    </td>
+
+
+                                                    <td>
+                                                        @item.PurchaseTotal
+                                                    </td>
+
+                                                    <td>
+                                                        @item.PurchaseVatPercentage
+                                                    </td>
+                                                    <td>
+                                                        @item.RowSubTotal
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        }
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+                    }
+                }
+                @if (ViewBag.PurchaseDatailsList != null)
+            {
+
+                InvoiceListGoods = ViewBag.PurchaseDatailsList as List<InvoiceDiskLast.Models.MvcPurchaseViewModel>;
+                InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Service").ToList();
+                if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
+                {
+                        <div class="row">
+                            <div class="col-xs-12 ">
+                                <table class="table" id="QutationServiceDetail1">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Date</th>
+
+                                            <th>
+                                                Services
+                                            </th>
+                                            <th>Decription</th>
+                                            <th>
+                                                hour
+                                            </th>
+                                            <th>
+                                                Hourly rate
+                                            </th>
+                                            <th>
+                                                Total
+                                            </th>
+                                            <th>
+                                                Vat %
+                                            </th>
+                                            <th>
+                                                SubTotal
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody class="tbody">
+
+                                        @foreach (var item in ViewBag.PurchaseDatailsList)
+                                        {
+                                            if (item.Type == "Service")
+                                            {
+                                                <tr id="mainrow">
+                                                    <td>
+                                                        @item.ServiceDate
+                                                    </td>
+
+                                                    <td>
+                                                        @item.PurchaseItemName
+                                                    </td>
+                                                    <td>
+                                                        @item.PurchaseDescription
+                                                    </td>
+
+                                                    <td>
+                                                        @item.PurchaseQuantity
+                                                    </td>
+                                                    <td>
+                                                        @item.PurchaseItemRate
+                                                    </td>
+                                                    <td>
+                                                        @item.PurchaseTotal
+                                                    </td>
+                                                    <td>
+                                                        @item.PurchaseVatPercentage
+                                                    </td>
+                                                    <td>
+                                                        @item.RowSubTotal
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                }
+                <hr />
+
+                <div class="row">
+                    <div class="col-xs-7 ">
+                    </div>
+                    <div class="col-xs-5 ">
+                        <div class="row">
+                            <div class="col-xs-5  text-right">Total excl. VAT:€</div>
+                            <div class="col-xs-6  text-right">@purchaseModel.PurchaseSubTotal</div>
+                            <div class="col-xs-1"></div>
+                        </div>
+                        <div class="row">
+                            @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
+                            {
+                                <div class="col-xs-5  text-right">VAT 6%:€</div>
+
+                                <div class="col-xs-6  text-right">@purchaseModel.Vat6</div>
+                                <div class="col-xs-1"></div>
+                            }
+                        </div>
+
+                        <div class="row">
+                            @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
+                            {
+                                <div class="col-xs-5  text-right">VAT 21%:€</div>
+
+                                <div class="col-xs-6  text-right">@purchaseModel.Vat21</div>
+                                <div class="col-xs-1"></div>
+                            }
+                        </div>
+                        <div class="row Grand-color">
+                            <div class="col-xs-5  text-right">Grand Total:</div>
+                            <div class="col-xs-6  text-right">&euro;: @purchaseModel.PurchaseTotoalAmount</div>
+                            <div class="col-xs-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-xs-8 ">
+                        We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
+                    </div>
+                    <div class="col-xs-4 "></div>
+                </div>
+                <div class="row">
+
+                    <div class="col-xs-8 ">
+                        Met vriendelijke groet.
+                    </div>
+                    <div class="col-xs-4 "></div>
+                </div>
+
+                <p></p>
+                <div class="row Grand-color-CompanyName">
+                    <div class="col-xs-6">@Contectdatas.ContactName</div>
+                    <div class="col-xs-6 "></div>
+                </div>
+                <div class="row Grand-color-CompanyName">
+                    <div class="col-xs-6 ">@CompanyDatas.CompanyName</div>
+                    <div class="col-xs-6 "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

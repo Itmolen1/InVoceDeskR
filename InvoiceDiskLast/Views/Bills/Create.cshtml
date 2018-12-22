@@ -9,8 +9,6 @@
 }
 
 
-
-
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -19,7 +17,9 @@
         <div class="container">
             <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
             <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
-            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
+            <input type="hidden" value="@Contectdatas.ContactsId" id="Contactid" />
+            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
+
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
 
@@ -418,13 +418,6 @@
         });
     }
 
-
-
-
-
-
-
-
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
 
@@ -796,9 +789,6 @@
         }
     });
 
-
-
-
     function CombineTotalAndSubtotal() {
 
         var SubTotalGoode, SubTotalService = 0;
@@ -1042,8 +1032,7 @@
             list.push(orderItem);
 
         });
-
-
+      
         var empObj = {
             PurchaseId: $('#PurchaseId').val(),
             PurchaseID: $('#PurchaseID').val(),
@@ -1058,11 +1047,13 @@
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
             Purchase_ID: $('.Purchase_ID').val(),
+            Contactid: $('#Contactid').val(),
+            CompanyId: $('#CompanyId').val(),
             PurchaseDetailslist: list
         };
 
         $.ajax({
-            url: "/Purchase/save1",
+            url: "/Bills/save1",
             data: JSON.stringify(empObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",
