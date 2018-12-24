@@ -1,0 +1,150 @@
+﻿<header class="topbar">
+    <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/Home/Index">
+                <img src="~/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                <img src="~/assets/images/logo-light-text.png" alt="home page" />
+                <span>
+                    <!-- dark Logo text -->
+                    <img src="~/assets/images/logo-light-text.png" alt="homepage" class="dark-logo" />
+                    <!-- Light Logo text -->
+
+                </span>
+            </a>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item d-md-none"> <a class="nav-link nav-toggler waves-effect waves-light" href="javascript:void(0)"><i class="ti-menu"></i></a></li>
+            </ul>
+            <ul class="navbar-nav my-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="~/assets/images/logo-icon.png" alt="user" class="img-circle" width="30"></a>
+                    <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                        <span class="with-arrow"><span class="bg-primary"></span></span>
+                        <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
+                            <div class="mydiv"><img alt="user Image" id="UserImageWithName" src="~/images/download.jpg" class="img-circle" style="max-height:60px;max-width:50px"></div>
+                            <div class="m-l-10">
+                                <h4 class="m-b-0"><span id="UFnameLname"></span></h4>
+                                <p class="m-b-0 small"><span id="UserNamess"></span></p>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:void(0)" id="AccountSitting"><i class="ti-settings m-r-5 m-l-5" id="AccountSitting"></i> Account Setting</a>
+                        <a class="dropdown-item" href="javascript:void(0)" id="CompanySitting"><i class="ti-settings m-r-5 m-l-5" id="CompanySitting"></i> Company Setting</a>
+                        <div class="dropdown-divider"></div>
+                        @*<a class="dropdown-item"><i href="javascript:void(0)" class="fa fa-power-off" id="Logouts"></i> Logout</a>*@
+                        <div class="p-l-30 p-10"><a href="javascript:void(0)" id="Logout" class="btn btn-sm btn-warning  btn-rounded"><i class="fa fa-power-off"></i>        LogOut</a></div>
+                        <div class="dropdown-divider"></div>
+
+                    </div>
+                </li>
+                <!-- ============================================================== -->
+                <!-- User profile and search -->
+                <!-- ============================================================== -->
+
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<aside class="left-sidebar">
+    <div class="nav-text-box align-items-center d-md-none">
+        <span><img src="~/assets/images/logo-icon.png" alt="elegant admin template"></span>
+        <a class="nav-lock waves-effect waves-dark ml-auto hidden-md-down" href="javascript:void(0)"><i class="mdi mdi-toggle-switch"></i></a>
+        <a class="nav-toggler waves-effect waves-dark ml-auto hidden-sm-up" href="javascript:void(0)"><i class="ti-close"></i></a>
+    </div>
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="icon-speedometer"></i><span class="hide-menu">Dashboard <span class="badge badge-pill badge-cyan">0</span></span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="/Home/Index">Home</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-files"></i><span class="hide-menu">Product <span class="badge badge-pill badge-info">@ViewBag.count</span></span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="/MVCProductUnit/Index">Product Unit</a></li>
+                        <li><a href="/MVCProduct/Index">Product</a></li>
+                        @*<li><a href="/MVCProduct/StockList">View Stock</a></li>*@
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-files"></i><span class="hide-menu">Client <span class="badge badge-pill badge-info">25</span></span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="/MVCClient/Index">Clients</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-clipboard"></i><span class="hide-menu">Sale</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        @*<li><a href="/Qutation/Create">New Qutation</a></li>*@
+                        <li><a href="/Qutation/Index">Qutation</a></li>
+                        <li><a href="/Invoice/Index">Invoice</a></li>
+                        <li><a href="/QutationOrder/QutationOrderList">Qutation Status</a></li>
+
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-agenda"></i><span class="hide-menu">Purchase</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="/Purchase/Index">Purchase</a></li>
+                        <li><a href="/Bills/Index">Bill</a></li>
+                        <li><a href="/Order/PurchaseOrderList">Purchase Status</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-agenda"></i><span class="hide-menu">Account</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="/MVCHeadAccount/Index">View Accounts</a></li>
+                        <li><a href="/MVCHeadAccount/Index">Receive Invoice Amount</a></li>
+                        <li><a href="/MVCHeadAccount/Index">Pay Bill Amount</a></li>
+                        <li><a href="/Reports/Journal">Journal</a></li>
+                        <li><a href="/Reports/BalanceSheet">Balance Sheet</a></li>
+                    </ul>
+                </li>
+              
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-align-left"></i><span class="hide-menu">Reports <span class="badge badge-pill badge-info">25</span></span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        @*<li><a href="starter-kit.html">Starter Kit</a></li>
+                            <li><a href="pages-blank.html">Blank page</a></li>*@
+                        <li>
+                            <a href="javascript:void(0)" class="has-arrow">Qutation <span class="badge badge-pill badge-success pull-right">6</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="/QutationOrder/QutationOrderList?status=open">Open</a></li>
+                                <li><a href="/QutationOrder/QutationOrderList?status=accepted">Accepted</a></li>
+                                <li><a href="/QutationOrder/QutationOrderList?status=Pending">Pending</a></li>
+                                <li><a href="/QutationOrder/QutationOrderList?status=rejected">Rejected</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="has-arrow">Invoice <span class="badge badge-pill badge-success pull-right">6</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="pages-login.html">Paid</a></li>
+                                <li><a href="pages-login-2.html">Un Paid</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+
+<div class="preloader">
+    <div class="loader">
+        <div class="loader__figure"></div>
+        <p class="loader__label">loading...</p>
+    </div>
+</div>

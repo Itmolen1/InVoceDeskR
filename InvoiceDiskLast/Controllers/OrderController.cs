@@ -246,17 +246,7 @@ namespace InvoiceDiskLast.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
 
         }
-
-
-
-
-
-
-
-
-
-
-
+        
         [HttpPost]
         public JsonResult UpdateOrderStaus(int PurchaseId, string Status)
         {

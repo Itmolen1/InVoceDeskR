@@ -1,0 +1,503 @@
+﻿<div class="modal fade bs-example-modal-lg" id="CreateNewProductModalGoods" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel" style="color:skyblue">Add New Product</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <select class="form-control p-0" id="TypeGoodsServices">
+                            <option value="0">Select Type</option>
+                            <option value="Good" selected="selected">Good</option>
+                            <option value="Services">Services</option>
+                        </select><span class="bar"></span>
+                    </div>
+                </div>
+                <hr />
+                <div id="DivGoodBody">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="ProductNameGoods" placeholder="Product Name" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="DescriptionGoods" placeholder="Description" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="SalePriceGoods" placeholder="Sale Price" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="PurchasePriceGoods" placeholder="Purchase Price" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <select class="form-control p-0" id="ProductUnitSelectGoods"></select>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="DivServiceBody">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="ProductNameService" placeholder="Service Name" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="DescriptionService" placeholder="Description" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <input class="form-control" type="text" required id="SalePriceService" placeholder="Hourly Price" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group ">
+                                <select id="ProductStatusGoods" class="form-control">
+                                    <option value="1" selected="selected">True</option>
+                                    <option value="0">False</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div id="SAveProdIDGoods">
+                    <button type="button" id="SaveNewProductGoods" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                </div>
+                <div id="UpdateProIdGoods">
+                    <button type="button" id="UpdateProductGoods" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
+                </div>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<script>
+    $('#SaveNewProductGoods').click(function () {
+
+        var IsValid;
+        if (GoodsServicess == "Good") {
+            IsValid = validateProductGoods();
+
+            if (IsValid == true) {
+                var pValid = checkProductByName($('#ProductNameGoods').val());
+                if (pValid == true) {
+
+                    var dss = {
+                        ProductName: $('#ProductNameGoods').val(),
+                        Description: $('#DescriptionGoods').val(),
+                        SalePrice: $('#SalePriceGoods').val(),
+                        PurchasePrice: $('#PurchasePriceGoods').val(),
+                        Type: GoodsServicess,
+                        OpeningQuantity: $('#OpeningQuantityGoods').val(),
+                        ProductUnit: $('#ProductUnitSelectGoods').val(),
+                    }
+
+                    $.ajax({
+                        url: "/MVCProduct/AddOrEdit",
+                        type: "POST",
+                        asyn: false,
+                        data: dss,
+                        success: function (data) {
+                            if (data == "Created") {
+                                $('#productTable').DataTable().ajax.reload();
+                                CleartProdctTextBoxGoods();
+                                $('#CreateNewProductModalGoods').modal('hide');
+                                $.toast({
+                                    heading: 'Opration Success',
+                                    text: 'Data Saved Successfull',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                                LoadProductG();
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
+            }
+
+            else {
+
+                IsValid = validateProductServices();
+            }
+
+
+        }
+        else if (GoodsServicess == "Services") {
+
+            IsValid = validateProductServices();
+            if (IsValid == true) {
+                var pValid = checkProductByName($('#ProductNameService').val());
+                if (pValid == true) {
+                    var dss = {
+                        ProductName: $('#ProductNameService').val(),
+                        Description: $('#DescriptionService').val(),
+                        SalePrice: $('#SalePriceService').val(),
+                        Type: GoodsServicess,
+                    }
+                    $.ajax({
+                        url: "/MVCProduct/AddOrEdit",
+                        type: "POST",
+                        asyn: false,
+                        data: dss,
+                        success: function (data) {
+                            if (data == "Created") {
+                                $('#productTable').DataTable().ajax.reload();
+                                ClearTextBoxesServices();
+                                $('#CreateNewProductModalGoods').modal('hide');
+                                $.toast({
+                                    heading: 'Opration Success',
+                                    text: 'Data Saved Successfull',
+                                    icon: 'info',
+                                    loader: true,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                                LoadProductS();
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
+            }
+        }
+
+        LoadProductSelect();
+    });
+
+    function CleartProdctTextBoxGoods() {
+        $('#ProductNameGoods').val("");
+        $('#DescriptionGoods').val("");
+        $('#SalePriceGoods').val("");
+        $('#PurchasePriceGoods').val("");
+        $('#OpeningQuantityGoods').val("");
+        $('#ProductUnitSelectGoods').val("0");
+
+    }
+
+    function ClearTextBoxesServices() {
+        $('#ProductNameService').val('');
+        $('#DescriptionService').val('');
+        $('#SalePriceService').val('');
+        $('#PurchasePriceService').val('');
+    }
+
+    function validateProductServices() {
+
+        var isValid = true;
+        if ($('#ProductNameService').val().trim() == "") {
+            $('#ProductNameService').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductNameService').css('border-color', 'lightgrey');
+        }
+
+        if ($('#SalePriceService').val().trim() == "") {
+            $('#SalePriceService').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePriceService').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function validateProductGoods() {
+        var isValid = true;
+
+        if ($('#ProductNameGoods').val().trim() == "") {
+            $('#ProductNameGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductNameGoods').css('border-color', 'lightgrey');
+        }
+        if ($('#SalePriceGoods').val().trim() == "") {
+            $('#SalePriceGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePriceGoods').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePriceGoods').val().trim() == "") {
+            $('#PurchasePriceGoods').css('border-color', 'Red');
+            $('#PurchasePriceGoods').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePriceGoods').css('border-color', 'lightgrey');
+        }
+        if ($('#OpeningQuantityGoods').val() == "") {
+            $('#OpeningQuantityGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+        }
+        if (($('#SalePriceGoods').val().trim() != "" && $('#PurchasePriceGoods').val().trim() != "")) {
+            if (parseFloat($('#SalePriceGoods').val()) < parseFloat($('#PurchasePriceGoods').val())) {
+                $('#SalePriceGoods').css('border-color', 'Red');
+                $('#PurchasePriceGoods').css('border-color', 'Red');
+                isValid == false;
+                $.toast({
+                    heading: 'Sale amount less',
+                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+            }
+            else {
+                $('#PurchasePriceGoods').css('border-color', 'lightgrey');
+                $('#SalePriceGoods').css('border-color', 'lightgrey');
+            }
+        }
+        //if ($('#ProductUnitSelect').val() == 0) {
+        //    $('#ProductUnitSelect').css('border-color', 'Red');
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        //}
+
+
+        if ($('#ProductUnitSelectGoods').val() == 0) {
+            $('#ProductUnitSelectGoods').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductUnitSelectGoods').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function CleartProdctTextBox() {
+        $('#ProductName').val("");
+        $('#Description').val("");
+        $('#SalePrice').val("");
+        $('#PurchasePrice').val("");
+        $('#OpeningQuantity').val("");
+        $('#ProductUnitSelect').val("0");
+        $('#VatValue').val("Select");
+    }
+
+    $('#ProductUnitSelectGoods').change(function () {
+
+        var value = $(this).val();
+        if (value == "AddNewPUnitSelect") {
+            $('#CreateNewProductModalGoods').modal('hide');
+
+            $('#SaveUnit').show();
+            $('#updateUnit').hide();
+
+            $('#UnitModel').modal('show');
+        }
+    });
+
+    function LoadProductSelect() {
+
+        PGoodService = "Services";
+
+        //LoadProductUnitPurchase();
+        $("#mainrow #SelectProductQutationp").find("option").remove();
+        $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PGoodService },
+
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #SelectProductQutationp').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
+
+    function SuccessInsertProduct() {
+        swal({
+            title: "Success",
+            text: "Your data has been saved successfully",
+            type: "success",
+        });
+    }
+
+    function checkProductByName(PName) {
+
+        var Result = true;
+        $.ajax({
+            url: "/MVCProduct/GetProductByName",
+            type: "POST",
+            asyn: false,
+            data: {
+                ProductName: PName,
+                ProductStatus: "All"
+            },
+            success: function (Resultdat) {
+
+                if (Resultdat == "Found") {
+                    $.toast({
+                        heading: 'Already exist',
+                        text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                    Result = false;
+
+
+                }
+                else {
+
+                    Result = true;
+                }
+            }
+
+        });
+        return Result;
+    }
+
+    function validateProduct() {
+        var isValid = true;
+
+        if ($('#ProductName').val().trim() == "") {
+            $('#ProductName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductName').css('border-color', 'lightgrey');
+        }
+        if ($('#SalePrice').val().trim() == "") {
+            $('#SalePrice').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#SalePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#PurchasePrice').val().trim() == "") {
+            $('#PurchasePrice').css('border-color', 'Red');
+            $('#PurchasePrice').focus();
+            isValid = false;
+        }
+        else {
+            $('#PurchasePrice').css('border-color', 'lightgrey');
+        }
+        if ($('#OpeningQuantity').val() == "") {
+            $('#OpeningQuantity').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#OpeningQuantity').css('border-color', 'lightgrey');
+        }
+        if (($('#SalePrice').val().trim() != "" && $('#PurchasePrice').val().trim() != "")) {
+            if (parseFloat($('#SalePrice').val()) < parseFloat($('#PurchasePrice').val())) {
+                $('#SalePrice').css('border-color', 'Red');
+                $('#PurchasePrice').css('border-color', 'Red');
+                isValid == false;
+                $.toast({
+                    heading: 'Sale amount less',
+                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+            }
+            else {
+                $('#PurchasePrice').css('border-color', 'lightgrey');
+                $('#SalePrice').css('border-color', 'lightgrey');
+            }
+        }
+       
+        if ($('#VatValue').val() == "Select") {
+            $('#VatValue').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#VatValue').css('border-color', 'lightgrey');
+        }
+
+        if ($('#ProductUnitSelect').val() == 0) {
+            $('#ProductUnitSelect').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ProductUnitSelect').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function ChangeBorderColorProductModel() {
+        $('#ProductName').css('border-color', 'lightgrey');
+        $('#SalePrice').css('border-color', 'lightgrey');
+        $('#PurchasePrice').css('border-color', 'lightgrey');
+        $('#OpeningQuantity').css('border-color', 'lightgrey');
+        $('#PurchasePrice').css('border-color', 'lightgrey');
+        $('#SalePrice').css('border-color', 'lightgrey');
+        $('#VatValue').css('border-color', 'lightgrey');
+        $('#ProductUnitSelect').css('border-color', 'lightgrey');
+    }
+
+    function ShowServiceGood(goodservice) {
+        GoodsServicess = "";
+
+        GoodsServicess = goodservice;
+        if (GoodsServicess == "Good") {
+            LoadProductUnitGoods();
+            $('#DivServiceBody').hide(1000);
+            $('#DivGoodBody').show(1000);
+        }
+        else {
+            $('#DivGoodBody').hide(1000);
+            $('#DivServiceBody').show(1000);
+        }
+    }
+
+
+</script>

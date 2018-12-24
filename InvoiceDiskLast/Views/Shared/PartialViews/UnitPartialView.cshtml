@@ -1,0 +1,163 @@
+﻿
+@{
+
+    Layout = null;
+}
+
+<div id="UnitModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add new unit</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group ">
+                            <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
+                        </div>
+                        <hr />
+                        <div class="form-group ">
+                            <select id="SelectUnitStatus" class="form-control">
+                                <option value="1" selected="selected">True</option>
+                                <option value="0">False</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div id="SaveUnit">
+                            <button type="button" id="SaveNewProductUnit" class="btn btn-success"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
+                            <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductUnit" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                        </div>
+                        <div id="updateUnit">
+                            <button type="button" id="UpdateProductUnit" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update</button>
+                            <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>
+  
+    $('#CancelProductUnit').click(function () {
+        CleartUnitTextBox();
+        ShowServiceGood(GoodsService);
+        $('#UnitModel').modal('hide');
+        $('#CreateNewProductModalGoods').modal('show');
+
+    });
+
+    function LoadProductUnitGoods() {
+        $("#ProductUnitSelectGoods").find("option").remove();
+        $("#ProductUnitSelectGoods").prepend("<option value=0>" + 'Select Unit' + "</option>");
+        $("#ProductUnitSelectGoods").append("<option value=AddNewPUnitSelect>" + 'Add New Unit' + "</option>");
+        $.ajax({
+            url: "/MVCProductUnit/GetProductUnit",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#ProductUnitSelectGoods').append($('<option></option>').val(item.ProductUnitID).html(item.ProductUnit));
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+    $('#SaveNewProductUnit').click(function () {
+        $.ajax({
+            url: "/MVCProductUnit/CheckUnitStatus",
+            type: "POST",
+            data: { name: $('#ProductUnit').val() },
+            success: function (Resultdat) {
+                if (Resultdat == "Found") {
+                    $.toast({
+                        heading: 'Already exist',
+                        text: 'Unit already exist with nam ' + $('#ProductUnit').val() + ' choose another `Name`',
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });
+                }
+                else {
+                    var dataUnit = {
+                        ProductUnit: $('#ProductUnit').val(),
+                        Status: "true"
+                    }
+                    $.ajax({
+                        url: "/MVCProductUnit/AddorEdit",
+                        type: "POST",
+                        data: dataUnit,
+                        success: function (dat) {
+                            CleartUnitTextBox();
+                            $('#UnitModel').modal('hide');
+                            LoadProductUnit();
+
+
+                            if (GoodsService == "Good") {
+                                ShowServiceGood(GoodsService);
+                                $('#CreateNewProductModalGoods').modal('show');
+                            }
+                            $.toast({
+                                heading: 'Success',
+                                text: 'Your opration has been successfuly completed `Thank you`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                            $('#productUnitTable').DataTable().ajax.reload();
+                        },
+                        Error: function (err) {
+                            alert("erro");
+                        }
+                    });
+                }
+            },
+            Error: function (err) {
+                alert("erro");
+            }
+        });
+    });
+
+    function CleartUnitTextBox() {
+        $('#ProductUnit').val('');
+        $('#productubitId').val('');
+
+    }
+
+    $('#Type').change(function () {
+        if ($(this).val() == "Good") {
+            ChangeBorderColorProductModel();
+            $('#GoodsDiveUnit').show(1000);
+            $('#OpeningStockValue').show(1000);
+            $('#VatValueDiv').removeClass();
+            $('#VatValueDiv').addClass('col-sm-6');
+
+        }
+        else if ($(this).val() == "Services") {
+            ChangeBorderColorProductModel();
+            $('#GoodsDiveUnit').hide(1000);
+            $('#OpeningStockValue').hide(1000);
+            $('#VatValueDiv').removeClass();
+            $('#VatValueDiv').addClass('col-sm-12');
+        }
+    });
+
+</script>

@@ -200,8 +200,6 @@
 
             </div>
 
-
-            Service table
             <hr />
             <div class="row">
                 <div class="col-12 b-r">
@@ -293,6 +291,14 @@
                             @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <form id="upload" enctype="multipart/form-data">
+                                <input type="file" name="fileUpload" id="fileUpload" size="23" />
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-4 b-r">
                     <div class="row">
@@ -353,7 +359,7 @@
     <div class="col-2 b-r"></div>
 </div>
 
-
+@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
 
 <script type="text/javascript">
@@ -416,12 +422,6 @@
             }
         });
     }
-
-
-
-
-
-
 
 
     var VAT21VAlUE, VAT6VAlUE;
@@ -1014,6 +1014,8 @@
 
     function CreatePurchase() {
 
+       
+
         var list = [], orderItem, CurrentRow;
 
         $('#orderdetailsitems .tbody tr').each(function () {
@@ -1067,7 +1069,7 @@
         };
 
         $.ajax({
-            url: "/Purchase/save1",
+            url: "/Invoice/save1",
             data: JSON.stringify(empObj),
             type: "POST",
             contentType: "application/json;charset=utf-8",

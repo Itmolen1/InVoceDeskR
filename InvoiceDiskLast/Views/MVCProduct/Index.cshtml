@@ -1,8 +1,7 @@
 ﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
 
@@ -114,6 +113,9 @@
     <!-- /.modal-dialog -->
 </div>
 
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml");
+
 
 <script>
     $(document).ready(function () {
@@ -168,13 +170,11 @@
 
     $(document).ready(function () {
         $('#CreateNewProduct').click(function () {
-            $('#UpdateProId').hide();
-            $('#SAveProdID').show();
-            //LoadProductUnit();
+          
             $('#UpdateProIdGoods').hide();
             $('#SAveProdIDGoods').show();
             
-            //$('#CreateNewProductModal').modal('show');
+          
 
             ShowServiceGood(GoodsService);
             $('#CreateNewProductModalGoods').modal('show');

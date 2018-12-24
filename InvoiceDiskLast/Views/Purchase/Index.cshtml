@@ -1,5 +1,6 @@
 ﻿
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
 
@@ -45,7 +46,8 @@
     </thead>
     <tbody></tbody>
 </table>
-
+@Html.Partial("~/Views/Shared/PartialViews/ParchasePartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")  
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -143,6 +145,9 @@
         });
 
         $('#AddNewPurchaseFromInvoice').click(function () {
+
+            $('#Bill').hide();
+            $('#Purchase').show();
             LoadVernder();
             $('#VenderSelectModel').modal('show');
         });

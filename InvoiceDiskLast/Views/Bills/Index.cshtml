@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<button id="NewBill" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New</button>
+
+@Html.Partial("~/Views/Shared/PartialViews/ParchasePartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")
+
+<div>
+    <table class="table" id="BillsDetailsTable">
+        <thead style="background-color:black;color:white">
+            <tr>
+                <th>
+                    PurchaseId
+                </th>
+
+                <th>
+                    PurchaseDate
+                </th>
+                <th>
+                    PurchaseDueDate
+                </th>
+                <th>
+                    RefrenceNumber
+                </th>
+                <th>
+                    Puchase Subtotal
+                </th>
+                <th>
+                    DiscountAmount
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Action
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () { 
+        LoadPurchaseOrderTable("accepted");
+    });
+
+
+    function LoadPurchaseOrderTable(status) {
+        $("#BillsDetailsTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "destroy": true,
+            "searching": true,
+            "autoWidth": false,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/Order/GetPurderOrderList",
+                "type": "POST",
+                data: { status: status },
+                "datatype": "json"
+            },
+            "columns": [
+                  { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
+                    {
+                        "data": "PurchaseDate", "type": "date ",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var pattern = /Date\(([^)]+)\)/;//date format from server side
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        }, "autoWidth": true
+                    },
+                   {
+                       "data": "PurchaseDueDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+
+                  { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+
+                  { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
+                  { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+                  {
+                      "data": "Type", "name": "Type", "autoWidth": true
+                  },
+                  {
+                      render: function (data, type, row) {
+
+                          switch (row.Status) {
+
+                              case "open":
+
+                                  return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                  break;
+
+                              case "pending":
+                                  return "<td><span class='label label-info'>" + row.Status + "</span></td>"
+                                  break;
+
+                              case "rejected":
+                                  return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
+                                  break;
+
+                              case "accepted":
+                                  return "<td><span class='label label-success'>" + row.Status + "</span></td>"
+                                  break;
+                          }
+                      }
+                  },
+
+                  {
+                      render: function (data, type, row) {
+
+
+                          switch (row.Status) {
+                              case "open":
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ',' + row.PurchaseSubTotal + ')"><i class="fa fa-check">proceed</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
+                                  break
+
+                              case "rejected":
+                                  return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re  Open</i></button>'
+                                  break
+
+                              case "pending":
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re  Open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
+                                  break
+
+
+                              case "accepted":
+                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye"> View Invoice</i></button>'
+                                  break
+                          }
+
+                      }
+                  },
+
+            ]
+        });
+    }
+
+    $('#NewBill').click(function () {
+        LoadVernder();
+        $('#Purchase').hide();
+        $('#Bill').show();
+        $('#VenderSelectModel').modal('show');
+    });
+</script>

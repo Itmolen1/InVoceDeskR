@@ -18,7 +18,6 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
         [HttpPost]
         public JsonResult IndexQutation()
         {
@@ -117,8 +116,6 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
 
         int Contactid = 0, CompanyID = 0;
         public ActionResult ViewQuation(int? quautionId)
@@ -261,9 +258,6 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success" } };
         }
 
-
-
-
         public ActionResult Print(int? QutationID)
         {
 
@@ -327,7 +321,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
 
         [HttpPost]
         public ActionResult SaveDraft(MVCQutationViewModel MVCQutationViewModel)
@@ -419,36 +412,23 @@ namespace InvoiceDiskLast.Controllers
         }
         int Contectid = 0;
 
-
         [HttpGet]
-        public ActionResult EditQutation(int QutationId = 0)
+        public ActionResult EditQutation(int QutationId)
         {
 
             MVCQutationViewModel quutionviewModel2 = new MVCQutationViewModel();
 
             try
             {
-                var idd = Session["ClientID"];
-                var cdd = Session["CompayID"];
-
-                if (Session["ClientID"] != null && Session["CompayID"] != null)
-                {
-                    Contectid = Convert.ToInt32(Session["ClientID"]);
-                    CompanyID = Convert.ToInt32(Session["CompayID"]);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationId.ToString()).Result;
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + QutationModel.ContactId.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                              
 
                 quutionviewModel2.DueDate = QutationModel.DueDate;
                 quutionviewModel2.QutationDate = QutationModel.QutationDate;
@@ -1040,8 +1020,6 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
-
         [HttpPost]
         [DeleteFileClass]
         public FileResult DownloadFile(string FilePath1)
@@ -1061,8 +1039,6 @@ namespace InvoiceDiskLast.Controllers
 
             return File(filepath, MimeMapping.GetMimeMapping(filepath), FileName);
         }
-
-
       
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
@@ -1275,9 +1251,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
         int companyId = 0;
-
 
         [HttpPost]
         public ActionResult SaveEmailPrintEdit(MVCQutationViewModel MVCQutationViewModel)
@@ -1377,10 +1351,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
-
-    
+           
 
     }
 }

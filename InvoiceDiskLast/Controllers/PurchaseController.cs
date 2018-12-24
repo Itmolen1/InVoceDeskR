@@ -74,46 +74,6 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
-
-        //public ActionResult Create()
-        //{
-        //    MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
-        //    try
-        //    {
-        //        Contectid = 3;
-        //        CompanyID = Convert.ToInt32(Session["CompayID"]);
-
-        //        HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
-        //        MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-        //        HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-        //        MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
-
-        //        ViewBag.Contentdata = contectmodel;
-        //        ViewBag.Companydata = companyModel;
-        //        DateTime InvoiceDate = new DateTime();
-        //        InvoiceDate = DateTime.Now;
-        //        purchaseviewModel.PurchaseDate = InvoiceDate;
-        //        purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-
-        //        MvcPurchaseModel q = new MvcPurchaseModel();
-        //        HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
-        //        q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-        //        purchaseviewModel.PurchaseDate = InvoiceDate;
-        //        purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-        //        purchaseviewModel.Purchase_ID = q.PurchaseID;
-        //        return View(purchaseviewModel);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return null;
-        //    }
-
-        //}
-
-
         public ActionResult GetVender()
         {
             var ProductList = new List<MVCContactModel>();
@@ -521,121 +481,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", purchaseId = intpurchaseorderId } };
         }
-
-
-        #region
-        //        var purchaseorderId = "";
-        //        int intpurchaseorderId = 0;
-
-        //        PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
-        //            try
-        //            {
-        //                if (Session["ClientId"] != null && Session["CompayID"] != null)
-        //                {
-        //                    Contectid = Convert.ToInt32(Session["ClientId"]);
-        //                    CompanyID = Convert.ToInt32(Session["CompayID"]);
-        //                }
-        //                else
-        //                {
-        //                    return RedirectToAction("Index", "Login");
-        //}
-
-
-        //                purchasemodel.CompanyId = CompanyID;
-        //                purchasemodel.UserId = 1;
-        //                purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
-
-        //                purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
-        //                purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
-        //                purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
-        //                purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
-        //                purchasemodel.PurchaseSubTotal = purchaseViewModel.PurchaseSubTotal;
-        //                purchasemodel.PurchaseDiscountAmount = purchaseViewModel.PurchaseDiscountAmount;
-        //                purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;
-        //                purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
-        //                purchasemodel.Vat6 = purchaseViewModel.Vat6;
-        //                purchasemodel.VenderId = Contectid;
-        //                purchasemodel.Vat21 = purchaseViewModel.Vat21;
-        //                purchasemodel.Status = "open";
-        //                purchasemodel.Type = StatusEnum.Goods.ToString();
-        //                if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID == null)
-        //                {
-        //                   HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
-        //                   IEnumerable<string> headerValues;
-        //                var userId = string.Empty;
-        //                    if (response.Headers.TryGetValues("idd", out headerValues))
-        //                    {
-        //                        purchaseorderId = headerValues.FirstOrDefault();
-        //                    }
-        //                    intpurchaseorderId = Convert.ToInt32(purchaseorderId);
-
-
-        //                    if (response.StatusCode == System.Net.HttpStatusCode.Created)
-        //                    {
-        //                        foreach (var item in purchaseViewModel.PurchaseDetailslist)
-        //                        {
-        //                            PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
-        //purchadeDetail.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
-        //                            purchadeDetail.PurchaseItemId = item.PurchaseItemId;
-        //                            purchadeDetail.PurchaseDescription = item.PurchaseDescription;
-        //                            purchadeDetail.PurchaseQuantity = item.PurchaseQuantity;
-        //                            purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
-        //                            purchadeDetail.PurchaseTotal = item.PurchaseTotal;
-        //                            purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
-        //                            purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-        //                            if (purchadeDetail.PurchaseOrderDetailsId == 0)
-        //                            {
-        //                                purchadeDetail.PurchaseId = intpurchaseorderId;
-
-        //                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
-        //                            }
-        //                            else
-        //                            {
-        //                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
-        //                            }
-        //                        }
-        //                    }
-        //                }
-
-        //                else
-        //                {
-        //                    if (purchaseViewModel.PurchaseOrderID != 0)
-        //                    {
-        //                        purchasemodel.PurchaseID = purchaseViewModel.Purchase_ID;
-        //                        intpurchaseorderId = Convert.ToInt32(purchaseViewModel.PurchaseOrderID);
-        //                        HttpResponseMessage response2 = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchase/" + purchasemodel.PurchaseOrderID, purchasemodel).Result;
-
-        //                        if (response2.StatusCode == System.Net.HttpStatusCode.OK)
-        //                        {
-        //                            foreach (var item in purchaseViewModel.PurchaseDetailslist)
-        //                            {
-        //                                PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
-        //purchadeDetail.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
-        //                                purchadeDetail.PurchaseItemId = item.PurchaseItemId;
-        //                                purchadeDetail.PurchaseDescription = item.PurchaseDescription;
-        //                                purchadeDetail.PurchaseQuantity = item.PurchaseQuantity;
-        //                                purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
-        //                                purchadeDetail.PurchaseTotal = item.PurchaseTotal;
-        //                                purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
-        //                                purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-        //                                if (purchadeDetail.PurchaseOrderDetailsId == 0 || purchadeDetail.PurchaseOrderDetailsId == null)
-        //                                {
-        //                                    purchadeDetail.PurchaseId = intpurchaseorderId;
-
-        //                                    HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
-        //                                }
-        //                                else
-        //                                {
-        //                                    HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
-        //                                }
-        //                            }
-
-        //                        }
-        //                    }
-        //                }
-
-        #endregion
-
+        
 
         [HttpPost]
         public ActionResult saveEmailEdit(MvcPurchaseViewModel purchaseViewModel)
@@ -832,52 +678,7 @@ namespace InvoiceDiskLast.Controllers
             }
             return new JsonResult { Data = new { Status = "Success", PurchaseOrderId = intpurchaseorderId } };
         }
-
-        public ActionResult Viewinvoice(int? purchaseOrderId)
-        {
-
-            if (purchaseOrderId == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
-            try
-            {
-                var idd = Session["ClientID"];
-                var cdd = Session["CompayID"];
-
-
-                if (Session["ClientID"] != null && Session["CompayID"] != null)
-                {
-                    Contectid = Convert.ToInt32(Session["ClientID"]);
-                    CompanyID = Convert.ToInt32(Session["CompayID"]);
-                }
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
-                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
-                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-
-                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
-                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
-
-
-                ViewBag.Contentdata = contectmodel;
-                ViewBag.Companydata = companyModel;
-                ViewBag.Purchase = ob;
-                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
-            }
-            catch (Exception ex)
-            {
-            }
-            return View();
-        }
+               
 
         public string SetPdfName(string FilePath)
         {
@@ -1922,24 +1723,17 @@ namespace InvoiceDiskLast.Controllers
 
         #endregion
 
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
-            try
-            {
-                if (Session["ClientId"] != null && Session["CompayID"] != null)
-                {
-                    Contectid = Convert.ToInt32(Session["ClientId"]);
-                    CompanyID = Convert.ToInt32(Session["CompayID"]);
-                }
-
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CompayID");
-                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", 1.ToString());
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+         try
+            { 
+               CompanyID = Convert.ToInt32(Session["CompayID"]);              
+                        
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + 1.ToString()).Result;
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
                 ViewBag.Contentdata = contectmodel;

@@ -1,4 +1,4 @@
-﻿
+﻿@*  *@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -61,8 +61,8 @@
     <tbody></tbody>
 </table>
 
-
-
+@Html.Partial("~/Views/Shared/PartialViews/QutationPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -209,7 +209,7 @@
     function EditQutation(QutationId)
     {
         if (QutationId > 0) {
-            window.location.href = "/Qutation/EditQutation/" + QutationId;
+            window.location.href = "/Qutation/EditQutation/?QutationId=" + QutationId;
         }
     }
 
