@@ -20,17 +20,17 @@ namespace InvoiceDiskLast.Controllers
             // string password = GlobalVeriables.WebApiClient.DefaultRequestHeaders.GetValues("Password").ToString();
 
 
-            bool IsuserExist = db.UserTables.Any(x => x.Username == username);
+            //bool IsuserExist = db.UserTables.Any(x => x.Username == username);
 
-            UserModels userm = db.UserTables.ToList().Where(x => x.Username == username).Select(c => new UserModels
-            {
+            //UserModels userm = db.UserTables.ToList().Where(x => x.Username == username).Select(c => new UserModels
+            //{
 
-                UserId = c.UserId,
-                UserFname = c.UserFname
-            }).FirstOrDefault();
+            //    UserId = c.UserId,
+            //    UserFname = c.UserFname
+            //}).FirstOrDefault();
 
 
-
+            bool IsuserExist = true;
             if (IsuserExist)
             {
                 Guid guid = new Guid();
