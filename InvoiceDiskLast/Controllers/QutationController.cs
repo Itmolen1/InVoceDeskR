@@ -52,7 +52,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return View(quutionviewModel);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
@@ -347,31 +347,33 @@ namespace InvoiceDiskLast.Controllers
 
                 if (response.StatusCode == System.Net.HttpStatusCode.Created)
                 {
-                    foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist)
+                    if (MVCQutationViewModel.QutationDetailslist!= null)
                     {
-                        QutationDetailsTable QtDetails = new QutationDetailsTable();
-                        QtDetails.ItemId = Convert.ToInt32(QDTList.ItemId);
-                        QtDetails.QutationID = Qid;
-                        QtDetails.Description = QDTList.Description;
-                        QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                        QtDetails.Quantity = QDTList.Quantity;
-                        QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
-                        QtDetails.Total = Convert.ToDouble(QDTList.Total);
-                        QtDetails.ServiceDate = QDTList.ServiceDate;
-                        QtDetails.RowSubTotal = QDTList.RowSubTotal;
+                        foreach (QutationDetailsTable QDTList in (MVCQutationViewModel.QutationDetailslist))
+                        {
+                            QutationDetailsTable QtDetails = new QutationDetailsTable();
+                            QtDetails.ItemId = Convert.ToInt32(QDTList.ItemId);
+                            QtDetails.QutationID = Qid;
+                            QtDetails.Description = QDTList.Description;
+                            QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                            QtDetails.Quantity = QDTList.Quantity;
+                            QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
+                            QtDetails.Total = Convert.ToDouble(QDTList.Total);
+                            QtDetails.ServiceDate = QDTList.ServiceDate;
+                            QtDetails.RowSubTotal = QDTList.RowSubTotal;
 
-                        QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                        QtDetails.Type = QDTList.Type;
-                        if (QtDetails.QutationDetailId == 0)
-                        {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
-                        }
-                        else
-                        {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+                            QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
+                            QtDetails.Type = QDTList.Type;
+                            if (QtDetails.QutationDetailId == 0)
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
+                            }
+                            else
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+                            }
                         }
                     }
-
                     return new JsonResult { Data = new { Status = "Success", path = "", QutationId = Qid } };
 
                 }
@@ -656,7 +658,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                    catch (System.IO.IOException )
+                    catch (System.IO.IOException)
                     {
 
                     }
@@ -1033,7 +1035,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-      
+
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1125,7 +1127,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
 
-            
+
                     string path1 = PrintView((int)MVCQutationViewModel.QutationID);
                     var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}", path1);
@@ -1145,7 +1147,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
         }
-        
+
         [HttpPost]
         public ActionResult SaveEmailEdit(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1253,7 +1255,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult SaveEmailPrintEdit(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-           
+
             int Qid = 0;
 
             try
@@ -1319,9 +1321,9 @@ namespace InvoiceDiskLast.Controllers
 
                         QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
                         QtDetails.Type = QDTList.Type;
-                       
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
-                        
+
+                        HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+
                     }
 
 
@@ -1332,7 +1334,7 @@ namespace InvoiceDiskLast.Controllers
                     var path = Path.Combine(root, pdfname);
                     path = Path.GetFullPath(path);
 
-                    return new JsonResult { Data = new { Status = "Success", path = path1, QutationId = MVCQutationViewModel.QutationID }};
+                    return new JsonResult { Data = new { Status = "Success", path = path1, QutationId = MVCQutationViewModel.QutationID } };
 
                 }
                 else
@@ -1350,7 +1352,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-    
+
 
     }
 }
