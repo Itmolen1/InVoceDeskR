@@ -21,14 +21,15 @@
             alert("no files selected");
             return true;
         }
+
         var files = $("#fileInput").get(0).files;
         if (!validateFileSize()) {
             return true;
         }
+
         var fileData = new FormData();
         fileData.append('ContactsId', parseInt($('#ContactsId').val()));
         fileData.append('ContactName', $('#ContactNamev').val());
-
 
 
         for (var i = 0; i < files.length; i++) {

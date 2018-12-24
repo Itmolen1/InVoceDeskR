@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
@@ -80,9 +82,9 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult Create(int id)
         {
-           
+
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
-         
+
             CompanyID = Convert.ToInt32(Session["CompayID"]);
 
 
@@ -111,7 +113,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return View(quutionviewModel);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
@@ -134,7 +136,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-               
+
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quautionId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
@@ -329,19 +331,71 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult SaveDraft(MVCQutationViewModel MVCQutationViewModel)
+
+        public bool uploadFile(int Id, string Name, HttpFileCollectionBase files)
         {
+
+            if (CreatDirectoryClass.UploadFileAndCreateDirectory(Id, Name, files))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+
+                var fileName = Path.GetFileName(file.FileName);
+
+                var path = Path.Combine(Server.MapPath("~/App_Data/"), fileName);
+                file.SaveAs(path);
+            }
+
+            return Content("Succesfully");
+        }
+
+
+        [HttpPost]
+        public ActionResult YourActionName(MVCQutationViewModel model, IEnumerable<HttpPostedFileBase> myImage)
+        {
+
+
+            return View();
+
+        }
+
+        [HttpPost]
+        public ActionResult SaveDraft(MVCQutationViewModel MVCQutationViewModel, HttpPostedFile[] arraylisr, FormCollection form)
+        {
+            HttpFileCollectionBase files = Request.Files;
+
+
+            
+            if(Request.Form["files"] !=null)
+            {
+               
+            }
             QutationTable qutationTable;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-                
+
+
+               
+
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
                 mvcQutationModel.UserId = 1;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
-
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                 mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -362,7 +416,6 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-
                 if (mvcQutationModel.TotalVat21 != null)
                 {
                     double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
@@ -370,38 +423,56 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
                 qutationTable = response.Content.ReadAsAsync<QutationTable>().Result;
 
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist)
-                    {
-                        QutationDetailsTable QtDetails = new QutationDetailsTable();
-                        QtDetails.ItemId = Convert.ToInt32(QDTList.ItemId);
-                        QtDetails.QutationID = qutationTable.QutationID;
-                        QtDetails.Description = QDTList.Description;
-                        QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                        QtDetails.Quantity = QDTList.Quantity;
-                        QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
-                        QtDetails.Total = Convert.ToDouble(QDTList.Total);
-                        QtDetails.ServiceDate = QDTList.ServiceDate;
-                        QtDetails.RowSubTotal = QDTList.RowSubTotal;
 
-                        QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-                        QtDetails.Type = QDTList.Type;
-                        if (QtDetails.QutationDetailId == 0)
+                    if (MVCQutationViewModel.QutationDetailslist.Count() != 1 && MVCQutationViewModel.QutationDetailslist.Count() != 0)
+                    {
+                        foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist)
                         {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
-                        }
-                        else
-                        {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+                            QutationDetailsTable QtDetails = new QutationDetailsTable();
+                            QtDetails.ItemId = Convert.ToInt32(QDTList.ItemId);
+                            QtDetails.QutationID = qutationTable.QutationID;
+                            QtDetails.Description = QDTList.Description;
+                            QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                            QtDetails.Quantity = QDTList.Quantity;
+                            QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
+                            QtDetails.Total = Convert.ToDouble(QDTList.Total);
+                            QtDetails.ServiceDate = QDTList.ServiceDate;
+                            QtDetails.RowSubTotal = QDTList.RowSubTotal;
+                            QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
+                            QtDetails.Type = QDTList.Type;
+
+                            if (QtDetails.QutationDetailId == 0)
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
+                            }
+                            else
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+                            }
                         }
                     }
 
-                    return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
+
+                   
+
+                    if (uploadFile(qutationTable.QutationID, "Qutatation" + qutationTable.QutationID, files))
+                    {
+                        return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
+                    }
+                    else
+                    {
+                        return new JsonResult { Data = new { Status = "Success", UploadStatus = "Fail", path = "", QutationId = qutationTable.QutationID } };
+                    }
+
+
+
+
 
                 }
                 else
@@ -686,7 +757,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                    catch (System.IO.IOException )
+                    catch (System.IO.IOException)
                     {
 
                     }
@@ -1063,7 +1134,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-      
+
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1155,7 +1226,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
 
-            
+
                     string path1 = PrintView((int)MVCQutationViewModel.QutationID);
                     var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}", path1);
@@ -1175,7 +1246,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
         }
-        
+
         [HttpPost]
         public ActionResult SaveEmailEdit(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1283,7 +1354,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult SaveEmailPrintEdit(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-           
+
             int Qid = 0;
 
             try
@@ -1349,9 +1420,9 @@ namespace InvoiceDiskLast.Controllers
 
                         QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
                         QtDetails.Type = QDTList.Type;
-                       
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
-                        
+
+                        HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+
                     }
 
 
@@ -1362,7 +1433,7 @@ namespace InvoiceDiskLast.Controllers
                     var path = Path.Combine(root, pdfname);
                     path = Path.GetFullPath(path);
 
-                    return new JsonResult { Data = new { Status = "Success", path = path1, QutationId = MVCQutationViewModel.QutationID }};
+                    return new JsonResult { Data = new { Status = "Success", path = path1, QutationId = MVCQutationViewModel.QutationID } };
 
                 }
                 else
@@ -1380,7 +1451,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-    
+
 
     }
 }

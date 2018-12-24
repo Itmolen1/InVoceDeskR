@@ -53,7 +53,10 @@ namespace InvoiceDiskLast.Models
         public int SaleQuantity { get; set; }
 
         public string Type { get; set; }
+        public QutationDetailsTable[] QutationDetailslist1 { get; set; }
 
+
+     
 
         public List<QutationDetailsTable> QutationDetailslist { get; set; }
 
