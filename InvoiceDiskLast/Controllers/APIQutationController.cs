@@ -127,18 +127,14 @@ namespace InvoiceDiskLast.Controllers
 
         // POST: api/APIQutation
         [ResponseType(typeof(QutationTable))]
-        public HttpResponseMessage PostQutationTable([FromBody] QutationTable qutationtable)
+        public IHttpActionResult PostQutationTable([FromBody] QutationTable qutationtable)
         {
             using (DBEntities entities = new DBEntities())
             {
-                entities.QutationTables.Add(qutationtable);
+                qutationtable= entities.QutationTables.Add(qutationtable);
                 entities.SaveChanges();
 
-                var massage = Request.CreateResponse(HttpStatusCode.Created, qutationtable);
-                massage.Headers.Location = new Uri(Request.RequestUri + qutationtable.QutationID.ToString());
-                massage.Content.Headers.Add("idd", qutationtable.QutationID.ToString());
-                massage.RequestMessage.Headers.Add("idd", qutationtable.QutationID.ToString());
-                return massage;
+                return Ok(qutationtable);
 
             }
         }

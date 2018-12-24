@@ -200,28 +200,8 @@
         var value = $('#SelectContacts1').val();
 
         if (value > 0) {
-           
-                $.ajax({
-                    url: '/MVCClient/AddOrEdit',
-                    type: 'GET',
-                    data: {
-                        id: value
-                    },
-                    success: function (data) {
-
-                        window.location.href = "/Qutation/Create"
-                        //if (qutationGoodOrService == "1") {
-                        //    window.location.href = "/MVCQutation/AddOrEdit"
-                        //}
-                        //else if (qutationGoodOrService == "2") {
-                        //    window.location.href = "/QutationService/AddOrEdit/0"
-                        //}
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-            }
+            window.location.href = "/Qutation/Create?id=" + value;
+        }
     });
 
     $('#SaveNewContacts').click(function () {

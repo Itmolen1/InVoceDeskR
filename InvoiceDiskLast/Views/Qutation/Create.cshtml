@@ -428,17 +428,11 @@
             $('#mainrow .FTotalG').val('');
             $('#mainrow .quantityG').val('');
 
-
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
             $('#mainrow #SelectVATG').val(0);
-
-
-
         }
-
-
 
         $('#mainrow #RowTotalG').val('');
     });
@@ -529,8 +523,7 @@
 
 
     function calculateTotalGoods(currentRow) {
-
-
+        
         Quantity = Currentrow.find(".quantityG").val(),
         Price = Currentrow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -539,7 +532,6 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        debugger;
         Total = 0;
         Total = Currentrow.find(".FTotalG").val();
 
@@ -555,8 +547,6 @@
 
 
     $(document).on('change', '.tbody .VATG', function () {
-
-        ;
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -578,10 +568,7 @@
     });
 
     $('.quantityG').change(function () {
-
-        ;
-
-        var Currentrow = $(this).closest("tr");
+       var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
@@ -590,8 +577,6 @@
     });
 
     $('.quantityG').keyup(function () {
-
-        debugger;
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -611,10 +596,6 @@
         CalculateVateTotal();
     });
 
-
-
-
-
     $('.tbody .VATG').change(function () {
 
         Currentrow = $(this).closest("tr");
@@ -629,8 +610,6 @@
 
 
     $('.VATG').change(function () {
-
-        debugger;
 
         currentRow1 = $(this).closest("tr");
         vat = currentRow1.find('.VATG').val();
@@ -716,7 +695,7 @@
     });
 
     function CalculateVateTotal() {
-        debugger;
+      
 
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
@@ -913,7 +892,6 @@
         }
         var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
 
-
         $('#SubTotal').text(Total.toFixed(2));
         $('#gtotal').text(Total.toFixed(2));
 
@@ -947,7 +925,6 @@
         $('#orderdetailsitems  tr').each(function () {
 
             var Value = $(this).find(".RowTotalG").val();
-
 
             if (!isNaN(parseFloat(Value))) {
                 SubTotalGood += parseFloat(Value)
@@ -995,9 +972,7 @@
         return TotalService;
     }
 
-
-
-
+    
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         if (InOrOut == 'AddingVat') {
@@ -1048,24 +1023,17 @@
         }
     }
 
-
-
     $('#orderdetailsitems').on('click', '.remove', function () {
 
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VAT  option:selected').val();
-
-
 
         $(this).parents('tr').remove();
 
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
-
     });
-
 
     $('#QutationServiceDetail1').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
@@ -1076,20 +1044,15 @@
         CalculateVateTotal();
     });
 
-
-
-
     $('#Submit').click(function () {
 
-        debugger;
         CreateQuation();
     });
 
 
 
     function ValidateRow(CurrentRow) {
-        debugger;
-
+      
         var Isvalid = true;
         var Produectid = 0, quantityG = 0, varrateG = 0;
 
@@ -1113,8 +1076,7 @@
         var list = [], orderItem, CurrentRow;
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-            debugger;
-
+          
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1188,12 +1150,9 @@
                          function (isconform) {
                              window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
                          });
-
-
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
-
                 }
             },
 
