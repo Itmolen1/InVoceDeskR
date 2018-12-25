@@ -19,6 +19,36 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult AddCustomer(MVCQutationViewModel model)
+        {
+            string fileName;
+         
+
+
+         
+            foreach (HttpPostedFileBase k in model.file23)
+            {
+                if (k.ContentLength > 0)
+
+                    fileName = k.FileName;
+
+            }
+
+            for (int i = 0; i < Request.Files.Count; i++)
+            {
+                HttpPostedFileBase file = Request.Files[i]; //Uploaded file
+                                                            //Use the following properties to get file's name, size and MIMEType
+                int fileSize = file.ContentLength;
+                 fileName = file.FileName;
+                string mimeType = file.ContentType;
+                System.IO.Stream fileContent = file.InputStream;
+                //To save file, use SaveAs method
+                file.SaveAs(Server.MapPath("~/") + fileName); //File will be saved in application root
+            }
+            return null;
+        }
+
         public ActionResult Create()
         {
 
@@ -59,7 +89,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveDraft(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult SaveDraft(MVCQutationViewModel MVCQutationViewModel,HttpPostedFileBase filess)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
 
@@ -74,10 +104,7 @@ namespace InvoiceDiskLast.Controllers
                 //To save file, use SaveAs method
                 file.SaveAs(Server.MapPath("~/") + fileName); //File will be saved in application root
             }
-            //return Json("Uploaded " + Request.Files.Count + " files");
-
-
-           
+            //return Json("Uploaded " + Request.Files.Count + " files");            
             try
             {
                 
@@ -164,6 +191,21 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
 
+        }
+
+        public class ImageModel
+        {
+           public HttpFileCollectionBase[] file22 { get; set; }
+            public HttpFileCollection[] file1 { get; set; }
+            public HttpPostedFileBase file2 { get; set; }
+            public HttpPostedFileBase file3 { get; set; }
+            public HttpPostedFileBase file4 { get; set; }
+            public HttpPostedFileBase file5 { get; set; }
+            public HttpPostedFileBase file6 { get; set; }
+            public HttpPostedFileBase file7 { get; set; }
+
+            public List<QutationDetailsTable> QutationDetailslist { get; set; }
+            public HttpPostedFileWrapper[] file23 { get; set; }
         }
 
         [HttpGet]
