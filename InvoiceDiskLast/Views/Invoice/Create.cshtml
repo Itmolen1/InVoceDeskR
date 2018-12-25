@@ -302,8 +302,8 @@
                     <div class="row">
                         <div class="col-12 b-r">
                             <form name='frmAccount' id='frmAccount'>
-                                <input type='file' name='file22' multiple />
-                                <input type='file' name='file23' multiple />
+                               
+                                <input type='file' name='file23' multiple id="uploadfile"/>
 
                             </form>
                         </div>
@@ -1014,7 +1014,7 @@
 
     function CreateQuation() {
 
-        var formData = new FormData($('#frmAccount')[0]);
+        var formData = new FormData($('#uploadfile')[0]);
 
 
 
@@ -1098,31 +1098,7 @@
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
 
-        //for (var i = 0; i < list2.length; i++) {
-        //    formData.append('QutationDetailslist1[' + i + '][ItemId]', list2[i].ItemId)
-        //    formData.append('QutationDetailslist1[' + i + '][Quantity]', list2[i].Quantity)
-        //    formData.append('QutationDetailslist1[' + i + '][Rate]', list2[i].Rate)
-        //    formData.append('QutationDetailslist1[' + i + '][Total]', list2[i].Total)
-        //    formData.append('QutationDetailslist1[' + i + '][Vat]', list2[i].Vat)
-        //    formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list2[i].RowSubTotal)
-        //}
-
-
-        //for (var key in object2) {
-        //    formData.append(key, object2[key]);
-        //}
-
-
-        //var xhr = new XMLHttpRequest();
-        //xhr.open('POST', '/Invoice/SaveDraft');
-        //xhr.send(empObj);
-        //xhr.onreadystatechange = function () {
-        //    if (xhr.readyState == 4 && xhr.status == 200) {
-        //        alert(xhr.responseText);
-        //    }
-        //}
-        //return false;
-
+      
         $.ajax({
             url: "@Url.Action("AddCustomer", "Invoice")",
             type: "POST",

@@ -248,13 +248,14 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        public ActionResult ViewDirecory(int Id)
+
+
+
+        public ActionResult ViewDirecory(int Id, string DName)
         {
             string d = "";
             try
             {
-
-
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
                 HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
@@ -262,14 +263,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)
                 { 
-
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Id.ToString()).Result;
-                    MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                    CreatDirectoryClass.CreateDirecotyFolder(mvcContactModel.ContactsId, mvcContactModel.ContactName);
-
-                  
-                
+                      CreatDirectoryClass.CreateDirecotyFolder(Id, DName);
                     directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
                     _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
