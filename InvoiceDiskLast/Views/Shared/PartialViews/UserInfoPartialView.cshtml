@@ -429,3 +429,38 @@
         });
     }
 </script>
+
+<script>
+   
+    var QutationStatus;
+    var InvoiceQutation = "";
+
+    $('#CompanySitting').click(function () {
+        window.location.href = "/MVCComapny/Index";
+    });
+
+
+
+    function Edit(companyId) {
+
+        window.location.href = "Company/AddOrEdit/" + companyId;
+    }
+
+    $('#Logout').click(function () {
+        Username = "";
+        $.ajax({
+            url: "/Login/Logut",
+            type: "POST",
+            dataType: "json",
+            success: function (resultData) {
+                window.location.href = "/Captcha/Index";
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    });
+
+    
+</script>

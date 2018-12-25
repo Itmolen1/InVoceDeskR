@@ -47,25 +47,7 @@
     });
 
    
-    function validateContactQutation() {
-        var isValid = true;
-        if ($('#ContactName').val().trim() == "") {
-            $('#ContactName').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ContactName').css('border-color', 'lightgrey');
-        }
-        if ($('#ContactAddress').val().trim() == "") {
-            $('#ContactAddress').css('border-color', 'Red');
-            isValid = false;
-        }
-        else {
-            $('#ContactAddress').css('border-color', 'lightgrey');
-        }
-
-        return isValid;
-    }
+   
 
 
     $('#CancelContactsQt').click(function () {
@@ -85,33 +67,6 @@
 
 
 
-    function LoadContactsQuIndex() {
-
-        $("#SelectContacts1").find("option").remove();
-
-        $("#SelectContacts1").prepend("<option value=0>" + 'Select Client' + "</option>");
-        $("#SelectContacts1").append("<option value=AddNewClientSelect>" + 'Add New Client' + "</option>");
-
-        $.ajax({
-            url: "/MVCClient/GetContacts",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-
-                $.each(data, function (key, item) {
-
-                    $('#SelectContacts1').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
-
-                });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
+    
 </script>
 
