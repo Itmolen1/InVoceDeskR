@@ -13,10 +13,10 @@
         @*two*@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
-        <div class="container">         
+        <div class="container">
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
-                   <input type="hidden" value="@Contectdatas.ContactsId" id ="ConatctId" />
+                    <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
                     <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
@@ -33,7 +33,7 @@
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
-                           Invoice Date:
+                            Invoice Date:
                         </div>
                         <div class="col-6 b-r">
                             @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
@@ -301,8 +301,10 @@
                     </div>
                     <div class="row">
                         <div class="col-12 b-r">
-                            <form id="upload" enctype="multipart/form-data">
-                                <input type="file" name="fileUpload" id="fileUpload" size="23" />
+                            <form name='frmAccount' id='frmAccount'>
+                                <input type='file' name='file22' multiple />
+                                <input type='file' name='file23' multiple />
+
                             </form>
                         </div>
 
@@ -312,7 +314,8 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">Sub Total:</div>
                         <div class="col-7 b-r text-right">
-                        <label id="SubTotal"></label></div>
+                            <label id="SubTotal"></label>
+                        </div>
 
                     </div>
                     <div class="row">
@@ -479,7 +482,7 @@
         CalculateVateTotal();
 
     });
-    
+
     $(document).on("keyup", ".tbody .rateG", function () {
 
         debugger;
@@ -866,7 +869,7 @@
         $('#gtotal').text(Total.toFixed(2));
 
     }
-    
+
     function CombineTotal() {
 
         var TotalGoode, Total, TotalService1 = 0;
@@ -1011,16 +1014,18 @@
 
     function CreateQuation() {
 
-      
-        var formdata = new FormData();
-        var fileInput = document.getElementById('fileUpload');
+        var formData = new FormData($('#frmAccount')[0]);
 
-        for (i = 0; i < fileInput.files.length; i++) {
-            formdata.append(fileInput.files[i].name, fileInput.files[i]);
-        }
-     
 
-        var list = [], orderItem, CurrentRow;
+
+        //var formdata = new FormData();
+        //var fileInput = document.getElementById('fileUpload');
+
+        // for (i = 0; i < fileInput.files.length; i++) {
+        //     formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        // }
+
+        var list = [],  orderItem, CurrentRow;
 
         $('#orderdetailsitems .tbody tr').each(function () {
 
@@ -1057,7 +1062,7 @@
         debugger;
 
         var empObj = {
-            
+
             Qutation_ID: $('#Qutation_ID').val(),
             RefNumber: $('#RefNumber').val(),
             QutationDate: $('#QutationDate').val(),
@@ -1072,15 +1077,41 @@
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyId').val(),
-            Files: fileInput[0],
-           // file: $("#fileUpload").val(),
-            QutationDetailslist: list
+            //Files: VideofileS,
+            // file: $("#fileUpload").val(),
+
         };
-        
-        
 
 
-      
+        debugger;
+
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+
+        for (var i = 0; i < list.length; i++) {
+            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
+            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
+            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
+            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+        }
+
+        //for (var i = 0; i < list2.length; i++) {
+        //    formData.append('QutationDetailslist1[' + i + '][ItemId]', list2[i].ItemId)
+        //    formData.append('QutationDetailslist1[' + i + '][Quantity]', list2[i].Quantity)
+        //    formData.append('QutationDetailslist1[' + i + '][Rate]', list2[i].Rate)
+        //    formData.append('QutationDetailslist1[' + i + '][Total]', list2[i].Total)
+        //    formData.append('QutationDetailslist1[' + i + '][Vat]', list2[i].Vat)
+        //    formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list2[i].RowSubTotal)
+        //}
+
+
+        //for (var key in object2) {
+        //    formData.append(key, object2[key]);
+        //}
+
 
         //var xhr = new XMLHttpRequest();
         //xhr.open('POST', '/Invoice/SaveDraft');
@@ -1091,11 +1122,27 @@
         //    }
         //}
         //return false;
-     
+
+        $.ajax({
+            url: "@Url.Action("AddCustomer", "Invoice")",
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(data);
+            },
+            error: function (xce) {
+                alert();
+            }
+        });
+
+
 
         $.ajax({
             url: "/Invoice/SaveDraft",
-            data: empObj,
+            data: JSON.stringify(empObj, filess = formdata),
             type: "POST",
             contentType: "application/json;charset=utf-8",
             dataType: "json",
@@ -1113,14 +1160,10 @@
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
-
                 }
             },
-
             error: function (errormessage) {
-
             }
-
         });
     }
 
@@ -1174,7 +1217,7 @@
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyId').val(),
             QutationDetailslist: list
-        };      
+        };
         $.ajax({
             url: "/Invoice/SaveEmail",
             data: JSON.stringify(empObj),
@@ -1191,7 +1234,7 @@
                     },
                           function (isconform) {
                               window.location.href = "/Invoice/EmailInvoice/?id=" + result.QutationId;
-                     });
+                          });
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
@@ -1266,18 +1309,18 @@
                     localStorage.setItem('path', result.path);
 
 
-                        swal({
-                            title: 'Qutation!',
-                            text: 'Qutation save successfully!',
-                            type: 'success'
-                        },
-                        function (isconform) {
-                            window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-                        });
-                    }
-                    else if (result.Status == "Fail") {
+                    swal({
+                        title: 'Qutation!',
+                        text: 'Qutation save successfully!',
+                        type: 'success'
+                    },
+                    function (isconform) {
+                        window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                    });
+                }
+                else if (result.Status == "Fail") {
 
-                    }
+                }
             },
             error: function (errormessage) {
             }

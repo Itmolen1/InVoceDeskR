@@ -56,7 +56,7 @@ namespace InvoiceDiskLast.Models
         public QutationDetailsTable[] QutationDetailslist1 { get; set; }
 
 
-     
+        public HttpPostedFileWrapper[] file23 { get; set; }
         public HttpPostedFileBase[] Files { get; set; }
 
 
