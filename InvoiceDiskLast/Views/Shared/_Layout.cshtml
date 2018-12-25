@@ -91,8 +91,7 @@
             </div>
         </div>
     </div>
-        @Html.Partial("~/Views/Shared/PartialViews/Footer.cshtml")
-        @Html.Partial("~/Views/Shared/PartialViews/UserInfoPartialView.cshtml")    
+       
     <div>
        
         <!-- Bootstrap tether Core JavaScript -->
@@ -141,68 +140,16 @@
         <script src="~/assets/js/fA.js"></script>
         <!---->
     </div>
+    @Html.Partial("~/Views/Shared/PartialViews/Footer.cshtml")
+    @Html.Partial("~/Views/Shared/PartialViews/UserInfoPartialView.cshtml")
+    
 </body>
 </html>
+
+
 <script>
     var GoodsServicess = "";
-    GoodsService = "Good"
-    var QutationStatus;
-    var InvoiceQutation = "";
-    
-    $('#CompanySitting').click(function () {
-        window.location.href = "/MVCComapny/Index";
-    });
-
-    
-
-    function Edit(companyId) {
-
-        window.location.href = "Company/AddOrEdit/" + companyId;
-    }
-
-    $('#Logout').click(function () {
-        Username = "";
-        $.ajax({
-            url: "/Login/Logut",
-            type: "POST",
-            dataType: "json",
-            success: function (resultData) {
-                window.location.href = "/Captcha/Index";
-            },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
-        });
-
-    });
-
-    function LoadVernder() {
-        $("#venderSelect").find("option").remove();
-        $("#venderSelect").prepend("<option value=0>" + 'Select Vender' + "</option>");
-        $("#venderSelect").append("<option value=AddNewVenderSelect>" + 'Add New Vender' + "</option>");
-
-        $.ajax({
-            url: "/Purchase/GetVender",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                $.each(data, function (key, item) {
-                    $('#venderSelect').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
-
-                });
-
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
 </script>
-
-
 
 
 

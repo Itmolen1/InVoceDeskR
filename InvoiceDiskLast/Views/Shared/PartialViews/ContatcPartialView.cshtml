@@ -227,7 +227,7 @@
 
                 },
                 success: function (response) {
-
+                    debugger;
                     if (response == '201') {
 
                         if (showRequiredModel == "QutationContactModel") {
@@ -302,16 +302,13 @@
         showRequiredModel = "QutationContactModel";
         var value = $(this).val();
         if (value == "AddNewClientSelect") {
-
+            $('#UpdateClineId').hide();
             $('#QutationContactModel').modal('hide');
 
             $('#ModelHeading').text("Maak nieuwe klant");
             $("#TypeContacts").find("option").remove();
             $("#TypeContacts").prepend("<option value=Customer>" + 'Klant' + "</option>");
-            $('#CreateNewContactModal1')
-
-
-            .modal('show');
+            $('#CreateNewContactModal1').modal('show');
 
         }
 
@@ -320,6 +317,7 @@
     $('#venderSelect').change(function () {
         showRequiredModel = "";
         showRequiredModel = "PurchaseContactModel";
+        $('#UpdateClineId').hide();
         var value = $(this).val();
         if (value == "AddNewVenderSelect") {
 
@@ -403,8 +401,6 @@
         GoodsService = "";
         GoodsService = $('#TypeGoodsServices').val();
         ShowServiceGood(GoodsService);
-
-
     });
 
     $(document).ready(function () {
@@ -419,10 +415,56 @@
                 $('#rowiddd').show(1000);
             }
         });
-
         $('#rowiddd2').hide();
 
     });
 
-  
+    function validateContactQutation() {
+        var isValid = true;
+        if ($('#ContactName').val().trim() == "") {
+            $('#ContactName').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ContactName').css('border-color', 'lightgrey');
+        }
+        if ($('#ContactAddress').val().trim() == "") {
+            $('#ContactAddress').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#ContactAddress').css('border-color', 'lightgrey');
+        }
+
+        return isValid;
+    }
+
+    function LoadContactsQuIndex() {
+
+        $("#SelectContacts1").find("option").remove();
+
+        $("#SelectContacts1").prepend("<option value=0>" + 'Select Client' + "</option>");
+        $("#SelectContacts1").append("<option value=AddNewClientSelect>" + 'Add New Client' + "</option>");
+
+        $.ajax({
+            url: "/MVCClient/GetContacts",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $.each(data, function (key, item) {
+
+                    $('#SelectContacts1').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+
+                });
+
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
 </script>

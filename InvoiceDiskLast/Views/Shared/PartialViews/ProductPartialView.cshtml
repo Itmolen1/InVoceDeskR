@@ -103,8 +103,9 @@
 
 
 <script>
-    $('#SaveNewProductGoods').click(function () {
 
+    $('#SaveNewProductGoods').click(function () {
+        debugger;
         var IsValid;
         if (GoodsServicess == "Good") {
             IsValid = validateProductGoods();
@@ -149,13 +150,6 @@
                     });
                 }
             }
-
-            else {
-
-                IsValid = validateProductServices();
-            }
-
-
         }
         else if (GoodsServicess == "Services") {
 
@@ -197,7 +191,7 @@
             }
         }
 
-        LoadProductSelect();
+        //LoadProductSelect();
     });
 
     function CleartProdctTextBoxGoods() {
@@ -369,7 +363,7 @@
     }
 
     function checkProductByName(PName) {
-
+        debugger;
         var Result = true;
         $.ajax({
             url: "/MVCProduct/GetProductByName",
@@ -390,11 +384,8 @@
                         loaderBg: '#FF0000'  // To change the background
                     });
                     Result = false;
-
-
                 }
                 else {
-
                     Result = true;
                 }
             }
@@ -498,6 +489,18 @@
             $('#DivServiceBody').show(1000);
         }
     }
-
+ 
+    $('#TypeGoodsServices').change(function () {
+        if ($(this).val() == "Good") {
+            ChangeBorderColorProductModel();
+            $('#DivGoodBody').show(1000);
+            $('#DivServiceBody').hide(1000);
+        }
+        else if ($(this).val() == "Services") {
+            ChangeBorderColorProductModel();
+            $('#DivGoodBody').hide(1000);
+            $('#DivServiceBody').show(1000);
+        }
+    });
 
 </script>

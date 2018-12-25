@@ -48,9 +48,8 @@
     <!-- /.modal-dialog -->
 </div>
 
-<script>
-  
-    $('#CancelProductUnit').click(function () {
+<script>  
+    $('#CancelProductUnit').click(function () {       
         CleartUnitTextBox();
         ShowServiceGood(GoodsService);
         $('#UnitModel').modal('hide');
@@ -82,6 +81,7 @@
     }
 
     $('#SaveNewProductUnit').click(function () {
+      
         $.ajax({
             url: "/MVCProductUnit/CheckUnitStatus",
             type: "POST",
@@ -100,21 +100,21 @@
                     var dataUnit = {
                         ProductUnit: $('#ProductUnit').val(),
                         Status: "true"
-                    }
+                    }                   
                     $.ajax({
                         url: "/MVCProductUnit/AddorEdit",
                         type: "POST",
                         data: dataUnit,
+
                         success: function (dat) {
                             CleartUnitTextBox();
                             $('#UnitModel').modal('hide');
-                            LoadProductUnit();
-
-
+                            LoadProductUnitGoods();
                             if (GoodsService == "Good") {
+                                debugger;
                                 ShowServiceGood(GoodsService);
                                 $('#CreateNewProductModalGoods').modal('show');
-                            }
+                            }                           
                             $.toast({
                                 heading: 'Success',
                                 text: 'Your opration has been successfuly completed `Thank you`',
@@ -142,22 +142,6 @@
 
     }
 
-    $('#Type').change(function () {
-        if ($(this).val() == "Good") {
-            ChangeBorderColorProductModel();
-            $('#GoodsDiveUnit').show(1000);
-            $('#OpeningStockValue').show(1000);
-            $('#VatValueDiv').removeClass();
-            $('#VatValueDiv').addClass('col-sm-6');
-
-        }
-        else if ($(this).val() == "Services") {
-            ChangeBorderColorProductModel();
-            $('#GoodsDiveUnit').hide(1000);
-            $('#OpeningStockValue').hide(1000);
-            $('#VatValueDiv').removeClass();
-            $('#VatValueDiv').addClass('col-sm-12');
-        }
-    });
+  
 
 </script>
