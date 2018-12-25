@@ -79,9 +79,9 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult Create(int id)
         {
-           
+
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
-         
+
             CompanyID = Convert.ToInt32(Session["CompayID"]);
 
 
@@ -110,7 +110,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return View(quutionviewModel);
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
@@ -131,7 +131,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-               
+
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quautionId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
@@ -146,6 +146,17 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
+
+
+
+
+        [HttpPost]
+        public ActionResult UploadFile(HttpPostedFileBase fileUpload)
+        {
+            // DO Stuff
+            return View();
+        }
+
 
         [HttpPost]
         public ActionResult DeleteQuatation(int QutationId, int QutationDetailID, int vat, decimal total)
@@ -329,7 +340,7 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-                
+
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
                 mvcQutationModel.UserId = 1;
@@ -428,7 +439,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                              
+
 
                 quutionviewModel2.DueDate = QutationModel.DueDate;
                 quutionviewModel2.QutationDate = QutationModel.QutationDate;
@@ -666,7 +677,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                    catch (System.IO.IOException )
+                    catch (System.IO.IOException)
                     {
 
                     }
@@ -1039,7 +1050,7 @@ namespace InvoiceDiskLast.Controllers
 
             return File(filepath, MimeMapping.GetMimeMapping(filepath), FileName);
         }
-      
+
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1131,7 +1142,7 @@ namespace InvoiceDiskLast.Controllers
                     }
 
 
-            
+
                     string path1 = PrintView((int)MVCQutationViewModel.QutationID);
                     var root = Server.MapPath("/PDF/");
                     var pdfname = String.Format("{0}", path1);
@@ -1151,7 +1162,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
         }
-        
+
         [HttpPost]
         public ActionResult SaveEmailEdit(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1257,7 +1268,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult SaveEmailPrintEdit(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-           
+
             int Qid = 0;
 
             try
@@ -1323,9 +1334,9 @@ namespace InvoiceDiskLast.Controllers
 
                         QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
                         QtDetails.Type = QDTList.Type;
-                       
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
-                        
+
+                        HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+
                     }
 
 
@@ -1336,7 +1347,7 @@ namespace InvoiceDiskLast.Controllers
                     var path = Path.Combine(root, pdfname);
                     path = Path.GetFullPath(path);
 
-                    return new JsonResult { Data = new { Status = "Success", path = path1, QutationId = MVCQutationViewModel.QutationID }};
+                    return new JsonResult { Data = new { Status = "Success", path = path1, QutationId = MVCQutationViewModel.QutationID } };
 
                 }
                 else
@@ -1351,7 +1362,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-           
+
 
     }
 }
