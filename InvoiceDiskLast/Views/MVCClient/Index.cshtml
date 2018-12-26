@@ -17,6 +17,7 @@
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New</button>
 
 <input type="hidden" id="ContactsId" name="ContactId" />
+<input type="hidden" id="Company_Id" name="Company_Id" />
 
 
 
@@ -309,7 +310,8 @@
                     Remarks: $('#Remarks').val(),
                     Status: $('#Status option:selected').text(),
                     PersonCompany: $("input[name='ClientType']:checked").val(),
-                    Remarks: $('#Remarks').text()
+                    Remarks: $('#Remarks').text(),
+                    Company_Id: $('#Company_Id').val()
                 },
                 success: function (data) {
                     $('#CreateNewContactModal1').modal('hide');
@@ -364,10 +366,7 @@
 
         $('#UpdateContacts').hide();
         $('#SaveNewContacts').show();
-        //$('#Name').css('border-color', 'lightgrey');
-        //$('#Age').css('border-color', 'lightgrey');
-        //$('#State').css('border-color', 'lightgrey');
-        //$('#Country').css('border-color', 'lightgrey');
+      
     }
 
     function EditContact(ContactsId) {
@@ -544,12 +543,5 @@
             });
         }
     }
-
-
-
-
-
-
-
 
 </script>

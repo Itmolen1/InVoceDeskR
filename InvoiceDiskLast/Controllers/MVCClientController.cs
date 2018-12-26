@@ -137,9 +137,6 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-                Session["ClientID"] = mvcContactModel.ContactsId;
-
-
                 return Json(mvcContactModel, JsonRequestBehavior.AllowGet);
             }
         }
@@ -166,7 +163,6 @@ namespace InvoiceDiskLast.Controllers
 
             mvcContactModel.Addeddate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
 
-
             if (mvcContactModel.ContactsId == null)
             {
                 mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]);
@@ -178,7 +174,7 @@ namespace InvoiceDiskLast.Controllers
             }
             else
             {
-                mvcContactModel.Company_Id = Convert.ToInt32(Session["CompayID"]);
+               
                 mvcContactModel.UserId = 1;
                 mvcContactModel.Addeddate = Convert.ToDateTime(System.DateTime.Now.ToShortDateString());
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("ApiConatacts/" + mvcContactModel.ContactsId, mvcContactModel).Result;
@@ -241,16 +237,9 @@ namespace InvoiceDiskLast.Controllers
 
         public class IFormFile
         {
-
             public HttpPostedFile file { get; set; }
         }
-
-
-
-
-
-
-
+        
         public ActionResult ViewDirecory(int Id, string DName)
         {
             string d = "";
