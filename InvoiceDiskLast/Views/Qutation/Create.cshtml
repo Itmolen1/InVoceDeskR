@@ -7,9 +7,6 @@
     var CompanyDatas = ViewBag.Companydata;
 }
 
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -212,10 +209,7 @@
                         </div>
                     </div>*@
             </div>
-
-
-            Service table
-            <hr />
+           <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="QutationServiceDetail1">
@@ -309,9 +303,16 @@
                             @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    
                   
                     <hr />
+                    <div class="row">
 
+                        <div class="col-md-12">
+                            <input type="file" id="fileInput" name="Files" class="makethispretty btn btn-success" multiple style="height:42px;" />
+                        </div>
+
+                    </div>
                 </div>
                 <div class="col-4 b-r">
                     <div class="row">
@@ -365,20 +366,7 @@
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
         <div class="pull-right">
-         @using (Html.BeginForm("SaveDraft", "Qutation", FormMethod.Post, new { enctype = "multipart/form-data" }))
-         {
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <input type="file" id="fileInput" name="Files"  class="makethispretty btn btn-success" multiple style="height:42px;" />
-                    </div>
-
-                </div>
-
-                <div class="btn-group">
-                    <button id="Submit" type="submit" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
-                </div>
-           }
+             <button id="Submit" type="submit" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>             
             <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
             <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
         </div>
@@ -389,14 +377,14 @@
 
 
 
-@using (Html.BeginForm("UploadFile", "Qutation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@*@using (Html.BeginForm("UploadFile", "Qutation", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
    
     <br /><br />
 
     <input type="file" name="fileUpload" /><br /><br />
     <input type="submit" value="submit me" name="submitme" id="submitme" />
-}
+}*@
 
 
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
@@ -1077,6 +1065,7 @@
     $('#Submit').click(function () {
         CreateQuation();       
     });
+
     var  arraylisr1=[];
             function ValidateRow(CurrentRow) {
 
@@ -1099,6 +1088,7 @@
             }
 
             function CreateQuation() {
+
                 var fileData = new FormData();
                 debugger;
 
@@ -1163,9 +1153,8 @@
                 fileData.append("TotalAmount", $('#gtotal').val());
                 fileData.append("CustomerNote", $('#CustomerNote').val());
                 fileData.append("ConatctId", $('#contactId').text());
-                fileData.append("CompanyID", $('#contactId').text());
+                fileData.append("CompanyID", $('#contactId').text());               
 
-               
                 var empObj = {
 
                     Qutation_ID: $('#Qutation_ID').val(),

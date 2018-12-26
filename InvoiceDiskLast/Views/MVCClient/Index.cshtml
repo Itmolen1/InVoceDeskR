@@ -4,10 +4,59 @@
     ViewBag.Title = "Index";
 }
 
+<style>
+    .modal-dialog {
+        overflow-y: initial !important;
+    }
+
+    .modal-body {
+        height: 550px;
+        overflow-y: auto;
+    }
+</style>
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New</button>
 
 <input type="hidden" id="ContactsId" name="ContactId" />
 
+
+
+
+
+<table class="table table-striped" id="ContactListTable">
+    <thead style="background-color:black;color:white">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Bedrijif Naam
+            </th>
+
+            <th>
+                City
+            </th>
+            <th>
+                PostCode
+            </th>
+            <th>
+                Mobiel
+            </th>
+            <th>
+                Type
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th class="text-right">Action</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+@*<div id="loadingDiv">Please wait while this page loads.</div>*@
 <div class="modal fade bs-example-modal-lg" id="ContactViewModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -142,14 +191,14 @@
                         </div>
                     </div>
                 </div>
-              
-            
+
+
 
             </div>
             <div class="modal-footer">
                 @Html.Partial("~/Views/Shared/DirectoryUploadFilePartialView.cshtml");
-             
-           <button type="button" class="btn btn-danger waves-effect text-left" id="CancelContactsv" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Dichtbij</button>
+
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelContactsv" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Dichtbij</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -157,81 +206,12 @@
     <!-- /.modal-dialog -->
 </div>
 
-
-
-<table class="table table-striped" id="ContactListTable">
-    <thead style="background-color:black;color:white">
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Bedrijif Naam
-            </th>
-
-            <th>
-                City
-            </th>
-            <th>
-                PostCode
-            </th>
-            <th>
-                Mobiel
-            </th>
-            <th>
-                Type
-            </th>
-
-            <th>
-                Status
-            </th>
-
-            <th class="text-right">Action</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-
-</table>
-
-@*<div id="loadingDiv">Please wait while this page loads.</div>*@
-
 @Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")
 
-<script>
-    $(function () {
-        var successMessage = '@TempData["SuccessMessage"]'
 
-        if (successMessage != '') {
-            alertify.success(successMessage);
-        }
-        if (successMessage != '') {
-            successMessage = '';
-            delete ('@TempData["SuccessMessage"]');
-        }
-    });
-
-</script>
-
-
-
-
-
-
-<style>
-    .modal-dialog {
-        overflow-y: initial !important;
-    }
-
-    .modal-body {
-        height: 550px;
-        overflow-y: auto;
-    }
-</style>
 
 
 <script>
-
-
     $(document).ready(function () {
 
         $("#ContactListTable").DataTable({
