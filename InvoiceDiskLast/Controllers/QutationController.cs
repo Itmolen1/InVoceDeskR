@@ -981,6 +981,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [DeleteFileClass]
+
         [HttpPost]
         public ActionResult InvoicebyEmail(EmailModel email)
         {
