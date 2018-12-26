@@ -27,13 +27,13 @@ namespace InvoiceDiskLast.Controllers
 
 
          
-            foreach (HttpPostedFileBase k in model.file23)
-            {
-                if (k.ContentLength > 0)
+            //foreach (HttpPostedFileBase k in model.file23)
+            //{
+            //    if (k.ContentLength > 0)
 
-                    fileName = k.FileName;
+            //        fileName = k.FileName;
 
-            }
+            //}
 
             for (int i = 0; i < Request.Files.Count; i++)
             {

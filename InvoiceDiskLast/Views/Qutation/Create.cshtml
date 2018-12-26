@@ -7,6 +7,9 @@
     var CompanyDatas = ViewBag.Companydata;
 }
 
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -209,7 +212,10 @@
                         </div>
                     </div>*@
             </div>
-           <p></p>
+
+
+            Service table
+            <hr />
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="QutationServiceDetail1">
@@ -293,6 +299,8 @@
             </div>
 
 
+
+
             <hr />
             <div class="row">
                 <div class="col-8 b-r">
@@ -303,16 +311,9 @@
                             @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    
-                  
+                    @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
                     <hr />
-                    <div class="row">
 
-                        <div class="col-md-12">
-                            <input type="file" id="fileInput" name="Files" class="makethispretty btn btn-success" multiple style="height:42px;" />
-                        </div>
-
-                    </div>
                 </div>
                 <div class="col-4 b-r">
                     <div class="row">
@@ -366,7 +367,12 @@
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
         <div class="pull-right">
-             <button id="Submit" type="submit" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>             
+
+
+            <div class="btn-group">
+                <button id="Submit" type="submit" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+            </div>
+
             <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
             <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
         </div>
@@ -377,14 +383,6 @@
 
 
 
-@*@using (Html.BeginForm("UploadFile", "Qutation", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-   
-    <br /><br />
-
-    <input type="file" name="fileUpload" /><br /><br />
-    <input type="submit" value="submit me" name="submitme" id="submitme" />
-}*@
 
 
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
@@ -1063,360 +1061,393 @@
     });
 
     $('#Submit').click(function () {
-        CreateQuation();       
+        CreateQuation();
+    });
+    var arraylisr1 = [];
+    function ValidateRow(CurrentRow) {
+
+        var Isvalid = true;
+        var Produectid = 0, quantityG = 0, varrateG = 0;
+
+        Produectid = CurrentRow.find('.product').val();
+        quantityG = CurrentRow.find('.quantityG ').val();
+        varrateG = CurrentRow.find('.rateG ').val();
+        if (parseInt(Produectid) == 0) {
+            Isvalid = false;
+        }
+        if (parseInt(quantityG) == 0) {
+            Isvalid = false;
+        }
+        if (parseInt(varrateG) == 0) {
+            Isvalid = false;
+        }
+        return Isvalid;
+    }
+
+    function CreateQuation() {
+        debugger;
+        var list = [], orderItem, CurrentRow;
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
+
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: parseInt($(this).find('.product').val()),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Goods",
+                    Rate: parseInt($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
+            }
+        });
+
+        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
+
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: $(this).find('.product').val(),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Rate: parseFloat($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Description: $(this).find('.Discription').val(),
+                    Type: "Service",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
+            }
+        });
+
+
+
+        if (list.length == 0) {
+            $('#BTW6').text('');
+            $('#BTW21').text('');
+            $('#gtotal').text('');
+            $('#gtotal').text('');
+        }
+
+
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+        };
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+        for (var i = 0; i < list.length; i++) {
+            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
+            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
+            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
+            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+        }
+        $.ajax({
+            url: "/Qutation/SaveDraft",
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                         });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
+    }
+
+    $('#saveEmail').click(function () {
+
+        var list = [], orderItem, CurrentRow;
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
+
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: parseInt($(this).find('.product').val()),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Goods",
+                    Rate: parseInt($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
+            }
+        });
+
+        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
+
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: $(this).find('.product').val(),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Rate: parseFloat($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Description: $(this).find('.Discription').val(),
+                    Type: "Service",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
+            }
+        });
+
+
+
+        if (list.length == 0) {
+            $('#BTW6').text('');
+            $('#BTW21').text('');
+            $('#gtotal').text('');
+            $('#gtotal').text('');
+        }
+
+
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+        };
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+        for (var i = 0; i < list.length; i++) {
+            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
+            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
+            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
+            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+        }
+        $.ajax({
+            url: "/Qutation/SaveEmail",
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                         });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
     });
 
-    var  arraylisr1=[];
-            function ValidateRow(CurrentRow) {
 
-                var Isvalid = true;
-                var Produectid = 0, quantityG = 0, varrateG = 0;
 
-                Produectid = CurrentRow.find('.product').val();
-                quantityG = CurrentRow.find('.quantityG ').val();
-                varrateG = CurrentRow.find('.rateG ').val();
-                if (parseInt(Produectid) == 0) {
-                    Isvalid = false;
+
+    $('#saveprintandsendtoyourselfsave').click(function () {
+
+        var list = [], orderItem, CurrentRow;
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
+
+
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: parseInt($(this).find('.product').val()),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Goods",
+                    Rate: parseInt($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
-                if (parseInt(quantityG) == 0) {
-                    Isvalid = false;
-                }
-                if (parseInt(varrateG) == 0) {
-                    Isvalid = false;
-                }
-                return Isvalid;
+                list.push(orderItem);
             }
 
-            function CreateQuation() {
+        });
 
-                var fileData = new FormData();
-                debugger;
+        $('#QutationServiceDetail1 .tbody tr').each(function () {
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
 
-                var list = [], orderItem, CurrentRow;
-
-              
-                var files = $("#fileInput").get(0).files;
-                if (!validateFileSize()) {
-                    return true;
-                }             
-                fileData.append('CustomerNote', "dweqdwede");
-                fileData.append('RefNumber', "dwedwedwe");
-                for (var i = 0; i < files.length; i++) {
-                    arraylisr1.push(files[i]);
+                orderItem = {
+                    ItemId: $(this).find('.product').val(),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Rate: parseFloat($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Description: $(this).find('.Discription').val(),
+                    Type: "Service",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
-
-                $('#orderdetailsitems .tbodyGood tr').each(function () {
-
-                    CurrentRow = $(this).closest("tr");
-                    if (ValidateRow(CurrentRow)) {
-                        orderItem = {
-                            ItemId: parseInt($(this).find('.product').val()),
-                            Quantity: parseInt($(this).find('.quantityG').val()),
-                            Type: "Goods",
-                            Rate: parseInt($(this).find('.rateG').val()),
-                            Total: parseFloat($(this).find('.FTotalG').val()),
-                            Vat: parseFloat($(this).find('.VATG').val()),
-                            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                        }
-                        list.push(orderItem);
-                    }
-                });
-
-                $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-                    CurrentRow = $(this).closest("tr");
-                    if (ValidateRow(CurrentRow)) {
-
-
-                        orderItem = {
-                            ItemId: $(this).find('.product').val(),
-                            Quantity: parseInt($(this).find('.quantityG').val()),
-                            Rate: parseFloat($(this).find('.rateG').val()),
-                            Total: parseFloat($(this).find('.FTotalG').val()),
-                            Description: $(this).find('.Discription').val(),
-                            Type: "Service",
-                            ServiceDate: $(this).find('.ServiceDate').val(),
-                            Vat: parseFloat($(this).find('.VATG').val()),
-                            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                        }
-                        list.push(orderItem);
-                    }
-                });
-
-                fileData.append("Qutation_ID", $('#Qutation_ID').val());
-                fileData.append("RefNumber", $('#RefNumber').val());
-                fileData.append("QutationDate", $('#QutationDate').val());
-                fileData.append("DueDate", $('#DueDate').val());
-                fileData.append("TotalVat6", $('#BTW6').text());
-                fileData.append("TotalVat21", $('#BTW21').val());
-                fileData.append("Total", $('#gtotal').val());
-                fileData.append("TotalAmount", $('#gtotal').val());
-                fileData.append("CustomerNote", $('#CustomerNote').val());
-                fileData.append("ConatctId", $('#contactId').text());
-                fileData.append("CompanyID", $('#contactId').text());               
-
-                var empObj = {
-
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#Qutation_ID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list,
-                   
-                };
-                // fileData.append(empObj);
-                $.ajax({
-                    url: "/Qutation/SaveDraft",
-                    type: "POST",
-                    dataType: "json",
-                   
-                    data: JSON.stringify( { MVCQutationViewModel: empObj, arraylisr: arraylisr1 }),
-                    contentType: false, // Not to set any content header
-                    processData: false, // Not to process data
-                   
-                    success: function (result) {
-                        QutationIdd = result.QutationId;
-                        if (result.Status == "Success") {
-                            swal({
-                                title: 'Invoice!',
-                                text: 'Invoice save successfully!',
-                                type: 'success'
-                            },
-                                 function (isconform) {
-                                     window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-                                 });
-                        }
-                        else if (result.Status == "Fail") {
-                            alert(result.Message);
-                        }
-                    },
-
-                    error: function (errormessage) {
-
-                    }
-
-                });
+                list.push(orderItem);
             }
 
-            $('#saveEmail').click(function () {
+        });
 
-                var list = [], orderItem, CurrentRow;
+        if (list.length == 0) {
+            $('#BTW6').text('');
+            $('#BTW21').text('');
+            $('#gtotal').text('');
+            $('#gtotal').text('');
+        }
 
-                debugger;
-
-       
-                if (document.getElementById("fileInput").files.length == 0) {
-                    alert("no files selected");
-                    return true;
-                }
-
-                var files = $("#fileInput").get(0).files;
-                if (!validateFileSize()) {
-                    return true;
-                }
-
-                var fileData = new FormData();
-                fileData.append('ContactsId', parseInt($('#ContactsId').val()));
-                fileData.append('ContactName', $('#ContactNamev').val());
-
-
-                for (var i = 0; i < files.length; i++) {
-                    fileData.append("fileInput", files[i]);
-
-                }
-
-
-                $('#orderdetailsitems .tbody tr').each(function () {
-
-                    orderItem = {
-                        ItemId: parseInt($(this).find('.product').val()),
-                        Quantity: parseInt($(this).find('.quantityG').val()),
-                        Type: "Goods",
-                        Rate: parseInt($(this).find('.rateG').val()),
-                        Total: parseFloat($(this).find('.FTotalG').val()),
-                        Vat: parseFloat($(this).find('.VATG').val()),
-                        RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    }
-                    list.push(orderItem);
-                });
-
-
-                $('#QutationServiceDetail1 .tbody tr').each(function () {
-                    orderItem = {
-                        ItemId: $(this).find('.product').val(),
-                        Quantity: parseInt($(this).find('.quantityG').val()),
-                        Rate: parseFloat($(this).find('.rateG').val()),
-                        Total: parseFloat($(this).find('.FTotalG').val()),
-                        Description: $(this).find('.Discription').val(),
-                        Type: "Service",
-                        ServiceDate: $(this).find('.ServiceDate').val(),
-                        Vat: parseFloat($(this).find('.VATG').val()),
-                        RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    }
-                    list.push(orderItem);
-                });
-
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#Qutation_ID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
-
-                $.ajax({
-                    url: "/Qutation/SaveEmail",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        QutationIdd = result.QutationId;
-
-                        if (result.Status == "Success" && result.UploadStatus == "Fail") {
-                            swal({
-                                title: 'Invoice!',
-                                text: 'Invoice save successfully but file to upload Attackment!',
-                                type: 'success'
-                            },
-                                 function (isconform) {
-                                     window.location.href = "/Qutation/InvoiceByEmail?QutationId=" + result.QutationId;
-                                 });
-                        }
-                        if (result.Status == "Success") {
-                            swal({
-                                title: 'Invoice!',
-                                text: 'Invoice save successfully!',
-                                type: 'success'
-                            },
-                                  function (isconform) {
-                                      window.location.href = "/Qutation/InvoiceByEmail?QutationId=" + result.QutationId;
-                                  });
-                        }
-                        else if (result.Status == "Fail") {
-                            alert(result.Message);
-                        }
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+            QutationDetailslist: list
+        };
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+        for (var i = 0; i < list.length; i++) {
+            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
+            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
+            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
+            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+        }
+        $.ajax({
+            url: "/Qutation/SaveEmailPrint",
+        
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+          
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    QutationIdd = result.QutationId;
+                    localStorage.setItem('path', result.path);
+                    swal({
+                        title: 'Qutation!',
+                        text: 'Qutation save successfully!',
+                        type: 'success'
                     },
-                    error: function (errormessage) {
-                    }
-                });
-            });
+                    function (isconform) {
+                        window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                    });
+                }
+                else if (result.Status == "Fail") {
 
-            $('#saveprintandsendtoyourselfsave').click(function () {
-                var list = [], orderItem, CurrentRow;
-                $('#orderdetailsitems .tbody tr').each(function () {
-                    orderItem = {
-                        ItemId: parseInt($(this).find('.product').val()),
-                        Quantity: parseInt($(this).find('.quantityG').val()),
-                        Type: "Goods",
-                        Rate: parseInt($(this).find('.rateG').val()),
-                        Total: parseFloat($(this).find('.FTotalG').val()),
-                        Vat: parseFloat($(this).find('.VATG').val()),
-                        RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    }
-                    list.push(orderItem);
-                });
+                }
+            },
+            error: function (errormessage) {
+            }
+        });
+    });
+    function validateFileSize() {
+        var Isvalid = true;
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
 
-                $('#QutationServiceDetail1 .tbody tr').each(function () {
-                    orderItem = {
-                        ItemId: $(this).find('.product').val(),
-                        Quantity: parseInt($(this).find('.quantityG').val()),
-                        Rate: parseFloat($(this).find('.rateG').val()),
-                        Total: parseFloat($(this).find('.FTotalG').val()),
-                        PurchaseDescription: $(this).find('.Discription').val(),
-                        Type: "Service",
-                        ServiceDate: $(this).find('.ServiceDate').val(),
-                        Vat: parseFloat($(this).find('.VATG').val()),
-                        RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    }
-                    list.push(orderItem);
-                });
+            if (document.getElementById("uploadfile").files.length != 0) {
 
-                var empObj = {
-                    Qutation_ID: $('#Qutation_ID').val(),
-                    RefNumber: $('#RefNumber').val(),
-                    QutationDate: $('#QutationDate').val(),
-                    DueDate: $('#DueDate').val(),
-                    SubTotal: $('#SubTotal').text(),
-                    DiscountAmount: $('#DiscountAmount').val(),
-                    QutationID: $('#Qutation_ID').val(),
-                    TotalVat6: $('#BTW6').text(),
-                    TotalVat21: $('#BTW21').text(),
-                    Total: $('#gtotal').text(),
-                    TotalAmount: $('#gtotal').text(),
-                    CustomerNote: $('#CustomerNote').val(),
-                    ConatctId: $('#contactId').val(),
-                    QutationDetailslist: list
-                };
+                //get the file size and file type from file input field
+                var fsize = $('#uploadfile')[0].files[0].size;
+                var ftype = $('#uploadfile')[0].files[0].type;
+                var fname = $('#uploadfile')[0].files[0].name;
 
-                $.ajax({
-                    url: "/Qutation/SaveEmailPrint",
-                    data: JSON.stringify(empObj),
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        QutationIdd = result.QutationId;
-                        if (result.Status == "Success") {
-                            QutationIdd = result.QutationId;
-                            localStorage.setItem('path', result.path);
-                            swal({
-                                title: 'Qutation!',
-                                text: 'Qutation save successfully!',
-                                type: 'success'
-                            },
-                            function (isconform) {
-                                window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-                            });
-                        }
-                        else if (result.Status == "Fail") {
+                if (fsize > 1048576) //do something if file size more than 1 mb (1048576)
+                {
+                    Isvalid = false;
 
-                        }
-                    },
-                    error: function (errormessage) {
-                    }
-                });
-            });
-            function validateFileSize() {
-                var Isvalid = true;
-                if (window.File && window.FileReader && window.FileList && window.Blob) {
-
-                    if (document.getElementById("fileInput").files.length == 0) {
-
-                        //get the file size and file type from file input field
-                        var fsize = $('#fileInput')[0].files[0].size;
-                        var ftype = $('#fileInput')[0].files[0].type;
-                        var fname = $('#fileInput')[0].files[0].name;
-
-                        if (fsize > 1048576) //do something if file size more than 1 mb (1048576)
-                        {
-                            Isvalid = false;
-
-                            alert("Type :" + ftype + " | " + fsize + " bites\n(File: " + fname + ") Too big!");
-                        }
-                        else {
-                            Isvalid = true;
-                        }
-                    }
-                    return Isvalid;
+                    alert("Type :" + ftype + " | " + fsize + " bites\n(File: " + fname + ") Too big!");
+                }
+                else {
+                    Isvalid = true;
                 }
             }
+            return Isvalid;
+        }
+    }
 </script>

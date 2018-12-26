@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
+using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Models
 {
-    public static class CreatDirectoryClass
+    public static class CreatDirectoryClass 
     {
 
         static string Result = "";
@@ -24,13 +25,13 @@ namespace InvoiceDiskLast.Models
 
                 var cLIENTfOLDER = HttpContext.Current.Server.MapPath("/DirectoryFolder/");
                 var FOLDERp = refrenceId + Name;
-                string d =HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp);
+                string d = HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp);
 
                 if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp)))
                 {
                     System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp));
                     Result = "/DirectoryFolder/" + FOLDERp + "/";
-                    AddDirectory(refrenceId, Result);             
+                    AddDirectory(refrenceId, Result);
                 }
             }
             catch (Exception)
@@ -69,7 +70,7 @@ namespace InvoiceDiskLast.Models
 
             bool Result = true;
 
-            var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG",".txt" };
+            var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
 
             try
             {
@@ -126,7 +127,7 @@ namespace InvoiceDiskLast.Models
                             }
                         }
                     }
-                }               
+                }
             }
             catch (Exception)
             {
@@ -139,5 +140,80 @@ namespace InvoiceDiskLast.Models
 
 
         }
+
+
+
+        public static bool DeleteFile(string FilePath)
+        {
+            bool Result = true;
+            try
+            {
+
+
+                var CompleterPath = HttpContext.Current.Server.MapPath("/DirectoryFoleder/" + FilePath);
+                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath(FilePath)))
+                {
+                    System.IO.File.Delete(HttpContext.Current.Server.MapPath(FilePath));
+                    return Result = true;
+                }
+
+
+            }
+            catch (Exception)
+            {
+                return Result = false;
+                throw;
+            }
+
+            return Result;
+        }
+
+
+        public static List<DirectoryViewModel> GetFileDirectiory(int Id)
+        {
+            List<DirectoryViewModel> _object = new List<DirectoryViewModel>();
+            string d = "";
+            try
+            {
+                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
+                DirectoryViewModel _Directory = new DirectoryViewModel();
+
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                if (directory.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    //directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                    //_Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(HttpContext.Current.Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _object.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return _object;
+        }
+
+
+
+
     }
 }

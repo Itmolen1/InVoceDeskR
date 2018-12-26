@@ -1,16 +1,41 @@
 ﻿
+<style>
+    .sp:hover {
+        cursor: pointer;
+    }
+</style>
 
-<div class="row">
-    <div class="col-8 b-r">
-        <table class="table table-hover" id="participantTable">
-            <tbody id="upload"></tbody>
-        </table>
+@if (ViewBag.FILE != null)
+{
+    <div class="row">
+        <div class="col-8 b-r">
+            <table class="table table-hover" id="participantTable">
+                <tbody id="upload">
+
+                    @foreach (var item in ViewBag.FILE)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+
+                                <input type="hidden" class="Path" value="@item.FileFolderPathe/@item.DirectoryPath" />
+
+                            </td>
+                            <td>
+                                <span style="color:red" class="sp" id="btnRemove">X</span>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4 b-r"></div>
     </div>
-    <div class="col-4 b-r"></div>
-</div>
+}
 <div class="row">
     <div class="col-8 b-r">
-      
+
         <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty btn btn-success" style="width:500px" />
     </div>
     <div class="col-4 b-r"></div>
@@ -44,9 +69,9 @@
                 data: fileData,
                 async: false,
                 success: function (result) {
-                   
+
                     if (result != "") {
-                        $('#upload').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
+                        $('#upload').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='text' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
                         var fileUpload = $("#txtUploadFile").val('');
                     }
                 },
@@ -58,7 +83,7 @@
     });
 
 
-    function validateFileSize() {     
+    function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             //get the file size and file type from file input field
@@ -80,19 +105,20 @@
     }
 
 
-    $(document).on('click', '.remove', function () {
-        $(this).parent().parent().remove();      
-        var current = $(this).closest("tr");
-        var FileName1 = current.find(".FileName").val();
+    $(document).on('click', '#btnRemove', function () {
+
+        var current = $(this).closest("tr");     
+        var FileName1 = current.find(".Path").val();
+       
         $.ajax({
-            url: "/Purchase/deleteFile",
+            url: "/Qutation/DeleteFile",
             type: "GET",
             data: { FileName: FileName1 },
             contentType: "application/json",
             dataType: "json",
             success: function (result) {
                 if (result == "Success") {
-
+                    current.remove();
                 }
             },
             error: function (err) {
@@ -102,5 +128,13 @@
 
 
     });
+
+
+
+
+
+
+
+
 
 </script>

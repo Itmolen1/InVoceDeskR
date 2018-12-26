@@ -77,7 +77,7 @@
 
                     $(row).addClass('RowRed');
                 }
-               else if (parseInt(Diff) < 5) {
+                else if (parseInt(Diff) < 5) {
 
                     $(row).addClass('RowYello');
                 }
@@ -159,7 +159,7 @@
                      {
                          render: function (data, type, row) {
 
-                                     return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQutation(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>'
+                             return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQutation(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.QutationID + ')"><i class="fa fa-eye">Attachment</i></a>'
 
                          }
                      }
@@ -199,15 +199,14 @@
 
         var todates = new Date(todate);
         var FromDate = new Date(gg);
-        var timeDiff = Math.abs(todates.getTime() -FromDate.getTime());
+        var timeDiff = Math.abs(todates.getTime() - FromDate.getTime());
         diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         return diffDays;
 
     }
 
-    function EditQutation(QutationId)
-    {
+    function EditQutation(QutationId) {
         if (QutationId > 0) {
             window.location.href = "/Qutation/EditQutation/?QutationId=" + QutationId;
         }
@@ -217,7 +216,7 @@
     function ViewQutationDetail(QutationId) {
         if (QutationId > 0) {
             window.location.href = "/MVCQutation/ViewQuation?quautionId=" + QutationId;
-        }            
+        }
     }
 
     function EditService(QutationId) {
@@ -250,4 +249,8 @@
         });
     }
 
+    function ViewDirectory1(Id) {
+        window.location.href = "/MVCClient/ViewDirecory?Id=" + Id + "&DName=" + "Qutation";
+        //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
+    }
 </script>

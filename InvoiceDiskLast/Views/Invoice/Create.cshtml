@@ -302,8 +302,8 @@
                     <div class="row">
                         <div class="col-12 b-r">
                             <form name='frmAccount' id='frmAccount'>
-                                <input type='file' name='file22' multiple />
-                                <input type='file' name='file23' multiple />
+                               
+                                <input type='file' name='file23' multiple id="uploadfile"/>
 
                             </form>
                         </div>
@@ -359,10 +359,7 @@
 </div>
 
 @*<label></label>*@
-@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-
-
 <div class="row" style="margin-top:5px">
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
@@ -788,11 +785,11 @@
 
     $('#mainrow .pClassG').change(function () {
         var Current = $(this).closest('tr');
-        GoodsService = "";
-        GoodsService = "Good";
+
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
             ShowServiceGood("Good");
+
             $('#TypeGoodsServices').attr('disabled', false);
             $('#UpdateProIdGoods').hide();
             $('#SAveProdIDGoods').show();
@@ -823,12 +820,12 @@
     });
 
     $('#mainrow1 .pClassS').change(function () {
-        debugger;
         var Current = $(this).closest('tr');
 
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
             ShowServiceGood("Services");
+
             $('#TypeGoodsServices').attr('disabled', false);
             $('#UpdateProIdGoods').hide();
             $('#SAveProdIDGoods').show();
@@ -1017,7 +1014,7 @@
 
     function CreateQuation() {
 
-        var formData = new FormData($('#frmAccount')[0]);
+        var formData = new FormData($('#uploadfile')[0]);
 
 
 
@@ -1099,9 +1096,9 @@
             formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
         }
 
+      
         $.ajax({
             url: "@Url.Action("AddCustomer", "Invoice")",
             type: "POST",
