@@ -5,6 +5,10 @@
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
 
+
+@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+
 <div class="row">
     <div class="col-xs-12 col-lg-12">
         <div class="table-responsive">
@@ -37,12 +41,6 @@
                 <tbody></tbody>
             </table>
         </div>
-    </div>
-</div>
-<div class="preloader" id="loadingDiv">
-    <div class="loader">
-        <div class="loader__figure"></div>
-        <p class="loader__label">loading...</p>
     </div>
 </div>
 
@@ -113,8 +111,6 @@
     <!-- /.modal-dialog -->
 </div>
 
-@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
-@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
 
 <script>
@@ -168,18 +164,16 @@
        
     });
 
-    $(document).ready(function () {
-        $('#CreateNewProduct').click(function () {
-          
+    $(document).ready(function ()
+    {
+        $('#CreateNewProduct').click(function () {          
+            ShowServiceGood("Good");
+            $('#TypeGoodsServices').attr('disabled', false);
             $('#UpdateProIdGoods').hide();
-            $('#SAveProdIDGoods').show();            
-            GoodsService = "";
-            ShowServiceGood(GoodsService);
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').val('Good');            
             $('#CreateNewProductModalGoods').modal('show');
         });
-
-       
-
     });
 
     //New Update

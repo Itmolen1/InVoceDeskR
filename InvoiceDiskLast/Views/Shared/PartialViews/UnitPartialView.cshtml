@@ -105,14 +105,12 @@
                         url: "/MVCProductUnit/AddorEdit",
                         type: "POST",
                         data: dataUnit,
-
                         success: function (dat) {
                             CleartUnitTextBox();
                             $('#UnitModel').modal('hide');
                             LoadProductUnitGoods();
-                            if (GoodsService == "Good") {
-                                debugger;
                                 ShowServiceGood(GoodsService);
+                                if (GotoProduct == "Yes") {
                                 $('#CreateNewProductModalGoods').modal('show');
                             }                           
                             $.toast({

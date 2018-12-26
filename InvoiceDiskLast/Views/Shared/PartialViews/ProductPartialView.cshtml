@@ -1,4 +1,5 @@
-﻿<div class="modal fade bs-example-modal-lg" id="CreateNewProductModalGoods" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+﻿
+<div class="modal fade bs-example-modal-lg" id="CreateNewProductModalGoods" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -103,11 +104,9 @@
 
 
 <script>
-
     $('#SaveNewProductGoods').click(function () {
-        debugger;
         var IsValid;
-        if (GoodsServicess == "Good") {
+        if (GoodsService == "Good") {
             IsValid = validateProductGoods();
 
             if (IsValid == true) {
@@ -119,7 +118,7 @@
                         Description: $('#DescriptionGoods').val(),
                         SalePrice: $('#SalePriceGoods').val(),
                         PurchasePrice: $('#PurchasePriceGoods').val(),
-                        Type: GoodsServicess,
+                        Type: GoodsService,
                         OpeningQuantity: $('#OpeningQuantityGoods').val(),
                         ProductUnit: $('#ProductUnitSelectGoods').val(),
                     }
@@ -151,8 +150,7 @@
                 }
             }
         }
-        else if (GoodsServicess == "Services") {
-
+        else if (GoodsService == "Services") {
             IsValid = validateProductServices();
             if (IsValid == true) {
                 var pValid = checkProductByName($('#ProductNameService').val());
@@ -161,7 +159,7 @@
                         ProductName: $('#ProductNameService').val(),
                         Description: $('#DescriptionService').val(),
                         SalePrice: $('#SalePriceService').val(),
-                        Type: GoodsServicess,
+                        Type: GoodsService,
                     }
                     $.ajax({
                         url: "/MVCProduct/AddOrEdit",
@@ -234,6 +232,7 @@
     }
 
     function validateProductGoods() {
+        debugger;
         var isValid = true;
 
         if ($('#ProductNameGoods').val().trim() == "") {
@@ -318,10 +317,9 @@
         var value = $(this).val();
         if (value == "AddNewPUnitSelect") {
             $('#CreateNewProductModalGoods').modal('hide');
-
             $('#SaveUnit').show();
             $('#updateUnit').hide();
-
+            GotoProduct = "Yes";
             $('#UnitModel').modal('show');
         }
     });
@@ -444,7 +442,7 @@
                 $('#SalePrice').css('border-color', 'lightgrey');
             }
         }
-       
+
         if ($('#VatValue').val() == "Select") {
             $('#VatValue').css('border-color', 'Red');
             isValid = false;
@@ -477,7 +475,6 @@
 
     function ShowServiceGood(goodservice) {
         GoodsServicess = "";
-
         GoodsServicess = goodservice;
         if (GoodsServicess == "Good") {
             LoadProductUnitGoods();
@@ -489,18 +486,73 @@
             $('#DivServiceBody').show(1000);
         }
     }
- 
+
     $('#TypeGoodsServices').change(function () {
         if ($(this).val() == "Good") {
+            GoodsService = "";
+            GoodsService = "Good";
             ChangeBorderColorProductModel();
             $('#DivGoodBody').show(1000);
             $('#DivServiceBody').hide(1000);
         }
         else if ($(this).val() == "Services") {
+            GoodsService = "";
+            GoodsService = "Services";
             ChangeBorderColorProductModel();
             $('#DivGoodBody').hide(1000);
             $('#DivServiceBody').show(1000);
         }
     });
+
+    function LoadProductG() {
+        PgoodServices = "Good";
+
+        $("#mainrow #SelectProductQutationG").find("option").remove();
+        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+    function LoadProductS() {
+        PgoodServices = "Services";
+        $("#mainrow1 #SelectProductQutationS").find("option").remove();
+        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
+        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $.ajax({
+            url: "/MVCProduct/GetProduct",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: { ProductStatus: PgoodServices },
+            success: function (data) {
+                $.each(data, function (key, item) {
+
+                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
+   
 
 </script>
