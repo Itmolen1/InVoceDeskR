@@ -330,7 +330,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-        
+
         public ActionResult DeleteFile(string FileName)
         {
             try
@@ -435,7 +435,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation", mvcQutationModel).Result;
 
                 QutationTable qtd = response.Content.ReadAsAsync<QutationTable>().Result;
-               
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     if (MVCQutationViewModel.QutationDetailslist1 != null)
@@ -467,18 +467,18 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (MVCQutationViewModel.file23[0] != null)
                         {
-                            UploadFile(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23);
+                            UploadFile(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
                         }
 
-                        return new JsonResult { Data = new { Status = "Success", path = "", QutationId = MVCQutationViewModel.QutationID } };
+                        return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qtd.QutationID } };
                     }
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        UploadFile(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        UploadFile(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
                     }
 
-                    return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
+                    return new JsonResult { Data = new { Status = "Success", QutationId = qtd.QutationID } };
                 }
             }
             catch (Exception ex)
@@ -783,7 +783,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 51.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 int companyId = 0;
@@ -875,9 +875,19 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult InvoicebyEmail(int? QutationId)
         {
-
+            var List = CreatDirectoryClass.GetFileDirectiory((int)QutationId);
 
             EmailModel email = new EmailModel();
+
+            List<Selected> _list = new List<Selected>();
+
+            foreach (var Item in List)
+            {
+                _list.Add(new Selected { IsSelected = true, FileName = Item.DirectoryPath, Directory = Item.FileFolderPathe + "/" + Item.DirectoryPath });
+            }
+
+            email.SelectList = _list;
+
             try
             {
 
@@ -916,7 +926,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 51.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
@@ -958,31 +968,52 @@ namespace InvoiceDiskLast.Controllers
         [DeleteFileClass]
 
         [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email)
+        public ActionResult InvoicebyEmail(EmailModel email, string[] Files, List<EmailModel> SelectList)
         {
             var root = Server.MapPath("/PDF/");
+
 
             List<AttakmentList> _attackmentList = new List<AttakmentList>();
             var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
 
-            if (Request.Form["FilePath"] != null)
+
+            for (int i = 0; i < Files.Count(); i++)
             {
-                var fileName2 = Request.Form["FilePath"];
-
-                string[] valueArray = fileName2.Split(',');
-
-                if (valueArray != null && valueArray.Count() > 0)
+                if (Files[i].EndsWith("doc") || Files[i].EndsWith("pdf") || Files[i].EndsWith("docx") || Files[i].EndsWith("jpg") || Files[i].EndsWith("png") || Files[i].EndsWith("txt"))
                 {
-                    _attackmentList = new List<AttakmentList>();
-                    foreach (var itemm in valueArray)
+                    if (System.IO.File.Exists(Server.MapPath(Files[i])))
                     {
-                        if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
-                        {
-                            _attackmentList.Add(new AttakmentList { Attckment = itemm });
-                        }
+                        _attackmentList.Add(new AttakmentList { Attckment = Server.MapPath(Files[i]) });
+                    }
+
+                    var filwe = Server.MapPath("/PDF/" + Files[i]);
+
+                    if (System.IO.File.Exists(filwe))
+                    {
+                        _attackmentList.Add(new AttakmentList { Attckment = filwe });
                     }
                 }
+
             }
+
+            //if (Request.Form["FilePath"] != null)
+            //{
+            //    var fileName2 = Request.Form["FilePath"];
+
+            //    string[] valueArray = fileName2.Split(',');
+
+            //    if (valueArray != null && valueArray.Count() > 0)
+            //    {
+            //        _attackmentList = new List<AttakmentList>();
+            //        foreach (var itemm in valueArray)
+            //        {
+            //            if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
+            //            {
+            //                _attackmentList.Add(new AttakmentList { Attckment = itemm });
+            //            }
+            //        }
+            //    }
+            //}
 
 
             TempData["EmailMessge"] = "";
@@ -1110,7 +1141,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
-           
+
             QutationTable qutationTable;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
 
@@ -1209,7 +1240,7 @@ namespace InvoiceDiskLast.Controllers
                     var path = Path.Combine(root, pdfname);
                     path = Path.GetFullPath(path);
 
-                   
+
                 }
             }
             catch (Exception ex)

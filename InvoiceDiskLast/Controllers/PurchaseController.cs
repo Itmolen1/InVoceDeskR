@@ -754,6 +754,9 @@ namespace InvoiceDiskLast.Controllers
                     if (System.IO.File.Exists(fname))
                     {
                         System.IO.File.Delete(fname);
+
+                        Path1 = fname;
+                        file.SaveAs(fname);
                     }
                     else
                     {

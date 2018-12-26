@@ -16,12 +16,30 @@ namespace InvoiceDiskLast.Models
         public string Topic { get; set; }
         public int invoiceId { get; set; }
 
-       
+
+        public List<Selected> SelectList { get; set; }
+
+
+
+
     }
+
+
 
 
     public class AttakmentList
     {
         public string Attckment { get; set; }
+
+
     }
+
+    public class Selected
+    {
+        public bool IsSelected { get; set; }
+        public string FileName { get; set; }
+        public string Directory { get; set; }
+
+    }
+
 }
