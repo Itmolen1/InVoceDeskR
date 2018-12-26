@@ -14,10 +14,6 @@
     var QutationModel = ViewBag.QutationDat;
 }
 
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
-
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -242,49 +238,46 @@
 
 
                         </tbody>
+                        <tbody class="tbodyGood">
+                            <tr id="mainrow">
+                                <td>
+                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                                </td>
+                                <td>
 
-                        <tr id="mainrow">
-                            <td>
-                                <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
-                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
-                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                    <option>0</option>
-                                    <option>6</option>
-                                    <option>21</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
-                            </td>
-                            <td>
-
-                                <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
-                            </td>
+                                    <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                </td>
 
 
 
-                        </tr>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-               
             </div>
-
-
-            Service table
-            <hr />
+            <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="QutationServiceDetail">
@@ -333,7 +326,7 @@
                                             <tr>
                                                 <td>
 
-                                                    @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new {  @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value=item.ServiceDate } })
+                                                    @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = item.ServiceDate } })
 
                                                 </td>
 
@@ -379,7 +372,7 @@
                                                     <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
                                                 </td>
 
-                                                <td>                                                    
+                                                <td>
                                                     <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
                                                 </td>
 
@@ -400,51 +393,54 @@
 
 
                         </tbody>
-                        <tr id="mainrow1">
-                            <td>
-                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
-                              
-                            </td>
 
-                            <td>
-                                <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
-                            </td>
-                            <td>
-                                <input type="text" class=" Discription form-control Input-height" />
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
-                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
-                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                    <option>0</option>
-                                    <option>6</option>
-                                    <option>21</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+                        <tbody class="tbodyService">
+                            <tr id="mainrow1">
+                                <td>
+                                    @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
 
-                            </td>
-                            <td>
-                                <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
-                            </td>
+                                </td>
 
-                        </tr>
+                                <td>
+                                    <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    <input type="text" class=" Discription form-control Input-height" />
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
+                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
+                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+
+                                </td>
+                                <td>
+                                    <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
+                                </td>
+
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
-            @Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml");
+            @Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml")
 
             <hr />
             <div class="row">
@@ -695,7 +691,7 @@
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
-        
+
         debugger;
 
         Total = 0;
@@ -1169,12 +1165,8 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
-
     });
-
-
-
+    
     $('#QutationServiceDetail').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VAT  option:selected').val();
@@ -1197,8 +1189,8 @@
 
 
     $('#saveprintandsendtoyourselfsave').click(function () {
-    
-       
+
+
         var list = [], orderItem, CurrentRow;
         $('#orderdetailsitems1 .tbody tr').each(function () {
 
@@ -1262,7 +1254,7 @@
             success: function (result) {
                 QutationIdd = result.QutationId;
 
-              
+
                 if (result.Status == "Success") {
                     QutationIdd = result.QutationId;
                     localStorage.setItem('path', result.path);
@@ -1353,7 +1345,7 @@
             dataType: "json",
             success: function (result) {
                 QutationIdd = result.QutationId;
-                
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1378,185 +1370,185 @@
     });
 
 
-        function CreateQuation1() {
+    function CreateQuation1() {
 
-            var list = [], orderItem, CurrentRow;
-
-
-            $('#orderdetailsitems1 .tbody tr').each(function () {
+        var list = [], orderItem, CurrentRow;
 
 
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    QutationDetailId: $(this).find('.QutationDetailId').val(),
-                    Qutation_ID: $(this).find('.Qutation_ID').val()
-                }
-                list.push(orderItem);
-            });
-
-            $('#QutationServiceDetail .tbody tr').each(function () {
+        $('#orderdetailsitems1 .tbody tr').each(function () {
 
 
-                orderItem = {
-                    ItemId: $(this).find('.product').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Rate: parseFloat($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    QutationDetailId: $(this).find('.QutationDetailId').val(),
-                    Qutation_ID: $(this).find('#Qutation_ID').val()
-                }
-                list.push(orderItem);
-
-            });
-            var empObj = {
-                Qutation_ID: $('#Qutation_ID').val(),
-                RefNumber: $('#RefNumber').val(),
-                QutationDate: $('#QutationDate').val(),
-                DueDate: $('#DueDate').val(),
-                SubTotal: $('#SubTotal').text(),
-                DiscountAmount: $('#DiscountAmount').val(),
-                QutationID: $('#Qutation_ID').val(),
-                TotalVat6: $('#BTW6').text(),
-                TotalVat21: $('#BTW21').text(),
-                Total: $('#gtotal').text(),
-                TotalAmount: $('#gtotal').text(),
-                CustomerNote: $('#CustomerNote').val(),
-                ConatctId: $('#contactId').val(),
-                QutationDetailslist: list
-            };
-
-        
-
-
-            $.ajax({
-                url: "/Qutation/EditQutation",
-                data: JSON.stringify(empObj),
-                type: "POST",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-                    QutationIdd = result.QutationId;
-                    if (result.Status == "Success") {
-                        swal({
-                            title: 'Invoice!',
-                            text: 'Invoice save successfully!',
-                            type: 'success'
-                        },
-                             function (isconform) {
-                                 window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-                             });
-
-
-                    }
-                    else if (result.Status == "Fail") {
-                        alert(result.Message);
-
-                    }
-                },
-
-                error: function (errormessage) {
-
-                }
-
-            });
-        }
-
-
-
-        var QID = 0;
-
- 
-        $(document).on('click', '#btnRemoveGood', function () {
-        
-            var currentRow1 = $(this).closest('tr');
-            var row = $(this).closest('tr');
-            Remove(row);
-            $(this).closest("tr").remove();
-      
-            CombineTotalAndSubtotal();
-            CombineTotal();
-            CalculateVateTotal();
-
-        
+            orderItem = {
+                ItemId: parseInt($(this).find('.product').val()),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Type: "Goods",
+                Rate: parseInt($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                QutationDetailId: $(this).find('.QutationDetailId').val(),
+                Qutation_ID: $(this).find('.Qutation_ID').val()
+            }
+            list.push(orderItem);
         });
 
-        $(document).on('click', '#btnRemoveService', function () {
+        $('#QutationServiceDetail .tbody tr').each(function () {
 
-            debugger;
-            var currentRow1 = $(this).closest('tr');
-            var row = $(this).closest('tr');
-            Remove(row);
-            $(this).closest("tr").remove();
 
-            CombineTotalAndSubtotal();
-            CombineTotal();
-            CalculateVateTotal();
+            orderItem = {
+                ItemId: $(this).find('.product').val(),
+                Quantity: parseInt($(this).find('.quantityG').val()),
+                Rate: parseFloat($(this).find('.rateG').val()),
+                Total: parseFloat($(this).find('.FTotalG').val()),
+                Description: $(this).find('.Discription').val(),
+                Type: "Service",
+                ServiceDate: $(this).find('.ServiceDate').val(),
+                Vat: parseFloat($(this).find('.VATG').val()),
+                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                QutationDetailId: $(this).find('.QutationDetailId').val(),
+                Qutation_ID: $(this).find('#Qutation_ID').val()
+            }
+            list.push(orderItem);
+
+        });
+        var empObj = {
+            Qutation_ID: $('#Qutation_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            QutationDate: $('#QutationDate').val(),
+            DueDate: $('#DueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            QutationID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#gtotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ConatctId: $('#contactId').val(),
+            QutationDetailslist: list
+        };
+
+
+
+
+        $.ajax({
+            url: "/Qutation/EditQutation",
+            data: JSON.stringify(empObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                QutationIdd = result.QutationId;
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                         });
+
+
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
+    }
+
+
+
+    var QID = 0;
+
+
+    $(document).on('click', '#btnRemoveGood', function () {
+
+        var currentRow1 = $(this).closest('tr');
+        var row = $(this).closest('tr');
+        Remove(row);
+        $(this).closest("tr").remove();
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+
+
+    });
+
+    $(document).on('click', '#btnRemoveService', function () {
+
+        debugger;
+        var currentRow1 = $(this).closest('tr');
+        var row = $(this).closest('tr');
+        Remove(row);
+        $(this).closest("tr").remove();
+
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
+
+
+
+
+
+    function Remove(CurrentRow) {
+
+        var QIDId = CurrentRow.find('.QutationDetailId').val();
+        var total1 = CurrentRow.find('.FTotalG').val();
+        var vat = CurrentRow.find('.VATG').val();
+        QID = CurrentRow.find('.QutationID').val();
+
+        var data = JSON.stringify({
+            QutationId: QID,
+            QutationDetailID: QIDId,
+            vat: vat,
+            total: total1
+        })
+        $.ajax({
+            url: "/Qutation/DeleteQuatation",
+            type: "POST",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            data: data,
+            success: function (data) {
+                if (data.Status == "Success") {
+
+
+                    swal({
+                        title: 'Qutation!',
+                        text: 'Qutation delete successfully!',
+                        type: 'success'
+                    });
+
+                }
+                else if (data.Status == "Fail") {
+
+                    swal({
+                        title: 'Qutation!',
+                        text: 'fail to delete qutation!',
+                        type: 'danger'
+                    });
+
+                }
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
         });
 
-    
-    
+    }
 
 
-
-        function Remove(CurrentRow) {
-
-            var QIDId = CurrentRow.find('.QutationDetailId').val();
-            var total1 = CurrentRow.find('.FTotalG').val();
-            var vat = CurrentRow.find('.VATG').val();
-            QID = CurrentRow.find('.QutationID').val();
-
-            var data = JSON.stringify({
-                QutationId: QID,
-                QutationDetailID: QIDId,
-                vat: vat,
-                total: total1
-            })
-            $.ajax({
-                url: "/Qutation/DeleteQuatation",
-                type: "POST",
-                async: false,
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: data,
-                success: function (data) {
-                    if (data.Status == "Success") {
-                    
-                   
-                        swal({
-                            title: 'Qutation!',
-                            text: 'Qutation delete successfully!',
-                            type: 'success'
-                        });
-
-                    }
-                    else if (data.Status == "Fail") {
-
-                        swal({
-                            title: 'Qutation!',
-                            text: 'fail to delete qutation!',
-                            type: 'danger'
-                        });
-
-                    }
-                },
-                Error: function (errormessage) {
-                    alert(errormessage);
-                }
-
-            });
-
-        }
-
-    
 </script>

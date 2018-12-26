@@ -6,17 +6,14 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
-
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-
+            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID"/>
+            <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
 
@@ -214,8 +211,7 @@
             </div>
 
 
-            Service table
-            <hr />
+           <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="QutationServiceDetail1">
@@ -384,7 +380,7 @@
 
 
 
-
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
 <script type="text/javascript">
@@ -460,10 +456,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
-
+    
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -509,8 +502,6 @@
         CalculateVateTotal();
     });
 
-
-
     $(document).on("keyup", ".tbody .rateG", function () {
 
         Currentrow = $(this).closest("tr");
@@ -523,8 +514,6 @@
         CalculateVateTotal();
     });
 
-
-
     $(document).on("keyup", ".tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
@@ -535,8 +524,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
 
     function calculateTotalGoods(currentRow) {
 
@@ -560,8 +547,7 @@
         var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
         Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
     }
-
-
+    
     $(document).on('change', '.tbody .VATG', function () {
 
         Currentrow = $(this).closest("tr");
@@ -572,7 +558,6 @@
         CalculateVateTotal();
 
     });
-
 
     $('.VATG').change(function () {
         var Currentrow = $(this).closest("tr");
@@ -622,8 +607,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
 
     $('.VATG').change(function () {
 
@@ -711,7 +694,6 @@
     });
 
     function CalculateVateTotal() {
-
 
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
@@ -987,8 +969,7 @@
         })
         return TotalService;
     }
-
-
+    
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         if (InOrOut == 'AddingVat') {
@@ -1129,14 +1110,12 @@
         });
 
 
-
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
             $('#gtotal').text('');
             $('#gtotal').text('');
         }
-
 
         var empObj = {
             Qutation_ID: $('#Qutation_ID').val(),
@@ -1151,7 +1130,9 @@
             Total: $('#gtotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#contactId').val(),
+            ConatctId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
+            
         };
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1264,7 +1245,8 @@
             Total: $('#gtotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#contactId').val(),
+            ConatctId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
         };
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1380,7 +1362,8 @@
             Total: $('#gtotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#contactId').val(),
+            ConatctId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
             QutationDetailslist: list
         };
         for (var key in empObj) {
