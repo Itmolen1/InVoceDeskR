@@ -403,7 +403,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-                mvcQutationModel.UserId = 1;
+                mvcQutationModel.UserId = 4;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -499,7 +499,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-                mvcQutationModel.UserId = 1;
+                mvcQutationModel.UserId = 4;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -585,6 +585,10 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+
+
+
         [HttpGet]
         public ActionResult EditQutation(int QutationId)
         {
@@ -611,32 +615,22 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
-
                 HttpResponseMessage GoodResponse = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Good").Result;
                 List<MVCProductModel> GoodModel = GoodResponse.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                 ViewBag.Good = GoodModel;
-
-
                 HttpResponseMessage Services = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/Services").Result;
                 List<MVCProductModel> ServiceModel = Services.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                 ViewBag.Service = ServiceModel;
-
-
                 List<VatModel> model = new List<VatModel>();
                 model.Add(new VatModel() { Vat1 = 0, Name = "0" });
-
                 model.Add(new VatModel() { Vat1 = 6, Name = "6" });
                 model.Add(new VatModel() { Vat1 = 21, Name = "21" });
-
                 ViewBag.VatDrop = model;
-
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.QutationDat = QutationModel;
                 ViewBag.QutationDatailsList = QutationModelDetailsList;
-
                 return View(quutionviewModel2);
-
             }
             catch (Exception)
             {
@@ -647,24 +641,21 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult EditQutation(MVCQutationViewModel MVCQutationViewModel)
         {
+
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
                 int companyId = 0;
-
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-
                 if (Session["CompayID"] != null)
                 {
                     companyId = Convert.ToInt32(Session["CompayID"]);
                 }
 
-
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 1;
+                mvcQutationModel.UserId = 4;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
-
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
                 mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
@@ -684,9 +675,7 @@ namespace InvoiceDiskLast.Controllers
                     double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
                     mvcQutationModel.TotalVat6 = vat61;
                 }
-
                 mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-
                 if (mvcQutationModel.TotalVat21 != null && mvcQutationModel.TotalVat21 != 0)
                 {
                     double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
@@ -694,9 +683,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
-
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist)
@@ -712,7 +699,6 @@ namespace InvoiceDiskLast.Controllers
                         QtDetails.ServiceDate = QDTList.ServiceDate;
                         QtDetails.RowSubTotal = QDTList.RowSubTotal;
                         QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
-
                         QtDetails.Type = QDTList.Type;
 
                         if (QtDetails.QutationDetailId == 0)
@@ -728,10 +714,7 @@ namespace InvoiceDiskLast.Controllers
                     return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
 
                 }
-                else
-                {
-                    return new JsonResult { Data = new { Status = "Fail", QutationId = MVCQutationViewModel.QutationID } };
-                }
+
             }
             catch (Exception ex)
             {
@@ -739,10 +722,47 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
 
-
+            return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
 
 
         }
+
+
+
+
+
+
+
+
+        [HttpPost]
+        public ActionResult UploadFiles(MVCQutationViewModel QutationViewModel)
+        {
+            try
+            {
+                string FilePath = "";
+                string FileName = "";
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFileBase file = files[i];
+
+                    string Path1 = CreatDirectoryClass.UploadFileToDirectory(file, QutationViewModel.QutationID);
+                    FileName = file.FileName;
+                }
+
+                return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+
+
+
+
 
         public static Boolean IsFileLocked(FileInfo file)
         {
@@ -972,97 +992,59 @@ namespace InvoiceDiskLast.Controllers
         {
             var root = Server.MapPath("/PDF/");
 
-            string q ="";
-            if (Request.Form["chk"] != null)
-            {
-                q = Request.Form["chk"];
-
-              
-                var strArray = formCollection["ckecbox"];
-
-                foreach(var item in strArray)
-                {
-                    
-                    if(item.ToString() == "on")
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
-
-                }
-
-
-                string t = Request.Form["ckecbox"]; 
-            }
 
 
 
 
-            if (formCollection.AllKeys.Contains("on"))
-            {
 
-            }
-
-                List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
             var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
 
-
-
-            foreach (var item in email.SelectList)
+            if (email.SelectList != null)
             {
 
-                if (item.IsSelected)
+                foreach (var item in email.SelectList)
                 {
 
-                    if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
+                    if (item.IsSelected)
                     {
-                        if (System.IO.File.Exists(Server.MapPath(item.Directory)))
+
+                        if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
                         {
-                            _attackmentList.Add(new AttakmentList { Attckment = Server.MapPath(item.Directory) });
+                            if (System.IO.File.Exists(Server.MapPath(item.Directory)))
+                            {
+                                _attackmentList.Add(new AttakmentList { Attckment = Server.MapPath(item.Directory) });
+                            }
+
+                            var filwe = Server.MapPath("/PDF/" + item.FileName);
+
+                            if (System.IO.File.Exists(filwe))
+                            {
+                                _attackmentList.Add(new AttakmentList { Attckment = filwe });
+                            }
                         }
+                    }
+                }
+            }
 
-                        var filwe = Server.MapPath("/PDF/" + item.FileName);
 
+            if (Request.Form["FileName"] != null)
+            {
+                var fileName2 = Request.Form["FileName"];
+                string[] valueArray = fileName2.Split(',');
+
+                foreach (var item in valueArray)
+                {
+                    if (item.EndsWith("doc") || item.EndsWith("pdf") || item.EndsWith("docx") || item.EndsWith("jpg") || item.EndsWith("png") || item.EndsWith("txt"))
+                    {
+                        var filwe = Server.MapPath("/PDF/" + item);
                         if (System.IO.File.Exists(filwe))
                         {
                             _attackmentList.Add(new AttakmentList { Attckment = filwe });
                         }
-
                     }
-
                 }
-
-
             }
-
-
-
-
-
-
-
-
-            //if (Request.Form["FilePath"] != null)
-            //{
-            //    var fileName2 = Request.Form["FilePath"];
-
-            //    string[] valueArray = fileName2.Split(',');
-
-            //    if (valueArray != null && valueArray.Count() > 0)
-            //    {
-            //        _attackmentList = new List<AttakmentList>();
-            //        foreach (var itemm in valueArray)
-            //        {
-            //            if (itemm.EndsWith("doc") || itemm.EndsWith("docx") || itemm.EndsWith("jpg") || itemm.EndsWith("png") || itemm.EndsWith("txt"))
-            //            {
-            //                _attackmentList.Add(new AttakmentList { Attckment = itemm });
-            //            }
-            //        }
-            //    }
-            //}
 
 
             TempData["EmailMessge"] = "";
@@ -1209,7 +1191,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = CompanyID;
-                mvcQutationModel.UserId = 1;
+                mvcQutationModel.UserId = 4;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -1317,7 +1299,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 1;
+                mvcQutationModel.UserId = 4;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
 
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
@@ -1418,7 +1400,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 1;
+                mvcQutationModel.UserId = 4;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
 
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;

@@ -30,7 +30,6 @@
                         </div>
                         <div class="form-group">
                             @Html.TextBoxFor(Model => Model.ToEmail, new { @class = "form-control", @required = "required", @placeholder = "To:" })
-
                         </div>
                         <div class="form-group">
                             @Html.TextBoxFor(Model => Model.Topic, new { @class = "form-control", @placeholder = "Topic:" })
@@ -38,9 +37,7 @@
                         </div>
                         <div class="form-group">
                             @Html.TextAreaFor(Model => Model.EmailText, new { @class = "textarea_editor form-control", @rows = "15", @cols = "50", @placeholder = "Enter text ..." })
-
                         </div>
-
                         <h4>
                             <i class="ti-link"></i> <label>@Model.Attachment</label>
                             @Html.HiddenFor(Model => Model.Attachment);
@@ -54,7 +51,6 @@
                                         {
                                             for (int i = 0; i < Model.SelectList.Count; i++)
                                             {
-
                                                 <tr>
                                                     <td>
                                                         @Html.CheckBoxFor(m => Model.SelectList[i].IsSelected) <label>@Model.SelectList[i].FileName</label>
@@ -72,8 +68,6 @@
                             <div class="col-6 b-r"></div>
                         </div>
 
-
-
                         <div class="row">
                             <div class="col-6 b-r">
                                 <input type="file" name="UploadFile" id="txtUploadFile" class="makethispretty btn btn-success" style="width:500px" />
@@ -84,8 +78,6 @@
                         <hr />
                         <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i> Send</button>
                         <a href="/Qutation/EditQutation/?QutationId=@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i> Discard</a>
-
-
                     </div>
                 </div>
 
@@ -96,7 +88,7 @@
 
 </div>
 
-<input type="checkbox"  id="checked"  checked/>
+
 
 
 
@@ -128,11 +120,11 @@
 
                     if (result != "") {
 
-
-                        $('#upload12').append("<tr><td><input  type='checkbox'  id='inputchechbox' name='ckecbox' ><input  type='checkbox' name='chk' value='" + result.FileName + "'  class='inputchechbox'><label>'" + result.FileName + "'</label></td></tr>")
-                        //$('#upload12').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
-                        //var fileUpload = $("#txtUploadFile").val('');
-                    }
+                        if (result != "") {
+                            $('#upload12').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
+                            var fileUpload = $("#txtUploadFile").val('');
+                        }
+                    } 
                 },
                 error: function (err) {
                     alert(err.statusText);
@@ -142,28 +134,6 @@
     });
 
 
-    $('#checked').change(function () {
-        alert('dxwe');
-
-        $("#checked").attr("checked", "checked");
-    });
-
-    $(document).on("#inputchechbox").change(function () {
-
-
-
-        var closerow = $(this).closest("tr");
-
-        if (this.checked) {
-            
-           
-          
-        }
-        else {
-            closerow.find("#inputchechbox").attr("checked", false);
-          
-        }
-    });
 
     function validateFileSize() {
         var Isvalid = true;
@@ -190,7 +160,7 @@
     $(document).on('click', '.remove', function () {
 
         var current = $(this).closest("tr");
-        var FileName1 = current.find(".Path").val();
+        var FileName1 = current.find(".FileName").val();
 
         $.ajax({
             url: "/Qutation/DeleteFile",
@@ -208,15 +178,7 @@
             }
         });
 
-
     });
-
-
-
-
-
-
-
 
 
 </script>

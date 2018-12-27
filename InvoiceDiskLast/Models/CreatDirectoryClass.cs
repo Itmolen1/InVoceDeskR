@@ -8,9 +8,9 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Models
 {
-    public static class CreatDirectoryClass 
+    public static class CreatDirectoryClass
     {
-
+        public static DirectoryViewModel _Directory = new DirectoryViewModel();
         static string Result = "";
 
 
@@ -96,11 +96,8 @@ namespace InvoiceDiskLast.Models
                                 if (allowedExtensions.Contains(ext))
                                 {
                                     string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
-
                                     var FileName = file.FileName.Replace(ext, "");
-
                                     string FileNameSetting = FileName + dateTime + ext;
-
                                     file.SaveAs(folderPAth + FileNameSetting);
                                 }
                             }
@@ -141,7 +138,30 @@ namespace InvoiceDiskLast.Models
 
         }
 
+        public static bool DeleteFileFromPDF(string FislePath)
+        {
+            bool Result = true;
+            try
+            {
 
+
+                var CompleterPath = HttpContext.Current.Server.MapPath("/PDF/" + FislePath);
+                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath(FislePath)))
+                {
+                    System.IO.File.Delete(HttpContext.Current.Server.MapPath(FislePath));
+                    return Result = true;
+                }
+
+
+            }
+            catch (Exception)
+            {
+                return Result = false;
+                throw;
+            }
+
+            return Result;
+        }
 
         public static bool DeleteFile(string FilePath)
         {
@@ -150,13 +170,13 @@ namespace InvoiceDiskLast.Models
             {
 
 
-                var CompleterPath = HttpContext.Current.Server.MapPath("/DirectoryFoleder/" + FilePath);
-                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath(FilePath)))
+                var CompleterPath = HttpContext.Current.Server.MapPath("/PDF/" + FilePath);
+
+                if (System.IO.File.Exists(CompleterPath))
                 {
-                    System.IO.File.Delete(HttpContext.Current.Server.MapPath(FilePath));
+                    System.IO.File.Delete(CompleterPath);
                     return Result = true;
                 }
-
 
             }
             catch (Exception)
@@ -183,8 +203,6 @@ namespace InvoiceDiskLast.Models
 
                 if (directory.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    //directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
-                    //_Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                     d = _Directory.DirectoryPath.ToString();
                     string F = _Directory.DirectoryPath.ToString();
@@ -212,6 +230,88 @@ namespace InvoiceDiskLast.Models
             return _object;
         }
 
+
+        public static DirectoryViewModel GetDiretoryPathById(int Id)
+        {
+            try
+            {
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+            }
+            catch (Exception)
+            {
+                _Directory = null;
+                throw;
+            }
+
+            return _Directory;
+        }
+
+
+
+
+        public static bool Delete(int Id, string FileName)
+        {
+            bool Issuccess = true;
+
+
+            try
+            {
+                _Directory = GetDiretoryPathById((int)Id);
+
+                if (_Directory != null)
+                {
+                  
+                     //  string   DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory.DirectoryPath + files.FileName);                                           
+                       // DirevtoryPath = DirevtoryPath + files.FileName;
+                    }
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Issuccess;
+        }
+
+        public static string UploadFileToDirectory(HttpPostedFileBase files, int? Id)
+        {
+
+            string DirevtoryPath = "";
+
+
+
+            try
+            {
+                _Directory = GetDiretoryPathById((int)Id);
+
+                if (_Directory != null)
+                {
+
+                    if (files.ContentLength != 0)
+                    {
+                        DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory.DirectoryPath + files.FileName);
+                        string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                        FileInfo fi = new FileInfo(files.FileName);
+                        string ext = fi.Extension;
+                        var FileName = files.FileName.Replace(ext, "");
+                        files.SaveAs(DirevtoryPath + FileName);
+                        DirevtoryPath = FileName;
+                    }
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return DirevtoryPath;
+        }
 
 
 
