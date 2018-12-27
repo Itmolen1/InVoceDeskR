@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
-            @using (Html.BeginForm("InvoiceByEmail", "Qutation", FormMethod.Post, new { id = "frmSendEmail" }))
+            @using (Html.BeginForm())
             {
                 @Html.HiddenFor(Model => Model.invoiceId)
                 <div class="bg-light border-left">
@@ -52,22 +52,17 @@
                                     <tbody id="upload12">
                                         @if (Model.SelectList.Count > 0)
                                         {
-                                            foreach (var item in Model.SelectList)
+                                            for (int i = 0; i < Model.SelectList.Count; i++)
                                             {
 
                                                 <tr>
                                                     <td>
-                                                        <input type="checkbox" name="Files" value="@item.FileName" />
-                                                        <input type="hidden" name="Files" value="@item.Directory" />
+                                                        @Html.CheckBoxFor(m => Model.SelectList[i].IsSelected) <label>@Model.SelectList[i].FileName</label>
+                                                        @Html.HiddenFor(m => Model.SelectList[i].FileName)
+                                                        @Html.HiddenFor(m => Model.SelectList[i].Directory)
+
                                                     </td>
-                                                    <td>
-                                                        @item.FileName
-                                                    </td>
-
-
-
                                                 </tr>
-
                                             }
                                         }
 
@@ -76,6 +71,8 @@
                             </div>
                             <div class="col-6 b-r"></div>
                         </div>
+
+
 
                         <div class="row">
                             <div class="col-6 b-r">
@@ -98,6 +95,8 @@
     </div>
 
 </div>
+
+<input type="checkbox"  id="checked"  checked/>
 
 
 
@@ -130,7 +129,7 @@
                     if (result != "") {
 
 
-                        $('#upload12').append("<tr><td><input type='checkbox' name='Files' value='" + result.FileName + "'  checked='checked'/></td><td>'" + result.FileName + "'</td></tr>")
+                        $('#upload12').append("<tr><td><input  type='checkbox'  id='inputchechbox' name='ckecbox' ><input  type='checkbox' name='chk' value='" + result.FileName + "'  class='inputchechbox'><label>'" + result.FileName + "'</label></td></tr>")
                         //$('#upload12').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
                         //var fileUpload = $("#txtUploadFile").val('');
                     }
@@ -142,6 +141,29 @@
         }
     });
 
+
+    $('#checked').change(function () {
+        alert('dxwe');
+
+        $("#checked").attr("checked", "checked");
+    });
+
+    $(document).on("#inputchechbox").change(function () {
+
+
+
+        var closerow = $(this).closest("tr");
+
+        if (this.checked) {
+            
+           
+          
+        }
+        else {
+            closerow.find("#inputchechbox").attr("checked", false);
+          
+        }
+    });
 
     function validateFileSize() {
         var Isvalid = true;

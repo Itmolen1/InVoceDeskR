@@ -968,33 +968,82 @@ namespace InvoiceDiskLast.Controllers
         [DeleteFileClass]
 
         [HttpPost]
-        public ActionResult InvoicebyEmail(EmailModel email, string[] Files, List<EmailModel> SelectList)
+        public ActionResult InvoicebyEmail(EmailModel email, string[] Files, FormCollection formCollection)
         {
             var root = Server.MapPath("/PDF/");
 
+            string q ="";
+            if (Request.Form["chk"] != null)
+            {
+                q = Request.Form["chk"];
 
-            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+              
+                var strArray = formCollection["ckecbox"];
+
+                foreach(var item in strArray)
+                {
+                    
+                    if(item.ToString() == "on")
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+
+
+                string t = Request.Form["ckecbox"]; 
+            }
+
+
+
+
+            if (formCollection.AllKeys.Contains("on"))
+            {
+
+            }
+
+                List<AttakmentList> _attackmentList = new List<AttakmentList>();
             var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
 
 
-            for (int i = 0; i < Files.Count(); i++)
+
+            foreach (var item in email.SelectList)
             {
-                if (Files[i].EndsWith("doc") || Files[i].EndsWith("pdf") || Files[i].EndsWith("docx") || Files[i].EndsWith("jpg") || Files[i].EndsWith("png") || Files[i].EndsWith("txt"))
+
+                if (item.IsSelected)
                 {
-                    if (System.IO.File.Exists(Server.MapPath(Files[i])))
+
+                    if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
                     {
-                        _attackmentList.Add(new AttakmentList { Attckment = Server.MapPath(Files[i]) });
+                        if (System.IO.File.Exists(Server.MapPath(item.Directory)))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = Server.MapPath(item.Directory) });
+                        }
+
+                        var filwe = Server.MapPath("/PDF/" + item.FileName);
+
+                        if (System.IO.File.Exists(filwe))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = filwe });
+                        }
+
                     }
 
-                    var filwe = Server.MapPath("/PDF/" + Files[i]);
-
-                    if (System.IO.File.Exists(filwe))
-                    {
-                        _attackmentList.Add(new AttakmentList { Attckment = filwe });
-                    }
                 }
 
+
             }
+
+
+
+
+
+
+
 
             //if (Request.Form["FilePath"] != null)
             //{
