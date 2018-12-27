@@ -14,6 +14,13 @@ namespace InvoiceDiskLast.Models
     
     public partial class UserTable
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserTable()
+        {
+            this.QutationOrderStatusTables = new HashSet<QutationOrderStatusTable>();
+            this.QutationTables = new HashSet<QutationTable>();
+        }
+    
         public int UserId { get; set; }
         public string UserFname { get; set; }
         public string Insertion { get; set; }
@@ -25,5 +32,9 @@ namespace InvoiceDiskLast.Models
         public string ImageUrl { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationOrderStatusTable> QutationOrderStatusTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationTable> QutationTables { get; set; }
     }
 }

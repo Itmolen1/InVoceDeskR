@@ -495,6 +495,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QutationTable_ContactsTable">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
@@ -604,6 +628,14 @@
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="Self.FK_QutationTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="QutationTable" EntitySet="QutationTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_ContactsTable" Association="Self.FK_QutationTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+            <End Role="QutationTable" EntitySet="QutationTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_UserTable" Association="Self.FK_QutationTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
           <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="Self.FK_UserTable_ComapnyInfo">
@@ -746,6 +778,18 @@
           </AssociationSet>
           <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
           <EntitySet Name="ExceptionLoggers" EntityType="APIcompanyModel.ExceptionLogger" />
+          <AssociationSet Name="FK_QutationTable_ContactsTable" Association="APIcompanyModel.FK_QutationTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationOrderStatusTable_UserTable" Association="APIcompanyModel.FK_QutationOrderStatusTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="QutationOrderStatusTable" EntitySet="QutationOrderStatusTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_UserTable" Association="APIcompanyModel.FK_QutationTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -787,6 +831,8 @@
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="QutationTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="QutationTable" ToRole="UserTable" />
         </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -865,6 +911,8 @@
           <Property Name="CompanyId" Type="Int32" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
           <Property Name="ImageUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_UserTable" FromRole="UserTable" ToRole="QutationOrderStatusTable" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
         </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
@@ -889,6 +937,7 @@
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
           <Property Name="PersonCompany" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1090,6 +1139,7 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationOrderStatusTable" ToRole="QutationTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="QutationOrderStatusTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_UserTable" FromRole="QutationOrderStatusTable" ToRole="UserTable" />
         </EntityType>
         <Association Name="FK_QutationOrderStatusTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -1269,6 +1319,42 @@
           <Property Name="ExceptionStackTrace" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DateTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="FK_QutationTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationOrderStatusTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationOrderStatusTable" Role="QutationOrderStatusTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="QutationOrderStatusTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
