@@ -3,6 +3,7 @@ using InvoiceDiskLast.Models;
 using Logger;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -76,7 +77,7 @@ namespace InvoiceDiskLast.Controllers
 
                             var path = Server.MapPath("/images/");
 
-                            
+
                             try
                             {
                                 if (!System.IO.Directory.Exists(path))
@@ -184,6 +185,74 @@ namespace InvoiceDiskLast.Controllers
             }
 
             return null;
+        }
+
+
+        public ActionResult Edit()
+        {
+            int id = Convert.ToInt32(Session["CompayID"]);
+
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + id.ToString()).Result;
+            MVCCompanyInfoModel CompanyInfo = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+            return View(CompanyInfo);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(MVCCompanyInfoModel compnayViewModel)
+        {
+            try
+            {
+                if (compnayViewModel.CompanyID > 0)
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        string fname;
+                        HttpFileCollectionBase files = Request.Files;
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                           
+                            //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
+                            //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                            HttpPostedFileBase file = files[i];
+
+                            // Checking for Internet Explorer  
+                            if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                            {
+                                string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                                fname = testfiles[testfiles.Length - 1];
+                            }
+                            else
+                            {
+                                string filename = Path.GetFileNameWithoutExtension(file.FileName);
+                                string Extention = Path.GetExtension(file.FileName);
+
+                                fname = file.FileName + DateTime.Now.ToString("yymmssfff") + Extention;
+                                    
+                               if(Extention != "")
+                                {
+                                    compnayViewModel.CompanyLogo = fname;
+                                }
+                            }
+
+                            // Get the complete folder path and store the file inside it.  
+                            fname = Path.Combine(Server.MapPath("/images/"), fname);
+                            file.SaveAs(fname);
+                        }
+                    }
+                }
+                compnayViewModel.UserName = "it1@gmail.com";
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny/" + compnayViewModel.CompanyID, compnayViewModel).Result;
+                MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+            return View(compnayViewModel);
+
         }
 
         [HttpGet]

@@ -33,7 +33,7 @@ namespace InvoiceDiskLast.Controllers
                
                 if (Result == true)
                 {
-                    ob = db.ComapnyInfoes.Where(u => u.UserName == User.username.ToString()).Select(c => (int)c.CompanyID).FirstOrDefault();
+                    ob = db.CompanyUsers.Where(u => u.UserId == User.username.ToString()).Select(c => (int)c.CompanyId).FirstOrDefault();
 
                     return ob;
 

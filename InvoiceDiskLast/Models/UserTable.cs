@@ -30,6 +30,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<System.DateTime> AddedDate { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public string ImageUrl { get; set; }
+        public string UserName { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

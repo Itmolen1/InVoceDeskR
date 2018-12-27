@@ -168,7 +168,7 @@ namespace InvoiceDiskLast.Controllers
                             Session["CompanyContact"] = cominfo.CompanyPhone;
                             Session["username"].ToString();
 
-                            HttpResponseMessage responseUser = GlobalVeriables.WebApiClient.GetAsync("GetUserInfo/" + compnyID).Result;
+                            HttpResponseMessage responseUser = GlobalVeriables.WebApiClient.PostAsJsonAsync("GetUserInfo", userInfo).Result;
                             UserModel usermodel = responseUser.Content.ReadAsAsync<UserModel>().Result;
 
                            
@@ -198,12 +198,12 @@ namespace InvoiceDiskLast.Controllers
         // }
 
 
-        public string Test2(string name)
-        {
-            name = "it1@gmail.com";
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("CompanyExist/" + name).Result;
-            return response.Content.ToString();
-        }
+        //public string Test2(string name)
+        //{
+        //    name = "it1@gmail.com";
+        //    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("CompanyExist/" + name).Result;
+        //    return response.Content.ToString();
+        //}
 
         public string Test1(string Email)
         {
