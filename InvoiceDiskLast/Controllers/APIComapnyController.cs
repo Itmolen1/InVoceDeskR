@@ -12,8 +12,7 @@ using InvoiceDiskLast.Models;
 using System.Web;
 
 namespace InvoiceDiskLast.Controllers
-{
-  
+{  
     public class APIComapnyController : ApiController
     {
         private DBEntities db = new DBEntities();
@@ -24,8 +23,7 @@ namespace InvoiceDiskLast.Controllers
         {
             return db.ComapnyInfoes;
         }
-
-       
+               
         // GET: api/APIComapny/5
         [ResponseType(typeof(ComapnyInfo))]
         public IHttpActionResult GetComapnyInfo(int id)
@@ -150,9 +148,7 @@ namespace InvoiceDiskLast.Controllers
             }
             
         }
-
-       
-
+               
         // DELETE: api/APIComapny/5
         [ResponseType(typeof(ComapnyInfo))]
         public IHttpActionResult DeleteComapnyInfo(int id)

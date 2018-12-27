@@ -26,6 +26,7 @@ namespace InvoiceDiskLast.Controllers
         {
             _iLog = Log.GetInstance;
         }
+
         public ActionResult Index()
         {
             UserModels model = new UserModels();
@@ -105,8 +106,6 @@ namespace InvoiceDiskLast.Controllers
                         HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
 
 
-
-
                         //HttpResponseMessage response = httpClient.PostAsync(url+"/Token", encodedRequest).Result;
 
                         HttpResponseMessage response = httpClient.PostAsync(url + "Token", encodedRequest).Result;
@@ -150,10 +149,8 @@ namespace InvoiceDiskLast.Controllers
                         //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
                         string name = userInfo.username.ToString();
                         Session["username"] = name;
-                        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-                        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("name", name);
                         GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session["ApiAccessToken"].ToString());
-                        HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiCompanyStatus/" + "ss").Result;
+                        HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("CompanyExist", userInfo).Result;
                         var apiresut = response.Content.ReadAsAsync<object>().Result;
 
                         int compnyID = Convert.ToInt32(apiresut);
@@ -201,12 +198,12 @@ namespace InvoiceDiskLast.Controllers
         // }
 
 
-        // public string Test2(string name,int id=0)
-        //{
-
-        //     HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("students/" + name+ "/"+id).Result;
-        //     return response.Content.ToString();
-        // }
+        public string Test2(string name)
+        {
+            name = "it1@gmail.com";
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("CompanyExist/" + name).Result;
+            return response.Content.ToString();
+        }
 
         public string Test1(string Email)
         {
