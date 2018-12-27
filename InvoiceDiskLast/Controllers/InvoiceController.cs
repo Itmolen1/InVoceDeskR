@@ -26,14 +26,7 @@ namespace InvoiceDiskLast.Controllers
          
 
 
-         
-            //foreach (HttpPostedFileBase k in model.file23)
-            //{
-            //    if (k.ContentLength > 0)
-
-            //        fileName = k.FileName;
-
-            //}
+        
 
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -49,7 +42,7 @@ namespace InvoiceDiskLast.Controllers
             return null;
         }
 
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
 
             int Contactid, CompanyID;
@@ -61,7 +54,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 1.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
                 
                 DateTime qutatioDate = new DateTime();

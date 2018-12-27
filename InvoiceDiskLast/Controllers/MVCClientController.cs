@@ -31,9 +31,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult GetContacts()
         {
             int CompanyId = Convert.ToInt32(Session["CompayID"]);
-            //GlobalVeriables.WebApiClient.DefaultRequestHeaders.Remove("CustomerStatus");
-
-            // GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CustomerStatus", "Customer");
+           
             HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + CompanyId + "/Customer").Result;
 
             var ProductList = response.Content.ReadAsAsync<IEnumerable<MVCContactModel>>().Result;

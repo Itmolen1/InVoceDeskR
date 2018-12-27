@@ -45,8 +45,8 @@ namespace InvoiceDiskLast.Controllers
                 Vat = c.TotalVat6 + c.TotalVat21,
                 TotalAmount = c.TotalAmount,
                 Status = (c.Status).Trim(),
-                UserName = c.ComapnyInfo.UserName,
-                CustomerName = c.UserId.ToString(),       
+                UserName = c.UserTable.UserFname + " " + c.UserTable.UserLname,
+                CustomerName = c.ContactsTable.ContactName     
                
             }).ToList();
 

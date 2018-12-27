@@ -25,5 +25,6 @@ namespace InvoiceDiskLast.Models
     
         public virtual QutationTable QutationTable { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public virtual UserTable UserTable { get; set; }
     }
 }

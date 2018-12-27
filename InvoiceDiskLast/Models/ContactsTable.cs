@@ -14,6 +14,12 @@ namespace InvoiceDiskLast.Models
     
     public partial class ContactsTable
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ContactsTable()
+        {
+            this.QutationTables = new HashSet<QutationTable>();
+        }
+    
         public int ContactsId { get; set; }
         public string ContactName { get; set; }
         public string ContactAddress { get; set; }
@@ -34,5 +40,7 @@ namespace InvoiceDiskLast.Models
         public string Remarks { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationTable> QutationTables { get; set; }
     }
 }
