@@ -11,46 +11,39 @@ using System.Web.Http;
 namespace InvoiceDiskLast.Controllers
 {
     [Authorize]
-    [RoutePrefix("api/ApiCompanyStatus")]
     public class ApiCompanyStatusController : ApiController
     {       
 
         private DBEntities db = new DBEntities();
-        // Exist: api/ApiCompanyStatus/id      
-       
+        // Exist: api/ApiCompanyStatus/id 
 
         public IHttpActionResult Getcompany()
         {
             return null;
         }
 
-        [Route("{name:alpha}")]
-        public object GetComapnyInfoes(string name)
+        [Route("api/CompanyExist")]
+        public object PostComapnyInfoes(UserInfo User)
         {
-            IEnumerable<string> headerValues;
-          
-            string em = "";
-            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("name", out headerValues))
-            {
-                em = headerValues.FirstOrDefault();
-               
-            }
-
-            bool Result= db.ComapnyInfoes.Count(e => e.UserName == em) > 0;
             object ob = new object();
-            ob = 0;            
-            if (Result == true)
+            ob = 0;
+            try
             {
-                ob = db.ComapnyInfoes.Where(u => u.UserName == em.ToString()).Select(c =>(int) c.CompanyID).FirstOrDefault();
-   
+                bool Result = db.ComapnyInfoes.Count(e => e.UserName == User.username) > 0;                
+               
+                if (Result == true)
+                {
+                    ob = db.CompanyUsers.Where(u => u.UserId == User.username.ToString()).Select(c => (int)c.CompanyId).FirstOrDefault();
+
+                    return ob;
+
+                }
+            }
+            catch (Exception ex)
+            {
                 return ob;
-                
             }
             return ob;
         }
-
-
-       
-
     }
 }

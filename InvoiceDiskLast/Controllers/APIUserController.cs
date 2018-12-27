@@ -45,12 +45,12 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [Route("api/GetUserInfo/{companyId:int}")]
-        public IHttpActionResult GetUserInfo(int companyId)
+        [Route("api/GetUserInfo")]
+        public IHttpActionResult PostUserInfo(UserInfo UserInfo)
         {
             try
             {
-                UserModel userModel = db.UserTables.Where(x => x.CompanyId == companyId).Select(c => new UserModel
+                UserModel userModel = db.UserTables.Where(x => x.UserName == UserInfo.username).Select(c => new UserModel
                 {
                     UserId = c.UserId,
                     UserFname = c.UserFname,

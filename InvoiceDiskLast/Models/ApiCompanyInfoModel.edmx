@@ -78,6 +78,16 @@
           <Property Name="AddedDate" Type="date" />
           <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="CompanyUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="Authority" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
             <PropertyRef Name="ContactsId" />
@@ -302,6 +312,7 @@
           <Property Name="DOB" Type="nvarchar" MaxLength="50" />
           <Property Name="AddedDate" Type="date" />
           <Property Name="CompanyId" Type="int" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
@@ -507,18 +518,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_QutationTable_UserTable">
-          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
-          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="QutationTable">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
@@ -550,6 +549,7 @@
           <EntitySet Name="AccountTransictionTable" EntityType="Self.AccountTransictionTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyUser" EntityType="Self.CompanyUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ControlAccountTable" EntityType="Self.ControlAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DirectoryTable" EntityType="Self.DirectoryTable" Schema="dbo" store:Type="Tables" />
@@ -632,10 +632,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ContactsTable" Association="Self.FK_QutationTable_ContactsTable">
             <End Role="ContactsTable" EntitySet="ContactsTable" />
-            <End Role="QutationTable" EntitySet="QutationTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_QutationTable_UserTable" Association="Self.FK_QutationTable_UserTable">
-            <End Role="UserTable" EntitySet="UserTable" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
           <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="Self.FK_UserTable_ComapnyInfo">
@@ -790,6 +786,7 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
+          <EntitySet Name="CompanyUsers" EntityType="APIcompanyModel.CompanyUser" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -913,6 +910,7 @@
           <Property Name="ImageUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_UserTable" FromRole="UserTable" ToRole="QutationOrderStatusTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
@@ -1355,6 +1353,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CompanyUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Authority" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1455,6 +1463,7 @@
           <EntitySetMapping Name="UserTables">
             <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
               <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
@@ -1687,6 +1696,17 @@
                 <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
                 <ScalarProperty Name="ExceptionMessage" ColumnName="ExceptionMessage" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyUsers">
+            <EntityTypeMapping TypeName="APIcompanyModel.CompanyUser">
+              <MappingFragment StoreEntitySet="CompanyUser">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Authority" ColumnName="Authority" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

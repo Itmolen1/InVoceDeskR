@@ -37,12 +37,11 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 int CompanyId = Convert.ToInt32(Session["CompayID"]);
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetUserInfo/"+ CompanyId).Result;
+                UserInfo user = new UserInfo();
+                user.username = Session["username"].ToString();
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("GetUserInfo",user).Result;
                 UserModel model = response.Content.ReadAsAsync<UserModel>().Result;
-
-                Session["imageurl"] = null;
-                Session["imageurl"] = model.ImageUrl;
-
+                Session["userID"] = model.UserId;
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return Json(model, JsonRequestBehavior.AllowGet);

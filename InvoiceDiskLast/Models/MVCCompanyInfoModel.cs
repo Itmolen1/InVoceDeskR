@@ -33,5 +33,6 @@ namespace InvoiceDiskLast.Models
         public string BIC { get; set; }
         public string KVK { get; set; }
         public string BTW { get; set; }
+        public HttpPostedFileBase File { get; set; }
     }
 }
