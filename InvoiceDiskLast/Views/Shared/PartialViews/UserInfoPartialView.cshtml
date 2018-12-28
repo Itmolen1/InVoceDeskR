@@ -84,23 +84,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                @*<div class="row">
-                    <div class="col-sm-3">
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <div class="mydiv">
-                                <img id="Useimage" alt="user Image" style="min-height:50px; min-width:100px; max-height:200px; max-width:200px; border:1px groove" />                              
-                                <br />
-                            </div>
-                            <input type="file" id="Useimage" class="btn btn-success" style="width:200px" />
-                        </div>
-                    </div>
-
-                    <div class="col-sm-1">
-                    </div>
-                </div>*@
-
+               <input type="hidden"  id="Username"/>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -314,11 +298,11 @@
                 }
             }
 
-            //if ($("#id_service_image").val() != "") {
-            //    fileData.append('ImageUrl', $('#uploadimg').val());
-            //}
+            if ($("#id_service_image").val() != "") {
+                fileData.append('ImageUrl', $('#uploadimg').val());
+            }
             fileData.append('UserId', $('#userid').val());
-            fileData.append('ImageUrl', $('#id_service_image').val());
+            fileData.append('ImageUrl', $('#ImageSRC').val());
 
             $.ajax({
                 url: '/UserInfo/UpdateImage',
@@ -380,6 +364,8 @@
                 $('#txtLname').val(Userdata.UserLname);
                 $('#txtEmail').val(Userdata.Username);
                 $('#TxtDob').val(Userdata.DOB);
+                $('#Username').val(Userdata.Username);
+
                 var gen = Userdata.Gender;
                 if (gen == 1) {
                     $('input:radio[name="gender"]').filter('[value="1"]').attr('checked', true);
@@ -400,6 +386,7 @@
             UserFname: $('#txtFname').val(),
             Insertion: $('#txtInsertion').val(),
             UserLname: $('#txtLname').val(),
+            Username: $('#Username').val(),
             Gender: $("input[name='gender']:checked").val(),
             DOB: $('#TxtDob').val(),
             UserId: $('#userid').val()
@@ -441,7 +428,7 @@
                 }
                 $('#UserImageWithName').attr('src', url)
                 $('#UserNamess').text(Userdata.Username);
-
+                $('#Username').val(Userdata.Username);
                 if (Userdata.UserFname == null || Userdata.UserLname == null) {
                     $('#UFnameLname').hide();
                 }
