@@ -42,6 +42,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("GetUserInfo",user).Result;
                 UserModel model = response.Content.ReadAsAsync<UserModel>().Result;
                 Session["userID"] = model.UserId;
+                TempData["ImageURL"] = model.ImageUrl;
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return Json(model, JsonRequestBehavior.AllowGet);
