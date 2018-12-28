@@ -84,21 +84,34 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-                <div class="row">
+                @*<div class="row">
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-8">
                         <div class="form-group">
                             <div class="mydiv">
-                                <img id="Useimage" alt="user Image" style="min-height:50px; min-width:100px; max-height:200px; max-width:200px; border:1px groove" /><br />
+                                <img id="Useimage" alt="user Image" style="min-height:50px; min-width:100px; max-height:200px; max-width:200px; border:1px groove" />                              
+                                <br />
                             </div>
-                            <input type="file" id="uploadimg" class="btn btn-success" style="width:200px" />
+                            <input type="file" id="Useimage" class="btn btn-success" style="width:200px" />
                         </div>
                     </div>
 
-                    <div class="col-sm-">
+                    <div class="col-sm-1">
+                    </div>
+                </div>*@
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                @*<input type="file" id="Useimage" alt="user Image" name="Files" class="dropify"  data-default-file="/Images/@TempData["ImageURL"]" />*@  
+                                <input type="file" name="n_service_img" id="id_service_image" />                                                        
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" id="SaveuserImage" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
@@ -162,7 +175,19 @@
                 else {
                     urls = '/images/' + Userdat.ImageUrl;
                 }
-                $('#Useimage').attr("src", urls);
+
+                $("#id_service_image").addClass('dropify');
+                $("#id_service_image").attr("data-height", 300);
+                $("#id_service_image").attr("data-default-file", urls);
+                $('.dropify').dropify();
+
+                //$("#Useimage").addClass('dropify');
+                //$("#Useimage").attr("data-height", 300);
+                //$("#Useimage").attr("data-default-file", urls);
+                //$('.dropify').dropify();
+           
+                //$('#Useimage').attr("src", urls);
+                //$('#Useimage').attr("src", urls);
                 $('#UserImageWithName').attr('src', urls)
                 $('#ImageSRC').val(Userdat.ImageUrl);
                 $('#UserInfoModel').modal('hide');
@@ -280,8 +305,8 @@
         if (window.FormData != undefined) {
             var fileData = new FormData();
 
-            if ($("#uploadimg").val() != "") {
-                var fileUpload = $("#uploadimg").get(0);
+            if ($("#id_service_image").val() != "") {
+                var fileUpload = $("#id_service_image").get(0);
                 var files = fileUpload.files;
 
                 for (var i = 0; i < files.length; i++) {
@@ -289,11 +314,11 @@
                 }
             }
 
-            if ($("#uploadimg").val() != "") {
-                fileData.append('ImageUrl', $('#uploadimg').val());
-            }
+            //if ($("#id_service_image").val() != "") {
+            //    fileData.append('ImageUrl', $('#uploadimg').val());
+            //}
             fileData.append('UserId', $('#userid').val());
-            fileData.append('ImageUrl', $('#ImageSRC').val());
+            fileData.append('ImageUrl', $('#id_service_image').val());
 
             $.ajax({
                 url: '/UserInfo/UpdateImage',
@@ -436,7 +461,7 @@
     var InvoiceQutation = "";
 
     $('#CompanySitting').click(function () {
-        window.location.href = "/MVCComapny/Index";
+        window.location.href = "/MVCComapny/Edit";
     });
 
 
@@ -463,4 +488,47 @@
     });
 
     
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+        
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
 </script>

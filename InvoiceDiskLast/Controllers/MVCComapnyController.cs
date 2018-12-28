@@ -140,7 +140,6 @@ namespace InvoiceDiskLast.Controllers
             {
                 try
                 {
-
                     if (Request.Files.Count > 0)
                     {
                         HttpFileCollectionBase files = Request.Files;
@@ -174,8 +173,8 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny/" + compnayViewModel.CompanyID, compnayViewModel).Result;
-                    MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                    return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+                    compnayViewModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                    return View(compnayViewModel);
                 }
                 catch (Exception ex)
                 {
@@ -184,7 +183,7 @@ namespace InvoiceDiskLast.Controllers
 
             }
 
-            return null;
+            return View(compnayViewModel);
         }
 
 
