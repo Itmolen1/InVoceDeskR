@@ -278,7 +278,7 @@ namespace InvoiceDiskLast.Models
             return Issuccess;
         }
 
-        public static string UploadFileToDirectory(HttpPostedFileBase files, int? Id)
+        public static string UploadFileToDirectory(HttpPostedFileBase files, int? Id, string Name)
         {
 
             string DirevtoryPath = "";
@@ -288,6 +288,12 @@ namespace InvoiceDiskLast.Models
             try
             {
                 _Directory = GetDiretoryPathById((int)Id);
+
+                if (_Directory == null)
+                {
+                   string p=CreateDirecotyFolder(Id, Name);
+                    _Directory.DirectoryPath = p;
+                }
 
                 if (_Directory != null)
                 {

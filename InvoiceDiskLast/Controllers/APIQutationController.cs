@@ -111,19 +111,22 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                db.SaveChanges();
+                  db.SaveChanges();
                 return StatusCode(HttpStatusCode.OK);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!QutationTableExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+
+                throw ex;
+
+                //if (!QutationTableExists(id))
+                //{
+                //    return NotFound();
+                //}
+                //else
+                //{
+                //    throw;
+                //}
             }
 
 

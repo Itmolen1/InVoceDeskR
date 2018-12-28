@@ -401,7 +401,28 @@
                     </div>
                 </div>
                 <hr /> 
-             @Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml")
+            <div class="row">
+                <div class="col-6 b-r">
+                    <table class="table table-hover" id="participantTable">
+                        <tbody id="upload123">
+                            @if (ViewBag.FILE != null)
+                            {
+                                foreach (var item in ViewBag.FILE)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6 b-r"></div>
+            </div>
+               @*@Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml")*@
             <hr />
                 <div class="row">
                     <div class="col-8 b-r">
@@ -438,6 +459,9 @@
 <script>
 
     $(document).ready(function () {
+
+        debugger;
+
         var patth = localStorage.getItem('path');
         $("#FilePath").val(patth);
 
