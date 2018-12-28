@@ -392,6 +392,33 @@ namespace InvoiceDiskLast.Controllers
             return true;
         }
 
+        [HttpPost]
+        public ActionResult DeleteFile(int Id, string FileName)
+        {
+            try
+            {
+
+
+                if (CreatDirectoryClass.Delete(Id, FileName))
+                {
+
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("Fail", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Fail", JsonRequestBehavior.AllowGet);
+                throw;
+            }
+
+
+        }
+
+
 
         [HttpPost]
         public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
@@ -739,7 +766,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                string FilePath = "";
+              
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
                 for (int i = 0; i < files.Count; i++)
@@ -747,7 +774,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpPostedFileBase file = files[i];
 
                     string Path1 = CreatDirectoryClass.UploadFileToDirectory(file, QutationViewModel.QutationID);
-                    FileName = file.FileName;
+                    FileName = Path1;
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
@@ -832,8 +859,6 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.QutationDatailsList = QutationModelDetailsList;
                 string companyName = quttationId + "-" + companyModel.CompanyName;
 
-
-
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
@@ -850,7 +875,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     try
                     {
-
                         if (System.IO.File.Exists(path))
                         {
                             FileInfo info = new FileInfo(path);
@@ -1271,7 +1295,7 @@ namespace InvoiceDiskLast.Controllers
                     var path = Path.Combine(root, pdfname);
                     path = Path.GetFullPath(path);
 
-
+                    return new JsonResult { Data = new { Status = "Success", path = pdfname, QutationId = qutationTable.QutationID } };
                 }
             }
             catch (Exception ex)

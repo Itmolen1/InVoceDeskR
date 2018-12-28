@@ -46,8 +46,8 @@ namespace InvoiceDiskLast.Controllers
                 TotalAmount = c.TotalAmount,
                 Status = (c.Status).Trim(),
                 UserName = c.UserTable.UserFname + " " + c.UserTable.UserLname,
-                CustomerName = c.ContactsTable.ContactName     
-               
+                CustomerName = c.ContactsTable.ContactName
+
             }).ToList();
 
             return Ok(Qutationob);
@@ -63,23 +63,27 @@ namespace InvoiceDiskLast.Controllers
         {
             MVCQutationModel qutationmodel = new MVCQutationModel();
 
-            var ob = db.QutationTables.Find(id);
-            qutationmodel.QutationID = ob.QutationID;
-            qutationmodel.Qutation_ID = ob.Qutation_ID;
-            qutationmodel.RefNumber = ob.RefNumber;
-            qutationmodel.QutationDate = ob.QutationDate;
-            qutationmodel.DueDate = ob.DueDate;
-            qutationmodel.SubTotal = ob.SubTotal;
-            qutationmodel.TotalVat6 = ob.TotalVat6;
-            qutationmodel.TotalVat21 = ob.TotalVat21;
-            qutationmodel.DiscountAmount = ob.DiscountAmount;
-            qutationmodel.TotalAmount = ob.TotalAmount;
-            qutationmodel.CustomerNote = ob.CustomerNote;
-            qutationmodel.Status = ob.Status;
-            qutationmodel.UserId = ob.UserId;
-            qutationmodel.CompanyId = ob.CompanyId;
-            qutationmodel.ContactId = ob.ContactId;
-            qutationmodel.Type = ob.Type;
+            qutationmodel = db.QutationTables.Where(q => q.QutationID == id).Select(c => new MVCQutationModel
+            {
+                QutationID = c.QutationID,
+                Qutation_ID = c.Qutation_ID,
+                RefNumber = c.RefNumber,
+                QutationDate = c.QutationDate,
+                DueDate = c.DueDate,
+                SubTotal = c.SubTotal,
+                TotalVat6 = c.TotalVat6,
+                TotalVat21 = c.TotalVat21,
+                DiscountAmount = c.DiscountAmount,
+                TotalAmount = c.TotalAmount,
+                CustomerNote = c.CustomerNote,
+                Status = c.Status,
+                UserId = c.UserId,
+                CompanyId = c.CompanyId,
+                ContactId = c.ContactId,
+                Type = c.Type,
+
+            }).FirstOrDefault();
+
 
             if (qutationmodel == null)
             {
@@ -131,7 +135,7 @@ namespace InvoiceDiskLast.Controllers
         {
             using (DBEntities entities = new DBEntities())
             {
-                qutationtable= entities.QutationTables.Add(qutationtable);
+                qutationtable = entities.QutationTables.Add(qutationtable);
                 entities.SaveChanges();
 
                 return Ok(qutationtable);
@@ -295,7 +299,7 @@ namespace InvoiceDiskLast.Controllers
                     SubTotal = p.SubTotal,
                     Status = (p.Status).Trim(),
                     CompanyId = p.CompanyId,
-                    UserId = p.UserId,                  
+                    UserId = p.UserId,
                 }).ToList();
             }
             catch (Exception)
@@ -400,24 +404,24 @@ namespace InvoiceDiskLast.Controllers
         public IHttpActionResult GetSaleQuantity(int id, int companyid)
         {
             MVCQutationViewModel _MvcQutationViewModel = new MVCQutationViewModel();
-                try
-                {
+            try
+            {
 
-                    var q = (from p in db.QutationTables
-                             join pd in db.QutationDetailsTables on p.QutationID equals pd.QutationID
-                             where p.Status == "accepted" && pd.QutationID == id && p.CompanyId == companyid
-                             select pd).Sum(i => i.Quantity);
+                var q = (from p in db.QutationTables
+                         join pd in db.QutationDetailsTables on p.QutationID equals pd.QutationID
+                         where p.Status == "accepted" && pd.QutationID == id && p.CompanyId == companyid
+                         select pd).Sum(i => i.Quantity);
 
-                    _MvcQutationViewModel.QuantityRemaing = q;
+                _MvcQutationViewModel.QuantityRemaing = q;
 
-                    return Ok(_MvcQutationViewModel);
-                }
+                return Ok(_MvcQutationViewModel);
+            }
 
-                catch (Exception ex)
-                {
-                    return NotFound();
-                }
-          
-            }            
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+        }
     }
 }

@@ -12,7 +12,7 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID"/>
+            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
             <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
@@ -211,7 +211,7 @@
             </div>
 
 
-           <p></p>
+            <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="QutationServiceDetail1">
@@ -455,7 +455,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-    
+
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -546,7 +546,7 @@
         var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
         Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
     }
-    
+
     $(document).on('change', '.tbody .VATG', function () {
 
         Currentrow = $(this).closest("tr");
@@ -920,7 +920,7 @@
         })
         return TotalService;
     }
-    
+
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         if (InOrOut == 'AddingVat') {
@@ -1004,13 +1004,13 @@
         Produectid = CurrentRow.find('.product').val();
         quantityG = CurrentRow.find('.quantityG ').val();
         varrateG = CurrentRow.find('.rateG ').val();
-        if (parseInt(Produectid) == 0) {
+        if (parseInt(Produectid) == 0 || Produectid == "") {
             Isvalid = false;
         }
-        if (parseInt(quantityG) == 0) {
+        if (parseInt(quantityG) == 0 || quantityG == "") {
             Isvalid = false;
         }
-        if (parseInt(varrateG) == 0) {
+        if (parseInt(varrateG) == 0 || varrateG == "") {
             Isvalid = false;
         }
         return Isvalid;
@@ -1026,6 +1026,9 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
+
+            debugger;
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1042,7 +1045,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
+            debugger;
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1059,6 +1062,8 @@
                 list.push(orderItem);
             }
         });
+
+        return true
 
 
         if (list.length == 0) {
@@ -1083,7 +1088,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
-            
+
         };
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1131,6 +1136,8 @@
 
     $('#saveEmail').click(function () {
 
+        debugger;
+
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
@@ -1139,8 +1146,11 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
+            debugger;
             CurrentRow = $(this).closest("tr");
+
             if (ValidateRow(CurrentRow)) {
+
                 orderItem = {
                     ItemId: parseInt($(this).find('.product').val()),
                     Quantity: parseInt($(this).find('.quantityG').val()),
@@ -1155,9 +1165,12 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
+            debugger;
             CurrentRow = $(this).closest("tr");
+
             if (ValidateRow(CurrentRow)) {
+
+
                 orderItem = {
                     ItemId: $(this).find('.product').val(),
                     Quantity: parseInt($(this).find('.quantityG').val()),
@@ -1228,7 +1241,7 @@
                         type: 'success'
                     },
                          function (isconform) {
-                            
+
                              window.location.href = "/Qutation/InvoiceByEmail?QutationId=" + result.QutationId;
                          });
                 }
@@ -1332,13 +1345,13 @@
         }
         $.ajax({
             url: "/Qutation/SaveEmailPrint",
-        
+
             type: "POST",
             data: formData,
             dataType: 'json',
             contentType: false,
             processData: false,
-          
+
             success: function (result) {
                 QutationIdd = result.QutationId;
                 if (result.Status == "Success") {

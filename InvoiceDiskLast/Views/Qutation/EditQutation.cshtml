@@ -629,7 +629,9 @@
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
-
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
     });
 
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
@@ -732,7 +734,7 @@
     }
 
 
-    $(document).on('change', '.tbody .VATG', function () {
+    $(document).on('change', '.VATG', function () {
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -744,7 +746,7 @@
     });
 
 
-    $('#mainrow1 .VATG').change(function () {
+    $('.VATG').change(function () {
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -754,7 +756,7 @@
 
 
 
-    $('.tbody .VATG').change(function () {
+    $('.VATG').change(function () {
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -767,7 +769,7 @@
 
 
 
-    $('#mainrow .VATG').change(function () {
+    $('.VATG').change(function () {
 
         currentRow1 = $(this).closest("tr");
         vat = currentRow1.find('.VATG').val();
@@ -848,12 +850,6 @@
     });
 
 
-
-
-
-
-
-
     function CalculateVateTotal() {
         debugger;
 
@@ -910,9 +906,6 @@
             $('#BTW21').text(parseFloat(t).toFixed(2));
         }
     }
-
-
-
 
     function LoadProductG() {
         PgoodServices = "Good";
@@ -1042,9 +1035,6 @@
     });
 
 
-
-
-
     function CombineTotalAndSubtotal() {
 
         var SubTotalGoode, SubTotalService = 0;
@@ -1057,7 +1047,6 @@
         $('#gtotal').text(Total.toFixed(2));
 
     }
-
 
     function CombineTotal() {
 
@@ -1125,8 +1114,6 @@
     }
 
 
-
-
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         debugger;
@@ -1179,8 +1166,6 @@
         }
     }
 
-
-
     $('#orderdetailsitems1').on('click', '.remove', function () {
 
         var currentRow = $(this).closest('tr');
@@ -1200,17 +1185,10 @@
         CalculateVateTotal();
     });
 
-
-
-
-
     $('#Submit').click(function () {
 
         CreateQuation1();
     });
-
-
-
 
     $('#saveprintandsendtoyourselfsave').click(function () {
 
@@ -1305,8 +1283,6 @@
         });
 
     });
-
-
 
     $('#saveEmail').click(function () {
         var list = [], orderItem, CurrentRow;
@@ -1488,10 +1464,7 @@
         });
     }
 
-
-
     var QID = 0;
-
 
     $(document).on('click', '#btnRemoveGood', function () {
 
@@ -1519,9 +1492,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
 
 
 
@@ -1605,7 +1575,7 @@
                 fileData.append(files[i].name, files[i]);
             }
 
-           
+
 
             fileData.append("QutationID", parseInt($('#QutationID').val()));
 
@@ -1653,16 +1623,16 @@
     }
 
 
-    $(document).on('click', '#remove', function () {
+    $(document).on('click', '.remove', function () {
 
         var current = $(this).closest("tr");
-        current.remove();
-        var FileName1 = current.find(".Path").val();
+      
+        var Name = current.find(".FileName").val();
 
         $.ajax({
             url: "/Qutation/DeleteFile",
-            type: "GET",
-            data: { FileName: FileName1 },
+            type: "POST",
+            data: JSON.stringify({ Id: $('#QutationID').val(), FileName: Name }),
             contentType: "application/json",
             dataType: "json",
             success: function (result) {
