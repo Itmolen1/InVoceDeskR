@@ -84,13 +84,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
-               <input type="hidden"  id="Username"/>
+                <input type="hidden" id="Username" />
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                @*<input type="file" id="Useimage" alt="user Image" name="Files" class="dropify"  data-default-file="/Images/@TempData["ImageURL"]" />*@  
-                                <input type="file" name="n_service_img" id="id_service_image" />                                                        
+                                @*<input type="file" id="Useimage" alt="user Image" name="Files" class="dropify"  data-default-file="/Images/@TempData["ImageURL"]" />*@
+                                <input type="file" name="n_service_img" id="id_service_image" />
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" style="color:skyblue">Change Image</h4>
+                <h4 class="modal-title" style="color:skyblue">Change Password</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body">
@@ -142,7 +142,53 @@
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
-</div> 
+</div>
+
+
+<div id="CreateUserModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color:skyblue">Create New User</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" id="NewUserEmail" type="email" required="" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <select id="UserAuthority" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" id="UserPassowrd" type="password" required="" placeholder="User Password">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" id="ConformPassword" type="password" required="" placeholder="Confirm Password">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveNewUser" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelNewUser" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<!-- /.modal-dialog -->
 
 
 <script>
@@ -169,7 +215,7 @@
                 //$("#Useimage").attr("data-height", 300);
                 //$("#Useimage").attr("data-default-file", urls);
                 //$('.dropify').dropify();
-           
+
                 //$('#Useimage').attr("src", urls);
                 //$('#Useimage').attr("src", urls);
                 $('#UserImageWithName').attr('src', urls)
@@ -233,46 +279,7 @@
 
     });
 
-    function ChangePasswordValidation() {
-        var isvalid = false;
-
-        if ($('#CurrentPassword').val().trim() == "") {
-            $('#CurrentPassword').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#CurrentPassword').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-
-        if ($('#NewPassowrd').val().trim() == "") {
-            $('#NewPassowrd').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#NewPassowrd').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-        if ($('#ConfirmPassword').val().trim() == "") {
-            $('#ConfirmPassword').css('border-color', 'Red');
-            return;
-        }
-        else {
-            $('#ConfirmPassword').css('border-color', 'lightgrey');
-            isvalid = true;
-        }
-
-        if ($('#NewPassowrd').val() != $('#ConfirmPassword').val()) {
-            $.toast({
-                heading: 'Miss match',
-                text: 'new password and confirm password must match `Password`',
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#FF0000'  // To change the background
-            });
-        }
-        return isvalid;
-    }
+ 
 
     $('#CancelChangePassword').click(function () {
         $('#UserInfoModel').modal('show');
@@ -342,6 +349,7 @@
         });
 
         GetUserInfo();
+       
     });
 
     $('#AccountSitting').click(function () {
@@ -440,18 +448,41 @@
             }
         });
     }
-</script>
 
-<script>
-   
+    $('#CancelNewUser').click(function () {
+        $('#CreateUserModel').modal('hide');
+    });
+
+    function LoadAuthority() {
+        $("#UserAuthority").find("option").remove();
+        $("#UserAuthority").prepend("<option value=0>" + 'Select Authority' + "</option>");
+        //$("#UserAuthority").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $.ajax({
+            url: "/UserInfo/GetAuthorityList",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (key, item) {
+                    $('#UserAuthority').append($('<option></option>').val(item.UserAuthorityId).html(item.Authority));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
     var QutationStatus;
     var InvoiceQutation = "";
 
     $('#CompanySitting').click(function () {
         window.location.href = "/MVCComapny/Edit";
     });
-
-
 
     function Edit(companyId) {
 
@@ -474,7 +505,99 @@
 
     });
 
+    $('#CreateUser').click(function () {
+        LoadAuthority();
+        $('#CreateUserModel').modal('show');
+    });
+
+    $('#SaveNewUser').click(function () {
+        if (ValidateNewUser())
+        {    
+            $.ajax({
+                //url: '/api/account/register',
+                url: 'UserInfo/Register',
+                method: 'POST',
+                data: {
+                    email: $('#NewUserEmail').val(),
+                    password: $('#UserPassowrd').val(),
+                    confirmpassword: $('#ConformPassword').val(),
+                    Authority: $('#UserAuthority').val(),
+
+                    },
+                success: function () {                       
+                    SendEmail();                        
+                },
+                error: function (jqHXR) {
+                    if (jqHXR.status == '400') {
+                        FailRegistration();
+                    }
+
+                }
+            });
+        }
+    });
+
+
     
+    function ValidateNewUser()
+    {
+        var isvalid = false;
+
+        if ($('#NewUserEmail').val().trim() == "") {
+            $('#NewUserEmail').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#NewUserEmail').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+
+        if ($('#UserAuthority').val() == 0) {
+            $('#UserAuthority').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#UserAuthority').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+        if ($('#UserPassowrd').val().trim() == "") {
+            $('#UserPassowrd').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#UserPassowrd').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+
+        if ($('#ConformPassword').val().trim() == "") {
+            $('#ConformPassword').css('border-color', 'Red');
+            return;
+        }
+        else {
+            $('#ConformPassword').css('border-color', 'lightgrey');
+            isvalid = true;
+        }
+
+        if ($('#UserPassowrd').val() != $('#ConformPassword').val()) {
+            $('#UserPassowrd').css('border-color', 'Red');
+            $('#ConformPassword').css('border-color', 'Red');
+            $.toast({
+                heading: 'Miss match',
+                text: 'password and confirm password must match `Password`',
+                icon: 'info',
+                loader: true,        // Change it to false to disable loader
+                loaderBg: '#FF0000'  // To change the background
+            });
+        }
+        else
+        {
+            isvalid = true;
+            $('#UserPassowrd').css('border-color', 'lightgrey');
+            $('#ConformPassword').css('border-color', 'lightgrey');
+        }
+        return isvalid;
+    }
+
 </script>
 
 <script>
@@ -491,7 +614,7 @@
                 error: 'Désolé, le fichier trop volumineux'
             }
         });
-        
+
         // Used events
         var drEvent = $('#input-file-events').dropify();
 

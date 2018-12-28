@@ -48,6 +48,7 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<DirectoryTable> DirectoryTables { get; set; }
         public virtual DbSet<ExceptionLogger> ExceptionLoggers { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
+        public virtual DbSet<UserAuthorityTable> UserAuthorityTables { get; set; }
     
         [DbFunction("DBEntities", "GetStockItem")]
         public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)

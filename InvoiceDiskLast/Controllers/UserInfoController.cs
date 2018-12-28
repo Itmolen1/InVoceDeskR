@@ -161,5 +161,66 @@ namespace InvoiceDiskLast.Controllers
             }
            
         }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetAuthorityList()
+        {
+            try
+            {
+               // int companyId = Convert.ToInt32(Session["CompayID"]);
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetAuthorityList").Result;
+               List<AuthorityModel> AuthorityModel = response.Content.ReadAsAsync<List<AuthorityModel>>().Result;
+                
+                return Json(AuthorityModel, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return Json(ex.ToString(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<string> Register(NewUserModel model)
+        {
+            try
+            {
+
+                RegisterBindingModel NewModel = new RegisterBindingModel();
+
+                NewModel.Email = model.email;
+                NewModel.Password = model.password;
+                NewModel.ConfirmPassword = model.confirmpassword;                
+
+                var jsonInput = new JavaScriptSerializer().Serialize(NewModel);
+
+                var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+                var response = await GlobalVeriables.WebApiClient.PostAsync("Account/register", stringContent);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    AspNetUser aspNetUser = new AspNetUser();
+                    aspNetUser.Id = response.Content.ReadAsAsync<IdentityResult>
+                    HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync()
+                }
+                else
+                {
+                    return "Not Found";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return "Ex";
+            }
+
+        }
     }
 }

@@ -44,5 +44,27 @@ namespace InvoiceDiskLast.Controllers
                 return NotFound();
             }
         }
+
+        [Route("api/GetAuthorityList")]
+        public IHttpActionResult GetAuthorityList()
+        {
+            try
+            {
+                List<AuthorityModel> AuthoritModel = db.UserAuthorityTables.Select(c => new AuthorityModel
+                {
+
+                    UserAuthorityId = c.UserAuthorityId,
+                    Authority = c.Authority, 
+                    CompanyId = c.CompanyId
+                   
+                }).ToList();
+
+                return Ok(AuthoritModel);
+            }
+            catch(Exception)
+            {
+                return NotFound();
+            }
+        }
     }
 }
