@@ -261,7 +261,7 @@ namespace InvoiceDiskLast.Models
                 if (_Directory != null)
                 {
 
-                    string FilePath=HttpContext.Current.Server.MapPath(_Directory.DirectoryPath + FileName);
+                    string FilePath = HttpContext.Current.Server.MapPath(_Directory.DirectoryPath + FileName);
                     if (System.IO.File.Exists(FilePath))
                     {
                         System.IO.File.Delete(HttpContext.Current.Server.MapPath(_Directory.DirectoryPath + FileName));
@@ -283,14 +283,14 @@ namespace InvoiceDiskLast.Models
 
             string DirevtoryPath = "";
 
-             DirectoryViewModel _Directory12 = new DirectoryViewModel();
+            DirectoryViewModel _Directory12 = new DirectoryViewModel();
             try
             {
                 _Directory = GetDiretoryPathById((int)Id);
 
                 if (_Directory == null)
                 {
-                   string p=CreateDirecotyFolder(Id, Name);
+                    string p = CreateDirecotyFolder(Id, Name);
                     _Directory12.DirectoryPath = p;
                 }
 
@@ -299,7 +299,14 @@ namespace InvoiceDiskLast.Models
 
                     if (files.ContentLength != 0)
                     {
-                        DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory12.DirectoryPath);
+                        if (_Directory12.DirectoryPath != null)
+                        {
+                            DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory12.DirectoryPath);
+                        }
+                        else
+                        {
+                            DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory.DirectoryPath);
+                        }
 
                         FileInfo fi = new FileInfo(files.FileName);
                         string ext = fi.Extension;
@@ -307,7 +314,7 @@ namespace InvoiceDiskLast.Models
                         var FileName = files.FileName.Replace(ext, "");
                         string FileNameSetting = FileName + dateTime + ext;
                         files.SaveAs(DirevtoryPath + FileNameSetting);
-                        DirevtoryPath =FileNameSetting;
+                        DirevtoryPath = FileNameSetting;
                     }
                 }
 
