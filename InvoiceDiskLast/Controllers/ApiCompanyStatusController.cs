@@ -29,7 +29,7 @@ namespace InvoiceDiskLast.Controllers
             ob = 0;
             try
             {
-                bool Result = db.ComapnyInfoes.Count(e => e.UserName == User.username) > 0;                
+                bool Result = db.CompanyUsers.Count(e => e.UserId == User.username) > 0;                
                
                 if (Result == true)
                 {

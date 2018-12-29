@@ -56,7 +56,7 @@ namespace InvoiceDiskLast.Controllers
                     UserFname = c.UserFname,
                     Insertion = c.Insertion,
                     UserLname = c.UserLname,
-                    Username = c.ComapnyInfo.UserName,
+                    Username = c.UserName,
                     Gender = c.Gender,
                     DOB = c.DOB,
                     ImageUrl = c.ImageUrl,
@@ -102,6 +102,20 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+        [Route("api/PostCompanyUser")]
+        public IHttpActionResult PostCompanyUser(CompanyUser compnyUser)
+        {
+            try
+            {
+                db.CompanyUsers.Add(compnyUser);
+                db.SaveChanges();
+                return Ok(compnyUser);
+            }
+            catch(Exception)
+            {
+                return NotFound();
+            }
+        }
 
         [Route("api/UpdateUserImage")]
         public IHttpActionResult PutUserImage(UserTable usertable)
@@ -121,9 +135,44 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+
+        [Route("api/ConformNewUser")]
+        public IHttpActionResult PostonformUser(AspNetUser aspNetUser)
+        {
+
+            AspNetUser asp = db.AspNetUsers.Where(c => c.UserName == aspNetUser.UserName).FirstOrDefault();
+            asp.EmailConfirmed = true;
+            db.Entry(asp).State = EntityState.Modified;
+            try
+            {
+                db.SaveChanges();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+
+            }
+        }
         private bool UserTableExists(int id)
         {
             return db.UserTables.Count(e => e.CompanyId == id) > 0;
+        }
+
+        [Route("api/PostUserInfo")]
+        public IHttpActionResult PostUser(UserTable userTable)
+        {
+            try
+            {
+                db.UserTables.Add(userTable);
+                db.SaveChanges();
+
+                return Ok(userTable);
+            }
+            catch(Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -5,9 +5,25 @@
 
 <button id="CreateNewProduct" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Create New</button>
 
+<style>
+  #productTable tr{
+    cursor: pointer;    
+}
 
-@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+  /*#productTable tbody tr.even:hover {
+       background-color: skyblue;
+      
+   }
+
+   #productTable tbody tr.odd:hover {
+       background-color: skyblue;
+      
+   }*/
+
+  table#productTable.dataTable tbody tr:hover {
+  background-color: skyblue;
+}
+</style>
 
 <div class="row">
     <div class="col-xs-12 col-lg-12">
@@ -111,6 +127,10 @@
     <!-- /.modal-dialog -->
 </div>
 
+@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+
+
 
 
 <script>
@@ -171,11 +191,24 @@
             $('#TypeGoodsServices').attr('disabled', false);
             $('#UpdateProIdGoods').hide();
             $('#SAveProdIDGoods').show();
-            $('#TypeGoodsServices').val('Good');            
+            $('#TypeGoodsServices').val('Good');
+            GoodsService = "";
+            GoodsService = "Good";
             $('#CreateNewProductModalGoods').modal('show');
         });
+
+        var table = $('#productTable').DataTable();
+
+        $('#productTable tbody').on('dblclick', 'tr', function () {
+            var data = table.row(this).data();
+            console.log(data);
+            EditProduct(data.ProductId);
+        });
+
     });
 
+
+  
     //New Update
     $('#UpdateProductGoods').click(function () {
        

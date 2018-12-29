@@ -142,7 +142,7 @@ namespace InvoiceDiskLast.Controllers
                 db.SaveChanges();
                 return CreatedAtRoute("DefaultApi", new { id = comapnyInfo.CompanyID }, comapnyInfo);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return BadRequest();
             }

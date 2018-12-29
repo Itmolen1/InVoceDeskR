@@ -278,9 +278,7 @@
         }
 
     });
-
- 
-
+     
     $('#CancelChangePassword').click(function () {
         $('#UserInfoModel').modal('show');
         $('#ChangePasswordModel').modal('hide');
@@ -512,10 +510,10 @@
 
     $('#SaveNewUser').click(function () {
         if (ValidateNewUser())
-        {    
+        {
             $.ajax({
                 //url: '/api/account/register',
-                url: 'UserInfo/Register',
+                url: '/UserInfo/Register',
                 method: 'POST',
                 data: {
                     email: $('#NewUserEmail').val(),
@@ -524,8 +522,21 @@
                     Authority: $('#UserAuthority').val(),
 
                     },
-                success: function () {                       
-                    SendEmail();                        
+                success: function (responss) {
+                    if(responss == '200')
+                    {
+                        $('#CreateUserModel').modal('hide');
+                        $.toast({
+                            heading: 'Success',
+                            text: 'New user added successfuly `Added`',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+
+                    }
+
+                    //SendEmail();                        
                 },
                 error: function (jqHXR) {
                     if (jqHXR.status == '400') {
@@ -536,9 +547,7 @@
             });
         }
     });
-
-
-    
+        
     function ValidateNewUser()
     {
         var isvalid = false;
@@ -600,45 +609,3 @@
 
 </script>
 
-@*<script>
-    $(document).ready(function() {
-        // Basic
-        $('.dropify').dropify();
-
-        // Translated
-        $('.dropify-fr').dropify({
-            messages: {
-                default: 'Glissez-déposez un fichier ici ou cliquez',
-                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
-                remove: 'Supprimer',
-                error: 'Désolé, le fichier trop volumineux'
-            }
-        });
-
-        // Used events
-        var drEvent = $('#input-file-events').dropify();
-
-        drEvent.on('dropify.beforeClear', function(event, element) {
-            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
-        });
-
-        drEvent.on('dropify.afterClear', function(event, element) {
-            alert('File deleted');
-        });
-
-        drEvent.on('dropify.errors', function(event, element) {
-            console.log('Has Errors');
-        });
-
-        var drDestroy = $('#input-file-to-destroy').dropify();
-        drDestroy = drDestroy.data('dropify')
-        $('#toggleDropify').on('click', function(e) {
-            e.preventDefault();
-            if (drDestroy.isDropified()) {
-                drDestroy.destroy();
-            } else {
-                drDestroy.init();
-            }
-        })
-    });
-</script>*@

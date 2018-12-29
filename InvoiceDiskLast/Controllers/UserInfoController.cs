@@ -186,42 +186,61 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        //[HttpPost]
-        //public async Task<string> Register(NewUserModel model)
-        //{
-        //    try
-        //    {
+        [HttpPost]
+        public async Task<ActionResult> Register(NewUserModel model)
+        {
+            try
+            {
+                RegisterBindingModel NewModel = new RegisterBindingModel();
 
-        //        RegisterBindingModel NewModel = new RegisterBindingModel();
+                NewModel.Email = model.email;
+                NewModel.Password = model.password;
+                NewModel.ConfirmPassword = model.confirmpassword;                
 
-        //        NewModel.Email = model.email;
-        //        NewModel.Password = model.password;
-        //        NewModel.ConfirmPassword = model.confirmpassword;                
+                var jsonInput = new JavaScriptSerializer().Serialize(NewModel);
 
-        //        var jsonInput = new JavaScriptSerializer().Serialize(NewModel);
+                var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-        //        var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                var response = await GlobalVeriables.WebApiClient.PostAsync("Account/register", stringContent);
 
-        //        var response = await GlobalVeriables.WebApiClient.PostAsync("Account/register", stringContent);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    AspNetUser aspNetUser = new AspNetUser();
+                    aspNetUser.UserName = model.email;
+                    HttpResponseMessage responses = await GlobalVeriables.WebApiClient.PostAsJsonAsync("ConformNewUser", aspNetUser);
 
-        //        if (response.StatusCode == System.Net.HttpStatusCode.OK)
-        //        {
-        //            AspNetUser aspNetUser = new AspNetUser();
-        //            aspNetUser.Id = response.Content.ReadAsAsync<IdentityResult>
-        //            HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync()
-        //        }
-        //        else
-        //        {
-        //            return "Not Found";
-        //        }
+                    if (responses.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        CompanyUser companyUser = new CompanyUser();
+                        companyUser.CompanyId = Convert.ToInt32(Session["CompayID"]);
+                        companyUser.UserId = model.email;
+                        companyUser.IsActive = true;
+                        companyUser.Authority = model.Authority;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return "Ex";
-        //    }
+                        HttpResponseMessage respons = await GlobalVeriables.WebApiClient.PostAsJsonAsync("PostCompanyUser", companyUser);
 
+                        if(respons.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            UserTable userTable = new UserTable();
+                            userTable.UserName = model.email;
+                            HttpResponseMessage responss = await GlobalVeriables.WebApiClient.PostAsJsonAsync("PostUserInfo", userTable);
 
-        //}
+                            if (responss.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                return Json(responss.StatusCode, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                    }
+                   
+                }
+               
+                return Json("OK", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json("Fail",JsonRequestBehavior.AllowGet);
+            }
+
+        }
     }
 }
