@@ -283,8 +283,7 @@ namespace InvoiceDiskLast.Models
 
             string DirevtoryPath = "";
 
-
-
+             DirectoryViewModel _Directory12 = new DirectoryViewModel();
             try
             {
                 _Directory = GetDiretoryPathById((int)Id);
@@ -292,15 +291,15 @@ namespace InvoiceDiskLast.Models
                 if (_Directory == null)
                 {
                    string p=CreateDirecotyFolder(Id, Name);
-                    _Directory.DirectoryPath = p;
+                    _Directory12.DirectoryPath = p;
                 }
 
-                if (_Directory != null)
+                if (_Directory12 != null)
                 {
 
                     if (files.ContentLength != 0)
                     {
-                        DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory.DirectoryPath);
+                        DirevtoryPath = HttpContext.Current.Server.MapPath(_Directory12.DirectoryPath);
 
                         FileInfo fi = new FileInfo(files.FileName);
                         string ext = fi.Extension;

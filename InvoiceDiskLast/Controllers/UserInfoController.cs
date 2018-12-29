@@ -186,41 +186,42 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<string> Register(NewUserModel model)
-        {
-            try
-            {
+        //[HttpPost]
+        //public async Task<string> Register(NewUserModel model)
+        //{
+        //    try
+        //    {
 
-                RegisterBindingModel NewModel = new RegisterBindingModel();
+        //        RegisterBindingModel NewModel = new RegisterBindingModel();
 
-                NewModel.Email = model.email;
-                NewModel.Password = model.password;
-                NewModel.ConfirmPassword = model.confirmpassword;                
+        //        NewModel.Email = model.email;
+        //        NewModel.Password = model.password;
+        //        NewModel.ConfirmPassword = model.confirmpassword;                
 
-                var jsonInput = new JavaScriptSerializer().Serialize(NewModel);
+        //        var jsonInput = new JavaScriptSerializer().Serialize(NewModel);
 
-                var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+        //        var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-                var response = await GlobalVeriables.WebApiClient.PostAsync("Account/register", stringContent);
+        //        var response = await GlobalVeriables.WebApiClient.PostAsync("Account/register", stringContent);
 
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    AspNetUser aspNetUser = new AspNetUser();
-                    aspNetUser.Id = response.Content.ReadAsAsync<IdentityResult>
-                    HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync()
-                }
-                else
-                {
-                    return "Not Found";
-                }
+        //        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        //        {
+        //            AspNetUser aspNetUser = new AspNetUser();
+        //            aspNetUser.Id = response.Content.ReadAsAsync<IdentityResult>
+        //            HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync()
+        //        }
+        //        else
+        //        {
+        //            return "Not Found";
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                return "Ex";
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return "Ex";
+        //    }
 
-        }
+
+        //}
     }
 }

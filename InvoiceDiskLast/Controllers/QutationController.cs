@@ -272,27 +272,16 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                var idd = Session["ClientID"];
-                var cdd = Session["CompayID"];
-
-                if (Session["ClientID"] != null && Session["CompayID"] != null)
-                {
-                    Contactid = Convert.ToInt32(Session["ClientID"]);
-                    CompanyID = Convert.ToInt32(Session["CompayID"]);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contactid.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + QutationID.ToString()).Result;
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + QutationModel.ContactId.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+              
 
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationID.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
@@ -636,7 +625,7 @@ namespace InvoiceDiskLast.Controllers
                 quutionviewModel2.QutationDate = QutationModel.QutationDate;
                 quutionviewModel2.QutationID = QutationModel.QutationID;
                 quutionviewModel2.Qutation_ID = QutationModel.Qutation_ID;
-
+                quutionviewModel2.ConatctId = QutationModel.ContactId;
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 

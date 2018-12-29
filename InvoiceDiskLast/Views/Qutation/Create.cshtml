@@ -166,7 +166,6 @@
 
                         <tbody class="tbodyGood">
 
-
                             <tr id="mainrow">
                                 <td>
                                     <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
@@ -255,7 +254,7 @@
                                 </td>
 
                                 <td>
-                                    <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
+                                    <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
                                     <input type="text" class=" Discription form-control Input-height" />
@@ -393,14 +392,14 @@
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
 
-        currentRow1 = $(this).closest("tr");
-        var VAT = Currentrow.find('.VATG').val();
-
+        debugger;
+    
+        var currentRow1 = $(this).closest("tr");
+        var VAT = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow1);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-        // AddingVatValue(VAT, currentRow1);
 
         var isAllValid = true;
         if ($("#mainrow #SelectProductQutationG").val() == "0") {
@@ -412,7 +411,6 @@
         var isAllValid = true;
         if ($("#mainrow .quantityG").val() == 0) {
             isAllValid = false;
-
             alert("Please provide quantityG");
             return;
         }
@@ -430,7 +428,9 @@
             //Replace add button with remove button
             $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
             //Remove id attribute from new clone row
-            $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
+
+
+            $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
             $('.tbodyGood').prepend($newRow);
             $(".FTotalG").prop('disabled', true);
@@ -513,9 +513,7 @@
             $('#mainrow1 .RowTotalG').val('');
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG').val('');
 
-            CombineTotalAndSubtotal();
-            CombineTotal();
-            CalculateVateTotal();
+
         }
     });
 
@@ -538,7 +536,7 @@
 
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
 
-    $(document).on("keypress", ".tbody .rateG", function () {
+    $(document).on("keypress", "tbody .rateG", function () {
 
         Currentrow = $(this).closest("tr");
         FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
@@ -550,7 +548,7 @@
     });
 
 
-    $(document).on("keyup", ".tbody .rateG", function () {
+    $(document).on("keyup", "tbody .rateG", function () {
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
@@ -558,11 +556,11 @@
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
-        GrandTotal("Add", Total, Subtotalwt);
+        // GrandTotal("Add", Total, Subtotalwt);
     });
 
 
-    $(document).on("keyup", ".tbody .quantityG", function () {
+    $(document).on("keyup", "tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
@@ -572,7 +570,7 @@
         CalculateVateTotal();
     });
 
-    $(document).on("keyup", ".tbody .rateG", function () {
+    $(document).on("keyup", "tbody .rateG", function () {
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
@@ -584,7 +582,7 @@
         CalculateVateTotal();
     });
 
-    $(document).on("keyup", ".tbody .quantityG", function () {
+    $(document).on("keyup", "tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
@@ -597,30 +595,48 @@
 
     function calculateTotalGoods(currentRow) {
 
-        Quantity = Currentrow.find(".quantityG").val(),
-        Price = Currentrow.find('.rateG').val();
+        console.log(currentRow);
+
+
+        Quantity = currentRow.find(".quantityG").val(),
+        Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
-        Currentrow.find('.FTotalG').val(Total);
+        if (!isNaN(Total)) {
+            currentRow.find('.FTotalG').val(Total);
+        }
+
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        Total = 0;
-        Total = Currentrow.find(".FTotalG").val();
-        if (parseInt(vat) == 0) {
-            Currentrow.find('.RowTotalG').val(Total);
-            Currentrow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
-            return;
-        }
-        var InputVatValue = parseFloat((Total / 100) * vat);
-        var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
-        Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
-    }
-    $(document).on('change', '.tbody .VATG', function () {
+        debugger;
+        var price = CurrentRow;
 
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        Total = 0;
+
+
+        Total = CurrentRow.find('.FTotalG').val();
+        if (parseInt(vat) == 0) {
+            if (!isNaN(Total)) {
+                CurrentRow.find('.RowTotalG').val(Total);
+                CurrentRow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
+                return;
+            }
+        }
+
+        if (!isNaN(Total)) {
+            var InputVatValue = parseFloat((Total / 100) * vat);
+            var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
+            CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
+        }
+
+
+    }
+    $(document).on('change', 'tbody .VATG', function () {
+
+        var currentRow1 = $(this).closest("tr");
+        var VAT = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(VAT, currentRow1);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -628,23 +644,27 @@
     });
 
     $('.VATG').change(function () {
-        var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
-        CombineTotalAndSubtotal();
-        CombineTotal();
-        CalculateVateTotal();
-    });
-    $('.quantityG').change(function () {
-        var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
-        CombineTotalAndSubtotal();
-        CombineTotal();
-        CalculateVateTotal();
-    });
-    $('.quantityG').keyup(function () {
 
+        debugger;
+
+        var Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+        Currentrow = "";
+    });
+    //$('.quantityG').change(function () {
+    //    var Currentrow = $(this).closest("tr");
+    //    vat = Currentrow.find('.VATG').val();
+    //    RowSubTalSubtotal(vat, Currentrow);
+    //    CombineTotalAndSubtotal();
+    //    CombineTotal();
+    //    CalculateVateTotal();
+    //});
+    $('.quantityG').keyup(function () {
+        debugger;
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -660,9 +680,12 @@
         CombineTotal();
         CalculateVateTotal();
     });
-    $('.tbody .VATG').change(function () {
+    $('tbody .VATG').change(function () {
 
-        Currentrow = $(this).closest("tr");
+        debugger;
+
+
+        var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
@@ -673,7 +696,7 @@
 
     $('.VATG').change(function () {
 
-        currentRow1 = $(this).closest("tr");
+        var currentRow1 = $(this).closest("tr");
         vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
@@ -689,7 +712,7 @@
 
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
-        $('#QutationServiceDetail1 tr').each(function () {
+        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
 
 
 
@@ -713,7 +736,7 @@
         });
 
 
-        $('#orderdetailsitems tr').each(function () {
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
 
             var Value = $(this).find(".VATG").val();
 
@@ -741,11 +764,34 @@
         }
     }
 
-    $('#mainrow .pClassG').change(function () {
-        var Current = $(this).closest('tr');
+    $(document).on('change', '.pClassG', function () {
+        debugger;
+        var currentRow1 = $(this).closest('tr');
+        var value = currentRow1.find('.pClassG').val();
+        GetProductPriceByProductId(value, currentRow1);
+    });
+  
 
-        var value = $(this).val();
-        if (value == "AddNewProductSelect") {
+    $('#mainrow .pClassG').change(function () {
+
+        debugger;
+        var currentRow = $(this).closest('tr');
+        var value = currentRow.find('.pClassG').val();
+        GetProductPriceByProductId(value, currentRow);
+    });
+
+
+    $('#mainrow1 .pClassG').change(function () {
+
+        debugger;
+        var currentRow = $(this).closest('tr');
+        var value = currentRow.find('.pClassG').val();
+        GetProductPriceByProductId(value, currentRow);
+    });
+
+    function GetProductPriceByProductId(Id, CurrentRow) {
+
+        if (Id == "AddNewProductSelect") {
             GoodsService = "";
             GoodsService = "Good";
             ShowServiceGood("Good");
@@ -756,59 +802,27 @@
             $('#TypeGoodsServices').attr('disabled', 'disabled');
             $('#CreateNewProductModalGoods').modal('show');
         }
-        else if (value == "0") {
+        else if (Id == "0") {
 
             return;
         }
         else {
-            var productId = $(this).val();
+            var productId = Id;
             $.ajax({
                 url: "/MVCQutation/ProductPricebyId",
                 type: "POST",
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
-
-                    //  ChangeTotalOnItemCahe(Current);
-                    $('#mainrow .rateG').val(resultData);
-                },
-                error: function (errormessage) {
-                    //alert(errormessage)
-                }
-            });
-        }
-    });
-
-    $('#mainrow1 .pClassS').change(function () {
-        var Current = $(this).closest('tr');
-
-        var value = $(this).val();
-        if (value == "AddNewProductSelect") {
-            ShowServiceGood("Services");
-            GoodsService = "";
-            GoodsService = "Services";
-            $('#TypeGoodsServices').attr('disabled', false);
-            $('#UpdateProIdGoods').hide();
-            $('#SAveProdIDGoods').show();
-            $('#TypeGoodsServices').val('Services');
-            $('#TypeGoodsServices').attr('disabled', 'disabled');
-            $('#CreateNewProductModalGoods').modal('show');
-        }
-        else if (value == "0") {
-
-            return;
-        }
-        else {
-            var productId = $(this).val();
-            $.ajax({
-                url: "/MVCQutation/ProductPricebyId",
-                type: "POST",
-                cache: false,
-                data: { 'ProductId': productId },
-                success: function (resultData) {
-                    // ChangeTotalOnItemCahe(Current);
-
-                    $('#mainrow1 .rateG').val(resultData);
+                    debugger;
+                    CurrentRow.find('.rateG').val(resultData);
+                    calculateTotalGoods(CurrentRow);
+                    CombineTotalAndSubtotal();
+                    CombineTotal();
+                    CalculateVateTotal();
+                    vat = CurrentRow.find('.VATG').val();
+                    var it = CurrentRow.find('.RowTotalG').val();
+                    RowSubTalSubtotal(vat, CurrentRow);
 
                 },
                 error: function (errormessage) {
@@ -816,9 +830,60 @@
                 }
             });
         }
-    });
+    }
+
+
+
+
+    //$('#mainrow1 .pClassS').change(function () {
+
+
+    //    var Current = $(this).closest('tr');
+
+    //    var value = $(this).val();
+    //    if (value == "AddNewProductSelect") {
+    //        ShowServiceGood("Services");
+    //        GoodsService = "";
+    //        GoodsService = "Services";
+    //        $('#TypeGoodsServices').attr('disabled', false);
+    //        $('#UpdateProIdGoods').hide();
+    //        $('#SAveProdIDGoods').show();
+    //        $('#TypeGoodsServices').val('Services');
+    //        $('#TypeGoodsServices').attr('disabled', 'disabled');
+    //        $('#CreateNewProductModalGoods').modal('show');
+    //    }
+    //    else if (value == "0") {
+
+    //        return;
+    //    }
+    //    else {
+    //        var productId = $(this).val();
+    //        $.ajax({
+    //            url: "/MVCQutation/ProductPricebyId",
+    //            type: "POST",
+    //            cache: false,
+    //            data: { 'ProductId': productId },
+    //            success: function (resultData) {
+
+    //                $('#mainrow1 .rateG').val(resultData);
+    //                calculateTotalGoods(Current);
+    //                CombineTotalAndSubtotal();
+    //                CombineTotal();
+    //                CalculateVateTotal();
+    //                vat = Current.find('.VATG').val();
+    //                RowSubTalSubtotal(vat, Current);
+
+    //            },
+    //            error: function (errormessage) {
+
+    //            }
+    //        });
+    //    }
+    //});
 
     function CombineTotalAndSubtotal() {
+
+        debugger;
 
         var SubTotalGoode = 0, SubTotalService = 0;
 
@@ -834,14 +899,18 @@
         }
         var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
 
-        $('#SubTotal').text(Total.toFixed(2));
-        $('#gtotal').text(Total.toFixed(2));
+        if (!isNaN(Total)) {
+            $('#SubTotal').text(Total.toFixed(2));
+            $('#gtotal').text(Total.toFixed(2));
 
-
+        }
 
     }
 
     function CombineTotal() {
+
+
+        debugger;
 
         var TotalGoode, Total, TotalService1 = 0;
 
@@ -878,7 +947,9 @@
 
     function AddSubTotalService() {
         var SubTotalService = 0;
+
         $('#QutationServiceDetail1  tr').each(function () {
+            debugger;
             var Value = $(this).find(".RowTotalG").val();
             if (!isNaN(Value)) {
 
@@ -905,7 +976,6 @@
         var TotalService = 0;
         $('#QutationServiceDetail1 tr').each(function () {
             var Value = $(this).find(".FTotalG").val();
-
 
             if (!isNaN(Value)) {
                 TotalService += parseFloat(Value);
@@ -974,6 +1044,9 @@
 
         $(this).parents('tr').remove();
 
+        var currentRow1 = $(this).closest("tr");
+        vat = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -983,9 +1056,15 @@
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VAT  option:selected').val();
         $(this).parents('tr').remove();
+
+        var currentRow1 = $(this).closest("tr");
+        vat = currentRow1.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
+
+
     });
 
     $('#Submit').click(function () {
@@ -1246,9 +1325,6 @@
 
         });
     });
-
-
-
 
     $('#saveprintandsendtoyourselfsave').click(function () {
 
