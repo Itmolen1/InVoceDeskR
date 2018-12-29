@@ -187,11 +187,10 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public async Task<string> Register(NewUserModel model)
+        public async Task<ActionResult> Register(NewUserModel model)
         {
             try
             {
-
                 RegisterBindingModel NewModel = new RegisterBindingModel();
 
                 NewModel.Email = model.email;
@@ -207,18 +206,39 @@ namespace InvoiceDiskLast.Controllers
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     AspNetUser aspNetUser = new AspNetUser();
-                    aspNetUser.Id = response.Content.ReadAsAsync<IdentityResult>
-                    HttpResponseMessage responses = GlobalVeriables.WebApiClient.PostAsJsonAsync()
-                }
-                else
-                {
-                    return "Not Found";
-                }
+                    aspNetUser.UserName = model.email;
+                    HttpResponseMessage responses = await GlobalVeriables.WebApiClient.PostAsJsonAsync("ConformNewUser", aspNetUser);
 
+                    if (responses.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        CompanyUser companyUser = new CompanyUser();
+                        companyUser.CompanyId = Convert.ToInt32(Session["CompayID"]);
+                        companyUser.UserId = model.email;
+                        companyUser.IsActive = true;
+                        companyUser.Authority = model.Authority;
+
+                        HttpResponseMessage respons = await GlobalVeriables.WebApiClient.PostAsJsonAsync("PostCompanyUser", companyUser);
+
+                        if(respons.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            UserTable userTable = new UserTable();
+                            userTable.UserName = model.email;
+                            HttpResponseMessage responss = await GlobalVeriables.WebApiClient.PostAsJsonAsync("PostUserInfo", userTable);
+
+                            if (responss.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                return Json(responss.StatusCode, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                    }
+                   
+                }
+               
+                return Json("OK", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return "Ex";
+                return Json("Fail",JsonRequestBehavior.AllowGet);
             }
 
         }

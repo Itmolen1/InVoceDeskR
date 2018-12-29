@@ -79,26 +79,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-        [Route("Conform")]
-        public IHttpActionResult PutProductTable(AspNetUser aspNetUser)
-        {
-
-            AspNetUser asp = db.AspNetUsers.Where(c => c.Id == aspNetUser.Id).FirstOrDefault();
-            asp.EmailConfirmed = true;
-            db.Entry(asp).State = EntityState.Modified;
-            try
-            {
-                db.SaveChanges();
-                return Ok();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-
-            }
-        }
-
+        
         [Route("{id:alpha}/{ss:alpha}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProductTable(string id, string ss, AspNetUser aspNetUser)
