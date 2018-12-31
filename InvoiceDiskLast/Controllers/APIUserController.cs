@@ -50,13 +50,13 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                UserModel userModel = db.UserTables.Where(x => x.UserName == UserInfo.username).Select(c => new UserModel
+                UserModel userModel = db.UserTables.Where(x => x.Username == UserInfo.username).Select(c => new UserModel
                 {
                     UserId = c.UserId,
                     UserFname = c.UserFname,
                     Insertion = c.Insertion,
                     UserLname = c.UserLname,
-                    Username = c.UserName,
+                    Username = c.Username,
                     Gender = c.Gender,
                     DOB = c.DOB,
                     ImageUrl = c.ImageUrl,
