@@ -144,7 +144,7 @@
     <!-- /.modal-dialog -->
 </div>
 
-
+<input type="hidden" id="UserImageUrl" />
 <div id="CreateUserModel" class="modal fade" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -395,7 +395,9 @@
             Username: $('#Username').val(),
             Gender: $("input[name='gender']:checked").val(),
             DOB: $('#TxtDob').val(),
-            UserId: $('#userid').val()
+            UserId: $('#userid').val(),
+            ImageUrl: $('#UserImageUrl').val()
+             
         },
 
         $.ajax({
@@ -435,6 +437,8 @@
                 $('#UserImageWithName').attr('src', url)
                 $('#UserNamess').text(Userdata.Username);
                 $('#Username').val(Userdata.Username);
+                $('#UserImageUrl').val(Userdata.ImageUrl);
+                
                 if (Userdata.UserFname == null || Userdata.UserLname == null) {
                     $('#UFnameLname').hide();
                 }
