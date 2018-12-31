@@ -111,7 +111,7 @@ namespace InvoiceDiskLast.Controllers
                 db.SaveChanges();
                 return Ok(compnyUser);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return NotFound();
             }

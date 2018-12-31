@@ -29,11 +29,11 @@ namespace InvoiceDiskLast.Controllers
             ob = 0;
             try
             {
-                bool Result = db.CompanyUsers.Count(e => e.UserId == User.username) > 0;                
+                bool Result = db.CompanyUsers.Count(e => e.UserID == User.username) > 0;                
                
                 if (Result == true)
                 {
-                    ob = db.CompanyUsers.Where(u => u.UserId == User.username.ToString()).Select(c => (int)c.CompanyId).FirstOrDefault();
+                    ob = db.CompanyUsers.Where(u => u.UserID == User.username.ToString()).Select(c => (int)c.CompanyID).FirstOrDefault();
 
                     return ob;
 
