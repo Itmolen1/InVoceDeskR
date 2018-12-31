@@ -16,8 +16,7 @@ namespace InvoiceDiskLast.Controllers
 
         private DBEntities db = new DBEntities();
 
-        //Get: api/GetQutationCount
-
+       
 
 
 
@@ -45,7 +44,8 @@ namespace InvoiceDiskLast.Controllers
                 Vat = c.TotalVat6 + c.TotalVat21,
                 TotalAmount = c.TotalAmount,
                 Status = (c.Status).Trim(),
-                UserName = c.UserTable.UserFname + " " + c.UserTable.UserLname,
+                //UserName = c.UserTable.UserFname + " " + c.UserTable.UserLname,
+                UserName = (c.UserTable.UserFname + " " + c.UserTable.UserLname != "" ? c.UserTable.UserFname + " " + c.UserTable.UserLname : c.UserTable.Username),              
                 CustomerName = c.ContactsTable.ContactName
 
             }).ToList();
