@@ -623,6 +623,7 @@ namespace InvoiceDiskLast.Controllers
 
                 quutionviewModel2.DueDate = QutationModel.DueDate;
                 quutionviewModel2.QutationDate = QutationModel.QutationDate;
+                quutionviewModel2.CompanyId = QutationModel.CompanyId;
                 quutionviewModel2.QutationID = QutationModel.QutationID;
                 quutionviewModel2.Qutation_ID = QutationModel.Qutation_ID;
                 quutionviewModel2.ConatctId = QutationModel.ContactId;
