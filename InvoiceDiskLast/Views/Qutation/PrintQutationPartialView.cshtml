@@ -14,7 +14,7 @@
     <title></title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
-
+    <link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
 
 
 </head>
@@ -27,11 +27,11 @@
 
                 <div class="row">
                     <div class="col-xs-7 ">
-                        <img src="@Url.Content(" ~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" />
+                        <img src="@Url.Content("~/Images/"+@CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
 
                         <div class="row" style="margin-top:20px">
                             <div class="col-xs-12  HeadText">
-                                <label>Qutation</label>
+                                <label>Quotation</label>
                             </div>
                         </div>
 
@@ -40,9 +40,9 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 ">
-                                @Contectdatas.ContactAddress
+                                @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
                                 <br />
-                                @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
+                                @Contectdatas.PostalCode,@Contectdatas.City
                             </div>
                         </div>
                         @{
@@ -53,7 +53,7 @@
                         }
                         <div class="row" style="margin-top:20px">
                             <div class="col-xs-4 ">
-                                Qutation Date:
+                                Quotation Date:
                             </div>
                             <div class="col-xs-8 ">
                                 @qdate.ToShortDateString()
@@ -61,7 +61,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-4 ">
-                                Qutation Number:
+                                Quotation Number:
                             </div>
                             <div class="col-xs-8 ">
                                 @QutationModel.Qutation_ID
@@ -147,8 +147,7 @@
 
                 @if (ViewBag.QutationDatailsList != null)
                 {
-                    InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>
-                        ;
+                    InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>;
 
                     InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
 
