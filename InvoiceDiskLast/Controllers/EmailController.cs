@@ -42,9 +42,6 @@ namespace InvoiceDiskLast.Controllers
             bool emailstatus = false;
             try
             {
-                
-
-
                 string bodyhtml = emailmodel.EmailBody;
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
@@ -60,21 +57,12 @@ namespace InvoiceDiskLast.Controllers
 
                 mail.Body = bodyhtml;
 
-
-
-            
-
-               
                 if (_StringList != null && _StringList.Count() > 0)
                 {
                     foreach (var item in _StringList)
                     {
                         string attt = item.Attckment;
-
-                        
-
                         mail.Attachments.Add(new System.Net.Mail.Attachment(item.Attckment.ToString()));
-
                     }
                 }
                 else
