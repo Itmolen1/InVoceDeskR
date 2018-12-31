@@ -222,7 +222,7 @@ namespace InvoiceDiskLast.Controllers
                         if(respons.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             UserTable userTable = new UserTable();
-                            userTable.UserName = model.email;
+                            userTable.Username = model.email;
                             HttpResponseMessage responss = await GlobalVeriables.WebApiClient.PostAsJsonAsync("PostUserInfo", userTable);
 
                             if (responss.StatusCode == System.Net.HttpStatusCode.OK)

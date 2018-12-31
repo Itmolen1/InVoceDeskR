@@ -516,6 +516,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QutationTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
@@ -629,6 +641,10 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_UserTable" Association="Self.FK_QutationTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="QutationTable" EntitySet="QutationTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="Self.FK_UserTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="UserTable" EntitySet="UserTable" />
@@ -690,7 +706,6 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
           </AssociationSet>
-          <EntitySet Name="UserTables" EntityType="APIcompanyModel.UserTable" />
           <EntitySet Name="ContactsTables" EntityType="APIcompanyModel.ContactsTable" />
           <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="APIcompanyModel.FK_ContactsTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
@@ -750,10 +765,6 @@
             <End Role="PaymentTermTable" EntitySet="PaymentTermTables" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="UserTable" EntitySet="UserTables" />
-          </AssociationSet>
           <EntitySet Name="PurchaseOrderDetailsTables" EntityType="APIcompanyModel.PurchaseOrderDetailsTable" />
           <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
@@ -773,16 +784,17 @@
             <End Role="ContactsTable" EntitySet="ContactsTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_QutationOrderStatusTable_UserTable" Association="APIcompanyModel.FK_QutationOrderStatusTable_UserTable">
+          <EntitySet Name="UserAuthorityTables" EntityType="APIcompanyModel.UserAuthorityTable" />
+          <EntitySet Name="CompanyUsers" EntityType="APIcompanyModel.CompanyUser" />
+          <EntitySet Name="UserTables" EntityType="APIcompanyModel.UserTable" />
+          <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="UserTable" EntitySet="UserTables" />
-            <End Role="QutationOrderStatusTable" EntitySet="QutationOrderStatusTables" />
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_UserTable" Association="APIcompanyModel.FK_QutationTable_UserTable">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
-          <EntitySet Name="UserAuthorityTables" EntityType="APIcompanyModel.UserAuthorityTable" />
-          <EntitySet Name="CompanyUsers" EntityType="APIcompanyModel.CompanyUser" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -890,25 +902,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UserTable">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserFname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Insertion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UserLname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Gender" Type="Int32" />
-          <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="CompanyId" Type="Int32" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
-          <Property Name="ImageUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_UserTable" FromRole="UserTable" ToRole="QutationOrderStatusTable" />
-          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
             <PropertyRef Name="ContactsId" />
@@ -1134,7 +1127,6 @@
           <Property Name="UserId" Type="Int32" />
           <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationOrderStatusTable" ToRole="QutationTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="QutationOrderStatusTable" ToRole="ComapnyInfo" />
-          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_UserTable" FromRole="QutationOrderStatusTable" ToRole="UserTable" />
         </EntityType>
         <Association Name="FK_QutationOrderStatusTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -1214,18 +1206,6 @@
             </Principal>
             <Dependent Role="AccountTransictionTable">
               <PropertyRef Name="FKPaymentTerm" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="UserTable">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1326,30 +1306,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_QutationOrderStatusTable_UserTable">
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationOrderStatusTable" Role="QutationOrderStatusTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="QutationOrderStatusTable">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_QutationTable_UserTable">
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="QutationTable">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="UserAuthorityTable">
           <Key>
             <PropertyRef Name="UserAuthorityId" />
@@ -1370,6 +1326,47 @@
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="AddedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserFname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Insertion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserLname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
+        </EntityType>
+        <Association Name="FK_UserTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="UserTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1464,22 +1461,6 @@
                 <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
                 <ScalarProperty Name="PurchaseID" ColumnName="PurchaseID" />
                 <ScalarProperty Name="PurchaseOrderID" ColumnName="PurchaseOrderID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
-              <MappingFragment StoreEntitySet="UserTable">
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="DOB" ColumnName="DOB" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="UserLname" ColumnName="UserLname" />
-                <ScalarProperty Name="Insertion" ColumnName="Insertion" />
-                <ScalarProperty Name="UserFname" ColumnName="UserFname" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1725,6 +1706,22 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
+              <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="UserLname" ColumnName="UserLname" />
+                <ScalarProperty Name="Insertion" ColumnName="Insertion" />
+                <ScalarProperty Name="UserFname" ColumnName="UserFname" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
