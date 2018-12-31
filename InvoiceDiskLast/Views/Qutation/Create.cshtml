@@ -393,7 +393,7 @@
     $('#btnaddGoods').click(function () {
 
         debugger;
-    
+
         var currentRow1 = $(this).closest("tr");
         var VAT = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow1);
@@ -583,6 +583,9 @@
     });
 
     $(document).on("keyup", "tbody .quantityG", function () {
+
+        debugger;
+
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
@@ -616,15 +619,15 @@
 
 
         Total = CurrentRow.find('.FTotalG').val();
-        if (parseInt(vat) == 0) {
-            if (!isNaN(Total)) {
+        if (parseInt(vat) == 0 && typeof (vat) != "undefined") {
+            if (!isNaN(Total) && typeof (Total) != "undefined") {
                 CurrentRow.find('.RowTotalG').val(Total);
                 CurrentRow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
                 return;
             }
         }
 
-        if (!isNaN(Total)) {
+        if (!isNaN(Total) && typeof (vat) != "undefined") {
             var InputVatValue = parseFloat((Total / 100) * vat);
             var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
             CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
@@ -655,14 +658,7 @@
         CalculateVateTotal();
         Currentrow = "";
     });
-    //$('.quantityG').change(function () {
-    //    var Currentrow = $(this).closest("tr");
-    //    vat = Currentrow.find('.VATG').val();
-    //    RowSubTalSubtotal(vat, Currentrow);
-    //    CombineTotalAndSubtotal();
-    //    CombineTotal();
-    //    CalculateVateTotal();
-    //});
+
     $('.quantityG').keyup(function () {
         debugger;
         var Currentrow = $(this).closest("tr");
@@ -672,6 +668,8 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
+
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -680,6 +678,8 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
+
     $('tbody .VATG').change(function () {
 
         debugger;
@@ -770,7 +770,6 @@
         var value = currentRow1.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow1);
     });
-  
 
     $('#mainrow .pClassG').change(function () {
 
@@ -779,7 +778,6 @@
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
-
 
     $('#mainrow1 .pClassG').change(function () {
 
@@ -843,10 +841,22 @@
         }
     }
 
+    $('#SelectProductQutationS').change(function () {
 
+        var value = $(this).val();
+        if (value == "AddNewProductSelect") {
+            ShowServiceGood("  ");
+            GoodsService = "";
+            GoodsService = "Services";
+            $('#TypeGoodsServices').attr('disabled', false);
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').val('Services');
+            $('#TypeGoodsServices').attr('disabled', 'disabled');
+            $('#CreateNewProductModalGoods').modal('show');
+        }
+    });
 
-
-   
     function CombineTotalAndSubtotal() {
 
         debugger;
@@ -874,28 +884,23 @@
     }
 
     function CombineTotal() {
-
-
-        debugger;
-
         var TotalGoode, Total, TotalService1 = 0;
-
         TotalGoode = totalGoods();
         TotalService1 = TotalService();
 
-        if (isNaN(TotalGoode)) {
+        if (!isNaN(parseFloat(TotalGoode) && typeof (TotalGoode) != "undefined")) {
             TotalGoode = 0;
         }
 
-        if (isNaN(TotalService1)) {
-            TotalService1 = 0;
+        if (!isNaN(parseFloat(TotalService1) && typeof (TotalService1) != "undefined")) {
+            {
+                TotalService1 = 0;
+            }
+            Total = parseFloat(TotalGoode) + parseFloat(TotalService1);
+
+            $('#TotalBTW').text(Total.toFixed(2));
         }
-
-        Total = parseFloat(TotalGoode) + parseFloat(TotalService1);
-
-        $('#TotalBTW').text(Total.toFixed(2));
     }
-
     function AddSubtotalGoods() {
         var SubTotalGood = 0;
 
@@ -903,7 +908,7 @@
 
             var Value = $(this).find(".RowTotalG").val();
 
-            if (!isNaN(parseFloat(Value))) {
+            if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 SubTotalGood += parseFloat(Value)
             }
         })
@@ -914,10 +919,12 @@
     function AddSubTotalService() {
         var SubTotalService = 0;
 
-        $('#QutationServiceDetail1  tr').each(function () {
+        $('#QutationServiceDetail1 tr').each(function () {
+
+
             debugger;
             var Value = $(this).find(".RowTotalG").val();
-            if (!isNaN(Value)) {
+            if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
 
                 SubTotalService += parseFloat(Value);
             }
@@ -931,7 +938,7 @@
         $('#orderdetailsitems  tr').each(function () {
 
             var Value = $(this).find(".FTotalG").val();
-            if (!isNaN(parseFloat(Value))) {
+            if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 TotalGood += parseFloat(Value)
             }
         })
@@ -943,7 +950,7 @@
         $('#QutationServiceDetail1 tr').each(function () {
             var Value = $(this).find(".FTotalG").val();
 
-            if (!isNaN(Value)) {
+            if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 TotalService += parseFloat(Value);
             }
         })
@@ -1123,7 +1130,7 @@
             QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
@@ -1241,7 +1248,7 @@
             QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
@@ -1356,7 +1363,7 @@
             QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
@@ -1430,4 +1437,8 @@
             return Isvalid;
         }
     }
+
+
+
+
 </script>

@@ -24,7 +24,7 @@
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
                     @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { id = "qutationId1" } })
-                         
+
                     @Html.HiddenFor(model => model.ConatctId, new { htmlAttributes = new { id = "ConatctId" } })
 
                     @Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new { id = "CompanyId" } })
@@ -857,26 +857,21 @@
 
         debugger;
         var price = CurrentRow;
-
         Total = 0;
-
-
         Total = CurrentRow.find('.FTotalG').val();
-        if (parseInt(vat) == 0) {
-            if (!isNaN(Total)) {
+        if (parseInt(vat) == 0 && typeof (vat) != "undefined") {
+            if (!isNaN(Total) && typeof (Total) != "undefined") {
                 CurrentRow.find('.RowTotalG').val(Total);
                 CurrentRow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
                 return;
             }
         }
 
-        if (!isNaN(Total)) {
+        if (!isNaN(Total) && typeof (Total) != "undefined") {
             var InputVatValue = parseFloat((Total / 100) * vat);
             var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
             CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
         }
-
-
     }
 
 
@@ -1188,7 +1183,7 @@
 
             var Value = $(this).find('.RowTotalG').val();
 
-          
+
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
 
                 SubTotalService += parseFloat(Value);
@@ -1203,7 +1198,7 @@
         $('#orderdetailsitems1 tbody tr').each(function () {
 
             var Value = $(this).find(".FTotalG").val();
-      
+
 
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 TotalGood += parseFloat(Value)
@@ -1368,7 +1363,7 @@
             QutationID: $('#QutationID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
@@ -1504,10 +1499,10 @@
             QutationID: $('#QutationID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-          
+
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyId').val(),
         };
@@ -1640,12 +1635,12 @@
             QutationID: $('#QutationID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyId').val(),
-            
+
         };
 
         for (var key in empObj) {
@@ -1709,7 +1704,6 @@
         var row = $(this).closest('tr');
         Remove(row);
         $(this).closest("tr").remove();
-
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
