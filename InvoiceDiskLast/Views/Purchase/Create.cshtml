@@ -164,37 +164,38 @@
                             </tr>
                         </thead>
 
-                        <tbody class="tbody"></tbody>
-                        <tr id="mainrow">
-                            <td>
-                                <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                    <option>0</option>
-                                    <option>6</option>
-                                    <option>21</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
-                            </td>
-                            <td>
-                                <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
-                            </td>
-                        </tr>
+                        <tbody class="tbodyGood">
+                            <tr id="mainrow">
+                                <td>
+                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
 
@@ -462,7 +463,7 @@
             //Remove id attribute from new clone row
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('#orderdetailsitems').append($newRow);
+            $('.tbodyGood').prependTo($newRow);
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -691,6 +692,26 @@
     });
 
 
+    function ValidateRow(CurrentRow) {
+
+        var Isvalid = true;
+        var Produectid = 0, quantityG = 0, varrateG = 0;
+        Produectid = CurrentRow.find('.product').val();
+        quantityG = CurrentRow.find('.quantityG ').val();
+        varrateG = CurrentRow.find('.rateG ').val();
+        if (parseInt(Produectid) == 0 || Produectid == "") {
+            Isvalid = false;
+        }
+        if (parseInt(quantityG) == 0 || quantityG == "") {
+            Isvalid = false;
+        }
+        if (parseInt(varrateG) == 0 || varrateG == "") {
+            Isvalid = false;
+        }
+        return Isvalid;
+    }
+
+
     $('#mainrow1 .VATG').change(function () {
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -761,10 +782,12 @@
 
     $('#mainrow1 .pClassS').change(function () {
         var Current = $(this).closest('tr');
-
+        debugger;
         var value = $(this).val();
         if (value == "AddNewProductSelect") {
             ShowServiceGood("Services");
+            GoodsService = "";
+            GoodsService = "Services";
 
             $('#TypeGoodsServices').attr('disabled', false);
             $('#UpdateProIdGoods').hide();
@@ -1016,28 +1039,40 @@
 
     function CreatePurchase() {
 
-       
 
+        debugger;
         var list = [], orderItem, CurrentRow;
 
-        $('#orderdetailsitems .tbody tr').each(function () {
-            orderItem = {
-                PurchaseItemId: parseInt($(this).find('.product').val()),
-                PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                Type: "Goods",
-                PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-                PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-                Total: parseFloat($(this).find('.FTotalG').val()),
-                PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
+      
+
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
+
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Goods",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
             }
-            list.push(orderItem);
         });
 
 
         $('#QutationServiceDetail1 .tbody tr').each(function () {
-
-            orderItem = {
+            if (ValidateRow(CurrentRow)) {
+            orderItem ={
                 PurchaseItemId: parseInt($(this).find('.product').val()),
                 PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                 Type: "Service",
@@ -1199,7 +1234,7 @@
 
     function EmailPrint() {
         var list = [], orderItem, CurrentRow;
-      
+
         $('#orderdetailsitems .tbody tr').each(function () {
             orderItem = {
                 PurchaseItemId: parseInt($(this).find('.product').val()),
@@ -1258,7 +1293,7 @@
             dataType: "json",
             success: function (result) {
                 localStorage.setItem('path1', result.path);
-               
+
 
                 if (result.Status == "Success") {
                     swal({
