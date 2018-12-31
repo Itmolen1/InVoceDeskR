@@ -418,7 +418,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-                mvcQutationModel.UserId = 4;
+                mvcQutationModel.UserId = 2;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -514,7 +514,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-                mvcQutationModel.UserId = 4;
+                mvcQutationModel.UserId = 2;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -669,7 +669,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 4;
+                mvcQutationModel.UserId = 2;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -1205,7 +1205,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = CompanyID;
-                mvcQutationModel.UserId = 4;
+                mvcQutationModel.UserId = 2;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -1309,7 +1309,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 4;
+                mvcQutationModel.UserId = 2;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -1405,7 +1405,7 @@ namespace InvoiceDiskLast.Controllers
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 4;
+                mvcQutationModel.UserId = 2;
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
 
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
