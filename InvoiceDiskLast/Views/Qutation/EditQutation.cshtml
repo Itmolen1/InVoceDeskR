@@ -189,7 +189,7 @@
                                             <tr>
                                                 <td>
                                                     <select class="product form-control pClassG Input-height" style="width: 300px;font-size:12px">
-                                                        <option value="0">Select Item..</option>
+                                                        <option value="AddNewProductSelect">Select Item..</option>
                                                         @foreach (var product in ViewBag.Good)
                                                         {
                                                             <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
@@ -340,7 +340,7 @@
 
                                                 <td>
                                                     <select class="product form-control pClassG Input-height" style="width: 200px;font-size:12px">
-                                                        <option value="0">Select Item..</option>
+                                                        <option value="AddNewServiceSelect">Select Item..</option>
                                                         @foreach (var product in ViewBag.Service)
                                                         {
                                                             <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
@@ -550,6 +550,10 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+
+
+
 <script type="text/javascript">
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
@@ -730,7 +734,7 @@
 
         $("#mainrow1 #SelectProductQutationS").find("option").remove();
         $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewServiceSelect>" + 'Add New Product' + "</option>");
 
         $.ajax({
             url: "/MVCProduct/GetProduct",
@@ -1067,6 +1071,17 @@
             $('#UpdateProIdGoods').hide();
             $('#SAveProdIDGoods').show();
             $('#TypeGoodsServices').val('Good');
+            $('#TypeGoodsServices').attr('disabled', 'disabled');
+            $('#CreateNewProductModalGoods').modal('show');
+        }
+        if (Id == "AddNewServiceSelect") {
+            GoodsService = "";
+            GoodsService = "Services";
+            ShowServiceGood("Services");
+            $('#TypeGoodsServices').attr('disabled', false);
+            $('#UpdateProIdGoods').hide();
+            $('#SAveProdIDGoods').show();
+            $('#TypeGoodsServices').val('Services');
             $('#TypeGoodsServices').attr('disabled', 'disabled');
             $('#CreateNewProductModalGoods').modal('show');
         }
