@@ -281,7 +281,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-
+              
 
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationID.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
@@ -415,15 +415,10 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-                if (Session["UserId"] != null)
-                {
-                    mvcQutationModel.UserId = Convert.ToInt32(Session["UserId"]);
-                }
-
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-           
+                mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -517,15 +512,9 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-                if (Session["UserId"] != null)
-                {
-                    mvcQutationModel.UserId = Convert.ToInt32(Session["UserId"]);
-                }
-
-
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-               
+                mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -671,18 +660,11 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                int companyId = 0;
+                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
               
-
-                //if (Session["UserId"] != null)
-                //{
-                //    mvcQutationModel.UserId = Convert.ToInt32(Session["UserId"]);
-                //}
-
-
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-              
+                mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -834,8 +816,6 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-
-
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quttationId.ToString()).Result;
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
 
@@ -847,11 +827,11 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + QutationModel.ContactId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-
+              
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
+              
 
                 DateTime qutationDueDate = Convert.ToDateTime(QutationModel.DueDate); //mm/dd/yyyy
                 DateTime qutationDate = Convert.ToDateTime(QutationModel.QutationDate);//mm/dd/yyyy
@@ -971,12 +951,8 @@ namespace InvoiceDiskLast.Controllers
                     companyEmail = "Company Email";
                 }
 
-
-
                 int ClientId = Convert.ToInt32(TempData["ConatctId"]);
                 int ConmpanyId = Convert.ToInt32(TempData["CompanyId"]);
-
-
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ClientId.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -1204,18 +1180,12 @@ namespace InvoiceDiskLast.Controllers
 
             QutationTable qutationTable;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-
-           
+            
             try
             {
-
-                if(Session["UserId"]!=null)
-                {
-                    mvcQutationModel.UserId = Convert.ToInt32(Session["UserId"]);
-                }
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-              
+                mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -1308,11 +1278,18 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-               
-                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;              
+                int companyId = 0;
+
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-                mvcQutationModel.UserId = 2;
+
+                if (Session["CompayID"] != null)
+                {
+                    companyId = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
+                mvcQutationModel.CompanyId = companyId;
+                mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
                 mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
@@ -1394,21 +1371,13 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult SaveEmailPrintEdit(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-
-            int Qid = 0;
-
+            
             try
             {
-                if (Session["CompayID"] != null)
-                {
-                    companyId = Convert.ToInt32(Session["CompayID"]);
-                }
-
-
-
+              
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                mvcQutationModel.CompanyId = companyId;
-                mvcQutationModel.UserId = 2;
+                mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
+                mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
 
                 mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;

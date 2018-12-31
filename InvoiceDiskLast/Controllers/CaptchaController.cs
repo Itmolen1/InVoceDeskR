@@ -145,17 +145,19 @@ namespace InvoiceDiskLast.Controllers
                     #endregion
                     if (Session["ApiAccessToken"] != null)
                     {
-
+                        UserModel UserTbale = new UserModel();
                         //HttpResponseMessage respons = GlobalVeriables.WebApiClient.GetAsync("/api/GetCompanyID" + "test").Result;
                         string name = userInfo.username.ToString();
                         Session["username"] = name;
                         GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session["ApiAccessToken"].ToString());
                         HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("CompanyExist", userInfo).Result;
-                        var apiresut = response.Content.ReadAsAsync<object>().Result;
+                       
+                        UserTbale = response.Content.ReadAsAsync<UserModel>().Result;
 
-                        int compnyID = Convert.ToInt32(apiresut);
+                        int compnyID = Convert.ToInt32(UserTbale.CompanyId);
+                        Session["LoginUserID"] = Convert.ToInt32(UserTbale.UserId);
                         #region
-                        if (compnyID > 0)
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             MVCCompanyInfoModel cominfo = new MVCCompanyInfoModel();
 

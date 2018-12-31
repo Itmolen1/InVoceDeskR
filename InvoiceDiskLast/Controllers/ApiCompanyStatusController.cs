@@ -12,7 +12,7 @@ namespace InvoiceDiskLast.Controllers
 {
     [Authorize]
     public class ApiCompanyStatusController : ApiController
-    {       
+    {
 
         private DBEntities db = new DBEntities();
         // Exist: api/ApiCompanyStatus/id 
@@ -23,27 +23,36 @@ namespace InvoiceDiskLast.Controllers
         }
 
         [Route("api/CompanyExist")]
-        public object PostComapnyInfoes(UserInfo User)
+        public IHttpActionResult PostComapnyInfoes(UserInfo User)
         {
-            object ob = new object();
-            ob = 0;
+            //object ob = new object();
+            UserModel  com = new UserModel();
+            //ob = 0;
             try
             {
-                bool Result = db.CompanyUsers.Count(e => e.UserID == User.username) > 0;                
-               
+                bool Result = db.CompanyUsers.Count(e => e.UserID == User.username) > 0;
+
                 if (Result == true)
                 {
-                    ob = db.CompanyUsers.Where(u => u.UserID == User.username.ToString()).Select(c => (int)c.CompanyID).FirstOrDefault();
+                    //ob = db.CompanyUsers.Where(u => u.UserID == User.username.ToString())
+                    //    .Select(c => (int)c.CompanyID).FirstOrDefault();
 
-                    return ob;
+                    com = db.UserTables.Where(u => u.Username == User.username.ToString())
+                        .Select(c => new UserModel
+                        {
+                            UserId = c.UserId,
+                            CompanyId = c.CompanyId,
+                        }).FirstOrDefault();
+
+                    return Ok(com);
 
                 }
             }
             catch (Exception ex)
             {
-                return ob;
+                return NotFound();
             }
-            return ob;
+            return  NotFound();
         }
     }
 }
