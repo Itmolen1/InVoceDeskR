@@ -14,10 +14,11 @@ namespace InvoiceDiskLast.Models
     
     public partial class CompanyUser
     {
-        public int id { get; set; }
-        public Nullable<int> CompanyId { get; set; }
-        public string UserId { get; set; }
-        public Nullable<int> Authority { get; set; }
+        public int ID { get; set; }
+        public Nullable<int> CompanyID { get; set; }
+        public string UserID { get; set; }
+        public Nullable<int> AuthorityID { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public string AddedBy { get; set; }
     }
 }

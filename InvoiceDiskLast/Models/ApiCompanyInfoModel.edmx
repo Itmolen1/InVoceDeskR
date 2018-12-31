@@ -80,13 +80,14 @@
         </EntityType>
         <EntityType Name="CompanyUser">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CompanyId" Type="int" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
-          <Property Name="Authority" Type="int" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="AuthorityID" Type="int" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="AddedBy" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
@@ -321,7 +322,7 @@
           <Property Name="DOB" Type="nvarchar" MaxLength="50" />
           <Property Name="AddedDate" Type="date" />
           <Property Name="CompanyId" Type="int" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
@@ -515,18 +516,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_QutationTable_ContactsTable">
-          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
-          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContactsTable">
-              <PropertyRef Name="ContactsId" />
-            </Principal>
-            <Dependent Role="QutationTable">
-              <PropertyRef Name="ContactId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
@@ -638,10 +627,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="Self.FK_QutationTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
-            <End Role="QutationTable" EntitySet="QutationTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_QutationTable_ContactsTable" Association="Self.FK_QutationTable_ContactsTable">
-            <End Role="ContactsTable" EntitySet="ContactsTable" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
           <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="Self.FK_UserTable_ComapnyInfo">
@@ -796,8 +781,8 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
-          <EntitySet Name="CompanyUsers" EntityType="APIcompanyModel.CompanyUser" />
           <EntitySet Name="UserAuthorityTables" EntityType="APIcompanyModel.UserAuthorityTable" />
+          <EntitySet Name="CompanyUsers" EntityType="APIcompanyModel.CompanyUser" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -922,6 +907,7 @@
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_UserTable" FromRole="UserTable" ToRole="QutationOrderStatusTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ContactsTable">
           <Key>
@@ -1364,16 +1350,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CompanyUser">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Authority" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" />
-        </EntityType>
         <EntityType Name="UserAuthorityTable">
           <Key>
             <PropertyRef Name="UserAuthorityId" />
@@ -1382,6 +1358,17 @@
           <Property Name="Authority" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="CompanyId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CompanyUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AuthorityID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="AddedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1483,7 +1470,7 @@
           <EntitySetMapping Name="UserTables">
             <EntityTypeMapping TypeName="APIcompanyModel.UserTable">
               <MappingFragment StoreEntitySet="UserTable">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
@@ -1719,17 +1706,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CompanyUsers">
-            <EntityTypeMapping TypeName="APIcompanyModel.CompanyUser">
-              <MappingFragment StoreEntitySet="CompanyUser">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Authority" ColumnName="Authority" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserAuthorityTables">
             <EntityTypeMapping TypeName="APIcompanyModel.UserAuthorityTable">
               <MappingFragment StoreEntitySet="UserAuthorityTable">
@@ -1737,6 +1713,18 @@
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="Authority" ColumnName="Authority" />
                 <ScalarProperty Name="UserAuthorityId" ColumnName="UserAuthorityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyUsers">
+            <EntityTypeMapping TypeName="APIcompanyModel.CompanyUser">
+              <MappingFragment StoreEntitySet="CompanyUser">
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AuthorityID" ColumnName="AuthorityID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

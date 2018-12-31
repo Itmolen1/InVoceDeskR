@@ -10,7 +10,8 @@
 namespace InvoiceDiskLast.Models
 {
     using System;
-    using System.Collections.Generic;    
+    using System.Collections.Generic;
+    
     public partial class UserAuthorityTable
     {
         public int UserAuthorityId { get; set; }

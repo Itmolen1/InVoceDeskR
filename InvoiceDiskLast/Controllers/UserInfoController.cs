@@ -212,10 +212,10 @@ namespace InvoiceDiskLast.Controllers
                     if (responses.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         CompanyUser companyUser = new CompanyUser();
-                        companyUser.CompanyId = Convert.ToInt32(Session["CompayID"]);
-                        companyUser.UserId = model.email;
+                        companyUser.CompanyID = Convert.ToInt32(Session["CompayID"]);
+                        companyUser.UserID = model.email;
                         companyUser.IsActive = true;
-                        companyUser.Authority = model.Authority;
+                        companyUser.AuthorityID = model.Authority;
 
                         HttpResponseMessage respons = await GlobalVeriables.WebApiClient.PostAsJsonAsync("PostCompanyUser", companyUser);
 
