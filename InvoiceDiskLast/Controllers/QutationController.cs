@@ -820,27 +820,25 @@ namespace InvoiceDiskLast.Controllers
             string pdfname;
             try
             {
-                int contactId = 0;
+             
+               
 
-                if (Session["ClientID"] != null)
-                {
-                    contactId = Convert.ToInt32(Session["ClientID"]);
-                }
-
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 51.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                int companyId = 0;
-                if (Session["CompayID"] != null)
-                {
-                    companyId = Convert.ToInt32(Session["CompayID"]);
-                }
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + companyId.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quttationId.ToString()).Result;
                 MVCQutationModel QutationModel = responseQutation.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+
+                TempData["CompanyId"] = QutationModel.CompanyId;
+                TempData["ConatctId"] = QutationModel.ContactId;
+
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + QutationModel.ContactId.ToString()).Result;
+                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+              
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+              
 
                 DateTime qutationDueDate = Convert.ToDateTime(QutationModel.DueDate); //mm/dd/yyyy
                 DateTime qutationDate = Convert.ToDateTime(QutationModel.QutationDate);//mm/dd/yyyy
@@ -961,14 +959,13 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                int id = 0;
-                if (Session["ClientID"] != null)
-                {
-                    id = Convert.ToInt32(Session["ClientID"]);
-                }
+
+                int ClientId = Convert.ToInt32(TempData["ConatctId"]);
+                int ConmpanyId = Convert.ToInt32(TempData["CompanyId"]);
 
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 51.ToString()).Result;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ClientId.ToString()).Result;
                 MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
@@ -1013,11 +1010,6 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult InvoicebyEmail(EmailModel email, string[] Files, FormCollection formCollection)
         {
             var root = Server.MapPath("/PDF/");
-
-
-
-
-
 
             List<AttakmentList> _attackmentList = new List<AttakmentList>();
             var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
@@ -1072,10 +1064,10 @@ namespace InvoiceDiskLast.Controllers
             TempData["EmailMessge"] = "";
             EmailModel emailModel = new EmailModel();
 
-            if (Session["CompayID"] != null)
-            {
-                CompanyID = Convert.ToInt32(Session["CompayID"]);
-            }
+            //if (Session["CompayID"] != null)
+            //{
+            //    CompanyID = Convert.ToInt32(Session["CompayID"]);
+            //}
 
             var fileName = email.Attachment;
             try
