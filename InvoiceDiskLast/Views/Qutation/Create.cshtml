@@ -133,6 +133,7 @@
                     </div>
                 </div>
             </div>
+           
             <hr />
             <div class="row">
                 <div class="col-12 b-r">
@@ -163,19 +164,19 @@
 
                             </tr>
                         </thead>
-
+                        
                         <tbody class="tbodyGood">
 
                             <tr id="mainrow">
                                 <td>
-                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px" ></select>
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" , @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG", autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
@@ -260,11 +261,11 @@
                                     <input type="text" class=" Discription form-control Input-height" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
+                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS", autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
@@ -876,7 +877,7 @@
         var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
 
         if (!isNaN(Total)) {
-            $('#SubTotal').text(Total.toFixed(2));
+         
             $('#gtotal').text(Total.toFixed(2));
 
         }
@@ -884,22 +885,25 @@
     }
 
     function CombineTotal() {
+
+        debugger;
+
         var TotalGoode, Total, TotalService1 = 0;
         TotalGoode = totalGoods();
         TotalService1 = TotalService();
 
-        if (!isNaN(parseFloat(TotalGoode) && typeof (TotalGoode) != "undefined")) {
+        if (isNaN(parseFloat(TotalGoode) && typeof (TotalGoode) == "undefined")) {
             TotalGoode = 0;
         }
 
-        if (!isNaN(parseFloat(TotalService1) && typeof (TotalService1) != "undefined")) {
+        if (isNaN(parseFloat(TotalService1) || typeof (TotalService1) == "undefined")) 
             {
                 TotalService1 = 0;
             }
             Total = parseFloat(TotalGoode) + parseFloat(TotalService1);
-
+           
             $('#TotalBTW').text(Total.toFixed(2));
-        }
+            $('#SubTotal').text(Total.toFixed(2));
     }
     function AddSubtotalGoods() {
         var SubTotalGood = 0;
@@ -938,7 +942,9 @@
         $('#orderdetailsitems  tr').each(function () {
 
             var Value = $(this).find(".FTotalG").val();
+
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
+
                 TotalGood += parseFloat(Value)
             }
         })
@@ -1072,7 +1078,10 @@
             return true;
         }
 
-        $('#orderdetailsitems .tbodyGood tr').each(function () {           
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
+
+            debugger;
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {

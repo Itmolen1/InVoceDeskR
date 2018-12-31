@@ -1132,7 +1132,7 @@
         }
         var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
 
-        $('#SubTotal').text(Total.toFixed(2));
+       // $('#SubTotal').text(Total.toFixed(2));
         $('#gtotal').text(Total.toFixed(2));
 
 
@@ -1155,7 +1155,7 @@
         }
 
         Total = parseFloat(TotalGoode) + parseFloat(TotalService1);
-
+        $('#SubTotal').text(Total.toFixed(2));
         $('#TotalBTW').text(Total.toFixed(2));
     }
 
@@ -1176,16 +1176,9 @@
 
     function AddSubTotalService() {
         var SubTotalService = 0;
-        $('#QutationServiceDetail tr').each(function () {
-
-            debugger;
-
-
+        $('#QutationServiceDetail tr').each(function () {    
             var Value = $(this).find('.RowTotalG').val();
-
-
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
-
                 SubTotalService += parseFloat(Value);
             }
         })
@@ -1196,10 +1189,7 @@
         var TotalGood = 0;
 
         $('#orderdetailsitems1 tbody tr').each(function () {
-
             var Value = $(this).find(".FTotalG").val();
-
-
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 TotalGood += parseFloat(Value)
             }
@@ -1211,8 +1201,6 @@
         var TotalService = 0;
         $('#QutationServiceDetail tbody tr').each(function () {
             var Value = $(this).find(".FTotalG").val();
-
-
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 TotalService += parseFloat(Value);
             }
