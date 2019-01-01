@@ -68,7 +68,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-                purchasemodel.VenderId = purchaseViewModel.Contactid;
+                purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.CompanyId = purchaseViewModel.CompanyId;
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
@@ -263,8 +263,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-               
-
+              
                 purchaseviewModel.PurchaseOrderID = ob.PurchaseOrderID;
                 purchaseviewModel.Purchase_ID = ob.PurchaseID;
                 purchaseviewModel.PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);
@@ -309,8 +308,7 @@ namespace InvoiceDiskLast.Controllers
             {
                
                 purchasemodel.CompanyId = purchasemodel.CompanyId;
-                purchasemodel.VenderId = purchaseViewModel.Contactid;
-
+                purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
 

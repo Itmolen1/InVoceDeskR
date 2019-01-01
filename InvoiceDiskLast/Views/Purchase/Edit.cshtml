@@ -1,6 +1,7 @@
 ﻿@model InvoiceDiskLast.Models.MvcPurchaseViewModel
 @{
     ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
@@ -22,6 +23,9 @@
             <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
             <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
             <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
+
+            @Html.HiddenFor(model => model.CompanyId);
+            @Html.HiddenFor(model => model.VenderId);
 
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
@@ -1351,88 +1355,7 @@
     });
 
 
-    //$('#saveprintandsendtoyourselfsave').click(function () {
 
-    //    var list = [], orderItem, CurrentRow;
-
-    //    $('#orderdetailsitems1 .tbody tr').each(function () {
-
-    //        orderItem = {
-    //            ItemId: parseInt($(this).find('.product').val()),
-    //            Quantity: parseInt($(this).find('.quantityG').val()),
-    //            Type: "Goods",
-    //            Rate: parseInt($(this).find('.rateG').val()),
-    //            Total: parseFloat($(this).find('.FTotalG').val()),
-    //            Vat: parseFloat($(this).find('.VATG').val()),
-    //            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-    //        }
-    //        list.push(orderItem);
-    //    });
-
-
-    //    $('#QutationServiceDetail .tbody tr').each(function () {
-    //        orderItem = {
-    //            ItemId: $(this).find('.product').val(),
-    //            Quantity: parseInt($(this).find('.quantityG').val()),
-    //            Rate: parseFloat($(this).find('.rateG').val()),
-    //            Total: parseFloat($(this).find('.FTotalG').val()),
-    //            PurchaseDescription: $(this).find('.Discription').val(),
-    //            Type: "Service",
-    //            ServiceDate: $(this).find('.ServiceDate').val(),
-    //            Vat: parseFloat($(this).find('.VATG').val()),
-    //            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-
-    //        }
-    //        list.push(orderItem);
-    //    });
-
-    //    var empObj = {
-    //        Qutation_ID: $('#Qutation_ID').val(),
-    //        RefNumber: $('#RefNumber').val(),
-    //        QutationDate: $('#QutationDate').val(),
-    //        DueDate: $('#DueDate').val(),
-    //        SubTotal: $('#SubTotal').text(),
-    //        DiscountAmount: $('#DiscountAmount').val(),
-    //        QutationID: $('#Qutation_ID').val(),
-    //        TotalVat6: $('#BTW6').text(),
-    //        TotalVat21: $('#BTW21').text(),
-    //        Total: $('#gtotal').text(),
-    //        TotalAmount: $('#gtotal').text(),
-    //        CustomerNote: $('#CustomerNote').val(),
-    //        ConatctId: $('#contactId').val(),
-    //        QutationDetailslist: list
-    //    };
-
-    //    $.ajax({
-    //        url: "/Qutation/SaveEmailPrint",
-    //        data: JSON.stringify(empObj),
-    //        type: "POST",
-    //        contentType: "application/json;charset=utf-8",
-    //        dataType: "json",
-    //        success: function (result) {
-    //            QutationIdd = result.QutationId;
-    //            if (result.Status == "Success") {
-    //                QutationIdd = result.QutationId;
-    //                localStorage.setItem('path', result.path);
-
-
-    //                swal({
-    //                    title: 'Qutation!',
-    //                    text: 'Qutation save successfully!',
-    //                    type: 'success'
-    //                },
-    //                function (isconform) {
-    //                    window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-    //                });
-    //            }
-    //            else if (result.Status == "Fail") {
-
-    //            }
-    //        },
-    //        error: function (errormessage) {
-    //        }
-    //    });
-    //});
 
     var currentRow = "";
 
@@ -1595,7 +1518,7 @@
                         title: 'Invoice!',
                         text: 'Invoice save successfully!',
                         type: 'success'
-                         },
+                    },
                           function (isconform) {
                               window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.PurchaseOrderId;
                           });

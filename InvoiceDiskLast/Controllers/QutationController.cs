@@ -282,7 +282,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-              
+
 
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + QutationID.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
@@ -579,16 +579,12 @@ namespace InvoiceDiskLast.Controllers
                         {
                             UploadFile(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
                         }
-
-                        return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
                     }
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
                         UploadFile(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
                     }
-
-                    return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
                 }
             }
             catch (Exception ex)
@@ -596,6 +592,7 @@ namespace InvoiceDiskLast.Controllers
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
+
             return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
         }
 
@@ -664,7 +661,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-              
+
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
                 mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
@@ -731,7 +728,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-                    return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
+                    //return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
 
 
                 }
@@ -830,11 +827,11 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + QutationModel.ContactId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-              
+
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-              
+
 
                 DateTime qutationDueDate = Convert.ToDateTime(QutationModel.DueDate); //mm/dd/yyyy
                 DateTime qutationDate = Convert.ToDateTime(QutationModel.QutationDate);//mm/dd/yyyy
@@ -1154,7 +1151,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-       
+
 
         [HttpPost]
         [DeleteFileClass]
@@ -1182,7 +1179,7 @@ namespace InvoiceDiskLast.Controllers
 
             QutationTable qutationTable;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-            
+
             try
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
@@ -1280,7 +1277,7 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-              
+
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
 
@@ -1368,10 +1365,10 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult SaveEmailPrintEdit(MVCQutationViewModel MVCQutationViewModel)
         {
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-            
+
             try
             {
-              
+
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
                 mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
