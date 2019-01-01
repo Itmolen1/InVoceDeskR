@@ -95,12 +95,13 @@ namespace InvoiceDiskLast.Controllers
 
                 DateTime qutatioDate = new DateTime();
                 qutatioDate = DateTime.Now;
-
+                int PaymentDuration = 15;
+                PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 quutionviewModel.QutationDate = qutatioDate;
-                quutionviewModel.DueDate = qutatioDate.AddDays(+15);
+                quutionviewModel.DueDate = qutatioDate.AddDays(+PaymentDuration);
 
 
                 MVCQutationModel q = new MVCQutationModel();

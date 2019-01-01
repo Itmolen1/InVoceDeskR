@@ -261,7 +261,7 @@
     });
 
     $('#CreateNewContacts').click(function () {
-
+        LoadPaymentTermDuration();
         showRequiredModel = "";
         showRequiredModel = "ContactModel";
         $('#UpdateClineId').hide();
@@ -311,7 +311,8 @@
                     Status: $('#Status option:selected').text(),
                     PersonCompany: $("input[name='ClientType']:checked").val(),
                     Remarks: $('#Remarks').text(),
-                    Company_Id: $('#Company_Id').val()
+                    Company_Id: $('#Company_Id').val(),
+                    PaymentTerm: $('#PaymentTermDurationSelect').text()
                 },
                 success: function (data) {
                     $('#CreateNewContactModal1').modal('hide');
@@ -404,6 +405,8 @@
                 $('#BillingEmail').val(resultContactData.BillingEmail);
                 $('#BillingEmail1').val(resultContactData.BillingEmail);
                 $('#Remarks').val(resultContactData.Remarks);
+                $('#PaymentTermDurationSelectv').val(resultContactData.PaymentTerm);
+                $('#PaymentTermDurationSelect').val(resultContactData.PaymentTerm);
 
                 $("input[name='ClientType']:checked").val(resultContactData.PersonCompany),
                 $('#Remarks').text(resultContactData.Remarks)
@@ -494,6 +497,7 @@
                 $('#Websitev').val(resultContactData.Website);
                 $('#BillingEmailv').val(resultContactData.BillingEmail);
                 $('#BillingEmailv1').val(resultContactData.BillingEmail);
+
 
 
                 $('#Remarksv').val(resultContactData.Remarks);

@@ -25,6 +25,7 @@ namespace InvoiceDiskLast.Models
         public string BillingEmail { get; set; }
         public string PersonCompany { get; set; }
         public string Remarks { get; set; }
+        public int? PaymentTerm { get; set; }
 
     }
 }

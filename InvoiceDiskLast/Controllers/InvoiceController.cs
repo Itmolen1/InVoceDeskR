@@ -22,11 +22,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddCustomer(MVCQutationViewModel model)
         {
-            string fileName;
-         
-
-
-        
+            string fileName;         
 
             for (int i = 0; i < Request.Files.Count; i++)
             {
@@ -45,9 +41,9 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult Create(int id)
         {
 
-            int Contactid, CompanyID;
+            int CompanyID;
             MVCQutationViewModel quutionviewModel = new MVCQutationViewModel();
-            Contactid = Convert.ToInt32(Session["ClientID"]);          
+            //Contactid = Convert.ToInt32(Session["ClientID"]);          
             CompanyID = Convert.ToInt32(Session["CompayID"]);
             try
             {
@@ -60,19 +56,20 @@ namespace InvoiceDiskLast.Controllers
                 DateTime qutatioDate = new DateTime();
                 qutatioDate = DateTime.Now;
 
+                int paymentTerm = 0;
+                paymentTerm = Convert.ToInt32(contectmodel.PaymentTerm);
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 quutionviewModel.QutationDate = qutatioDate;
-                quutionviewModel.DueDate = qutatioDate.AddDays(+15);
-
+                quutionviewModel.DueDate = qutatioDate.AddDays(+paymentTerm);
 
                 MVCQutationModel q = new MVCQutationModel();
                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GetQuationCount/").Result;
                 q = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
                 quutionviewModel.Qutation_ID = q.Qutation_ID;
 
-                return View();
+                return View(quutionviewModel);
             }
             catch (Exception ex)
             {
