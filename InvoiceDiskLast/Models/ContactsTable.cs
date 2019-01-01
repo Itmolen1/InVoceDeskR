@@ -38,6 +38,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<bool> Status { get; set; }
         public string PersonCompany { get; set; }
         public string Remarks { get; set; }
+        public Nullable<int> PaymentTerm { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

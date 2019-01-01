@@ -716,24 +716,24 @@
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-
-
+            
             var Value = 0;
             Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 21) {
 
-
                 if (!isNaN(parseFloat(Value))) {
-                    t += parseFloat(Value)
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue)
                 }
             }
 
-
             if (Value == 6) {
                 if (!isNaN(parseFloat(Value))) {
-                    Totalvat6 += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+
+                    Totalvat6 += parseFloat(InputVatValue);
                 }
             }
         });
@@ -742,18 +742,21 @@
         $('#orderdetailsitems .tbodyGood tr').each(function () {
 
             var Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 6) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    Totalvat6 += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+                    Totalvat6 += parseFloat(InputVatValue);
                 }
             }
 
             if (Value == 21) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    t += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue);
                 }
             }
         });
@@ -789,7 +792,7 @@
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
-
+    
     function GetProductPriceByProductId(Id, CurrentRow) {
 
         if (Id == "AddNewProductSelect") {
@@ -906,6 +909,7 @@
         $('#TotalBTW').text(Total.toFixed(2));
         $('#SubTotal').text(Total.toFixed(2));
     }
+
     function AddSubtotalGoods() {
         var SubTotalGood = 0;
 
@@ -919,8 +923,7 @@
         })
         return SubTotalGood;
     }
-
-
+    
     function AddSubTotalService() {
         var SubTotalService = 0;
 
@@ -963,10 +966,7 @@
         })
         return TotalService;
     }
-
-
-
-
+    
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         if (InOrOut == 'AddingVat') {
@@ -1442,8 +1442,5 @@
             return Isvalid;
         }
     }
-
-
-
-
+    
 </script>

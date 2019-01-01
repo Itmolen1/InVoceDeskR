@@ -111,6 +111,7 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="50" />
           <Property Name="Addeddate" Type="date" />
           <Property Name="Status" Type="bit" />
+          <Property Name="PaymentTerm" Type="int" />
         </EntityType>
         <EntityType Name="ControlAccountTable">
           <Key>
@@ -163,6 +164,13 @@
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="CompanyId" Type="int" />
           <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="PaymentTermDuration">
+          <Key>
+            <PropertyRef Name="PaymentDurationId" />
+          </Key>
+          <Property Name="PaymentDurationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentDuration" Type="int" />
         </EntityType>
         <EntityType Name="PaymentTermTable">
           <Key>
@@ -566,6 +574,7 @@
           <EntitySet Name="ExceptionLogger" EntityType="Self.ExceptionLogger" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HeadAccountTable" EntityType="Self.HeadAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderStatusTable" EntityType="Self.OrderStatusTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentTermDuration" EntityType="Self.PaymentTermDuration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTermTable" EntityType="Self.PaymentTermTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PendingTable" EntityType="Self.PendingTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTable" EntityType="Self.ProductTable" Schema="dbo" store:Type="Tables" />
@@ -795,6 +804,7 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
+          <EntitySet Name="PaymentTermDurations" EntityType="APIcompanyModel.PaymentTermDuration" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -926,6 +936,7 @@
           <Property Name="PersonCompany" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
+          <Property Name="PaymentTerm" Type="Int32" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1367,6 +1378,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PaymentTermDuration">
+          <Key>
+            <PropertyRef Name="PaymentDurationId" />
+          </Key>
+          <Property Name="PaymentDurationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentDuration" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1467,6 +1485,7 @@
           <EntitySetMapping Name="ContactsTables">
             <EntityTypeMapping TypeName="APIcompanyModel.ContactsTable">
               <MappingFragment StoreEntitySet="ContactsTable">
+                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
                 <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
@@ -1722,6 +1741,14 @@
                 <ScalarProperty Name="Insertion" ColumnName="Insertion" />
                 <ScalarProperty Name="UserFname" ColumnName="UserFname" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentTermDurations">
+            <EntityTypeMapping TypeName="APIcompanyModel.PaymentTermDuration">
+              <MappingFragment StoreEntitySet="PaymentTermDuration">
+                <ScalarProperty Name="PaymentDuration" ColumnName="PaymentDuration" />
+                <ScalarProperty Name="PaymentDurationId" ColumnName="PaymentDurationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
