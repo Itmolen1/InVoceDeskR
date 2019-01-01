@@ -17,6 +17,7 @@ using Logger;
 namespace InvoiceDiskLast.Controllers
 {
     [RouteNotFoundAttribute]
+    [RouteNotFoundAttribute]
     public class CaptchaController : Controller
     {
         DBEntities db = new DBEntities();

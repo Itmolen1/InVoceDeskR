@@ -187,8 +187,6 @@
                                 {
                                     foreach (var item in ViewBag.QutationDatailsList)
                                     {
-
-
                                         if (item.Type == "Goods")
                                         {
                                             <tr>
@@ -239,9 +237,7 @@
 
                                             </tr>
                                         }
-                                    }
-
-
+                                    }                                    
                                     <tr id="mainrow">
                                         <td>
                                             <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
@@ -272,20 +268,9 @@
 
                                             <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
                                         </td>
-
-
-
                                     </tr>
-
-
                                 }
-
-
-
                             }
-
-
-
                         </tbody>
                     </table>
                 </div>
@@ -297,7 +282,6 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>Date</th>
-
                                 <th>
                                     Services
                                 </th>
@@ -320,20 +304,15 @@
                                 <th>
                                     Action
                                 </th>
-
                             </tr>
-
                         </thead>
-
                         <tbody class="tbodyService">
 
                             @{
                                 if (ViewBag.QutationDatailsList != null)
                                 {
                                     foreach (var item in ViewBag.QutationDatailsList)
-                                    {
-
-
+                                    {                            
                                         if (item.Type == "Service")
                                         {
                                             <tr>
@@ -397,8 +376,6 @@
                                                 </td>
                                             </tr>
                                         }
-
-
                                     }
                                     <tr id="mainrow1">
                                         <td>
@@ -442,10 +419,6 @@
                                     </tr>
                                 }
                             }
-
-
-
-
                         </tbody>
                     </table>
                 </div>
@@ -552,11 +525,10 @@
     </div>
     <div class="col-2 b-r"></div>
 </div>
+</div>
 
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
-
 
 
 <script type="text/javascript">
@@ -596,9 +568,6 @@
             return;
         }
 
-
-
-
         if (isAllValid) {
             var $newRow = $("#mainrow").clone().removeAttr('id');
             $('#SelectProductQutationG', $newRow).val($("#SelectProductQutationG").val());
@@ -624,9 +593,7 @@
             }
             $('#mainrow #SelectVATG').val(0);
         }
-    });
-
-
+    });    
 
     $('#btnSerVice').click(function () {
 
@@ -666,9 +633,6 @@
         CombineTotal();
         CalculateVateTotal();
 
-
-
-
         if (isAllValid) {
             var $newRow = $("#mainrow1").clone().removeAttr('id');
             $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
@@ -703,10 +667,8 @@
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG ').val('');
         }
 
-
     });
-
-
+    
     function LoadProductG() {
         PgoodServices = "Good";
 
@@ -732,7 +694,6 @@
 
         });
     }
-
 
     function LoadProductS() {
         PgoodServices = "Services";
@@ -760,10 +721,6 @@
         });
     }
 
-
-
-
-
     $('.quantityG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -771,8 +728,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
 
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
@@ -782,7 +737,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
 
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
 
@@ -794,9 +748,7 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
     });
-
 
     $(document).on("keyup", "tbody .rateG", function () {
 
@@ -808,7 +760,6 @@
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
         // GrandTotal("Add", Total, Subtotalwt);
     });
-
 
     $(document).on("keyup", "tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
@@ -854,9 +805,7 @@
         if (!isNaN(Total)) {
             currentRow.find('.FTotalG').val(Total);
         }
-
     }
-
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
@@ -891,8 +840,6 @@
 
     });
 
-
-
     $('.VATG').change(function () {
 
         debugger;
@@ -906,8 +853,6 @@
         Currentrow = "";
     });
 
-
-
     $('.quantityG').keyup(function () {
         debugger;
         var Currentrow = $(this).closest("tr");
@@ -918,7 +863,6 @@
         CalculateVateTotal();
     });
 
-
     $('.quantityG').keyup(function () {
         debugger;
         var Currentrow = $(this).closest("tr");
@@ -928,7 +872,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
 
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
@@ -940,9 +883,6 @@
     });
 
     $('tbody .VATG').change(function () {
-
-        debugger;
-
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -968,49 +908,53 @@
     });
     //Services
 
+   
     function CalculateVateTotal() {
 
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
-        $('#QutationServiceDetail tr').each(function () {
-
-
+        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
 
             var Value = 0;
             Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 21) {
 
-
                 if (!isNaN(parseFloat(Value))) {
-                    t += parseFloat(Value)
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue)
                 }
             }
 
-
             if (Value == 6) {
                 if (!isNaN(parseFloat(Value))) {
-                    Totalvat6 += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+
+                    Totalvat6 += parseFloat(InputVatValue);
                 }
             }
         });
 
 
-        $('#orderdetailsitems1 tr').each(function () {
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
 
             var Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 6) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    Totalvat6 += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+                    Totalvat6 += parseFloat(InputVatValue);
                 }
             }
 
             if (Value == 21) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    t += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue);
                 }
             }
         });
@@ -1023,7 +967,6 @@
             $('#BTW21').text(parseFloat(t).toFixed(2));
         }
     }
-
 
 
     $(document).ready(function () {
@@ -1043,9 +986,6 @@
 
 
     $('#mainrow .pClassG').change(function () {
-
-        debugger;
-
 
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
@@ -1114,11 +1054,7 @@
             });
         }
     }
-
-
-
-
-
+    
     function CombineTotalAndSubtotal() {
 
         debugger;
@@ -1139,8 +1075,6 @@
 
        // $('#SubTotal').text(Total.toFixed(2));
         $('#gtotal').text(Total.toFixed(2));
-
-
 
     }
 
@@ -1213,11 +1147,7 @@
         return TotalService;
     }
 
-
-
     function AsignValueT21(NewValue, Vat, InOrOut) {
-
-        debugger;
 
         if (InOrOut == 'AddingVat') {
             if (Vat == 21) {
@@ -1363,9 +1293,6 @@
             CompanyId: $('#CompanyId').val(),
         };
 
-
-
-
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1379,10 +1306,8 @@
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
             formData.append('QutationDetailslist1[' + i + '][QutationDetailId]', list[i].QutationDetailId)
             formData.append('QutationDetailslist1[' + i + '][Qutation_ID]', list[i].Qutation_ID)
-
         }
-
-
+        
         $.ajax({
             url: "/Qutation/SaveEmailPrintEdit",
             type: "POST",
@@ -1517,7 +1442,6 @@
 
         }
 
-
         $.ajax({
             url: "/Qutation/SaveEmailEdit",
             type: "POST",
@@ -1531,8 +1455,6 @@
                 QutationIdd = result.QutationId;
 
                 if (result.Status == "Success") {
-
-
 
                     swal({
                         title: 'Invoice!',
@@ -1673,8 +1595,6 @@
                          function (isconform) {
                              window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
                          });
-
-
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
@@ -1700,8 +1620,6 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
-
     });
 
     $(document).on('click', '#btnRemoveService', function () {
@@ -1716,8 +1634,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
 
     function Remove(CurrentRow) {
 
@@ -1763,11 +1679,8 @@
             Error: function (errormessage) {
                 alert(errormessage);
             }
-
         });
-
     }
-
 
     function ValidateRow(CurrentRow) {
 
@@ -1790,15 +1703,9 @@
 
 </script>
 
-
-
-
-
-
 <script type="text/javascript">
 
     $('#txtUploadFile12').on('change', function (e) {
-
 
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
@@ -1809,16 +1716,10 @@
             return true;
         }
         else {
-
-
-
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
-
-
-
             fileData.append("QutationID", parseInt($('#QutationID').val()));
 
             $.ajax({
@@ -1841,7 +1742,6 @@
             });
         }
     });
-
 
     function validateFileSize() {
         var Isvalid = true;
@@ -1866,7 +1766,6 @@
             return Isvalid;
         }
     }
-
 
     $(document).on('click', '.remove', function () {
 
