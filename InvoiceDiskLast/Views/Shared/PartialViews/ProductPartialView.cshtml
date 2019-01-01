@@ -104,8 +104,7 @@
 
 
 <script>
-    $('#SaveNewProductGoods').click(function () {
-        debugger;
+    $('#SaveNewProductGoods').click(function () {       
         var IsValid;
         if (GoodsService == "Good") {
             IsValid = validateProductGoods();
@@ -233,7 +232,7 @@
     }
 
     function validateProductGoods() {
-        debugger;
+      
         var isValid = true;
 
         if ($('#ProductNameGoods').val().trim() == "") {
@@ -250,14 +249,14 @@
         else {
             $('#SalePriceGoods').css('border-color', 'lightgrey');
         }
-        if ($('#PurchasePriceGoods').val().trim() == "") {
-            $('#PurchasePriceGoods').css('border-color', 'Red');
-            $('#PurchasePriceGoods').focus();
-            isValid = false;
-        }
-        else {
-            $('#PurchasePriceGoods').css('border-color', 'lightgrey');
-        }
+        //if ($('#PurchasePriceGoods').val().trim() == "") {
+        //    $('#PurchasePriceGoods').css('border-color', 'Red');
+        //    $('#PurchasePriceGoods').focus();
+        //    isValid = false;
+        //}
+        //else {
+        //    $('#PurchasePriceGoods').css('border-color', 'lightgrey');
+        //}
         if ($('#OpeningQuantityGoods').val() == "") {
             $('#OpeningQuantityGoods').css('border-color', 'Red');
             isValid = false;
@@ -265,24 +264,24 @@
         else {
             $('#OpeningQuantity').css('border-color', 'lightgrey');
         }
-        if (($('#SalePriceGoods').val().trim() != "" && $('#PurchasePriceGoods').val().trim() != "")) {
-            if (parseFloat($('#SalePriceGoods').val()) < parseFloat($('#PurchasePriceGoods').val())) {
-                $('#SalePriceGoods').css('border-color', 'Red');
-                $('#PurchasePriceGoods').css('border-color', 'Red');
-                isValid == false;
-                $.toast({
-                    heading: 'Sale amount less',
-                    text: 'Sale Amount must be greater from Purchase amount `Amount`',
-                    icon: 'info',
-                    loader: true,        // Change it to false to disable loader
-                    loaderBg: '#FF0000'  // To change the background
-                });
-            }
-            else {
-                $('#PurchasePriceGoods').css('border-color', 'lightgrey');
-                $('#SalePriceGoods').css('border-color', 'lightgrey');
-            }
-        }
+        //if (($('#SalePriceGoods').val().trim() != "" && $('#PurchasePriceGoods').val().trim() != "")) {
+        //    if (parseFloat($('#SalePriceGoods').val()) < parseFloat($('#PurchasePriceGoods').val())) {
+        //        $('#SalePriceGoods').css('border-color', 'Red');
+        //        $('#PurchasePriceGoods').css('border-color', 'Red');
+        //        isValid == false;
+        //        $.toast({
+        //            heading: 'Sale amount less',
+        //            text: 'Sale Amount must be greater from Purchase amount `Amount`',
+        //            icon: 'info',
+        //            loader: true,        // Change it to false to disable loader
+        //            loaderBg: '#FF0000'  // To change the background
+        //        });
+        //    }
+        //    else {
+        //        $('#PurchasePriceGoods').css('border-color', 'lightgrey');
+        //        $('#SalePriceGoods').css('border-color', 'lightgrey');
+        //    }
+        //}
         //if ($('#ProductUnitSelect').val() == 0) {
         //    $('#ProductUnitSelect').css('border-color', 'Red');
         //    isValid = false;
