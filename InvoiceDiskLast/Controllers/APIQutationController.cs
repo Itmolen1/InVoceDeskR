@@ -15,11 +15,7 @@ namespace InvoiceDiskLast.Controllers
     {
 
         private DBEntities db = new DBEntities();
-
-       
-
-
-
+        
         // GET: api/APIQutation
         public IHttpActionResult GetQutationTables()
         {
@@ -54,8 +50,6 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
 
         // GET: api/APIQutation/5
         [ResponseType(typeof(QutationTable))]
@@ -146,8 +140,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
         //public HttpResponseMessage Post([FromBody] QutationTable qutationTable)
         //{
         //    try
@@ -199,7 +191,6 @@ namespace InvoiceDiskLast.Controllers
         {
             return db.QutationTables.Count(e => e.QutationID == id) > 0;
         }
-
 
 
         [Route("api/QutationOrderListByStatus/{Status:alpha}")]
@@ -282,9 +273,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
-
         #region
         [Route("api/GetQuatationSerViceList/{Type:alpha}/{CompanyId:int}")]
         public IHttpActionResult GetQutationListForInvoiceService(string Type, int CompanyId)
@@ -317,8 +305,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
         #endregion
-
-
 
         [Route("api/CheckProductQuantity/{ProductId:int}")]
         public IHttpActionResult GetCheckQuantity(int ProductId)

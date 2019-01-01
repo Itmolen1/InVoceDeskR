@@ -14,6 +14,12 @@ namespace InvoiceDiskLast.Models
     
     public partial class ProductTable
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProductTable()
+        {
+            this.InvoiceDetailsTables1 = new HashSet<InvoiceDetailsTable>();
+        }
+    
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
@@ -27,5 +33,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<bool> ProductStatus { get; set; }
     
         public virtual ProductUnitTable ProductUnitTable { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceDetailsTable> InvoiceDetailsTables1 { get; set; }
     }
 }
