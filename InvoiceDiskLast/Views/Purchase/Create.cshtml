@@ -696,29 +696,34 @@
     });
     //Services
 
+
+
+
+
+
     function CalculateVateTotal() {
 
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
 
-
-
             var Value = 0;
             Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 21) {
 
-
                 if (!isNaN(parseFloat(Value))) {
-                    t += parseFloat(Value)
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue)
                 }
             }
 
-
             if (Value == 6) {
                 if (!isNaN(parseFloat(Value))) {
-                    Totalvat6 += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+
+                    Totalvat6 += parseFloat(InputVatValue);
                 }
             }
         });
@@ -727,18 +732,21 @@
         $('#orderdetailsitems .tbodyGood tr').each(function () {
 
             var Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 6) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    Totalvat6 += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+                    Totalvat6 += parseFloat(InputVatValue);
                 }
             }
 
             if (Value == 21) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    t += parseFloat(Value);
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue);
                 }
             }
         });
@@ -751,6 +759,11 @@
             $('#BTW21').text(parseFloat(t).toFixed(2));
         }
     }
+
+
+
+
+
 
     $(document).on('change', '.pClassG', function () {
         debugger;
@@ -1129,7 +1142,7 @@
 
         };
 
-      
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1155,7 +1168,7 @@
             processData: false,
 
             success: function (result) {
-                QutationIdd = result.QutationId;
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1270,7 +1283,7 @@
         console.log()
 
         $.ajax({
-            url: "/Qutation/SaveEmail",
+            url: "/Purchase/SaveEmail",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1278,7 +1291,7 @@
             processData: false,
 
             success: function (result) {
-                QutationIdd = result.QutationId;
+          
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1286,8 +1299,8 @@
                         type: 'success'
                     },
                          function (isconform) {
-
-                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
+                             window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.purchaseId;
+                             
                          });
                 }
                 else if (result.Status == "Fail") {
@@ -1389,8 +1402,7 @@
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
         $.ajax({
-            url: "/Qutation/SaveEmailPrint",
-
+            url: "/Qutation/SaveEmailPrint1",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1398,9 +1410,9 @@
             processData: false,
 
             success: function (result) {
-                QutationIdd = result.QutationId;
+
                 if (result.Status == "Success") {
-                    QutationIdd = result.QutationId;
+
                     localStorage.setItem('path', result.path);
                     swal({
                         title: 'Qutation!',
@@ -1408,7 +1420,7 @@
                         type: 'success'
                     },
                     function (isconform) {
-                        window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.QutationId;
+                        window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.PurchaseOrderId;
                     });
                 }
                 else if (result.Status == "Fail") {
