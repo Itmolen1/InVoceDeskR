@@ -60,6 +60,7 @@ namespace InvoiceDiskLast.Controllers
                         Status = c.Status,
                         PersonCompany = c.PersonCompany,
                         Remarks = c.Remarks,
+                        PaymentTerm = c.PaymentTerm,
                     }).ToList();
 
                     return Ok(obContact);
@@ -100,6 +101,7 @@ namespace InvoiceDiskLast.Controllers
                     Type = c.Type,
                     PersonCompany = c.PersonCompany,
                     Remarks = c.Remarks,
+                    PaymentTerm = c.PaymentTerm,
 
                     Addeddate = c.Addeddate,
                     Status = c.Status,
@@ -112,7 +114,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 return Ok(Contactmodel);
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 return NotFound();
             }

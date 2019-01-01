@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="col-sm-2" style="margin-top:7px">staat</div>
                                 <div class="col-sm-10">
                                     <select class="form-control" id="Status">
@@ -123,7 +123,15 @@
                                         <option value="0">False</option>
                                     </select>
                                 </div>
+                            </div>*@
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="PaymentTermDurationSelect">                                       
+                                    </select>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -224,10 +232,11 @@
                     BillingEmail: $('#BillingEmail').val(),
                     Remarks: $('#Remarks').val(),
                     Status: $('#Status option:selected').text(),
+                    PaymentTerm: $('#PaymentTermDurationSelect option:selected').text(),
 
                 },
                 success: function (response) {
-                    debugger;
+
                     if (response == '201') {
 
                         if (showRequiredModel == "QutationContactModel") {
@@ -331,6 +340,31 @@
         }
 
     });
+
+    function LoadPaymentTermDuration()
+    {
+        $("#PaymentTermDurationSelect").find("option").remove();
+
+        $("#PaymentTermDurationSelect").prepend("<option value=0>" + 'Select Payment Term' + "</option>");
+        //$("#PaymentTermDurationSelect").append("<option value=AddNewPaymentTerm>" + 'Add New Client' + "</option>");
+
+        $.ajax({
+            url: "/PaymentTerm/GetPaymentTermDuration",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $.each(data, function (key, item) {
+                    $('#PaymentTermDurationSelect').append($('<option></option>').val(item.PaymentDurationId).html(item.PaymentDuration));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
 
     function LoadContacts() {
 
