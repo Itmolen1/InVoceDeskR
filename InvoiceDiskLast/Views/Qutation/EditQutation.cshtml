@@ -21,6 +21,8 @@
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
 
+            
+
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
                     @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { id = "qutationId1" } })
@@ -28,7 +30,6 @@
                     @Html.HiddenFor(model => model.ConatctId, new { htmlAttributes = new { id = "ConatctId" } })
 
                     @Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new { id = "CompanyId" } })
-
 
 
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
@@ -45,110 +46,111 @@
                             <br />
                             @Contectdatas.PostalCode,@Contectdatas.City
                         </div>
-
-
-                        <div class="row" style="margin-top:20px">
-                            <div class="col-3 b-r">
-                                Qutation Date:
-                            </div>
-                            <div class="col-6 b-r">
-                                @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "QutationDate" } })
-                                @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
-
-
-                            </div>
-                            <div class="col-3 b-r"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3 b-r">
-                                Qutation Number:
-                            </div>
-                            <div class="col-6 b-r">
-                                @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
-                                @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
-
-
-                            </div>
-                            <div class="col-3 b-r"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3 b-r">
-                                Due Date:
-                            </div>
-                            <div class="col-6 b-r">
-                                @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
-                                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
-
-
-                            </div>
-                            <div class="col-3 b-r"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3 b-r">
-                                Reference No:
-                            </div>
-                            <div class="col-6 b-r">
-                                @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
-                                @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-
-
-                            </div>
-                            <div class="col-3 b-r"></div>
-                        </div>
                     </div>
 
-                    <div class="col-5 b-r">
-                        <div class="row" style="margin-top:33px">
-                            <div class="col-3 b-r"></div>
-                            <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                            <div class="col-2 b-r"></div>
+
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-3 b-r">
+                            Qutation Date:
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">Kvk nr:</div>
-                            <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
+                            @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">BTW nr:</div>
-                            <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Qutation Number:
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">Bank:</div>
-                            <div class="col-7 b-r">@CompanyDatas.BankName</div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
+                            @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+
+
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">IBAN No:</div>
-                            <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Due Date:
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">BIC No:</div>
-                            <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
+                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+
+
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">Telephone:</div>
-                            <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 b-r">
+                            Reference No:
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">Cell No:</div>
-                            <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
+                            @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
+
+
                         </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">E-mail:</div>
-                            <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">Website:</div>
-                            <div class="col-7 b-r">@CompanyDatas.Website</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-5 b-r text-right">Address:</div>
-                            <div class="col-7 b-r">
-                                @CompanyDatas.CompanyAddress<br />
-                                @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                                @CompanyDatas.CompanyCountry
-                            </div>
+                        <div class="col-3 b-r"></div>
+                    </div>
+                </div>
+
+                <div class="col-5 b-r">
+                    <div class="row" style="margin-top:33px">
+                        <div class="col-3 b-r"></div>
+                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
+                        <div class="col-2 b-r"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Kvk nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BTW nr:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Bank:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">IBAN No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">BIC No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Telephone:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Cell No:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">E-mail:</div>
+                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Website:</div>
+                        <div class="col-7 b-r">@CompanyDatas.Website</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 b-r text-right">Address:</div>
+                        <div class="col-7 b-r">
+                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
+                            @CompanyDatas.CompanyCountry
                         </div>
                     </div>
                 </div>
+            </div>
+
                 <hr />
                 <div class="row">
                     <div class="col-12 b-r">
@@ -183,20 +185,22 @@
                             <tbody class="tbodyGood">
 
                                 @{
-                                    if (ViewBag.QutationDatailsList != null)
+                                if (ViewBag.QutationDatailsList != null)
+                                {
+                                    foreach (var item in ViewBag.QutationDatailsList)
                                     {
-                                        foreach (var item in ViewBag.QutationDatailsList)
+
+
+                                        if (item.Type == "Goods")
                                         {
-                                            if (item.Type == "Goods")
-                                            {
                                                 <tr>
                                                     <td>
                                                         <select class="product form-control pClassG Input-height" style="width: 300px;font-size:12px">
                                                             <option value="AddNewProductSelect">Select Item..</option>
                                                             @foreach (var product in ViewBag.Good)
-                                                            {
+                                                        {
                                                                 <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
-                                                            }
+                                                        }
                                                         </select>
                                                     </td>
                                                     <td>
@@ -212,9 +216,9 @@
                                                     <td>
                                                         <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
                                                             @foreach (var item1 in ViewBag.VatDrop)
-                                                            {
+                                                        {
                                                                 <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
-                                                            }
+                                                        }
                                                         </select>
 
                                                     </td>
@@ -236,8 +240,10 @@
                                                     </td>
 
                                                 </tr>
-                                            }
                                         }
+                                    }
+
+
                                         <tr id="mainrow">
                                             <td>
                                                 <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
@@ -268,9 +274,20 @@
 
                                                 <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
                                             </td>
+
+
+
                                         </tr>
-                                    }
+
+
                                 }
+
+
+
+                                }
+
+
+
                             </tbody>
                         </table>
                     </div>
@@ -282,6 +299,7 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Date</th>
+
                                     <th>
                                         Services
                                     </th>
@@ -304,17 +322,22 @@
                                     <th>
                                         Action
                                     </th>
+
                                 </tr>
+
                             </thead>
+
                             <tbody class="tbodyService">
 
                                 @{
-                                    if (ViewBag.QutationDatailsList != null)
+                                if (ViewBag.QutationDatailsList != null)
+                                {
+                                    foreach (var item in ViewBag.QutationDatailsList)
                                     {
-                                        foreach (var item in ViewBag.QutationDatailsList)
+
+
+                                        if (item.Type == "Service")
                                         {
-                                            if (item.Type == "Service")
-                                            {
                                                 <tr>
                                                     <td>
 
@@ -326,9 +349,9 @@
                                                         <select class="product form-control pClassG Input-height" style="width: 200px;font-size:12px">
                                                             <option value="AddNewServiceSelect">Select Item..</option>
                                                             @foreach (var product in ViewBag.Service)
-                                                            {
+                                                        {
                                                                 <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
-                                                            }
+                                                        }
                                                         </select>
                                                     </td>
                                                     <td>
@@ -352,9 +375,9 @@
                                                         <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
 
                                                             @foreach (var item1 in ViewBag.VatDrop)
-                                                            {
+                                                        {
                                                                 <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
-                                                            }
+                                                        }
                                                         </select>
 
                                                     </td>
@@ -375,8 +398,10 @@
                                                         <input type="hidden" class="QutationID" value="@item.QutationID" />
                                                     </td>
                                                 </tr>
-                                            }
                                         }
+
+
+                                    }
                                         <tr id="mainrow1">
                                             <td>
                                                 @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
@@ -417,8 +442,12 @@
                                             </td>
 
                                         </tr>
-                                    }
                                 }
+                                }
+
+
+
+
                             </tbody>
                         </table>
                     </div>
@@ -428,16 +457,16 @@
                         <table class="table table-hover" id="participantTable">
                             <tbody id="upload123">
                                 @if (ViewBag.FILE != null)
+                            {
+                                foreach (var item in ViewBag.FILE)
                                 {
-                                    foreach (var item in ViewBag.FILE)
-                                    {
                                         <tr>
                                             <td>
                                                 <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
                                             </td>
                                         </tr>
-                                    }
                                 }
+                            }
 
                             </tbody>
                         </table>
@@ -511,24 +540,25 @@
     </div>
 
     @*<label></label>*@
-
-    <div class="row" style="margin-top:5px">
-        <div class="col-2 b-r"></div>
-        <div class="col-8 b-r">
-            <div class="pull-right">
-                <div class="btn-group">
-                    <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
-                </div>
-                <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
-                <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
-            </div>
-        </div>
-        <div class="col-2 b-r"></div>
-    </div>
 </div>
+<div class="row" style="margin-top:5px">
+    <div class="col-2 b-r"></div>
+    <div class="col-8 b-r">
+        <div class="pull-right">
+            <div class="btn-group">
+                <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+            </div>
+            <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+            <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
+        </div>
+    </div>
+    <div class="col-2 b-r"></div>
 
+  
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
+
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+
 
 
 <script type="text/javascript">
@@ -568,6 +598,9 @@
             return;
         }
 
+
+
+
         if (isAllValid) {
             var $newRow = $("#mainrow").clone().removeAttr('id');
             $('#SelectProductQutationG', $newRow).val($("#SelectProductQutationG").val());
@@ -594,6 +627,8 @@
             $('#mainrow #SelectVATG').val(0);
         }
     });
+
+
 
     $('#btnSerVice').click(function () {
 
@@ -633,6 +668,9 @@
         CombineTotal();
         CalculateVateTotal();
 
+
+
+
         if (isAllValid) {
             var $newRow = $("#mainrow1").clone().removeAttr('id');
             $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
@@ -667,7 +705,9 @@
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG ').val('');
         }
 
+
     });
+
 
     function LoadProductG() {
         PgoodServices = "Good";
@@ -695,6 +735,7 @@
         });
     }
 
+
     function LoadProductS() {
         PgoodServices = "Services";
 
@@ -721,6 +762,10 @@
         });
     }
 
+
+
+
+
     $('.quantityG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -728,6 +773,8 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
+
 
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
@@ -737,6 +784,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
 
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
 
@@ -748,7 +796,9 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
+
     });
+
 
     $(document).on("keyup", "tbody .rateG", function () {
 
@@ -760,6 +810,7 @@
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
         // GrandTotal("Add", Total, Subtotalwt);
     });
+
 
     $(document).on("keyup", "tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
@@ -805,7 +856,9 @@
         if (!isNaN(Total)) {
             currentRow.find('.FTotalG').val(Total);
         }
+
     }
+
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
@@ -840,6 +893,8 @@
 
     });
 
+
+
     $('.VATG').change(function () {
 
         debugger;
@@ -853,15 +908,7 @@
         Currentrow = "";
     });
 
-    $('.quantityG').keyup(function () {
-        debugger;
-        var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
-        CombineTotalAndSubtotal();
-        CombineTotal();
-        CalculateVateTotal();
-    });
+
 
     $('.quantityG').keyup(function () {
         debugger;
@@ -872,6 +919,18 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
+
+    $('.quantityG').keyup(function () {
+        debugger;
+        var Currentrow = $(this).closest("tr");
+        vat = Currentrow.find('.VATG').val();
+        RowSubTalSubtotal(vat, Currentrow);
+        CombineTotalAndSubtotal();
+        CombineTotal();
+        CalculateVateTotal();
+    });
+
 
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
@@ -883,6 +942,9 @@
     });
 
     $('tbody .VATG').change(function () {
+
+        debugger;
+
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -908,53 +970,49 @@
     });
     //Services
 
-
     function CalculateVateTotal() {
 
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
-        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
+        $('#QutationServiceDetail tr').each(function () {
+
+
 
             var Value = 0;
             Value = $(this).find(".VATG").val();
-            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 21) {
 
+
                 if (!isNaN(parseFloat(Value))) {
-                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
-                    t += parseFloat(InputVatValue)
+                    t += parseFloat(Value)
                 }
             }
 
+
             if (Value == 6) {
                 if (!isNaN(parseFloat(Value))) {
-                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
-
-                    Totalvat6 += parseFloat(InputVatValue);
+                    Totalvat6 += parseFloat(Value);
                 }
             }
         });
 
 
-        $('#orderdetailsitems .tbodyGood tr').each(function () {
+        $('#orderdetailsitems1 tr').each(function () {
 
             var Value = $(this).find(".VATG").val();
-            var FTotalG = $(this).find(".FTotalG").val();
 
             if (Value == 6) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
-                    Totalvat6 += parseFloat(InputVatValue);
+                    Totalvat6 += parseFloat(Value);
                 }
             }
 
             if (Value == 21) {
 
                 if (!isNaN(parseFloat(Value))) {
-                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
-                    t += parseFloat(InputVatValue);
+                    t += parseFloat(Value);
                 }
             }
         });
@@ -969,6 +1027,7 @@
     }
 
 
+
     $(document).ready(function () {
         $('.pClassG').change(function () {
             debugger;
@@ -977,9 +1036,18 @@
             GetProductPriceByProductId(value, currentRow1);
         });
     })
-  
+    //$(document).on('change', '.pClassG', function () {
+    //    debugger;
+    //    var currentRow1 = $(this).closest('tr');
+    //    var value = currentRow1.find('.pClassG').val();
+    //    GetProductPriceByProductId(value, currentRow1);
+    //});
+
 
     $('#mainrow .pClassG').change(function () {
+
+        debugger;
+
 
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
@@ -1049,8 +1117,16 @@
         }
     }
 
-    function CombineTotalAndSubtotal() {      
+
+
+
+
+    function CombineTotalAndSubtotal() {
+
+        debugger;
+
         var SubTotalGoode = 0, SubTotalService = 0;
+
         SubTotalGoode = AddSubtotalGoods();
         SubTotalService = AddSubTotalService();
 
@@ -1063,8 +1139,10 @@
         }
         var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
 
-       
+       // $('#SubTotal').text(Total.toFixed(2));
         $('#gtotal').text(Total.toFixed(2));
+
+
 
     }
 
@@ -1105,7 +1183,7 @@
 
     function AddSubTotalService() {
         var SubTotalService = 0;
-        $('#QutationServiceDetail tr').each(function () {
+        $('#QutationServiceDetail tr').each(function () {    
             var Value = $(this).find('.RowTotalG').val();
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 SubTotalService += parseFloat(Value);
@@ -1139,8 +1217,9 @@
 
 
 
-
     function AsignValueT21(NewValue, Vat, InOrOut) {
+
+        debugger;
 
         if (InOrOut == 'AddingVat') {
             if (Vat == 21) {
@@ -1286,6 +1365,9 @@
             CompanyId: $('#CompanyId').val(),
         };
 
+
+
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1299,7 +1381,9 @@
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
             formData.append('QutationDetailslist1[' + i + '][QutationDetailId]', list[i].QutationDetailId)
             formData.append('QutationDetailslist1[' + i + '][Qutation_ID]', list[i].Qutation_ID)
+
         }
+
 
         $.ajax({
             url: "/Qutation/SaveEmailPrintEdit",
@@ -1435,6 +1519,7 @@
 
         }
 
+
         $.ajax({
             url: "/Qutation/SaveEmailEdit",
             type: "POST",
@@ -1448,6 +1533,8 @@
                 QutationIdd = result.QutationId;
 
                 if (result.Status == "Success") {
+
+
 
                     swal({
                         title: 'Invoice!',
@@ -1569,7 +1656,7 @@
 
         $.ajax({
             url: "/Qutation/EditQutation",
-           
+            data: JSON.stringify(empObj),
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1588,6 +1675,8 @@
                          function (isconform) {
                              window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
                          });
+
+
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
@@ -1613,6 +1702,8 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
+
+
     });
 
     $(document).on('click', '#btnRemoveService', function () {
@@ -1627,6 +1718,8 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
+
 
     function Remove(CurrentRow) {
 
@@ -1672,8 +1765,11 @@
             Error: function (errormessage) {
                 alert(errormessage);
             }
+
         });
+
     }
+
 
     function ValidateRow(CurrentRow) {
 
@@ -1696,9 +1792,15 @@
 
 </script>
 
+
+
+
+
+
 <script type="text/javascript">
 
     $('#txtUploadFile12').on('change', function (e) {
+
 
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
@@ -1709,10 +1811,16 @@
             return true;
         }
         else {
+
+
+
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
+
+
+
             fileData.append("QutationID", parseInt($('#QutationID').val()));
 
             $.ajax({
@@ -1735,6 +1843,7 @@
             });
         }
     });
+
 
     function validateFileSize() {
         var Isvalid = true;
@@ -1759,6 +1868,7 @@
             return Isvalid;
         }
     }
+
 
     $(document).on('click', '.remove', function () {
 
