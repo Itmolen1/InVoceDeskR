@@ -9,9 +9,9 @@ namespace InvoiceDiskLast.Models
     public class MvcPurchaseViewModel
     {
 
-        public int ?  PurchaseOrderID { get; set; }
+        public int? PurchaseOrderID { get; set; }
         public string Purchase_ID { get; set; }
- 
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> PurchaseDate { get; set; }
@@ -42,13 +42,17 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> PurchaseQuantity { get; set; }
         public Nullable<double> PurchaseItemRate { get; set; }
         public Nullable<double> PurchaseTotal { get; set; }
-        
+
         public Nullable<int> PurchaseId { get; set; }
-        public int Contactid { get; set; }
+        public int VenderId { get; set; }
 
         public Nullable<double> Vat6 { get; set; }
         public Nullable<double> Vat21 { get; set; }
         public Nullable<decimal> RowSubTotal { get; set; }
+
+        public HttpPostedFileWrapper[] file23 { get; set; }
+        public PurchaseOrderDetailsTable[] PurchaseOrderList { get; set; }
+
         public List<PurchaseOrderDetailsTable> PurchaseDetailslist { get; set; }
 
     }

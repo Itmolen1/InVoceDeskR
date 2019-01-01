@@ -26,6 +26,8 @@ namespace InvoiceDiskLast.Models
         public string Type { get; set; }
         public Nullable<System.DateTime> ServiceDate { get; set; }
     
+
+
         public virtual PurchaseOrderTable PurchaseOrderTable { get; set; }
     }
 }

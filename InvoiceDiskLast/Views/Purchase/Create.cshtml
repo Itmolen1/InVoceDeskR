@@ -20,6 +20,9 @@
             <div class="row" style="margi   n-top:10px">
                 <div class="col-7 b-r">
 
+                    @Html.HiddenFor(model => model.CompanyId);
+                    @Html.HiddenFor(model => model.VenderId);
+
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
@@ -198,14 +201,14 @@
                     </table>
                 </div>
                 @*<div class="row">
-                <div class="col-1 b-r"></div>
-                <div class="col-11 b-r">
-                <div id="OrderItems">
-                <table class="table" id="orderdetailsitemssss"></table>
-                <span id="orderItemError" style="color:red"></span>
-                </div>
-                </div>
-                </div>*@
+                    <div class="col-1 b-r"></div>
+                    <div class="col-11 b-r">
+                    <div id="OrderItems">
+                    <table class="table" id="orderdetailsitemssss"></table>
+                    <span id="orderItemError" style="color:red"></span>
+                    </div>
+                    </div>
+                    </div>*@
             </div>
 
 
@@ -246,7 +249,9 @@
                         <tbody class="tbodyService">
                             <tr id="mainrow1">
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "PurchaseDueDate", @value = DateTime.Now.ToShortDateString() } })                        
+
+                                    @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "ServiceDate form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
+
                                 </td>
                                 <td>
                                     <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
@@ -1059,7 +1064,6 @@
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
 
-            debugger;
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1097,6 +1101,7 @@
                 list.push(orderItem);
             }
         });
+
 
 
         if (list.length == 0) {
@@ -1119,27 +1124,30 @@
             PurchaseVenderNote: $('#PurchaseVenderNote').val(),
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
-            ConatctId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
+            VenderId: $('#VenderId').val(),
+            CompanyId: $('#CompanyId').val(),
 
         };
+
+      
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-            formData.append('QutationDetailslist1[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
-            formData.append('QutationDetailslist1[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('QutationDetailslist1[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
-
-
-
-            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
+            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
+            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
+
+
         $.ajax({
-            url: "/Qutation/SaveDraft",
+            url: "/Purchase/SaveDraft",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1155,7 +1163,8 @@
                         type: 'success'
                     },
                          function (isconform) {
-                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
                          });
                 }
                 else if (result.Status == "Fail") {
@@ -1166,7 +1175,6 @@
             error: function (errormessage) {
 
             }
-
         });
     }
 
@@ -1184,12 +1192,14 @@
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Goods",
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
@@ -1199,18 +1209,16 @@
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
             debugger;
             CurrentRow = $(this).closest("tr");
-
             if (ValidateRow(CurrentRow)) {
-
                 orderItem = {
-                    ItemId: $(this).find('.product').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Rate: parseFloat($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Type: "Service",
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Services",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
@@ -1228,33 +1236,39 @@
 
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
-            DueDate: $('#DueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            Total: $('#SubTotal').text(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
+            PurchaseId: $('#PurchaseID').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('#PurchaseDate').val(),
+            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            VenderId: $('#VenderId').val(),
+            CompanyId: $('#CompanyId').val(),
         };
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
-            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
+            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
+            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+
         }
+        console.log()
+
         $.ajax({
             url: "/Qutation/SaveEmail",
             type: "POST",
@@ -1273,7 +1287,7 @@
                     },
                          function (isconform) {
 
-                             window.location.href = "/Qutation/InvoiceByEmail?QutationId=" + result.QutationId;
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
                          });
                 }
                 else if (result.Status == "Fail") {
@@ -1302,12 +1316,14 @@
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Services",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
@@ -1321,14 +1337,14 @@
             if (ValidateRow(CurrentRow)) {
 
                 orderItem = {
-                    ItemId: $(this).find('.product').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Rate: parseFloat($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Type: "Service",
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Services",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
@@ -1343,33 +1359,34 @@
         }
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
-            DueDate: $('#DueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            Total: $('#SubTotal').text(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
-            QutationDetailslist: list
+            PurchaseId: $('#PurchaseId').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('#PurchaseDate').val(),
+            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
+            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            VenderId: $('#VenderId').val(),
+            CompanyId: $('#CompanyId').val(),
         };
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
-            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
+            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
+            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
         $.ajax({
             url: "/Qutation/SaveEmailPrint",
@@ -1391,7 +1408,7 @@
                         type: 'success'
                     },
                     function (isconform) {
-                        window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                        window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.QutationId;
                     });
                 }
                 else if (result.Status == "Fail") {
@@ -1402,6 +1419,8 @@
             }
         });
     });
+
+
     function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {

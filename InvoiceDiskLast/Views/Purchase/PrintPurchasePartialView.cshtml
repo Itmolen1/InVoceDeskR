@@ -15,11 +15,7 @@
     <title></title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
-
-
-
 </head>
-
 <body>
     <div class="row">
 
@@ -142,21 +138,18 @@
                         </div>
                     </div>
                 </div>
-
                 <hr />
-
                 @{
                     List<InvoiceDiskLast.Models.MvcPurchaseViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.MvcPurchaseViewModel>();
                 }
 
                 @if (ViewBag.PurchaseDatailsList != null)
-               {
-                InvoiceListGoods = ViewBag.PurchaseDatailsList as List<InvoiceDiskLast.Models.MvcPurchaseViewModel>;
-                InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
-
-                if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
-
                 {
+                    InvoiceListGoods = ViewBag.PurchaseDatailsList as List<InvoiceDiskLast.Models.MvcPurchaseViewModel>;
+                    InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
+                    if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
+
+                    {
 
                         <div class="row">
                             <div class="col-xs-12 ">
