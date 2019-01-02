@@ -12,8 +12,6 @@ namespace InvoiceDiskLast.Models
     {
         public static DirectoryViewModel _Directory = new DirectoryViewModel();
         static string Result = "";
-
-
         public static string CreateDirecotyFolder(int? refrenceId, string Name)
         {
             try
@@ -41,9 +39,7 @@ namespace InvoiceDiskLast.Models
 
             return Result;
         }
-
-
-
+        
         public static void AddDirectory(int? Id, string Path)
         {
             try
@@ -61,10 +57,7 @@ namespace InvoiceDiskLast.Models
             }
 
         }
-
-
-
-
+                
         public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files)
         {
 
@@ -162,10 +155,7 @@ namespace InvoiceDiskLast.Models
 
             return Result;
         }
-
-
-
-
+        
         public static List<DirectoryViewModel> GetFileDirectiory(int Id)
         {
             List<DirectoryViewModel> _object = new List<DirectoryViewModel>();
@@ -206,8 +196,7 @@ namespace InvoiceDiskLast.Models
 
             return _object;
         }
-
-
+        
         public static DirectoryViewModel GetDiretoryPathById(int Id)
         {
             try
@@ -305,15 +294,7 @@ namespace InvoiceDiskLast.Models
         }
 
 
-
-
-
-
-
-
-
-
-
+        //upload file and create directory for Create and Update [4 places (Quotation,Invoice,Purchase,Bill)]
         public static string UploadFileToDirectoryCommon(int? Id, string FileName, HttpPostedFileWrapper[] file)
         {
             string FilePath12 = "";
@@ -353,9 +334,7 @@ namespace InvoiceDiskLast.Models
 
             return FilePath12;
         }
-
-
-
+        
         public static string UploadToPDFCommon(HttpPostedFileBase file)
         {
             string FilePAth = "";
