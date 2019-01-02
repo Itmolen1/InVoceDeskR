@@ -359,6 +359,8 @@
                     </div>
                 }
             }
+
+
             <hr />
             <div class="row">
                 <div class="col-7 b-r">
@@ -398,6 +400,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-6 b-r">
+                    <table class="table table-hover" id="participantTable">
+                        <tbody id="upload123">
+                            @if (ViewBag.FILE != null)
+                            {
+                                foreach (var item in ViewBag.FILE)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6 b-r"></div>
             </div>
             <hr />
             <div class="row">
@@ -440,14 +463,14 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var patth = localStorage.getItem('path1');
+        var patth = localStorage.getItem('path');
         $("#FilePath").val(patth);
         if ($('input#FilePath').val() == "") {
         }
         else {
             $('#DownloadFile1').submit();
             $("#FilePath").val('');
-            localStorage.removeItem('path1');
+            localStorage.removeItem('path');
         }
     });
 

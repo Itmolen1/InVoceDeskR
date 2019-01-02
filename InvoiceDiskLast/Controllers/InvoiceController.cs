@@ -201,7 +201,7 @@ namespace InvoiceDiskLast.Controllers
                         if (invoiceViewModel.file23[0] != null)
                         {
                           
-                            CreatDirectoryClass.UploadFileAndCreateDirectory(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23);
+                           // CreatDirectoryClass.UploadFileAndCreateDirectory(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23);
                           
                         }
                     }

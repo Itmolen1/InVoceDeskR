@@ -70,7 +70,7 @@
 
                         <div class="row">
                             <div class="col-6 b-r">
-                                <input type="file" name="Files" id="txtUploadFile" class="makethispretty btn btn-success" style="width:500px" />
+                                <input type="file" name="files" id="txtUploadFile" class="makethispretty btn btn-success" style="width:500px" />
                             </div>
                             <div class="col-6 b-r"></div>
                         </div>
@@ -98,33 +98,29 @@
         var fileUpload = $("#txtUploadFile").get(0);
         var files = fileUpload.files;
 
+        debugger;
         var IsvalidSixze = validateFileSize();
 
         if (IsvalidSixze == false) {
             return true;
         }
         else {
-
             var fileData = new FormData();
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
             $.ajax({
-                url: '/Qutation/UploadFile',
+                url: '/Qutation/UploadFileToPDF',
                 type: "POST",
                 contentType: false,
                 processData: false,
                 data: fileData,
                 async: false,
                 success: function (result) {
-
                     if (result != "") {
-
-                        if (result != "") {
-                            $('#upload12').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
-                            var fileUpload = $("#txtUploadFile").val('');
-                        }
-                    } 
+                        $('#upload12').append("<tr><td><input type='text'  class='form-control FileName' value='" + result + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result + "' name='FilePath'></td></tr>")
+                        var fileUpload = $("#txtUploadFile").val('');
+                    }
                 },
                 error: function (err) {
                     alert(err.statusText);

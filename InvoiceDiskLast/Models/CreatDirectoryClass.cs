@@ -307,13 +307,6 @@ namespace InvoiceDiskLast.Models
 
 
 
-
-
-
-
-
-
-
         public static string UploadFileToDirectoryCommon(int? Id, string FileName, HttpPostedFileWrapper[] file)
         {
             string FilePath12 = "";
@@ -333,14 +326,10 @@ namespace InvoiceDiskLast.Models
                     if (allowedExtensions.Contains(ext))
                     {
                         string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
-
                         string FileName1 = f.FileName.Replace(ext, "");
-
                         string FileNameSetting = FileName1 + dateTime + ext;
-
                         f.SaveAs(fap + FileNameSetting);
-
-                        return FilePath12 = FileNameSetting;
+                        FilePath12 = FileNameSetting;
                     }
                 }
             }

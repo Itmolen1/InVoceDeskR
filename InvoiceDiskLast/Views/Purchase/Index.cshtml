@@ -124,23 +124,14 @@
 
                         {
                             render: function (data, type, row) {
-
-
-                                switch (row.Type) {
-                                    case "Goods":
-                                        return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewInvoiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>'
-                                        break
-
-                                    case "Services":
-                                        return '<button  class="btn btn-info btn-sm" onclick="EditService(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewServiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>'
-                                        break
-
-                                }
-
+                                                           
+                             return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewInvoiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.PurchaseOrderID + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
+                                     
                             }
 
-                        }
+                        },
 
+          
             ]
         });
 
@@ -152,7 +143,10 @@
             $('#VenderSelectModel').modal('show');
         });
     });
-
+    function ViewDirectory1(Id) {
+        window.location.href = "/MVCClient/ViewDirecory?Id=" + Id + "&DName=" + "Qutation";
+        //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
+    }
 
     function DateDiff(fromdate, todate) {
         var start = fromdate;
@@ -171,25 +165,13 @@
             },
             success: function (data) {
 
-                window.location.href = "/Purchase/AddOrEdit/" + PurchaseId;
+                window.location.href = "/Purchase/Edit/" + PurchaseId;
             }
         });
 
     }
 
-    function ViewServiceDetail(PurchaseId) {
-        $.ajax({
-            url: '/Purchase/AddOrEditPurchase',
-            type: 'GET',
-            data: {
-                purchaseId: PurchaseId
-            },
-            success: function (data) {
-
-                window.location.href = "/MvcInvoiceServices/Viewinvoice?purchaseOrderId=" + PurchaseId;
-            }
-        });
-    }
+   
 
 
     function ViewInvoiceDetail(PurchaseId) {
@@ -202,7 +184,7 @@
             },
             success: function (data) {
 
-                window.location.href = "/Purchase/Viewinvoice?purchaseOrderId=" + PurchaseId;
+                window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + PurchaseId;
             }
         });
 
@@ -211,20 +193,5 @@
 
 
 
-    function EditService(PurchaseId) {
-        $.ajax({
-            url: '/Purchase/AddOrEditPurchase',
-            type: 'GET',
-            data: {
-                purchaseId: PurchaseId
-            },
-            success: function (data) {
-
-                window.location.href = "/MvcInvoiceServices/AddOrEdit/" + PurchaseId;
-            }
-        });
-
-
-    }
 
 </script>

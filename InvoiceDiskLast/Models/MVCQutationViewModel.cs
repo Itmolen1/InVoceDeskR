@@ -24,6 +24,8 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> DiscountAmount { get; set; }
         public Nullable<double> Vat { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public Nullable<System.DateTime> DueDate1 { get; set; }
 
         public bool Isdelete { get; set; }
         public Nullable<double> TotalAmount { get; set; }

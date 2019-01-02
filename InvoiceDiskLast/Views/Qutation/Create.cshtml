@@ -1113,6 +1113,10 @@
         });
 
 
+        console.log(list);
+        return true;
+
+
 
 
         if (list.length == 0) {
@@ -1150,6 +1154,10 @@
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+
+
+            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            
         }
         $.ajax({
             url: "/Qutation/SaveDraft",
@@ -1267,6 +1275,7 @@
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
         $.ajax({
             url: "/Qutation/SaveEmail",
@@ -1383,6 +1392,7 @@
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
         $.ajax({
             url: "/Qutation/SaveEmailPrint",

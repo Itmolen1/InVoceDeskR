@@ -20,8 +20,8 @@
             <div class="row" style="margi   n-top:10px">
                 <div class="col-7 b-r">
 
-                    @Html.HiddenFor(model => model.CompanyId);
-                    @Html.HiddenFor(model => model.VenderId);
+                    @Html.HiddenFor(model => model.CompanyId)
+                    @Html.HiddenFor(model => model.VenderId)
 
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
@@ -180,7 +180,7 @@
                                     @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG" , @autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
@@ -257,18 +257,18 @@
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class=" Discription form-control Input-height"  autocomplete="off"/>
+                                    <input type="text" class=" Discription form-control Input-height" autocomplete="off" />
                                 </td>
                                 <td>
                                     @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" , @autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal" , @autocomplete = "off" } })
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
@@ -651,7 +651,7 @@
     });
 
     $('.quantityG').keyup(function () {
-     
+
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -1281,7 +1281,6 @@
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
 
         }
-        console.log()
 
         $.ajax({
             url: "/Purchase/SaveEmail",
@@ -1292,7 +1291,7 @@
             processData: false,
 
             success: function (result) {
-          
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1301,7 +1300,7 @@
                     },
                          function (isconform) {
                              window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.purchaseId;
-                             
+
                          });
                 }
                 else if (result.Status == "Fail") {
@@ -1327,12 +1326,12 @@
 
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-            CurrentRow = $(this).closest("tr");
+            var CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
                     PurchaseItemId: parseInt($(this).find('.product').val()),
                     PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Services",
+                    Type: "Goods",
                     ServiceDate: $(this).find('.ServiceDate').val(),
                     PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
@@ -1345,8 +1344,8 @@
 
         });
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            debugger;
-            CurrentRow = $(this).closest("tr");
+
+            var CurrentRow = $(this).closest("tr");
 
             if (ValidateRow(CurrentRow)) {
 
@@ -1403,7 +1402,7 @@
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
         $.ajax({
-            url: "/Qutation/SaveEmailPrint1",
+            url: "/Purchase/SaveEmailPrint1",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1411,9 +1410,7 @@
             processData: false,
 
             success: function (result) {
-
                 if (result.Status == "Success") {
-
                     localStorage.setItem('path', result.path);
                     swal({
                         title: 'Qutation!',
