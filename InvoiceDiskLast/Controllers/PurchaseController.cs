@@ -1698,18 +1698,16 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult UploadFiles(MvcPurchaseViewModel _PurchaseViewModel)
+        public ActionResult UploadFiles()
         {
             try
             {
-
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFileBase file = files[i];
-                    string Path1 = CreatDirectoryClass.UploadFileToDirectory(file, _PurchaseViewModel.PurchaseOrderID, "Purchase");
-                    FileName = Path1;
+                    FileName = CreatDirectoryClass.UploadToPDFCommon(file);
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
@@ -1723,37 +1721,37 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        [HttpPost]
-        public bool UploadFile(int? Id, string FileName, HttpPostedFileWrapper[] file)
-        {
-            try
-            {
-                var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
-                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
-                string fap = Server.MapPath(FilePath);
-                for (int i = 0; i < file.Count(); i++)
-                {
-                    HttpPostedFileBase f = file[i];
-                    FileInfo fi = new FileInfo(f.FileName);
-                    string ext = fi.Extension;
-                    if (allowedExtensions.Contains(ext))
-                    {
-                        string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
-                        string FileName1 = f.FileName.Replace(ext, "");
-                        string FileNameSetting = FileName1 + dateTime + ext;
-                        f.SaveAs(fap + FileNameSetting);
-                    }
-                }
-            }
+        //[HttpPost]
+        //public bool UploadFile(int? Id, string FileName, HttpPostedFileWrapper[] file)
+        //{
+        //    try
+        //    {
+        //        var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
+        //        string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
+        //        string fap = Server.MapPath(FilePath);
+        //        for (int i = 0; i < file.Count(); i++)
+        //        {
+        //            HttpPostedFileBase f = file[i];
+        //            FileInfo fi = new FileInfo(f.FileName);
+        //            string ext = fi.Extension;
+        //            if (allowedExtensions.Contains(ext))
+        //            {
+        //                string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+        //                string FileName1 = f.FileName.Replace(ext, "");
+        //                string FileNameSetting = FileName1 + dateTime + ext;
+        //                f.SaveAs(fap + FileNameSetting);
+        //            }
+        //        }
+        //    }
 
-            catch (Exception)
-            {
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
 
 
@@ -1872,8 +1870,6 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult SaveToDraftEdit(MvcPurchaseViewModel purchaseViewModel)
         {
-
-
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
@@ -2048,7 +2044,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (purchaseViewModel.file23[0] != null)
                 {
-                    UploadFile(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23);
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23);
                 }
             }
             catch (Exception ex)
@@ -2122,7 +2118,13 @@ namespace InvoiceDiskLast.Controllers
                     }
 
                 }
+
+                if (purchaseViewModel.file23[0] != null)
+                {
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23);
+                }
             }
+
             catch (Exception ex)
             {
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message } };

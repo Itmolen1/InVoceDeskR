@@ -325,7 +325,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                if (CreatDirectoryClass.DeleteFile(FileName))
+                if (CreatDirectoryClass.DeleteFileFromPDF(FileName))
                 {
 
                     return Json("Success", JsonRequestBehavior.AllowGet);
@@ -344,42 +344,42 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        public bool UploadFile(int? Id, string FileName, HttpPostedFileWrapper[] file)
-        {
-            try
-            {
-                var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
-                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
+        //public bool UploadFile(int? Id, string FileName, HttpPostedFileWrapper[] file)
+        //{
+        //    try
+        //    {
+        //        var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
+        //        string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
 
-                string fap = Server.MapPath(FilePath);
+        //        string fap = Server.MapPath(FilePath);
 
-                for (int i = 0; i < file.Count(); i++)
-                {
-                    HttpPostedFileBase f = file[i];
-                    FileInfo fi = new FileInfo(f.FileName);
-                    string ext = fi.Extension;
-                    if (allowedExtensions.Contains(ext))
-                    {
-                        string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+        //        for (int i = 0; i < file.Count(); i++)
+        //        {
+        //            HttpPostedFileBase f = file[i];
+        //            FileInfo fi = new FileInfo(f.FileName);
+        //            string ext = fi.Extension;
+        //            if (allowedExtensions.Contains(ext))
+        //            {
+        //                string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
 
-                        string FileName1 = f.FileName.Replace(ext, "");
+        //                string FileName1 = f.FileName.Replace(ext, "");
 
-                        string FileNameSetting = FileName1 + dateTime + ext;
+        //                string FileNameSetting = FileName1 + dateTime + ext;
 
-                        f.SaveAs(fap + FileNameSetting);
+        //                f.SaveAs(fap + FileNameSetting);
 
-                    }
-                }
-            }
+        //            }
+        //        }
+        //    }
 
-            catch (Exception)
-            {
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         [HttpPost]
         public ActionResult DeleteFile(int Id, string FileName)
@@ -483,7 +483,7 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (MVCQutationViewModel.file23[0] != null)
                         {
-                            UploadFile(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
                         }
 
                         return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qtd.QutationID } };
@@ -491,7 +491,7 @@ namespace InvoiceDiskLast.Controllers
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        UploadFile(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
                     }
 
                     return new JsonResult { Data = new { Status = "Success", QutationId = qtd.QutationID } };
@@ -577,13 +577,13 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (MVCQutationViewModel.file23[0] != null)
                         {
-                            UploadFile(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
                         }
                     }
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        UploadFile(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
                     }
                 }
             }
@@ -752,22 +752,46 @@ namespace InvoiceDiskLast.Controllers
 
 
 
+        [HttpPost]
+        public ActionResult UploadFile()
+        {
+            try
+            {
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFileBase file = files[i];
+                    CreatDirectoryClass.UploadToPDFCommon(file);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+
 
 
 
         [HttpPost]
-        public ActionResult UploadFiles(MVCQutationViewModel QutationViewModel)
+        public ActionResult UploadFiles(MVCQutationViewModel MVCQutationViewModel)
         {
             try
             {
-
+             
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFileBase file = files[i];
-                    string Path1 = CreatDirectoryClass.UploadFileToDirectory(file, QutationViewModel.QutationID, "Qutation");
-                    FileName = Path1;
+
+
+                    FileName= CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23);
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
@@ -777,6 +801,8 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
+
+
 
 
 
@@ -889,9 +915,9 @@ namespace InvoiceDiskLast.Controllers
 
                     SaveOnServerPath = path, // Save your place
 
-                  //  CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer.  (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + "  Printed date: " +
-                  // DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
-                  //" --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+                    //  CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer.  (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + "  Printed date: " +
+                    // DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                    //" --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 
                 };
 
@@ -1053,10 +1079,6 @@ namespace InvoiceDiskLast.Controllers
             TempData["EmailMessge"] = "";
             EmailModel emailModel = new EmailModel();
 
-            //if (Session["CompayID"] != null)
-            //{
-            //    CompanyID = Convert.ToInt32(Session["CompayID"]);
-            //}
 
             var fileName = email.Attachment;
             try
@@ -1126,31 +1148,7 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
         }
 
-        public string SetPdfName(string FilePath)
-        {
-            int CompanyId = 0;
-            try
-            {
-                if (Session["CompayID"] != null)
-                {
-                    CompanyId = Convert.ToInt32(Session["CompayID"]);
-                }
 
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                string[] arrya = FilePath.Split('-');
-                string QuationId = arrya[1];
-                string PdfName = QuationId + "-" + companyModel.CompanyName + ".pdf";
-
-                return PdfName;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
 
 
         [HttpPost]
@@ -1252,7 +1250,7 @@ namespace InvoiceDiskLast.Controllers
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        UploadFile(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
                     }
 
                     string path1 = PrintView((int)qutationTable.QutationID);

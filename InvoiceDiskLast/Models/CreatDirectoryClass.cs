@@ -163,30 +163,7 @@ namespace InvoiceDiskLast.Models
             return Result;
         }
 
-        public static bool DeleteFile(string FilePath)
-        {
-            bool Result = true;
-            try
-            {
 
-
-                var CompleterPath = HttpContext.Current.Server.MapPath("/PDF/" + FilePath);
-
-                if (System.IO.File.Exists(CompleterPath))
-                {
-                    System.IO.File.Delete(CompleterPath);
-                    return Result = true;
-                }
-
-            }
-            catch (Exception)
-            {
-                return Result = false;
-                throw;
-            }
-
-            return Result;
-        }
 
 
         public static List<DirectoryViewModel> GetFileDirectiory(int Id)
@@ -246,8 +223,6 @@ namespace InvoiceDiskLast.Models
 
             return _Directory;
         }
-
-
 
 
         public static bool Delete(int Id, string FileName)
@@ -330,6 +305,88 @@ namespace InvoiceDiskLast.Models
         }
 
 
+
+
+
+
+
+
+
+
+
+        public static string UploadFileToDirectoryCommon(int? Id, string FileName, HttpPostedFileWrapper[] file)
+        {
+            string FilePath12 = "";
+
+            try
+            {
+                var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
+                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
+
+                string fap = HttpContext.Current.Server.MapPath(FilePath);
+
+                for (int i = 0; i < file.Count(); i++)
+                {
+                    HttpPostedFileBase f = file[i];
+                    FileInfo fi = new FileInfo(f.FileName);
+                    string ext = fi.Extension;
+                    if (allowedExtensions.Contains(ext))
+                    {
+                        string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+
+                        string FileName1 = f.FileName.Replace(ext, "");
+
+                        string FileNameSetting = FileName1 + dateTime + ext;
+
+                        f.SaveAs(fap + FileNameSetting);
+
+                        return FilePath12 = FileNameSetting;
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return FilePath12;
+        }
+
+
+
+        public static string UploadToPDFCommon(HttpPostedFileBase file)
+        {
+            string FilePAth = "";
+
+            try
+            {
+                if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("/PDF/")))
+                {
+                    Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/PDF/"));
+                }
+                string DirevtoryPath = HttpContext.Current.Server.MapPath("/PDF/");
+
+                if (file.ContentLength != 0)
+                {
+                    FileInfo fi = new FileInfo(file.FileName);
+                    string ext = fi.Extension;
+                    string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                    var FileName = file.FileName.Replace(ext, "");
+                    string FileNameSetting = FileName + dateTime + ext;
+                    file.SaveAs(DirevtoryPath + FileNameSetting);
+                    return FileNameSetting;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return FilePAth;
+        }
 
     }
 }
