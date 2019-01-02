@@ -155,8 +155,7 @@ namespace InvoiceDiskLast.Controllers
             // DO Stuff
             return View();
         }
-
-
+        
         [HttpPost]
         public ActionResult DeleteQuatation(int QutationId, int QutationDetailID, int vat, decimal total)
         {
@@ -351,6 +350,7 @@ namespace InvoiceDiskLast.Controllers
                 var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
                 string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
 
+              
                 string fap = Server.MapPath(FilePath);
 
                 for (int i = 0; i < file.Count(); i++)
@@ -406,9 +406,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
-
+        
         [HttpPost]
         public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -595,12 +593,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
         }
-
-
-
-
-
-
+        
         [HttpGet]
         public ActionResult EditQutation(int QutationId)
         {
@@ -747,14 +740,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
-
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult UploadFiles(MVCQutationViewModel QutationViewModel)
         {
@@ -777,13 +763,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
-
-
-
-
+                
         public static Boolean IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
@@ -1151,8 +1131,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
+        
         [HttpPost]
         [DeleteFileClass]
         public FileResult DownloadFile(string FilePath1)

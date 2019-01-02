@@ -4,12 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model InvoiceDiskLast.Models.MVCQutationViewModel
+@model InvoiceDiskLast.Models.InvoiceViewModel
 
 @{
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
-    var QutationModel = ViewBag.QutationDat;
+    var InvoiceData = ViewBag.InvoiceData;
 }
 
 <div class="row">
@@ -33,8 +33,8 @@
                      Send
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/Invoice/EmailInvoice/?id=@QutationModel.QutationID">Send by Email</a>
-                    <a class="dropdown-item" href="/Invoice/Print/?id=@QutationModel.QutationID">Print and send it yourself</a>
+                    <a class="dropdown-item" href="/Invoice/EmailInvoice/?id=@InvoiceData.InvoiceID">Send by Email</a>
+                    <a class="dropdown-item" href="/Invoice/Print/?id=@InvoiceData.InvoiceID">Print and send it yourself</a>
                    
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Separated link</a>
@@ -43,11 +43,11 @@
             <div style="margin-left:3px">
                 <div class="btn-group">
                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print Invoice", "Print", "Invoice", new { id = QutationModel.QutationID }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("print Invoice", "Print", "Invoice", new { id = InvoiceData.InvoiceID }, new { @class = "btn btn-success" })
                 </div>
             </div>
             <div style="margin-left:3px">
-                <a href="/Invoice/Edit/?id=@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+                <a href="/Invoice/Edit/?id=@InvoiceData.InvoiceID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
 
 
             </div>
@@ -73,7 +73,7 @@
             }
             <div class="row">
                 <div class="col-7 b-r">
-                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" />
+                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size"/>
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-12 b-r HeadText">
@@ -93,8 +93,8 @@
                     @{
                         DateTime qdate = new DateTime();
                         DateTime qddate = new DateTime();
-                        qdate = Convert.ToDateTime(QutationModel.QutationDate);
-                        qddate = Convert.ToDateTime(QutationModel.DueDate);
+                        qdate = Convert.ToDateTime(InvoiceData.InvoiceDate);
+                        qddate = Convert.ToDateTime(InvoiceData.InvoiceDueDate);
                     }
                     <div class="row" style="margin-top:20px">
                         <div class="col-4 b-r">
@@ -109,7 +109,7 @@
                             Invoice Number:
                         </div>
                         <div class="col-8 b-r">
-                            @QutationModel.Qutation_ID
+                            @InvoiceData.Invoice_ID
                         </div>
                     </div>
                     <div class="row">
@@ -125,7 +125,7 @@
                             Reference number:
                         </div>
                         <div class="col-8 b-r">
-                            @QutationModel.RefNumber
+                            @InvoiceData.RefNumber
                         </div>
                     </div>
                 </div>
@@ -215,9 +215,9 @@
 
                         <tbody class="tbody">
 
-                            @if (ViewBag.QutationDatailsList != null)
+                            @if (ViewBag.InvoiceDetailsList != null)
                             {
-                                foreach (var item in ViewBag.QutationDatailsList)
+                                foreach (var item in ViewBag.InvoiceDetailsList)
                                 {
                                     if (item.Type == "Goods")
                                     {
@@ -289,9 +289,9 @@
 
                         </thead>
                         <tbody class="tbody"></tbody>
-                        @if (ViewBag.QutationDatailsList != null)
+                        @if (ViewBag.InvoiceDetailsList != null)
                         {
-                            foreach (var item in ViewBag.QutationDatailsList)
+                            foreach (var item in ViewBag.InvoiceDetailsList)
                             {
                                 if (item.Type == "Service")
                                 {
@@ -336,34 +336,34 @@
                 <div class="col-5 b-r">
                     <div class="row">
                         <div class="col-4 b-r text-right">Total excl. VAT:€</div>
-                        <div class="col-7 b-r text-right">@QutationModel.SubTotal</div>
+                        <div class="col-7 b-r text-right">@InvoiceData.SubTotal</div>
                         <div class="col-1 b-r">
                         </div>
                     </div>
                     <div class="row">
-                        @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                        @if (InvoiceData.TotalVat6 != 0 && InvoiceData.TotalVat6 != null)
                         {
                             <div class="col-4 b-r text-right">VAT 6%:€</div>
 
-                            <div class="col-7 b-r text-right">@QutationModel.TotalVat6</div>
+                            <div class="col-7 b-r text-right">@InvoiceData.TotalVat6</div>
                             <div class="col-1 b-r">
                             </div>
                         }
                     </div>
 
                     <div class="row">
-                        @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                        @if (InvoiceData.TotalVat21 != 0 && InvoiceData.TotalVat21 != null)
                         {
                             <div class="col-4 b-r text-right">VAT 21%:€</div>
 
-                            <div class="col-7 b-r text-right">@QutationModel.TotalVat21</div>
+                            <div class="col-7 b-r text-right">@InvoiceData.TotalVat21</div>
                             <div class="col-1 b-r">
                             </div>
                         }
                     </div>
                     <div class="row Grand-color">
                         <div class="col-4 b-r text-right">Grand Total:</div>
-                        <div class="col-7 b-r text-right">&euro;: @QutationModel.TotalAmount</div>
+                        <div class="col-7 b-r text-right">&euro;: @InvoiceData.TotalAmount</div>
                         <div class="col-1 b-r">
                         </div>
                     </div>
