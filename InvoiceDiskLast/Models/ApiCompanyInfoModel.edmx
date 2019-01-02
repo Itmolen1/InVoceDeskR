@@ -502,7 +502,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InvoiceTable_ContactsTable">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="InvoiceTable" Type="Self.InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_InvoiceTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="InvoiceTable" Type="Self.InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_UserTable1">
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
           <End Role="InvoiceTable" Type="Self.InvoiceTable" Multiplicity="*" />
           <ReferentialConstraint>
@@ -718,7 +742,15 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="InvoiceTable" EntitySet="InvoiceTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_InvoiceTable_ContactsTable" Association="Self.FK_InvoiceTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+            <End Role="InvoiceTable" EntitySet="InvoiceTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_InvoiceTable_UserTable" Association="Self.FK_InvoiceTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="InvoiceTable" EntitySet="InvoiceTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceTable_UserTable1" Association="Self.FK_InvoiceTable_UserTable1">
             <End Role="UserTable" EntitySet="UserTable" />
             <End Role="InvoiceTable" EntitySet="InvoiceTable" />
           </AssociationSet>
@@ -920,11 +952,19 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
+          <AssociationSet Name="FK_InvoiceTable_ContactsTable" Association="APIcompanyModel.FK_InvoiceTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="InvoiceTable" EntitySet="InvoiceTables" />
+          </AssociationSet>
           <AssociationSet Name="FK_InvoiceDetailsTable_InvoiceTable" Association="APIcompanyModel.FK_InvoiceDetailsTable_InvoiceTable">
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
             <End Role="InvoiceDetailsTable" EntitySet="InvoiceDetailsTables" />
           </AssociationSet>
           <AssociationSet Name="FK_InvoiceTable_UserTable" Association="APIcompanyModel.FK_InvoiceTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="InvoiceTable" EntitySet="InvoiceTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceTable_UserTable1" Association="APIcompanyModel.FK_InvoiceTable_UserTable1">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
@@ -1060,6 +1100,7 @@
           <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
           <Property Name="PaymentTerm" Type="Int32" />
+          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1478,6 +1519,7 @@
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="UserTable" ToRole="InvoiceTable" />
+          <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
         </EntityType>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1562,8 +1604,10 @@
           <Property Name="ContactId" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="InvoiceTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="InvoiceTable" ToRole="ContactsTable" />
           <NavigationProperty Name="InvoiceDetailsTables" Relationship="APIcompanyModel.FK_InvoiceDetailsTable_InvoiceTable" FromRole="InvoiceTable" ToRole="InvoiceDetailsTable" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="InvoiceTable" ToRole="UserTable" />
+          <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="InvoiceTable" ToRole="UserTable" />
         </EntityType>
         <Association Name="FK_InvoiceTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1574,6 +1618,18 @@
             </Principal>
             <Dependent Role="InvoiceTable">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="ContactId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1590,6 +1646,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_InvoiceTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_UserTable1">
           <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
           <ReferentialConstraint>

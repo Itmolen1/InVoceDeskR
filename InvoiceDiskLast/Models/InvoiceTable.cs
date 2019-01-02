@@ -39,8 +39,10 @@ namespace InvoiceDiskLast.Models
         public string Type { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public virtual ContactsTable ContactsTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceDetailsTable> InvoiceDetailsTables { get; set; }
         public virtual UserTable UserTable { get; set; }
+        public virtual UserTable UserTable1 { get; set; }
     }
 }

@@ -8,7 +8,9 @@ using InvoiceDiskLast.Models;
 
 namespace InvoiceDiskLast.Controllers
 {
+    
     public class APIInvoiceDetailsController : ApiController
     {
+       
     }
 }
