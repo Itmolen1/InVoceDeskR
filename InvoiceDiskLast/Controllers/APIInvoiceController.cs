@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using InvoiceDiskLast.Models;
-
+using System.Web.Http.Description;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -56,6 +56,67 @@ namespace InvoiceDiskLast.Controllers
             {
                 return Ok(Invoice);
             }
+        }
+
+
+        [Route("api/PostInvoice")]
+        [ResponseType(typeof(QutationTable))]
+        public IHttpActionResult PostInvoice([FromBody] InvoiceTable invoiceTable)
+        {
+            using (DBEntities entities = new DBEntities())
+            {
+               
+                try
+                {
+                    invoiceTable = entities.InvoiceTables.Add(invoiceTable);
+
+                    entities.SaveChanges();
+
+                    return Ok(invoiceTable);
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest();
+                }
+
+            }
+        }
+
+
+        [Route("api/GetInvoiceById/{id:int}")]
+        [ResponseType(typeof(QutationTable))]
+        public IHttpActionResult GetInvoiceTable(int id)
+        {
+            MVCInvoiceModel invoiceModel = new MVCInvoiceModel();
+
+            invoiceModel = db.InvoiceTables.Where(q => q.InvoiceID == id).Select(c => new MVCInvoiceModel
+            {
+                InvoiceID = c.InvoiceID,
+                Invoice_ID = c.Invoice_ID,
+                RefNumber = c.RefNumber,
+                InvoiceDate = c.InvoiceDate,
+                InvoiceDueDate = c.InvoiceDueDate,
+                SubTotal = c.SubTotal,
+                TotalVat6 = c.TotalVat6,
+                TotalVat21 = c.TotalVat21,
+                DiscountAmount = c.DiscountAmount,
+                TotalAmount = c.TotalAmount,
+                CustomerNote = c.CustomerNote,
+                Status = c.Status,
+                UserId = c.UserId,
+                CompanyId = c.CompanyId,
+                ContactId = c.ContactId,
+                Type = c.Type,
+
+            }).FirstOrDefault();
+
+
+            if (invoiceModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(invoiceModel);
         }
     }
 }

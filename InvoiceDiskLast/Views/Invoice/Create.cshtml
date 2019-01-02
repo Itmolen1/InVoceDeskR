@@ -1081,13 +1081,13 @@
         }
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
+            Invoice_ID: $('#Invoice_ID').val(),
             RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
-            DueDate: $('#DueDate').val(),
+            InvoiceDate: $('#InvoiceDate').val(),
+            InvoiceDueDate: $('#InvoiceDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
+            InvoiceID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#SubTotal').text(),
@@ -1101,24 +1101,24 @@
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
-            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+            formData.append('InvoiceDetailsTable[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('InvoiceDetailsTable[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('InvoiceDetailsTable[' + i + '][Rate]', list[i].Rate)
+            formData.append('InvoiceDetailsTable[' + i + '][Total]', list[i].Total)
+            formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
+            formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
         }
         $.ajax({
-            url: "/Qutation/SaveDraft",
+            url: "/Invoice/SaveDraft",
             type: "POST",
             data: formData,
             dataType: 'json',
             contentType: false,
             processData: false,
 
-            success: function (result) {
-                QutationIdd = result.QutationId;
+            success: function (result)
+            {                
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1126,7 +1126,7 @@
                         type: 'success'
                     },
                          function (isconform) {
-                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                             window.location.href = "/Invoice/ViewInvoice?id=" + result.id;
                          });
                 }
                 else if (result.Status == "Fail") {

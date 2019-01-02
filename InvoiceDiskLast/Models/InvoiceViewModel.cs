@@ -7,7 +7,7 @@ namespace InvoiceDiskLast.Models
 {
     public class InvoiceViewModel
     {
-        public int InvoiceID { get; set; }
+        public int? InvoiceID { get; set; }
         public string Invoice_ID { get; set; }
         public string RefNumber { get; set; }
         public Nullable<int> QutationId { get; set; }
@@ -23,12 +23,12 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> UserId { get; set; }
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> ContactId { get; set; }
+        
 
         public string UserName { get; set; }
         public string CustomerName { get; set; }
 
-
-
+        //<--Invoice Details -->
 
         public int InvoiceDetailId { get; set; }
         public Nullable<int> ItemId { get; set; }
@@ -37,9 +37,13 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> Rate { get; set; }
         public Nullable<double> Total { get; set; }
         public Nullable<double> Vat { get; set; }
-        public Nullable<double> RowSubTotal { get; set; }       
+        public Nullable<double> RowSubTotal { get; set; }
+        public string ItemName { get; set; }
         public string Type { get; set; }
         public Nullable<System.DateTime> ServiceDate { get; set; }
+
+        public HttpPostedFileWrapper[] file23 { get; set; }
+        public HttpPostedFileBase[] Files { get; set; }
 
         public List<InvoiceDetailsTable> InvoiceDetailsTable { get; set; }
 
