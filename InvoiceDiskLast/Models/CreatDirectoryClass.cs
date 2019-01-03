@@ -13,7 +13,7 @@ namespace InvoiceDiskLast.Models
         public static DirectoryViewModel _Directory = new DirectoryViewModel();
         static string Result = "";
         
-        public static string CreateDirecotyFolder(int? refrenceId, string Name)
+        public static string CreateDirecotyFolder(int? refrenceId, string Name,string Decription)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace InvoiceDiskLast.Models
 
         }
         
-        public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files)
+        public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files,string Decription)
         {
 
             bool Result = true;
@@ -72,7 +72,7 @@ namespace InvoiceDiskLast.Models
                 {
                     DirectoryViewModel _Directory = new DirectoryViewModel();
 
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id +"/"+ Decription).Result;
                     _Directory = response.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
 
@@ -99,7 +99,7 @@ namespace InvoiceDiskLast.Models
                     }
                     else
                     {
-                        string folderPAth2 = CreateDirecotyFolder(Id, Name);
+                        string folderPAth2 = CreateDirecotyFolder(Id, Name, Decription);
 
                         if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(folderPAth2)))
                         {
@@ -293,18 +293,15 @@ namespace InvoiceDiskLast.Models
 
             return DirevtoryPath;
         }
-
-
-
-
-        public static string UploadFileToDirectoryCommon(int? Id, string FileName, HttpPostedFileWrapper[] file)
+                
+        public static string UploadFileToDirectoryCommon(int? Id, string FileName, string Decription, HttpPostedFileWrapper[] file)
         {
             string FilePath12 = "";
 
             try
             {
                 var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
-                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
+                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName, Decription);
 
                 string fap = HttpContext.Current.Server.MapPath(FilePath);
 

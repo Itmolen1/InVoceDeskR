@@ -535,13 +535,13 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult DeleteFile(int Id, string FileName)
+        public ActionResult DeleteFile(int Id, string FileName,string Description)
         {
             try
             {
 
 
-                if (CreatDirectoryClass.Delete(Id, FileName))
+                if (CreatDirectoryClass.Delete(Id, FileName, Description))
                 {
 
                     return Json("Success", JsonRequestBehavior.AllowGet);
@@ -579,14 +579,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
-
-
-
-
-
+        
         [DeleteFileClass]
         [HttpPost]
         public FileResult DownloadFile(string FilePath1)
@@ -1627,7 +1620,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpPostedFileBase file = files[i];
 
 
-                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(_MvcPurchaseViewModel.PurchaseOrderID, "purchase", _MvcPurchaseViewModel.file23);
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(_MvcPurchaseViewModel.PurchaseOrderID, "purchase", "purchase", _MvcPurchaseViewModel.file23);
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };

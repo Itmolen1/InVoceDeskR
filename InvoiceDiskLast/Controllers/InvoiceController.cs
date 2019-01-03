@@ -195,9 +195,8 @@ namespace InvoiceDiskLast.Controllers
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
                             }
                         }
-                        if (invoiceViewModel.file23[0] != null)
-                        {
-                          
+                        if (invoiceViewModel.file23[0] != null)    
+                        {                          
                             CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23);
                           
                         }

@@ -382,13 +382,13 @@ namespace InvoiceDiskLast.Controllers
         //}
 
         [HttpPost]
-        public ActionResult DeleteFile(int Id, string FileName)
+        public ActionResult DeleteFile(int Id, string FileName,string Decription)
         {
             try
             {
 
 
-                if (CreatDirectoryClass.Delete(Id, FileName))
+                if (CreatDirectoryClass.Delete(Id, FileName, Decription))
                 {
 
                     return Json("Success", JsonRequestBehavior.AllowGet);
