@@ -48,11 +48,8 @@
             </div>
             <div style="margin-left:3px">
                 <a href="/Invoice/Edit/?id=@InvoiceData.InvoiceID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
-
-
-            </div>
-
-            
+                
+            </div>            
         </div>
     </div>
     <div class="col-2 b-r"></div>
@@ -85,9 +82,9 @@
                     </div>
                     <div class="row">
                         <div class="col-12 b-r">
-                            @Contectdatas.ContactAddress
+                            @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
                             <br />
-                            @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
+                            @Contectdatas.PostalCode, @Contectdatas.City
                         </div>
                     </div>
                     @{
@@ -368,6 +365,28 @@
                         </div>
                     </div>
                 </div>
+            </div>
+          <p></p>
+            <div class="row">
+                <div class="col-6 b-r">
+                    <table class="table table-hover" id="participantTable">
+                        <tbody id="upload123">
+                            @if (ViewBag.FILE != null)
+                            {
+                                foreach (var item in ViewBag.FILE)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6 b-r"></div>
             </div>
             <hr />
             <div class="row">

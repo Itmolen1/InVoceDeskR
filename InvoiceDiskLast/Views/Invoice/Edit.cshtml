@@ -4,19 +4,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model InvoiceDiskLast.Models.MVCQutationViewModel
+@model InvoiceDiskLast.Models.InvoiceViewModel
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
-    var QutationModel = ViewBag.QutationDat;
+    var InvoiceModel = ViewBag.InvoiceData;  
 }
 
-
-
-@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -27,30 +24,31 @@
           
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
-                    @Html.HiddenFor(model => model.QutationID, new { htmlAttributes = new { id = "QutationID" } })
+                  
+                    @Html.HiddenFor(model => model.InvoiceID, new { htmlAttributes = new { id = "InvoiceID" } })
                     @Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new { id = "CompanyId" } })
-                    @Html.HiddenFor(model => model.ConatctId, new { htmlAttributes = new { id = "ConatctId" } })
+                    @Html.HiddenFor(model => model.ContactId, new { htmlAttributes = new { id = "ContactId" } })
 
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Qutation</div>
+                        <div class="col-12 b-r HeadText">Invoice</div>
                     </div>
                     <div class="row clientInfo" style="margin-top:10px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
                     </div>
                     <div class="row">
-                        <div class="col-12 b-r">@Contectdatas.ContactAddress <br />@Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                        <div class="col-12 b-r">@Contectdatas.ContactAddress @Contectdatas.StreetNumber <br />@Contectdatas.PostalCode, @Contectdatas.City</div>
                     </div>
 
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
-                            Qutation Date:
+                            Invoice Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "QutationDate" } })
-                            @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
+                            @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })
 
 
                         </div>
@@ -58,11 +56,11 @@
                     </div>
                     <div class="row">
                         <div class="col-3 b-r">
-                            Qutation Number:
+                            Invoice Number:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID" } })
-                            @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Invoice_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Invoice_ID", @readonly= "readonly" } })
+                            @Html.ValidationMessageFor(model => model.Invoice_ID, "", new { @class = "text-danger" })
 
 
                         </div>
@@ -73,8 +71,8 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
-                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
+                            @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })
 
 
                         </div>
@@ -87,8 +85,6 @@
                         <div class="col-6 b-r">
                             @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
                             @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-
-
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -180,9 +176,9 @@
                         <tbody class="tbody">
 
                             @{
-                                if (ViewBag.QutationDatailsList != null)
+                                if (ViewBag.InvoiceDetailsList != null)
                                 {
-                                    foreach (var item in ViewBag.QutationDatailsList)
+                                    foreach (var item in ViewBag.InvoiceDetailsList)
                                     {
 
 
@@ -227,7 +223,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+                                                    <input type="hidden" class="QutationDetailId" value="@item.InvoiceDetailId" />
                                                 </td>
 
                                             </tr>
@@ -328,9 +324,9 @@
                         <tbody class="tbody">
 
                             @{
-                                if (ViewBag.QutationDatailsList != null)
+                                if (ViewBag.InvoiceDetailsList != null)
                                 {
-                                    foreach (var item in ViewBag.QutationDatailsList)
+                                    foreach (var item in ViewBag.InvoiceDetailsList)
                                     {
 
 
@@ -389,7 +385,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationDetailId" value="@item.QutationDetailId" />
+                                                    <input type="hidden" class="QutationDetailId" value="@item.InvoiceDetailId" />
                                                 </td>
                                             </tr>
                                         }
@@ -461,14 +457,14 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">Sub Total:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="SubTotal">@QutationModel.SubTotal</label>
+                            <label id="SubTotal">@InvoiceModel.SubTotal</label>
                         </div>
 
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">Totaal excel btw:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="TotalBTW">@QutationModel.SubTotal</label>
+                            <label id="TotalBTW">@InvoiceModel.SubTotal</label>
                         </div>
                     </div>
                     <div class="row">
@@ -480,20 +476,20 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">BTW 6%:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="BTW6">@QutationModel.TotalVat6</label>
+                            <label id="BTW6">@InvoiceModel.TotalVat6</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">BTW 21%:</div>
                         <div class="col-7 b-r text-right">
-                            <label id="BTW21">@QutationModel.TotalVat21</label>
+                            <label id="BTW21">@InvoiceModel.TotalVat21</label>
                         </div>
                     </div>
 
                     <div class="row Grand-color">
                         <div class="col-5 b-r text-right">Grand Total:</div>
                         <div class="col-7 b-r text-right">
-                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@QutationModel.TotalAmount</label>
+                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@InvoiceModel.TotalAmount</label>
                         </div>
                     </div>
                 </div>
@@ -520,6 +516,9 @@
     </div>
     <div class="col-2 b-r"></div>
 </div>
+
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
 <script type="text/javascript">
     var Currentrow, Total, vat, Price, Quantity = 0;
@@ -573,13 +572,10 @@
             $('#mainrow .quantityG').val('');
             $('#mainrow .RowTotalG').val('');
 
-
-
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
             $('#mainrow #SelectVATG').val(0);
-
         }
 
 
@@ -591,12 +587,11 @@
          CalculateVateTotal();
     });
 
-    $('.quantityG').keyup(function () {
-
+    $('.quantityG').keyup(function ()
+    {
 
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
-
 
     });
 
@@ -604,10 +599,7 @@
 
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
-
-
     });
-
 
     $('.rateG').keyup(function () {
         Currentrow = $(this).closest("tr");
@@ -628,11 +620,6 @@
 
     });
 
-
-
-
-
-
     $(document).on("keyup", ".tbody .rateG", function () {
 
         debugger;
@@ -645,7 +632,6 @@
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
         GrandTotal("Add", Total, Subtotalwt);
-
     });
 
 
@@ -655,12 +641,10 @@
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
-
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
-
 
 
     $(document).on("keyup", ".tbody .rateG", function () {
@@ -676,7 +660,6 @@
     });
 
 
-
     $(document).on("keyup", ".tbody .quantityG", function () {
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
@@ -687,7 +670,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
 
 
     function calculateTotalGoods(currentRow) {
@@ -714,7 +696,6 @@
         Currentrow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
     }
 
-
     $(document).on('change', '.tbody .VATG', function () {
 
         var Currentrow = $(this).closest("tr");
@@ -723,9 +704,7 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
     });
-
 
     $('#mainrow1 .VATG').change(function () {
 
@@ -734,8 +713,7 @@
         RowSubTalSubtotal(vat, Currentrow);
 
     });
-
-
+    
 
     $('.tbody .VATG').change(function () {
 
@@ -747,8 +725,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
+    
 
     $('#mainrow .VATG').change(function () {
 
@@ -760,13 +737,8 @@
 
     //Services
 
-
     $('#btnSerVice').click(function () {
-
-
-        debugger;
-
-
+       
 
         var isAllValid = true;
         if ($("#mainrow1 #SelectProductQutationS").val() == "0") {
@@ -822,7 +794,6 @@
             $('#mainrow1 .RowTotalG').val('');
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG ').val('');
         }
-
         
         var currentRow1 = $(this).closest("tr");
         var vat = currentRow1.find('.VATG').val();
@@ -831,13 +802,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
-
-
-
-
-
 
     function CalculateVateTotal() {
         debugger;
@@ -866,7 +830,6 @@
                 }
             }
         });
-
 
         $('#orderdetailsitems1 .tbody tr .VATG').each(function () {
 
@@ -897,8 +860,6 @@
     }
 
 
-
-
     function LoadProductG() {
         PgoodServices = "Good";
 
@@ -924,7 +885,6 @@
 
         });
     }
-
 
     function LoadProductS() {
         PgoodServices = "Services";
@@ -1024,8 +984,7 @@
                 }
             });
         }
-    });
-    
+    });   
 
 
     function CombineTotalAndSubtotal() {
@@ -1038,9 +997,7 @@
 
         $('#SubTotal').text(Total.toFixed(2));
         $('#gtotal').text(Total.toFixed(2));
-
     }
-
 
     function CombineTotal() {
 
@@ -1066,7 +1023,6 @@
         })
         return SubTotalGood;
     }
-
 
     function AddSubTotalService() {
         var SubTotalService = 0;
@@ -1106,10 +1062,7 @@
         })
         return TotalService;
     }
-
-
-
-
+    
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         debugger;
@@ -1162,8 +1115,6 @@
         }
     }
 
-
-
     $('#orderdetailsitems1').on('click', '.remove', function () {
 
         var currentRow = $(this).closest('tr');
@@ -1174,11 +1125,7 @@
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
-
     });
-
-
 
     $('#QutationServiceDetail').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
@@ -1189,12 +1136,10 @@
         CalculateVateTotal();
     });
 
-
     $('#Submit').click(function () {
 
         CreateQuation1();
     });
-
 
     function CreateQuation1() {
 
@@ -1239,21 +1184,21 @@
 
         });
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
+            Invoice_ID: $('#Invoice_ID').val(),
             RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
-            DueDate: $('#DueDate').val(),
+            InvoiceDate: $('#InvoiceDate').val(),
+            InvoiceDueDate: $('#InvoiceDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#QutationID').val(),
+            InvoiceID: $('#InvoiceID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#gtotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#ConatctId').val(),
+            ContactId: $('#ContactId').val(),
             CompanyId: $('#CompanyId').val(),
-            QutationDetailslist: list
+            InvoiceDetailsTable: list
         };
 
         
@@ -1287,7 +1232,4 @@
 
         });
     }
-
-
-
 </script>

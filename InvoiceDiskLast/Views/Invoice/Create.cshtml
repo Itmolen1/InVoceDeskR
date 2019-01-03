@@ -12,9 +12,10 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
+
             <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
             <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
-
+        
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
                     <img src="@Url.Content("~/Images/" +@CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
@@ -57,7 +58,7 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
+                            @Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
                             @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-3 b-r"></div>
@@ -1079,8 +1080,10 @@
             $('#gtotal').text('');
             $('#gtotal').text('');
         }
+        debugger;
 
         var empObj = {
+            
             Invoice_ID: $('#Invoice_ID').val(),
             RefNumber: $('#RefNumber').val(),
             InvoiceDate: $('#InvoiceDate').val(),
@@ -1093,10 +1096,13 @@
             Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#ConatctId').val(),
+            ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
-
+            
+        
+           
         };
+        console.log(empObj);
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }

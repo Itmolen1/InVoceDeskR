@@ -61,28 +61,7 @@ namespace InvoiceDiskLast.Controllers
                         Type = pd.Type,
                         ItemName = pd.ProductTable.ProductName,
                         InvoiceDetailId = pd.InvoiceDetailId
-                    }).ToList();
-
-
-                    //var query = (from pd in db.InvoiceDetailsTables
-                    //             join p in db.ProductTables on pd.ItemId equals p.ProductId
-                    //             where pd.QutationID == id
-                    //             select new MVCQutationViewModel
-                    //             {
-                    //                 ItemId = pd.ItemId,
-                    //                 QutationID = pd.QutationID,
-                    //                 Rate = pd.Rate,
-                    //                 Quantity = pd.Quantity,
-                    //                 Vat = pd.Vat,
-                    //                 Type = pd.Type,
-                    //                 ItemName = p.ProductName,
-                    //                 Total = pd.Total,
-                    //                 RowSubTotal = pd.RowSubTotal,
-                    //                 Description = pd.Description,
-                    //                 ServiceDate = pd.ServiceDate,
-                    //                 QutationDetailId = pd.QutationDetailId,
-
-                    //             }).ToList();
+                    }).ToList();                    
 
                     return Ok(InvoiceDetaislList);
                 }
