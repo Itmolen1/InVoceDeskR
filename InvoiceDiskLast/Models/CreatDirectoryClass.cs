@@ -243,7 +243,7 @@ namespace InvoiceDiskLast.Models
             return Issuccess;
         }
 
-        public static string UploadFileToDirectory(HttpPostedFileBase files, int? Id, string Name)
+        public static string UploadFileToDirectory(HttpPostedFileBase files, int? Id, string Name, string Description)
         {
 
             string DirevtoryPath = "";
@@ -251,7 +251,7 @@ namespace InvoiceDiskLast.Models
             DirectoryViewModel _Directory12 = new DirectoryViewModel();
             try
             {
-                _Directory = GetDiretoryPathById((int)Id);
+                _Directory = GetDiretoryPathById((int)Id, Description);
 
                 if (_Directory == null)
                 {
