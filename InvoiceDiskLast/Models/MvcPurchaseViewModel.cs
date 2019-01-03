@@ -34,6 +34,9 @@ namespace InvoiceDiskLast.Models
         public string PurchaseItemName { get; set; }
 
         public string Type { get; set; }
+
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public Nullable<DateTime> ServiceDate { get; set; }
 
         public int PurchaseOrderDetailsId { get; set; }

@@ -40,9 +40,9 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate"  } })
+                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
                             @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
-                            
+
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -51,7 +51,7 @@
                             Qutation Number:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID", @readonly= "readonly" } })
+                            @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
 
 
@@ -298,7 +298,7 @@
                 </div>
             </div>
 
-            
+
             <hr />
             <div class="row">
                 <div class="col-8 b-r">
@@ -713,7 +713,7 @@
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
+
             var Value = 0;
             Value = $(this).find(".VATG").val();
             var FTotalG = $(this).find(".FTotalG").val();
@@ -789,7 +789,7 @@
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
-    
+
     function GetProductPriceByProductId(Id, CurrentRow) {
 
         if (Id == "AddNewProductSelect") {
@@ -920,7 +920,7 @@
         })
         return SubTotalGood;
     }
-    
+
     function AddSubTotalService() {
         var SubTotalService = 0;
 
@@ -963,7 +963,7 @@
         })
         return TotalService;
     }
-    
+
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         if (InOrOut == 'AddingVat') {
@@ -1112,6 +1112,7 @@
             }
         });
 
+
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
@@ -1150,7 +1151,7 @@
 
 
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
-            
+
         }
         $.ajax({
             url: "/Qutation/SaveDraft",
@@ -1161,7 +1162,7 @@
             processData: false,
 
             success: function (result) {
-               
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1445,5 +1446,5 @@
             return Isvalid;
         }
     }
-    
+
 </script>
