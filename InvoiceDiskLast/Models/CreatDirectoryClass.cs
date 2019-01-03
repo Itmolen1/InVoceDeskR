@@ -12,8 +12,7 @@ namespace InvoiceDiskLast.Models
     {
         public static DirectoryViewModel _Directory = new DirectoryViewModel();
         static string Result = "";
-
-
+        
         public static string CreateDirecotyFolder(int? refrenceId, string Name)
         {
             try
@@ -41,9 +40,7 @@ namespace InvoiceDiskLast.Models
 
             return Result;
         }
-
-
-
+        
         public static void AddDirectory(int? Id, string Path)
         {
             try
@@ -61,10 +58,7 @@ namespace InvoiceDiskLast.Models
             }
 
         }
-
-
-
-
+        
         public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files)
         {
 
@@ -162,10 +156,7 @@ namespace InvoiceDiskLast.Models
 
             return Result;
         }
-
-
-
-
+        
         public static List<DirectoryViewModel> GetFileDirectiory(int Id)
         {
             List<DirectoryViewModel> _object = new List<DirectoryViewModel>();
@@ -207,12 +198,12 @@ namespace InvoiceDiskLast.Models
             return _object;
         }
 
-
-        public static DirectoryViewModel GetDiretoryPathById(int Id)
+        public static DirectoryViewModel GetDiretoryPathById(int Id,string Decription)
         {
             try
             {
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" +Id+Decription).Result;
+
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
             }
             catch (Exception)
@@ -223,15 +214,14 @@ namespace InvoiceDiskLast.Models
 
             return _Directory;
         }
-
-
-        public static bool Delete(int Id, string FileName)
+        
+        public static bool Delete(int Id, string FileName,string Decription)
         {
             bool Issuccess = true;
 
             try
             {
-                _Directory = GetDiretoryPathById((int)Id);
+                _Directory = GetDiretoryPathById((int)Id, Decription);
 
                 if (_Directory != null)
                 {

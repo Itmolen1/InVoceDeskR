@@ -649,8 +649,6 @@
             }
         });
 
-
-
         $('#btnSerVice').click(function () {
 
             var currentRow1 = $(this).closest("tr");
@@ -729,7 +727,6 @@
 
         });
 
-
         function LoadProductG() {
             PgoodServices = "Good";
 
@@ -755,7 +752,6 @@
 
             });
         }
-
 
         function LoadProductS() {
             PgoodServices = "Services";
@@ -783,10 +779,6 @@
             });
         }
 
-
-
-
-
         $('.quantityG').keyup(function () {
             Currentrow = $(this).closest("tr");
             calculateTotalGoods(Currentrow);
@@ -794,8 +786,6 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
-
 
         $('.rateG').keyup(function () {
             Currentrow = $(this).closest("tr");
@@ -805,8 +795,7 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
-
+        
         var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
 
         $(document).on("keypress", "tbody .rateG", function () {
@@ -819,8 +808,7 @@
             CalculateVateTotal();
 
         });
-
-
+        
         $(document).on("keyup", "tbody .rateG", function () {
 
             Currentrow = $(this).closest("tr");
@@ -831,8 +819,7 @@
             var Subtotalwt = Currentrow.find('.RowTotalG').val();
             // GrandTotal("Add", Total, Subtotalwt);
         });
-
-
+        
         $(document).on("keyup", "tbody .quantityG", function () {
             Currentrow = $(this).closest("tr");
             vat = Currentrow.find(".VATG").val();
@@ -854,8 +841,7 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
-
+        
         $(document).on("keyup", "tbody .quantityG", function () {
             Currentrow = $(this).closest("tr");
             vat = Currentrow.find(".VATG").val();
@@ -866,8 +852,7 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
-
+        
         function calculateTotalGoods(currentRow) {
 
             console.log(currentRow);
@@ -880,8 +865,7 @@
 
         }
 
-
-        function RowSubTalSubtotal(vat, CurrentRow) {
+       function RowSubTalSubtotal(vat, CurrentRow) {
 
             debugger;
             var price = CurrentRow;
@@ -901,8 +885,7 @@
                 CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
             }
         }
-
-
+        
         $(document).on('change', 'tbody .VATG', function () {
 
             var currentRow1 = $(this).closest("tr");
@@ -913,9 +896,7 @@
             CalculateVateTotal();
 
         });
-
-
-
+        
         $('.VATG').change(function () {
 
             debugger;
@@ -928,9 +909,7 @@
             CalculateVateTotal();
             Currentrow = "";
         });
-
-
-
+        
         $('.quantityG').keyup(function () {
             debugger;
             var Currentrow = $(this).closest("tr");
@@ -940,8 +919,7 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
-
+        
         $('.quantityG').keyup(function () {
             debugger;
             var Currentrow = $(this).closest("tr");
@@ -951,8 +929,7 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
-
+        
         $('.rateG').keyup(function () {
             var Currentrow = $(this).closest("tr");
             vat = Currentrow.find('.VATG').val();
@@ -976,7 +953,6 @@
             CalculateVateTotal();
         });
 
-
         $('.VATG').change(function () {
 
             var currentRow1 = $(this).closest("tr");
@@ -988,8 +964,7 @@
             CalculateVateTotal();
 
 
-        });
-        //Services
+        });        //Services
 
         function CalculateVateTotal() {
 
@@ -1047,8 +1022,6 @@
             }
         }
 
-
-
         $(document).ready(function () {
             $('.pClassG').change(function () {
                 debugger;
@@ -1056,8 +1029,7 @@
                 var value = currentRow1.find('.pClassG').val();
                 GetProductPriceByProductId(value, currentRow1);
             });
-        })
-      
+        })      
 
         $('#mainrow .pClassG').change(function () {
 
@@ -1068,7 +1040,6 @@
             var value = currentRow.find('.pClassG').val();
             GetProductPriceByProductId(value, currentRow);
         });
-
 
         $('#mainrow1 .pClassG').change(function () {
 
@@ -1132,10 +1103,6 @@
             }
         }
 
-
-
-
-
         function CombineTotalAndSubtotal() {
 
             debugger;
@@ -1195,7 +1162,6 @@
             return SubTotalGood;
         }
 
-
         function AddSubTotalService() {
             var SubTotalService = 0;
             $('#QutationServiceDetail tr').each(function () {
@@ -1229,9 +1195,7 @@
             })
             return TotalService;
         }
-
-
-
+        
         function AsignValueT21(NewValue, Vat, InOrOut) {
 
             debugger;
@@ -1302,7 +1266,6 @@
             CombineTotal();
             CalculateVateTotal();
         });
-
 
         $('#saveprintandsendtoyourselfsave').click(function () {
 
@@ -1570,8 +1533,7 @@
                 }
             });
         });
-
-
+        
         $('#Submit').click(function () {
 
 
@@ -1735,8 +1697,6 @@
             CalculateVateTotal();
         });
 
-
-
         function Remove(CurrentRow) {
 
             var QIDId = CurrentRow.find('.QutationDetailId').val();
@@ -1785,8 +1745,7 @@
             });
 
         }
-
-
+        
         function ValidateRow(CurrentRow) {
 
             var Isvalid = true;
@@ -1807,11 +1766,6 @@
         }
 
     </script>
-
-
-
-
-
 
     <script type="text/javascript">
         $('#txtUploadFile12').on('change', function (e) {
@@ -1857,7 +1811,6 @@
             }
         });
 
-
         function validateFileSize() {
             var Isvalid = true;
             if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1881,8 +1834,7 @@
                 return Isvalid;
             }
         }
-
-
+        
         $(document).on('click', '.remove', function () {
 
             var current = $(this).closest("tr");
@@ -1906,11 +1858,7 @@
             });
 
         });
-
-
-
-
-
+        
         $(document).ready(function () {
             $('#participantTable #DeleteFile').click(function () {
                 var Current = $(this).closest("tr")
@@ -1936,6 +1884,5 @@
                 }
             });
         }
-
-
+        
     </script>

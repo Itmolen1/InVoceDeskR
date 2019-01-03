@@ -16,6 +16,7 @@ namespace InvoiceDiskLast.Models
     {
         public int Id { get; set; }
         public Nullable<int> RefrenceId { get; set; }
+        public string Decription { get; set; }
         public string DirectoryPath { get; set; }
         public Nullable<bool> IsActive { get; set; }
     }
