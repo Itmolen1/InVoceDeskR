@@ -44,7 +44,6 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<AccountTransictionTable> AccountTransictionTables { get; set; }
         public virtual DbSet<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
         public virtual DbSet<ProductTable> ProductTables { get; set; }
-        public virtual DbSet<DirectoryTable> DirectoryTables { get; set; }
         public virtual DbSet<ExceptionLogger> ExceptionLoggers { get; set; }
         public virtual DbSet<UserAuthorityTable> UserAuthorityTables { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
@@ -52,6 +51,7 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<PaymentTermDuration> PaymentTermDurations { get; set; }
         public virtual DbSet<InvoiceDetailsTable> InvoiceDetailsTables { get; set; }
         public virtual DbSet<InvoiceTable> InvoiceTables { get; set; }
+        public virtual DbSet<DirectoryTable> DirectoryTables { get; set; }
     
         [DbFunction("DBEntities", "GetStockItem")]
         public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)

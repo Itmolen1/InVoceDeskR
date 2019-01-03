@@ -127,6 +127,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RefrenceId" Type="int" />
+          <Property Name="Decription" Type="varchar" MaxLength="20" />
           <Property Name="DirectoryPath" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" />
         </EntityType>
@@ -924,7 +925,6 @@
             <End Role="ProductUnitTable" EntitySet="ProductUnitTables" />
             <End Role="ProductTable" EntitySet="ProductTables" />
           </AssociationSet>
-          <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
           <EntitySet Name="ExceptionLoggers" EntityType="APIcompanyModel.ExceptionLogger" />
           <AssociationSet Name="FK_QutationTable_ContactsTable" Association="APIcompanyModel.FK_QutationTable_ContactsTable">
             <End Role="ContactsTable" EntitySet="ContactsTables" />
@@ -968,6 +968,7 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
+          <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1450,15 +1451,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DirectoryTable">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RefrenceId" Type="Int32" />
-          <Property Name="DirectoryPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" />
-        </EntityType>
         <EntityType Name="ExceptionLogger">
           <Key>
             <PropertyRef Name="ID" />
@@ -1669,6 +1661,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DirectoryTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefrenceId" Type="Int32" />
+          <Property Name="Decription" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DirectoryPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1968,16 +1970,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DirectoryTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.DirectoryTable">
-              <MappingFragment StoreEntitySet="DirectoryTable">
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="DirectoryPath" ColumnName="DirectoryPath" />
-                <ScalarProperty Name="RefrenceId" ColumnName="RefrenceId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ExceptionLoggers">
             <EntityTypeMapping TypeName="APIcompanyModel.ExceptionLogger">
               <MappingFragment StoreEntitySet="ExceptionLogger">
@@ -2073,6 +2065,17 @@
                 <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
                 <ScalarProperty Name="Invoice_ID" ColumnName="Invoice_ID" />
                 <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DirectoryTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.DirectoryTable">
+              <MappingFragment StoreEntitySet="DirectoryTable">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DirectoryPath" ColumnName="DirectoryPath" />
+                <ScalarProperty Name="Decription" ColumnName="Decription" />
+                <ScalarProperty Name="RefrenceId" ColumnName="RefrenceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

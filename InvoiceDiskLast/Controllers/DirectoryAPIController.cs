@@ -21,12 +21,12 @@ namespace InvoiceDiskLast.Controllers
             _iLog = Log.GetInstance;
         }
 
-        [Route("api/CheckForDirectoryExist/{RefrenceId:int}")]
-        public IHttpActionResult GetDirectory(int RefrenceId)
+        [Route("api/CheckForDirectoryExist/{RefrenceId:int}/{Decription:alpha}")]
+        public IHttpActionResult GetDirectory(int RefrenceId, string Decription)
         {
             try
             {
-                var q = db.DirectoryTables.Where(c => c.Id == RefrenceId).FirstOrDefault();
+                var q = db.DirectoryTables.Where(c => c.Id == RefrenceId && c.Decription == Decription).FirstOrDefault();
 
                 if (q != null)
                 {

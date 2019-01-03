@@ -225,6 +225,8 @@ namespace InvoiceDiskLast.Controllers
             InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
             try
             {
+                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(id);
+
                 HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + id.ToString()).Result;
                 MVCInvoiceModel InvoiceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;
                 invoiceViewModel.InvoiceID = InvoiceModel.InvoiceID;
@@ -284,7 +286,7 @@ namespace InvoiceDiskLast.Controllers
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
             try
             {
-
+              
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
 
 
