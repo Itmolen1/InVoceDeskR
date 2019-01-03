@@ -203,7 +203,7 @@ namespace InvoiceDiskLast.Models
         {
             try
             {
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" +Id+Decription).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" +Id +"/"+Decription).Result;
 
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
             }

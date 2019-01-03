@@ -60,7 +60,9 @@ namespace InvoiceDiskLast.Controllers
                         Total = pd.Total,
                         Type = pd.Type,
                         ItemName = pd.ProductTable.ProductName,
-                        InvoiceDetailId = pd.InvoiceDetailId
+                        InvoiceDetailId = pd.InvoiceDetailId,
+                        RowSubTotal = pd.RowSubTotal
+
                     }).ToList();                    
 
                     return Ok(InvoiceDetaislList);

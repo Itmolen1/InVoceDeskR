@@ -1586,10 +1586,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
-
-
+        
         [HttpPost]
         public ActionResult UploadFiles()
         {
@@ -1610,10 +1607,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
-
+        
         [HttpPost]
         public ActionResult UploadFiles12(MvcPurchaseViewModel _MvcPurchaseViewModel)
         {

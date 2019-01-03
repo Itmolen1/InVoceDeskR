@@ -238,20 +238,20 @@ namespace InvoiceDiskLast.Controllers
             public HttpPostedFile file { get; set; }
         }
         
-        public ActionResult ViewDirecory(int Id, string DName)
+        public ActionResult ViewDirecory(int Id, string DName, string Decription = "Client")
         {
             string d = "";
             try
             {
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/"+Decription).Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)
                 { 
-                      CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
-                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                      CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Client");
+                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id+"/"+ "Client").Result;
                     _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                     d = _Directory.DirectoryPath.ToString();

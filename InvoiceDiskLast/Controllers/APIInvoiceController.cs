@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using InvoiceDiskLast.Models;
 using System.Web.Http.Description;
+using System.Data.Entity;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -117,6 +118,36 @@ namespace InvoiceDiskLast.Controllers
             }
 
             return Ok(invoiceModel);
+        }
+
+        [Route("api/UpdateInvoice/{id:int}")]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutInvoiceTable(int id, InvoiceTable invoiceTable)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != invoiceTable.InvoiceID)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(invoiceTable).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return Ok(invoiceTable);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest();
+            }
+
+
         }
     }
 }

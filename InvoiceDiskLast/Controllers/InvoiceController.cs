@@ -36,7 +36,7 @@ namespace InvoiceDiskLast.Controllers
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
 
-                int CompanyId = Convert.ToInt32(Session["CompayID"]);              
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceTable/" + CompanyId).Result;
                 invoiceViewModel = response.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
@@ -69,14 +69,14 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult AddCustomer(MVCQutationViewModel model)
         {
-            string fileName;         
+            string fileName;
 
             for (int i = 0; i < Request.Files.Count; i++)
             {
                 HttpPostedFileBase file = Request.Files[i]; //Uploaded file
                                                             //Use the following properties to get file's name, size and MIMEType
                 int fileSize = file.ContentLength;
-                 fileName = file.FileName;
+                fileName = file.FileName;
                 string mimeType = file.ContentType;
                 System.IO.Stream fileContent = file.InputStream;
                 //To save file, use SaveAs method
@@ -87,7 +87,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult Create(int id)
         {
-                       
+
             InvoiceViewModel invoioceViewModel = new InvoiceViewModel();
 
             int CompanyID = Convert.ToInt32(Session["CompayID"]);
@@ -98,7 +98,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-                
+
                 DateTime qutatioDate = new DateTime();
                 qutatioDate = DateTime.Now.Date;
 
@@ -123,7 +123,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 return null;
             }
-           
+
         }
 
         [HttpPost]
@@ -144,7 +144,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
                 mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
                 mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
-                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;               
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
                 mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
                 mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
                 mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
@@ -197,15 +197,15 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (invoiceViewModel.file23[0] != null)
                         {
-                          
-                            CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23,"Invoice");
-                          
+
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+
                         }
                     }
 
                     if (invoiceViewModel.file23[0] != null)
                     {
-                        UploadFiles.UploadFile(mvcInvoiceModel.InvoiceID, "Invoice", invoiceViewModel.file23,"Invoice");
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
                     }
                 }
             }
@@ -225,7 +225,7 @@ namespace InvoiceDiskLast.Controllers
             InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
             try
             {
-                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(id,"Invoice");
+                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(id, "Invoice");
 
                 HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + id.ToString()).Result;
                 MVCInvoiceModel InvoiceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;
@@ -234,7 +234,7 @@ namespace InvoiceDiskLast.Controllers
                 invoiceViewModel.ContactId = InvoiceModel.ContactId;
                 invoiceViewModel.Invoice_ID = InvoiceModel.Invoice_ID;
 
-                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + invoiceViewModel.ContactId.ToString()).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + invoiceViewModel.ContactId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + invoiceViewModel.CompanyId.ToString()).Result;
@@ -273,93 +273,81 @@ namespace InvoiceDiskLast.Controllers
 
                 return View(invoiceViewModel);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
-           
+
         }
 
         [HttpPost]
-        public ActionResult Edit(MVCQutationViewModel MVCQutationViewModel)
+        public ActionResult Edit(InvoiceViewModel invoiceViewModel)
         {
-            MVCQutationModel mvcQutationModel = new MVCQutationModel();
+            InvoiceTable InvoiceTable;
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
             {
               
-                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
+                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
+                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
+                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
+                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
+                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
+                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
+                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
+                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
+                mvcInvoiceModel.Status = "accepted";
 
-
-                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
-                mvcQutationModel.UserId = 1;
-                mvcQutationModel.ContactId = MVCQutationViewModel.ConatctId;
-
-                mvcQutationModel.QutationID = MVCQutationViewModel.QutationID;
-                mvcQutationModel.RefNumber = MVCQutationViewModel.RefNumber;
-                mvcQutationModel.QutationDate = MVCQutationViewModel.QutationDate;
-                mvcQutationModel.DueDate = MVCQutationViewModel.DueDate;
-                mvcQutationModel.SubTotal = MVCQutationViewModel.SubTotal;
-                mvcQutationModel.DiscountAmount = MVCQutationViewModel.DiscountAmount;
-                mvcQutationModel.TotalAmount = MVCQutationViewModel.TotalAmount;
-                mvcQutationModel.CustomerNote = MVCQutationViewModel.CustomerNote;
-                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                mvcQutationModel.TotalVat6 = MVCQutationViewModel.TotalVat6;
-                mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-                mvcQutationModel.Type = StatusEnum.Goods.ToString();
-                mvcQutationModel.Status = "accepted";
-
-                if (mvcQutationModel.TotalVat6 != null)
+                if (mvcInvoiceModel.TotalVat6 != null)
                 {
-                    double vat61 = Math.Round((double)mvcQutationModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
-                    mvcQutationModel.TotalVat6 = vat61;
+                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat6 = vat61;
                 }
 
-                mvcQutationModel.TotalVat21 = MVCQutationViewModel.TotalVat21;
-
-                if (mvcQutationModel.TotalVat21 != null)
+                if (mvcInvoiceModel.TotalVat21 != null)
                 {
-                    double vat21 = Math.Round((double)mvcQutationModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
-                    mvcQutationModel.TotalVat21 = vat21;
+                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat21 = vat21;
                 }
 
-                mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
+                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
+
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist)
+                    if (invoiceViewModel.InvoiceDetailsTable != null)
                     {
-                        QutationDetailsTable QtDetails = new QutationDetailsTable();
-                        QtDetails.ItemId = Convert.ToInt32(QDTList.ItemId);
-                        QtDetails.QutationID = MVCQutationViewModel.QutationID;
-                        QtDetails.Description = QDTList.Description;
-                        QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                        QtDetails.Quantity = QDTList.Quantity;
-                        QtDetails.Rate = Convert.ToDouble(QDTList.Rate);
-                        QtDetails.Total = Convert.ToDouble(QDTList.Total);
-                        QtDetails.ServiceDate = QDTList.ServiceDate;
-                        QtDetails.RowSubTotal = QDTList.RowSubTotal;
-                        QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
 
-                        QtDetails.Type = QDTList.Type;
+                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                        {
+                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
+                            InvoiceDetails.Description = InvoiceDetailsList.Description;
+                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                            InvoiceDetails.Type = InvoiceDetailsList.Type;
 
-                        if (QtDetails.QutationDetailId == 0)
-                        {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutationDetails", QtDetails).Result;
-                        }
-                        else
-                        {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
+                            if (InvoiceDetails.InvoiceDetailId != 0)
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                            }
                         }
                     }
-
-                    return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
-
-                }
-                else
-                {
-                    return new JsonResult { Data = new { Status = "Fail", QutationId = MVCQutationViewModel.QutationID } };
                 }
             }
             catch (Exception ex)
@@ -367,8 +355,10 @@ namespace InvoiceDiskLast.Controllers
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
-        }
 
+            return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+        }
+    
 
         [HttpGet]
         public ActionResult Print(int id)
@@ -833,6 +823,120 @@ namespace InvoiceDiskLast.Controllers
             {
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
+        }
+
+        public ActionResult ViewDirecory(int Id, string DName, string Decription = "Invoice")
+        {
+            string d = "";
+            try
+            {
+                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
+                DirectoryViewModel _Directory = new DirectoryViewModel();
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + Decription).Result;
+                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                if (directory.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
+                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + Decription).Result;
+                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+                else
+                {
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UploadFiles(InvoiceViewModel InvoiceViewModel)
+        {
+            try
+            {
+
+                string FileName = "";
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFileBase file = files[i];
+
+
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceViewModel.InvoiceID, "Invoice", InvoiceViewModel.file23, "Invoice");
+                }
+
+                return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteFile(int Id, string FileName)
+        {
+            try
+            {
+
+                if (CreatDirectoryClass.Delete(Id, FileName, "Invoice"))
+                {
+
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("Fail", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json("Fail", JsonRequestBehavior.AllowGet);
+                throw;
+            }
+
+
         }
     }
 }

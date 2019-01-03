@@ -595,12 +595,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
         }
-
-
-
-
-
-
+        
         [HttpGet]
         public ActionResult EditQutation(int QutationId)
         {
@@ -737,10 +732,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
-
-
+        
         [HttpPost]
         public ActionResult UploadFileToPDF()
         {
@@ -764,11 +756,7 @@ namespace InvoiceDiskLast.Controllers
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult UploadFiles(MVCQutationViewModel MVCQutationViewModel)
         {
