@@ -24,7 +24,7 @@ namespace InvoiceDiskLast.Controllers
             {
 
 
-                if (CreatDirectoryClass.Delete(Id, FileName))
+                if (CreatDirectoryClass.Delete(Id, FileName, "Quotation"))
                 {
 
                     return Json("Success", JsonRequestBehavior.AllowGet);

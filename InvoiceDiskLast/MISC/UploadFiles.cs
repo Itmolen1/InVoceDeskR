@@ -9,12 +9,12 @@ namespace InvoiceDiskLast.MISC
 {
     public class UploadFiles
     {
-        public static  bool UploadFile(int? Id, string FileName, HttpPostedFileWrapper[] file)
+        public static  bool UploadFile(int? Id, string FileName, HttpPostedFileWrapper[] file,string Discription)
         {
             try
             {
                 var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
-                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
+                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName, Discription);
 
                 string fap = HttpContext.Current.Server.MapPath(FilePath);
 

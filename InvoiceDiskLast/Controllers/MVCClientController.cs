@@ -184,7 +184,7 @@ namespace InvoiceDiskLast.Controllers
                 else
                 {
                     _Directory.IsActive = true;
-                    _Directory.DirectoryPath = CreatDirectoryClass.CreateDirecotyFolder((int)mvcContactModel.ContactsId, mvcContactModel.ContactName);
+                    _Directory.DirectoryPath = CreatDirectoryClass.CreateDirecotyFolder((int)mvcContactModel.ContactsId, mvcContactModel.ContactName,"Client");
                     _Directory.RefrenceId = mvcContactModel.ContactsId;
 
                     HttpResponseMessage directoryResponse = GlobalVeriables.WebApiClient.PostAsJsonAsync("CreateDirecoty", _Directory).Result;
@@ -250,7 +250,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)
                 { 
-                      CreatDirectoryClass.CreateDirecotyFolder(Id, DName);
+                      CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
                     directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
                     _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
@@ -309,7 +309,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 HttpFileCollectionBase files = Request.Files;
 
-                if (CreatDirectoryClass.UploadFileAndCreateDirectory((int)mvcContactModel.ContactsId, mvcContactModel.ContactName, files))
+                if (CreatDirectoryClass.UploadFileAndCreateDirectory((int)mvcContactModel.ContactsId, mvcContactModel.ContactName, files, "Invoice"))
                 {
                     return Json("Success", JsonRequestBehavior.AllowGet);
                 }

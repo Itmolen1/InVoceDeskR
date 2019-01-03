@@ -13,7 +13,7 @@ namespace InvoiceDiskLast.Models
         public static DirectoryViewModel _Directory = new DirectoryViewModel();
         static string Result = "";
         
-        public static string CreateDirecotyFolder(int? refrenceId, string Name)
+        public static string CreateDirecotyFolder(int? refrenceId, string Name,string Discription)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace InvoiceDiskLast.Models
                 {
                     System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp));
                     Result = "/DirectoryFolder/" + FOLDERp + "/";
-                    AddDirectory(refrenceId, Result);
+                    AddDirectory(refrenceId, Result, Discription);
                 }
             }
             catch (Exception)
@@ -41,7 +41,7 @@ namespace InvoiceDiskLast.Models
             return Result;
         }
         
-        public static void AddDirectory(int? Id, string Path)
+        public static void AddDirectory(int? Id, string Path,string Description)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace InvoiceDiskLast.Models
                 _Directory.IsActive = true;
                 _Directory.DirectoryPath = Path;
                 _Directory.RefrenceId = Id;
+                _Directory.Decription = Description;
                 HttpResponseMessage directoryResponse = GlobalVeriables.WebApiClient.PostAsJsonAsync("CreateDirecoty", _Directory).Result;
             }
             catch (Exception)
@@ -59,7 +60,7 @@ namespace InvoiceDiskLast.Models
 
         }
         
-        public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files)
+        public static bool UploadFileAndCreateDirectory(int Id, string Name, HttpFileCollectionBase files,string Description)
         {
 
             bool Result = true;
@@ -72,7 +73,7 @@ namespace InvoiceDiskLast.Models
                 {
                     DirectoryViewModel _Directory = new DirectoryViewModel();
 
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id +"/"+ Description).Result;
                     _Directory = response.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
 
@@ -99,7 +100,7 @@ namespace InvoiceDiskLast.Models
                     }
                     else
                     {
-                        string folderPAth2 = CreateDirecotyFolder(Id, Name);
+                        string folderPAth2 = CreateDirecotyFolder(Id, Name, Description);
 
                         if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(folderPAth2)))
                         {
@@ -157,7 +158,7 @@ namespace InvoiceDiskLast.Models
             return Result;
         }
         
-        public static List<DirectoryViewModel> GetFileDirectiory(int Id)
+        public static List<DirectoryViewModel> GetFileDirectiory(int Id, string Discription)
         {
             List<DirectoryViewModel> _object = new List<DirectoryViewModel>();
             string d = "";
@@ -166,7 +167,7 @@ namespace InvoiceDiskLast.Models
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
 
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + Discription.ToString()).Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                 if (directory.StatusCode == System.Net.HttpStatusCode.OK)
@@ -255,7 +256,7 @@ namespace InvoiceDiskLast.Models
 
                 if (_Directory == null)
                 {
-                    string p = CreateDirecotyFolder(Id, Name);
+                    string p = CreateDirecotyFolder(Id, Name, Description);
                     _Directory12.DirectoryPath = p;
                 }
 
@@ -297,14 +298,14 @@ namespace InvoiceDiskLast.Models
 
 
 
-        public static string UploadFileToDirectoryCommon(int? Id, string FileName, HttpPostedFileWrapper[] file)
+        public static string UploadFileToDirectoryCommon(int? Id, string FileName, HttpPostedFileWrapper[] file, string Description)
         {
             string FilePath12 = "";
 
             try
             {
                 var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
-                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName);
+                string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName, Description);
 
                 string fap = HttpContext.Current.Server.MapPath(FilePath);
 

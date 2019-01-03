@@ -122,7 +122,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult ViewQuation(int? quautionId)
         {
             int ID = Convert.ToInt32(quautionId);
-            ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)quautionId);
+            ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)quautionId, "Quotation");
             try
             {
                 HttpResponseMessage responseQutation = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + quautionId.ToString()).Result;
@@ -388,7 +388,7 @@ namespace InvoiceDiskLast.Controllers
             {
 
 
-                if (CreatDirectoryClass.Delete(Id, FileName))
+                if (CreatDirectoryClass.Delete(Id, FileName, "Quotation"))
                 {
 
                     return Json("Success", JsonRequestBehavior.AllowGet);
@@ -483,7 +483,7 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (MVCQutationViewModel.file23[0] != null)
                         {
-                            CreatDirectoryClass.UploadFileToDirectoryCommon(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(qtd.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
                         }
 
                         return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qtd.QutationID } };
@@ -491,7 +491,7 @@ namespace InvoiceDiskLast.Controllers
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(qtd.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qtd.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
                     }
 
                     return new JsonResult { Data = new { Status = "Success", QutationId = qtd.QutationID } };
@@ -577,13 +577,13 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (MVCQutationViewModel.file23[0] != null)
                         {
-                            CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
                         }
                     }
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
                     }
                 }
             }
@@ -604,7 +604,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpGet]
         public ActionResult EditQutation(int QutationId)
         {
-            ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(QutationId);
+            ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(QutationId, "Quotation");
 
             MVCQutationViewModel quutionviewModel2 = new MVCQutationViewModel();
             try
@@ -655,13 +655,10 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult EditQutation(MVCQutationViewModel MVCQutationViewModel)
         {
-
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
-
             try
             {
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
                 mvcQutationModel.CompanyId = MVCQutationViewModel.CompanyId;
                 mvcQutationModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
@@ -698,7 +695,6 @@ namespace InvoiceDiskLast.Controllers
                 {
                     if (MVCQutationViewModel.QutationDetailslist1 != null)
                     {
-
                         foreach (QutationDetailsTable QDTList in MVCQutationViewModel.QutationDetailslist1)
                         {
                             QutationDetailsTable QtDetails = new QutationDetailsTable();
@@ -725,16 +721,10 @@ namespace InvoiceDiskLast.Controllers
                         }
                     }
 
-
-
-
                     //return new JsonResult { Data = new { Status = "Success", QutationId = MVCQutationViewModel.QutationID } };
 
 
                 }
-
-
-
 
             }
             catch (Exception ex)
@@ -747,7 +737,6 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
 
 
 
@@ -793,7 +782,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpPostedFileBase file = files[i];
 
 
-                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23);
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
@@ -803,13 +792,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
-
-
-
-
 
 
         public static Boolean IsFileLocked(FileInfo file)
@@ -936,7 +918,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult InvoicebyEmail(int? QutationId)
         {
-            var List = CreatDirectoryClass.GetFileDirectiory((int)QutationId);
+            var List = CreatDirectoryClass.GetFileDirectiory((int)QutationId, "Quotation");
 
             EmailModel email = new EmailModel();
 
@@ -1252,7 +1234,7 @@ namespace InvoiceDiskLast.Controllers
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23);
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
                     }
 
                     string path1 = PrintView((int)qutationTable.QutationID);

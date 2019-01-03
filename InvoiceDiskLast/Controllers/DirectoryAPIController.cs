@@ -21,12 +21,12 @@ namespace InvoiceDiskLast.Controllers
             _iLog = Log.GetInstance;
         }
 
-        [Route("api/CheckForDirectoryExist/{RefrenceId:int}/{Decription:alpha}")]
+        [Route("api/CheckForDirectoryExist/{RefrenceId:int}")]
         public IHttpActionResult GetDirectory(int RefrenceId, string Decription)
         {
             try
             {
-                var q = db.DirectoryTables.Where(c => c.Id == RefrenceId && c.Decription == Decription).FirstOrDefault();
+                var q = db.DirectoryTables.Where(c => c.Id == RefrenceId && c.Decription.ToLower() == Decription.ToLower()).FirstOrDefault();
 
                 if (q != null)
                 {
@@ -64,13 +64,13 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [Route("api/GetDirectory/{RefrenceId:int}")]
-        public IHttpActionResult GetDirectorPath(int RefrenceId)
+        [Route("api/GetDirectory/{RefrenceId:int}/{Decription:alpha}")]
+        public IHttpActionResult GetDirectorPath(int RefrenceId, string Decription)
         {
             DirectoryViewModel _cviewModel = new DirectoryViewModel();
             try
             {
-                _cviewModel = db.DirectoryTables.Where(d => d.RefrenceId == RefrenceId).Select(D => new DirectoryViewModel
+                _cviewModel = db.DirectoryTables.Where(d => d.RefrenceId == RefrenceId && d.Decription.ToLower()== Decription.ToLower()).Select(D => new DirectoryViewModel
                 {
                     DirectoryPath = D.DirectoryPath
                 }).FirstOrDefault();
