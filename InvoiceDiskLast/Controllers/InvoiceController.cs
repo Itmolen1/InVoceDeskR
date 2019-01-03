@@ -195,16 +195,17 @@ namespace InvoiceDiskLast.Controllers
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
                             }
                         }
-                        if (invoiceViewModel.file23[0] != null)    
-                        {                          
-                            CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23);
+                        if (invoiceViewModel.file23[0] != null)
+                        {
+                          
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23,"Invoice");
                           
                         }
                     }
 
                     if (invoiceViewModel.file23[0] != null)
                     {
-                        UploadFiles.UploadFile(mvcInvoiceModel.InvoiceID, "Invoice", invoiceViewModel.file23);
+                        UploadFiles.UploadFile(mvcInvoiceModel.InvoiceID, "Invoice", invoiceViewModel.file23,"Invoice");
                     }
                 }
             }
@@ -224,7 +225,7 @@ namespace InvoiceDiskLast.Controllers
             InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
             try
             {
-                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(id);
+                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(id,"Invoice");
 
                 HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + id.ToString()).Result;
                 MVCInvoiceModel InvoiceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;
@@ -427,7 +428,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)id);
+                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)id, "Invoice");
 
                 HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + id.ToString()).Result;
                 MVCInvoiceModel InvoceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;

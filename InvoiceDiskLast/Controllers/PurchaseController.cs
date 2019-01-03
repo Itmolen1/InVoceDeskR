@@ -535,13 +535,13 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult DeleteFile(int Id, string FileName,string Description)
+        public ActionResult DeleteFile(int Id, string FileName)
         {
             try
             {
 
 
-                if (CreatDirectoryClass.Delete(Id, FileName, Description))
+                if (CreatDirectoryClass.Delete(Id, FileName , "Purchase"))
                 {
 
                     return Json("Success", JsonRequestBehavior.AllowGet);
@@ -579,7 +579,14 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-        
+
+
+
+
+
+
+
+
         [DeleteFileClass]
         [HttpPost]
         public FileResult DownloadFile(string FilePath1)
@@ -679,7 +686,7 @@ namespace InvoiceDiskLast.Controllers
 
 
             EmailModel email = new EmailModel();
-            var List = CreatDirectoryClass.GetFileDirectiory((int)purchaseOrderId);
+            var List = CreatDirectoryClass.GetFileDirectiory((int)purchaseOrderId,"Purchase");
             List<Selected> _list = new List<Selected>();
 
             foreach (var Item in List)
@@ -1620,7 +1627,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpPostedFileBase file = files[i];
 
 
-                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(_MvcPurchaseViewModel.PurchaseOrderID, "purchase", "purchase", _MvcPurchaseViewModel.file23);
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(_MvcPurchaseViewModel.PurchaseOrderID, "purchase", _MvcPurchaseViewModel.file23,"Purchase");
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
@@ -1641,11 +1648,11 @@ namespace InvoiceDiskLast.Controllers
             {
 
 
-                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)purchaseOrderId);
+                ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)purchaseOrderId,"Purchase");
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
                 MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-
+                ob.PurchaseOrderID = purchaseOrderId;
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ob.VenderId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
@@ -1680,7 +1687,7 @@ namespace InvoiceDiskLast.Controllers
         {
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
 
-            ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(Id);
+            ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(Id,"Purchase");
 
             try
             {
@@ -1927,7 +1934,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (purchaseViewModel.file23[0] != null)
                 {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23);
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23,"Purchase");
                 }
             }
             catch (Exception ex)
@@ -2007,7 +2014,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (purchaseViewModel.file23[0] != null)
                 {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23);
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(purchaseViewModel.PurchaseOrderID, "purchase", purchaseViewModel.file23,"Purchase");
                 }
             }
 
