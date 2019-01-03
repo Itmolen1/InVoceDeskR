@@ -23,7 +23,7 @@
         <div class="container">
             <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
             <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
-            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId"  />
+            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
 
             @Html.HiddenFor(model => model.CompanyId)
             @Html.HiddenFor(model => model.VenderId)
@@ -329,7 +329,19 @@
                                             <tr>
                                                 <td>
 
-                                                    <input type="datetime" class="ServiceDate  form-control Input-height" value="@item.ServiceDate" autocomplete="off" />
+                                                    @{
+                                                        DateTime dt = new DateTime();
+                                                        DateTime t = new DateTime();
+                                                        dt = Convert.ToDateTime(item.ServiceDate);
+                                                         
+
+                                                    }
+                                                   
+
+                                                  
+                                                    @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "ServiceDate form-control MAterialDatepicker Input-height", id = "QutationDate", @value = dt.ToShortDateString(), @autocomplete = "off" } })
+                                                    
+                                                   
                                                 </td>
 
                                                 <td>
@@ -385,11 +397,11 @@
                                                     <input type="hidden" class="PurchaseOrderID" value="@item.PurchaseOrderID" />
                                                 </td>
                                             </tr>
-                                        }
+                                                                }
 
 
-                                    }
-                                }
+                                                            }
+                                                        }
                             }
 
 
@@ -1763,10 +1775,30 @@
 
 
     $(document).ready(function () {
-        $('#participantTable #DeleteFile').click(function () {
+        $('#participantTable #DeleteFile').click(function (e) {
             var Current = $(this).closest("tr")
-            var FileName = Current.find('.FileName').val();
-            DeleteFileFromFolder(FileName, Current);
+            e.preventDefault();
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this imaginary file!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+              function (isConfirm) {
+                  if (isConfirm) {
+
+                      var FileName = Current.find('.FileName').val();
+                      DeleteFileFromFolder(FileName, Current);
+                      swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                  } else {
+                      swal("Cancelled", "Your imaginary file is safe :)", "error");
+                  }
+              });
         });
     });
 

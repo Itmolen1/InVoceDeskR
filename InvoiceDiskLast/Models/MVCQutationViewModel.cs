@@ -61,7 +61,11 @@ namespace InvoiceDiskLast.Models
         public HttpPostedFileWrapper[] file23 { get; set; }
         public HttpPostedFileBase[] Files { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        public Nullable<System.DateTime> sdate { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        public Nullable<System.DateTime> sdate2 { get; set; }
         public List<QutationDetailsTable> QutationDetailslist { get; set; }
 
     }

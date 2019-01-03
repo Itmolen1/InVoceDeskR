@@ -22,6 +22,7 @@ namespace InvoiceDiskLast.Models
                     System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/DirectoryFolder/"));
                 }
 
+
                 var cLIENTfOLDER = HttpContext.Current.Server.MapPath("/DirectoryFolder/");
                 var FOLDERp = refrenceId + Name;
                 string d = HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp);
@@ -203,7 +204,7 @@ namespace InvoiceDiskLast.Models
         {
             try
             {
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" +Id+Decription).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id+ "/"+ Decription).Result;
 
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
             }
