@@ -23,7 +23,7 @@
         <div class="container">
             <input type="hidden" value="@(Model.PurchaseOrderID !=null?Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
             <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
-            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
+            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId"  />
 
             @Html.HiddenFor(model => model.CompanyId)
             @Html.HiddenFor(model => model.VenderId)
@@ -196,10 +196,10 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" />
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" />
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
                                                 </td>
 
                                                 <td>
@@ -247,15 +247,15 @@
                                     <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
@@ -329,7 +329,7 @@
                                             <tr>
                                                 <td>
 
-                                                    <input type="datetime" class="ServiceDate  form-control Input-height" value="@item.ServiceDate" />
+                                                    <input type="datetime" class="ServiceDate  form-control Input-height" value="@item.ServiceDate" autocomplete="off" />
                                                 </td>
 
                                                 <td>
@@ -342,15 +342,15 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class=" Discription form-control Input-height" value="@item.PurchaseDescription" />
+                                                    <input type="text" class=" Discription form-control Input-height" value="@item.PurchaseDescription" autocomplete="off" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" />
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" />
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
                                                 </td>
 
                                                 <td>
@@ -396,25 +396,25 @@
 
                             <tr id="mainrow1">
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "ServiceDate form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
+                                    @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @class = "ServiceDate form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString(), @autocomplete = "off" } })
                                 </td>
 
                                 <td>
-                                    <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
+                                    <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class=" Discription form-control Input-height" />
+                                    <input type="text" class=" Discription form-control Input-height" autocomplete="off" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
+                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
+                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly", @autocomplete = "off" } })
                                     @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
@@ -468,7 +468,9 @@
             </div>
             <div class="row">
                 <div class="col-6 b-r">
-                    <input type="file" name="Files" id="txtUploadFile12" class="makethispretty btn btn-success" style="width:500px" />
+                    <form name='frmAccount' id='frmAccount'>
+                        <input type="file" name="file23" id="txtUploadFile12" class="makethispretty btn btn-success" style="width:500px" />
+                    </form>
                 </div>
                 <div class="col-6 b-r"></div>
             </div>
@@ -941,6 +943,8 @@
 
     function CalculateVateTotal() {
 
+
+
         var Totalvat211, Totalvat6 = 0;
         var t = 0;
         $('#QutationServiceDetail .tbodyService tr').each(function () {
@@ -1269,6 +1273,8 @@
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
             formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
         }
 
         $.ajax({
@@ -1399,10 +1405,16 @@
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
             formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderID]', list[i].PurchaseOrderID)
+
+            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+
         }
 
         $.ajax({
             url: "/Purchase/saveEmailEdit",
+            type: "POST",
             data: formData,
             dataType: 'json',
             contentType: false,
@@ -1613,16 +1625,20 @@
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
             formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderID]', list[i].PurchaseOrderID)
+            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
 
         $.ajax({
             url: "/Purchase/PrintEmailEdit",
+            type: "POST",
             data: formData,
             dataType: 'json',
             contentType: false,
             processData: false,
             success: function (result) {
-                localStorage.setItem('path1', result.path);
+                localStorage.setItem('path', result.path);
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1674,29 +1690,30 @@
 
     $('#txtUploadFile12').on('change', function (e) {
 
+        debugger;
+
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
-
+        var formData = new FormData($('#frmAccount')[0]);
         var IsvalidSixze = validateFileSize();
 
         if (IsvalidSixze == false) {
             return true;
         }
         else {
-            var fileData = new FormData();
+
             for (var i = 0; i < files.length; i++) {
-                fileData.append(files[i].name, files[i]);
+                formData.append(files[i].name, files[i]);
             }
-            fileData.append("PurchaseOrderID", parseInt($('#PurchaseOrderID').val()));
 
-
+            formData.append("PurchaseOrderID", parseInt($('#PurchaseOrderID').val()));
 
             $.ajax({
-                url: '/Purchase/UploadFiles',
+                url: '/Purchase/UploadFiles12',
                 type: "POST",
                 contentType: false,
                 processData: false,
-                data: fileData,
+                data: formData,
                 async: false,
                 success: function (result) {
 
@@ -1711,6 +1728,7 @@
             });
         }
     });
+
 
     function validateFileSize() {
         var Isvalid = true;

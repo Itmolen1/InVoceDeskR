@@ -204,14 +204,14 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
+                                        <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" autocomplete="off"/>
                                     </td>
                                     <td>
-                                        <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
+                                        <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate"  autocomplete="off"/>
                                     </td>
 
                                     <td>
-                                        <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
+                                        <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly"  autocomplete="off"/>
                                     </td>
                                     <td>
                                         <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -326,7 +326,7 @@
                             </tr>
 
                         </thead>
-
+                        
                         <tbody class="tbodyService">
 
                             @{
@@ -341,8 +341,16 @@
                                             <tr>
                                                 <td>
 
-                                                    @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = item.ServiceDate } })
+                                                    <label>@item.ServiceDate </label>
+                                                  @{
+                                                      DateTime DT = new DateTime();
+                                                      DT = Convert.ToDateTime(item.ServiceDate);
 
+
+                                                    @*@Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = item.ServiceDate } })*@
+                                                    @Html.EditorFor(model => model.DueDate1, new { htmlAttributes = new { @class = "ServiceDate   form-control  Input-height", id = "QutationDate", @value = DT.ToShortDateString() } })
+                                                      }
+                                                      @*<input type="text" class="form-control MAterialDatepicker Input-height"  value="@dt.ToShortDateString()"/>*@
                                                 </td>
 
                                                 <td>
@@ -355,19 +363,19 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description" />
+                                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description"  autocomplete="off"/>
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity"  autocomplete="off"/>
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate"  autocomplete="off"/>
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
+                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" autocomplete="off" />
 
                                                 </td>
 
@@ -384,11 +392,11 @@
 
                                                 <td>
 
-                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
+                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal"  autocomplete="off"/>
                                                 </td>
 
                                                 <td>
-                                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
+                                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px"  autocomplete="off"/>
                                                 </td>
 
                                                 <td>
@@ -404,7 +412,9 @@
                                     }
                                     <tr id="mainrow1">
                                         <td>
-                                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
+                                            @*@Html.EditorFor(model => model.DueDate1, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })*@
+
+                                           <input type="text" class="form-control MAterialDatepicker Input-height"  value="@DateTime.Now.ToShortDateString()"/>
 
                                         </td>
 
@@ -412,7 +422,7 @@
                                             <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                         </td>
                                         <td>
-                                            <input type="text" class=" Discription form-control Input-height" />
+                                            <input type="text" class=" Discription form-control Input-height"  autocomplete="off"/>
                                         </td>
                                         <td>
                                             @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
@@ -463,6 +473,15 @@
                                     <tr>
                                         <td>
                                             <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                        </td>
+
+                                        <td>
+                                            <input type="hidden" value="@item.DirectoryPath" class="FileName" />
+                                        </td>
+
+
+                                        <td>
+                                            <button class="btn btn-danger btn-sm'  type='button" id="DeleteFile"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 }
@@ -1038,13 +1057,7 @@
                 GetProductPriceByProductId(value, currentRow1);
             });
         })
-        //$(document).on('change', '.pClassG', function () {
-        //    debugger;
-        //    var currentRow1 = $(this).closest('tr');
-        //    var value = currentRow1.find('.pClassG').val();
-        //    GetProductPriceByProductId(value, currentRow1);
-        //});
-
+      
 
         $('#mainrow .pClassG').change(function () {
 
@@ -1383,6 +1396,7 @@
                 formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
                 formData.append('QutationDetailslist1[' + i + '][QutationDetailId]', list[i].QutationDetailId)
                 formData.append('QutationDetailslist1[' + i + '][Qutation_ID]', list[i].Qutation_ID)
+                formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
 
             }
 
@@ -1518,7 +1532,7 @@
                 formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
                 formData.append('QutationDetailslist1[' + i + '][QutationDetailId]', list[i].QutationDetailId)
                 formData.append('QutationDetailslist1[' + i + '][Qutation_ID]', list[i].Qutation_ID)
-
+                formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
             }
 
 
@@ -1653,7 +1667,7 @@
                 formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
                 formData.append('QutationDetailslist1[' + i + '][QutationDetailId]', list[i].QutationDetailId)
                 formData.append('QutationDetailslist1[' + i + '][Qutation_ID]', list[i].Qutation_ID)
-
+                formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
             }
 
             $.ajax({
@@ -1800,10 +1814,7 @@
 
 
     <script type="text/javascript">
-
         $('#txtUploadFile12').on('change', function (e) {
-
-
             var fileUpload = $("#txtUploadFile12").get(0);
             var files = fileUpload.files;
             var formData = new FormData($('#frmAccount')[0]);
@@ -1895,6 +1906,36 @@
             });
 
         });
+
+
+
+
+
+        $(document).ready(function () {
+            $('#participantTable #DeleteFile').click(function () {
+                var Current = $(this).closest("tr")
+                var FileName = Current.find('.FileName').val();
+                DeleteFileFromFolder(FileName, Current);
+            });
+        });
+
+        function DeleteFileFromFolder(FilenameToDelete, currentRow) {
+            $.ajax({
+                url: "/Purchase/deleteFile",
+                type: "POST",
+                data: JSON.stringify({ Id: $('#QutationID').val(), FileName: FilenameToDelete }),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (result) {
+                    if (result == "Success") {
+                        currentRow.remove();
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
 
 
     </script>

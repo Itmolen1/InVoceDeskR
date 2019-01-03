@@ -753,7 +753,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult UploadFile()
+        public ActionResult UploadFileToPDF()
         {
             try
             {
@@ -761,8 +761,10 @@ namespace InvoiceDiskLast.Controllers
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFileBase file = files[i];
-                    CreatDirectoryClass.UploadToPDFCommon(file);
 
+                    string FileName = CreatDirectoryClass.UploadToPDFCommon(file);
+
+                    return Json(FileName, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception)
@@ -783,7 +785,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-             
+
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
                 for (int i = 0; i < files.Count; i++)
@@ -791,7 +793,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpPostedFileBase file = files[i];
 
 
-                    FileName= CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23);
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23);
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };

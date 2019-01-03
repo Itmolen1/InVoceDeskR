@@ -199,10 +199,10 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                db.SaveChanges();
-                return StatusCode(HttpStatusCode.OK);
+                 db.SaveChanges();
+                return Ok(PurchaseTable);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 if (!PurchaseTableExists(id))
                 {
