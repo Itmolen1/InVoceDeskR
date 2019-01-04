@@ -173,7 +173,7 @@
                             </tr>
                         </thead>
 
-                        <tbody class="tbody">
+                        <tbody class="tbodyGood">
 
                             @{
                                 if (ViewBag.InvoiceDetailsList != null)
@@ -223,7 +223,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationDetailId" value="@item.InvoiceDetailId" />
+                                                    <input type="hidden" class="InvoiceDetailId" value="@item.InvoiceDetailId" />
                                                 </td>
 
                                             </tr>
@@ -235,53 +235,46 @@
                             }
 
 
+
+
+                            <tr id="mainrow">
+                                <td>
+                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                                </td>
+                                <td>
+
+                                    <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                </td>
+
+
+
+                            </tr>
                         </tbody>
-
-                        <tr id="mainrow">
-                            <td>
-                                <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
-                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
-                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                    <option>0</option>
-                                    <option>6</option>
-                                    <option>21</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
-                            </td>
-                            <td>
-
-                                <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
-                            </td>
-
-
-
-                        </tr>
                     </table>
                 </div>
-                @*<div class="row">
-                        <div class="col-1 b-r"></div>
-                        <div class="col-11 b-r">
-                            <div id="OrderItems">
-                                <table class="table" id="orderdetailsitemssss"></table>
-                                <span id="orderItemError" style="color:red"></span>
-                            </div>
-                        </div>
-                    </div>*@
+               
             </div>
             <p></p>
             <hr />
@@ -319,7 +312,7 @@
 
                         </thead>
 
-                        <tbody class="tbody">
+                        <tbody class="tbodyService">
 
                             @{
                                 if (ViewBag.InvoiceDetailsList != null)
@@ -383,7 +376,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="hidden" class="QutationDetailId" value="@item.InvoiceDetailId" />
+                                                    <input type="hidden" class="InvoiceDetailId" value="@item.InvoiceDetailId" />
                                                 </td>
                                             </tr>
                                         }
@@ -395,46 +388,47 @@
 
 
 
+
+                            <tr id="mainrow1">
+                                <td>
+                                    <input type="date" class="form-control Input-height MAterialDatepicker" />
+                                </td>
+
+                                <td>
+                                    <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    <input type="text" class=" Discription form-control Input-height" />
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
+                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
+                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
+                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+
+                                </td>
+                                <td>
+                                    <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
+                                </td>
+
+                            </tr>
                         </tbody>
-                        <tr id="mainrow1">
-                            <td>
-                                <input type="date" class="form-control Input-height MAterialDatepicker" />
-                            </td>
-
-                            <td>
-                                <select id="SelectProductQutationS" class="product form-control pClassS Input-height" style="width: 200px;font-size:12px"></select>
-                            </td>
-                            <td>
-                                <input type="text" class=" Discription form-control Input-height" />
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
-                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
-                                @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
-                                @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                    <option>0</option>
-                                    <option>6</option>
-                                    <option>21</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
-
-                            </td>
-                            <td>
-                                <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
-                            </td>
-
-                        </tr>
                     </table>
                 </div>
             </div>
@@ -566,7 +560,7 @@
             //Remove id attribute from new clone row
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('#orderdetailsitems1').append($newRow);
+            $('.tbodyGood').prepend($newRow);
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -674,6 +668,24 @@
         CalculateVateTotal();
     });
 
+    function ValidateRow(CurrentRow) {
+        debugger;
+        var Isvalid = true;
+        var Produectid = 0, quantityG = 0, varrateG = 0;
+        Produectid = CurrentRow.find('.product').val();
+        quantityG = CurrentRow.find('.quantityG ').val();
+        varrateG = CurrentRow.find('.rateG ').val();
+        if (parseInt(Produectid) == 0 || Produectid == "") {
+            Isvalid = false;
+        }
+        if (parseInt(quantityG) == 0 || quantityG == "") {
+            Isvalid = false;
+        }
+        if (parseInt(varrateG) == 0 || varrateG == "") {
+            Isvalid = false;
+        }
+        return Isvalid;
+    }
 
     function calculateTotalGoods(currentRow) {
 
@@ -685,7 +697,7 @@
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
-
+        debugger;
         Total = 0;
         Total = Currentrow.find(".FTotalG").val();
 
@@ -779,8 +791,8 @@
 
             $('span.error', $newRow).remove();
 
-            $('#QutationServiceDetail').append($newRow);
-
+          
+            $('.tbodyService').prepend($newRow);
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -1140,54 +1152,70 @@
         CalculateVateTotal();
     });
 
-    $('#Submit').click(function () {
-
-        CreateQuation1();
+    $('#Submit').click(function () {   
+        
+        UpdateInvoice();
     });
 
-    function CreateQuation1() {
-
+    function UpdateInvoice() {
+        debugger;
         var list = [], orderItem, CurrentRow;
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
 
+        $('#orderdetailsitems1 .tbodyGood tr').each(function () {
+            debugger;
 
-        $('#orderdetailsitems1 .tbody tr').each(function () {
-
-
-            orderItem = {
-                ItemId:parseInt($(this).find('.product').val()),
-                Quantity:parseInt($(this).find('.quantityG').val()),
-                Type:"Goods",
-                Rate:parseInt($(this).find('.rateG').val()),
-                Total:parseFloat($(this).find('.FTotalG').val()),
-                Vat:parseFloat($(this).find('.VATG').val()),
-                RowSubTotal:parseFloat($(this).find('.RowTotalG').val()),
-                QutationDetailId: $(this).find('.QutationDetailId').val(),
-                Qutation_ID: $(this).find('.Qutation_ID').val()
-              
+          var  CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: parseInt($(this).find('.product').val()),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Goods",
+                    Rate: parseInt($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                    InvoiceDetailId: $(this).find('.InvoiceDetailId').val(),
+                }
+                list.push(orderItem);
             }
-            list.push(orderItem);
         });
 
-        $('#QutationServiceDetail .tbody tr').each(function () {
+        $('#QutationServiceDetail .tbodyService tr').each(function () {
+            debugger;
 
-
-            orderItem = {
-                ItemId: $(this).find('.product').val(),
-                Quantity: parseInt($(this).find('.quantityG').val()),
-                Rate: parseFloat($(this).find('.rateG').val()),
-                Total: parseFloat($(this).find('.FTotalG').val()),
-                Description: $(this).find('.Discription').val(),
-                Type: "Service",
-                ServiceDate: $(this).find('.ServiceDate').val(),
-                Vat: parseFloat($(this).find('.VATG').val()),
-                RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                QutationDetailId:$(this).find('.QutationDetailId').val(),
-                Qutation_ID: $(this).find('#Qutation_ID').val()
+           var CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: $(this).find('.product').val(),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Rate: parseFloat($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Description: $(this).find('.Discription').val(),
+                    Type: "Service",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                    InvoiceDetailId: $(this).find('.InvoiceDetailId').val(),
+                }
+                list.push(orderItem);
             }
-            list.push(orderItem);
-
         });
+        
+        if (list.length == 0) {
+            $('#BTW6').text('');
+            $('#BTW21').text('');
+            $('#gtotal').text('');
+            $('#gtotal').text('');
+        }
+        debugger;
+
         var empObj = {
+
             Invoice_ID: $('#Invoice_ID').val(),
             RefNumber: $('#RefNumber').val(),
             InvoiceDate: $('#InvoiceDate').val(),
@@ -1197,23 +1225,36 @@
             InvoiceID: $('#InvoiceID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            Total: $('#gtotal').text(),
+            Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ContactId').val(),
             CompanyId: $('#CompanyId').val(),
-            InvoiceDetailsTable: list
+             
         };
-
-        
         console.log(empObj);
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+        for (var i = 0; i < list.length; i++) {
+            formData.append('InvoiceDetailsTable[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('InvoiceDetailsTable[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('InvoiceDetailsTable[' + i + '][Rate]', list[i].Rate)
+            formData.append('InvoiceDetailsTable[' + i + '][Total]', list[i].Total)
+            formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
+            formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
+        }
         $.ajax({
             url: "/Invoice/Edit",
-            data: JSON.stringify(empObj),
             type: "POST",
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            success: function (result) {  
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+
+            success: function (result) {
+                alert(result);
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1221,12 +1262,11 @@
                         type: 'success'
                     },
                          function (isconform) {
-                             window.location.href = "/Invoice/ViewInvoice?id=" + result.QutationId;
+                             window.location.href = "/Invoice/ViewInvoice?id=" + result.id;
                          });
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
-
                 }
             },
 

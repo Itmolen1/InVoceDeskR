@@ -15,8 +15,6 @@
                             <td>
                                 <input type="hidden" value="@item.DirectoryPath" class="FileName" />
                             </td>
-
-
                             <td>
                                 <button class="btn btn-danger btn-sm'  type='button" id="DeleteFile"><i class="fa fa-trash"></i></button>
                             </td>
@@ -41,21 +39,40 @@
 
         var Name = current.find(".FileName").val();
 
-        $.ajax({
-            url: "/Qutation/DeleteFile",
-            type: "POST",
-            data: JSON.stringify({ Id: $('#InvoiceID').val(), FileName: Name }),
-            contentType: "application/json",
-            dataType: "json",
-            success: function (result) {
-                if (result == "Success") {
-                    current.remove();
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel plx!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        url: "/Qutation/DeleteFile",
+                        type: "POST",
+                        data: JSON.stringify({ Id: $('#InvoiceID').val(), FileName: Name }),
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (result) {
+                            if (result == "Success") {
+                                current.remove();
+                            }
+                        },
+                        error: function (err) {
+                            alert(err.statusText);
+                        }
+                    });
+                    swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                } else {
+                    swal("Cancelled", "Your imaginary file is safe :)", "error");
                 }
-            },
-            error: function (err) {
-                alert(err.statusText);
             }
-        });
+        );
 
     });
 
@@ -64,13 +81,33 @@
         $('#participantTable #DeleteFile').click(function () {
             var Current = $(this).closest("tr")
             var FileName = Current.find('.FileName').val();
-            DeleteFileFromFolder(FileName, Current);
-        });
-    });
+
+                    swal({
+                        title: "Are you sure?",
+                        text: "You will not be able to recover this imaginary file!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel plx!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            DeleteFileFromFolder(FileName, Current);
+                            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                        } else {
+                            swal("Cancelled", "Your imaginary file is safe :)", "error");
+                        }
+                        }
+                    );          
+                });
+             });
 
     function DeleteFileFromFolder(FilenameToDelete, currentRow) {
         $.ajax({
-            url: "/Purchase/deleteFile",
+            url: "/Invoice/deleteFile",
             type: "POST",
             data: JSON.stringify({ Id: $('#InvoiceID').val(), FileName: FilenameToDelete }),
             contentType: "application/json",
@@ -102,7 +139,7 @@
             formData.append("InvoiceID", parseInt($('#InvoiceID').val()));
 
             $.ajax({
-                url: '/Qutation/UploadFiles',
+                url: '/Invoice/UploadFiles',
                 type: "POST",
                 contentType: false,
                 processData: false,
