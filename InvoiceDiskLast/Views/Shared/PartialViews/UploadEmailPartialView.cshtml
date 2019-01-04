@@ -1,0 +1,116 @@
+﻿
+@model InvoiceDiskLast.Models.EmailModel
+<div class="row">
+    <div class="col-6 b-r">
+        <table class="table table-hover" id="participantTable">
+            <tbody id="upload12">
+                @if (Model.SelectList.Count > 0)
+                {
+                    for (int i = 0; i < Model.SelectList.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.CheckBoxFor(m => Model.SelectList[i].IsSelected) <label>@Model.SelectList[i].FileName</label>
+                                @Html.HiddenFor(m => Model.SelectList[i].FileName)
+                                @Html.HiddenFor(m => Model.SelectList[i].Directory)
+
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="col-6 b-r"></div>
+</div>
+
+<div class="row">
+    <div class="col-6 b-r">
+        <input type="file" name="files" id="txtUploadFile" class="makethispretty btn btn-success" style="width:500px" />
+    </div>
+    <div class="col-6 b-r"></div>
+</div>
+
+<script type="text/javascript">
+
+    $('#txtUploadFile').on('change', function (e) {
+        var fileUpload = $("#txtUploadFile").get(0);
+        var files = fileUpload.files;
+
+        debugger;
+        var IsvalidSixze = validateFileSize();
+
+        if (IsvalidSixze == false) {
+            return true;
+        }
+        else {
+            var fileData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                url: '/Common/UploadFileToPDF',
+                type: "POST",
+                contentType: false,
+                processData: false,
+                data: fileData,
+                async: false,
+                success: function (result) {
+                    if (result != "") {
+                        $('#upload12').append("<tr><td><input type='text'  class='form-control FileName' value='" + result + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result + "' name='FilePath'></td></tr>")
+                        var fileUpload = $("#txtUploadFile").val('');
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+    });
+
+
+
+    function validateFileSize() {
+        var Isvalid = true;
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            //get the file size and file type from file input field
+            var fsize = $('#txtUploadFile')[0].files[0].size;
+            var ftype = $('#txtUploadFile')[0].files[0].type;
+            var fname = $('#txtUploadFile')[0].files[0].name;
+
+            if (fsize > 1048576) //do something if file size more than 1 mb (1048576)
+            {
+                Isvalid = false;
+
+                alert("Type :" + ftype + " | " + fsize + " bites\n(File: " + fname + ") Too big!");
+            }
+            else {
+                Isvalid = true;
+            }
+        }
+        return Isvalid;
+    }
+
+
+    function RemoveFile(URL,Fileame,CurrentRow)
+    {
+        debugger;
+        $.ajax({
+            url: URL,
+            type: "GET",
+            data: { FileName: Fileame },
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                if (result == "Success") {
+                    CurrentRow.remove();
+                }
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+    }
+
+</script>

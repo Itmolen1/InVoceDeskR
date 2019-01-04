@@ -238,14 +238,14 @@ namespace InvoiceDiskLast.Controllers
             public HttpPostedFile file { get; set; }
         }
         
-        public ActionResult ViewDirecory(int Id, string DName, string Decription = "Client")
+        public ActionResult ViewDirecory(int Id, string DName)
         {
             string d = "";
             try
             {
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/"+Decription).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/"+ "Client").Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)

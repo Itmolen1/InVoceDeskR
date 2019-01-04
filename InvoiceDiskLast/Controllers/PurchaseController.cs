@@ -579,13 +579,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-
-
-
-
-
+        
 
         [DeleteFileClass]
         [HttpPost]
@@ -662,7 +656,7 @@ namespace InvoiceDiskLast.Controllers
                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"";
 
 
-                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/Viewpp.cshtml")
+                return new Rotativa.PartialViewAsPdf("~/Views/Purchase/PrintPurchasePartialView.cshtml")
                 {
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
@@ -781,7 +775,7 @@ namespace InvoiceDiskLast.Controllers
                     if (item.IsSelected)
                     {
 
-                        if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
+                        if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("PNG") || item.Directory.EndsWith("JPEG") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
                         {
                             if (System.IO.File.Exists(Server.MapPath(item.Directory)))
                             {
@@ -807,7 +801,7 @@ namespace InvoiceDiskLast.Controllers
 
                 foreach (var item in valueArray)
                 {
-                    if (item.EndsWith("doc") || item.EndsWith("pdf") || item.EndsWith("docx") || item.EndsWith("jpg") || item.EndsWith("png") || item.EndsWith("txt"))
+                    if (item.EndsWith("doc") || item.EndsWith("pdf") || item.EndsWith("PNG") ||  item.EndsWith("JPEG") || item.EndsWith("docx") || item.EndsWith("jpg") || item.EndsWith("png") || item.EndsWith("txt"))
                     {
                         var filwe = Server.MapPath("/PDF/" + item);
                         if (System.IO.File.Exists(filwe))
@@ -2185,6 +2179,70 @@ namespace InvoiceDiskLast.Controllers
             path = Path.GetFullPath(path);
 
             return new JsonResult { Data = new { Status = "Success", path = pdfname, PurchaseOrderId = purchasemodel.PurchaseOrderID } };
+        }
+
+        public ActionResult ViewDirecory(int Id, string DName)
+        {
+            string d = "";
+            try
+            {
+                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
+                DirectoryViewModel _Directory = new DirectoryViewModel();
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
+                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                if (directory.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Purchase");
+                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
+                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+                else
+                {
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View();
         }
     }
 }

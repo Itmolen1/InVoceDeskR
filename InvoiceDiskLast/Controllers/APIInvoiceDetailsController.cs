@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using InvoiceDiskLast.Models;
 using System.Web.Http.Description;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace InvoiceDiskLast.Controllers
 {
@@ -77,5 +79,64 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+        [Route("api/DeleteInvoiceDetails/{id:int}")]
+        [ResponseType(typeof(InvoiceDetailsTable))]
+        public IHttpActionResult DeleteInvoiceDtailsTable(int id)
+        {
+             InvoiceDetailsTable invoiceDetailsTable = db.InvoiceDetailsTables.Find(id);
+            if (invoiceDetailsTable == null)
+            {
+                return NotFound();
+            }
+
+            db.InvoiceDetailsTables.Remove(invoiceDetailsTable);
+            db.SaveChanges();
+
+            return Ok(invoiceDetailsTable);
+        }
+
+
+        private bool InvoiceDetailsTableExists(int id)
+        {
+            return db.InvoiceDetailsTables.Count(e => e.InvoiceDetailId == id) > 0;
+        }
+
+        [Route("api/UpdateInvoiceDetails/{id:int}")]
+        [ResponseType(typeof(InvoiceDetailsTable))]
+        public IHttpActionResult PutQutationDetailsTable(int id, InvoiceDetailsTable InvoiceDetailsTable)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != InvoiceDetailsTable.InvoiceDetailId)
+            {
+                return BadRequest();
+            }
+
+             db.Entry(InvoiceDetailsTable).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return Ok(InvoiceDetailsTable);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InvoiceDetailsTableExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+
+        }
     }
 }

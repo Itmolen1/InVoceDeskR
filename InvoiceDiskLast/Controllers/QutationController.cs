@@ -118,7 +118,7 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        int Contactid = 0, CompanyID = 0;
+       int CompanyID = 0;
         public ActionResult ViewQuation(int? quautionId)
         {
             int ID = Convert.ToInt32(quautionId);
@@ -202,6 +202,7 @@ namespace InvoiceDiskLast.Controllers
                         QutationModel.Status = QutationModel.Status;
                         QutationModel.CompanyId = QutationModel.CompanyId;
                         if (vat == 6)
+
                             QutationModel.TotalVat6 = QutationModel.TotalVat6 - 6;
                         else
                             QutationModel.TotalVat21 = QutationModel.TotalVat21 - 21;
@@ -308,9 +309,9 @@ namespace InvoiceDiskLast.Controllers
                     PageMargins = new Rotativa.Options.Margins(5, 0, 10, 0),
 
                     PageHeight = 40,
-                    CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:\n  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)\n" + "  Printed date: " +
-                    DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
-                   " --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+                   // CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:\n  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer. \n (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)\n" + "  Printed date: " +
+                   // DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                   //" --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
 
                 };
             }
@@ -406,9 +407,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
-
+        
         [HttpPost]
         public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1010,7 +1009,7 @@ namespace InvoiceDiskLast.Controllers
                     if (item.IsSelected)
                     {
 
-                        if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
+                        if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("PDF") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("jpeg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("PNG") || item.Directory.EndsWith("txt"))
                         {
                             if (System.IO.File.Exists(Server.MapPath(item.Directory)))
                             {
@@ -1093,12 +1092,7 @@ namespace InvoiceDiskLast.Controllers
                     bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
-
-                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
-                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
-
-
-
+                
                 var folderPath = Server.MapPath("/PDF/");
                 EmailController.clearFolder(folderPath);
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
@@ -1121,6 +1115,71 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+
+
+        public ActionResult ViewDirecory(int Id, string DName)
+        {
+            string d = "";
+            try
+            {
+                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
+                DirectoryViewModel _Directory = new DirectoryViewModel();
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Quotation").Result;
+                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                if (directory.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Quotation");
+                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Quotation").Result;
+                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+                else
+                {
+                    d = _Directory.DirectoryPath.ToString();
+                    string F = _Directory.DirectoryPath.ToString();
+                    d = d.Substring(17);
+                    ViewBag.Name = d.Replace("/", "");
+
+                    if (_Directory.DirectoryPath != null)
+                    {
+                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+                        FileInfo[] info = dir.GetFiles("*.*");
+
+                        foreach (FileInfo f in info)
+                        {
+                            string Name = f.Name;
+                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+                        }
+                        ViewBag.TreeView = _DirectoryList;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View();
+        }
 
 
         [HttpPost]

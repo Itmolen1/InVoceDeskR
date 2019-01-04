@@ -27,8 +27,21 @@
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
         <div class="btn-group">
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:150px">
+                <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
+                Send
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="/Purchase/InvoicebyEmail/?purchaseOrderId=@purchaseModel.PurchaseOrderID">Send by Email</a>
+                <a class="dropdown-item" href="/Purchase/Print/?purchaseOrderId=@purchaseModel.PurchaseOrderID">Print and send it yourself</a>
 
-            <div class="dropdown">
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            @*<div class="dropdown">
                 <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
                     <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
                     Send
@@ -42,7 +55,7 @@
                     <li class="divider"></li>
                     <li>@Html.ActionLink(" Print Invoice and send it yourself ", "Print", "Purchase", new { purchaseOrderId = purchaseModel.PurchaseOrderID }, htmlAttributes: new { @class = "  fa fa-download" })</li>
                 </ul>
-            </div>
+            </div>*@
 
             <div style="margin-left:3px">
                 <div class="btn-group">

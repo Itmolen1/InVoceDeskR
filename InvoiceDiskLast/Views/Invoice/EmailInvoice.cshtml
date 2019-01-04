@@ -43,11 +43,10 @@
                             @Html.HiddenFor(Model => Model.Attachment);
                         </h4>
 
-                        @Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml");
-
+                       @Html.Partial("~/Views/Shared/PartialViews/UploadEmailPartialView.cshtml")                                         
                         <hr />
                         <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i> Send</button>
-                        <a href="/Invoice/EmailInvoice/?QutationId=@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i> Discard</a>
+                        <a href="/Invoice/EmailInvoice/?id=@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i> Discard</a>
                     </div>
                 </div>
             }
@@ -56,3 +55,15 @@
     </div>
 
 </div>
+
+<script>
+
+    $(document).on('click', '.remove', function () {
+
+        var current = $(this).closest("tr");
+        var FileName1 = current.find(".FileName").val();
+
+        RemoveFile("/Common/DeleteFile", FileName1, current);
+    });
+
+</script>

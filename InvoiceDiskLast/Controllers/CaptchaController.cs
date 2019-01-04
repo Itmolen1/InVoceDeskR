@@ -152,9 +152,10 @@ namespace InvoiceDiskLast.Controllers
                         Session["username"] = name;
                         GlobalVeriables.WebApiClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session["ApiAccessToken"].ToString());
                         HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("CompanyExist", userInfo).Result;
-                       
-                        UserTbale = response.Content.ReadAsAsync<UserModel>().Result;
-
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            UserTbale = response.Content.ReadAsAsync<UserModel>().Result;
+                        }
                         int compnyID = Convert.ToInt32(UserTbale.CompanyId);
                         Session["LoginUserID"] = Convert.ToInt32(UserTbale.UserId);
                         #region
