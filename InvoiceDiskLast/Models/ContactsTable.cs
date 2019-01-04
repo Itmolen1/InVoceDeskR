@@ -19,6 +19,7 @@ namespace InvoiceDiskLast.Models
         {
             this.QutationTables = new HashSet<QutationTable>();
             this.InvoiceTables = new HashSet<InvoiceTable>();
+            this.BillTables = new HashSet<BillTable>();
         }
     
         public int ContactsId { get; set; }
@@ -46,5 +47,7 @@ namespace InvoiceDiskLast.Models
         public virtual ICollection<QutationTable> QutationTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BillTable> BillTables { get; set; }
     }
 }

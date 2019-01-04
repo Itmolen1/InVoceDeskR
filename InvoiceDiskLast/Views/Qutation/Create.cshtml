@@ -6,6 +6,9 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
+
+
+
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -40,7 +43,7 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
+                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control  Input-height", id = "QutationDate", @autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
                         </div>
@@ -63,7 +66,7 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
+                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
 
 
@@ -175,16 +178,13 @@
                                     <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                    <input type="text" class="quantityG form-control Input-height" id="QuantityG" autocomplete="off" style="font-size:12px" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG", autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                                    <input type="text" class="rateG form-control Input-height" id="RateG" autocomplete="off" style="font-size:12px" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly" } })
-                                    @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                    <input type="text" class="FTotalG form-control Input-height" id="FTotalG" readonly="readonly" style="font-size:12px" />
                                 </td>
                                 <td>
                                     <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -203,15 +203,7 @@
                         </tbody>
                     </table>
                 </div>
-                @*<div class="row">
-                        <div class="col-1 b-r"></div>
-                        <div class="col-11 b-r">
-                            <div id="OrderItems">
-                                <table class="table" id="orderdetailsitemssss"></table>
-                                <span id="orderItemError" style="color:red"></span>
-                            </div>
-                        </div>
-                    </div>*@
+             
             </div>
 
 
@@ -252,8 +244,8 @@
                         <tbody class="tbodyService">
                             <tr id="mainrow1">
                                 <td>
-
-                                    @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })
+                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
+                                  
 
                                 </td>
 
@@ -309,7 +301,7 @@
                             @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
+                      @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
                     <hr />
 
                 </div>
@@ -484,8 +476,13 @@
             $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
             $('.VATG', $newRow).val($("#mainrow1 #SelectVATS").val());
 
+
+
+
+
             //Replace add button with remove button
             $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
+            $("#btnSerVice", $newRow).removeClass('hasDatepicker');
 
             //Remove id attribute from new clone row
 
@@ -494,6 +491,8 @@
             $('span.error', $newRow).remove();
 
             $('.tbodyService').prepend($newRow);
+
+            // $(this).find('.ServiceDate').removeClass('.hasDatepicker').remove('id');
 
             $(".FTotalG").prop('disabled', true);
 
@@ -511,6 +510,9 @@
             $('#mainrow1 #RowTotalG').val('');
             $('#mainrow1 .RowTotalG').val('');
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG').val('');
+
+
+            $('')
 
 
         }
@@ -1446,5 +1448,75 @@
             return Isvalid;
         }
     }
+
+</script>
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.ServiceDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            datetime: new Date(),
+            dateFormat: 'dd/mm/yy',
+        }).datepicker("setDate", new Date());
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+
+
+    $(document).ready(function () {
+        $('.QutationDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+    $(document).ready(function () {
+        $('.DueDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+
+    $('body').on('focus', ".ss", function () {
+
+        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
+        $(this).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
 
 </script>

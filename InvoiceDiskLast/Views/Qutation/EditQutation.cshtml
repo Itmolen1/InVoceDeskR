@@ -31,7 +31,6 @@
 
                     @Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new { id = "CompanyId" } })
 
-
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
@@ -54,7 +53,7 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "QutationDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
+                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control Input-height", id = "QutationDate", @autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
 
                         </div>
@@ -77,9 +76,8 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "DueDate", title = "Due Date" } })
+                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
-
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -91,8 +89,6 @@
                         <div class="col-6 b-r">
                             @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
                             @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-
-
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -252,11 +248,11 @@
                                             <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
                                         </td>
                                         <td>
-                                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG" } })
+                                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG", @autocomplete = "off" } })
                                             @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                         </td>
                                         <td>
-                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG" } })
+                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG", @autocomplete = "off" } })
                                             @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                                         </td>
                                         <td>
@@ -354,8 +350,8 @@
                                                 }
 
                                                 <td>
-                                                    @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @class = "ServiceDate form-control MAterialDatepicker Input-height", id = "QutationDate", @value = dt.ToShortDateString(), @autocomplete = "off" } })
-                                                  
+
+                                                    <input class="ServiceDate  ss Input-height form-control" value="@dt.ToShortDateString()" autocomplete="off" />
                                                 </td>
 
                                                 <td>
@@ -419,7 +415,8 @@
                                                         <td>
                                                             @*@Html.EditorFor(model => model.DueDate1, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })*@
 
-                                                            <input type="date" class="form-control MAterialDatepicker Input-height" />
+
+                                                            <input class="ServiceDate Input-height form-control" autocomplete="off" />
 
                                                         </td>
 
@@ -430,15 +427,15 @@
                                                             <input type="text" class=" Discription form-control Input-height" autocomplete="off" />
                                                         </td>
                                                         <td>
-                                                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
+                                                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", @autocomplete = "off" } })
                                                             @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                                                         </td>
                                                         <td>
-                                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS" } })
+                                                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS", @autocomplete = "off" } })
                                                             @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
                                                         </td>
                                                         <td>
-                                                            @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly" } })
+                                                            @Html.EditorFor(model => model.Total, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly", @autocomplete = "off" } })
                                                             @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
                                                         </td>
                                                         <td>
@@ -459,10 +456,6 @@
                                                     </tr>
                                                     }
                             }
-
-
-
-
                         </tbody>
                     </table>
                 </div>
@@ -1911,4 +1904,76 @@
             });
         }
 
+
+
+
+
+        $(document).ready(function () {
+            $('.QutationDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                gotoCurrent: true,
+                dateFormat: 'dd/mm/yy',
+            });
+            if ($(this).hasClass('birthdate')) {
+                $(this).datepicker('option', 'yearRange', '1980:c');
+                $(this).datepicker('option', 'defaultDate', '-10y');
+            }
+        });
+
+
+        $(document).ready(function () {
+            $('.DueDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                gotoCurrent: true,
+                dateFormat: 'dd/mm/yy',
+            });
+            if ($(this).hasClass('birthdate')) {
+                $(this).datepicker('option', 'yearRange', '1980:c');
+                $(this).datepicker('option', 'defaultDate', '-10y');
+            }
+        });
+
+
+
+
+        $('body').on('focus', ".ss", function () {
+
+            $(this).closest('tr').find(':input').removeClass('hasDatepicker');
+            $(this).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                gotoCurrent: true,
+
+                dateFormat: 'dd/mm/yy',
+            });
+            if ($(this).hasClass('birthdate')) {
+                $(this).datepicker('option', 'yearRange', '1980:c');
+                $(this).datepicker('option', 'defaultDate', '-10y');
+            }
+        });
+
+
     </script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#mainrow1  .ServiceDate').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                gotoCurrent: true,
+                datetime: new Date(),
+                dateFormat: 'dd/mm/yy',
+            }).datepicker("setDate", new Date());
+            if ($(this).hasClass('birthdate')) {
+                $(this).datepicker('option', 'yearRange', '1980:c');
+                $(this).datepicker('option', 'defaultDate', '-10y');
+            }
+        });
+
+    </script>
+
+
+
