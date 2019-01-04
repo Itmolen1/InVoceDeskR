@@ -245,7 +245,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Client").Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)

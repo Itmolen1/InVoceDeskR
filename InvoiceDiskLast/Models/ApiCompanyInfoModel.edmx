@@ -52,6 +52,44 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="BillDetailTable">
+          <Key>
+            <PropertyRef Name="BillDetailId" />
+          </Key>
+          <Property Name="BillDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemId" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Rate" Type="float" />
+          <Property Name="Total" Type="float" />
+          <Property Name="Vat" Type="float" />
+          <Property Name="RowSubTotal" Type="float" />
+          <Property Name="BillID" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="ServiceDate" Type="date" />
+        </EntityType>
+        <EntityType Name="BillTable">
+          <Key>
+            <PropertyRef Name="BilID" />
+          </Key>
+          <Property Name="BilID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bill_ID" Type="nvarchar" MaxLength="50" />
+          <Property Name="RefNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="PurchaseId" Type="int" />
+          <Property Name="BillDate" Type="date" />
+          <Property Name="BillDueDate" Type="date" />
+          <Property Name="SubTotal" Type="float" />
+          <Property Name="TotalVat6" Type="float" />
+          <Property Name="TotalVat21" Type="float" />
+          <Property Name="DiscountAmount" Type="float" />
+          <Property Name="TotalAmount" Type="float" />
+          <Property Name="CustomerNote" Type="nvarchar" MaxLength="300" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="ContactId" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="ComapnyInfo">
           <Key>
             <PropertyRef Name="CompanyID" />
@@ -371,6 +409,18 @@
           <Property Name="CompanyId" Type="int" />
           <Property Name="Username" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="BillTable_UserTable1">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="AccountTable" Type="Self.AccountTable" Multiplicity="*" />
@@ -428,6 +478,42 @@
             </Principal>
             <Dependent Role="AccountTransictionTable">
               <PropertyRef Name="FKPaymentTerm" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ContactsTable">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -677,6 +763,8 @@
           <EntitySet Name="AccountTable" EntityType="Self.AccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccountTransictionTable" EntityType="Self.AccountTransictionTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillDetailTable" EntityType="Self.BillDetailTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillTable" EntityType="Self.BillTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ComapnyInfo" EntityType="Self.ComapnyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyUser" EntityType="Self.CompanyUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactsTable" EntityType="Self.ContactsTable" Schema="dbo" store:Type="Tables" />
@@ -699,6 +787,10 @@
           <EntitySet Name="QutationTable" EntityType="Self.QutationTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAuthorityTable" EntityType="Self.UserAuthorityTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="BillTable_UserTable1" Association="Self.BillTable_UserTable1">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="BillTable" EntitySet="BillTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="Self.FK_AccountTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="AccountTable" EntitySet="AccountTable" />
@@ -718,6 +810,18 @@
           <AssociationSet Name="FK_AccountTransictionTable_PaymentTermTable" Association="Self.FK_AccountTransictionTable_PaymentTermTable">
             <End Role="PaymentTermTable" EntitySet="PaymentTermTable" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="Self.FK_BillTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="BillTable" EntitySet="BillTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ContactsTable" Association="Self.FK_BillTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+            <End Role="BillTable" EntitySet="BillTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_UserTable" Association="Self.FK_BillTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="BillTable" EntitySet="BillTable" />
           </AssociationSet>
           <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="Self.FK_ContactsTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
@@ -835,6 +939,7 @@
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTransictionTable" />
           <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="InvoiceTable" />
+          <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="BillTable" />
         </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
@@ -969,6 +1074,24 @@
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
           <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
+          <EntitySet Name="BillDetailTables" EntityType="APIcompanyModel.BillDetailTable" />
+          <EntitySet Name="BillTables" EntityType="APIcompanyModel.BillTable" />
+          <AssociationSet Name="BillTable_UserTable1" Association="APIcompanyModel.BillTable_UserTable1">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="APIcompanyModel.FK_BillTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ContactsTable" Association="APIcompanyModel.FK_BillTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_UserTable" Association="APIcompanyModel.FK_BillTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1102,6 +1225,7 @@
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
           <Property Name="PaymentTerm" Type="Int32" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
+          <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="ContactsTable" ToRole="BillTable" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1512,6 +1636,8 @@
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="UserTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
+          <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="UserTable" ToRole="BillTable" />
+          <NavigationProperty Name="BillTables1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="UserTable" ToRole="BillTable" />
         </EntityType>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1671,6 +1797,96 @@
           <Property Name="DirectoryPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" />
         </EntityType>
+        <EntityType Name="BillDetailTable">
+          <Key>
+            <PropertyRef Name="BillDetailId" />
+          </Key>
+          <Property Name="BillDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Rate" Type="Double" />
+          <Property Name="Total" Type="Double" />
+          <Property Name="Vat" Type="Double" />
+          <Property Name="RowSubTotal" Type="Double" />
+          <Property Name="BillID" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="BillTable">
+          <Key>
+            <PropertyRef Name="BilID" />
+          </Key>
+          <Property Name="BilID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bill_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseId" Type="Int32" />
+          <Property Name="BillDate" Type="DateTime" Precision="0" />
+          <Property Name="BillDueDate" Type="DateTime" Precision="0" />
+          <Property Name="SubTotal" Type="Double" />
+          <Property Name="TotalVat6" Type="Double" />
+          <Property Name="TotalVat21" Type="Double" />
+          <Property Name="DiscountAmount" Type="Double" />
+          <Property Name="TotalAmount" Type="Double" />
+          <Property Name="CustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="ContactId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="BillTable" ToRole="UserTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="BillTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="BillTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="BillTable" ToRole="UserTable" />
+        </EntityType>
+        <Association Name="BillTable_UserTable1">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2076,6 +2292,46 @@
                 <ScalarProperty Name="Decription" ColumnName="Decription" />
                 <ScalarProperty Name="RefrenceId" ColumnName="RefrenceId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillDetailTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.BillDetailTable">
+              <MappingFragment StoreEntitySet="BillDetailTable">
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="BillID" ColumnName="BillID" />
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
+                <ScalarProperty Name="Vat" ColumnName="Vat" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="BillDetailId" ColumnName="BillDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.BillTable">
+              <MappingFragment StoreEntitySet="BillTable">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="BillDueDate" ColumnName="BillDueDate" />
+                <ScalarProperty Name="BillDate" ColumnName="BillDate" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+                <ScalarProperty Name="Bill_ID" ColumnName="Bill_ID" />
+                <ScalarProperty Name="BilID" ColumnName="BilID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

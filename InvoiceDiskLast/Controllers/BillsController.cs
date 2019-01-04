@@ -19,17 +19,17 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-       
+
 
         [HttpGet]
         public ActionResult Create(int id)
         {
-            MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
+            BillDetailViewModel _BillDetailView = new BillDetailViewModel();
             try
             {
                 //int  Contectid = Convert.ToInt32(Session["ClientId"]);
-                int   CompanyID = Convert.ToInt32(Session["CompayID"]);
-              
+                int CompanyID = Convert.ToInt32(Session["CompayID"]);
+
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
@@ -40,17 +40,19 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.Companydata = companyModel;
                 DateTime InvoiceDate = new DateTime();
                 InvoiceDate = DateTime.Now;
-                purchaseviewModel.PurchaseDate = InvoiceDate;
-                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+                _BillDetailView.BillDate = InvoiceDate;
+                _BillDetailView.BillDueDate = InvoiceDate.AddDays(+15);
+                MvcBillModel q = new MvcBillModel();
+                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateBilNumber/").Result;
+                q = response1.Content.ReadAsAsync<MvcBillModel>().Result;
+                _BillDetailView.BillDate = InvoiceDate;
 
-                MvcPurchaseModel q = new MvcPurchaseModel();
-                HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
-                q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-                purchaseviewModel.PurchaseDate = InvoiceDate;
-                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-                purchaseviewModel.Purchase_ID = q.PurchaseID;
+                _BillDetailView.BillDueDate = InvoiceDate.AddDays(+15);
 
-                return View(purchaseviewModel);
+                _BillDetailView.Bill_ID = q.Bill_ID;
+
+
+                return View(_BillDetailView);
             }
             catch (Exception ex)
             {
@@ -60,11 +62,107 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+        #region Bill by samar
+
+        [HttpPost]
+        public ActionResult SaveDraft(BillDetailViewModel billDetailViewModel)
+        {
+            BillTable billtable = new BillTable();
+            try
+            {
+                BillDetailViewModel billviewModel = new BillDetailViewModel();
+
+                billtable.CompanyId = billDetailViewModel.CompanyId;
+                billtable.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                billtable.Bill_ID = billDetailViewModel.Bill_ID.ToString();
+                billtable.ContactId = billDetailViewModel.ContactId;
+                //billtable.PurchaseOrderID = (Convert.ToInt32(billDetailViewModel.PurchaseOrderID != null ? billDetailViewModel.PurchaseOrderID : 0));
+                billtable.RefNumber = billDetailViewModel.RefNumber;
+                billtable.BillDate = (DateTime)billDetailViewModel.BillDate;
+                billtable.BillDueDate = billDetailViewModel.BillDueDate;
+                billtable.SubTotal = billDetailViewModel.SubTotal;
+                billtable.DiscountAmount = billDetailViewModel.DiscountAmount;
+                billtable.TotalAmount = billDetailViewModel.TotalAmount;
+                billtable.CustomerNote = billDetailViewModel.CustomerNote;
+                billtable.TotalVat6 = billDetailViewModel.TotalVat6;
+                billtable.TotalVat21 = billDetailViewModel.TotalVat21;
+                billtable.Status = "open";
+                billtable.Type = StatusEnum.Goods.ToString();
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", billtable).Result;
+                BillTable billviewmodel = response.Content.ReadAsAsync<BillTable>().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    billviewModel.BilID = billviewmodel.BilID;
+
+                    if (billDetailViewModel.BillDetail != null)
+                    {
+                        foreach (BillDetailTable item in billDetailViewModel.BillDetail)
+                        {
+                            BillDetailTable billdetailtable = new BillDetailTable();
+                            billdetailtable.BillID = billviewmodel.BilID;
+                            billdetailtable.ItemId = item.ItemId;
+                            billdetailtable.Description = item.Description;
+                            billdetailtable.Quantity = item.Quantity;
+                            billdetailtable.Rate = item.Rate;
+                            billdetailtable.Total = item.Total;
+                            billdetailtable.Type = item.Type;
+                            billdetailtable.RowSubTotal = item.RowSubTotal;
+                            billdetailtable.Vat = item.Vat;
+                           //billdetailtable.PurchaseId = purchaseViewModel.PurchaseOrderID;
+                            billdetailtable.ServiceDate = item.ServiceDate;
+                            //billdetailtable.PurchaseId = purchaseViewModel.PurchaseOrderID;
+                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", billdetailtable).Result;
+                        }
+                    }
+                }
+
+                if (billDetailViewModel.file23[0] != null)
+                {
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(billDetailViewModel.BilID, "purchase", billDetailViewModel.file23, "Bill");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+
+            return new JsonResult { Data = new { Status = "Success", purchaseId = purchaseViewModel.PurchaseOrderID } };
+        }
+
+
+
+
+
+
+
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpPost]
         public ActionResult save1(MvcPurchaseViewModel purchaseViewModel)
         {
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
-           
+
             try
             {
 
@@ -82,7 +180,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
 
-               
+
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "accepted";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
@@ -150,7 +248,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                
+
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + id.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
 
@@ -263,7 +361,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-              
+
                 purchaseviewModel.PurchaseOrderID = ob.PurchaseOrderID;
                 purchaseviewModel.Purchase_ID = ob.PurchaseID;
                 purchaseviewModel.PurchaseDate = Convert.ToDateTime(ob.PurchaseDate);
@@ -306,7 +404,7 @@ namespace InvoiceDiskLast.Controllers
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
-               
+
                 purchasemodel.CompanyId = purchasemodel.CompanyId;
                 purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.UserId = 1;
@@ -321,7 +419,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.PurchaseDiscountAmount = purchaseViewModel.PurchaseDiscountAmount;
                 purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;
                 purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
-                purchasemodel.Vat6 = purchaseViewModel.Vat6;                
+                purchasemodel.Vat6 = purchaseViewModel.Vat6;
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "accepted";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
@@ -340,8 +438,8 @@ namespace InvoiceDiskLast.Controllers
                         purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
                         purchadeDetail.Type = item.Type;
                         purchadeDetail.RowSubTotal = item.RowSubTotal;
-                        purchadeDetail.PurchaseDescription = item.PurchaseDescription;                       
-                        purchadeDetail.ServiceDate = item.ServiceDate;                       
+                        purchadeDetail.PurchaseDescription = item.PurchaseDescription;
+                        purchadeDetail.ServiceDate = item.ServiceDate;
                         purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                         purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                         purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
@@ -369,7 +467,7 @@ namespace InvoiceDiskLast.Controllers
 
         public string PrintView(int id)
         {
-           
+
             string pdfname;
             try
             {
@@ -377,7 +475,7 @@ namespace InvoiceDiskLast.Controllers
                 MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
 
                 int? Contectid = ob.VenderId;
-                int? CompanyID = ob.CompanyId;               
+                int? CompanyID = ob.CompanyId;
 
                 HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + CompanyID + "/All").Result;
                 List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
@@ -596,7 +694,7 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
             }
-               
+
             TempData["EmailMessge"] = "";
 
             EmailModel emailModel = new EmailModel();
