@@ -5,9 +5,9 @@ using System.Web;
 
 namespace InvoiceDiskLast.Models
 {
-    public class MVCInvoiceModel
+    public class InvoiceModel
     {
-        public int? InvoiceID { get; set; }
+        public int InvoiceID { get; set; }
         public string Invoice_ID { get; set; }
         public string RefNumber { get; set; }
         public Nullable<int> QutationId { get; set; }

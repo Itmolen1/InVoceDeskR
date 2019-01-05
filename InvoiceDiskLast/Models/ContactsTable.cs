@@ -18,8 +18,8 @@ namespace InvoiceDiskLast.Models
         public ContactsTable()
         {
             this.QutationTables = new HashSet<QutationTable>();
-            this.InvoiceTables = new HashSet<InvoiceTable>();
             this.BillTables = new HashSet<BillTable>();
+            this.InvoiceTables = new HashSet<InvoiceTable>();
         }
     
         public int ContactsId { get; set; }
@@ -46,8 +46,8 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationTable> QutationTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillTable> BillTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
     }
 }

@@ -50,10 +50,10 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<UserTable> UserTables { get; set; }
         public virtual DbSet<PaymentTermDuration> PaymentTermDurations { get; set; }
         public virtual DbSet<InvoiceDetailsTable> InvoiceDetailsTables { get; set; }
-        public virtual DbSet<InvoiceTable> InvoiceTables { get; set; }
         public virtual DbSet<DirectoryTable> DirectoryTables { get; set; }
         public virtual DbSet<BillDetailTable> BillDetailTables { get; set; }
         public virtual DbSet<BillTable> BillTables { get; set; }
+        public virtual DbSet<InvoiceTable> InvoiceTables { get; set; }
     
         [DbFunction("DBEntities", "GetStockItem")]
         public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)

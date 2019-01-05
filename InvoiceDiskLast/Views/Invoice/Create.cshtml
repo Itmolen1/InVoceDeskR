@@ -6,6 +6,8 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
+
+<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -313,14 +315,19 @@
                             <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@Model.TotalAmount</label>
                         </div>
                     </div> 
-                    <div class="row">                       
-                            <div class="col-12 b-r">
-                                <textarea rows="2" class="form-control">This is new text box will be be implement tommorrwo In sha Allah</textarea>
-                            </div>
-                        </div>                  
+                                
                 </div>
               
             </div>
+            <div class="row">
+                <div class="col-12 b-r">
+                    <div class="form-group">
+                        <textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@Model.InvoiceDescription</textarea>
+                        <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="col-2 b-r">
@@ -346,8 +353,9 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
+<script src="~/CustomScript/CharacterCount.js"></script>
 
-<script type="text/javascript">
+<script>
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
         LoadProductS();
@@ -1097,6 +1105,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
+            InvoiceDescription: $('#InvoiceDescription').val(),
             
         
            
@@ -1221,7 +1230,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
-
+            InvoiceDescription: $('#InvoiceDescription').val(),
 
 
         };
@@ -1341,6 +1350,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
+            InvoiceDescription: $('#InvoiceDescription').val(),
         };
         console.log(empObj);
         for (var key in empObj) {
