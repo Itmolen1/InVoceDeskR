@@ -6,7 +6,7 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
-
+<script src="~/CustomScript/DateTimeFormate.js"></script>
 <link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 <div class="row">
     <div class="col-2 b-r">
@@ -34,14 +34,16 @@
                             @Contectdatas.PostalCode,@Contectdatas.City
                         </div>
                     </div>
-                   
+                    
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
                             Invoice Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "InvoiceDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
-                            @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })
+                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.InvoiceDate" id="InvoiceDate" />
+
+                            @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "InvoiceDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
+                            @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -60,8 +62,11 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
-                            @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })
+
+                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@Model.InvoiceDueDate" id="InvoiceDueDate" />
+
+                            @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
+                            @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -227,7 +232,8 @@
                         <tbody class="tbodyService">
                             <tr id="mainrow1">
                                 <td>
-                                    <input type="text" id="InvoiceDate" class="form-control" />
+
+                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
                                     @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "InvoiceDate", @value = DateTime.Now.ToShortDateString() } })*@
 
                                 </td>
@@ -317,7 +323,7 @@
                     </div> 
                                 
                 </div>
-              <input type="text" id="txtDate" />
+              
             </div>
             <div class="row">
                 <div class="col-12 b-r">
@@ -356,13 +362,6 @@
 <script src="~/CustomScript/CharacterCount.js"></script>
 
 <script>
-    $(document).ready(function () {
-
-        $('#txtDate').datepicker();
-        $('#InvoiceDate').datepicker();
-    });
-
-    
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
         LoadProductS();
@@ -1076,7 +1075,7 @@
                     Rate: parseFloat($(this).find('.rateG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
-                    Type: "Service",
+                    Type: "Service", 
                     ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
@@ -1100,7 +1099,7 @@
             
             Invoice_ID: $('#Invoice_ID').val(),
             RefNumber: $('#RefNumber').val(),
-            InvoiceDate: $('#InvoiceDate          ').val(),
+            InvoiceDate: $('#InvoiceDate').val(),
             InvoiceDueDate: $('#InvoiceDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
@@ -1129,6 +1128,9 @@
             formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
             formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
+
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
+
         }
         $.ajax({
             url: "/Invoice/SaveDraft",
@@ -1253,6 +1255,7 @@
             formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
             formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
         $.ajax({
             url: "/Invoice/SaveEmail",
@@ -1371,6 +1374,7 @@
             formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
             formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
         $.ajax({
             url: "/Invoice/SavePrint",
@@ -1427,3 +1431,7 @@
 
    
 </script>
+
+
+
+

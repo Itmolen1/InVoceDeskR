@@ -17,7 +17,7 @@
         <div class="container">
             <input type="hidden" id="PurchaseOrderID" />
             @*<input type="hidden" class="Bill_ID" value="@Model.Bill_ID" />*@
-            <input type="hidden" value="@Contectdatas.ContactsId" id="Contactid" />
+            <input type="hidden" value="@Model.VenderId" id="VenderId" />
             <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
 
             <div class="row" style="margin-top:10px">
@@ -522,7 +522,7 @@
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
-        // GrandTotal("Add", Total, Subtotalwt);
+
     });
 
 
@@ -556,16 +556,12 @@
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
-
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
 
     function calculateTotalGoods(currentRow) {
-
-        console.log(currentRow);
-
 
         Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
@@ -1039,7 +1035,6 @@
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
                     ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
                     Quantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Goods",
                     ServiceDate: $(this).find('.ServiceDate').val(),
@@ -1052,7 +1047,7 @@
             }
         });
 
-        
+
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
 
@@ -1072,7 +1067,7 @@
                 list.push(orderItem);
             }
         });
-       
+
 
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -1088,12 +1083,11 @@
             BillDueDate: $('#BillDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            //PurchaseOrderID: $('#PurchaseOrderID').val(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#PurchaseVenderNote').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
-            ContactId: $('#VenderId').val(),
+            VenderId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
         };
 
@@ -1133,7 +1127,7 @@
                     },
                          function (isconform) {
 
-                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
+                             window.location.href = "/Bills/ViewBilDetail?BillId=" + result.BillId;
                          });
                 }
                 else if (result.Status == "Fail") {

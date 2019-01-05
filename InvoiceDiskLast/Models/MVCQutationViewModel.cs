@@ -14,17 +14,17 @@ namespace InvoiceDiskLast.Models
         public string Qutation_ID { get; set; }
         public string RefNumber { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> QutationDate { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> DueDate { get; set; }
         public Nullable<double> SubTotal { get; set; }
         public Nullable<double> DiscountAmount { get; set; }
         public Nullable<double> Vat { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         public Nullable<System.DateTime> DueDate1 { get; set; }
 
         public bool Isdelete { get; set; }
@@ -48,7 +48,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> Total { get; set; }
         public int? ConatctId { get; set; }
         public string ItemName { get; set; }
-        public int? QuantityRemaing { get; set; }      
+        public int? QuantityRemaing { get; set; }
 
         public int ExeecdQuantity { get; set; }
 
@@ -61,10 +61,10 @@ namespace InvoiceDiskLast.Models
         public HttpPostedFileWrapper[] file23 { get; set; }
         public HttpPostedFileBase[] Files { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> sdate { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> sdate2 { get; set; }
         public List<QutationDetailsTable> QutationDetailslist { get; set; }
 

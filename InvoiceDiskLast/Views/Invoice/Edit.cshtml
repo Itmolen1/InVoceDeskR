@@ -13,7 +13,7 @@
     var CompanyDatas = ViewBag.Companydata;
     var InvoiceModel = ViewBag.InvoiceData;
 }
-
+<script src="~/CustomScript/DateTimeFormate.js"></script>
 
 <link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 @*<label></label>*@
@@ -50,8 +50,10 @@
                             Invoice Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
-                            @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })
+
+                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.InvoiceDate" id="InvoiceDate" />
+                            @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
+                                @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
 
 
                         </div>
@@ -62,7 +64,7 @@
                             Invoice Number:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Invoice_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Invoice_ID", @readonly= "readonly" } })
+                            @Html.EditorFor(model => model.Invoice_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Invoice_ID", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Invoice_ID, "", new { @class = "text-danger" })
 
 
@@ -74,8 +76,9 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
-                            @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })
+                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@Model.InvoiceDueDate" id="InvoiceDueDate" />
+                            @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
+                                @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
 
 
                         </div>
@@ -185,49 +188,49 @@
                                     {
                                         if (item.Type == "Goods")
                                         {
-                            <tr>
-                                <td>
-                                    <select class="product form-control pClassG Input-height" style="width: 300px;font-size:12px">
-                                        <option value="0">Select Item..</option>
-                                        @foreach (var product in ViewBag.Good)
+                                            <tr>
+                                                <td>
+                                                    <select class="product form-control pClassG Input-height" style="width: 300px;font-size:12px">
+                                                        <option value="0">Select Item..</option>
+                                                        @foreach (var product in ViewBag.Good)
                                                         {
-                                                        <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                            <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
-                                </td>
-                                <td>
-                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
-                                </td>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
+                                                </td>
 
-                                <td>
-                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
-                                </td>
-                                <td>
-                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                        @foreach (var item1 in ViewBag.VatDrop)
+                                                <td>
+                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
+                                                </td>
+                                                <td>
+                                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                                        @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
-                                    </select>
+                                                    </select>
 
-                                </td>
+                                                </td>
 
-                                <td>
-                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
-                                </td>
+                                                <td>
+                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
+                                                </td>
 
-                                <td>
-                                    <input type="button" id="btnRemoveGood" value="x" class="btn-height-Remove" style="width:50px" />
-                                </td>
+                                                <td>
+                                                    <input type="button" id="btnRemoveGood" value="x" class="btn-height-Remove" style="width:50px" />
+                                                </td>
 
-                                <td>
-                                    <input type="hidden" id="InvoiceDetailId" value="@item.InvoiceDetailId" />
-                                </td>
+                                                <td>
+                                                    <input type="hidden" id="InvoiceDetailId" value="@item.InvoiceDetailId" />
+                                                </td>
 
-                            </tr>
+                                            </tr>
                                         }
                                     }
 
@@ -324,62 +327,63 @@
 
                                         if (item.Type == "Service")
                                         {
-                            <tr>
-                                <td>
+                                            <tr>
+                                                <td>
 
-                                    <input type="datetime" class="ServiceDate  form-control Input-height" value="@item.ServiceDate" />
-                                </td>
+                                                    <input  class="sdate ss form-control Input-height" value="@item.ServiceDate" />
+                                                   
+                                                </td>
 
-                                <td>
-                                    <select class="product form-control pClassG Input-height" style="width: 200px;font-size:12px">
-                                        <option value="0">Select Item..</option>
-                                        @foreach (var product in ViewBag.Service)
+                                                <td>
+                                                    <select class="product form-control pClassG Input-height" style="width: 200px;font-size:12px">
+                                                        <option value="0">Select Item..</option>
+                                                        @foreach (var product in ViewBag.Service)
                                                         {
-                                                        <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                            <option value="@product.ProductId" @(product.ProductId == item.ItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description" />
-                                </td>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description" />
+                                                </td>
 
-                                <td>
-                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
-                                </td>
+                                                <td>
+                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.Quantity" />
+                                                </td>
 
-                                <td>
-                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
-                                </td>
+                                                <td>
+                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.Rate" />
+                                                </td>
 
-                                <td>
-                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
+                                                <td>
+                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.Total" readonly="readonly" />
 
-                                </td>
+                                                </td>
 
-                                <td>
-                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                                <td>
+                                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
 
-                                        @foreach (var item1 in ViewBag.VatDrop)
+                                                        @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
+                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.Vat ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
-                                    </select>
+                                                    </select>
 
-                                </td>
+                                                </td>
 
-                                <td>
+                                                <td>
 
-                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
-                                </td>
+                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
+                                                </td>
 
-                                <td>
-                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
-                                </td>
+                                                <td>
+                                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
+                                                </td>
 
-                                <td>
-                                    <input type="hidden" id="InvoiceDetailId" value="@item.InvoiceDetailId" />
-                                </td>
-                            </tr>
+                                                <td>
+                                                    <input type="hidden" id="InvoiceDetailId" value="@item.InvoiceDetailId" />
+                                                </td>
+                                            </tr>
                                         }
 
 
@@ -389,7 +393,7 @@
 
                             <tr id="mainrow1">
                                 <td>
-                                    <input type="date" class="form-control Input-height MAterialDatepicker" />
+                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
                                 </td>
 
                                 <td>
@@ -487,13 +491,13 @@
                 </div>
 
             </div>
-            <div class="row">              
+            <div class="row">
                 <div class="col-12 b-r">
                     <div class="form-group">
                         <textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
                         <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>
                     </div>
-                </div>               
+                </div>
             </div>
         </div>
     </div>
@@ -521,7 +525,7 @@
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 <script src="~/CustomScript/CharacterCount.js"></script>
-<script>  
+<script>
 
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
@@ -1252,7 +1256,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    ServiceDate: $(this).find('.sdate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1286,7 +1290,7 @@
             CompanyId: $('#CompanyId').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
-
+       
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1299,8 +1303,11 @@
             formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
             formData.append('InvoiceDetailsTable[' + i + '][InvoiceDetailId]', list[i].InvoiceDetailId)
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
 
+
+        
 
         $.ajax({
             url: "/Invoice/SavePrintEdit",
@@ -1386,7 +1393,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    ServiceDate: $(this).find('.sdate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1433,6 +1440,7 @@
             formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
             formData.append('InvoiceDetailsTable[' + i + '][InvoiceDetailId]', list[i].InvoiceDetailId)
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
 
         $.ajax({
@@ -1509,7 +1517,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    ServiceDate: $(this).find('.sdate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1557,6 +1565,7 @@
             formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
             formData.append('InvoiceDetailsTable[' + i + '][InvoiceDetailId]', list[i].InvoiceDetailId)
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
 
         $.ajax({

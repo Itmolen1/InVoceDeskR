@@ -12,12 +12,16 @@ namespace InvoiceDiskLast.Models
         public int? PurchaseOrderID { get; set; }
         public string Purchase_ID { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> PurchaseDate { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> PurchaseDueDate { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
+        [DataType(DataType.Date)]
+        public Nullable<System.DateTime> PDueDate { get; set; }
 
         public string PurchaseRefNumber { get; set; }
         public Nullable<double> PurchaseSubTotal { get; set; }

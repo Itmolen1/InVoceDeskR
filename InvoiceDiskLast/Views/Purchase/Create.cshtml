@@ -6,6 +6,8 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
+<script src="~/CustomScript/DateTimeFormate.js"></script>
+
 
 
 <div class="row">
@@ -41,8 +43,10 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
-                            @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
+
+                            <input class="PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDate" id="PurchaseDate" />
+                               @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -62,10 +66,12 @@
                     <div class="row">
                         <div class="col-3 b-r">
                             Due Date:
-                        </div>
+                        </div>   
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new {@type="text", @style = "font-size:12px", @class = "PurchaseDueDate   form-control  Input-height", id = "PurchaseDueDate", title = "Due Date", required = "required" , @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.PurchaseDueDate, "", new { @class = "text-danger" })
+                            <input class="DueDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDueDate" id="DueDate" />
+
+                            @*@Html.EditorFor(model => model.PDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate  form-control  Input-height", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.PDueDate, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -588,9 +594,6 @@
 
     function calculateTotalGoods(currentRow) {
 
-        console.log(currentRow);
-
-
         Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -1078,7 +1081,6 @@
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
 
-
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1125,11 +1127,11 @@
         }
 
         var empObj = {
-            PurchaseId: $('#PurchaseId').val(),
+            PurchaseId: $('#PurchaseID').val(),
             PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseDate: $('.PurchaseDate').val(),
+            PDueDate: $('.DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1142,7 +1144,6 @@
 
         };
 
-    
 
 
         for (var key in empObj) {
@@ -1254,8 +1255,8 @@
             PurchaseId: $('#PurchaseID').val(),
             PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseDate: $('.PurchaseDate').val(),
+            PDueDate: $('.DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1372,12 +1373,13 @@
             $('#gtotal').text('');
         }
 
+
         var empObj = {
-            PurchaseId: $('#PurchaseId').val(),
+            PurchaseId: $('#PurchaseID').val(),
             PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseDate: $('.PurchaseDate').val(),
+            PDueDate: $('.DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1464,67 +1466,3 @@
 
 
 
-<script>
-    $(document).ready(function () {
-        $('.ServiceDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            datetime: new Date(),
-            dateFormat: 'dd/mm/yy',
-        }).datepicker("setDate", new Date());
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    $(document).ready(function () {
-        $('.PurchaseDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-        
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    
-
-    $(document).ready(function () {
-        $('.PurchaseDueDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-
-    $('body').on('focus', ".ss", function () {
-
-        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
-        $(this).datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-
-
-</script>
