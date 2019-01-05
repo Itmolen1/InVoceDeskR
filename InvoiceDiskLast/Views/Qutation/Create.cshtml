@@ -43,7 +43,15 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            <input class="QutationDate  Input-height form-control" autocomplete="off" value="@Model.QutationDate" id="QutationDate" />
+                            @{ 
+
+                                DateTime dt = new DateTime();
+
+                                dt = Convert.ToDateTime(Model.QutationDate);
+
+                            }
+
+                            <input class="QutationDate  Input-height form-control" autocomplete="off" value="@dt.ToShortDateString()" id="QutationDate" />
 
                             @*@Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control  Input-height", id = "QutationDate", @autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })*@
