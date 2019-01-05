@@ -132,10 +132,17 @@ namespace InvoiceDiskLast.Controllers
         {
             using (DBEntities entities = new DBEntities())
             {
-                qutationtable = entities.QutationTables.Add(qutationtable);
-                entities.SaveChanges();
+                try
+                {
+                    qutationtable = entities.QutationTables.Add(qutationtable);
+                    entities.SaveChanges();
 
-                return Ok(qutationtable);
+                    return Ok(qutationtable);
+                }
+                catch(Exception ex)
+                {
+                    return BadRequest();
+                }
 
             }
         }

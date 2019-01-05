@@ -414,12 +414,12 @@ namespace InvoiceDiskLast.Controllers
             {
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Client").Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Quotation").Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
+                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Quotation");
                     directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
                     _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
@@ -606,7 +606,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 mvcQutationModel.Qutation_ID = MVCQutationViewModel.Qutation_ID;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/" + mvcQutationModel.QutationID, mvcQutationModel).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIQutation/", mvcQutationModel).Result;
                 qutationTable = response.Content.ReadAsAsync<QutationTable>().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)

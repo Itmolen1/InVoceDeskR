@@ -937,20 +937,20 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
 
-        public ActionResult ViewDirecory(int Id, string DName, string Decription = "Invoice")
+        public ActionResult ViewDirecory(int Id, string DName)
         {
             string d = "";
             try
             {
                 List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
                 DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + Decription).Result;
+                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/Invoice").Result;
                 _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                 if (directory.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
-                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + Decription).Result;
+                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/Invoice").Result;
                     _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
                     d = _Directory.DirectoryPath.ToString();
@@ -998,7 +998,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
 
-            return View();
+            return View("~/Views/Purchase/ViewDirecory.cshtml");
         }
 
         [HttpPost]
@@ -1095,6 +1095,87 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-       
+        [HttpPost]
+        public ActionResult SaveEmailEdit(InvoiceViewModel invoiceViewModel)
+        {
+            InvoiceTable InvoiceTable;
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
+            try
+            {
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
+                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
+                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
+                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
+                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
+                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
+                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
+                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
+                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
+                mvcInvoiceModel.Status = "accepted";
+
+                if (mvcInvoiceModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat6 = vat61;
+                }
+
+                if (mvcInvoiceModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat21 = vat21;
+                }
+
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
+                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    if (invoiceViewModel.InvoiceDetailsTable != null)
+                    {
+
+                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                        {
+                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
+                            InvoiceDetails.Description = InvoiceDetailsList.Description;
+                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                            InvoiceDetails.Type = InvoiceDetailsList.Type;
+
+                            if (InvoiceDetails.InvoiceDetailId == 0)
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                            }
+                            else
+                            {
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                            }
+                        }
+                        return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                    }
+                }
+            }
+           catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+
+            return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+        }
+
     }
 }
