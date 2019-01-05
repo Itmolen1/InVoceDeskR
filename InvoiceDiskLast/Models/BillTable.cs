@@ -31,10 +31,12 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> ContactId { get; set; }
         public string Type { get; set; }
+        public Nullable<int> VenderId { get; set; }
     
         public virtual UserTable UserTable { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual ContactsTable ContactsTable { get; set; }
         public virtual UserTable UserTable1 { get; set; }
+        public virtual ContactsTable ContactsTable1 { get; set; }
     }
 }

@@ -87,7 +87,7 @@
           <Property Name="Status" Type="nvarchar" MaxLength="10" />
           <Property Name="UserId" Type="int" />
           <Property Name="CompanyId" Type="int" />
-          <Property Name="ContactId" Type="int" />
+          <Property Name="VenderId" Type="int" />
           <Property Name="Type" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="ComapnyInfo">
@@ -501,7 +501,7 @@
               <PropertyRef Name="ContactsId" />
             </Principal>
             <Dependent Role="BillTable">
-              <PropertyRef Name="ContactId" />
+              <PropertyRef Name="VenderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1092,6 +1092,10 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="BillTable" EntitySet="BillTables" />
           </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ContactsTable1" Association="APIcompanyModel.FK_BillTable_ContactsTable1">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1226,6 +1230,7 @@
           <Property Name="PaymentTerm" Type="Int32" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="ContactsTable" ToRole="BillTable" />
+          <NavigationProperty Name="BillTables1" Relationship="APIcompanyModel.FK_BillTable_ContactsTable1" FromRole="ContactsTable" ToRole="BillTable" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1838,6 +1843,8 @@
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="BillTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="BillTable" ToRole="ContactsTable" />
           <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="BillTable" ToRole="UserTable" />
+          <Property Name="VenderId" Type="Int32" />
+          <NavigationProperty Name="ContactsTable1" Relationship="APIcompanyModel.FK_BillTable_ContactsTable1" FromRole="BillTable" ToRole="ContactsTable" />
         </EntityType>
         <Association Name="BillTable_UserTable1">
           <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
@@ -1884,6 +1891,18 @@
             </Principal>
             <Dependent Role="BillTable">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ContactsTable1">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="VenderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2315,8 +2334,8 @@
           <EntitySetMapping Name="BillTables">
             <EntityTypeMapping TypeName="APIcompanyModel.BillTable">
               <MappingFragment StoreEntitySet="BillTable">
+                <ScalarProperty Name="VenderId" ColumnName="VenderId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />

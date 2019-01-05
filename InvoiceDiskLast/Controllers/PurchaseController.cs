@@ -1911,6 +1911,8 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.CompanyId = purchaseViewModel.CompanyId;
                 purchasemodel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
+                //purchasemodel.pur = purchaseViewModel.PurchaseId.ToString();
+
                 purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
@@ -2153,7 +2155,6 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;
                 purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
-
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "open";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
@@ -2212,68 +2213,68 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", path = pdfname, PurchaseOrderId = purchasemodel.PurchaseOrderID } };
         }
 
-        public ActionResult ViewDirecory(int Id, string DName)
-        {
-            string d = "";
-            try
-            {
-                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
-                DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
-                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+        //public ActionResult ViewDirecory(int Id, string DName)
+        //{
+        //    string d = "";
+        //    try
+        //    {
+        //        List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
+        //        DirectoryViewModel _Directory = new DirectoryViewModel();
+        //        HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
+        //        _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
-                if (directory.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Purchase");
-                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
-                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
+        //        if (directory.StatusCode != System.Net.HttpStatusCode.OK)
+        //        {
+        //            CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Purchase");
+        //            directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
+        //            _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
 
-                    d = _Directory.DirectoryPath.ToString();
-                    string F = _Directory.DirectoryPath.ToString();
-                    d = d.Substring(17);
-                    ViewBag.Name = d.Replace("/", "");
+        //            d = _Directory.DirectoryPath.ToString();
+        //            string F = _Directory.DirectoryPath.ToString();
+        //            d = d.Substring(17);
+        //            ViewBag.Name = d.Replace("/", "");
 
-                    if (_Directory.DirectoryPath != null)
-                    {
-                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-                        FileInfo[] info = dir.GetFiles("*.*");
+        //            if (_Directory.DirectoryPath != null)
+        //            {
+        //                DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+        //                FileInfo[] info = dir.GetFiles("*.*");
 
-                        foreach (FileInfo f in info)
-                        {
-                            string Name = f.Name;
-                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-                        }
-                        ViewBag.TreeView = _DirectoryList;
-                    }
-                }
-                else
-                {
-                    d = _Directory.DirectoryPath.ToString();
-                    string F = _Directory.DirectoryPath.ToString();
-                    d = d.Substring(17);
-                    ViewBag.Name = d.Replace("/", "");
+        //                foreach (FileInfo f in info)
+        //                {
+        //                    string Name = f.Name;
+        //                    _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+        //                }
+        //                ViewBag.TreeView = _DirectoryList;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            d = _Directory.DirectoryPath.ToString();
+        //            string F = _Directory.DirectoryPath.ToString();
+        //            d = d.Substring(17);
+        //            ViewBag.Name = d.Replace("/", "");
 
-                    if (_Directory.DirectoryPath != null)
-                    {
-                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-                        FileInfo[] info = dir.GetFiles("*.*");
+        //            if (_Directory.DirectoryPath != null)
+        //            {
+        //                DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
+        //                FileInfo[] info = dir.GetFiles("*.*");
 
-                        foreach (FileInfo f in info)
-                        {
-                            string Name = f.Name;
-                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-                        }
-                        ViewBag.TreeView = _DirectoryList;
-                    }
-                }
-            }
-            catch (Exception)
-            {
+        //                foreach (FileInfo f in info)
+        //                {
+        //                    string Name = f.Name;
+        //                    _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
+        //                }
+        //                ViewBag.TreeView = _DirectoryList;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
+        //        throw;
+        //    }
 
-            return View();
-        }
+        //    return View();
+        //}
     }
 }
