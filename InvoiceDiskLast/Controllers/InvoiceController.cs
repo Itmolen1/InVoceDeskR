@@ -123,6 +123,7 @@ namespace InvoiceDiskLast.Controllers
 
                 invoioceViewModel.ContactId = id;
                 invoioceViewModel.CompanyId = CompanyID;
+                invoioceViewModel.InvoiceDescription = "Graag betalen voor de uiterste betaaldatum onder vermelding van het factuurnummer";
                 return View(invoioceViewModel);
             }
             catch (Exception ex)
@@ -143,7 +144,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
                 mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
-                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.InvoiceID = 0;
                 mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
                 mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
                 mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
@@ -155,6 +156,11 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
                 mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
                 mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
+
+                int count = mvcInvoiceModel.InvoiceDescription.Length;
+
+
 
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {
@@ -167,8 +173,7 @@ namespace InvoiceDiskLast.Controllers
                     double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
                     mvcInvoiceModel.TotalVat21 = vat21;
                 }
-
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
                 InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
 
@@ -247,6 +252,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
                 mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
                 mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
 
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {
@@ -403,7 +409,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
                 mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
                 mvcInvoiceModel.Status = "accepted";
-
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {
                     double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
@@ -1119,6 +1125,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
                 mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
                 mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
 
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {
@@ -1201,6 +1208,8 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
                 mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
                 mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
+
 
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {
