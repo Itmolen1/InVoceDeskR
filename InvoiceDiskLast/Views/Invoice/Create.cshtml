@@ -34,7 +34,7 @@
                             @Contectdatas.PostalCode,@Contectdatas.City
                         </div>
                     </div>
-                    
+                   
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
                             Invoice Date:
@@ -227,8 +227,8 @@
                         <tbody class="tbodyService">
                             <tr id="mainrow1">
                                 <td>
-
-                                    @Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "InvoiceDate", @value = DateTime.Now.ToShortDateString() } })
+                                    <input type="text" id="InvoiceDate" class="form-control" />
+                                    @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "InvoiceDate", @value = DateTime.Now.ToShortDateString() } })*@
 
                                 </td>
                                 <td>
@@ -317,7 +317,7 @@
                     </div> 
                                 
                 </div>
-              
+              <input type="text" id="txtDate" />
             </div>
             <div class="row">
                 <div class="col-12 b-r">
@@ -356,6 +356,13 @@
 <script src="~/CustomScript/CharacterCount.js"></script>
 
 <script>
+    $(document).ready(function () {
+
+        $('#txtDate').datepicker();
+        $('#InvoiceDate').datepicker();
+    });
+
+    
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
         LoadProductS();
@@ -1093,7 +1100,7 @@
             
             Invoice_ID: $('#Invoice_ID').val(),
             RefNumber: $('#RefNumber').val(),
-            InvoiceDate: $('#InvoiceDate').val(),
+            InvoiceDate: $('#InvoiceDate          ').val(),
             InvoiceDueDate: $('#InvoiceDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
