@@ -1,4 +1,6 @@
-﻿using InvoiceDiskLast.Models;
+﻿using InvoiceDiskLast.MISC;
+using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +9,18 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+    [RouteNotFoundAttribute]
     public class CommonController : Controller
     {
+        private Ilog _iLog;
         // GET: Common
         public ActionResult Index()
         {
             return View();
+        }
+        public CommonController()
+        {
+            _iLog = Log.GetInstance;
         }
 
 

@@ -14,6 +14,7 @@
     var InvoiceModel = ViewBag.InvoiceData;  
 }
 
+@*<label></label>*@
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -500,7 +501,7 @@
                 <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
             </div>
             <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
-            <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
+            <button id="SavePrint" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
         </div>
     </div>
     <div class="col-2 b-r"></div>
@@ -1196,7 +1197,7 @@
             CalculateVateTotal();
         });
 
-        $('#saveprintandsendtoyourselfsave').click(function () {
+        $('#SavePrint').click(function () {
 
             $(this).val("please wait...");
 
@@ -1209,7 +1210,9 @@
             }
 
             $('#orderdetailsitems1 .tbodyGood tr').each(function () {
-                CurrentRow = $(this).closest("tr");
+                debugger;
+
+                var CurrentRow = $(this).closest("tr");
                 if (ValidateRow(CurrentRow)) {
                     orderItem = {
                         ItemId: parseInt($(this).find('.product').val()),
@@ -1219,16 +1222,16 @@
                         Total: parseFloat($(this).find('.FTotalG').val()),
                         Vat: parseFloat($(this).find('.VATG').val()),
                         RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                        QutationDetailId: $(this).find('.QutationDetailId').val(),
-                        Qutation_ID: $(this).find('.Qutation_ID').val()
+                        InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
                     }
                     list.push(orderItem);
                 }
             });
 
             $('#QutationServiceDetail .tbodyService tr').each(function () {
+                debugger;
 
-                CurrentRow = $(this).closest("tr");
+                var CurrentRow = $(this).closest("tr");
                 if (ValidateRow(CurrentRow)) {
                     orderItem = {
                         ItemId: $(this).find('.product').val(),
@@ -1240,12 +1243,12 @@
                         ServiceDate: $(this).find('.ServiceDate').val(),
                         Vat: parseFloat($(this).find('.VATG').val()),
                         RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                        QutationDetailId: $(this).find('.QutationDetailId').val(),
-                        Qutation_ID: $(this).find('#Qutation_ID').val()
+                        InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
                     }
                     list.push(orderItem);
                 }
             });
+
 
             if (list.length == 0) {
                 $('#BTW6').text('');
@@ -1254,47 +1257,41 @@
                 $('#gtotal').text('');
             }
 
-
             var empObj = {
-                Qutation_ID: $('#Qutation_ID').val(),
+                Invoice_ID: $('#Invoice_ID').val(),
                 RefNumber: $('#RefNumber').val(),
-                QutationDate: $('#QutationDate').val(),
-                DueDate: $('#DueDate').val(),
+                InvoiceDate: $('#InvoiceDate').val(),
+                InvoiceDueDate: $('#InvoiceDueDate').val(),
                 SubTotal: $('#SubTotal').text(),
                 DiscountAmount: $('#DiscountAmount').val(),
-                QutationID: $('#QutationID').val(),
+                InvoiceID: $('#InvoiceID').val(),
                 TotalVat6: $('#BTW6').text(),
                 TotalVat21: $('#BTW21').text(),
                 Total: $('#SubTotal').text(),
                 TotalAmount: $('#gtotal').text(),
                 CustomerNote: $('#CustomerNote').val(),
-                ConatctId: $('#ConatctId').val(),
+                ContactId: $('#ContactId').val(),
                 CompanyId: $('#CompanyId').val(),
+
             };
-
-
-
 
             for (var key in empObj) {
                 formData.append(key, empObj[key]);
             }
             for (var i = 0; i < list.length; i++) {
-                formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
-                formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
-                formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
-                formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-                formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-                formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-                formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
-                formData.append('QutationDetailslist1[' + i + '][QutationDetailId]', list[i].QutationDetailId)
-                formData.append('QutationDetailslist1[' + i + '][Qutation_ID]', list[i].Qutation_ID)
-                formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
-
+                formData.append('InvoiceDetailsTable[' + i + '][ItemId]', list[i].ItemId)
+                formData.append('InvoiceDetailsTable[' + i + '][Quantity]', list[i].Quantity)
+                formData.append('InvoiceDetailsTable[' + i + '][Rate]', list[i].Rate)
+                formData.append('InvoiceDetailsTable[' + i + '][Total]', list[i].Total)
+                formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
+                formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+                formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
+                formData.append('InvoiceDetailsTable[' + i + '][InvoiceDetailId]', list[i].InvoiceDetailId)
             }
 
 
             $.ajax({
-                url: "/Qutation/SaveEmailPrintEdit",
+                url: "/Invoice/SavePrintEdit",
                 type: "POST",
                 data: formData,
                 dataType: 'json',
@@ -1302,28 +1299,34 @@
                 processData: false,
                 success: function (result) {
 
-                    $("#saveprintandsendtoyourselfsave").val('Save + print and send and send ot yourself');
+                    $("#SavePrint").val('Save + print and send and send ot yourself');
 
-                    QutationIdd = result.QutationId;
-                    if (result.Status == "Success") {
-                        QutationIdd = result.QutationId;
+                    if (result.Status == "Success") {                       
                         localStorage.setItem('path', result.path);
                         swal({
-                            title: 'Qutation!',
-                            text: 'Qutation save successfully!',
+                            title: 'Invoice!',
+                            text: 'Invoice  updated successfully!',
                             type: 'success'
                         },
                         function (isconform) {
-                            window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
+                            window.location.href = "/Invoice/ViewInvoice?id=" + result.id;
                         });
                     }
-                    else if (result.Status == "Fail") {
-
+                    else if (result.Status == "Fail")
+                    {
+                        swal({
+                            title: 'Failed!',
+                            text: 'Invoice  updated Fiald!',
+                            type: 'Faild'
+                        });
                     }
                 },
-
                 error: function (errormessage) {
-
+                    swal({
+                        title: 'Failed!',
+                        text: 'Invoice  updated Fiald!',
+                        type: 'Faild'
+                    });
                 }
 
             });
@@ -1582,6 +1585,7 @@
             });
 
         });
+
         var QID = 0;
 
         $(document).on('click', '#btnRemoveGood', function () {
