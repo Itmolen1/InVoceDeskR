@@ -35,8 +35,9 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        [Route("Api/AddBill")]
         [ResponseType(typeof(BillTable))]
-        public IHttpActionResult PostPurchase([FromBody] BillTable billtable)
+        public IHttpActionResult PostBillDetail([FromBody] BillTable billtable)
         {
             using (DBEntities entities = new DBEntities())
             {

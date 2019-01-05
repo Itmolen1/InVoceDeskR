@@ -1072,8 +1072,7 @@
                 list.push(orderItem);
             }
         });
-        console.log(list);
-        return true;
+       
 
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -1083,21 +1082,19 @@
         }
 
         var empObj = {
-            PurchaseId: $('#Bill_ID').val(),
-            PurchaseID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
-            PurchaseSubTotal: $('#SubTotal').text(),
+            Bill_ID: $('#Bill_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            BillDate: $('#BillDate').val(),
+            BillDueDate: $('#BillDueDate').val(),
+            SubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            PurchaseOrderID: $('#PurchaseOrderID').val(),
-            PurchaseTotoalAmount: $('#gtotal').text(),
-            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-            Vat6: $('#BTW6').text(),
-            Vat21: $('#BTW21').text(),
-            VenderId: $('#VenderId').val(),
+            //PurchaseOrderID: $('#PurchaseOrderID').val(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#PurchaseVenderNote').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            ContactId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
-
         };
 
 
@@ -1119,7 +1116,7 @@
 
 
         $.ajax({
-            url: "/Purchase/SaveDraft",
+            url: "/Bills/SaveDraft",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1208,19 +1205,18 @@
 
 
         var empObj = {
-            PurchaseId: $('#PurchaseID').val(),
-            PurchaseID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
-            PurchaseSubTotal: $('#SubTotal').text(),
+            Bill_ID: $('#Bill_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            BillDate: $('#BillDate').val(),
+            BillDueDate: $('#BillDueDate').val(),
+            SubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            PurchaseOrderID: $('#PurchaseOrderID').val(),
-            PurchaseTotoalAmount: $('#gtotal').text(),
-            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-            Vat6: $('#BTW6').text(),
-            Vat21: $('#BTW21').text(),
-            VenderId: $('#VenderId').val(),
+            //PurchaseOrderID: $('#PurchaseOrderID').val(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#PurchaseVenderNote').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            ContactId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
         };
         for (var key in empObj) {

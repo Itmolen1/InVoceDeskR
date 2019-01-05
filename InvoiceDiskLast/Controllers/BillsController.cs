@@ -68,15 +68,13 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult SaveDraft(BillDetailViewModel billDetailViewModel)
         {
             BillTable billtable = new BillTable();
+            BillDetailViewModel billviewModel = new BillDetailViewModel();
             try
             {
-                BillDetailViewModel billviewModel = new BillDetailViewModel();
-
                 billtable.CompanyId = billDetailViewModel.CompanyId;
                 billtable.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 billtable.Bill_ID = billDetailViewModel.Bill_ID.ToString();
-                billtable.ContactId = billDetailViewModel.ContactId;
-                //billtable.PurchaseOrderID = (Convert.ToInt32(billDetailViewModel.PurchaseOrderID != null ? billDetailViewModel.PurchaseOrderID : 0));
+                //billtable.ContactId = billDetailViewModel;
                 billtable.RefNumber = billDetailViewModel.RefNumber;
                 billtable.BillDate = (DateTime)billDetailViewModel.BillDate;
                 billtable.BillDueDate = billDetailViewModel.BillDueDate;
@@ -89,18 +87,19 @@ namespace InvoiceDiskLast.Controllers
                 billtable.Status = "open";
                 billtable.Type = StatusEnum.Goods.ToString();
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", billtable).Result;
+                // bill Api
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBill", billtable).Result;
                 BillTable billviewmodel = response.Content.ReadAsAsync<BillTable>().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     billviewModel.BilID = billviewmodel.BilID;
-
                     if (billDetailViewModel.BillDetail != null)
                     {
                         foreach (BillDetailTable item in billDetailViewModel.BillDetail)
                         {
                             BillDetailTable billdetailtable = new BillDetailTable();
+
                             billdetailtable.BillID = billviewmodel.BilID;
                             billdetailtable.ItemId = item.ItemId;
                             billdetailtable.Description = item.Description;
@@ -110,17 +109,16 @@ namespace InvoiceDiskLast.Controllers
                             billdetailtable.Type = item.Type;
                             billdetailtable.RowSubTotal = item.RowSubTotal;
                             billdetailtable.Vat = item.Vat;
-                           //billdetailtable.PurchaseId = purchaseViewModel.PurchaseOrderID;
                             billdetailtable.ServiceDate = item.ServiceDate;
-                            //billdetailtable.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", billdetailtable).Result;
+                            // APIBill   
+                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
                         }
                     }
                 }
 
                 if (billDetailViewModel.file23[0] != null)
                 {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(billDetailViewModel.BilID, "purchase", billDetailViewModel.file23, "Bill");
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(billDetailViewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
                 }
             }
             catch (Exception ex)
@@ -129,7 +127,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
 
-            return new JsonResult { Data = new { Status = "Success", purchaseId = purchaseViewModel.PurchaseOrderID } };
+            return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
         }
 
 

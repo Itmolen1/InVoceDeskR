@@ -50,7 +50,7 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control PurchaseDate", id = "PurchaseDate" } })
+                            @Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control PurchaseDate", id = "PurchaseDate" } })
                             @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })
 
 
@@ -73,7 +73,7 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control PurchaseDueDate Input-height", id = "PurchaseDueDate", title = "Due Date", required = "required" } })
+                            @Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control PurchaseDueDate Input-height", id = "PurchaseDueDate", title = "Due Date", required = "required" } })
                             @Html.ValidationMessageFor(model => model.PurchaseDueDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-3 b-r"></div>
@@ -335,10 +335,10 @@
                                                         dt = Convert.ToDateTime(item.ServiceDate);
 
                                                     }
-                                                                                                   
+
                                                     <input class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" />
-                                                    
-                                                   
+
+
                                                 </td>
 
                                                 <td>
@@ -1252,7 +1252,7 @@
 
         var empObj = {
             Purchase_ID: $('#PurchaseID').val(),
-           
+            PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
             PurchaseDate: $('#PurchaseDate').val(),
             PurchaseDueDate: $('#PurchaseDueDate').val(),
@@ -1824,71 +1824,71 @@
 
 
 
-        $('body').on('focus', ".ss", function () {
+    $('body').on('focus', ".ss", function () {
 
-            $(this).closest('tr').find(':input').removeClass('hasDatepicker');
-            $(this).datepicker({
-               changeMonth: true,
-                changeYear: true,
-                gotoCurrent: true,
+        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
+        $(this).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
 
-                dateFormat: 'dd/mm/yy',
-            });
-            if ($(this).hasClass('birthdate')) {
-                $(this).datepicker('option', 'yearRange', '1980:c');
-                $(this).datepicker('option', 'defaultDate', '-10y');
-            }
+            dateFormat: 'dd/mm/yy',
         });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
 
 
-          $(document).ready(function () {
-            $('#mainrow1  .ServiceDate').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                gotoCurrent: true,
-                datetime: new Date(),
-                dateFormat: 'dd/mm/yy',
-            }).datepicker("setDate", new Date());
-            if ($(this).hasClass('birthdate')) {
-                $(this).datepicker('option', 'yearRange', '1980:c');
-                $(this).datepicker('option', 'defaultDate', '-10y');
-            }
+    $(document).ready(function () {
+        $('#mainrow1  .ServiceDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            datetime: new Date(),
+            dateFormat: 'dd/mm/yy',
+        }).datepicker("setDate", new Date());
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+
+
+
+
+
+    $(document).ready(function () {
+        $('.PurchaseDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+
+            dateFormat: 'dd/mm/yy',
         });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
 
 
 
+    $(document).ready(function () {
+        $('.PurchaseDueDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
 
-
-
-
-          $(document).ready(function () {
-              $('.PurchaseDate').datepicker({
-                  changeMonth: true,
-                  changeYear: true,
-                  gotoCurrent: true,
-
-                  dateFormat: 'dd/mm/yy',
-              });
-              if ($(this).hasClass('birthdate')) {
-                  $(this).datepicker('option', 'yearRange', '1980:c');
-                  $(this).datepicker('option', 'defaultDate', '-10y');
-              }
-          });
-
-
-
-          $(document).ready(function () {
-              $('.PurchaseDueDate').datepicker({
-                  changeMonth: true,
-                  changeYear: true,
-                  gotoCurrent: true,
-
-                  dateFormat: 'dd/mm/yy',
-              });
-              if ($(this).hasClass('birthdate')) {
-                  $(this).datepicker('option', 'yearRange', '1980:c');
-                  $(this).datepicker('option', 'defaultDate', '-10y');
-              }
-          });
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
 
 </script>

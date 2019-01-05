@@ -14,19 +14,18 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
 
         // POST: api/APIQutationDetail
+        [Route("Api/AddBillDetail")]
         [ResponseType(typeof(BillDetailTable))]
-        public IHttpActionResult PostPurchaseDetailsTable(BillDetailTable billdetailmodel)
+        public IHttpActionResult PostBillDetail(BillDetailTable billdetailmodel)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                  return BadRequest(ModelState);
+                    return BadRequest(ModelState);
                 }
-
                 db.BillDetailTables.Add(billdetailmodel);
                 db.SaveChanges();
-
                 return Ok();
             }
             catch (Exception ex)
