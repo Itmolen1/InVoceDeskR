@@ -85,10 +85,14 @@
                         </div>
                         <div class="col-6 b-r">
 
+                            @{
+                                DateTime dt33 = new DateTime();
+                                dt33 = Convert.ToDateTime(Model.DueDate);
+                            }
 
-                            @*<input type="text" class="DueDate form-control Input-height" id="DueDate" autocomplete="off" value="@Model.DueDate" />*@
-                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                           <input type="text" class="DueDate form-control Input-height" id="DueDate" autocomplete="off" value="@dt33.ToShortDateString()" />
+                            @*@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })*@
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -1337,7 +1341,7 @@
             $('#gtotal').text('');
             $('#gtotal').text('');
         }
-     
+
 
         var empObj = {
             Qutation_ID: $('#Qutation_ID').val(),
@@ -1615,7 +1619,7 @@
             Qutation_ID: $('#Qutation_ID').val(),
             RefNumber: $('#RefNumber').val(),
             QutationDate: $('#QutationDate').val(),
-            DueDate: $('#DueDate').val(),
+            DueDate: $('.DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
             QutationID: $('#QutationID').val(),
@@ -1631,7 +1635,7 @@
 
 
 
-       
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1941,7 +1945,7 @@
                 changeMonth: true,
                 changeYear: true,
                 gotoCurrent: true,
-                dateFormat: 'dd/mm/yy',           
+                dateFormat: 'dd/mm/yy',
             });
                 if ($(this).hasClass('birthdate')) {
                     $(this).datepicker('option', 'yearRange', '1980:c');
