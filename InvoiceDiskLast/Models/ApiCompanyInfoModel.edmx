@@ -228,6 +228,7 @@
           <Property Name="CompanyId" Type="int" />
           <Property Name="ContactId" Type="int" />
           <Property Name="Type" Type="nvarchar" MaxLength="10" />
+          <Property Name="InvoiceDescription" Type="nvarchar" MaxLength="160" />
         </EntityType>
         <EntityType Name="OrderStatusTable">
           <Key>
@@ -938,8 +939,8 @@
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationOrderStatusTable" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTransictionTable" />
           <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
-          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="InvoiceTable" />
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="BillTable" />
+          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="InvoiceTable" />
         </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
@@ -1052,6 +1053,25 @@
             <End Role="ProductTable" EntitySet="ProductTables" />
             <End Role="InvoiceDetailsTable" EntitySet="InvoiceDetailsTables" />
           </AssociationSet>
+          <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
+          <EntitySet Name="BillDetailTables" EntityType="APIcompanyModel.BillDetailTable" />
+          <EntitySet Name="BillTables" EntityType="APIcompanyModel.BillTable" />
+          <AssociationSet Name="BillTable_UserTable1" Association="APIcompanyModel.BillTable_UserTable1">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="APIcompanyModel.FK_BillTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ContactsTable" Association="APIcompanyModel.FK_BillTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_UserTable" Association="APIcompanyModel.FK_BillTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
           <EntitySet Name="InvoiceTables" EntityType="APIcompanyModel.InvoiceTable" />
           <AssociationSet Name="FK_InvoiceTable_ComapnyInfo" Association="APIcompanyModel.FK_InvoiceTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
@@ -1072,25 +1092,6 @@
           <AssociationSet Name="FK_InvoiceTable_UserTable1" Association="APIcompanyModel.FK_InvoiceTable_UserTable1">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
-          </AssociationSet>
-          <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
-          <EntitySet Name="BillDetailTables" EntityType="APIcompanyModel.BillDetailTable" />
-          <EntitySet Name="BillTables" EntityType="APIcompanyModel.BillTable" />
-          <AssociationSet Name="BillTable_UserTable1" Association="APIcompanyModel.BillTable_UserTable1">
-            <End Role="UserTable" EntitySet="UserTables" />
-            <End Role="BillTable" EntitySet="BillTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="APIcompanyModel.FK_BillTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="BillTable" EntitySet="BillTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BillTable_ContactsTable" Association="APIcompanyModel.FK_BillTable_ContactsTable">
-            <End Role="ContactsTable" EntitySet="ContactsTables" />
-            <End Role="BillTable" EntitySet="BillTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BillTable_UserTable" Association="APIcompanyModel.FK_BillTable_UserTable">
-            <End Role="UserTable" EntitySet="UserTables" />
-            <End Role="BillTable" EntitySet="BillTables" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
@@ -1224,8 +1225,8 @@
           <Property Name="Remarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
           <Property Name="PaymentTerm" Type="Int32" />
-          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="ContactsTable" ToRole="BillTable" />
+          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
           </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1634,10 +1635,10 @@
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
-          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="UserTable" ToRole="InvoiceTable" />
-          <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="UserTable" ToRole="BillTable" />
           <NavigationProperty Name="BillTables1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="UserTable" ToRole="BillTable" />
+          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="UserTable" ToRole="InvoiceTable" />
+          <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
           </EntityType>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1697,93 +1698,6 @@
             </Principal>
             <Dependent Role="InvoiceDetailsTable">
               <PropertyRef Name="ItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="InvoiceTable">
-          <Key>
-            <PropertyRef Name="InvoiceID" />
-          </Key>
-          <Property Name="InvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Invoice_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="QutationId" Type="Int32" />
-          <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
-          <Property Name="InvoiceDueDate" Type="DateTime" Precision="0" />
-          <Property Name="SubTotal" Type="Double" />
-          <Property Name="TotalVat6" Type="Double" />
-          <Property Name="TotalVat21" Type="Double" />
-          <Property Name="DiscountAmount" Type="Double" />
-          <Property Name="TotalAmount" Type="Double" />
-          <Property Name="CustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="ContactId" Type="Int32" />
-          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="InvoiceTable" ToRole="ComapnyInfo" />
-          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="InvoiceTable" ToRole="ContactsTable" />
-          <NavigationProperty Name="InvoiceDetailsTables" Relationship="APIcompanyModel.FK_InvoiceDetailsTable_InvoiceTable" FromRole="InvoiceTable" ToRole="InvoiceDetailsTable" />
-          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="InvoiceTable" ToRole="UserTable" />
-          <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="InvoiceTable" ToRole="UserTable" />
-        </EntityType>
-        <Association Name="FK_InvoiceTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="InvoiceTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InvoiceTable_ContactsTable">
-          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContactsTable">
-              <PropertyRef Name="ContactsId" />
-            </Principal>
-            <Dependent Role="InvoiceTable">
-              <PropertyRef Name="ContactId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InvoiceDetailsTable_InvoiceTable">
-          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.InvoiceDetailsTable" Role="InvoiceDetailsTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="InvoiceTable">
-              <PropertyRef Name="InvoiceID" />
-            </Principal>
-            <Dependent Role="InvoiceDetailsTable">
-              <PropertyRef Name="InvoiceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InvoiceTable_UserTable">
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="InvoiceTable">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_InvoiceTable_UserTable1">
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="InvoiceTable">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1883,6 +1797,94 @@
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="BillTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InvoiceTable">
+          <Key>
+            <PropertyRef Name="InvoiceID" />
+          </Key>
+          <Property Name="InvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Invoice_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QutationId" Type="Int32" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+          <Property Name="InvoiceDueDate" Type="DateTime" Precision="0" />
+          <Property Name="SubTotal" Type="Double" />
+          <Property Name="TotalVat6" Type="Double" />
+          <Property Name="TotalVat21" Type="Double" />
+          <Property Name="DiscountAmount" Type="Double" />
+          <Property Name="TotalAmount" Type="Double" />
+          <Property Name="CustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="ContactId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceDescription" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="InvoiceTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="InvoiceTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="InvoiceDetailsTables" Relationship="APIcompanyModel.FK_InvoiceDetailsTable_InvoiceTable" FromRole="InvoiceTable" ToRole="InvoiceDetailsTable" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="InvoiceTable" ToRole="UserTable" />
+          <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="InvoiceTable" ToRole="UserTable" />
+        </EntityType>
+        <Association Name="FK_InvoiceTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceDetailsTable_InvoiceTable">
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceDetailsTable" Role="InvoiceDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InvoiceTable">
+              <PropertyRef Name="InvoiceID" />
+            </Principal>
+            <Dependent Role="InvoiceDetailsTable">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_UserTable1">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2261,29 +2263,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="InvoiceTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.InvoiceTable">
-              <MappingFragment StoreEntitySet="InvoiceTable">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
-                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
-                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
-                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
-                <ScalarProperty Name="InvoiceDueDate" ColumnName="InvoiceDueDate" />
-                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
-                <ScalarProperty Name="QutationId" ColumnName="QutationId" />
-                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
-                <ScalarProperty Name="Invoice_ID" ColumnName="Invoice_ID" />
-                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DirectoryTables">
             <EntityTypeMapping TypeName="APIcompanyModel.DirectoryTable">
               <MappingFragment StoreEntitySet="DirectoryTable">
@@ -2332,6 +2311,30 @@
                 <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
                 <ScalarProperty Name="Bill_ID" ColumnName="Bill_ID" />
                 <ScalarProperty Name="BilID" ColumnName="BilID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.InvoiceTable">
+              <MappingFragment StoreEntitySet="InvoiceTable">
+                <ScalarProperty Name="InvoiceDescription" ColumnName="InvoiceDescription" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="InvoiceDueDate" ColumnName="InvoiceDueDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="QutationId" ColumnName="QutationId" />
+                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+                <ScalarProperty Name="Invoice_ID" ColumnName="Invoice_ID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

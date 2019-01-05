@@ -32,7 +32,8 @@ namespace InvoiceDiskLast.Controllers
                 TotalAmount = c.TotalAmount,
                 Status = (c.Status).Trim(),
                 UserName = (c.UserTable.UserFname + " " + c.UserTable.UserLname != "" ? c.UserTable.UserFname + " " + c.UserTable.UserLname : c.UserTable.Username),
-                CustomerName = c.ContactsTable.ContactName
+                CustomerName = c.ContactsTable.ContactName,
+                InvoiceDescription = c.InvoiceDescription
 
             }).ToList();
 
@@ -64,11 +65,14 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult PostInvoice([FromBody] InvoiceTable invoiceTable)
         {
+            
             using (DBEntities entities = new DBEntities())
             {
-               
+                
+
                 try
                 {
+                    
                     invoiceTable = entities.InvoiceTables.Add(invoiceTable);
 
                     entities.SaveChanges();
@@ -108,6 +112,7 @@ namespace InvoiceDiskLast.Controllers
                 CompanyId = c.CompanyId,
                 ContactId = c.ContactId,
                 Type = c.Type,
+                InvoiceDescription = c.InvoiceDescription
 
             }).FirstOrDefault();
 
