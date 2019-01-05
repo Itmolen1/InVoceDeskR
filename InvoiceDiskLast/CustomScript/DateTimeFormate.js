@@ -13,6 +13,23 @@
         }
     });
 
+
+ $(document).ready(function () {
+        $('.sdate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            datetime: new Date(),
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+
 $(document).ready(function () {
     $('.PurchaseDate').datepicker({
         changeMonth: true,

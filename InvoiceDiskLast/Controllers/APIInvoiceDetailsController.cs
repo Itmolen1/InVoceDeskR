@@ -43,7 +43,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [Route("api/GetInvoiceDetails/{id:int}")]
-        [ResponseType(typeof(List<MVCQutationViewModel>))]
+        [ResponseType(typeof(List<InvoiceViewModel>))]
         public IHttpActionResult GetInvoiceDetailsTable(int id)
         {
             List<InvoiceViewModel> InvoiceDetaislList = new List<InvoiceViewModel>();
@@ -57,6 +57,7 @@ namespace InvoiceDiskLast.Controllers
                         ItemId = pd.ItemId,
                         InvoiceID = pd.InvoiceId,
                         Rate = pd.Rate,
+                        ServiceDate=pd.ServiceDate,
                         Quantity = pd.Quantity,
                         Vat = pd.Vat,
                         Total = pd.Total,

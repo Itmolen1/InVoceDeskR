@@ -43,8 +43,10 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control  Input-height", id = "QutationDate", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })
+                            <input class="QutationDate  Input-height form-control" autocomplete="off" value="@Model.QutationDate" id="QutationDate" />
+
+                            @*@Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control  Input-height", id = "QutationDate", @autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })*@
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -1363,7 +1365,7 @@
         var empObj = {
             Qutation_ID: $('#Qutation_ID').val(),
             RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
+            QutationDate: $('.QutationDate').val(),
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
@@ -1462,7 +1464,7 @@
             changeYear: true,
             gotoCurrent: true,
             datetime: new Date(),
-            dateFormat: 'dd/mm/yy',
+            //dateFormat: 'dd/mm/yy',
         }).datepicker("setDate", new Date());
         if ($(this).hasClass('birthdate')) {
             $(this).datepicker('option', 'yearRange', '1980:c');
@@ -1478,7 +1480,7 @@
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
-            dateFormat: 'dd/mm/yy',
+            //dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
             $(this).datepicker('option', 'yearRange', '1980:c');
@@ -1492,7 +1494,7 @@
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
-            dateFormat: 'dd/mm/yy',
+            //dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
             $(this).datepicker('option', 'yearRange', '1980:c');
@@ -1509,7 +1511,7 @@
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
-            dateFormat: 'dd/mm/yy',
+            //dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
             $(this).datepicker('option', 'yearRange', '1980:c');
