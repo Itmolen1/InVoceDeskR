@@ -1,5 +1,4 @@
-﻿
-@model InvoiceDiskLast.Models.BillDetailViewModel
+﻿@model InvoiceDiskLast.Models.MvcPurchaseViewModel
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,6 +6,8 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
+<script src="~/CustomScript/DateTimeFormate.js"></script>
+
 
 
 <div class="row">
@@ -15,47 +16,49 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            <input type="hidden" id="PurchaseOrderID" />
-            @*<input type="hidden" class="Bill_ID" value="@Model.Bill_ID" />*@
-            <input type="hidden" value="@Model.VenderId" id="VenderId" />
-            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
+            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
+            <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
 
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
 
+                    @Html.HiddenFor(model => model.CompanyId)
+                    @Html.HiddenFor(model => model.VenderId)
+
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Bill</div>
+                        <div class="col-12 b-r HeadText">Qutation</div>
                     </div>
                     <div class="row clientInfo" style="margin-top:10px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
                     </div>
                     <div class="row">
-                        <div class="col-12 b-r">@Contectdatas.ContactAddress <br />@Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City</div>
+                        <div class="col-12 b-r">@Contectdatas.ContactAddress,@Contectdatas.PostalCode <br />@Contectdatas.StreetNumber @Contectdatas.City</div>
                     </div>
 
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
-                            Bill Date:
+                            Qutation Date:
                         </div>
-
-
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BillDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "BillDate  form-control  Input-height", id = "BillDate", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.BillDate, "", new { @class = "text-danger" })
+
+                            <input class="PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDate" id="PurchaseDate" />
+                               @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
+                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
 
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
                     <div class="row">
                         <div class="col-3 b-r">
-                            Bill Number:
+                            Qutation Number:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Bill_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "Bill_ID", required = "required", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Bill_ID, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseID", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
+
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -63,10 +66,12 @@
                     <div class="row">
                         <div class="col-3 b-r">
                             Due Date:
-                        </div>
+                        </div>   
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BillDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control BillDueDate Input-height", id = "BillDueDate", title = "Due Date", required = "required", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.BillDueDate, "", new { @class = "text-danger" })
+                            <input class="DueDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDueDate" id="DueDate" />
+
+                            @*@Html.EditorFor(model => model.PDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate  form-control  Input-height", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.PDueDate, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -75,10 +80,8 @@
                             Reference No:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber", required = "required" } })
-                            @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-
-
+                            @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseRefNumber", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseRefNumber, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -136,6 +139,7 @@
                     </div>
                 </div>
             </div>
+
             <hr />
             <div class="row">
                 <div class="col-12 b-r">
@@ -168,18 +172,22 @@
                         </thead>
 
                         <tbody class="tbodyGood">
+
                             <tr id="mainrow">
                                 <td>
                                     <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class="quantityG form-control Input-height" id="QuantityG" style="font-size:12px" />
+                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    <input type="text" class="rateG form-control Input-height" id="rateG" style="font-size:12px" />
+                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    <input type="text" class="FTotalG form-control Input-height" id="FTotal" style="font-size:12px" />
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
                                     <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -198,12 +206,19 @@
                         </tbody>
                     </table>
                 </div>
-
+                @*<div class="row">
+                    <div class="col-1 b-r"></div>
+                    <div class="col-11 b-r">
+                    <div id="OrderItems">
+                    <table class="table" id="orderdetailsitemssss"></table>
+                    <span id="orderItemError" style="color:red"></span>
+                    </div>
+                    </div>
+                    </div>*@
             </div>
 
 
-            Service table
-            <hr />
+            <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="QutationServiceDetail1">
@@ -240,23 +255,27 @@
                         <tbody class="tbodyService">
                             <tr id="mainrow1">
                                 <td>
-                                    <input class="ServiceDate  ss  form-control Input-height" />
-                                </td>
 
+                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
+
+                                </td>
                                 <td>
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class=" Discription form-control Input-height" />
+                                    <input type="text" class=" Discription form-control Input-height" autocomplete="off" />
                                 </td>
                                 <td>
-                                    <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="font-size:12px" />
+                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    <input type="text" class="rateG form-control Input-height" id="RateS" style="font-size:12px" />
+                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
-                                    <input type="text" class="FTotalG form-control Input-height" id="FTotal" style="font-size:12px" />
+                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
                                 </td>
                                 <td>
                                     <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -271,29 +290,32 @@
                                 <td>
                                     <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
                                 </td>
-
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
+
+
+
             <hr />
             <div class="row">
                 <div class="col-8 b-r">
                     <div class="row">
                         <div class="col-3 b-r">Customer Notes:</div>
                         <div class="col-9 b-r">
-                            @Html.TextAreaFor(model => model.CustomerNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
-                            @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
+                            @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
+                            @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
+                    <hr />
                 </div>
                 <div class="col-4 b-r">
                     <div class="row">
                         <div class="col-5 b-r text-right">Sub Total:</div>
-                        <div class="col-7 b-r text-right"><label id="SubTotal"></label></div>
+                        <div class="col-7 b-r text-right"><label id="SubTotal">@*@Model.SubTotal*@</label></div>
 
                     </div>
                     <div class="row">
@@ -335,13 +357,19 @@
         @*two*@
     </div>
 </div>
+
+@*<label></label>*@
+
 <div class="row" style="margin-top:5px">
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
         <div class="pull-right">
+
+
             <div class="btn-group">
-                <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+                <button id="Submit" type="submit" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
             </div>
+
             <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
             <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
         </div>
@@ -349,10 +377,11 @@
     <div class="col-2 b-r"></div>
 </div>
 
+
+
+
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-
-
 
 <script type="text/javascript">
     var Currentrow, Total, vat, Price, Quantity = 0;
@@ -468,6 +497,7 @@
             $('#mainrow1 #SelectProductQutationS').val('0');
             $('#mainrow1 .quantityG').val('');
             $('#mainrow1 .rateG ').val('');
+
             $('#mainrow1 #FTotalG').val('');
             $('#mainrow1 .quantityG').val('');
             $('#mainrow1 #FTotal').val('');
@@ -522,7 +552,7 @@
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
-
+        // GrandTotal("Add", Total, Subtotalwt);
     });
 
 
@@ -556,6 +586,7 @@
         vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
+
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -610,6 +641,8 @@
     });
 
     $('.VATG').change(function () {
+
+        debugger;
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -733,6 +766,8 @@
 
 
 
+
+
     $(document).on('change', '.pClassG', function () {
         debugger;
         var currentRow1 = $(this).closest('tr');
@@ -750,6 +785,7 @@
 
     $('#mainrow1 .pClassG').change(function () {
 
+        debugger;
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -889,9 +925,14 @@
 
     function AddSubTotalService() {
         var SubTotalService = 0;
+
         $('#QutationServiceDetail1 tr').each(function () {
+
+
+            debugger;
             var Value = $(this).find(".RowTotalG").val();
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
+
                 SubTotalService += parseFloat(Value);
             }
         })
@@ -900,9 +941,13 @@
 
     function totalGoods() {
         var TotalGood = 0;
+
         $('#orderdetailsitems  tr').each(function () {
+
             var Value = $(this).find(".FTotalG").val();
+
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
+
                 TotalGood += parseFloat(Value)
             }
         })
@@ -975,9 +1020,12 @@
     }
 
     $('#orderdetailsitems').on('click', '.remove', function () {
+
         var currentRow = $(this).closest('tr');
         var vat = currentRow.find('.VAT  option:selected').val();
+
         $(this).parents('tr').remove();
+
         var currentRow1 = $(this).closest("tr");
         vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -1023,46 +1071,48 @@
     }
 
     function CreateQuation() {
-
+        debugger;
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
         if (!validateFileSize()) {
             return true;
         }
+
         $('#orderdetailsitems .tbodyGood tr').each(function () {
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Goods",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val())
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
             }
         });
 
-
-
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
+            debugger;
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Service",
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
             }
@@ -1077,40 +1127,43 @@
         }
 
         var empObj = {
-            Bill_ID: $('#Bill_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            BillDate: $('#BillDate').val(),
-            BillDueDate: $('#BillDueDate').val(),
-            SubTotal: $('#SubTotal').text(),
+            PurchaseId: $('#PurchaseID').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('.PurchaseDate').val(),
+            PDueDate: $('.DueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#PurchaseVenderNote').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
             VenderId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
+
         };
+
 
 
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-
-            formData.append('BillDetail[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('BillDetail[' + i + '][Description]', list[i].Description)
-            formData.append('BillDetail[' + i + '][Type]', list[i].Type)
-            formData.append('BillDetail[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('BillDetail[' + i + '][Rate]', list[i].Rate)
-            formData.append('BillDetail[' + i + '][Total]', list[i].Total)
-            formData.append('BillDetail[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('BillDetail[' + i + '][Vat]', list[i].Vat)
-            formData.append('BillDetail[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
+            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
+            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
 
 
         $.ajax({
-            url: "/Bills/SaveDraft",
+            url: "/Purchase/SaveDraft",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1127,7 +1180,7 @@
                     },
                          function (isconform) {
 
-                             window.location.href = "/Bills/ViewBilDetail?BillId=" + result.BillId;
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
                          });
                 }
                 else if (result.Status == "Fail") {
@@ -1151,38 +1204,38 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-
+            debugger;
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Goods",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
             }
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
+            debugger;
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Service",
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Services",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
             }
@@ -1199,18 +1252,19 @@
 
 
         var empObj = {
-            Bill_ID: $('#Bill_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            BillDate: $('#BillDate').val(),
-            BillDueDate: $('#BillDueDate').val(),
-            SubTotal: $('#SubTotal').text(),
+            PurchaseId: $('#PurchaseID').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('.PurchaseDate').val(),
+            PDueDate: $('.DueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            //PurchaseOrderID: $('#PurchaseOrderID').val(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#PurchaseVenderNote').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            ContactId: $('#VenderId').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            VenderId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
         };
         for (var key in empObj) {
@@ -1218,15 +1272,15 @@
         }
         for (var i = 0; i < list.length; i++) {
 
-            formData.append('BillDetail[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('BillDetail[' + i + '][Description]', list[i].Description)
-            formData.append('BillDetail[' + i + '][Type]', list[i].Type)
-            formData.append('BillDetail[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('BillDetail[' + i + '][Rate]', list[i].Rate)
-            formData.append('BillDetail[' + i + '][Total]', list[i].Total)
-            formData.append('BillDetail[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('BillDetail[' + i + '][Vat]', list[i].Vat)
-            formData.append('BillDetail[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
+            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
+            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
 
         }
 
@@ -1237,7 +1291,9 @@
             dataType: 'json',
             contentType: false,
             processData: false,
+
             success: function (result) {
+
                 if (result.Status == "Success") {
                     swal({
                         title: 'Invoice!',
@@ -1275,34 +1331,36 @@
             var CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
-
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Goods",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
             }
 
         });
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
+
             var CurrentRow = $(this).closest("tr");
+
             if (ValidateRow(CurrentRow)) {
+
                 orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
+                    PurchaseItemId: parseInt($(this).find('.product').val()),
+                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Services",
                     ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
+                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
+                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
             }
@@ -1315,36 +1373,36 @@
             $('#gtotal').text('');
         }
 
+
         var empObj = {
-            //PurchaseId: $('#PurchaseId').val(),
-            Bill_ID: $('#Bill_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            BillDate: $('#BillDate').val(),
-            BillDueDate: $('#BillDueDate').val(),
-            SubTotal: $('#SubTotal').text(),
+            PurchaseId: $('#PurchaseID').val(),
+            PurchaseID: $('#PurchaseID').val(),
+            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
+            PurchaseDate: $('.PurchaseDate').val(),
+            PDueDate: $('.DueDate').val(),
+            PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            //PurchaseOrderID: $('#PurchaseOrderID').val(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#PurchaseVenderNote').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            ContactId: $('#VenderId').val(),
+            PurchaseOrderID: $('#PurchaseOrderID').val(),
+            PurchaseTotoalAmount: $('#gtotal').text(),
+            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            Vat6: $('#BTW6').text(),
+            Vat21: $('#BTW21').text(),
+            VenderId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
         };
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-
-            formData.append('BillDetail[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('BillDetail[' + i + '][Description]', list[i].Description)
-            formData.append('BillDetail[' + i + '][Type]', list[i].Type)
-            formData.append('BillDetail[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('BillDetail[' + i + '][Rate]', list[i].Rate)
-            formData.append('BillDetail[' + i + '][Total]', list[i].Total)
-            formData.append('BillDetail[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('BillDetail[' + i + '][Vat]', list[i].Vat)
-            formData.append('BillDetail[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
+            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
+            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
         }
         $.ajax({
             url: "/Purchase/SaveEmailPrint1",
@@ -1401,101 +1459,10 @@
         }
     }
 
-</script>
 
 
-<script>
-    $(document).ready(function () {
-        $('.ServiceDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            datetime: new Date(),
-            dateFormat: 'dd/mm/yy',
-        }).datepicker("setDate", new Date());
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    $(document).ready(function () {
-        $('.BillDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-
-
-    $(document).ready(function () {
-        $('.BillDueDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-
-    $('body').on('focus', ".ss", function () {
-
-        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
-        $(this).datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-
-
-
-
-    function validateFileSize() {
-        var Isvalid = true;
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-
-            if (document.getElementById("uploadfile").files.length != 0) {
-
-                //get the file size and file type from file input field
-                var fsize = $('#uploadfile')[0].files[0].size;
-                var ftype = $('#uploadfile')[0].files[0].type;
-                var fname = $('#uploadfile')[0].files[0].name;
-
-                if (fsize > 1048576) //do something if file size more than 1 mb (1048576)
-                {
-                    Isvalid = false;
-
-                    alert("Type :" + ftype + " | " + fsize + " bites\n(File: " + fname + ") Too big!");
-                }
-                else {
-                    Isvalid = true;
-                }
-            }
-            return Isvalid;
-        }
-    }
 
 </script>
-
 
 
 

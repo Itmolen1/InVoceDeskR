@@ -1917,7 +1917,7 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
                 purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
-                purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
+                purchasemodel.PurchaseDueDate = purchaseViewModel.PDueDate;
                 purchasemodel.PurchaseSubTotal = purchaseViewModel.PurchaseSubTotal;
                 purchasemodel.PurchaseDiscountAmount = purchaseViewModel.PurchaseDiscountAmount;
                 purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;

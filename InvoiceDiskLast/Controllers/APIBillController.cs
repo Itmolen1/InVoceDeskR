@@ -54,5 +54,41 @@ namespace InvoiceDiskLast.Controllers
                 }
             }
         }
+
+        [Route("api/GetbillDetail/{id:int}")]
+        [ResponseType(typeof(MvcBillModel))]
+        public IHttpActionResult GetBillDetail(int id)
+        {
+            MvcBillModel billModel = new MvcBillModel();
+
+            billModel = db.BillTables.Where(q => q.BilID == id).Select(c => new MvcBillModel
+            {
+                BilID = c.BilID,
+                Bill_ID = c.Bill_ID,
+                BillDate = c.BillDate,
+                BillDueDate = c.BillDueDate,
+                SubTotal = c.SubTotal,
+                TotalVat6 = c.TotalVat6,
+                TotalVat21 = c.TotalVat21,
+                DiscountAmount = c.DiscountAmount,
+                TotalAmount = c.TotalAmount,
+                CustomerNote = c.CustomerNote,
+                Status = c.Status,
+                UserId = c.UserId,
+                CompanyId = c.CompanyId,
+                VenderId = c.VenderId,
+                Type = c.Type,
+
+            }).FirstOrDefault();
+
+
+            if (billModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(billModel);
+        }
+
     }
 }

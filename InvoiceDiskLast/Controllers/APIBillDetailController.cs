@@ -30,9 +30,75 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
-
                 return BadRequest();
 
+            }
+        }
+        [Route("Api/GetBillDetailTablebyId/{id:int}")]
+        [ResponseType(typeof(List<BillDetailViewModel>))]
+        public IHttpActionResult GetBillDetail(int id)
+        {
+            IEnumerable<string> HeaderValue;
+            var QTID = "";
+            if (GlobalVeriables.WebApiClient.DefaultRequestHeaders.TryGetValues("QTID", out HeaderValue))
+            {
+                QTID = HeaderValue.FirstOrDefault();
+            }
+            int QTIDs = (QTID != "" ? Convert.ToInt32(QTID) : 0);
+
+            if (QTIDs != 0)
+            {
+                var query = db.BillDetailTables.ToList().Where(c => c.BillDetailId == QTIDs).Select(pd => new
+                {
+                    BillID = pd.BillID,                   
+                    BillDetailId = pd.BillDetailId,
+                    ItemId = pd.ItemId,
+                    Rate = pd.Rate,
+                    Description = pd.Description,
+                    Quantity = pd.Quantity,
+                    Vat = pd.Vat,
+                    Total = pd.Total,
+                    Type = pd.Type,
+                    RowSubTotal = pd.RowSubTotal,
+                }).ToList();
+
+
+                return Ok(query);
+            }
+            else
+            {
+
+
+
+
+                var query = (from pd in db.BillDetailTables
+                             join p in db.ProductTables on pd.ItemId equals p.ProductId
+                             where pd.BillID == id
+                             select new BillDetailViewModel
+                             {
+                                 ServiceDate = pd.ServiceDate,
+                                 BilID = pd.BillID,
+                               
+                                 BillDetailId = pd.BillDetailId,
+                                 ItemId = pd.ItemId,
+                                 Rate = pd.Rate,
+                                 Description = pd.Description,
+                                 Quantity = pd.Quantity,
+                                 Vat = pd.Vat,
+                                 Total = pd.Total,
+                                 Type = pd.Type,
+                                 ItemName = p.ProductName,
+                                 RowSubTotal = pd.RowSubTotal,
+
+
+                             }).ToList();
+
+
+                if (query == null)
+                {
+                    return NotFound();
+                }
+                return Ok(query);
             }
 
         }

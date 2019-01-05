@@ -1,34 +1,16 @@
 ﻿
 @{
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
-    var purchaseModel = ViewBag.Purchase;
+    var BillModel = ViewBag.BilllData;
 }
 
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-@{
-    ViewBag.Title = "ViewQuation";
-}
 
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-
-
-<div class="row">
-    @if (TempData["EmailMessge"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Success!</strong>@TempData["EmailMessge"]
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
-</div>
 
 <div class="row" style="margin-bottom:5px">
     <div class="col-2 b-r"></div>
@@ -41,10 +23,10 @@
                     Send
                     <span class="caret"></span>
                 </button>
-              
+
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/Bills/EmailBill/?Id=@purchaseModel.PurchaseOrderID">Send by Email</a>
-                    <a class="dropdown-item" href="/Bills/Print/?id=@purchaseModel.PurchaseOrderID">Print and send it yourself</a>
+                    <a class="dropdown-item" href="/Bills/EmailBill/?Id=@BillModel.BilID">Send by Email</a>
+                    <a class="dropdown-item" href="/Bills/Print/?id=@BillModel.BilID">Print and send it yourself</a>
 
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Separated link</a>
@@ -53,11 +35,11 @@
             <div style="margin-left:3px">
                 <div class="btn-group">
                     <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print concept", "Print", "Bills", new { id = purchaseModel.PurchaseOrderID }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("print concept", "Print", "Bills", new { id = BillModel.BilID }, new { @class = "btn btn-success" })
                 </div>
             </div>
             <div style="margin-left:3px">
-                <a href="/Bills/Edit/@purchaseModel.PurchaseOrderID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
+                <a href="/Bills/Edit/@BillModel.BilID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
 
 
             </div>
@@ -86,7 +68,7 @@
             }
             <div class="row">
                 <div class="col-7 b-r">
-                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size"/>
+                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-12 b-r HeadText">
@@ -103,13 +85,13 @@
                             @Contectdatas.PostalCode, @Contectdatas.StreetNumber @Contectdatas.City
                         </div>
                     </div>
-                  
+
                     @{
                         DateTime pdate = new DateTime();
-                        pdate = Convert.ToDateTime(purchaseModel.PurchaseDate);
+                        pdate = Convert.ToDateTime(BillModel.BillDate);
 
                         DateTime dDate = new DateTime();
-                        dDate = Convert.ToDateTime(purchaseModel.PurchaseDueDate);
+                        dDate = Convert.ToDateTime(BillModel.BillDueDate);
 
                     }
 
@@ -126,7 +108,7 @@
                             Bill Number:
                         </div>
                         <div class="col-8 b-r">
-                            @purchaseModel.PurchaseOrderID
+                            @BillModel.BilID
                         </div>
                     </div>
                     <div class="row">
@@ -142,7 +124,7 @@
                             Reference number:
                         </div>
                         <div class="col-8 b-r">
-                            @purchaseModel.PurchaseRefNumber
+                            @BillModel.RefNumber
                         </div>
                     </div>
                 </div>
@@ -203,11 +185,11 @@
             <p></p>
 
             @{
-                List<InvoiceDiskLast.Models.MvcPurchaseViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.MvcPurchaseViewModel>();
+                List<InvoiceDiskLast.Models.BillDetailViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.BillDetailViewModel>();
             }
-            @if (ViewBag.PurchaseDatailsList != null)
+            @if (ViewBag.BillDetail != null)
             {
-                InvoiceListGoods = ViewBag.PurchaseDatailsList as List<InvoiceDiskLast.Models.MvcPurchaseViewModel>;
+                InvoiceListGoods = ViewBag.BillDetail as List<InvoiceDiskLast.Models.BillDetailViewModel>;
 
                 InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
 
@@ -240,25 +222,26 @@
                                 </thead>
 
                                 <tbody class="tbody">
-                                    @foreach (var item in ViewBag.PurchaseDatailsList)
+                                    @foreach (var item in ViewBag.BillDetail)
                                     {
                                         if (item.Type == "Goods")
                                         {
                                             <tr id="mainrow">
                                                 <td>
-                                                    @item.PurchaseItemName
+
+                                                    @item.ItemName
                                                 </td>
                                                 <td>
-                                                    @item.PurchaseQuantity
+                                                    @item.Quantity
                                                 </td>
                                                 <td>
-                                                    @item.PurchaseItemRate
+                                                    @item.Rate
                                                 </td>
                                                 <td>
-                                                    @item.PurchaseTotal
+                                                    @item.Total
                                                 </td>
                                                 <td>
-                                                    @item.PurchaseVatPercentage
+                                                    @item.Vat
                                                 </td>
                                                 <td>
                                                     @item.RowSubTotal
@@ -278,9 +261,9 @@
 
             }
 
-            @if (ViewBag.PurchaseDatailsList != null)
+            @if (ViewBag.BillDetail != null)
             {
-                InvoiceListGoods = ViewBag.PurchaseDatailsList as List<InvoiceDiskLast.Models.MvcPurchaseViewModel>;
+                InvoiceListGoods = ViewBag.BillDetail as List<InvoiceDiskLast.Models.BillDetailViewModel>;
 
                 InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Service").ToList();
 
@@ -320,7 +303,7 @@
                                 </thead>
                                 <tbody class="tbody"></tbody>
 
-                                @foreach (var item in ViewBag.PurchaseDatailsList)
+                                @foreach (var item in ViewBag.BillDetail)
                                 {
                                     if (item.Type == "Service")
                                     {
@@ -330,23 +313,24 @@
                                             </td>
 
                                             <td>
-                                                @item.PurchaseItemName
+
+                                                @item.ItemName
                                             </td>
                                             <td>
-                                                @item.PurchaseDescription
+                                                @item.Description
                                             </td>
 
                                             <td>
-                                                @item.PurchaseQuantity
+                                                @item.Quantity
                                             </td>
                                             <td>
-                                                @item.PurchaseQuantity
+                                                @item.Rate
                                             </td>
                                             <td>
-                                                @item.PurchaseTotal
+                                                @item.Total
                                             </td>
                                             <td>
-                                                @item.PurchaseVatPercentage
+                                                @item.Vat
                                             </td>
                                             <td>
                                                 @item.RowSubTotal
@@ -367,34 +351,34 @@
                 <div class="col-5 b-r">
                     <div class="row">
                         <div class="col-4 b-r text-right">Total excl. VAT:€</div>
-                        <div class="col-7 b-r text-right">@purchaseModel.PurchaseSubTotal</div>
+                        <div class="col-7 b-r text-right">@BillModel.SubTotal</div>
                         <div class="col-1 b-r">
                         </div>
                     </div>
                     <div class="row">
-                        @if (purchaseModel.Vat6 != 0 && purchaseModel.Vat6 != null)
+                        @if (BillModel.TotalVat6 != 0 && BillModel.TotalVat6 != null)
                         {
                             <div class="col-4 b-r text-right">VAT 6%:€</div>
 
-                            <div class="col-7 b-r text-right">@purchaseModel.Vat6</div>
-                                <div class="col-1 b-r">
-                                </div>
+                            <div class="col-7 b-r text-right">@BillModel.TotalVat6</div>
+                            <div class="col-1 b-r">
+                            </div>
                         }
                     </div>
 
                     <div class="row">
-                        @if (purchaseModel.Vat21 != 0 && purchaseModel.Vat21 != null)
+                        @if (BillModel.TotalVat21 != 0 && BillModel.TotalVat21 != null)
                         {
                             <div class="col-4 b-r text-right">VAT 21%:€</div>
 
-                            <div class="col-7 b-r text-right">@purchaseModel.Vat21</div>
-                                <div class="col-1 b-r">
-                                </div>
+                            <div class="col-7 b-r text-right">@BillModel.TotalVat21</div>
+                            <div class="col-1 b-r">
+                            </div>
                         }
                     </div>
                     <div class="row Grand-color">
                         <div class="col-4 b-r text-right">Grand Total:</div>
-                        <div class="col-7 b-r text-right">&euro;: @purchaseModel.PurchaseTotoalAmount</div>
+                        <div class="col-7 b-r text-right">&euro;: @BillModel.TotalAmount</div>
                         <div class="col-1 b-r">
                         </div>
                     </div>

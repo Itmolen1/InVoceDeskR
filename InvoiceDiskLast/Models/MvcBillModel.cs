@@ -7,7 +7,7 @@ namespace InvoiceDiskLast.Models
 {
     public class MvcBillModel
     {
-        public int BilID { get; set; }
+        public int ? BilID { get; set; }
         public string Bill_ID { get; set; }
         public string RefNumber { get; set; }
         public Nullable<int> PurchaseId { get; set; }
@@ -22,7 +22,7 @@ namespace InvoiceDiskLast.Models
         public string Status { get; set; }
         public Nullable<int> UserId { get; set; }
         public Nullable<int> CompanyId { get; set; }
-        public Nullable<int> ContactId { get; set; }
+        public Nullable<int> VenderId { get; set; }
         public string Type { get; set; }
 
 
