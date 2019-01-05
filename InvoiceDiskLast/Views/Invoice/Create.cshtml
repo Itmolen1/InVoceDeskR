@@ -6,6 +6,8 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
+
+<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
@@ -315,13 +317,17 @@
                     </div> 
                                 
                 </div>
-                <div class="row">
-                    <div class="col-12 b-r">
-                        <textarea rows="2" class="form-control" id="InvoiceDescription">@Model.InvoiceDescription</textarea>
-                    </div>
-                </div>    
               
             </div>
+            <div class="row">
+                <div class="col-12 b-r">
+                    <div class="form-group">
+                        <textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@Model.InvoiceDescription</textarea>
+                        <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="col-2 b-r">
@@ -347,8 +353,9 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
+<script src="~/CustomScript/CharacterCount.js"></script>
 
-<script type="text/javascript">
+<script>
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
         LoadProductS();

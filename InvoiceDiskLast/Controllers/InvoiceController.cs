@@ -158,9 +158,6 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.Status = "accepted";
                 mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
 
-                int count = mvcInvoiceModel.InvoiceDescription.Length;
-
-
 
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {

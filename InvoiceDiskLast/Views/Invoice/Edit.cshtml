@@ -14,22 +14,8 @@
     var InvoiceModel = ViewBag.InvoiceData;
 }
 
-<style>
-    .txtarea {
-    position: relative;
-    }
 
-    .txtarea {
-    padding-left: 50px;
-    }
-
-    .badge-pill {
-    position: absolute;
-    left: 3px;
-    top: 5px;
-}
-</style>
-
+<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 @*<label></label>*@
 <div class="row">
     <div class="col-2 b-r">
@@ -503,7 +489,6 @@
             </div>
             <div class="row">              
                 <div class="col-12 b-r">
-
                     <div class="form-group">
                         <textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
                         <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>
@@ -535,28 +520,8 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-
-<script>
-
-
-    function CharacterLenthCount() {
-        debugger;
-        var count = $('#InvoiceDescription').val().length;
-
-        if (count > 150) {
-            $('#lenthC').removeClass('badge-info');
-            $('#lenthC').addClass('badge-danger');
-            $('#lenthC').text(count + " excedded");
-
-
-        }
-        else if (count < 150) {
-            $('#lenthC').removeClass('badge-danger');
-            $('#lenthC').addClass('badge-info');
-            $('#lenthC').text(count);
-
-        }
-    }
+<script src="~/CustomScript/CharacterCount.js"></script>
+<script>  
 
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
