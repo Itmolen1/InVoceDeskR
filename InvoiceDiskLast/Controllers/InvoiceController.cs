@@ -1,5 +1,6 @@
 ﻿using InvoiceDiskLast.MISC;
 using InvoiceDiskLast.Models;
+using Logger;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +11,16 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
+    
     [SessionExpireAttribute]
+    [RouteNotFoundAttribute]
     public class InvoiceController : Controller
     {
+        private Ilog _iLog;
+        public InvoiceController()
+        {
+            _iLog = Log.GetInstance;
+        }
         // GET: Invoice
         public ActionResult Index()
         {
@@ -83,7 +91,6 @@ namespace InvoiceDiskLast.Controllers
             }
             return null;
         }
-
         public ActionResult Create(int id)
         {
 
@@ -310,9 +317,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
         }
-
-
-
+        
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -542,8 +547,7 @@ namespace InvoiceDiskLast.Controllers
             }
           
         }
-
-
+        
         public string PrintView(int id)
         {
             string pdfname;
@@ -634,8 +638,7 @@ namespace InvoiceDiskLast.Controllers
 
             return pdfname;
         }
-
-
+        
         public static Boolean IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
@@ -1024,8 +1027,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
+        
         [HttpPost]
         public ActionResult DeleteFile(int Id, string FileName)
         {
@@ -1093,8 +1095,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail" } };
             }
         }
-
-
+        
         [HttpPost]
         public ActionResult SaveEmailEdit(InvoiceViewModel invoiceViewModel)
         {
@@ -1176,8 +1177,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", id = mvcInvoiceModel.InvoiceID } };
         }
-
-
+        
         [HttpPost]
         public ActionResult SavePrintEdit(InvoiceViewModel invoiceViewModel)
         {
