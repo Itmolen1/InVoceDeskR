@@ -129,7 +129,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
 
-            return new JsonResult { Data = new { Status = "Success", purchaseId = purchaseViewModel.PurchaseOrderID } };
+            return new JsonResult { Data = new { Status = "Success", purchaseId = billDetailViewModel.BilID } };
         }
 
 
