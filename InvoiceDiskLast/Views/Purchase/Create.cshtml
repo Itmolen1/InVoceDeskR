@@ -6,9 +6,8 @@
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
 }
-<script src="~/CustomScript/DateTimeFormate.js"></script>
-
-
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
 <div class="row">
     <div class="col-2 b-r">
@@ -44,8 +43,8 @@
                         </div>
                         <div class="col-6 b-r">
 
-                            <input class="PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDate" id="PurchaseDate" />
-                               @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
+                            <input type="text" class="PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDate" id="PurchaseDate" />
+                            @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
                                 @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
 
                         </div>
@@ -66,9 +65,9 @@
                     <div class="row">
                         <div class="col-3 b-r">
                             Due Date:
-                        </div>   
+                        </div>
                         <div class="col-6 b-r">
-                            <input class="DueDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDueDate" id="DueDate" />
+                            <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDueDate" id="DueDate" />
 
                             @*@Html.EditorFor(model => model.PDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate  form-control  Input-height", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.PDueDate, "", new { @class = "text-danger" })*@
@@ -256,7 +255,7 @@
                             <tr id="mainrow1">
                                 <td>
 
-                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
+                                    <input type="text" class="ServiceDate ss "   />
 
                                 </td>
                                 <td>
@@ -484,7 +483,8 @@
             //Replace add button with remove button
             $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
 
-            //Remove id attribute from new clone row
+            currentRow1.find('.ServiceDate ').removeAttr('id');
+            currentRow1.find('.ServiceDate ').remove('id');
 
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
 
@@ -1465,4 +1465,71 @@
 </script>
 
 
+<script>
 
+    $(document).ready(function () {
+        $('.ServiceDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy/mm/dd'
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+   
+
+
+
+    $(document).ready(function () {
+        $('.PurchaseDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy/mm/dd'
+        }).datepicker();
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+    $(document).ready(function () {
+        $('.DueDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy/mm/dd'
+        }).datepicker();
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+    $('body').on('focus', ".ss", function () {
+
+        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
+        $(this).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            dateFormat: 'dd-mm-yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+
+
+
+</script>
