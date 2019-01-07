@@ -15,12 +15,12 @@ namespace InvoiceDiskLast.Models
         public string RefNumber { get; set; }
         public Nullable<int> PurchaseId { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        public Nullable<System.DateTime> BillDueDate { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime BillDueDate { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        public Nullable<System.DateTime> BillDate { get; set; }
+        public DateTime BillDate { get; set; }
         public string Description { get; set; }
 
         public int? Quantity { get; set; }
