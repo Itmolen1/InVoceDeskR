@@ -60,8 +60,8 @@
 
                             <input class="QutationDate  Input-height form-control" autocomplete="off" value="@dt333.ToShortDateString()" id="QutationDate" />
 
-                         
-                                @*@Html.EditorFor(model =>model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control Input-height", id = "QutationDate", @autocomplete = "off" } })
+
+                            @*@Html.EditorFor(model =>model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control Input-height", id = "QutationDate", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })*@
 
                         </div>
@@ -90,9 +90,9 @@
                                 dt33 = Convert.ToDateTime(Model.DueDate);
                             }
 
-                           <input type="text" class="DueDate form-control Input-height" id="DueDate" autocomplete="off" value="@dt33.ToShortDateString()" />
+                            <input type="text" class="DueDate form-control Input-height" id="DueDate" autocomplete="off" value="@dt33.ToShortDateString()" />
                             @*@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })*@
+                                @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })*@
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -431,7 +431,7 @@
                                                             @*@Html.EditorFor(model => model.DueDate1, new { htmlAttributes = new { @class = "ServiceDate   form-control MAterialDatepicker Input-height", id = "QutationDate", @value = DateTime.Now.ToShortDateString() } })*@
 
 
-                                                            <input class="ServiceDate Input-height form-control" autocomplete="off" />
+                                                            <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
 
                                                         </td>
 
@@ -644,9 +644,7 @@
             //Remove id attribute from new clone row
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-
-            $('.tbodyGood').prepend($newRow);
-
+            $('.tbodyGood tr:last').before($newRow);
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -707,20 +705,13 @@
             var $newRow = $("#mainrow1").clone().removeAttr('id');
             $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
             $('.VATG', $newRow).val($("#mainrow1 #SelectVATS").val());
-
-            //Replace add button with remove button
             $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
-
-            //Remove id attribute from new clone row
-            currentRow1.find('.ServiceDate ').removeAttr('id');
-            currentRow1.find('.ServiceDate ').remove('id');
-
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
-
             $('span.error', $newRow).remove();
-
-            $('.tbodyService').prepend($newRow);
-
+            $('.tbodyService tr:last').before($newRow);
+            $newRow.find('.hasDatepicker ').removeAttr('id');
+            $newRow.find('.hasDatepicker ').remove('id');
+            RemovareDate();
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -882,7 +873,7 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        debugger;
+
         var price = CurrentRow;
         Total = 0;
         Total = CurrentRow.find('.FTotalG').val();
@@ -914,7 +905,7 @@
 
     $('.VATG').change(function () {
 
-        debugger;
+
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -926,7 +917,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        debugger;
+
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -936,7 +927,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        debugger;
+
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -956,7 +947,7 @@
 
     $('tbody .VATG').change(function () {
 
-        debugger;
+
 
 
         var Currentrow = $(this).closest("tr");
@@ -1041,7 +1032,7 @@
 
     $(document).ready(function () {
         $('.pClassG').change(function () {
-            debugger;
+
             var currentRow1 = $(this).closest('tr');
             var value = currentRow1.find('.pClassG').val();
             GetProductPriceByProductId(value, currentRow1);
@@ -1050,7 +1041,7 @@
 
     $('#mainrow .pClassG').change(function () {
 
-        debugger;
+
 
 
         var currentRow = $(this).closest('tr');
@@ -1060,7 +1051,7 @@
 
     $('#mainrow1 .pClassG').change(function () {
 
-        debugger;
+
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -1122,7 +1113,7 @@
 
     function CombineTotalAndSubtotal() {
 
-        debugger;
+
 
         var SubTotalGoode = 0, SubTotalService = 0;
 
@@ -1215,7 +1206,7 @@
 
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
-        debugger;
+
 
         if (InOrOut == 'AddingVat') {
             if (Vat == 21) {
@@ -1431,7 +1422,7 @@
 
         $('#orderdetailsitems1 .tbodyGood tr').each(function () {
 
-            debugger;
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1565,7 +1556,7 @@
 
 
         $('#orderdetailsitems1 .tbodyGood tr').each(function () {
-            debugger;
+
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1585,7 +1576,7 @@
         });
 
         $('#QutationServiceDetail .tbodyService tr').each(function () {
-            debugger;
+
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1706,7 +1697,7 @@
 
     $(document).on('click', '#btnRemoveService', function () {
 
-        debugger;
+
         var currentRow1 = $(this).closest('tr');
         var row = $(this).closest('tr');
         Remove(row);
@@ -1805,11 +1796,7 @@
             for (var i = 0; i < files.length; i++) {
                 formData.append(files[i].name, files[i]);
             }
-
-
-
             formData.append("QutationID", parseInt($('#QutationID').val()));
-
             $.ajax({
                 url: '/Qutation/UploadFiles',
                 type: "POST",
@@ -1933,59 +1920,84 @@
             gotoCurrent: true,
             dateFormat: 'dd/mm/yy',
         });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+
+    $(document).ready(function () {
+        $('.DueDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+
+
+
+        $('#mainrow1 .ServiceDate').focus(function () {
+            $(this).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                gotoCurrent: true,
+                datetime: new Date(),
+                dateFormat: 'dd/mm/yy',
+            }).datepicker("setDate", new Date());
             if ($(this).hasClass('birthdate')) {
                 $(this).datepicker('option', 'yearRange', '1980:c');
                 $(this).datepicker('option', 'defaultDate', '-10y');
             }
-            });
+        });
 
-
-        $(document).ready(function () {
-            $('.DueDate').datepicker({
-                changeMonth: true,
-                changeYear: true,
-                gotoCurrent: true,
-                dateFormat: 'dd/mm/yy',
-            });
-                if ($(this).hasClass('birthdate')) {
-                    $(this).datepicker('option', 'yearRange', '1980:c');
-                    $(this).datepicker('option', 'defaultDate', '-10y');
-                }
-                });
-
-            $('body').on('focus', ".ss", function () {
-
-                $(this).closest('tr').find(':input').removeClass('hasDatepicker');
-                $(this).datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    gotoCurrent: true,
-
-                    dateFormat: 'dd/mm/yy',            });
-                    if ($(this).hasClass('birthdate')) {
-                        $(this).datepicker('option', 'yearRange', '1980:c');
-                        $(this).datepicker('option', 'defaultDate', '-10y');
-                    }
-                    });
-
+    //    $('#mainrow1 .ServiceDate').datepicker({
+    //        changeMonth: true,
+    //        changeYear: true,
+    //        gotoCurrent: true,
+    //        datetime: new Date(),
+    //        dateFormat: 'dd/mm/yy',
+    //    }).datepicker("setDate", new Date());
+    //    if ($(this).hasClass('birthdate')) {
+    //        $(this).datepicker('option', 'yearRange', '1980:c');
+    //        $(this).datepicker('option', 'defaultDate', '-10y');
+    //    }
+    //});
+    
 </script>
 
 <script>
 
-    $(document).ready(function () {
-        $('#mainrow1  .ServiceDate').datepicker({
+    function RemovareDate() {
+        $('#QutationServiceDetail .tbodyService tr ').each(function () {
+            var currentr = $(this).closest('tr');
+            currentr.find('input .hasDatepicker').removeAttr('id');
+        })
+    }
+
+    $('body').on('focus', ".ss", function () {
+
+        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
+        $(this).datepicker({
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
-            datetime: new Date(),
-            dateFormat: 'dd/mm/yy',            }).datepicker("setDate", new Date());
-            if ($(this).hasClass('birthdate')) {
-                $(this).datepicker('option', 'yearRange', '1980:c');
-                $(this).datepicker('option', 'defaultDate', '-10y');
-            }
-            });
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
 
+    $('body').on('focusout', '.ss', function () {
+        debugger;
+        RemovareDate();
+    });
 </script>
-
 
 

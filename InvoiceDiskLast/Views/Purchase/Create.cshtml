@@ -27,7 +27,7 @@
                     <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
 
                     <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Qutation</div>
+                        <div class="col-12 b-r HeadText">Purchase</div>
                     </div>
                     <div class="row clientInfo" style="margin-top:10px">
                         <div class="col-12 b-r">@Contectdatas.ContactName</div>
@@ -39,11 +39,17 @@
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
-                            Qutation Date:
+                            Purchase Date:
                         </div>
                         <div class="col-6 b-r">
 
-                            <input type="text" class="PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDate" id="PurchaseDate" />
+
+                            @{
+                                DateTime PurchaseDate = new DateTime();
+                                PurchaseDate = Convert.ToDateTime(Model.PurchaseDate);
+                            }
+
+                            <input type="text" class="PurchaseDate  Input-height form-control" autocomplete="off" value="@PurchaseDate.ToShortDateString()" id="PurchaseDate" />
                             @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
                                 @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
 
@@ -52,7 +58,7 @@
                     </div>
                     <div class="row">
                         <div class="col-3 b-r">
-                            Qutation Number:
+                            Purchase Number:
                         </div>
                         <div class="col-6 b-r">
                             @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseID", required = "required" } })
@@ -67,7 +73,12 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@Model.PurchaseDueDate" id="DueDate" />
+
+                            @{
+                                DateTime PurchaseDueDate = new DateTime();
+                                PurchaseDueDate = Convert.ToDateTime(Model.PurchaseDueDate);
+                            }
+                            <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@PurchaseDueDate.ToShortDateString()" id="DueDate" />
 
                             @*@Html.EditorFor(model => model.PDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate  form-control  Input-height", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.PDueDate, "", new { @class = "text-danger" })*@
@@ -255,8 +266,8 @@
                             <tr id="mainrow1">
                                 <td>
 
-                                    <input type="text" class="ServiceDate ss "   />
-
+                                    <input  class="ServiceDate ss Input-height form-control"/>
+                                    @*<input class="ServiceDate  Input-height form-control" />*@
                                 </td>
                                 <td>
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
@@ -1119,6 +1130,7 @@
         });
 
 
+
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
@@ -1131,7 +1143,7 @@
             PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
             PurchaseDate: $('.PurchaseDate').val(),
-            PDueDate: $('.DueDate').val(),
+            PurchaseDueDate: $('.DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1229,7 +1241,8 @@
                 orderItem = {
                     PurchaseItemId: parseInt($(this).find('.product').val()),
                     PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Services",
+                    Type: "Service",
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     ServiceDate: $(this).find('.ServiceDate').val(),
                     PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
@@ -1256,7 +1269,7 @@
             PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
             PurchaseDate: $('.PurchaseDate').val(),
-            PDueDate: $('.DueDate').val(),
+            PurchaseDueDate: $('.DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1271,7 +1284,6 @@
             formData.append(key, empObj[key]);
         }
         for (var i = 0; i < list.length; i++) {
-
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
             formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
@@ -1283,6 +1295,9 @@
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
 
         }
+
+
+
 
         $.ajax({
             url: "/Purchase/SaveEmail",
@@ -1354,7 +1369,8 @@
                 orderItem = {
                     PurchaseItemId: parseInt($(this).find('.product').val()),
                     PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Services",
+                    Type: "Service",
+                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     ServiceDate: $(this).find('.ServiceDate').val(),
                     PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
@@ -1379,7 +1395,7 @@
             PurchaseID: $('#PurchaseID').val(),
             PurchaseRefNumber: $('#PurchaseRefNumber').val(),
             PurchaseDate: $('.PurchaseDate').val(),
-            PDueDate: $('.DueDate').val(),
+            PurchaseDueDate: $('.DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1468,7 +1484,7 @@
 <script>
 
     $(document).ready(function () {
-        $('.ServiceDate').datepicker({
+        $('#mainrow1 .ServiceDate').datepicker({
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
@@ -1522,7 +1538,7 @@
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
-            dateFormat: 'dd-mm-yy',
+            dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
             $(this).datepicker('option', 'yearRange', '1980:c');

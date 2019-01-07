@@ -13,7 +13,9 @@
     var CompanyDatas = ViewBag.Companydata;
     var InvoiceModel = ViewBag.InvoiceData;
 }
+<script src="~/CustomScript/DateTimeFormate.js"></script>
 
+<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 @*<label></label>*@
 <div class="row">
     <div class="col-2 b-r">
@@ -49,7 +51,13 @@
                         </div>
                         <div class="col-6 b-r">
 
-                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.InvoiceDate" id="InvoiceDate" />
+                            @{
+                                DateTime dt1 = new DateTime();
+                                dt1 = Convert.ToDateTime(Model.InvoiceDate);
+                            }
+
+
+                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="InvoiceDate" />
                             @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
                                 @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
 
@@ -74,7 +82,13 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@Model.InvoiceDueDate" id="InvoiceDueDate" />
+
+
+                            @{
+                                DateTime InvoiceDate = new DateTime();
+                                InvoiceDate = Convert.ToDateTime(Model.InvoiceDueDate);
+                            }
+                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@InvoiceDate.ToShortDateString()" id="InvoiceDueDate" />
                             @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
                                 @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
 
@@ -328,8 +342,13 @@
                                             <tr>
                                                 <td>
 
-                                                    <input  class="ServiceDate form-control Input-height MAterialDatepicker" value="@item.ServiceDate" />
-                                                   
+                                                    @{
+                                                        DateTime dt = new DateTime();
+                                                        dt = Convert.ToDateTime(item.ServiceDate);
+                                                    }
+
+                                                    <input class="ServiceDate ss form-control Input-height" value="@dt.ToShortDateString()" />
+
                                                 </td>
 
                                                 <td>
@@ -342,7 +361,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="Discription form-control Input-height" value="@item.Description" />
+                                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description" />
                                                 </td>
 
                                                 <td>
@@ -382,16 +401,16 @@
                                                     <input type="hidden" id="InvoiceDetailId" value="@item.InvoiceDetailId" />
                                                 </td>
                                             </tr>
-                                        }
+                                                                }
 
 
-                                    }
-                                }
+                                                            }
+                                                        }
                             }
 
                             <tr id="mainrow1">
                                 <td>
-                                    <input class="ServiceDate MAterialDatepicker Input-height form-control" autocomplete="off" />
+                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
                                 </td>
 
                                 <td>
@@ -492,9 +511,7 @@
             <div class="row">
                 <div class="col-12 b-r">
                     <div class="form-group">
-                        @*<textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
-                        <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>*@
-                        <textarea class="form-control txtarea" maxlength="155" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
+                        <textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
                         <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>
                     </div>
                 </div>
@@ -525,27 +542,7 @@
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
-<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 <script>
-
-    function CharacterLenthCount() {
-        debugger;
-        var count = $('#InvoiceDescription').val().length;
-
-        if (count > 150) {
-            $('#lenthC').removeClass('badge-info');
-            $('#lenthC').addClass('badge-danger');
-            $('#lenthC').text(count);
-
-
-        }
-        else if (count < 150) {
-            $('#lenthC').removeClass('badge-danger');
-            $('#lenthC').addClass('badge-info');
-            $('#lenthC').text(count);
-
-        }
-    }
 
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
@@ -596,8 +593,8 @@
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
 
-            $('.tbodyGood').prepend($newRow);
-
+          
+            $('.tbodyGood tr:last').before($newRow);
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -669,9 +666,8 @@
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
 
             $('span.error', $newRow).remove();
-
-            $('.tbodyService').prepend($newRow);
-
+            $('.tbodyService tr:last').before($newRow);
+           
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -1312,7 +1308,7 @@
             CompanyId: $('#CompanyId').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
-       
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1329,7 +1325,7 @@
         }
 
 
-        
+
 
         $.ajax({
             url: "/Invoice/SavePrintEdit",
@@ -1588,11 +1584,8 @@
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
             formData.append('InvoiceDetailsTable[' + i + '][InvoiceDetailId]', list[i].InvoiceDetailId)
             formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
-
-            alert(list[i].ServiceDate);
         }
 
-       
         $.ajax({
             url: "/Invoice/Edit",
             data: JSON.stringify(empObj),

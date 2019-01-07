@@ -1,6 +1,6 @@
 ﻿
     $(document).ready(function () {
-        $('.ServiceDate').datepicker({
+        $('#mainrow1 .ServiceDate').datepicker({
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
