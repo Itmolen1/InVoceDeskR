@@ -49,7 +49,7 @@
                             Bill Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BillDate, new { htmlAttributes = new {@type="text", @style = "font-size:12px", @class = "form-control ", id = "BillDate", autocomplete = "off" } })
+                            @Html.EditorFor(model => model.BillDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control ", id = "BillDate", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.BillDate, "", new { @class = "text-danger" })
 
                         </div>
@@ -60,7 +60,7 @@
                             Bill Number:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BilID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "BilID", required = "required" , } })
+                            @Html.EditorFor(model => model.BilID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "BilID", required = "required", } })
                             @Html.ValidationMessageFor(model => model.BilID, "", new { @class = "text-danger" })
 
                         </div>
@@ -71,7 +71,7 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BillDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control Input-height", id = "BillDueDate", title = "Due Date", required = "required" , autocomplete = "off" } })
+                            @Html.EditorFor(model => model.BillDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control Input-height", id = "BillDueDate", title = "Due Date", required = "required", autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.BillDueDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-3 b-r"></div>
@@ -336,7 +336,7 @@
                                             <tr>
                                                 <td>
 
-                                                    <input type="datetime" class="ServiceDate  form-control Input-height" value="@item.ServiceDate" />
+                                                    <input type="text" class="ServiceDate  form-control Input-height" value="@item.ServiceDate" />
                                                 </td>
 
                                                 <td>
@@ -402,7 +402,7 @@
 
                             <tr id="mainrow1">
                                 <td>
-                                    <input type="date" class="form-control Input-height MAterialDatepicker" />
+                                    <input type="text" class="form-control Input-height " />
                                 </td>
 
                                 <td>
@@ -461,7 +461,6 @@
                         <div class="col-7 b-r text-right">
                             <label id="SubTotal">@BillModel.SubTotal</label>
                         </div>
-
                     </div>
                     <div class="row">
                         <div class="col-5 b-r text-right">Totaal excel btw:</div>
@@ -574,7 +573,9 @@
 
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('.tbodyGood').prepend($newRow);
+
+            $('.tbodyGood tr:last').before($newRow);
+
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -633,8 +634,9 @@
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
 
             $('span.error', $newRow).remove();
+            $('.tbodyService tr:last').before($newRow);
 
-            $('.tbodyService').prepend($newRow);
+            // $('.tbodyService').prepend($newRow);
 
             $(".FTotalG").prop('disabled', true);
 
