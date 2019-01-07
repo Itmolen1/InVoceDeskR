@@ -40,7 +40,12 @@
                             Invoice Date:
                         </div>
                         <div class="col-6 b-r">
-                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.InvoiceDate" id="InvoiceDate" />
+                            @{
+                                DateTime InvoiceDate = new DateTime();
+                                InvoiceDate = Convert.ToDateTime(Model.InvoiceDate);
+                            }
+
+                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@InvoiceDate.ToShortDateString()" id="InvoiceDate" />
 
                             @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "InvoiceDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
                             @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
@@ -62,8 +67,11 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-
-                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@Model.InvoiceDueDate" id="InvoiceDueDate" />
+                            @{
+                                DateTime InvoiceDueDate = new DateTime();
+                                InvoiceDueDate = Convert.ToDateTime(Model.InvoiceDueDate);
+                            }
+                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@InvoiceDueDate.ToShortDateString()" id="InvoiceDueDate" />
 
                             @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
                             @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
@@ -410,7 +418,8 @@
 
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('.tbodyGood').prepend($newRow);
+            $('.tbodyGood tr:last').before($newRow);
+          
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -470,8 +479,8 @@
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
 
             $('span.error', $newRow).remove();
-
-            $('.tbodyService').prepend($newRow);
+            $('.tbodyService tr:last').before($newRow);
+        
 
             $(".FTotalG").prop('disabled', true);
 

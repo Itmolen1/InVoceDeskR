@@ -309,7 +309,12 @@
                                 {
                                     <tr id="mainrow">
                                         <td>
-                                            @item.ServiceDate
+                                            @{
+                                                DateTime InvoiceDate = new DateTime();
+                                                InvoiceDate = Convert.ToDateTime(item.ServiceDate);
+                                            }
+
+                                            @InvoiceDate.ToShortDateString()
                                         </td>
 
                                         <td>

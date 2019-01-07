@@ -51,7 +51,13 @@
                         </div>
                         <div class="col-6 b-r">
 
-                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@Model.InvoiceDate" id="InvoiceDate" />
+                            @{
+                                DateTime dt1 = new DateTime();
+                                dt1 = Convert.ToDateTime(Model.InvoiceDate);
+                            }
+
+
+                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="InvoiceDate" />
                             @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
                                 @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
 
@@ -76,7 +82,13 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@Model.InvoiceDueDate" id="InvoiceDueDate" />
+
+
+                            @{
+                                DateTime InvoiceDate = new DateTime();
+                                InvoiceDate = Convert.ToDateTime(Model.InvoiceDueDate);
+                            }
+                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@InvoiceDate.ToShortDateString()" id="InvoiceDueDate" />
                             @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
                                 @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
 
@@ -330,8 +342,13 @@
                                             <tr>
                                                 <td>
 
-                                                    <input  class="sdate ss form-control Input-height" value="@item.ServiceDate" />
-                                                   
+                                                    @{
+                                                        DateTime dt = new DateTime();
+                                                        dt = Convert.ToDateTime(item.ServiceDate);
+                                                    }
+
+                                                    <input class="ServiceDate ss form-control Input-height" value="@dt.ToShortDateString()" />
+
                                                 </td>
 
                                                 <td>
@@ -384,11 +401,11 @@
                                                     <input type="hidden" id="InvoiceDetailId" value="@item.InvoiceDetailId" />
                                                 </td>
                                             </tr>
-                                        }
+                                                                }
 
 
-                                    }
-                                }
+                                                            }
+                                                        }
                             }
 
                             <tr id="mainrow1">
@@ -576,8 +593,8 @@
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
 
-            $('.tbodyGood').prepend($newRow);
-
+          
+            $('.tbodyGood tr:last').before($newRow);
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -649,9 +666,8 @@
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
 
             $('span.error', $newRow).remove();
-
-            $('.tbodyService').prepend($newRow);
-
+            $('.tbodyService tr:last').before($newRow);
+           
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -1258,7 +1274,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.sdate').val(),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1292,7 +1308,7 @@
             CompanyId: $('#CompanyId').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
-       
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1309,7 +1325,7 @@
         }
 
 
-        
+
 
         $.ajax({
             url: "/Invoice/SavePrintEdit",
@@ -1395,7 +1411,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.sdate').val(),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1519,7 +1535,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.sdate').val(),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
