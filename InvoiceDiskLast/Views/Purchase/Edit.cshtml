@@ -343,13 +343,32 @@
                                                 <td>
 
                                                     @{
+                                                        string Day = "", Month = "";
+
                                                         DateTime dt = new DateTime();
-
+                                                        int D, m, y = 0;
                                                         dt = Convert.ToDateTime(item.ServiceDate);
+                                                        D = dt.Day;
+                                                        m = dt.Month;
+                                                        y = dt.Year;
 
+                                                        if (D < 10)
+                                                        {
+                                                            Day = '0' + D.ToString();
+                                                        }
+
+                                                        if (m < 10)
+                                                        {
+                                                            Month = '0' + m.ToString(); ;
+                                                        }
+
+
+                                                        string date = Day.ToString() + "/" + Month.ToString() + "/" + y.ToString();
                                                     }
 
-                                                    <input type="text"  class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" />
+
+
+                                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@date" />
 
 
                                                 </td>
@@ -418,7 +437,7 @@
 
                             <tr id="mainrow1">
                                 <td>
-                                    <input type="text"  class="ServiceDate ss Input-height form-control" />
+                                    <input  class="ServiceDate ss Input-height form-control"  />
                                 </td>
 
                                 <td>
@@ -627,7 +646,7 @@
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
             $('.tbodyGood tr:last').before($newRow);
-         
+
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -694,7 +713,7 @@
             //Replace add button with remove button
             $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
 
-           
+
 
 
             //Remove id attribute from new clone row
@@ -703,7 +722,7 @@
 
             $('span.error', $newRow).remove();
 
-         
+
             $('.tbodyService tr:last').before($newRow);
             $newRow.find('.hasDatepicker ').removeAttr('id');
             $newRow.find('.hasDatepicker ').remove('id');
@@ -863,7 +882,7 @@
 
     function calculateTotalGoods(currentRow) {
 
-      
+
         Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -1263,7 +1282,7 @@
             }
         });
 
-      
+
 
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -1297,7 +1316,7 @@
         for (var i = 0; i < list.length; i++) {
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)         
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
@@ -1306,7 +1325,7 @@
             formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
         }
-       
+
 
 
         $.ajax({
@@ -1432,7 +1451,7 @@
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
             formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-         
+
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
@@ -1618,7 +1637,7 @@
         });
 
 
-      
+
 
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -1645,7 +1664,7 @@
             CompanyId: $('#CompanyId').val(),
         };
 
-       
+
 
 
 
@@ -1657,7 +1676,7 @@
 
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)         
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
@@ -1851,7 +1870,7 @@
 
 
 
-   
+
 
 
     $(document).ready(function () {
@@ -1863,8 +1882,8 @@
             dateFormat: 'dd/mm/yy',
         }).datepicker("setDate", new Date());
         if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
+            //$(this).datepicker('option', 'yearRange', '1980:c');
+            //$(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
 
@@ -1883,8 +1902,8 @@
             dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
+            //$(this).datepicker('option', 'yearRange', '1980:c');
+            //$(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
 
@@ -1899,24 +1918,24 @@
             dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
+            //$(this).datepicker('option', 'yearRange', '1980:c');
+            //$(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
 
 </script>
 
 
- 
 
 
-    
 
-      
+
+
+
 
 
 <script>
-   
+
     function RemovareDate() {
         $('#QutationServiceDetail .tbodyService tr ').each(function () {
             var currentr = $(this).closest('tr');
@@ -1934,8 +1953,8 @@
             dateFormat: 'dd/mm/yy',
         });
         if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
+            //$(this).datepicker('option', 'yearRange', '1980:c');
+            //$(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
 
