@@ -1769,6 +1769,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult SaveDraft(MvcPurchaseViewModel purchaseViewModel)
         {
+
+            //dfdfreferfererf
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
