@@ -863,7 +863,7 @@
 
     function calculateTotalGoods(currentRow) {
 
-        console.log(currentRow);
+      
         Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -1263,6 +1263,7 @@
             }
         });
 
+      
 
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -1296,16 +1297,17 @@
         for (var i = 0; i < list.length; i++) {
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)         
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
             formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
         }
+       
+
 
         $.ajax({
             url: "/Purchase/SaveToDraftEdit",
@@ -1430,7 +1432,7 @@
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
             formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+         
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
@@ -1439,7 +1441,7 @@
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderID]', list[i].PurchaseOrderID)
 
-            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
 
         }
 
@@ -1616,6 +1618,8 @@
         });
 
 
+      
+
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
@@ -1641,6 +1645,9 @@
             CompanyId: $('#CompanyId').val(),
         };
 
+       
+
+
 
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1650,8 +1657,7 @@
 
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)         
             formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
@@ -1659,7 +1665,7 @@
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderID]', list[i].PurchaseOrderID)
-            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
 
         $.ajax({
