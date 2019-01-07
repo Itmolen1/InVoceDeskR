@@ -1171,13 +1171,7 @@ namespace InvoiceDiskLast.Controllers
         {
             return View();
         }
-
-        public class VatModel
-        {
-            public int Vat1 { get; set; }
-            public string Name { get; set; }
-        }
-
+        
         public ActionResult PurchaseList()
         {
             return View();
@@ -1225,8 +1219,6 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-        #region
 
         public ActionResult InvoiceSerVice()
         {
@@ -1406,8 +1398,6 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
-
-
         public ActionResult ViewAndPrintInvoiceGood(int Id)
         {
             if (Id == 0)
@@ -1453,68 +1443,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
-        //[HttpPost]
-        //public JsonResult GetPurchaseGoodList()
-        //{
-        //    IEnumerable<MvcPurchaseModel> PurchaseList;
-        //    try
-        //    {
-        //        var draw = Request.Form.GetValues("draw").FirstOrDefault();
-        //        var start = Request.Form.GetValues("start").FirstOrDefault();
-        //        var length = Request.Form.GetValues("length").FirstOrDefault();
-        //        var sortColumn = Request.Form.GetValues("columns[" +
-        //        Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-        //        var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
-        //        string search = Request.Form.GetValues("search[value]")[0];
-
-        //        int pageSize = length != null ? Convert.ToInt32(length) : 0;
-        //        int skip = start != null ? Convert.ToInt32(start) : 0;
-
-        //        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
-        //        int CompanyId = Convert.ToInt32(Session["CompayID"]);
-        //        GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-
-        //        int companyId = Convert.ToInt32(Session["CompayID"]);
-
-        //        HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetPurchaseGoodsList/" + StatusEnum.Goods + "/" + companyId).Result;
-        //        PurchaseList = response.Content.ReadAsAsync<IEnumerable<MvcPurchaseModel>>().Result;
-
-
-        //        if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-        //        {
-        //            PurchaseList = PurchaseList.Where(p => p.PurchaseOrderID.ToString().Contains(search)
-        //          || p.PurchaseRefNumber != null && p.PurchaseRefNumber.ToLower().Contains(search.ToLower())
-        //          || p.PurchaseDate != null && p.PurchaseDate.ToString().ToLower().Contains(search.ToLower())
-        //          || p.PurchaseDueDate != null && p.PurchaseDueDate.ToString().ToLower().Contains(search.ToLower())
-        //          || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
-        //          || p.PurchaseTotoalAmount != null && p.PurchaseTotoalAmount.ToString().ToLower().Contains(search.ToLower())
-        //          || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
-        //        }
-
-
-
-        //        int recordsTotal = recordsTotal = PurchaseList.Count();
-        //        var data = PurchaseList.Skip(skip).Take(pageSize).ToList();
-        //        return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write(ex.ToString());
-        //        return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
-        //    }
-        //    return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
-
-        //}
-
-
-
-
-
-
-        #endregion
-
+        
         public ActionResult Create(int id)
         {
             MvcPurchaseViewModel purchaseviewModel = new MvcPurchaseViewModel();
@@ -1598,72 +1527,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
-        //public ActionResult ViewDirecory(int Id, string DName)
-        //{
-        //    string d = "";
-        //    try
-        //    {
-        //        List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
-        //        DirectoryViewModel _Directory = new DirectoryViewModel();
-        //        HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
-        //        _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-
-        //        if (directory.StatusCode != System.Net.HttpStatusCode.OK)
-        //        {
-        //            CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
-        //            directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id).Result;
-        //            _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-
-        //            d = _Directory.DirectoryPath.ToString();
-        //            string F = _Directory.DirectoryPath.ToString();
-        //            d = d.Substring(17);
-        //            ViewBag.Name = d.Replace("/", "");
-
-        //            if (_Directory.DirectoryPath != null)
-        //            {
-        //                DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-        //                FileInfo[] info = dir.GetFiles("*.*");
-
-        //                foreach (FileInfo f in info)
-        //                {
-        //                    string Name = f.Name;
-        //                    _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-        //                }
-        //                ViewBag.TreeView = _DirectoryList;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            d = _Directory.DirectoryPath.ToString();
-        //            string F = _Directory.DirectoryPath.ToString();
-        //            d = d.Substring(17);
-        //            ViewBag.Name = d.Replace("/", "");
-
-        //            if (_Directory.DirectoryPath != null)
-        //            {
-        //                DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-        //                FileInfo[] info = dir.GetFiles("*.*");
-
-        //                foreach (FileInfo f in info)
-        //                {
-        //                    string Name = f.Name;
-        //                    _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-        //                }
-        //                ViewBag.TreeView = _DirectoryList;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-
-        //    return View();
-        //}
-        
+                        
         public ActionResult Viewinvoice1(int? purchaseOrderId)
         {
             try
@@ -1969,8 +1833,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", purchaseId = purchaseViewModel.PurchaseOrderID } };
         }
-
-
+        
         [HttpPost]
         public ActionResult SaveEmail(MvcPurchaseViewModel purchaseViewModel)
         {
@@ -2128,9 +1991,7 @@ namespace InvoiceDiskLast.Controllers
             //DownloadFile(path);
             return new JsonResult { Data = new { Status = "Success", path = pdfname, PurchaseOrderId = purchaseViewModel.PurchaseOrderID } };
         }
-
-
-
+        
         [HttpPost]
         public ActionResult PrintEmailEdit(MvcPurchaseViewModel purchaseViewModel)
         {
@@ -2213,68 +2074,6 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", path = pdfname, PurchaseOrderId = purchasemodel.PurchaseOrderID } };
         }
 
-        //public ActionResult ViewDirecory(int Id, string DName)
-        //{
-        //    string d = "";
-        //    try
-        //    {
-        //        List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
-        //        DirectoryViewModel _Directory = new DirectoryViewModel();
-        //        HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
-        //        _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-
-        //        if (directory.StatusCode != System.Net.HttpStatusCode.OK)
-        //        {
-        //            CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Purchase");
-        //            directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/" + "Purchase").Result;
-        //            _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-
-        //            d = _Directory.DirectoryPath.ToString();
-        //            string F = _Directory.DirectoryPath.ToString();
-        //            d = d.Substring(17);
-        //            ViewBag.Name = d.Replace("/", "");
-
-        //            if (_Directory.DirectoryPath != null)
-        //            {
-        //                DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-        //                FileInfo[] info = dir.GetFiles("*.*");
-
-        //                foreach (FileInfo f in info)
-        //                {
-        //                    string Name = f.Name;
-        //                    _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-        //                }
-        //                ViewBag.TreeView = _DirectoryList;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            d = _Directory.DirectoryPath.ToString();
-        //            string F = _Directory.DirectoryPath.ToString();
-        //            d = d.Substring(17);
-        //            ViewBag.Name = d.Replace("/", "");
-
-        //            if (_Directory.DirectoryPath != null)
-        //            {
-        //                DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-        //                FileInfo[] info = dir.GetFiles("*.*");
-
-        //                foreach (FileInfo f in info)
-        //                {
-        //                    string Name = f.Name;
-        //                    _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-        //                }
-        //                ViewBag.TreeView = _DirectoryList;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-
-        //    return View();
-        //}
+       
     }
 }

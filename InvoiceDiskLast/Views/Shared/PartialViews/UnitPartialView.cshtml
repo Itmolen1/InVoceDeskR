@@ -16,14 +16,7 @@
                     <div class="col-sm-12">
                         <div class="form-group ">
                             <input class="form-control" type="text" required id="ProductUnit" placeholder="Unit Name" />
-                        </div>
-                        <hr />
-                        <div class="form-group ">
-                            <select id="SelectUnitStatus" class="form-control">
-                                <option value="1" selected="selected">True</option>
-                                <option value="0">False</option>
-                            </select>
-                        </div>
+                        </div>                       
                     </div>
                 </div>
             </div>
@@ -106,6 +99,7 @@
                         type: "POST",
                         data: dataUnit,
                         success: function (dat) {
+                            $('#productUnitTable').DataTable().ajax.reload();
                             CleartUnitTextBox();
                             $('#UnitModel').modal('hide');
                             LoadProductUnitGoods();
@@ -120,7 +114,7 @@
                                 loader: true,        // Change it to false to disable loader
                                 loaderBg: '#9EC600'  // To change the background
                             });
-                            $('#productUnitTable').DataTable().ajax.reload();
+                           
                         },
                         Error: function (err) {
                             alert("erro");

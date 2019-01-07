@@ -140,6 +140,7 @@ namespace InvoiceDiskLast.Controllers
             MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
             {
+               // return Json("success",JsonRequestBehavior.AllowGet);
                 mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
                 mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
                 mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
@@ -349,6 +350,21 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseInvoiceDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceDetails/" + id.ToString()).Result;
                 List<InvoiceViewModel> InvoiceDetailsList = responseInvoiceDetailsList.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
 
+                //foreach (InvoiceViewModel dd in InvoiceDetailsList)
+                //{
+
+
+                //    //// DateTime? dt = dd.ServiceDate;
+                //    var dateTimeNow = dd.ServiceDate; // Return 00/00/0000 00:00:00
+                //    var dateOnlyString = dateTimeNow.ToShortDateString();
+
+                //    DateTime dt = DateTime.Parse(dateOnlyString);
+                //    DateTime dst = Convert.ToDateTime(dateOnlyString);
+                //    //DateTime ds = dt.ToString("yyyy-MM-dd");
+
+                //   dd.ServiceDate = Convert.ToDateTime(dateOnlyString);
+                //    dd.ServiceDate.ToShortDateString();
+                //}
 
                 HttpResponseMessage GoodResponse = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + invoiceViewModel.CompanyId + "/Good").Result;
                 List<MVCProductModel> GoodModel = GoodResponse.Content.ReadAsAsync<List<MVCProductModel>>().Result;
@@ -389,7 +405,7 @@ namespace InvoiceDiskLast.Controllers
             MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
             {
-              
+                //return Json("success",JsonRequestBehavior.AllowGet);
                 mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
                 mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
                 mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
@@ -942,71 +958,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
-
-        public ActionResult ViewDirecory(int Id, string DName)
-        {
-            string d = "";
-            try
-            {
-                List<DirectoryViewModel> _DirectoryList = new List<DirectoryViewModel>();
-                DirectoryViewModel _Directory = new DirectoryViewModel();
-                HttpResponseMessage directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/Invoice").Result;
-                _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-
-                if (directory.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    CreatDirectoryClass.CreateDirecotyFolder(Id, DName, "Invoice");
-                    directory = GlobalVeriables.WebApiClient.GetAsync("GetDirectory/" + Id + "/Invoice").Result;
-                    _Directory = directory.Content.ReadAsAsync<DirectoryViewModel>().Result;
-
-                    d = _Directory.DirectoryPath.ToString();
-                    string F = _Directory.DirectoryPath.ToString();
-                    d = d.Substring(17);
-                    ViewBag.Name = d.Replace("/", "");
-
-                    if (_Directory.DirectoryPath != null)
-                    {
-                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-                        FileInfo[] info = dir.GetFiles("*.*");
-
-                        foreach (FileInfo f in info)
-                        {
-                            string Name = f.Name;
-                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-                        }
-                        ViewBag.TreeView = _DirectoryList;
-                    }
-                }
-                else
-                {
-                    d = _Directory.DirectoryPath.ToString();
-                    string F = _Directory.DirectoryPath.ToString();
-                    d = d.Substring(17);
-                    ViewBag.Name = d.Replace("/", "");
-
-                    if (_Directory.DirectoryPath != null)
-                    {
-                        DirectoryInfo dir = new DirectoryInfo(Server.MapPath(_Directory.DirectoryPath));
-                        FileInfo[] info = dir.GetFiles("*.*");
-
-                        foreach (FileInfo f in info)
-                        {
-                            string Name = f.Name;
-                            _DirectoryList.Add(new DirectoryViewModel { DirectoryPath = f.Name, FileFolderPathe = F });
-                        }
-                        ViewBag.TreeView = _DirectoryList;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return View("~/Views/Purchase/ViewDirecory.cshtml");
-        }
-
+        
         [HttpPost]
         public ActionResult UploadFiles(InvoiceViewModel InvoiceViewModel)
         {
