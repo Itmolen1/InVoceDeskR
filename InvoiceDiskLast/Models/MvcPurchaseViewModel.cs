@@ -19,9 +19,7 @@ namespace InvoiceDiskLast.Models
         [DataType(DataType.Date)]
         public Nullable<System.DateTime> PurchaseDueDate { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
-        [DataType(DataType.Date)]
-        public Nullable<System.DateTime> PDueDate { get; set; }
+       
 
         public string PurchaseRefNumber { get; set; }
         public Nullable<double> PurchaseSubTotal { get; set; }
