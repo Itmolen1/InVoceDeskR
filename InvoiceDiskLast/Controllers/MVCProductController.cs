@@ -187,6 +187,7 @@ namespace InvoiceDiskLast.Controllers
                 }
                 else
                 {
+                    ProductModel.ProductStatus = true;
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutAPIProduct/" + ProductModel.ProductId, ProductModel).Result;
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
