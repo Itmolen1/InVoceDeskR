@@ -49,7 +49,7 @@
                                 PurchaseDate = Convert.ToDateTime(Model.PurchaseDate);
                             }
 
-                            <input  class="PurchaseDate  Input-height form-control" autocomplete="off" value="@PurchaseDate.ToShortDateString()" id="PurchaseDate" />
+                            <input class="PurchaseDate  Input-height form-control" autocomplete="off" value="@PurchaseDate.ToShortDateString()" id="PurchaseDate" />
                             @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
                                 @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
 
@@ -266,14 +266,14 @@
                             <tr id="mainrow1">
                                 <td>
 
-                                    <input  class="ServiceDate ss Input-height form-control"/>
+                                    <input type="text" class="ServiceDate ss Input-height form-control" />
                                     @*<input class="ServiceDate  Input-height form-control" />*@
                                 </td>
                                 <td>
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class="Discription form-control Input-height" autocomplete="off" />
+                                    <input type="text" class=" Discription form-control Input-height" autocomplete="off" />
                                 </td>
                                 <td>
                                     @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", @autocomplete = "off" } })
@@ -1098,7 +1098,7 @@
                     PurchaseItemId: parseInt($(this).find('.product').val()),
                     PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
                     Type: "Goods",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
+                   
                     PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
@@ -1348,8 +1348,7 @@
                 orderItem = {
                     PurchaseItemId: parseInt($(this).find('.product').val()),
                     PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    Type: "Goods",                    
                     PurchaseItemRate: parseInt($(this).find('.rateG').val()),
                     PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
@@ -1491,17 +1490,12 @@
             datetime: new Date(),
             dateFormat: 'dd/mm/yy',
         }).datepicker("setDate", new Date());
-       
+
         if ($(this).hasClass('birthdate')) {
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-   
-
-
 
     $(document).ready(function () {
         $('.PurchaseDate').datepicker({
@@ -1516,7 +1510,6 @@
         }
     });
 
-
     $(document).ready(function () {
         $('.DueDate').datepicker({
             changeMonth: true,
@@ -1529,7 +1522,6 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
 
     $('body').on('focus', ".ss", function () {
 
@@ -1545,9 +1537,5 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-
-
 
 </script>
