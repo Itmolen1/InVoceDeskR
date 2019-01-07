@@ -13,9 +13,7 @@
     var CompanyDatas = ViewBag.Companydata;
     var InvoiceModel = ViewBag.InvoiceData;
 }
-<script src="~/CustomScript/DateTimeFormate.js"></script>
 
-<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 @*<label></label>*@
 <div class="row">
     <div class="col-2 b-r">
@@ -330,7 +328,7 @@
                                             <tr>
                                                 <td>
 
-                                                    <input  class="sdate ss form-control Input-height" value="@item.ServiceDate" />
+                                                    <input  class="ServiceDate form-control Input-height MAterialDatepicker" value="@item.ServiceDate" />
                                                    
                                                 </td>
 
@@ -344,7 +342,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class=" Discription form-control Input-height" value="@item.Description" />
+                                                    <input type="text" class="Discription form-control Input-height" value="@item.Description" />
                                                 </td>
 
                                                 <td>
@@ -393,7 +391,7 @@
 
                             <tr id="mainrow1">
                                 <td>
-                                    <input class="ServiceDate ss Input-height form-control" autocomplete="off" />
+                                    <input class="ServiceDate MAterialDatepicker Input-height form-control" autocomplete="off" />
                                 </td>
 
                                 <td>
@@ -494,7 +492,9 @@
             <div class="row">
                 <div class="col-12 b-r">
                     <div class="form-group">
-                        <textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
+                        @*<textarea class="form-control txtarea" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
+                        <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>*@
+                        <textarea class="form-control txtarea" maxlength="155" id="InvoiceDescription" onkeyup="CharacterLenthCount()">@InvoiceModel.InvoiceDescription</textarea>
                         <span class="badge badge-pill badge-info pull-left" id="lenthC"></span>
                     </div>
                 </div>
@@ -525,7 +525,27 @@
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 
+<link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
 <script>
+
+    function CharacterLenthCount() {
+        debugger;
+        var count = $('#InvoiceDescription').val().length;
+
+        if (count > 150) {
+            $('#lenthC').removeClass('badge-info');
+            $('#lenthC').addClass('badge-danger');
+            $('#lenthC').text(count);
+
+
+        }
+        else if (count < 150) {
+            $('#lenthC').removeClass('badge-danger');
+            $('#lenthC').addClass('badge-info');
+            $('#lenthC').text(count);
+
+        }
+    }
 
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
@@ -1258,7 +1278,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.sdate').val(),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1395,7 +1415,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.sdate').val(),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1519,7 +1539,7 @@
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     Description: $(this).find('.Discription').val(),
                     Type: "Service",
-                    ServiceDate: $(this).find('.sdate').val(),
+                    ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                     InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
@@ -1568,8 +1588,11 @@
             formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
             formData.append('InvoiceDetailsTable[' + i + '][InvoiceDetailId]', list[i].InvoiceDetailId)
             formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
+
+            alert(list[i].ServiceDate);
         }
 
+       
         $.ajax({
             url: "/Invoice/Edit",
             data: JSON.stringify(empObj),

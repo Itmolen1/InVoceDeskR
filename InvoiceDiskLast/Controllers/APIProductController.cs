@@ -195,6 +195,10 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
+                if(productTable.ProductUnit == 0)
+                    {
+                    productTable.ProductUnit = null;
+                }
 
                 db.ProductTables.Add(productTable);
                 db.SaveChanges();
