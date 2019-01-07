@@ -57,7 +57,7 @@
 
 
                             <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="InvoiceDate" />
-                            @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
+                            @*@Html.EditorFor(model => model.   , new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
                                 @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
 
 
@@ -444,7 +444,6 @@
                                 <td>
                                     <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
                                 </td>
-
                             </tr>
                         </tbody>
                     </table>
@@ -578,10 +577,7 @@
             alert("Please select provide rate");
             return;
         }
-
-
-
-
+        
         if (isAllValid) {
             var $newRow = $("#mainrow").clone().removeAttr('id');
             $('#SelectProductQutationG', $newRow).val($("#SelectProductQutationG").val());
@@ -591,8 +587,7 @@
             //Remove id attribute from new clone row
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-
-
+            
             $('.tbodyGood tr:last').before($newRow);
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
