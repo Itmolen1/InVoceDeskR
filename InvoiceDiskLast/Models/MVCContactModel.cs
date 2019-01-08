@@ -18,6 +18,7 @@ namespace InvoiceDiskLast.Models
         public string StreetNumber { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
+        public string Land { get; set; }
         public string LandLine { get; set; }
         public string telephone { get; set; }
         public string Mobile { get; set; }

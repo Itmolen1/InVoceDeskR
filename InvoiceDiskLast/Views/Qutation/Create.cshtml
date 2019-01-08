@@ -34,6 +34,8 @@
                             @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
                             <br />
                             @Contectdatas.PostalCode,@Contectdatas.City
+                            <br />
+                            @Contectdatas.Land                      
                         </div>
                     </div>
 
@@ -60,10 +62,7 @@
                         <div class="col-3 b-r">
                             Qutation Number:
                         </div>
-                        <div class="col-6 b-r">
-
-
-                          
+                        <div class="col-6 b-r">                       
 
                             @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
@@ -152,7 +151,7 @@
                     <div class="row">
                         <div class="col-5 b-r text-right">Address:</div>
                         <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress<br />
+                            @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber<br />
                             @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
                             @CompanyDatas.CompanyCountry
                         </div>
@@ -405,7 +404,7 @@
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
 
-        debugger;
+        
         var currentRow1 = $(this).closest("tr");
         var VAT = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow1);
@@ -607,7 +606,7 @@
 
     $(document).on("keyup", "tbody .quantityG", function () {
 
-        debugger;
+        
 
         Currentrow = $(this).closest("tr");
         vat = Currentrow.find(".VATG").val();
@@ -635,7 +634,7 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        debugger;
+        
         var price = CurrentRow;
 
         Total = 0;
@@ -672,7 +671,7 @@
 
     $('.VATG').change(function () {
 
-        debugger;
+        
 
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
@@ -684,7 +683,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        debugger;
+        
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -706,7 +705,7 @@
 
     $('tbody .VATG').change(function () {
 
-        debugger;
+        
 
 
         var Currentrow = $(this).closest("tr");
@@ -792,7 +791,7 @@
     }
 
     $(document).on('change', '.pClassG', function () {
-        debugger;
+        
         var currentRow1 = $(this).closest('tr');
         var value = currentRow1.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow1);
@@ -800,22 +799,41 @@
 
     $('#mainrow .pClassG').change(function () {
 
-        debugger;
+        
+        var currentRow = $(this).closest('tr');
+        var value = currentRow.find('.pClassG').val();
+        GetProductPriceByProductId(value, currentRow);
+    });
+
+    $('#AddGoods').click(function () {
+
+        GoodsService = "";
+        GoodsService = "Good";
+        ShowServiceGood("Good");
+        $('#TypeGoodsServices').attr('disabled', false);
+        $('#UpdateProIdGoods').hide();
+        $('#SAveProdIDGoods').show();
+        $('#TypeGoodsServices').val('Good');
+        $('#TypeGoodsServices').attr('disabled', 'disabled');
+        $('#CreateNewProductModalGoods').modal('show');
+    });
+
+    $('#mainrow .pClassG').change(function () {
+
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
 
     $('#mainrow1 .pClassG').change(function () {
-
-        debugger;
+              
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
 
     function GetProductPriceByProductId(Id, CurrentRow) {
-
+        
         if (Id == "AddNewProductSelect") {
             GoodsService = "";
             GoodsService = "Good";
@@ -838,19 +856,18 @@
             $('#TypeGoodsServices').attr('disabled', 'disabled');
             $('#CreateNewProductModalGoods').modal('show');
         }
-        else if (Id == "0") {
-
-            return;
+        else if (Id == 0) {          
+            return true;
         }
-        else {
-            var productId = Id;
+        else if (Id > 0) {
+            var ProductId = Id;
             $.ajax({
-                url: "/MVCQutation/ProductPricebyId",
+                url: "/MVCProduct/ProductPricebyId",
                 type: "POST",
                 cache: false,
-                data: { 'ProductId': productId },
+                data: { 'ProductId': ProductId },
                 success: function (resultData) {
-                    debugger;
+                    
                     CurrentRow.find('.rateG').val(resultData);
                     calculateTotalGoods(CurrentRow);
                     CombineTotalAndSubtotal();
@@ -886,7 +903,7 @@
 
     function CombineTotalAndSubtotal() {
 
-        debugger;
+        
 
         var SubTotalGoode = 0, SubTotalService = 0;
 
@@ -912,7 +929,7 @@
 
     function CombineTotal() {
 
-        debugger;
+        
 
         var TotalGoode, Total, TotalService1 = 0;
         TotalGoode = totalGoods();
@@ -951,7 +968,7 @@
         $('#QutationServiceDetail1 tr').each(function () {
 
 
-            debugger;
+            
             var Value = $(this).find(".RowTotalG").val();
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
 
@@ -1090,7 +1107,7 @@
     }
 
     function CreateQuation() {
-        debugger;
+        
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
@@ -1100,7 +1117,7 @@
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
 
-            debugger;
+            
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1118,7 +1135,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            debugger;
+            
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1219,7 +1236,7 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-            debugger;
+            
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1236,7 +1253,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            debugger;
+            
             CurrentRow = $(this).closest("tr");
 
             if (ValidateRow(CurrentRow)) {
@@ -1355,7 +1372,7 @@
 
         });
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            debugger;
+            
             CurrentRow = $(this).closest("tr");
 
             if (ValidateRow(CurrentRow)) {
@@ -1443,9 +1460,7 @@
             }
         });
     });
-
-
-
+    
     function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1471,13 +1486,6 @@
         }
     }
 
-</script>
-
-
-
-
-
-<script>
     $(document).ready(function () {
       
 
@@ -1492,14 +1500,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-    });
-
- 
-
-
-
-
-    $(document).ready(function () {
+  
         $('.QutationDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1510,10 +1511,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-    });
-
-
-    $(document).ready(function () {
+  
         $('.DueDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1525,9 +1523,7 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-
+    
     $('body').on('focus', ".ss", function () {
 
         $(this).closest('tr').find(':input').removeClass('hasDatepicker');
@@ -1543,7 +1539,5 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-
+    
 </script>

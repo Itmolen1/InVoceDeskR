@@ -42,7 +42,7 @@
     <link href="~/dist/css/style.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/dist/css/fonts/fontawesome-webfont3e6e.ttf" />
     <link rel="stylesheet" href="~/dist/css/fonts/materialdesignicons-webfont.ttf" />
-    <link rel="stylesheet" href="~/dist/css/fonts/themify.ttf" />
+    <link rel="stylesheet" href="~/dist/css/fonts/themify.ttf" />   
     <script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
 
     <!--[if lt IE 9]>
@@ -137,8 +137,8 @@
         <script src="~/assets/node_modules/timepicker/bootstrap-timepicker.min.js"></script>
         <script src="~/assets/node_modules/bootstrap-daterangepicker/daterangepicker.js"></script>
         @*<script src="~/Scripts/CustomScript/DatePicker.js"></script>*@
-        <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>
-        <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+        @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/jquery-ui.min.js" type="text/javascript"></script>*@
+        @*<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />*@
         <script src="~/CustomClasses/AutoCompleteSelectBox.js"></script>
         <script src="~/assets/js/fA.js"></script>
         <script src="~/assets/node_modules/dropify/dist/js/dropify.min.js"></script>
@@ -154,8 +154,24 @@
 <script>
     var GoodsService = "";
     var GotoProduct = "";
+    var GoToVendCustrClient = "";
 
+    $(document).ready(function ()
+    {
+        $("input[type='radio']").click(function () {
+            var radioValue = $("input[name='ClientType']:checked").val();
+            if (radioValue == "Private") {
+                $('#rowiddd').hide(1000);
+                $('#rowiddd2').show(1000);
 
+            }
+            else {
+                $('#rowiddd2').hide(1000);
+                $('#rowiddd').show(1000);
+            }
+        });
+
+    });
 </script>
 
 

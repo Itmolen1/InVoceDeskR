@@ -17,9 +17,8 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContactsTable()
         {
-            this.QutationTables = new HashSet<QutationTable>();
-            this.BillTables = new HashSet<BillTable>();
             this.InvoiceTables = new HashSet<InvoiceTable>();
+            this.QutationTables = new HashSet<QutationTable>();
         }
     
         public int ContactsId { get; set; }
@@ -31,23 +30,22 @@ namespace InvoiceDiskLast.Models
         public string StreetNumber { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
+        public string Land { get; set; }
         public string LandLine { get; set; }
         public string telephone { get; set; }
         public string Mobile { get; set; }
         public string BillingEmail { get; set; }
         public string Website { get; set; }
-        public Nullable<System.DateTime> Addeddate { get; set; }
-        public Nullable<bool> Status { get; set; }
         public string PersonCompany { get; set; }
         public string Remarks { get; set; }
+        public Nullable<System.DateTime> Addeddate { get; set; }
+        public Nullable<bool> Status { get; set; }
         public Nullable<int> PaymentTerm { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QutationTable> QutationTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BillTable> BillTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationTable> QutationTables { get; set; }
     }
 }

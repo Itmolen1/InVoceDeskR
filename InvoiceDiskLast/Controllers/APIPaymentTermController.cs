@@ -31,26 +31,7 @@ namespace InvoiceDiskLast.Controllers
                 return NotFound();
                 throw;
             }
-        }
-
-        [Route("api/PostpaymentTerm")]
-        public IHttpActionResult PostPaymentTerm(PaymentTermTable paymentTable)
-        {
-            try
-            {
-                
-                    db.PaymentTermTables.Add(paymentTable);
-                    db.SaveChanges();
-
-                    return Ok(paymentTable);
-               
-            }
-            catch(Exception ex)
-            {
-                return BadRequest();
-            }
-        }
-
+        }       
 
     }
 }

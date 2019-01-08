@@ -17,10 +17,19 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
 
         // GET: api/PaymentTermDurations
-        [Route("api/GetPaymentTermDurations")]
-        public IQueryable<PaymentTermDuration> GetPaymentTermDurations()
+        [Route("api/GetPaymentTermDurations/{id:int}")]
+        public IHttpActionResult GetPaymentTermDurations(int id)
         {
-            return db.PaymentTermDurations;
+            
+            List<PaymentTermUdrationModel> paymentTermDurations = db.PaymentTermDurations.Where(x => x.CompanyId == id && x.Status == true).Select(x => new PaymentTermUdrationModel
+            {
+
+                PaymentDurationId = x.PaymentDurationId,
+                PaymentDuration = x.PaymentDuration
+
+            }).ToList();
+
+            return Ok(paymentTermDurations);
         }
 
         // GET: api/PaymentTermDurations/5
@@ -71,19 +80,21 @@ namespace InvoiceDiskLast.Controllers
             }            
         }
 
-        // POST: api/PaymentTermDurations
+        [Route("api/PaymentTermDurations")]
         [ResponseType(typeof(PaymentTermDuration))]
         public IHttpActionResult PostPaymentTermDuration(PaymentTermDuration paymentTermDuration)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                paymentTermDuration = db.PaymentTermDurations.Add(paymentTermDuration);
+                db.SaveChanges();
+
+                return Ok(paymentTermDuration);
             }
-
-            db.PaymentTermDurations.Add(paymentTermDuration);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = paymentTermDuration.PaymentDurationId }, paymentTermDuration);
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
         }
 
         // DELETE: api/PaymentTermDurations/5
