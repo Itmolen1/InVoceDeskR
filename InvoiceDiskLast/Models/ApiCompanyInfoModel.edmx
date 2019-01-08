@@ -677,6 +677,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QutationTable_ContactsTable">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QutationTable_UserTable">
           <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
           <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="*" />
@@ -829,6 +841,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="Self.FK_QutationTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="QutationTable" EntitySet="QutationTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_ContactsTable" Association="Self.FK_QutationTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
             <End Role="QutationTable" EntitySet="QutationTable" />
           </AssociationSet>
           <AssociationSet Name="FK_QutationTable_UserTable" Association="Self.FK_QutationTable_UserTable">
@@ -1024,6 +1040,10 @@
             <End Role="ContactsTable" EntitySet="ContactsTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_ContactsTable" Association="APIcompanyModel.FK_QutationTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1066,6 +1086,7 @@
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="QutationTable" ToRole="UserTable" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="QutationTable" ToRole="ContactsTable" />
         </EntityType>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
@@ -1770,6 +1791,7 @@
           <Property Name="PaymentTerm" Type="Int32" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
         </EntityType>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1791,6 +1813,18 @@
               <PropertyRef Name="ContactsId" />
             </Principal>
             <Dependent Role="InvoiceTable">
+              <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="QutationTable">
               <PropertyRef Name="ContactId" />
             </Dependent>
           </ReferentialConstraint>
