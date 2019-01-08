@@ -18,8 +18,8 @@ namespace InvoiceDiskLast.Models
         public string Bill_ID { get; set; }
         public string RefNumber { get; set; }
         public Nullable<int> PurchaseId { get; set; }
-        public Nullable<System.DateTime> BillDate { get; set; }
-        public Nullable<System.DateTime> BillDueDate { get; set; }
+        public System.DateTime BillDate { get; set; }
+        public System.DateTime BillDueDate { get; set; }
         public Nullable<double> SubTotal { get; set; }
         public Nullable<double> TotalVat6 { get; set; }
         public Nullable<double> TotalVat21 { get; set; }
@@ -34,7 +34,6 @@ namespace InvoiceDiskLast.Models
     
         public virtual UserTable UserTable { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
-        public virtual ContactsTable ContactsTable { get; set; }
         public virtual UserTable UserTable1 { get; set; }
     }
 }

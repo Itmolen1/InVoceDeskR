@@ -82,8 +82,9 @@
 
 <script>
     $(document).ready(function () {
-        $('#btn-QutationNew').click(function () {
-            LoadPaymentTermDuration();
+        $('#btn-QutationNew').click(function () {           
+            GoToVendCustrClient = "";
+            GoToVendCustrClient = "Customer";
             LoadContacts();
             $('#quotation').show();
             $('#Invoice').hide();
@@ -99,7 +100,8 @@
             });
 
             $('#btn-NewPurchase').click(function () {
-
+                GoToVendCustrClient = "";
+                GoToVendCustrClient = "Vender";
                 showRequiredModel = "";
                 showRequiredModel = "PurchaseContatcModel";
                 LoadVernder();
@@ -109,12 +111,15 @@
             });
 
             $('#thiss').click(function () {
+                GoToVendCustrClient = "";
+                GoToVendCustrClient = "Vender";
                 LoadVernder();
                 $('#VenderSelectModel').modal('show');
             });
 
-            $('#btn-NewInvoice').click(function () { 
-                LoadPaymentTermDuration();
+            $('#btn-NewInvoice').click(function () {              
+                GoToVendCustrClient = "";
+                GoToVendCustrClient = "Customer";
                 LoadContacts();
                 $('#quotation').hide();
                 $('#Invoice').show();
@@ -123,6 +128,8 @@
 
             $('#btn-NewBill').click(function () {
 
+                GoToVendCustrClient = "";
+                GoToVendCustrClient = "Vender";
                 showRequiredModel = "";
                 showRequiredModel = "PurchaseContatcModel";
                 LoadVernder();

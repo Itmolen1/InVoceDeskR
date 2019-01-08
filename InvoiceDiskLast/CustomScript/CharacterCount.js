@@ -1,5 +1,5 @@
 ﻿function CharacterLenthCount() {
-    debugger;
+    
     var count = $('#InvoiceDescription').val().length;
 
     if (count > 150) {

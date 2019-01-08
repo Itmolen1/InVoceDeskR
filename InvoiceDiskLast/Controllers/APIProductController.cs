@@ -148,11 +148,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
-
-
-
+        
         [Route("api/PutAPIProduct/{id:int}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProductTable(int id, ProductTable productTable)

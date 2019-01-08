@@ -62,8 +62,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group ">
-                                <input class="form-control" type="text" required id="SalePriceService" placeholder="Hourly Price" />
-                              
+                                <input class="form-control" type="text" required id="SalePriceService" placeholder="Hourly Price" />                              
                             </div>
                         </div>
                     </div>
@@ -80,12 +79,12 @@
             </div>
             <div class="modal-footer">
                 <div id="SAveProdIDGoods">
-                    <button type="button" id="SaveNewProductGoods" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Save</button>
-                </div>
+                    <button type="button" id="SaveNewProductGoods" class="btn btn-success d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i>Save</button>
+                   </div>
                 <div id="UpdateProIdGoods">
                     <button type="button" id="UpdateProductGoods" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle" style="padding-right: 10px"></i>Update Product</button>
                 </div>
-                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProduct" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
+                <button type="button" class="btn btn-danger waves-effect text-left" id="CancelProductGood" data-dismiss="modal"><i class="fa fa-window-close" style="padding-right: 10px"></i>Close</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -95,91 +94,131 @@
 
 
 <script>
-    $('#SaveNewProductGoods').click(function () {       
+    $('#SaveNewProductGoods').click(function () {
+           var pValid;
         var IsValid;
         if (GoodsService == "Good") {
             IsValid = validateProductGoods();
-
-            if (IsValid == true) {
-                var pValid = checkProductByName($('#ProductNameGoods').val());
-                if (pValid == true) {
-
-                    var dss = {
+            if (IsValid == true) {               
+                $.ajax({
+                    url: "/MVCProduct/GetProductByName",
+                    type: "POST",
+                    asyn: false,
+                    data: {
                         ProductName: $('#ProductNameGoods').val(),
-                        Description: $('#DescriptionGoods').val(),
-                        SalePrice: $('#SalePriceGoods').val(),
-                        PurchasePrice: $('#PurchasePriceGoods').val(),
-                        Type: GoodsService,
-                        OpeningQuantity: $('#OpeningQuantityGoods').val(),
-                        ProductUnit: $('#ProductUnitSelectGoods').val(),
-                    }
-
-                    $.ajax({
-                        url: "/MVCProduct/AddOrEdit",
-                        type: "POST",
-                        asyn: false,
-                        data: dss,
-                        success: function (data) {
-                            if (data == "Created") {
-                                $('#productTable').DataTable().ajax.reload();
-                                CleartProdctTextBoxGoods();
-                                $('#CreateNewProductModalGoods').modal('hide');
-                                $.toast({
-                                    heading: 'Opration Success',
-                                    text: 'Data Saved Successfull',
-                                    icon: 'info',
-                                    loader: true,        // Change it to false to disable loader
-                                    loaderBg: '#9EC600'  // To change the background
-                                });
-                                LoadProductG();
-                            }
-                        },
-                        error: function () {
-                            alert("error");
+                        ProductStatus: "All"
+                    },
+                    success: function (datasucess) {
+                        if (datasucess == "Found")
+                        {
+                            $.toast({
+                                heading: 'Already exist',
+                                text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#FF0000'  // To change the background
+                            });
                         }
-                    });
-                }
+                        if (datasucess != "Found")
+                        {
+                            var dss = {
+                                ProductName: $('#ProductNameGoods').val(),
+                                Description: $('#DescriptionGoods').val(),
+                                SalePrice: $('#SalePriceGoods').val(),
+                                PurchasePrice: $('#PurchasePriceGoods').val(),
+                                Type: GoodsService,
+                                OpeningQuantity: $('#OpeningQuantityGoods').val(),
+                                ProductUnit: $('#ProductUnitSelectGoods').val(),
+                            }
+
+                            $.ajax({
+                                url: "/MVCProduct/AddOrEdit",
+                                type: "POST",
+                                asyn: false,
+                                data: dss,
+                                success: function (data) {
+                                    if (data == "Created") {
+                                        $('#productTable').DataTable().ajax.reload();
+                                        CleartProdctTextBoxGoods();
+                                        $('#CreateNewProductModalGoods').modal('hide');
+                                        $.toast({
+                                            heading: 'Opration Success',
+                                            text: 'Data Saved Successfull',
+                                            icon: 'info',
+                                            loader: true,        // Change it to false to disable loader
+                                            loaderBg: '#9EC600'  // To change the background
+                                        });
+                                        LoadProductG();
+                                    }
+                                },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+                        }
+
+                    }
+                });
+               
             }
         }
         else if (GoodsService == "Services") {
             IsValid = validateProductServices();
             if (IsValid == true) {
-                var pValid = checkProductByName($('#ProductNameService').val());
-                if (pValid == true) {
-                    var dss = {
+                $.ajax({
+                    url: "/MVCProduct/GetProductByName",
+                    type: "POST",
+                    asyn: false,
+                    data: {
                         ProductName: $('#ProductNameService').val(),
-                        Description: $('#DescriptionService').val(),
-                        SalePrice: $('#SalePriceService').val(),
-                        Type: GoodsService,
-                    }
-                    $.ajax({
-                        url: "/MVCProduct/AddOrEdit",
-                        type: "POST",
-                        asyn: false,
-                        data: dss,
-                        success: function (data) {
-                            if (data == "Created") {
-                                $('#productTable').DataTable().ajax.reload();
-                                ClearTextBoxesServices();
-                                $('#CreateNewProductModalGoods').modal('hide');
-                                $.toast({
-                                    heading: 'Opration Success',
-                                    text: 'Data Saved Successfull',
-                                    icon: 'info',
-                                    loader: true,        // Change it to false to disable loader
-                                    loaderBg: '#9EC600'  // To change the background
-                                });
-                                LoadProductS();
-                            }
-                        },
-                        error: function () {
-                            alert("error");
+                        ProductStatus: "All"
+                    },
+                    success: function (datasucess) {
+                        if (datasucess == "Found") {
+                            $.toast({
+                                heading: 'Already exist',
+                                text: 'Product already exist with nam ' + $('#ProductName').val() + ' choose another `Name`',
+                                icon: 'info',
+                                loader: true,        // Change it to false to disable loader
+                                loaderBg: '#FF0000'  // To change the background
+                            });
                         }
-                    });
-                }
+                        if (datasucess != "Found") {
+                            var dss = {
+                                ProductName: $('#ProductNameService').val(),
+                                Description: $('#DescriptionService').val(),
+                                SalePrice: $('#SalePriceService').val(),
+                                Type: GoodsService,
+                            }
+                            $.ajax({
+                                url: "/MVCProduct/AddOrEdit",
+                                type: "POST",
+                                asyn: false,
+                                data: dss,
+                                success: function (data) {
+                                    if (data == "Created") {
+                                        $('#productTable').DataTable().ajax.reload();
+                                        ClearTextBoxesServices();
+                                        $('#CreateNewProductModalGoods').modal('hide');
+                                        $.toast({
+                                            heading: 'Opration Success',
+                                            text: 'Data Saved Successfull',
+                                            icon: 'info',
+                                            loader: true,        // Change it to false to disable loader
+                                            loaderBg: '#9EC600'  // To change the background
+                                        });
+                                        LoadProductS();
+                                    }
+                                },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    }
+                });
             }
         }
-
         //LoadProductSelect();
     });
 
@@ -322,7 +361,7 @@
         //LoadProductUnitPurchase();
         $("#mainrow #SelectProductQutationp").find("option").remove();
         $("#mainrow #SelectProductQutationp").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
+        $("#mainrow #SelectProductQutationp").append("<option value=AddNewProductSelect> id=AddNewProduct" + 'Add New Product' + "</option>");
 
         $.ajax({
             url: "/MVCProduct/GetProduct",
@@ -352,7 +391,7 @@
     }
 
     function checkProductByName(PName) {
-        debugger;
+        
         var Result = true;
         $.ajax({
             url: "/MVCProduct/GetProductByName",
@@ -495,6 +534,13 @@
         }
     });
 
+    $('#CancelProductGood').click(function () {
+
+        $('#CreateNewProductModalGoods').modal('hide');       
+        $("#mainrow #SelectProductQutationG").val($("#SelectProductQutationG option:first").val());
+        $("#mainrow1 #SelectProductQutationS").val($("#SelectProductQutationS option:first").val());
+    });
+
     function LoadProductG() {
         PgoodServices = "Good";
 
@@ -519,6 +565,8 @@
             }
 
         });
+
+        
     }
 
     function LoadProductS() {
@@ -545,5 +593,4 @@
         });
     }
    
-
 </script>

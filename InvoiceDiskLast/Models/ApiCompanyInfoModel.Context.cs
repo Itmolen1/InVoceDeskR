@@ -31,7 +31,6 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<QutationDetailsTable> QutationDetailsTables { get; set; }
         public virtual DbSet<QutationTable> QutationTables { get; set; }
         public virtual DbSet<PurchaseOrderTable> PurchaseOrderTables { get; set; }
-        public virtual DbSet<ContactsTable> ContactsTables { get; set; }
         public virtual DbSet<ProductUnitTable> ProductUnitTables { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<AccountTable> AccountTables { get; set; }
@@ -48,12 +47,13 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<UserAuthorityTable> UserAuthorityTables { get; set; }
         public virtual DbSet<CompanyUser> CompanyUsers { get; set; }
         public virtual DbSet<UserTable> UserTables { get; set; }
-        public virtual DbSet<PaymentTermDuration> PaymentTermDurations { get; set; }
         public virtual DbSet<DirectoryTable> DirectoryTables { get; set; }
         public virtual DbSet<BillDetailTable> BillDetailTables { get; set; }
         public virtual DbSet<BillTable> BillTables { get; set; }
         public virtual DbSet<InvoiceTable> InvoiceTables { get; set; }
         public virtual DbSet<InvoiceDetailsTable> InvoiceDetailsTables { get; set; }
+        public virtual DbSet<PaymentTermDuration> PaymentTermDurations { get; set; }
+        public virtual DbSet<ContactsTable> ContactsTables { get; set; }
     
         [DbFunction("DBEntities", "GetStockItem")]
         public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)

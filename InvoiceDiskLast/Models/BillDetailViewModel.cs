@@ -17,10 +17,10 @@ namespace InvoiceDiskLast.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        public Nullable<System.DateTime> BillDueDate { get; set; }
+        public DateTime BillDueDate { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [DataType(DataType.Date)]
-        public Nullable<System.DateTime> BillDate { get; set; }
+        public DateTime BillDate { get; set; }
         public string Description { get; set; }
 
         public int? Quantity { get; set; }

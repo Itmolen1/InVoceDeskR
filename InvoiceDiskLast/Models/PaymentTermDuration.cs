@@ -16,5 +16,7 @@ namespace InvoiceDiskLast.Models
     {
         public int PaymentDurationId { get; set; }
         public Nullable<int> PaymentDuration { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<bool> Status { get; set; }
     }
 }

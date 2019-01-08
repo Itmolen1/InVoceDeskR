@@ -247,7 +247,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 HttpFileCollectionBase files = Request.Files;
 
-                if (CreatDirectoryClass.UploadFileAndCreateDirectory((int)mvcContactModel.ContactsId, mvcContactModel.ContactName, files, "Invoice"))
+                if (CreatDirectoryClass.UploadFileAndCreateDirectory((int)mvcContactModel.ContactsId, mvcContactModel.ContactName, files, "Client"))
                 {
                     return Json("Success", JsonRequestBehavior.AllowGet);
                 }

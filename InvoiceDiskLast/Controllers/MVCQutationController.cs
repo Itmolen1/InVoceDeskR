@@ -1385,15 +1385,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [HttpPost]
-        public JsonResult ProductPricebyId(int ProductId)
-        {
-
-            HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + ProductId.ToString()).Result;
-            MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;
-            float price = (float)productModel.SalePrice;
-            return Json(price, JsonRequestBehavior.AllowGet);
-        }
+       
 
 
 
