@@ -67,7 +67,7 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BillDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control BillDueDate Input-height", id = "BillDueDate", title = "Due Date", required = "required", @autocomplete = "off" } })
+                            @Html.EditorFor(model => model.BillDueDate, new { htmlAttributes = new { @type = "text",  @style = "font-size:12px", @class = "BillDueDate  form-control  Input-height", id = "BillDueDate", @autocomplete = "off" } })
                             @Html.ValidationMessageFor(model => model.BillDueDate, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-3 b-r"></div>
@@ -77,7 +77,7 @@
                             Reference No:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber", required = "required" } })
+                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new {  @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber", required = "required" } })
                             @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
 
 
@@ -465,6 +465,10 @@
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
 
             $('span.error', $newRow).remove();
+
+
+            currentRow1.find('.ServiceDate ').removeAttr('id');
+            currentRow1.find('.ServiceDate ').remove('id');
             $('.tbodyService tr:last').before($newRow);
            
             $(".FTotalG").prop('disabled', true);
@@ -1084,7 +1088,7 @@
             Bill_ID: $('#Bill_ID').val(),
             RefNumber: $('#RefNumber').val(),
             BillDate: $('#BillDate').val(),
-            BillDueDate: $('#BillDueDate').val(),
+            BillDueDate: $('.BillDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             TotalAmount: $('#gtotal').text(),
@@ -1094,7 +1098,6 @@
             VenderId: $('#VenderId').val(),
             CompanyId: $('#CompanyId').val(),
         };
-
 
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1324,7 +1327,7 @@
             Bill_ID: $('#Bill_ID').val(),
             RefNumber: $('#RefNumber').val(),
             BillDate: $('#BillDate').val(),
-            BillDueDate: $('#BillDueDate').val(),
+            BillDueDate: $('.BillDueDate').val(),
             SubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             //PurchaseOrderID: $('#PurchaseOrderID').val(),

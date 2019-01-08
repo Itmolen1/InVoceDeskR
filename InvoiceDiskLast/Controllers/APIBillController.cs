@@ -65,8 +65,8 @@ namespace InvoiceDiskLast.Controllers
             {
                 BilID = c.BilID,
                 Bill_ID = c.Bill_ID,
-                BillDate = c.BillDate,
-                BillDueDate = c.BillDueDate,
+                BillDate =Convert.ToDateTime(c.BillDate),
+                BillDueDate = Convert.ToDateTime(c.BillDueDate),
                 SubTotal = c.SubTotal,
                 TotalVat6 = c.TotalVat6,
                 TotalVat21 = c.TotalVat21,
