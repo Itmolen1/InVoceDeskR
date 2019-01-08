@@ -33,6 +33,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> RowSubTotal { get; set; }
         public Nullable<double> Total { get; set; }
 
+        public string VenderName { get; set; }
         public Nullable<double> Rate { get; set; }
         public int? ItemId { get; set; }
         public string ItemName { get; set; }
@@ -41,6 +42,7 @@ namespace InvoiceDiskLast.Models
         public string CustomerNote { get; set; }
         public string Status { get; set; }
 
+        public string UserName { get; set; }
         public Nullable<DateTime> ServiceDate { get; set; }
 
         public Nullable<int> UserId { get; set; }
