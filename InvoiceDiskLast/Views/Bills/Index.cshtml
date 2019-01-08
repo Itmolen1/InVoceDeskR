@@ -13,26 +13,23 @@
         <thead style="background-color:black;color:white">
             <tr>
                 <th>
-                    PurchaseId
+                    S.No
                 </th>
 
                 <th>
-                    PurchaseDate
+                    Bill Date
                 </th>
                 <th>
-                    PurchaseDueDate
+                    Due Date
                 </th>
                 <th>
-                    RefrenceNumber
+                    Refrence No
                 </th>
                 <th>
-                    Puchase Subtotal
+                    Subtotal
                 </th>
                 <th>
-                    DiscountAmount
-                </th>
-                <th>
-                    Type
+                    Total
                 </th>
                 <th>
                     Status
@@ -40,8 +37,6 @@
                 <th>
                     Action
                 </th>
-
-
             </tr>
         </thead>
         <tbody></tbody>
@@ -50,11 +45,11 @@
 
 <script>
     $(document).ready(function () { 
-        LoadPurchaseOrderTable("accepted");
+        LoadBillTable();
     });
 
 
-    function LoadPurchaseOrderTable(status) {
+    function LoadBillTable() {
         $("#BillsDetailsTable").DataTable({
             //"processing": true, // for show progress bar
             "processing": true,
@@ -68,15 +63,15 @@
             "filter": false, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
             "ajax": {
-                "url": "/Order/GetPurderOrderList",
+                "url": "/Bills/GetBillOrderList",
                 "type": "POST",
                 data: { status: status },
                 "datatype": "json"
             },
             "columns": [
-                  { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
+                  { "data": "BilID", "name": "BilID", "autoWidth": true },// key for edit delete
                     {
-                        "data": "PurchaseDate", "type": "date ",
+                        "data": "BillDate", "type": "date ",
                         "render": function (value) {
                             if (value === null) return "";
                             var pattern = /Date\(([^)]+)\)/;//date format from server side
@@ -86,7 +81,7 @@
                         }, "autoWidth": true
                     },
                    {
-                       "data": "PurchaseDueDate", "type": "date ",
+                       "data": "BillDueDate", "type": "date ",
                        "render": function (value) {
                            if (value === null) return "";
                            var pattern = /Date\(([^)]+)\)/;//date format from server side
@@ -96,63 +91,39 @@
                        }, "autoWidth": true
                    },
 
-                  { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+                  { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
 
-                  { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                  { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
-                  {
-                      "data": "Type", "name": "Type", "autoWidth": true
-                  },
+                  { "data": "SubTotal", "name": "SubTotal", "autoWidth": true },
+                  { "data": "TotalAmount", "name": "TotalAmount", "autoWidth": true },                  
                   {
                       render: function (data, type, row) {
 
                           switch (row.Status) {
 
                               case "open":
-
                                   return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
                                   break;
-
                               case "pending":
                                   return "<td><span class='label label-info'>" + row.Status + "</span></td>"
                                   break;
-
                               case "rejected":
                                   return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
                                   break;
-
                               case "accepted":
                                   return "<td><span class='label label-success'>" + row.Status + "</span></td>"
                                   break;
                           }
                       }
-                  },
 
+                  },
                   {
                       render: function (data, type, row) {
 
-
-                          switch (row.Status) {
-                              case "open":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.PurchaseOrderID + ',' + row.PurchaseSubTotal + ')"><i class="fa fa-check">proceed</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
-                                  break
-
-                              case "rejected":
-                                  return '<button  class="btn btn-success btn-sm" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Re  Open</i></button>'
-                                  break
-
-                              case "pending":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></button>|<button  class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.PurchaseOrderID + ')"><i class="fa fa-check"> Re  Open</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>'
-                                  break
-
-
-                              case "accepted":
-                                  return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.PurchaseOrderID + ', \'' + row.Type + '\')"><i class="fa fa-eye"> View Invoice</i></button>'
-                                  break
-                          }
+                          return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditBill(' + row.BilID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewBillDetail(' + row.BilID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory(' + row.BilID + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
 
                       }
-                  },
+                  }
+               
 
             ]
         });
@@ -164,4 +135,24 @@
         $('#Bill').show();
         $('#VenderSelectModel').modal('show');
     });
+
+    function EditBill(id)
+    {
+        if (id > 0) {
+            window.location.href = "/Bills/Edit/?Id=" + id;
+        }
+
+    }
+
+    function ViewBillDetail(id)
+    {
+        if (id > 0) {
+            window.location.href = "/Bills/ViewBilDetail?BillId=" + id;
+        }
+    }
+
+    function ViewDirectory(id)
+    {
+        window.location.href = "/Common/ViewDirecory?Id=" + id + "&DName=" + "Bill";
+    }
 </script>

@@ -15,6 +15,42 @@ namespace InvoiceDiskLast.Controllers
         private DBEntities db = new DBEntities();
 
 
+        [Route("api/GetbillDetails/{CompanyID:int}")]
+        [ResponseType(typeof(MvcBillModel))]
+        public IHttpActionResult GetBillDetails(int CompanyID)
+        {
+            List<BillDetailViewModel> BillList = new List<BillDetailViewModel>();
+
+            BillList = db.BillTables.Where(q => q.CompanyId == CompanyID).Select(c => new BillDetailViewModel
+            {
+                BilID = c.BilID,
+                Bill_ID = c.Bill_ID,
+                BillDate = c.BillDate,
+                BillDueDate = c.BillDueDate,
+                RefNumber = c.RefNumber,
+                SubTotal = c.SubTotal,
+                TotalVat6 = c.TotalVat6,
+                TotalVat21 = c.TotalVat21,
+                DiscountAmount = c.DiscountAmount,
+                TotalAmount = c.TotalAmount,
+                CustomerNote = c.CustomerNote,
+                Status = c.Status,
+                UserId = c.UserId,
+                CompanyId = c.CompanyId,
+                VenderId = c.VenderId,
+                Type = c.Type,
+
+            }).ToList();
+
+
+            if (BillList == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(BillList);
+        }
+
 
         [Route("api/GenrateBilNumber")]
         [ResponseType(typeof(MvcBillModel))]

@@ -18,7 +18,62 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult GetBillOrderList()
+        {
+            List<BillDetailViewModel> BillList = new List<BillDetailViewModel>();
+            try
+            {
+                #region
+                int recordsTotal = 0;
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                var sortColumn = Request.Form.GetValues("columns[" +
+                Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                string search = Request.Form.GetValues("search[value]")[0];
+                int skip = start != null ? Convert.ToInt32(start) : 0;
 
+                int companyId = Convert.ToInt32(Session["CompayID"]);
+
+               
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetbillDetails/"+ companyId).Result;
+                BillList = respose.Content.ReadAsAsync<List<BillDetailViewModel>>().Result;
+
+               // List<QutationIndexViewModel> quationList1 = new List<QutationIndexViewModel>();
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                    {
+
+                        BillList = BillList.Where(p => p.BilID.ToString().Contains(search)
+                       || p.BillDate != null && p.BillDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.BillDueDate != null && p.BillDueDate.ToString().ToLower().Contains(search.ToLower())
+                       || p.VenderName != null && p.VenderName.ToString().ToLower().Contains(search.ToLower())
+                       || p.UserName != null && p.UserName.ToString().ToLower().Contains(search.ToLower())
+                       || p.Vat != null && p.Vat.ToString().ToLower().Contains(search.ToLower())
+                       || p.TotalAmount != null && p.TotalAmount.ToString().ToLower().Contains(search.ToLower())
+                       || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+
+                      ).ToList();
+
+                    }
+
+
+                }
+
+                recordsTotal = recordsTotal = BillList.Count();
+                var data = BillList.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
 
         [HttpGet]
@@ -58,11 +113,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult EditSaveDraft(BillDetailViewModel _billDetailViewModel)
         {
@@ -85,7 +136,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.TotalVat6 = _billDetailViewModel.TotalVat6;
                 mvcbillMoel.TotalVat21 = _billDetailViewModel.TotalVat21;
                 mvcbillMoel.Type = StatusEnum.Goods.ToString();
-                mvcbillMoel.Status = "open";
+                mvcbillMoel.Status = "accepted";
 
                 if (mvcbillMoel.TotalVat6 != null && mvcbillMoel.TotalVat6 != 0)
                 {
@@ -148,8 +199,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
-
+        
 
         [HttpPost]
         public ActionResult EditEmailPrint(BillDetailViewModel _billDetailViewModel)
@@ -173,7 +223,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.TotalVat6 = _billDetailViewModel.TotalVat6;
                 mvcbillMoel.TotalVat21 = _billDetailViewModel.TotalVat21;
                 mvcbillMoel.Type = StatusEnum.Goods.ToString();
-                mvcbillMoel.Status = "open";
+                mvcbillMoel.Status = "accepted";
 
                 if (mvcbillMoel.TotalVat6 != null && mvcbillMoel.TotalVat6 != 0)
                 {
@@ -237,9 +287,7 @@ namespace InvoiceDiskLast.Controllers
             path = Path.GetFullPath(path);
             return new JsonResult { Data = new { Status = "Success", path = path1, id = _billDetailViewModel.BilID } };
         }
-
-
-
+        
 
         [HttpPost]
         public ActionResult EditEmail(BillDetailViewModel _billDetailViewModel)
@@ -263,7 +311,7 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.TotalVat6 = _billDetailViewModel.TotalVat6;
                 mvcbillMoel.TotalVat21 = _billDetailViewModel.TotalVat21;
                 mvcbillMoel.Type = StatusEnum.Goods.ToString();
-                mvcbillMoel.Status = "open";
+                mvcbillMoel.Status = "accepted";
 
                 if (mvcbillMoel.TotalVat6 != null && mvcbillMoel.TotalVat6 != 0)
                 {
@@ -325,9 +373,7 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-
-
-
+        
         [HttpPost]
         public ActionResult DeleteInvoice(int billid, int BillDetailId, int vat, float total)
         {
@@ -367,12 +413,7 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail" } };
             }
         }
-
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult SaveEmailPrint(BillDetailViewModel billDetailViewModel)
         {
@@ -393,7 +434,7 @@ namespace InvoiceDiskLast.Controllers
                 billtable.CustomerNote = billDetailViewModel.CustomerNote;
                 billtable.TotalVat6 = billDetailViewModel.TotalVat6;
                 billtable.TotalVat21 = billDetailViewModel.TotalVat21;
-                billtable.Status = "open";
+                billtable.Status = "accepted";
                 billtable.Type = StatusEnum.Goods.ToString();
                 // bill Api
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBill", billtable).Result;
@@ -441,9 +482,7 @@ namespace InvoiceDiskLast.Controllers
             path = Path.GetFullPath(path);
             return new JsonResult { Data = new { Status = "Success", path = path1, id = billviewModel.BilID } };
         }
-
-
-
+        
         #region Bill by samar
 
 
@@ -621,7 +660,7 @@ namespace InvoiceDiskLast.Controllers
                 billtable.CustomerNote = billDetailViewModel.CustomerNote;
                 billtable.TotalVat6 = billDetailViewModel.TotalVat6;
                 billtable.TotalVat21 = billDetailViewModel.TotalVat21;
-                billtable.Status = "open";
+                billtable.Status = "accepted";
                 billtable.Type = StatusEnum.Goods.ToString();
                 // bill Api
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBill", billtable).Result;
@@ -688,7 +727,7 @@ namespace InvoiceDiskLast.Controllers
                 billtable.CustomerNote = billDetailViewModel.CustomerNote;
                 billtable.TotalVat6 = billDetailViewModel.TotalVat6;
                 billtable.TotalVat21 = billDetailViewModel.TotalVat21;
-                billtable.Status = "open";
+                billtable.Status = "accepted";
                 billtable.Type = StatusEnum.Goods.ToString();
                 // bill Api
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBill", billtable).Result;
@@ -1087,22 +1126,7 @@ namespace InvoiceDiskLast.Controllers
             return pdfname;
         }
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         [HttpPost]
         public ActionResult save1(MvcPurchaseViewModel purchaseViewModel)
         {
