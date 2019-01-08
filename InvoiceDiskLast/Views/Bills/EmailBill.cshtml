@@ -4,11 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "InvoicebyEmail";
 }
-<script src="~/Scripts/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+
 <div class="container">
-
-
     @if (TempData["Error"] != null)
     {
         <div>
@@ -28,7 +27,7 @@
                     <div class="col-sm-12">
                         <div class="bg-light border-left">
                             <div class="card-body">
-                                <h3 class="card-title">Compose New Message<div class="pull-right" style="color:skyblue"> Invoice-@Model.invoiceId</div></h3>
+                                <h3 class="card-title">Compose New Message<div class="pull-right" style="color:skyblue"> Bill-@Model.invoiceId</div></h3>
                                 <div class="form-group">
                                     @Html.TextBoxFor(Model => Model.From, new { @class = "form-control", @readonly = "readonly", @title = "From" })
                                 </div>
@@ -47,12 +46,15 @@
                                 <h4><i class="ti-link"></i><label>@Model.Attachment</label>add</h4>
 
 
-                                @Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml")
+                                @Html.Partial("~/Views/Shared/PartialViews/UploadEmailPartialView.cshtml")
+                                
                                 @Html.HiddenFor(Model => Model.Attachment)
 
                                 <hr />
                                 <button type="submit" class="btn btn-success"><i class="fa fa-envelope-o" style="margin-right:5px"></i>Send</button>
-                                <a href="/Bills/ViewBill/@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i>Discard</a>
+                               
+                              
+                                 <a href="/Bills/ViewBilDetail/?BillId=@Model.invoiceId" class="btn btn-dark"><i class="fa fa-times" style="margin-right:5px"></i>Discard</a>
                             </div>
                         </div>
                     </div>
@@ -65,3 +67,14 @@
 </div>
 
 
+<script>
+
+    $(document).on('click', '.remove', function () {
+
+        var current = $(this).closest("tr");
+        var FileName1 = current.find(".FileName").val();
+
+        RemoveFile("/Common/DeleteFile", FileName1, current);
+    });
+
+</script>

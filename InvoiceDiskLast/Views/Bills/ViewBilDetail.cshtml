@@ -1,6 +1,8 @@
 ﻿
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
     var BillModel = ViewBag.BilllData;
@@ -10,7 +12,17 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-
+<div class="row">
+    @if (TempData["EmailMessge"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong>@TempData["EmailMessge"]  
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+</div>
 
 <div class="row" style="margin-bottom:5px">
     <div class="col-2 b-r"></div>
@@ -29,7 +41,7 @@
                     <a class="dropdown-item" href="/Bills/Print/?id=@BillModel.BilID">Print and send it yourself</a>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
+                  
                 </div>
             </div>
             <div style="margin-left:3px">
@@ -61,14 +73,14 @@
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
 
-            @using (Html.BeginForm("DownloadFile", "Purchase", FormMethod.Post, new { id = "DownloadFile1" }))
+            @using (Html.BeginForm("DownloadFile", "Bills", FormMethod.Post, new { id = "DownloadFile1" }))
             {
                 <input type="hidden" name="FilePath1" id="FilePath" />
                 <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
             }
             <div class="row">
                 <div class="col-7 b-r">
-                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
+                    <img src="@Url.Content("~/Images/"+CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
 
                     <div class="row" style="margin-top:20px">
                         <div class="col-12 b-r HeadText">
@@ -278,6 +290,7 @@
                                         <th>Date</th>
 
                                         <th>
+
                                             Services
                                         </th>
                                         <th>Decription</th>
@@ -309,7 +322,12 @@
                                     {
                                         <tr id="mainrow">
                                             <td>
-                                                @item.ServiceDate
+                                                @{
+                                                    DateTime servicedate = new DateTime();
+                                                    servicedate = Convert.ToDateTime(item.ServiceDate);
+                                                }
+                                                @servicedate.ToShortDateString()
+
                                             </td>
 
                                             <td>
@@ -336,14 +354,36 @@
                                                 @item.RowSubTotal
                                             </td>
                                         </tr>
-                                    }
+                                                        }
 
-                                }
+                                                    }
                             </table>
                         </div>
                     </div>
-                }
-            }
+                                                        }
+                                                    }
+            <hr />
+            <div class="row">
+                <div class="col-6 b-r">
+                    <table class="table table-hover" id="participantTable">
+                        <tbody id="upload123">
+                            @if (ViewBag.FILE != null)
+                            {
+                                foreach (var item in ViewBag.FILE)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6 b-r"></div>
+            </div>
             <hr />
             <div class="row">
                 <div class="col-7 b-r">
@@ -420,19 +460,17 @@
 
 
 
-
-
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var patth = localStorage.getItem('path1');
-        $("#FilePath1").val(patth);
-        if ($('input#FilePath1').val() == "") {
+        var patth = localStorage.getItem('path');
+        $("#FilePath").val(patth);
+        if ($('input#FilePath').val() == "") {
         }
         else {
-            $('#DownloadFileInvoice').submit();
-            $("#FilePath1").val('');
-            localStorage.removeItem('path1');
+            $('#DownloadFile1').submit();
+            $("#FilePath").val('');
+            localStorage.removeItem('path');
         }
     });
 

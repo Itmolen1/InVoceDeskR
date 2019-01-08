@@ -1,6 +1,7 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -34,6 +35,12 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
+
+
+
+
+
+
         [Route("Api/GetBillDetailTablebyId/{id:int}")]
         [ResponseType(typeof(List<BillDetailViewModel>))]
         public IHttpActionResult GetBillDetail(int id)
@@ -50,7 +57,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 var query = db.BillDetailTables.ToList().Where(c => c.BillDetailId == QTIDs).Select(pd => new
                 {
-                    BillID = pd.BillID,                   
+                    BillID = pd.BillID,
                     BillDetailId = pd.BillDetailId,
                     ItemId = pd.ItemId,
                     Rate = pd.Rate,
@@ -78,7 +85,7 @@ namespace InvoiceDiskLast.Controllers
                              {
                                  ServiceDate = pd.ServiceDate,
                                  BilID = pd.BillID,
-                               
+
                                  BillDetailId = pd.BillDetailId,
                                  ItemId = pd.ItemId,
                                  Rate = pd.Rate,
@@ -102,5 +109,68 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+
+
+
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutQutationDetailsTable(int id, BillDetailTable billDetailTable)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != billDetailTable.BillDetailId)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(billDetailTable).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return StatusCode(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+        [Route("api/DeleteDetails/{id:int}")]
+        [ResponseType(typeof(InvoiceDetailsTable))]
+        public IHttpActionResult DeleteBillDtailsTable(int id)
+        {
+            BillDetailTable billdetailtable = db.BillDetailTables.Find(id);
+            try
+            {
+                if (billdetailtable == null)
+                {
+                    return NotFound();
+                }
+                db.BillDetailTables.Remove(billdetailtable);
+                db.SaveChanges();
+                return Ok(billdetailtable);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+        }
+
     }
 }

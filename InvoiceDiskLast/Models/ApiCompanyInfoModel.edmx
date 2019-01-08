@@ -76,8 +76,8 @@
           <Property Name="Bill_ID" Type="nvarchar" MaxLength="50" />
           <Property Name="RefNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="PurchaseId" Type="int" />
-          <Property Name="BillDate" Type="date" />
-          <Property Name="BillDueDate" Type="date" />
+          <Property Name="BillDate" Type="date" Nullable="false" />
+          <Property Name="BillDueDate" Type="date" Nullable="false" />
           <Property Name="SubTotal" Type="float" />
           <Property Name="TotalVat6" Type="float" />
           <Property Name="TotalVat21" Type="float" />
@@ -410,18 +410,6 @@
           <Property Name="CompanyId" Type="int" />
           <Property Name="Username" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="BillTable_UserTable1">
-          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
-          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="BillTable">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="AccountTable" Type="Self.AccountTable" Multiplicity="*" />
@@ -479,42 +467,6 @@
             </Principal>
             <Dependent Role="AccountTransictionTable">
               <PropertyRef Name="FKPaymentTerm" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BillTable_ComapnyInfo">
-          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
-          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="BillTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BillTable_ContactsTable">
-          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
-          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContactsTable">
-              <PropertyRef Name="ContactsId" />
-            </Principal>
-            <Dependent Role="BillTable">
-              <PropertyRef Name="VenderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BillTable_UserTable">
-          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
-          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="BillTable">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -788,10 +740,6 @@
           <EntitySet Name="QutationTable" EntityType="Self.QutationTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAuthorityTable" EntityType="Self.UserAuthorityTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="BillTable_UserTable1" Association="Self.BillTable_UserTable1">
-            <End Role="UserTable" EntitySet="UserTable" />
-            <End Role="BillTable" EntitySet="BillTable" />
-          </AssociationSet>
           <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="Self.FK_AccountTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="AccountTable" EntitySet="AccountTable" />
@@ -811,18 +759,6 @@
           <AssociationSet Name="FK_AccountTransictionTable_PaymentTermTable" Association="Self.FK_AccountTransictionTable_PaymentTermTable">
             <End Role="PaymentTermTable" EntitySet="PaymentTermTable" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="Self.FK_BillTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
-            <End Role="BillTable" EntitySet="BillTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BillTable_ContactsTable" Association="Self.FK_BillTable_ContactsTable">
-            <End Role="ContactsTable" EntitySet="ContactsTable" />
-            <End Role="BillTable" EntitySet="BillTable" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BillTable_UserTable" Association="Self.FK_BillTable_UserTable">
-            <End Role="UserTable" EntitySet="UserTable" />
-            <End Role="BillTable" EntitySet="BillTable" />
           </AssociationSet>
           <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="Self.FK_ContactsTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
@@ -1705,8 +1641,8 @@
           <Property Name="Bill_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PurchaseId" Type="Int32" />
-          <Property Name="BillDate" Type="DateTime" Precision="0" />
-          <Property Name="BillDueDate" Type="DateTime" Precision="0" />
+          <Property Name="BillDate" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="BillDueDate" Type="DateTime" Precision="0" Nullable="false" />
           <Property Name="SubTotal" Type="Double" />
           <Property Name="TotalVat6" Type="Double" />
           <Property Name="TotalVat21" Type="Double" />

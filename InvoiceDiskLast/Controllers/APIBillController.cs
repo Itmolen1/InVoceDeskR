@@ -1,6 +1,7 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +16,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        [Route("Api/GenrateBilNumber")]
+        [Route("api/GenrateBilNumber")]
         [ResponseType(typeof(MvcBillModel))]
         public IHttpActionResult GetBillNumber()
         {
@@ -35,7 +36,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        [Route("Api/AddBill")]
+        [Route("api/AddBill")]
         [ResponseType(typeof(BillTable))]
         public IHttpActionResult PostBillDetail([FromBody] BillTable billtable)
         {
@@ -65,8 +66,8 @@ namespace InvoiceDiskLast.Controllers
             {
                 BilID = c.BilID,
                 Bill_ID = c.Bill_ID,
-                BillDate =Convert.ToDateTime(c.BillDate),
-                BillDueDate = Convert.ToDateTime(c.BillDueDate),
+                BillDate = c.BillDate,
+                BillDueDate = c.BillDueDate,
                 SubTotal = c.SubTotal,
                 TotalVat6 = c.TotalVat6,
                 TotalVat21 = c.TotalVat21,
@@ -89,6 +90,38 @@ namespace InvoiceDiskLast.Controllers
 
             return Ok(billModel);
         }
+
+
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutPurchaseTable(int id, BillTable billTable)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != billTable.BilID)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(billTable).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return Ok(billTable);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+
+        }
+
+
+
 
     }
 }

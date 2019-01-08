@@ -78,9 +78,16 @@
                         </div>
                         <div class="col-6 b-r">
 
+                            @{
+                                DateTime dt1 = new DateTime();
+                                dt1 = Convert.ToDateTime(Model.DueDate);
+                            }
 
-                            @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+                            <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="DueDate" />
+
+
+                            @*@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })*@
 
 
                         </div>

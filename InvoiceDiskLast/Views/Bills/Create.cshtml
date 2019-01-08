@@ -1,5 +1,4 @@
-﻿
-@model InvoiceDiskLast.Models.BillDetailViewModel
+﻿@model InvoiceDiskLast.Models.BillDetailViewModel
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -16,14 +15,14 @@
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
             <input type="hidden" id="PurchaseOrderID" />
-            @*<input type="hidden" class="Bill_ID" value="@Model.Bill_ID" />*@
+          
             <input type="hidden" value="@Model.VenderId" id="VenderId" />
             <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
 
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
 
-                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
+                    <img src="@Url.Content("~/Images/"+CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
 
                     <div class="row clientInfo">
                         <div class="col-12 b-r HeadText">Bill</div>
@@ -41,12 +40,13 @@
                             Bill Date:
                         </div>
 
-
                         <div class="col-6 b-r">
 
-
-                            @Html.EditorFor(model => model.BillDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "BillDate  form-control  Input-height", id = "BillDate", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.BillDate, "", new { @class = "text-danger" })
+                            @{
+                                DateTime BillDate = new DateTime();
+                                BillDate = Convert.ToDateTime(Model.BillDate);
+                            }
+                            <input class="BillDate  Input-height form-control" autocomplete="off" value="@BillDate.ToShortDateString()" id="BillDate" />
 
                         </div>
                         <div class="col-3 b-r"></div>
@@ -67,8 +67,13 @@
                             Due Date:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BillDueDate, new { htmlAttributes = new { @type = "text",  @style = "font-size:12px", @class = "BillDueDate  form-control  Input-height", id = "BillDueDate", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.BillDueDate, "", new { @class = "text-danger" })
+
+                            @{
+                                DateTime BillDueDate = new DateTime();
+                                BillDueDate = Convert.ToDateTime(Model.BillDueDate);
+                            }
+                            <input class="BillDueDate  Input-height form-control" autocomplete="off" value="@BillDueDate.ToShortDateString()" id="BillDueDate" />
+
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -77,7 +82,7 @@
                             Reference No:
                         </div>
                         <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new {  @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber", required = "required" } })
+                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber", required = "required" } })
                             @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
 
 
@@ -249,7 +254,7 @@
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class=" Discription form-control Input-height" />
+                                    <input type="text" class="Discription form-control Input-height" />
                                 </td>
                                 <td>
                                     <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="font-size:12px" />
@@ -258,7 +263,7 @@
                                     <input type="text" class="rateG form-control Input-height" id="RateS" style="font-size:12px" />
                                 </td>
                                 <td>
-                                    <input type="text" class="FTotalG form-control Input-height" id="FTotal" style="font-size:12px" />
+                                    <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="font-size:12px" />
                                 </td>
                                 <td>
                                     <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -406,7 +411,7 @@
             $('span.error', $newRow).remove();
 
             $('.tbodyGood tr:last').before($newRow);
-          
+
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -470,7 +475,7 @@
             currentRow1.find('.ServiceDate ').removeAttr('id');
             currentRow1.find('.ServiceDate ').remove('id');
             $('.tbodyService tr:last').before($newRow);
-           
+
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -1007,37 +1012,35 @@
         CalculateVateTotal();
     });
 
+    var ajaxreaponse;
+
     $('#Submit').click(function () {
-        CreateQuation();
+        CreateQuation("/Bills/SaveDraft", "SaveDraft");
     });
-    var arraylisr1 = [];
-    function ValidateRow(CurrentRow) {
 
-        var Isvalid = true;
-        var Produectid = 0, quantityG = 0, varrateG = 0;
-        Produectid = CurrentRow.find('.product').val();
-        quantityG = CurrentRow.find('.quantityG ').val();
-        varrateG = CurrentRow.find('.rateG ').val();
-        if (parseInt(Produectid) == 0 || Produectid == "") {
-            Isvalid = false;
-        }
-        if (parseInt(quantityG) == 0 || quantityG == "") {
-            Isvalid = false;
-        }
-        if (parseInt(varrateG) == 0 || varrateG == "") {
-            Isvalid = false;
-        }
-        return Isvalid;
-    }
 
-    function CreateQuation() {
+    $('#saveEmail').click(function () {
+        CreateQuation("/Bills/SaveEmail", "SaveEmail");
+    });
+
+    $('#saveprintandsendtoyourselfsave').click(function () {
+        CreateQuation("/Bills/SaveEmailPrint", "SaveEamilPrint");
+    });
+
+
+
+
+    function CreateQuation(Url, btnName) {
 
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
+
+
         if (!validateFileSize()) {
             return true;
         }
+
         $('#orderdetailsitems .tbodyGood tr').each(function () {
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1054,7 +1057,6 @@
                 list.push(orderItem);
             }
         });
-
 
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
@@ -1115,274 +1117,98 @@
             formData.append('BillDetail[' + i + '][ServiceDate]', list[i].ServiceDate)
         }
 
-
         $.ajax({
-            url: "/Bills/SaveDraft",
+            url: Url,  //"/Bills/SaveDraft",
             type: "POST",
             data: formData,
             dataType: 'json',
             contentType: false,
             processData: false,
+            success: function (response) {
+                debugger;
 
-            success: function (result) {
-
-                if (result.Status == "Success") {
-                    swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
-                        type: 'success'
-                    },
-                         function (isconform) {
-
-                             window.location.href = "/Bills/ViewBilDetail?BillId=" + result.BillId;
-                         });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
-            },
-
-            error: function (errormessage) {
-
+                Response(response, btnName)
             }
         });
+        return ajaxreaponse;
     }
 
-    $('#saveEmail').click(function () {
 
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
+
+
+
+    function Response(response, btnName) {
+        debugger;
+
+
+        if (response.Status == "Success" && btnName == "SaveDraft") {
+            swal({
+                title: 'Invoice!',
+                text: 'Invoice save successfully!',
+                type: 'success'
+            },
+                 function (isconform) {
+                     window.location.href = "/Bills/ViewBilDetail?BillId=" + response.BillId;
+                 });
         }
 
-        $('#orderdetailsitems .tbodyGood tr').each(function () {
-
-            CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
-
-        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-            CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
-
-
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
-        }
-
-
-        var empObj = {
-            Bill_ID: $('#Bill_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            BillDate: $('#BillDate').val(),
-            BillDueDate: $('#BillDueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            //PurchaseOrderID: $('#PurchaseOrderID').val(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#PurchaseVenderNote').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            ContactId: $('#VenderId').val(),
-            CompanyId: $('#CompanyId').val(),
-        };
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
-        }
-        for (var i = 0; i < list.length; i++) {
-
-            formData.append('BillDetail[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('BillDetail[' + i + '][Description]', list[i].Description)
-            formData.append('BillDetail[' + i + '][Type]', list[i].Type)
-            formData.append('BillDetail[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('BillDetail[' + i + '][Rate]', list[i].Rate)
-            formData.append('BillDetail[' + i + '][Total]', list[i].Total)
-            formData.append('BillDetail[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('BillDetail[' + i + '][Vat]', list[i].Vat)
-            formData.append('BillDetail[' + i + '][ServiceDate]', list[i].ServiceDate)
-
-        }
-
-        $.ajax({
-            url: "/Purchase/SaveEmail",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function (result) {
-                if (result.Status == "Success") {
-                    swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
-                        type: 'success'
-                    },
+        if (response.Status == "Success" && btnName == "SaveEmail") {
+            swal({
+                title: 'Invoice!',
+                text: 'Invoice save successfully!',
+                type: 'success'
+            },
                          function (isconform) {
-                             window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.purchaseId;
-
+                             window.location.href = "/Bills/EmailBill?ID=" + response.BillId;
                          });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
+        }
+
+        if (response.Status == "Success" && btnName == "SaveEamilPrint") {
+            localStorage.setItem('path', response.path);
+            swal({
+                title: 'Bill!',
+                text: 'Bill hasbeen created successfully!',
+                type: 'success'
             },
+            function (isconform) {
+                window.location.href = "/Bills/ViewBilDetail?BillId=" + response.id;
+            });
+        }
+        else if (result.Status == "Fail") {
 
-            error: function (errormessage) {
-
-            }
-
-        });
-    });
-
-    $('#saveprintandsendtoyourselfsave').click(function () {
-
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
         }
 
-
-        $('#orderdetailsitems .tbodyGood tr').each(function () {
-            var CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                }
-                list.push(orderItem);
-            }
-
-        });
-        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            var CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    RowSubTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
+        if (response.Status == "Fail") {
+            alert('Fail to Create Bills');
         }
+    }
 
-        var empObj = {
-            //PurchaseId: $('#PurchaseId').val(),
-            Bill_ID: $('#Bill_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            BillDate: $('#BillDate').val(),
-            BillDueDate: $('.BillDueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            //PurchaseOrderID: $('#PurchaseOrderID').val(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#PurchaseVenderNote').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            ContactId: $('#VenderId').val(),
-            CompanyId: $('#CompanyId').val(),
-        };
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
+
+
+
+
+
+
+
+
+    function ValidateRow(CurrentRow) {
+
+        var Isvalid = true;
+        var Produectid = 0, quantityG = 0, varrateG = 0;
+        Produectid = CurrentRow.find('.product').val();
+        quantityG = CurrentRow.find('.quantityG ').val();
+        varrateG = CurrentRow.find('.rateG ').val();
+        if (parseInt(Produectid) == 0 || Produectid == "") {
+            Isvalid = false;
         }
-        for (var i = 0; i < list.length; i++) {
-
-            formData.append('BillDetail[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('BillDetail[' + i + '][Description]', list[i].Description)
-            formData.append('BillDetail[' + i + '][Type]', list[i].Type)
-            formData.append('BillDetail[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('BillDetail[' + i + '][Rate]', list[i].Rate)
-            formData.append('BillDetail[' + i + '][Total]', list[i].Total)
-            formData.append('BillDetail[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('BillDetail[' + i + '][Vat]', list[i].Vat)
-            formData.append('BillDetail[' + i + '][ServiceDate]', list[i].ServiceDate)
+        if (parseInt(quantityG) == 0 || quantityG == "") {
+            Isvalid = false;
         }
-        $.ajax({
-            url: "/Purchase/SaveEmailPrint1",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-
-            success: function (result) {
-                if (result.Status == "Success") {
-                    localStorage.setItem('path', result.path);
-                    swal({
-                        title: 'Qutation!',
-                        text: 'Qutation save successfully!',
-                        type: 'success'
-                    },
-                    function (isconform) {
-                        window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.PurchaseOrderId;
-                    });
-                }
-                else if (result.Status == "Fail") {
-
-                }
-            },
-            error: function (errormessage) {
-            }
-        });
-    });
-
-
+        if (parseInt(varrateG) == 0 || varrateG == "") {
+            Isvalid = false;
+        }
+        return Isvalid;
+    }
     function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {

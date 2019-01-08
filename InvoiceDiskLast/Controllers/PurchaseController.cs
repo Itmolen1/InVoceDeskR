@@ -834,9 +834,8 @@ namespace InvoiceDiskLast.Controllers
                     bool result = EmailController.email(emailModel, _attackmentList);
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
-                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
-                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
-                var folderPath = Server.MapPath("/PDF/");
+                
+                 var folderPath = Server.MapPath("/PDF/");
                 EmailController.clearFolder(folderPath);
 
                 return RedirectToAction("Viewinvoice1", new { purchaseOrderId = email.invoiceId });
