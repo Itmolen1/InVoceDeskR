@@ -35,7 +35,7 @@
                             <br />
                             @Contectdatas.PostalCode,@Contectdatas.City
                             <br />
-                            @Contectdatas.Land                      
+                            @Contectdatas.Land
                         </div>
                     </div>
 
@@ -45,16 +45,11 @@
                             Qutation Date:
                         </div>
                         <div class="col-6 b-r">
-                            @{ 
+                            @{
                                 DateTime dt = new DateTime();
                                 dt = Convert.ToDateTime(Model.QutationDate);
                             }
-
                             <input type="text" class="QutationDate  Input-height form-control" autocomplete="off" value="@dt.ToShortDateString()" id="QutationDate" />
-
-                            @*@Html.EditorFor(model => model.QutationDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "QutationDate  form-control  Input-height", id = "QutationDate", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.QutationDate, "", new { @class = "text-danger" })*@
-
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -62,12 +57,9 @@
                         <div class="col-3 b-r">
                             Qutation Number:
                         </div>
-                        <div class="col-6 b-r">                       
-
+                        <div class="col-6 b-r">
                             @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
-
-
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -83,12 +75,6 @@
                             }
 
                             <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="DueDate" />
-
-                            @*<label></label>*@
-                            @*@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate form-control  Input-height", id = "DueDate", title = "Due Date", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })*@
-
-
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -222,7 +208,7 @@
                         </tbody>
                     </table>
                 </div>
-             
+
             </div>
 
 
@@ -264,7 +250,7 @@
                             <tr id="mainrow1">
                                 <td>
                                     <input type="text" class="ServiceDate ss Input-height form-control" autocomplete="off" />
-                                 
+
                                 </td>
 
                                 <td>
@@ -319,7 +305,7 @@
                             @Html.ValidationMessageFor(model => model.CustomerNote, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                      @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
+                    @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
                     <hr />
 
                 </div>
@@ -404,7 +390,7 @@
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
 
-        
+
         var currentRow1 = $(this).closest("tr");
         var VAT = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow1);
@@ -540,7 +526,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -548,7 +534,7 @@
     });
 
     $('.rateG').keyup(function () {
-        Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
 
         CombineTotalAndSubtotal();
@@ -560,7 +546,7 @@
 
     $(document).on("keypress", "tbody .rateG", function () {
 
-        Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
         FocuseInTotal = Currentrow.find('.RowTotalG').val();
         CombineTotalAndSubtotal();
@@ -572,8 +558,8 @@
 
     $(document).on("keyup", "tbody .rateG", function () {
 
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
@@ -583,8 +569,8 @@
 
 
     $(document).on("keyup", "tbody .quantityG", function () {
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
@@ -594,8 +580,8 @@
 
     $(document).on("keyup", "tbody .rateG", function () {
 
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
 
@@ -606,10 +592,10 @@
 
     $(document).on("keyup", "tbody .quantityG", function () {
 
-        
 
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
 
@@ -620,10 +606,7 @@
 
     function calculateTotalGoods(currentRow) {
 
-        console.log(currentRow);
-
-
-        Quantity = currentRow.find(".quantityG").val(),
+        var Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
         if (!isNaN(Total)) {
@@ -634,7 +617,7 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        
+
         var price = CurrentRow;
 
         Total = 0;
@@ -671,10 +654,8 @@
 
     $('.VATG').change(function () {
 
-        
-
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -683,9 +664,9 @@
     });
 
     $('.quantityG').keyup(function () {
-        
+
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -695,7 +676,7 @@
 
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -705,11 +686,10 @@
 
     $('tbody .VATG').change(function () {
 
-        
 
 
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
         CombineTotalAndSubtotal();
@@ -719,8 +699,10 @@
 
     $('.VATG').change(function () {
 
+        debugger;
+
         var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
+        var vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
         CombineTotalAndSubtotal();
@@ -791,7 +773,7 @@
     }
 
     $(document).on('change', '.pClassG', function () {
-        
+
         var currentRow1 = $(this).closest('tr');
         var value = currentRow1.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow1);
@@ -799,7 +781,7 @@
 
     $('#mainrow .pClassG').change(function () {
 
-        
+
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -826,14 +808,14 @@
     });
 
     $('#mainrow1 .pClassG').change(function () {
-              
+
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
 
     function GetProductPriceByProductId(Id, CurrentRow) {
-        
+
         if (Id == "AddNewProductSelect") {
             GoodsService = "";
             GoodsService = "Good";
@@ -856,7 +838,7 @@
             $('#TypeGoodsServices').attr('disabled', 'disabled');
             $('#CreateNewProductModalGoods').modal('show');
         }
-        else if (Id == 0) {          
+        else if (Id == 0) {
             return true;
         }
         else if (Id > 0) {
@@ -867,7 +849,7 @@
                 cache: false,
                 data: { 'ProductId': ProductId },
                 success: function (resultData) {
-                    
+
                     CurrentRow.find('.rateG').val(resultData);
                     calculateTotalGoods(CurrentRow);
                     CombineTotalAndSubtotal();
@@ -903,7 +885,7 @@
 
     function CombineTotalAndSubtotal() {
 
-        
+
 
         var SubTotalGoode = 0, SubTotalService = 0;
 
@@ -929,7 +911,7 @@
 
     function CombineTotal() {
 
-        
+
 
         var TotalGoode, Total, TotalService1 = 0;
         TotalGoode = totalGoods();
@@ -968,7 +950,7 @@
         $('#QutationServiceDetail1 tr').each(function () {
 
 
-            
+
             var Value = $(this).find(".RowTotalG").val();
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
 
@@ -1107,7 +1089,7 @@
     }
 
     function CreateQuation() {
-        
+
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
@@ -1116,8 +1098,6 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-
-            
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1135,7 +1115,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1236,7 +1216,7 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-            
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1253,7 +1233,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
+
             CurrentRow = $(this).closest("tr");
 
             if (ValidateRow(CurrentRow)) {
@@ -1372,7 +1352,7 @@
 
         });
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
+
             CurrentRow = $(this).closest("tr");
 
             if (ValidateRow(CurrentRow)) {
@@ -1460,7 +1440,7 @@
             }
         });
     });
-    
+
     function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1487,7 +1467,7 @@
     }
 
     $(document).ready(function () {
-      
+
 
         $('.ServiceDate').datepicker({
             changeMonth: true,
@@ -1500,7 +1480,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-  
+
         $('.QutationDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1511,7 +1491,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-  
+
         $('.DueDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1523,7 +1503,7 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-    
+
     $('body').on('focus', ".ss", function () {
 
         $(this).closest('tr').find(':input').removeClass('hasDatepicker');
@@ -1539,5 +1519,5 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-    
+
 </script>

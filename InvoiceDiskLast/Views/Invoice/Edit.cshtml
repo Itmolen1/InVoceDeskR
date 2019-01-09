@@ -733,7 +733,7 @@
     }
 
     $('.quantityG').keyup(function () {
-        Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -741,7 +741,7 @@
     });
 
     $('.rateG').keyup(function () {
-        Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
 
         CombineTotalAndSubtotal();
@@ -753,7 +753,7 @@
 
     $(document).on("keypress", "tbody .rateG", function () {
 
-        Currentrow = $(this).closest("tr");
+        var Currentrow = $(this).closest("tr");
         FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
         FocuseInTotal = Currentrow.find('.RowTotalG').val();
         CombineTotalAndSubtotal();
@@ -764,8 +764,8 @@
 
     $(document).on("keyup", "tbody .rateG", function () {
 
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
@@ -774,8 +774,8 @@
     });
 
     $(document).on("keyup", "tbody .quantityG", function () {
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
@@ -785,8 +785,8 @@
 
     $(document).on("keyup", "tbody .rateG", function () {
 
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+        var Currentrow = $(this).closest("tr");
+        var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
 
@@ -796,8 +796,8 @@
     });
 
     $(document).on("keyup", "tbody .quantityG", function () {
-        Currentrow = $(this).closest("tr");
-        vat = Currentrow.find(".VATG").val();
+         var  Currentrow = $(this).closest("tr");
+         var vat = Currentrow.find(".VATG").val();
         calculateTotalGoods(Currentrow);
         RowSubTalSubtotal(vat, Currentrow);
 
@@ -808,7 +808,6 @@
 
     function calculateTotalGoods(currentRow) {
 
-        console.log(currentRow);
         Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -855,7 +854,7 @@
         
 
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -866,7 +865,7 @@
     $('.quantityG').keyup(function () {
         
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -876,7 +875,7 @@
     $('.quantityG').keyup(function () {
         
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -885,7 +884,7 @@
 
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -898,7 +897,7 @@
 
 
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
         CombineTotalAndSubtotal();
@@ -909,7 +908,7 @@
     $('.VATG').change(function () {
 
         var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
+        var vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
         CombineTotalAndSubtotal();
@@ -1035,7 +1034,7 @@
         else {
             var productId = Id;
             $.ajax({
-                url: "/MVCQutation/ProductPricebyId",
+                url: "/Common/ProductPricebyId",
                 type: "POST",
                 cache: false,
                 data: { 'ProductId': productId },
