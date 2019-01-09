@@ -15,7 +15,7 @@ namespace InvoiceDiskLast.Controllers
     {
 
         private DBEntities db = new DBEntities();
-        
+
         // GET: api/APIQutation
         public IHttpActionResult GetQutationTables()
         {
@@ -41,7 +41,7 @@ namespace InvoiceDiskLast.Controllers
                 TotalAmount = c.TotalAmount,
                 Status = (c.Status).Trim(),
                 //UserName = c.UserTable.UserFname + " " + c.UserTable.UserLname,
-                UserName = (c.UserTable.UserFname + " " + c.UserTable.UserLname != "" ? c.UserTable.UserFname + " " + c.UserTable.UserLname : c.UserTable.Username),              
+                UserName = (c.UserTable.UserFname + " " + c.UserTable.UserLname != "" ? c.UserTable.UserFname + " " + c.UserTable.UserLname : c.UserTable.Username),
                 CustomerName = c.ContactsTable.ContactName
 
             }).ToList();
@@ -105,28 +105,15 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                  db.SaveChanges();
+                db.SaveChanges();
                 return StatusCode(HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
-
                 throw ex;
-
-                //if (!QutationTableExists(id))
-                //{
-                //    return NotFound();
-                //}
-                //else
-                //{
-                //    throw;
-                //}
             }
-
-
         }
 
-        // POST: api/APIQutation
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult PostQutationTable([FromBody] QutationTable qutationtable)
         {
@@ -139,7 +126,7 @@ namespace InvoiceDiskLast.Controllers
 
                     return Ok(qutationtable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return BadRequest();
                 }
@@ -147,29 +134,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        //public HttpResponseMessage Post([FromBody] QutationTable qutationTable)
-        //{
-        //    try
-        //    {
-        //        using (QutationEntities entities = new QutationEntities())
-        //        {
-        //            entities.QutationTables.Add(qutationTable);
-        //            entities.SaveChanges();
 
-        //            var message = Request.CreateResponse(HttpStatusCode.Created, qutationTable);
-        //            message.Headers.Location = new Uri(Request.RequestUri +
-        //                qutationTable.QutationID.ToString());
-
-        //            return message;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
-        //    }
-        //}
-
-        // DELETE: api/APIQutation/5
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult DeleteQutationTable(int id)
         {
@@ -419,5 +384,34 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+
+        [Route("api/GetUpdateQuatationStatus/{Id:int}")]
+        public IHttpActionResult GetUpdateQuatationStatus(int Id)
+        {
+
+            QutationTable qt = new QutationTable();
+
+            try
+            {
+                qt = db.QutationTables.Where(q => q.QutationID == Id).FirstOrDefault();
+
+                if (qt != null)
+                {
+                    qt.Status = "accepted";
+                    db.Entry(qt).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Ok(qt);
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                throw;
+            }
+        }
+
+
+
     }
 }

@@ -168,18 +168,33 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        //// GET: api/APIQutation/5
-        //[ResponseType(typeof(PurchaseOrderTable))]
-        //public IHttpActionResult GetPurchaseTable(int id)
-        //{
-        //    PurchaseOrderTable PurchaseTable = db.PurchaseOrderTables.Find(id);
-        //    if (PurchaseTable == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Route("api/GetUpdate/{Id:int}")]
+        public IHttpActionResult GetUpdatePurchaseStatus1(int Id)
+        {
+            PurchaseOrderTable po = new PurchaseOrderTable();
+            try
+            {
+                po = db.PurchaseOrderTables.Where(q => q.PurchaseOrderID == Id).FirstOrDefault();
 
-        //    return Ok(PurchaseTable);
-        //}
+                if (po != null)
+                {
+                    po.Status = "accepted";
+                    db.Entry(po).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+                throw;
+            }
+        }
 
         // PUT: api/APIQutation/5
         [ResponseType(typeof(void))]

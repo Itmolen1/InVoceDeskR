@@ -122,9 +122,7 @@
                             <tr id="mainrow1">
                                 <td>
                                     <input type="text" class="ServiceDate ss Input-height form-control" autocomplete="off" />
-
                                 </td>
-
                                 <td>
                                     <select id="SelectProductQutationS" class="product form-control pClassG  Service Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
@@ -152,12 +150,9 @@
                                 </td>
                                 <td>
                                     <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
-
                                 </td>
                                 <td>
-
                                     <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
-
                                 </td>
 
                             </tr>
@@ -261,8 +256,7 @@
 
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
-
-
+        debugger;
         var currentRow1 = $(this).closest("tr");
         var VAT = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow1);
@@ -296,9 +290,7 @@
             $('.VATG', $newRow).val($("#mainrow #SelectVATG").val());
             //Replace add button with remove button
             $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
-            //Remove id attribute from new clone row
-
-
+         
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
             $('.tbodyGood').prepend($newRow);
@@ -326,8 +318,6 @@
         CombineTotal();
         CalculateVateTotal();
 
-
-
         var isAllValid = true;
         if ($("#mainrow1 #SelectProductQutationS").val() == "0") {
             isAllValid = false;
@@ -354,8 +344,6 @@
             $('#SelectProductQutationS', $newRow).val($("#SelectProductQutationS").val());
             $('.VATG', $newRow).val($("#mainrow1 #SelectVATS").val());
 
-
-
             currentRow1.find('.ServiceDate ').removeAttr('id');
             currentRow1.find('.ServiceDate ').remove('id');
 
@@ -370,9 +358,7 @@
             $('span.error', $newRow).remove();
 
             $('.tbodyService').prepend($newRow);
-
-            // $(this).find('.ServiceDate').removeClass('.hasDatepicker').remove('id');
-
+      
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -390,8 +376,6 @@
             $('#mainrow1 .RowTotalG').val('');
             $('#QutationServiceDetail1 #mainrow1 .RowTotalG').val('');
 
-
-            $('')
 
 
         }
@@ -436,7 +420,7 @@
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
-        // GrandTotal("Add", Total, Subtotalwt);
+        
     });
 
 
@@ -486,15 +470,12 @@
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
+        debugger;
 
-
-        var price = CurrentRow;
-
+        
         Total = 0;
-
-
         Total = CurrentRow.find('.FTotalG').val();
-        if (parseInt(vat) == 0 && typeof (vat) != "undefined") {
+        if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
             if (!isNaN(Total) && typeof (Total) != "undefined") {
                 CurrentRow.find('.RowTotalG').val(Total);
                 CurrentRow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
@@ -502,13 +483,11 @@
             }
         }
 
-        if (!isNaN(Total) && typeof (vat) != "undefined") {
+        if (!isNaN(Total) && Total != "" && typeof (vat) != "undefined") {
             var InputVatValue = parseFloat((Total / 100) * vat);
             var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
             CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
         }
-
-
     }
 
     $(document).on('change', 'tbody .VATG', function () {
@@ -556,30 +535,21 @@
 
     $('tbody .VATG').change(function () {
 
-
-
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
-
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
 
     $('.VATG').change(function () {
-
-        debugger;
-
         var currentRow1 = $(this).closest("tr");
         var vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
-
+        RowSubTalSubtotal(vat, currentRow1);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
-
-
     });
     //Services
 
@@ -651,14 +621,12 @@
 
     $('#mainrow .pClassG').change(function () {
 
-
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
 
     $('#AddGoods').click(function () {
-
         GoodsService = "";
         GoodsService = "Good";
         ShowServiceGood("Good");
@@ -678,7 +646,6 @@
     });
 
     $('#mainrow1 .pClassG').change(function () {
-
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -719,7 +686,6 @@
                 cache: false,
                 data: { 'ProductId': ProductId },
                 success: function (resultData) {
-
                     CurrentRow.find('.rateG').val(resultData);
                     calculateTotalGoods(CurrentRow);
                     CombineTotalAndSubtotal();
@@ -728,10 +694,8 @@
                     vat = CurrentRow.find('.VATG').val();
                     var it = CurrentRow.find('.RowTotalG').val();
                     RowSubTalSubtotal(vat, CurrentRow);
-
                 },
                 error: function (errormessage) {
-
                 }
             });
         }
@@ -754,14 +718,9 @@
     });
 
     function CombineTotalAndSubtotal() {
-
-
-
         var SubTotalGoode = 0, SubTotalService = 0;
-
         SubTotalGoode = AddSubtotalGoods();
         SubTotalService = AddSubTotalService();
-
         if (isNaN(SubTotalGoode)) {
             SubTotalGoode = 0;
         }
@@ -780,13 +739,9 @@
     }
 
     function CombineTotal() {
-
-
-
         var TotalGoode, Total, TotalService1 = 0;
         TotalGoode = totalGoods();
         TotalService1 = TotalService();
-
         if (isNaN(parseFloat(TotalGoode) && typeof (TotalGoode) == "undefined")) {
             TotalGoode = 0;
         }
@@ -906,30 +861,24 @@
             }
         }
     }
-
+    //remove
     $('#orderdetailsitems').on('click', '.remove', function () {
 
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
-
         $(this).parents('tr').remove();
-
-        var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        var currentRow = $(this).closest("tr");
+        var vat = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
 
     $('#QutationServiceDetail1').on('click', '.remove', function () {
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
+        debugger;             
         $(this).parents('tr').remove();
-
-        var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        var currentRow = $(this).closest("tr");
+        var vat = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -1027,11 +976,12 @@
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
-
         };
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
+
         for (var i = 0; i < list.length; i++) {
             formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
             formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
@@ -1040,7 +990,6 @@
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
-            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
 
 
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
@@ -1079,16 +1028,13 @@
     }
 
     $('#saveEmail').click(function () {
-
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
         if (!validateFileSize()) {
             return true;
         }
-
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1163,6 +1109,7 @@
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
         }
         $.ajax({
             url: "/Qutation/SaveEmail",
@@ -1280,6 +1227,7 @@
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
         }
         $.ajax({
             url: "/Qutation/SaveEmailPrint",

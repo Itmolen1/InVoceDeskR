@@ -591,7 +591,7 @@
 
 
         Total = CurrentRow.find('.FTotalG').val();
-        if (parseInt(vat) == 0 && typeof (vat) != "undefined") {
+        if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
             if (!isNaN(Total) && typeof (Total) != "undefined") {
                 CurrentRow.find('.RowTotalG').val(Total);
                 CurrentRow.find('.RowTotalG').val(parseFloat(Total).toFixed(2));
@@ -599,7 +599,7 @@
             }
         }
 
-        if (!isNaN(Total) && typeof (vat) != "undefined") {
+        if (!isNaN(Total) && typeof (vat) != "undefined" && Total != "") {
             var InputVatValue = parseFloat((Total / 100) * vat);
             var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
             CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
