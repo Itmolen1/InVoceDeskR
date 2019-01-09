@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
-
-
+    
     $('.ServiceDate').datepicker({
         changeMonth: true,
         changeYear: true,

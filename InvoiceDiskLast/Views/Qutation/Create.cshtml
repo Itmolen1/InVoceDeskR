@@ -80,10 +80,7 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
-
-
             <p></p>
             <div class="row">
                 <div class="col-12 b-r">
@@ -114,9 +111,7 @@
                                 <th>
                                     Action
                                 </th>
-
                             </tr>
-
                         </thead>
                         <tbody class="tbodyService">
                             <tr id="mainrow1">
@@ -228,12 +223,9 @@
     <div class="col-2 b-r"></div>
     <div class="col-8 b-r">
         <div class="pull-right">
-
-
             <div class="btn-group">
                 <button id="Submit" type="submit" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
             </div>
-
             <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
             <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
         </div>
@@ -246,7 +238,8 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-<script src="~/CustomScript/DateCustomeScript.js"></script>
+
+
 <script type="text/javascript">
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
@@ -470,9 +463,7 @@
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
-        debugger;
-
-        
+       
         Total = 0;
         Total = CurrentRow.find('.FTotalG').val();
         if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
@@ -990,9 +981,9 @@
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
-
-
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
+            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
+            
 
         }
         $.ajax({
@@ -1007,8 +998,8 @@
 
                 if (result.Status == "Success") {
                     swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
+                        title: 'Quotation!',
+                        text: 'Quotation save successfully!',
                         type: 'success'
                     },
                          function (isconform) {
@@ -1123,8 +1114,8 @@
                 QutationIdd = result.QutationId;
                 if (result.Status == "Success") {
                     swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
+                        title: 'Quotation!',
+                        text: 'Quotation save successfully!',
                         type: 'success'
                     },
                          function (isconform) {
@@ -1288,3 +1279,64 @@
 
    
 </script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#mainrow1 .ServiceDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            datetime: new Date(),
+            dateFormat: 'dd/mm/yy',
+        }).datepicker("setDate", new Date());
+
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+    $(document).ready(function () {
+        $('.FromDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy/mm/dd'
+        }).datepicker();
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+    $(document).ready(function () {
+        $('.DueDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy/mm/dd'
+        }).datepicker();
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+    $('body').on('focus', ".ss", function () {
+
+        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
+        $(this).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            dateFormat: 'dd/mm/yy',
+        });
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+
+</script>
+
