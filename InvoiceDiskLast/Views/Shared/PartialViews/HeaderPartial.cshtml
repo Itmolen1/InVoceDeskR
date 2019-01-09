@@ -1,86 +1,82 @@
-﻿<html>
-<head>  
-    <link href="~/CustomClasses/style.css" rel="stylesheet" />
-    <link href="~/CustomClasses/print.css" rel="stylesheet" />
-    @*<script type='text/javascript' src='js/jquery-1.3.2.min.js'></script>*@
-    <script src="~/CustomScript/example.js"></script>
-</head>
-
+﻿
 @{ 
     var Contectdatas = ViewBag.Contentdata;
     var CompanyDatas = ViewBag.Companydata;
+    var commonModel = ViewBag.commonModel;
 }
-<body id="Partials">
-    <div class="row">
-        <div class="col-7 b-r">
+
+<input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
+<input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body printableArea">
+            <img src="~/images/6.jpg" class="image-Size" />
+            <h3><span class="pull-right">@CompanyDatas.CompanyName</span></h3>
+            <hr />
             <div class="row">
-                <img src="@Url.Content("~/Images/"+CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-            </div>
-            <div class="row HeadText" style="margin-left:40px">
-                @ViewBag.definition
-            </div>
-            <div class="row">
-                <table id="meta" style="margin-top: 33px" class="tb FS" >
-                    <tr>
-                        <td class="meta-head" colspan="2" style="text-align:center">@Contectdatas.ContactName</td>
-                    </tr>
-                    <tr>
-                        <td>@Contectdatas.ContactAddress @Contectdatas.StreetNumber</td>                        
-                    </tr>
-                    <tr>
-                        <td >@Contectdatas.PostalCode, @Contectdatas.City</td>                       
-                    </tr>                  
-                </table>
+                <div class="col-md-12">
+                    <div class="pull-left">
+
+                        <h3> &nbsp;<b class="text-muted">@commonModel.Name</b></h3>
+                        <h3>To,</h3>
+                        <address>
+                            <p class="text-muted m-l-5">
+                                @Contectdatas.ContactName
+                                <br />@Contectdatas.ContactAddress,@Contectdatas.StreetNumber
+                                <br />@Contectdatas.PostalCode,@Contectdatas.City
+                                <br />@Contectdatas.Land
+                            </p>
+                        </address>
+                        <div class="row">
+                            @{
+                                DateTime dt = new DateTime();
+                                dt = Convert.ToDateTime(commonModel.FromDate);
+                            }
+                            <div class="col-md-5">From Date:</div>
+                            <div class="col-md-7"><input type="text" class="FromDate  Input-height form-control" autocomplete="off" value="@dt.ToShortDateString()" id="QutationDate" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">@commonModel.Name Number:</div>
+                            <div class="col-md-7"><input type="text" class="form-control" id="Number_ID" value="@commonModel.Number_Id"/></div>
+                        </div>
+                        <div class="row">
+                            @{
+                                DateTime dt1 = new DateTime();
+                                dt1 = Convert.ToDateTime(commonModel.DueDate);
+                            }
+                            <div class="col-md-5">Due Date:</div>
+                            <div class="col-md-7"><input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="DueDate" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">Reference No:</div>
+                            <div class="col-md-7"><input type="text" id="ReferenceNumber" class="form-control" value="@commonModel.ReferenceNumber" /></div>
+                        </div>
+
+                    </div>
+                    <div class="pull-right text-right">
+
+                        <h3>From,</h3>
+                        @*<h4 class="font-bold">Company Name</h4>*@
+                        <p class="text-muted m-l-30">
+                                  Kvk nr: @CompanyDatas.KVK
+                            <br />BTW nr: @CompanyDatas.BTW
+                            <br />Bank nr: @CompanyDatas.BankName
+                            <br />IBAN nr: @CompanyDatas.IBANNumber
+                            <br />BIC nr: @CompanyDatas.BIC
+                            <br />Telephone: @CompanyDatas.CompanyPhone
+                            <br />Cell nr: @CompanyDatas.CompanyCell
+                            <br />E-mail: @CompanyDatas.CompanyEmail
+                            <br />Website: @CompanyDatas.Website
+                            <br /> Address: @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber
+                            <br />          @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity 
+                            <br />          @CompanyDatas.CompanyCountry
+
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-5 b-r">
-            <table id="meta" class="FS" style="margin-top: 33px">
-                <tr>
-                    <td class="meta-head" colspan="2" style="text-align:center">@CompanyDatas.CompanyName</td>
-
-                </tr>
-                <tr>
-                    <td class="meta-head">Kvk nr</td>
-                    <td><textarea>@CompanyDatas.KVK</textarea></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">BTW nr</td>
-                    <td><textarea id="date">@CompanyDatas.BTW</textarea></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">Bank</td>
-                    <td><div class="due">@CompanyDatas.BankName</div></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">IBAN No</td>
-                    <td><div class="due">@CompanyDatas.IBANNumber</div></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">BIC No</td>
-                    <td><div class="due">@CompanyDatas.BIC</div></td>
-                <tr>
-                    <td class="meta-head">Phone</td>
-                    <td><div class="due">@CompanyDatas.CompanyPhone</div></td>
-                <tr>
-                    <td class="meta-head">Cell</td>
-                    <td><div class="due">@CompanyDatas.CompanyCell</div></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">E-mail</td>
-                    <td><div class="due">@CompanyDatas.CompanyEmail</div></td>
-                </tr>              
-                <tr>
-                    <td class="meta-head">Web site</td>
-                    <td><div class="due">@CompanyDatas.Website</div></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">Address</td>
-                    <td><div class="due">@CompanyDatas.CompanyAddress<br />
-                    @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                    @CompanyDatas.CompanyCountry</div></td>
-                </tr>              
-            </table>
-        </div> 
     </div>
-</body>
-</html>
+</div>
+

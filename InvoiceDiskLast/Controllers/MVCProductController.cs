@@ -1,4 +1,4 @@
-﻿
+﻿  
 using InvoiceDiskLast.MISC;
 using InvoiceDiskLast.Models;
 using Logger;
@@ -107,8 +107,7 @@ namespace InvoiceDiskLast.Controllers
             return View();
             #endregion
         }
-        //ujhy6t7y67y
-
+      
         [HttpGet]
         public ActionResult GetProduct(string ProductStatus)
         {
@@ -126,8 +125,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-
-
+        
         [HttpPost]
         public ActionResult GetProductByName(string ProductName, string ProductStatus)
         {
@@ -279,8 +277,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
+        
         public ActionResult StockList()
         {
             return View();

@@ -12,6 +12,7 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
     [RouteNotFoundAttribute]
+    [SessionExpireAttribute]
     public class CommonController : Controller
     {
         private Ilog _iLog;
