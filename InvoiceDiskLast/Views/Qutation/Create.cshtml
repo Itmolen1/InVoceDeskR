@@ -3,10 +3,9 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    var Contectdatas = ViewBag.Contentdata;
-    var CompanyDatas = ViewBag.Companydata;
+    //var Contectdatas = ViewBag.Contentdata;
+    //var CompanyDatas = ViewBag.Companydata;
 }
-
 
 
 <div class="row">
@@ -15,137 +14,10 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
-            <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
 
-            <div class="row" style="margin-top:10px">
-                <div class="col-7 b-r">
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
 
-                    <img src="@Url.Content("~/Images/" +@CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-
-                    <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Qutation</div>
-                    </div>
-                    <div class="row clientInfo" style="margin-top:10px">
-                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 b-r">
-                            @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
-                            <br />
-                            @Contectdatas.PostalCode,@Contectdatas.City
-                            <br />
-                            @Contectdatas.Land
-                        </div>
-                    </div>
-
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-3 b-r">
-                            Qutation Date:
-                        </div>
-                        <div class="col-6 b-r">
-                            @{
-                                DateTime dt = new DateTime();
-                                dt = Convert.ToDateTime(Model.QutationDate);
-                            }
-                            <input type="text" class="QutationDate  Input-height form-control" autocomplete="off" value="@dt.ToShortDateString()" id="QutationDate" />
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Qutation Number:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Qutation_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Qutation_ID", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Qutation_ID, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Due Date:
-                        </div>
-                        <div class="col-6 b-r">
-
-                            @{
-                                DateTime dt1 = new DateTime();
-                                dt1 = Convert.ToDateTime(Model.DueDate);
-                            }
-
-                            <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="DueDate" />
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Reference No:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
-                            @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                </div>
-
-                <div class="col-5 b-r">
-                    <div class="row" style="margin-top:33px">
-                        <div class="col-3 b-r"></div>
-                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                        <div class="col-2 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Kvk nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Bank:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">IBAN No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BIC No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Telephone:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Cell No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">E-mail:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Website:</div>
-                        <div class="col-7 b-r">@CompanyDatas.Website</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Address:</div>
-                        <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber<br />
-                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <hr />
+           <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="orderdetailsitems">
@@ -255,7 +127,7 @@
                                     <select id="SelectProductQutationS" class="product form-control pClassG  Service Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class="Discription form-control Input-height" />
+                                    <input type="text" class="Discription form-control Input-height" id="Discription" />
                                 </td>
                                 <td>
                                     @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", autocomplete = "off" } })
@@ -374,7 +246,7 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-
+<script src="~/CustomScript/DateCustomeScript.js"></script>
 <script type="text/javascript">
     var Currentrow, Total, vat, Price, Quantity = 0;
     $(document).ready(function () {
@@ -437,7 +309,6 @@
 
         $('#mainrow #RowTotalG').val('');
     });
-
     $('#btnSerVice').click(function () {
 
         var currentRow1 = $(this).closest("tr");
@@ -521,6 +392,7 @@
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
+
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -539,6 +411,7 @@
 
     });
 
+
     $(document).on("keyup", "tbody .rateG", function () {
 
         var Currentrow = $(this).closest("tr");
@@ -550,6 +423,7 @@
         
     });
 
+
     $(document).on("keyup", "tbody .quantityG", function () {
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find(".VATG").val();
@@ -573,8 +447,6 @@
     });
 
     $(document).on("keyup", "tbody .quantityG", function () {
-
-
 
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find(".VATG").val();
@@ -989,7 +861,6 @@
             }
         }
     }
-
     //remove
     $('#orderdetailsitems').on('click', '.remove', function () {
 
@@ -1016,7 +887,7 @@
     $('#Submit').click(function () {
         CreateQuation();
     });
- 
+    var arraylisr1 = [];
     function ValidateRow(CurrentRow) {
 
         var Isvalid = true;
@@ -1063,7 +934,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
+          
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1071,13 +942,14 @@
                     Quantity: parseInt($(this).find('.quantityG').val()),
                     Rate: parseFloat($(this).find('.rateG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
+                    Description: $(this).find('#Discription').val(),
                     Type: "Service",
                     ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
+               
             }
         });
 
@@ -1090,13 +962,13 @@
         }
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
+            Qutation_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            QutationDate: $('#FromDate').val(),
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
+            //QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#SubTotal').text(),
@@ -1118,9 +990,9 @@
             formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
             formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
+
+
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
-            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
-            
 
         }
         $.ajax({
@@ -1210,13 +1082,13 @@
 
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            QutationDate: $('#QutationDate').val(),
+            Qutation_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            QutationDate: $('#FromDate').val(),
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
+            //QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#SubTotal').text(),
@@ -1327,13 +1199,13 @@
         }
 
         var empObj = {
-            Qutation_ID: $('#Qutation_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            QutationDate: $('.QutationDate').val(),
+            Qutation_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            QutationDate: $('.FromDate').val(),
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            QutationID: $('#Qutation_ID').val(),
+            //QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#SubTotal').text(),
@@ -1414,60 +1286,5 @@
         }
     }
 
-    $(document).ready(function () {
-
-
-        $('.ServiceDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            datetime: new Date(),
-            //dateFormat: 'dd/mm/yy',
-        }).datepicker("setDate", new Date());
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-
-        $('.QutationDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            //dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-
-        $('.DueDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            //dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    $('body').on('focus', ".ss", function () {
-
-        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
-        //$(this).closest('tr').find(':input').removeAttr('id');
-        $(this).datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            //dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-
-
+   
 </script>

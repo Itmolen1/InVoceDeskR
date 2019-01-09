@@ -63,5 +63,11 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+
+        public ActionResult QuotationViewTest()
+        {
+            return View();
+        }
+
     }
 }

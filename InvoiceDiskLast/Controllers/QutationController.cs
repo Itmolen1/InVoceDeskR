@@ -95,19 +95,32 @@ namespace InvoiceDiskLast.Controllers
 
                 DateTime qutatioDate = new DateTime();
                 qutatioDate = DateTime.Now;
-                int PaymentDuration = 15;
+                int PaymentDuration;
+                if (contectmodel.PaymentTerm.ToString() !=  "" && contectmodel.PaymentTerm.ToString() != null)
+                {
+                     PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
+                }
+                else
+                {
+                    PaymentDuration = 15;
+                }
                 PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
 
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Quotation";
+                
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
-                quutionviewModel.QutationDate = qutatioDate;
-                quutionviewModel.DueDate = qutatioDate.AddDays(+PaymentDuration);
-
+                commonModel.FromDate = qutatioDate;
+                commonModel.DueDate = qutatioDate.AddDays(+PaymentDuration);
 
                 MVCQutationModel q = new MVCQutationModel();
                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GetQuationCount/").Result;
                 q = response1.Content.ReadAsAsync<MVCQutationModel>().Result;
-                quutionviewModel.Qutation_ID = q.Qutation_ID;
+                commonModel.Number_Id = q.Qutation_ID;
+
+                ViewBag.commonModel = commonModel;
+
 
                 return View(quutionviewModel);
             }

@@ -2076,7 +2076,6 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = pdfname, PurchaseOrderId = purchasemodel.PurchaseOrderID } };
         }
-
-       
+               
     }
 }
