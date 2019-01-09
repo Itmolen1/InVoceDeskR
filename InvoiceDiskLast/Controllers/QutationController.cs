@@ -120,8 +120,7 @@ namespace InvoiceDiskLast.Controllers
                 commonModel.Number_Id = q.Qutation_ID;
 
                 ViewBag.commonModel = commonModel;
-
-
+                
                 return View(quutionviewModel);
             }
             catch (Exception)
@@ -649,6 +648,15 @@ namespace InvoiceDiskLast.Controllers
                 model.Add(new VatModel() { Vat1 = 6, Name = "6" });
                 model.Add(new VatModel() { Vat1 = 21, Name = "21" });
                 ViewBag.VatDrop = model;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Quotation";
+                commonModel.FromDate = Convert.ToDateTime(QutationModel.QutationDate);
+                commonModel.Number_Id = QutationModel.Qutation_ID;
+                commonModel.ReferenceNumber = QutationModel.RefNumber;
+
+
+                ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.QutationDat = QutationModel;
