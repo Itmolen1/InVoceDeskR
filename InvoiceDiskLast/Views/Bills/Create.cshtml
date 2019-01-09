@@ -981,11 +981,9 @@
 
     $('#orderdetailsitems').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
         $(this).parents('tr').remove();
-        var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        vat = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -993,18 +991,13 @@
 
     $('#QutationServiceDetail1').on('click', '.remove', function () {
         var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
         $(this).parents('tr').remove();
-
-        var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        vat = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
-
-    var ajaxreaponse;
 
     $('#Submit').click(function () {
         CreateQuation("/Bills/SaveDraft", "SaveDraft");

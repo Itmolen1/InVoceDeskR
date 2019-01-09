@@ -614,14 +614,9 @@
 
     }
 
-    function RowSubTalSubtotal(vat, CurrentRow) {
-
-        
+    function RowSubTalSubtotal(vat, CurrentRow) { 
         var price = CurrentRow;
-
         Total = 0;
-
-
         Total = CurrentRow.find('.FTotalG').val();
         if (parseInt(vat) == 0 && typeof (vat) != "undefined") {
             if (!isNaN(Total) && typeof (Total) != "undefined") {
@@ -636,8 +631,6 @@
             var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
             CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
         }
-
-
     }
 
     $(document).on('change', 'tbody .VATG', function () {
@@ -653,8 +646,7 @@
 
     $('.VATG').change(function () {
 
-        
-
+       
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -1030,27 +1022,21 @@
 
     $('#orderdetailsitems').on('click', '.remove', function () {
 
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
-
-        $(this).parents('tr').remove();
-
-        var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        var currentRow = $(this).closest('tr'); 
+        $(this).parents('tr').remove();   
+        vat = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
 
     $('#QutationServiceDetail1').on('click', '.remove', function () {
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
-        $(this).parents('tr').remove();
 
-        var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        var currentRow = $(this).closest('tr');
+        $(this).parents('tr').remove();
+        vat = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, currentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
