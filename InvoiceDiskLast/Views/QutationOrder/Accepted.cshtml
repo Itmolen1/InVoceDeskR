@@ -1,4 +1,5 @@
-﻿@model InvoiceDiskLast.Models.PendingModel
+﻿
+@model InvoiceDiskLast.Models.PendingModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "QutationOrderList";
@@ -630,11 +631,11 @@
 
 
 
-    @*<label></label>*@
+@*<label></label>*@
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
         $(document).ready(function () {
 
@@ -648,9 +649,9 @@
             {
                 LoadQutationOrderTable("open");
             }
-           
-               
-          
+
+
+
 
             $('#btnqutation').click(function () {
                 if ($('#drppaymentDebitq option:selected').text() == $('#drpAccountCreditq option:selected').text()) {
@@ -782,7 +783,7 @@
 
                     {
                         render: function (data, type, row) {
-                         
+
 
                             switch (row.Status) {
                                 case "open":
@@ -817,7 +818,7 @@
 
 
         function ViewInvoice(qutationId, Type) {
-          
+
             $.ajax({
                 url: '/MVCClient/AddOrEditQutation',
                 type: 'GET',
@@ -827,7 +828,7 @@
                 success: function (data) {
                     if (Type == "Goods") {
                         window.location.href = "/Invoice/ViewInvoice/?id=" + qutationId;
-                      
+
                         //window.open(href, '_blank');
                     }
                     else if (Type == "Services") {
@@ -950,7 +951,7 @@
 
 
         function AcceptOrder(id, Amount, ServiceType) {
-            SerViceGood = "Prceed";        
+            SerViceGood = "Prceed";
             Proceeds(id, "accepted", "the qutation is  prceeds successfully")
         }
 
@@ -970,7 +971,7 @@
 
 
         function Proceeds(Id, Status, Message) {
-     
+
            var Data = JSON.stringify({
                 QutationId: Id,
                 Status: Status,
@@ -1022,23 +1023,7 @@
                 data: Data,
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
-                    //if (response.Status == "Exceeded") {
-                    //    var html = "";
-                    //    $.each(response.Message, function (key, item) {
-
-                    //        html += "<tr>"
-                    //        html += '<td style="text-align:center">' + item.ItemId + '</td>';
-                    //        html += '<td>' + item.ItemName + '</td>';
-                    //        html += '<td style="text-align:right">' + item.Quantity + '</td>';
-                    //        html += '<td style="text-align:right">' + item.SaleQuantity + '</td>';
-                    //        html += '<td  style="color:red;text-align:right">' + item.ExeecdQuantity + '</td>';
-                    //        html += "</tr>"
-                    //    });
-                    //    $('#Extabletbody').append(html);
-
-                    //    $('#ExceedItemModel').modal('show');
-
-                    //}
+                    
 
                     if (response.Status == "Success") {
 
@@ -1067,7 +1052,7 @@
 
 
         $('#drpstatus').change(function () {
-                      
+
             var status = $('#drpstatus option:selected').text();
             LoadQutationOrderTable(status);
         });
@@ -1192,7 +1177,7 @@
 
 
         $(document).ready(function () {
-            loadPayemtDropdownq();            
+            loadPayemtDropdownq();
             loadPayemtTermDropdown();
         });
 
@@ -1403,4 +1388,4 @@
 
 
 
-    </script>
+</script>
