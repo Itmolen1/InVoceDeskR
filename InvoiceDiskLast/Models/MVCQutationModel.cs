@@ -11,8 +11,8 @@ namespace InvoiceDiskLast.Models
         public int? QutationID { get; set; }
         public string Qutation_ID { get; set; }
         public string RefNumber { get; set; }
-        public Nullable<System.DateTime> QutationDate { get; set; }
-        public Nullable<System.DateTime> DueDate { get; set; }
+        public System.DateTime QutationDate { get; set; }
+        public System.DateTime DueDate { get; set; }
         public Nullable<double> SubTotal { get; set; }
         public Nullable<double> TotalVat6 { get; set; }
         public Nullable<double> TotalVat21 { get; set; }

@@ -651,7 +651,7 @@ namespace InvoiceDiskLast.Controllers
 
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Quotation";
-                commonModel.FromDate = Convert.ToDateTime(QutationModel.QutationDate);
+                commonModel.FromDate = QutationModel.QutationDate;
                 commonModel.Number_Id = QutationModel.Qutation_ID;
                 commonModel.ReferenceNumber = QutationModel.RefNumber;
 

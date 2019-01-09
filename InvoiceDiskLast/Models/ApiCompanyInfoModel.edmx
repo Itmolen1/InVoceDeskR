@@ -375,8 +375,8 @@
           <Property Name="QutationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Qutation_ID" Type="nvarchar" MaxLength="50" />
           <Property Name="RefNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="QutationDate" Type="date" />
-          <Property Name="DueDate" Type="date" />
+          <Property Name="QutationDate" Type="date" Nullable="false" />
+          <Property Name="DueDate" Type="date" Nullable="false" />
           <Property Name="SubTotal" Type="float" />
           <Property Name="TotalVat6" Type="float" />
           <Property Name="TotalVat21" Type="float" />
@@ -877,7 +877,6 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
           <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
           <Property Name="StreetNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -896,19 +895,11 @@
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="BillTable" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="InvoiceTable" />
           <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
         </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
           <EntitySet Name="QutationDetailsTables" EntityType="APIcompanyModel.QutationDetailsTable" />
-          <EntitySet Name="QutationTables" EntityType="APIcompanyModel.QutationTable" />
-          <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="APIcompanyModel.FK_QutationDetailsTable_QutationTable">
-            <End Role="QutationTable" EntitySet="QutationTables" />
-            <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="QutationTable" EntitySet="QutationTables" />
-          </AssociationSet>
           <EntitySet Name="PurchaseOrderTables" EntityType="APIcompanyModel.PurchaseOrderTable" />
           <AssociationSet Name="FK_PurchaseOrderTable_ComapnyInfo" Association="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
@@ -947,10 +938,6 @@
           </AssociationSet>
           <EntitySet Name="PendingTables" EntityType="APIcompanyModel.PendingTable" />
           <EntitySet Name="QutationOrderStatusTables" EntityType="APIcompanyModel.QutationOrderStatusTable" />
-          <AssociationSet Name="FK_QutationOrderStatusTable_QutationTable" Association="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable">
-            <End Role="QutationTable" EntitySet="QutationTables" />
-            <End Role="QutationOrderStatusTable" EntitySet="QutationOrderStatusTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_QutationOrderStatusTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="QutationOrderStatusTable" EntitySet="QutationOrderStatusTables" />
@@ -988,10 +975,6 @@
           <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="UserTable" EntitySet="UserTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_QutationTable_UserTable" Association="APIcompanyModel.FK_QutationTable_UserTable">
-            <End Role="UserTable" EntitySet="UserTables" />
-            <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
           <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
           <EntitySet Name="BillDetailTables" EntityType="APIcompanyModel.BillDetailTable" />
@@ -1040,8 +1023,25 @@
             <End Role="ContactsTable" EntitySet="ContactsTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
+          <EntitySet Name="QutationTables" EntityType="APIcompanyModel.QutationTable" />
+          <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ContactsTable" Association="APIcompanyModel.FK_QutationTable_ContactsTable">
             <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="APIcompanyModel.FK_QutationDetailsTable_QutationTable">
+            <End Role="QutationTable" EntitySet="QutationTables" />
+            <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationOrderStatusTable_QutationTable" Association="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable">
+            <End Role="QutationTable" EntitySet="QutationTables" />
+            <End Role="QutationOrderStatusTable" EntitySet="QutationOrderStatusTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_UserTable" Association="APIcompanyModel.FK_QutationTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
           </EntityContainer>
@@ -1057,61 +1057,11 @@
           <Property Name="Total" Type="Double" />
           <Property Name="Vat" Type="Double" />
           <Property Name="QutationID" Type="Int32" />
-          <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationDetailsTable" ToRole="QutationTable" />
           <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ServiceDate" Type="DateTime" Precision="3" />
           <Property Name="RowSubTotal" Type="Double" />
+          <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationDetailsTable" ToRole="QutationTable" />
         </EntityType>
-        <EntityType Name="QutationTable">
-          <Key>
-            <PropertyRef Name="QutationID" />
-          </Key>
-          <Property Name="QutationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Qutation_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="QutationDate" Type="DateTime" Precision="0" />
-          <Property Name="DueDate" Type="DateTime" Precision="0" />
-          <Property Name="SubTotal" Type="Double" />
-          <Property Name="TotalVat6" Type="Double" />
-          <Property Name="TotalVat21" Type="Double" />
-          <Property Name="DiscountAmount" Type="Double" />
-          <Property Name="TotalAmount" Type="Double" />
-          <Property Name="CustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="CompanyId" Type="Int32" />
-          <Property Name="ContactId" Type="Int32" />
-          <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationTable" ToRole="QutationDetailsTable" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
-          <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
-          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="QutationTable" ToRole="UserTable" />
-          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="QutationTable" ToRole="ContactsTable" />
-        </EntityType>
-        <Association Name="FK_QutationDetailsTable_QutationTable">
-          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationDetailsTable" Role="QutationDetailsTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QutationTable">
-              <PropertyRef Name="QutationID" />
-            </Principal>
-            <Dependent Role="QutationDetailsTable">
-              <PropertyRef Name="QutationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_QutationTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="QutationTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="PurchaseOrderTable">
           <Key>
             <PropertyRef Name="PurchaseOrderID" />
@@ -1337,21 +1287,9 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationOrderStatusTable" ToRole="QutationTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="QutationOrderStatusTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationOrderStatusTable" ToRole="QutationTable" />
         </EntityType>
-        <Association Name="FK_QutationOrderStatusTable_QutationTable">
-          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationOrderStatusTable" Role="QutationOrderStatusTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="QutationTable">
-              <PropertyRef Name="QutationID" />
-            </Principal>
-            <Dependent Role="QutationOrderStatusTable">
-              <PropertyRef Name="Fk_QutationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_QutationOrderStatusTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
           <End Type="APIcompanyModel.QutationOrderStatusTable" Role="QutationOrderStatusTable" Multiplicity="*" />
@@ -1533,11 +1471,11 @@
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
-          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="UserTable" ToRole="BillTable" />
           <NavigationProperty Name="BillTables1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="UserTable" ToRole="BillTable" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="UserTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           </EntityType>
         <Association Name="FK_UserTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1548,18 +1486,6 @@
             </Principal>
             <Dependent Role="UserTable">
               <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_QutationTable_UserTable">
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTable">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="QutationTable">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1817,6 +1743,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="QutationTable">
+          <Key>
+            <PropertyRef Name="QutationID" />
+          </Key>
+          <Property Name="QutationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Qutation_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QutationDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SubTotal" Type="Double" />
+          <Property Name="TotalVat6" Type="Double" />
+          <Property Name="TotalVat21" Type="Double" />
+          <Property Name="DiscountAmount" Type="Double" />
+          <Property Name="TotalAmount" Type="Double" />
+          <Property Name="CustomerNote" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="ContactId" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="QutationTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationTable" ToRole="QutationDetailsTable" />
+          <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="QutationTable" ToRole="UserTable" />
+        </EntityType>
+        <Association Name="FK_QutationTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QutationTable_ContactsTable">
           <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
@@ -1826,6 +1790,42 @@
             </Principal>
             <Dependent Role="QutationTable">
               <PropertyRef Name="ContactId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationDetailsTable_QutationTable">
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationDetailsTable" Role="QutationDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QutationTable">
+              <PropertyRef Name="QutationID" />
+            </Principal>
+            <Dependent Role="QutationDetailsTable">
+              <PropertyRef Name="QutationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationOrderStatusTable_QutationTable">
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationOrderStatusTable" Role="QutationOrderStatusTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="QutationTable">
+              <PropertyRef Name="QutationID" />
+            </Principal>
+            <Dependent Role="QutationOrderStatusTable">
+              <PropertyRef Name="Fk_QutationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1876,28 +1876,6 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ItemId" ColumnName="ItemId" />
                 <ScalarProperty Name="QutationDetailId" ColumnName="QutationDetailId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="QutationTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.QutationTable">
-              <MappingFragment StoreEntitySet="QutationTable">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
-                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
-                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
-                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
-                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
-                <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
-                <ScalarProperty Name="QutationID" ColumnName="QutationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2278,6 +2256,28 @@
                 <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
                 <ScalarProperty Name="ContactName" ColumnName="ContactName" />
                 <ScalarProperty Name="ContactsId" ColumnName="ContactsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QutationTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.QutationTable">
+              <MappingFragment StoreEntitySet="QutationTable">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ContactId" ColumnName="ContactId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
+                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+                <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
+                <ScalarProperty Name="QutationID" ColumnName="QutationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

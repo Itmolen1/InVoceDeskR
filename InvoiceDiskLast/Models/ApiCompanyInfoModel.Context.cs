@@ -29,7 +29,6 @@ namespace InvoiceDiskLast.Models
     
         public virtual DbSet<ComapnyInfo> ComapnyInfoes { get; set; }
         public virtual DbSet<QutationDetailsTable> QutationDetailsTables { get; set; }
-        public virtual DbSet<QutationTable> QutationTables { get; set; }
         public virtual DbSet<PurchaseOrderTable> PurchaseOrderTables { get; set; }
         public virtual DbSet<ProductUnitTable> ProductUnitTables { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
@@ -54,6 +53,7 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<InvoiceDetailsTable> InvoiceDetailsTables { get; set; }
         public virtual DbSet<PaymentTermDuration> PaymentTermDurations { get; set; }
         public virtual DbSet<ContactsTable> ContactsTables { get; set; }
+        public virtual DbSet<QutationTable> QutationTables { get; set; }
     
         [DbFunction("DBEntities", "GetStockItem")]
         public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)
