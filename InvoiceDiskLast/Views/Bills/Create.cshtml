@@ -632,7 +632,7 @@
     $('.VATG').change(function () {
 
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var  vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
         CombineTotalAndSubtotal();
         CombineTotal();
@@ -664,7 +664,7 @@
     $('tbody .VATG').change(function () {
 
         var Currentrow = $(this).closest("tr");
-        vat = Currentrow.find('.VATG').val();
+        var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
         CombineTotalAndSubtotal();
@@ -675,7 +675,7 @@
     $('.VATG').change(function () {
 
         var currentRow1 = $(this).closest("tr");
-        vat = currentRow1.find('.VATG').val();
+        var vat = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
 
         CombineTotalAndSubtotal();
@@ -685,12 +685,7 @@
 
     });
     //Services
-
-
-
-
-
-
+    
     function CalculateVateTotal() {
 
         var Totalvat211, Totalvat6 = 0;
@@ -749,9 +744,6 @@
             $('#BTW21').text(parseFloat(t).toFixed(2));
         }
     }
-
-
-
 
     $(document).on('change', '.pClassG', function () {
         
@@ -905,8 +897,7 @@
         })
         return SubTotalGood;
     }
-
-
+    
     function AddSubTotalService() {
         var SubTotalService = 0;
         $('#QutationServiceDetail1 tr').each(function () {
@@ -940,10 +931,7 @@
         })
         return TotalService;
     }
-
-
-
-
+    
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
         if (InOrOut == 'AddingVat') {
@@ -1024,8 +1012,7 @@
     $('#Submit').click(function () {
         CreateQuation("/Bills/SaveDraft", "SaveDraft");
     });
-
-
+    
     $('#saveEmail').click(function () {
         CreateQuation("/Bills/SaveEmail", "SaveEmail");
     });
@@ -1033,10 +1020,7 @@
     $('#saveprintandsendtoyourselfsave').click(function () {
         CreateQuation("/Bills/SaveEmailPrint", "SaveEamilPrint");
     });
-
-
-
-
+    
     function CreateQuation(Url, btnName) {
 
         var list = [], orderItem, CurrentRow;
@@ -1139,15 +1123,9 @@
         });
         return ajaxreaponse;
     }
-
-
-
-
-
+    
     function Response(response, btnName) {
-        debugger;
-
-
+      
         if (response.Status == "Success" && btnName == "SaveDraft") {
             swal({
                 title: 'Invoice!',
@@ -1190,14 +1168,6 @@
         }
     }
 
-
-
-
-
-
-
-
-
     function ValidateRow(CurrentRow) {
 
         var Isvalid = true;
@@ -1216,6 +1186,7 @@
         }
         return Isvalid;
     }
+
     function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1241,10 +1212,7 @@
         }
     }
 
-</script>
 
-
-<script>
     $(document).ready(function () {
         $('.ServiceDate').datepicker({
             changeMonth: true,
@@ -1257,9 +1225,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-    });
-
-    $(document).ready(function () {
+   
         $('.BillDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1271,12 +1237,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-    });
-
-
-
-    $(document).ready(function () {
-        $('.BillDueDate').datepicker({
+           $('.BillDueDate').datepicker({
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
@@ -1305,10 +1266,6 @@
         }
     });
 
-
-
-
-
     function validateFileSize() {
         var Isvalid = true;
         if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -1334,14 +1291,6 @@
         }
     }
 
-</script>
-
-
-
-
-
-
-<script>
 
     $(document).ready(function () {
         $('#BillDate').datepicker({
@@ -1356,11 +1305,7 @@
             $(this).datepicker('option', 'yearRange', '1980:c');
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
-    });
-
-
-
-    $(document).ready(function () {
+   
         $('#BillDueDate').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1372,11 +1317,7 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-
-
-
+    
 
     $('body').on('focus', ".ss", function () {
 
@@ -1392,10 +1333,7 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-
-
+    
 
 </script>
 
