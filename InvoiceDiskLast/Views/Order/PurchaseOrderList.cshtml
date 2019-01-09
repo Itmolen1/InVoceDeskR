@@ -1,6 +1,6 @@
 ﻿@model InvoiceDiskLast.Models.PendingModel
 
-@{ 
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -728,10 +728,8 @@
                 $('#companyCity').text(response.CompanyDta.CompanyCity);
                 $('#companyCountry').text(response.CompanyDta.CompanyCountry);
                 $('#tbody').html(html);
-
                 $("#logo").empty();
                 $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "'/>");
-
                 $('#showpendindModel').modal('show');
             },
 
@@ -740,17 +738,11 @@
             },
         });
 
-        // loadPendingTable(purchaseId);
         $('#showpendindModel').modal('show');
     }
 
     function AcceptOrder(id, Amount) {
-        //$('#txtrefrencenumber').val(id);
-        //$('#AmountDebit').val(Amount);
-        //$('#txttransactionId').val(Math.floor(Math.random() * 10));
-        //$('#TransactionModel').modal('show');
-
-        updateStatus(id, "accepted", "the invoice is accepted successfully");
+        Prcoceed(id, "accepted", "the invoice is accepted successfully");
     }
 
     function Rejected(id) {
@@ -761,6 +753,44 @@
         $('#Pending').modal('show');
         $('#txtpurchaseId').val(id);
     }
+
+    function Prcoceed(id) {
+        var Data = JSON.stringify({
+            Id: id,
+            Status: "hnuij",
+        })
+        $.ajax({
+            url: '/Order/Proceeds',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.Status == "Success") {
+                    $('#PurchaseListTable').DataTable().ajax.reload();
+
+                    swal({
+                        title: 'Status!',
+                        text: "Proceeds successfully",
+                        type: 'success'
+                    });
+                }
+                else if (response.Status == "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: "fail to process",
+                        type: 'danger'
+                    });
+                }
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+
+    }
+
+
 
     function updateStatus(Id, Status, Message) {
 

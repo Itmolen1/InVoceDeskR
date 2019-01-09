@@ -950,12 +950,8 @@
 
 
         function AcceptOrder(id, Amount, ServiceType) {
-            SerViceGood = ServiceType;
-
-
-            $('#purchaseAddEditLing').attr('href', '/Purchase/Index');
-            updateStatus(id, "accepted", "the qutation is  accepted successfully");
-
+            SerViceGood = "Prceed";        
+            Proceeds(id, "accepted", "the qutation is  prceeds successfully")
         }
 
 
@@ -968,9 +964,46 @@
         }
 
         function PendingtOrderq(id) {
-
             $('#Pendingq').modal('show');
             $('#txtpurchaseIdQ').val(id);
+        }
+
+
+        function Proceeds(Id, Status, Message) {
+     
+           var Data = JSON.stringify({
+                QutationId: Id,
+                Status: Status,
+                Type: SerViceGood
+            })
+            $.ajax({
+                url: '/QutationOrder/Proceeds',
+                type: 'POST',
+                data: Data,
+                contentType: 'application/json; charset=utf-8',
+                success: function (response) {
+                    if (response.Status == "Success") {
+
+                        $('#QutationOrderTable').DataTable().ajax.reload();
+                        swal({
+                            title: 'Status!',
+                            text: Message,
+                            type: 'success'
+                        });
+                    }
+                    else if (response.Status == "Fail") {
+                        swal({
+                            title: 'Status!',
+                            text: "fail to process",
+                            type: 'danger'
+                        });
+                    }
+                },
+
+                Error: function (error) {
+                    alert(error)
+                },
+            });
         }
 
 
@@ -989,23 +1022,23 @@
                 data: Data,
                 contentType: 'application/json; charset=utf-8',
                 success: function (response) {
-                    if (response.Status == "Exceeded") {
-                        var html = "";
-                        $.each(response.Message, function (key, item) {
+                    //if (response.Status == "Exceeded") {
+                    //    var html = "";
+                    //    $.each(response.Message, function (key, item) {
 
-                            html += "<tr>"
-                            html += '<td style="text-align:center">' + item.ItemId + '</td>';
-                            html += '<td>' + item.ItemName + '</td>';
-                            html += '<td style="text-align:right">' + item.Quantity + '</td>';
-                            html += '<td style="text-align:right">' + item.SaleQuantity + '</td>';
-                            html += '<td  style="color:red;text-align:right">' + item.ExeecdQuantity + '</td>';
-                            html += "</tr>"
-                        });
-                        $('#Extabletbody').append(html);
+                    //        html += "<tr>"
+                    //        html += '<td style="text-align:center">' + item.ItemId + '</td>';
+                    //        html += '<td>' + item.ItemName + '</td>';
+                    //        html += '<td style="text-align:right">' + item.Quantity + '</td>';
+                    //        html += '<td style="text-align:right">' + item.SaleQuantity + '</td>';
+                    //        html += '<td  style="color:red;text-align:right">' + item.ExeecdQuantity + '</td>';
+                    //        html += "</tr>"
+                    //    });
+                    //    $('#Extabletbody').append(html);
 
-                        $('#ExceedItemModel').modal('show');
+                    //    $('#ExceedItemModel').modal('show');
 
-                    }
+                    //}
 
                     if (response.Status == "Success") {
 

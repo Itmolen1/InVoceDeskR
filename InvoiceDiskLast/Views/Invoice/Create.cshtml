@@ -17,7 +17,7 @@
 
             <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
             <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
-        
+
             <div class="row" style="margin-top:10px">
                 <div class="col-7 b-r">
                     <img src="@Url.Content("~/Images/" +@CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
@@ -36,7 +36,7 @@
                             @Contectdatas.Land
                         </div>
                     </div>
-                    
+
                     <div class="row" style="margin-top:20px">
                         <div class="col-3 b-r">
                             Invoice Date:
@@ -50,7 +50,7 @@
                             <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@InvoiceDate.ToShortDateString()" id="InvoiceDate" />
 
                             @*@Html.EditorFor(model => model.InvoiceDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "InvoiceDate  form-control MAterialDatepicker Input-height", id = "QutationDate" } })
-                            @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
+                                @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -58,8 +58,8 @@
                         <div class="col-3 b-r">
                             Invoice Number:
                         </div>
-                        <div class="col-6 b-r">                    
-                            @Html.EditorFor(model => model.Invoice_ID, new { htmlAttributes = new { @class = "form-control Input-height", @readonly= "readonly", id = "Invoice_ID"  } })
+                        <div class="col-6 b-r">
+                            @Html.EditorFor(model => model.Invoice_ID, new { htmlAttributes = new { @class = "form-control Input-height", @readonly = "readonly", id = "Invoice_ID" } })
                             @Html.ValidationMessageFor(model => model.Invoice_ID, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-3 b-r"></div>
@@ -76,7 +76,7 @@
                             <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@InvoiceDueDate.ToShortDateString()" id="InvoiceDueDate" />
 
                             @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "DueDate form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
-                            @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
+                                @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="col-3 b-r"></div>
                     </div>
@@ -205,7 +205,7 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>             
+                </div>
             </div>
             <p></p>
             <div class="row">
@@ -283,7 +283,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>   
+            </div>
             <div class="row">
                 <div class="col-8 b-r">
                     <div class="row">
@@ -330,10 +330,10 @@
                         <div class="col-7 b-r text-right">
                             <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@Model.TotalAmount</label>
                         </div>
-                    </div> 
-                                
+                    </div>
+
                 </div>
-              
+
             </div>
             <div class="row">
                 <div class="col-12 b-r">
@@ -381,7 +381,7 @@
     var VAT21VAlUE, VAT6VAlUE;
     $('#btnaddGoods').click(function () {
 
-        
+
         var currentRow1 = $(this).closest("tr");
         var VAT = currentRow1.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow1);
@@ -421,7 +421,7 @@
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
             $('.tbodyGood tr:last').before($newRow);
-          
+
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -482,7 +482,7 @@
 
             $('span.error', $newRow).remove();
             $('.tbodyService tr:last').before($newRow);
-        
+
 
             $(".FTotalG").prop('disabled', true);
 
@@ -534,7 +534,7 @@
         CalculateVateTotal();
 
     });
-    
+
     $(document).on("keyup", "tbody .rateG", function () {
 
         var Currentrow = $(this).closest("tr");
@@ -545,7 +545,7 @@
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
         // GrandTotal("Add", Total, Subtotalwt);
     });
-    
+
     $(document).on("keyup", "tbody .quantityG", function () {
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find(".VATG").val();
@@ -570,7 +570,7 @@
 
     $(document).on("keyup", "tbody .quantityG", function () {
 
-        
+
 
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find(".VATG").val();
@@ -584,7 +584,7 @@
 
     function calculateTotalGoods(currentRow) {
 
-    
+
         Quantity = currentRow.find(".quantityG").val(),
         Price = currentRow.find('.rateG').val();
         Total = parseFloat(Quantity * Price);
@@ -596,7 +596,7 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        
+
         var price = CurrentRow;
 
         Total = 0;
@@ -611,7 +611,7 @@
             }
         }
 
-        if (!isNaN(Total) && typeof (vat) != "undefined") {
+        if (!isNaN(Total) && typeof (vat) != "undefined" && Total != "") {
             var InputVatValue = parseFloat((Total / 100) * vat);
             var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
             CurrentRow.find('.RowTotalG').val(parseFloat(ValueWTV).toFixed(2));
@@ -633,7 +633,7 @@
 
     $('.VATG').change(function () {
 
-        
+
 
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
@@ -645,7 +645,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        
+
         var Currentrow = $(this).closest("tr");
         vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -653,7 +653,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
-    
+
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
@@ -662,16 +662,12 @@
         CombineTotal();
         CalculateVateTotal();
     });
-    
+
     $('tbody .VATG').change(function () {
-
-        
-
 
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
-
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -679,10 +675,9 @@
 
     $('.VATG').change(function () {
 
-        var currentRow1 = $(this).closest("tr");
-        var vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
-
+        var CurrentRow = $(this).closest("tr");
+        var vat = CurrentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, CurrentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -691,23 +686,21 @@
     });
     //Services
     $(document).on('change', '.pClassG', function () {
-        
-        var currentRow1 = $(this).closest('tr');
-        var value = currentRow1.find('.pClassG').val();
-        GetProductPriceByProductId(value, currentRow1);
+
+        var CurrentRow = $(this).closest('tr');
+        var value = CurrentRow.find('.pClassG').val();
+        GetProductPriceByProductId(value, CurrentRow);
     });
 
     $('#mainrow .pClassG').change(function () {
 
-        
+
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
 
     $('#mainrow1 .pClassG').change(function () {
-
-        
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -749,7 +742,7 @@
                 cache: false,
                 data: { 'ProductId': productId },
                 success: function (resultData) {
-                    
+
                     CurrentRow.find('.rateG').val(resultData);
                     calculateTotalGoods(CurrentRow);
                     CombineTotalAndSubtotal();
@@ -844,7 +837,7 @@
 
     function CombineTotalAndSubtotal() {
 
-        
+
 
         var SubTotalGoode = 0, SubTotalService = 0;
 
@@ -870,7 +863,7 @@
 
     function CombineTotal() {
 
-        
+
 
         var TotalGoode, Total, TotalService1 = 0;
         TotalGoode = totalGoods();
@@ -905,14 +898,9 @@
 
     function AddSubTotalService() {
         var SubTotalService = 0;
-
         $('#QutationServiceDetail1 tr').each(function () {
-
-
-            
             var Value = $(this).find(".RowTotalG").val();
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
-
                 SubTotalService += parseFloat(Value);
             }
         })
@@ -921,13 +909,9 @@
 
     function totalGoods() {
         var TotalGood = 0;
-
         $('#orderdetailsitems  tr').each(function () {
-
             var Value = $(this).find(".FTotalG").val();
-
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
-
                 TotalGood += parseFloat(Value)
             }
         })
@@ -998,27 +982,20 @@
 
     $('#orderdetailsitems').on('click', '.remove', function () {
 
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
-
-        $(this).parents('tr').remove();
-
-        var currentRow1 = $(this).closest("tr");
-        var vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        var CurrentRow = $(this).closest("tr");
+        $(this).parents('tr').remove();  
+        var vat = CurrentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, CurrentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
     });
 
     $('#QutationServiceDetail1').on('click', '.remove', function () {
-        var currentRow = $(this).closest('tr');
-        var vat = currentRow.find('.VAT  option:selected').val();
+        var CurrentRow = $(this).closest("tr");
         $(this).parents('tr').remove();
-
-        var currentRow1 = $(this).closest("tr");
-        var vat = currentRow1.find('.VATG').val();
-        RowSubTalSubtotal(vat, Currentrow);
+        var vat = CurrentRow.find('.VATG').val();
+        RowSubTalSubtotal(vat, CurrentRow);
         CombineTotalAndSubtotal();
         CombineTotal();
         CalculateVateTotal();
@@ -1048,7 +1025,7 @@
     }
 
     function CreateQuation() {
-        
+
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
@@ -1058,7 +1035,7 @@
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
 
-            
+
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1076,131 +1053,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
-            CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: $(this).find('.product').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Rate: parseFloat($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Type: "Service", 
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
 
-
-
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
-        }
-        
-
-        var empObj = {
-            
-            Invoice_ID: $('#Invoice_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            InvoiceDate: $('#InvoiceDate').val(),
-            InvoiceDueDate: $('#InvoiceDueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            DiscountAmount: $('#DiscountAmount').val(),
-            InvoiceID: $('#Qutation_ID').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            Total: $('#SubTotal').text(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#CustomerNote').val(),
-            ContactId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
-            InvoiceDescription: $('#InvoiceDescription').val(),       
-        };
-      
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
-        }
-        for (var i = 0; i < list.length; i++) {
-            formData.append('InvoiceDetailsTable[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('InvoiceDetailsTable[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('InvoiceDetailsTable[' + i + '][Rate]', list[i].Rate)
-            formData.append('InvoiceDetailsTable[' + i + '][Total]', list[i].Total)
-            formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
-            formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
-            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
-
-        }
-        $.ajax({
-            url: "/Invoice/SaveDraft",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-
-            success: function (result)
-            {                
-                if (result.Status == "Success") {
-                    swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
-                        type: 'success'
-                    },
-                         function (isconform) {
-                             window.location.href = "/Invoice/ViewInvoice?id=" + result.id;
-                         });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
-            },
-
-            error: function (errormessage) {
-
-            }
-
-        });
-    }
-
-    $('#saveEmail').click(function () {
-
-        
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
-        }
-
-        $('#orderdetailsitems .tbodyGood tr').each(function () {
-
-            
-
-            CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
-
-        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1227,7 +1080,130 @@
             $('#gtotal').text('');
             $('#gtotal').text('');
         }
-        
+
+
+        var empObj = {
+
+            Invoice_ID: $('#Invoice_ID').val(),
+            RefNumber: $('#RefNumber').val(),
+            InvoiceDate: $('#InvoiceDate').val(),
+            InvoiceDueDate: $('#InvoiceDueDate').val(),
+            SubTotal: $('#SubTotal').text(),
+            DiscountAmount: $('#DiscountAmount').val(),
+            InvoiceID: $('#Qutation_ID').val(),
+            TotalVat6: $('#BTW6').text(),
+            TotalVat21: $('#BTW21').text(),
+            Total: $('#SubTotal').text(),
+            TotalAmount: $('#gtotal').text(),
+            CustomerNote: $('#CustomerNote').val(),
+            ContactId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
+            InvoiceDescription: $('#InvoiceDescription').val(),
+        };
+
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+        for (var i = 0; i < list.length; i++) {
+            formData.append('InvoiceDetailsTable[' + i + '][ItemId]', list[i].ItemId)
+            formData.append('InvoiceDetailsTable[' + i + '][Quantity]', list[i].Quantity)
+            formData.append('InvoiceDetailsTable[' + i + '][Rate]', list[i].Rate)
+            formData.append('InvoiceDetailsTable[' + i + '][Total]', list[i].Total)
+            formData.append('InvoiceDetailsTable[' + i + '][Vat]', list[i].Vat)
+            formData.append('InvoiceDetailsTable[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('InvoiceDetailsTable[' + i + '][Type]', list[i].Type)
+            formData.append('InvoiceDetailsTable[' + i + '][ServiceDate]', list[i].ServiceDate)
+
+        }
+        $.ajax({
+            url: "/Invoice/SaveDraft",
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+
+            success: function (result) {
+                if (result.Status == "Success") {
+                    swal({
+                        title: 'Invoice!',
+                        text: 'Invoice save successfully!',
+                        type: 'success'
+                    },
+                         function (isconform) {
+                             window.location.href = "/Invoice/ViewInvoice?id=" + result.id;
+                         });
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
+    }
+
+    $('#saveEmail').click(function () {
+
+
+        var list = [], orderItem, CurrentRow;
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
+
+        $('#orderdetailsitems .tbodyGood tr').each(function () {
+
+
+
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: parseInt($(this).find('.product').val()),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Type: "Goods",
+                    Rate: parseInt($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
+            }
+        });
+
+        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
+
+            CurrentRow = $(this).closest("tr");
+            if (ValidateRow(CurrentRow)) {
+                orderItem = {
+                    ItemId: $(this).find('.product').val(),
+                    Quantity: parseInt($(this).find('.quantityG').val()),
+                    Rate: parseFloat($(this).find('.rateG').val()),
+                    Total: parseFloat($(this).find('.FTotalG').val()),
+                    Description: $(this).find('.Discription').val(),
+                    Type: "Service",
+                    ServiceDate: $(this).find('.ServiceDate').val(),
+                    Vat: parseFloat($(this).find('.VATG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                }
+                list.push(orderItem);
+            }
+        });
+
+
+
+
+        if (list.length == 0) {
+            $('#BTW6').text('');
+            $('#BTW21').text('');
+            $('#gtotal').text('');
+            $('#gtotal').text('');
+        }
+
 
         var empObj = {
 
@@ -1321,7 +1297,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-            
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1345,7 +1321,7 @@
             $('#gtotal').text('');
             $('#gtotal').text('');
         }
-        
+
 
         var empObj = {
 
@@ -1387,8 +1363,8 @@
             contentType: false,
             processData: false,
 
-            success: function (result) {           
-                if (result.Status == "Success") {                  
+            success: function (result) {
+                if (result.Status == "Success") {
                     localStorage.setItem('path', result.path);
                     swal({
                         title: 'Invoice!',
@@ -1432,7 +1408,7 @@
         }
     }
 
-   
+
 </script>
 
 

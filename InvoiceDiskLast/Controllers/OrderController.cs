@@ -246,7 +246,121 @@ namespace InvoiceDiskLast.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
 
         }
-        
+
+        public MvcPurchaseModel GetPurchasae(int Id)
+        {
+            HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + Id.ToString()).Result;
+            MvcPurchaseModel perchacaseModel = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
+            return perchacaseModel;
+        }
+
+
+        public List<MvcPurchaseViewModel> GetPurchaseDetail(int PurchaseId)
+        {
+            HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + PurchaseId.ToString()).Result;
+            List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+            return PuchaseModelDetailsList;
+        }
+
+        public bool UpdateQuatationStation(int PurchaseId)
+        {
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetUpdate/" + PurchaseId).Result;
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return true;
+            else
+                return false;
+        }
+
+
+        [HttpPost]
+        public JsonResult Proceeds(int Id, string Status)
+        {
+            MvcPurchaseModel PurchaseModel = new MvcPurchaseModel();
+            List<MvcPurchaseViewModel> _PurcchaseDetailList = new List<MvcPurchaseViewModel>();
+
+            InvoiceTable InvoiceTable = new InvoiceTable();
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
+
+            PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
+
+            try
+            {
+                PurchaseModel = GetPurchasae(Id);
+                _PurcchaseDetailList = GetPurchaseDetail(Id);
+                if (PurchaseModel != null)
+                {
+                    BillTable billtable = new BillTable();
+
+                    billtable.CompanyId = PurchaseModel.CompanyId;
+                    billtable.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                    billtable.Bill_ID = PurchaseModel.PurchaseID.ToString();
+                    billtable.VenderId = PurchaseModel.VenderId;
+                    billtable.RefNumber = PurchaseModel.PurchaseRefNumber;
+                    billtable.BillDate = Convert.ToDateTime(PurchaseModel.PurchaseDate);
+                    billtable.BillDueDate = Convert.ToDateTime(PurchaseModel.PurchaseDueDate);
+                    billtable.SubTotal = PurchaseModel.PurchaseSubTotal;
+                    billtable.DiscountAmount = PurchaseModel.PurchaseTotoalAmount;
+                    billtable.TotalAmount = PurchaseModel.PurchaseTotoalAmount;
+                    billtable.CustomerNote = PurchaseModel.PurchaseVenderNote;
+                    billtable.TotalVat6 = PurchaseModel.Vat6;
+                    billtable.TotalVat21 = PurchaseModel.Vat21;
+                    billtable.Status = "accepted";
+                    billtable.Type = StatusEnum.Goods.ToString();
+                    // bill Api
+                    HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBill", billtable).Result;
+                    BillTable billviewmodel = response.Content.ReadAsAsync<BillTable>().Result;
+
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+
+                        if (_PurcchaseDetailList != null)
+                        {
+                            foreach (var item in _PurcchaseDetailList)
+                            {
+                                BillDetailTable billdetailtable = new BillDetailTable();
+
+                                billdetailtable.BillID = billviewmodel.BilID;
+                                billdetailtable.ItemId = item.PurchaseItemId;
+                                billdetailtable.Description = item.PurchaseDescription;
+                                billdetailtable.Quantity = item.PurchaseQuantity;
+                                billdetailtable.Rate = item.PurchaseItemRate;
+                                billdetailtable.Total = item.PurchaseTotal;
+                                billdetailtable.Type = item.Type;
+                                billdetailtable.RowSubTotal = Convert.ToDouble(item.RowSubTotal);
+                                billdetailtable.Vat = item.PurchaseVatPercentage;
+                                billdetailtable.ServiceDate = item.ServiceDate;
+                                // APIBill   
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+
+                                if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                                {
+                                    return new JsonResult { Data = new { Status = "Fail", Message = "Fail to Proceed" } };
+                                }
+
+                            }
+
+                            if (UpdateQuatationStation(Id))
+                            {
+                                return new JsonResult { Data = new { Status = "Success", Message = "Proceed successfullly" } };
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return new JsonResult { Data = new { Status = "Success", Message = "Proceed successfullly" } };
+        }
+
+
+
+
         [HttpPost]
         public JsonResult UpdateOrderStaus(int PurchaseId, string Status)
         {
@@ -281,7 +395,7 @@ namespace InvoiceDiskLast.Controllers
 
                         if (response2.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            return new JsonResult { Data = new { Status = "Success", Message="Change status to"+ Status } };
+                            return new JsonResult { Data = new { Status = "Success", Message = "Change status to" + Status } };
                         }
                         else
                         {
