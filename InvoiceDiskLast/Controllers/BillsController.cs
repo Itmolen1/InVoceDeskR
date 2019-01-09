@@ -693,7 +693,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (billDetailViewModel.file23[0] != null)
                 {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(billDetailViewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(billviewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
                 }
             }
             catch (Exception ex)
