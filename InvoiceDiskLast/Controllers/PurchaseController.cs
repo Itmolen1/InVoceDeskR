@@ -1461,17 +1461,23 @@ namespace InvoiceDiskLast.Controllers
                 DateTime InvoiceDate = new DateTime();
                 InvoiceDate = DateTime.Now;
                 purchaseviewModel.PurchaseDate = InvoiceDate;
-                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
+                //purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
                 purchaseviewModel.CompanyId = companyModel.CompanyID;
                 purchaseviewModel.VenderId = id;
 
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Purchase";
+
+                commonModel.FromDate = InvoiceDate;
+               
                 MvcPurchaseModel q = new MvcPurchaseModel();
                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateInvoice/").Result;
                 q = response1.Content.ReadAsAsync<MvcPurchaseModel>().Result;
                 purchaseviewModel.PurchaseDate = InvoiceDate;
-                purchaseviewModel.PurchaseDueDate = InvoiceDate.AddDays(+15);
-                purchaseviewModel.Purchase_ID = q.PurchaseID;
+                commonModel.DueDate = InvoiceDate.AddDays(+15);
+                commonModel.Number_Id = q.PurchaseID;
 
+                ViewBag.commonModel = commonModel;
                 return View(purchaseviewModel);
             }
             catch (Exception ex)
@@ -1628,6 +1634,16 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + Id.ToString()).Result;
                 List<MvcPurchaseViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Purchase";
+
+                commonModel.FromDate = Convert.ToDateTime(ob.PurchaseDate);
+                commonModel.DueDate = Convert.ToDateTime(ob.PurchaseDueDate);
+                commonModel.Number_Id = ob.PurchaseID;
+                commonModel.ReferenceNumber = ob.PurchaseRefNumber;
+
+                ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.Purchase = ob;
@@ -1714,6 +1730,7 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
+
         public ActionResult PrintPurchase(int? purchaseOrderId)
         {
 

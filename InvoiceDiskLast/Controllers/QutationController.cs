@@ -653,6 +653,7 @@ namespace InvoiceDiskLast.Controllers
                 commonModel.Name = "Quotation";
                 commonModel.FromDate = QutationModel.QutationDate;
                 commonModel.Number_Id = QutationModel.Qutation_ID;
+                commonModel.DueDate = QutationModel.DueDate;
                 commonModel.ReferenceNumber = QutationModel.RefNumber;
 
 

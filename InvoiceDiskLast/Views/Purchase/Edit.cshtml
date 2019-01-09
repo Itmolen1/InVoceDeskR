@@ -19,151 +19,13 @@
     <div class="col-2 b-r">
         @*two*@
     </div>
-
+    <input type="hidden" value="@(Model.PurchaseOrderID !=null ? Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
+    <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            <input type="hidden" value="@(Model.PurchaseOrderID !=null ? Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
-            <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
-            <input type="hidden" value="@Contectdatas.ContactsId" id="contactId" />
-
-            @Html.HiddenFor(model => model.CompanyId)
-            @Html.HiddenFor(model => model.VenderId)
-
-            <div class="row" style="margin-top:10px">
-                <div class="col-7 b-r">
-
-
-                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-
-                    <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Purchase</div>
-                    </div>
-                    <div class="row clientInfo" style="margin-top:10px">
-                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 b-r">
-                            @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
-                            <br />
-                            @Contectdatas.PostalCode,@Contectdatas.City
-                            <br />
-                            @Contectdatas.Land
-                            
-                        </div>
-                    </div>
-
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-3 b-r">
-                            Qutation Date:
-                        </div>
-                        <div class="col-6 b-r">
-                            @{
-                                DateTime PurchaseDate = new DateTime();
-                                PurchaseDate = Convert.ToDateTime(Model.PurchaseDate);
-                            }
-                            <input class="PurchaseDate  Input-height form-control" autocomplete="off" value="@PurchaseDate.ToShortDateString()" id="PurchaseDate" />
-                            @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control PurchaseDate", id = "PurchaseDate" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Purchase Number:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseID", required = "required" } })
-                            @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Due Date:
-                        </div>
-                        <div class="col-6 b-r">
-                            @{
-                                DateTime PurchaseDueDate = new DateTime();
-                                PurchaseDueDate = Convert.ToDateTime(Model.PurchaseDueDate);
-                            }
-
-                            <input class="PurchaseDueDate  Input-height form-control" autocomplete="off" value="@PurchaseDueDate.ToShortDateString()" id="PurchaseDueDate" />
-
-                            @*@Html.EditorFor(model => model.PurchaseDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "form-control PurchaseDueDate Input-height", id = "PurchaseDueDate", title = "Due Date", required = "required" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseDueDate, "", new { @class = "text-danger" })*@
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Reference No:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseRefNumber", required = "required" } })
-                            @Html.ValidationMessageFor(model => model.PurchaseRefNumber, "", new { @class = "text-danger" })
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                </div>
-
-                <div class="col-5 b-r">
-                    <div class="row" style="margin-top:33px">
-                        <div class="col-3 b-r"></div>
-                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                        <div class="col-2 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Kvk nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Bank:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">IBAN No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BIC No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Telephone:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Cell No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">E-mail:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Website:</div>
-                        <div class="col-7 b-r">@CompanyDatas.Website</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Address:</div>
-                        <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber<br />
-                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr />
+                                  
+          @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
+            
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="orderdetailsitems1">
@@ -1298,10 +1160,10 @@
 
         var empObj = {
             Purchase_ID: $('#PurchaseID').val(),
-            PurchaseID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseID: $('#Number_ID').val(),
+            PurchaseRefNumber: $('#ReferenceNumber').val(),
+            PurchaseDate: $('#FromDate').val(),
+            PurchaseDueDate: $('#DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1309,8 +1171,8 @@
             PurchaseVenderNote: $('#PurchaseVenderNote').val(),
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
-            VenderId: $('#VenderId').val(),
-            CompanyId: $('#CompanyId').val(),
+            VenderId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
         };
 
 
@@ -1344,8 +1206,8 @@
                 //  QutationIdd = result.QutationId;
                 if (result.Status == "Success") {
                     swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
+                        title: 'Purchase!',
+                        text: 'Purchase save successfully!',
                         type: 'success'
                     },
                          function (isconform) {
@@ -1429,12 +1291,12 @@
         }
 
         var empObj = {
-            PurchaseId: $('#PurchaseId').val(),
+            PurchaseId: $('#Number_ID').val(),
             PurchaseID: $('#PurchaseID').val(),
             Purchase_ID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseRefNumber: $('#ReferenceNumber').val(),
+            PurchaseDate: $('#FromDate').val(),
+            PurchaseDueDate: $('#DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1442,8 +1304,8 @@
             PurchaseVenderNote: $('#PurchaseVenderNote').val(),
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
-            VenderId: $('#VenderId').val(),
-            CompanyId: $('#CompanyId').val(),
+            VenderId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
         };
 
 
@@ -1481,8 +1343,8 @@
                 if (result.Status == "Success") {
 
                     swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
+                        title: 'Purchase!',
+                        text: 'Purchase save successfully!',
                         type: 'success'
                     },
                           function (isconform) {
@@ -1551,8 +1413,8 @@
                 if (data.Status == "Success") {
 
                     swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
+                        title: 'Purchase!',
+                        text: 'Purchase save successfully!',
                         type: 'success'
                     });
 
@@ -1560,8 +1422,8 @@
                 else if (data.Status == "Fail") {
 
                     swal({
-                        title: 'Invoice!',
-                        text: 'fail to remove Invoice!',
+                        title: 'Purchase!',
+                        text: 'fail to remove Purchase!',
                         type: 'danger'
                     });
                 }
@@ -1652,12 +1514,12 @@
         }
 
         var empObj = {
-            PurchaseId: $('#PurchaseId').val(),
+            PurchaseId: $('#Number_ID').val(),
             PurchaseID: $('#PurchaseID').val(),
             Purchase_ID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('#PurchaseDate').val(),
-            PurchaseDueDate: $('#PurchaseDueDate').val(),
+            PurchaseRefNumber: $('#ReferenceNumber').val(),
+            PurchaseDate: $('#FromDate').val(),
+            PurchaseDueDate: $('#DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1665,14 +1527,11 @@
             PurchaseVenderNote: $('#PurchaseVenderNote').val(),
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
-            VenderId: $('#VenderId').val(),
-            CompanyId: $('#CompanyId').val(),
+            VenderId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
         };
 
-
-
-
-
+        
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
@@ -1703,8 +1562,8 @@
                 localStorage.setItem('path', result.path);
                 if (result.Status == "Success") {
                     swal({
-                        title: 'Invoice!',
-                        text: 'Invoice save successfully!',
+                        title: 'Purchase!',
+                        text: 'Purchase save successfully!',
                         type: 'success'
                     },
                           function (isconform) {
@@ -1899,7 +1758,7 @@
 
 
     $(document).ready(function () {
-        $('.PurchaseDate').datepicker({
+        $('.FromDate').datepicker({
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
@@ -1915,7 +1774,7 @@
 
 
     $(document).ready(function () {
-        $('.PurchaseDueDate').datepicker({
+        $('.DueDate').datepicker({
             changeMonth: true,
             changeYear: true,
             gotoCurrent: true,
