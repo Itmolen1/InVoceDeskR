@@ -5,227 +5,183 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<style>
+    .TableClose{
+        cursor: pointer;
+        
+    }
+</style>
 <!-- ============================================================== -->
 <!-- End Bread crumb and right sidebar toggle -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
 <!-- Start Page Content -->
 <!-- ============================================================== -->
-<div class="row">
-    <div class="col-md-12">
-        @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
+<div class="container">
+    <div class="row" style="border:1px solid black">
+        <div class="col-md-12">
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive" style="clear: both;">
-                    <table class="table table-hover" id="orderdetailsitems">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Goods
-                                </th>
-                                <th>
-                                    Quantity
-                                </th>
-                                <th>
-                                    Price
-                                </th>
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Vat%
-                                </th>
-                                <th>
-                                    Sub
-                                </th>
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="tbodyGood">
-                            <tr id="mainrow">
-                                <td>
-                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
-                                </td>
-                                <td>
-                                    <input type="text" class="quantityG form-control Input-height" id="QuantityG" style="width: 200px;font-size:12px" />
-                                </td>
-                                <td>
-                                    <input type="text" class="rateG form-control Input-height" id="rateG" style="width: 200px;font-size:12px" />
-                                </td>
-                                <td>
-                                    <input type="text" class="FTotalG form-control Input-height" id="FTotal" style="width: 200px;font-size:12px" />
-                                </td>
-                                <td>
-                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                        <option>0</option>
-                                        <option>6</option>
-                                        <option>21</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
-                                </td>
-                                <td>
-                                    <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <hr />
-                <div class="table-responsive" style="clear: both;">
-                    <table class="table table-hover" id="QutationServiceDetail1">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
 
-                                <th>
-                                    Services
-                                </th>
-                                <th>Decription</th>
-                                <th>
-                                    hour
-                                </th>
-                                <th>
-                                    Hourly rate
-                                </th>
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Vat %
-                                </th>
-                                <th>
-                                    Sub
-                                </th>
-                                <th>
-                                    Action
-                                </th>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-body printableArea">
+                        <div class="table-responsive" style="clear: both;">
+                            <table class="table table-hover" id="orderdetailsitems">                               
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            Goederen
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+                                            Prijs
+                                        </th>
+                                        <th>
+                                            Totaal
+                                        </th>
+                                        <th>
+                                            BTW%
+                                        </th>
+                                        <th>
+                                            Subtotaal
+                                        </th>
+                                        <th>
+                                            Actie <span class="text-danger pull-right TableClose" title="Verberg deze tabel" >x</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbodyGood">
+                                    <tr id="mainrow">
+                                        <td>
+                                            <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 250px;font-size:12px"></select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="quantityG form-control Input-height" id="QuantityG" style="width: 100px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="rateG form-control Input-height" id="rateG" style="width: 100px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="FTotalG form-control Input-height" id="FTotal" style="width: 100px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                                <option>0</option>
+                                                <option>6</option>
+                                                <option>21</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                                        </td>
+                                        <td>
+                                            <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr />
+                        <div class="table-responsive" style="clear: both;">
+                            <table class="table table-hover" id="QutationServiceDetail1">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Datam</th>
+                                        <th>
+                                            Diensten
+                                        </th>
+                                        <th>Omschrijving</th>
+                                        <th>
+                                            uur
+                                        </th>
+                                        <th>
+                                            Uurprijs
+                                        </th>
+                                        <th>
+                                            Totaal
+                                        </th>
+                                        <th>
+                                            BTW %
+                                        </th>
+                                        <th>
+                                            Subtotaal
+                                        </th>
+                                        <th>
+                                            Actie<span class="text-danger pull-right TableClose" title="Verberg deze tabel">x</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbodyService">
+                                    <tr id="mainrow1">
+                                        <td>
+                                            <input class="ServiceDate  ss  form-control Input-height" style="width: 100px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 150px;font-size:12px"></select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="Discription form-control Input-height" style="width: 150px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 80px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 80px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="width: 80px;font-size:12px" />
+                                        </td>
+                                        <td>
+                                            <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                                <option>0</option>
+                                                <option>6</option>
+                                                <option>21</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+                                        </td>
+                                        <td>
+                                            <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
+                                        </td>
 
-                            </tr>
-
-                        </thead>
-                        <tbody class="tbodyService">
-                            <tr id="mainrow1">
-                                <td>
-                                    <input class="ServiceDate  ss  form-control Input-height" style="width: 100px;font-size:12px"/>
-                                </td>
-
-                                <td>
-                                    <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
-                                </td>
-                                <td>
-                                    <input type="text" class="Discription form-control Input-height" style="width: 200px;font-size:12px"/>
-                                </td>
-                                <td>
-                                    <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 100px;font-size:12px" />
-                                </td>
-                                <td>
-                                    <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 100px;font-size:12px" />
-                                </td>
-                                <td>
-                                    <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="width: 100px;font-size:12px" />
-                                </td>
-                                <td>
-                                    <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                        <option>0</option>
-                                        <option>6</option>
-                                        <option>21</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
-                                </td>
-                                <td>
-                                    <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
-                                </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <hr />
-
-                <div class="table-responsive" style="clear: both;">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th>Description</th>
-                                <th class="text-right">Quantity</th>
-                                <th class="text-right">Unit Cost</th>
-                                <th class="text-right">Total</th>
-                                <th class="text-right">Total</th>
-                                <th class="text-right">Total</th>
-                                <th class="text-right">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>Milk Powder</td>
-                                <td class="text-right">2 </td>
-                                <td class="text-right"> $24 </td>
-                                <td class="text-right"> $48 </td>
-                                <td class="text-right">2 </td>
-                                <td class="text-right"> $24 </td>
-                                <td class="text-right"> $48 </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>Air Conditioner</td>
-                                <td class="text-right"> 3 </td>
-                                <td class="text-right"> $500 </td>
-                                <td class="text-right"> $1500 </td>
-                                <td class="text-right">2 </td>
-                                <td class="text-right"> $24 </td>
-                                <td class="text-right"> $48 </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>RC Cars</td>
-                                <td class="text-right"> 20 </td>
-                                <td class="text-right"> %600 </td>
-                                <td class="text-right"> $12000 </td>
-                                <td class="text-right">2 </td>
-                                <td class="text-right"> $24 </td>
-                                <td class="text-right"> $48 </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>Down Coat</td>
-                                <td class="text-right"> 60 </td>
-                                <td class="text-right">$5 </td>
-                                <td class="text-right"> $300 </td>
-                                <td class="text-right">2 </td>
-                                <td class="text-right"> $24 </td>
-                                <td class="text-right"> $48 </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="pull-right m-t-30 text-right">
-                    <p>Sub - Total amount: $13,848</p>
-                    <p>vat (10%) : $138 </p>
-                    <hr>
-                    <h3><b>Total :</b> $13,986</h3>
-                </div>
-                <div class="clearfix"></div>
-                <hr>
-                <div class="text-right">
-                    <button class="btn btn-danger" type="submit"> Proceed to payment </button>
-                    <button id="print" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr />                        
+                    </div>
+                    <div class="col-md-12">
+                        <div class="pull-left text-left">
+                            @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
+                        </div>
+                        <div class="pull-right text-right">
+                            <p>Sub - Total amount: $13,848</p>
+                            <p>Totaal excel btw: 78788</p>
+                            <p>BTW (0%) : $138 </p>
+                            <p>BTW (6%) : $138 </p>
+                            <p>BTW (21%) : $138 </p>
+                            <hr>
+                            <h3><b>Garnd Total :</b> $13,986</h3>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                        <div class="text-right" style="padding-bottom:5px">
+                            <button class="btn btn-info" type="submit"> Proceed to </button>
+                            <button class="btn btn-info" type="submit"> Proceed to </button>
+                            <button id="print" class="btn btn-info btn-outline" type="button"> <span><i class="fa fa-print"></i>Proceed Print</span> </button>
+                            <button id="print" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-                
+</div>              
 <!-- ============================================================== -->
 <!-- End PAge Content -->
 <!-- ============================================================== -->
