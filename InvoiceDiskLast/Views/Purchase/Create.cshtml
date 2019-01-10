@@ -15,141 +15,8 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyID" />
-            <input type="hidden" value="@Contectdatas.ContactsId" id="ConatctId" />
-
-            <div class="row" style="margin-top:10px">
-                <div class="col-7 b-r">
-
-                    @Html.HiddenFor(model => model.CompanyId)
-                    @Html.HiddenFor(model => model.VenderId)
-
-                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-
-                    <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Purchase</div>
-                    </div>
-                    <div class="row clientInfo" style="margin-top:10px">
-                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 b-r">@Contectdatas.ContactAddress,@Contectdatas.PostalCode <br />@Contectdatas.StreetNumber @Contectdatas.City</div>
-                    </div>
-
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-3 b-r">
-                            Purchase Date:
-                        </div>
-                        <div class="col-6 b-r">
-
-
-                            @{
-                                DateTime PurchaseDate = new DateTime();
-                                PurchaseDate = Convert.ToDateTime(Model.PurchaseDate);
-                            }
-
-                            <input type="text" class="PurchaseDate  Input-height form-control" autocomplete="off" value="@PurchaseDate.ToShortDateString()" id="PurchaseDate" />
-                            @*@Html.EditorFor(model => model.PurchaseDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "PurchaseDate  form-control  Input-height", id = "PurchaseDate",@autocomplete="off" } })
-                                @Html.ValidationMessageFor(model => model.PurchaseDate, "", new { @class = "text-danger" })*@
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Purchase Number:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Purchase_ID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseID", required = "required" } })
-                            @Html.ValidationMessageFor(model => model.Purchase_ID, "", new { @class = "text-danger" })
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Due Date:
-                        </div>
-                        <div class="col-6 b-r">
-
-                            @{
-                                DateTime PurchaseDueDate = new DateTime();
-                                PurchaseDueDate = Convert.ToDateTime(Model.PurchaseDueDate);
-                            }
-                            <input type="text" class="DueDate  Input-height form-control" autocomplete="off" value="@PurchaseDueDate.ToShortDateString()" id="DueDate" />
-
-                            @*@Html.EditorFor(model => model.PDueDate, new { htmlAttributes = new { @type = "text", @style = "font-size:12px", @class = "DueDate  form-control  Input-height", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.PDueDate, "", new { @class = "text-danger" })*@
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Reference No:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.PurchaseRefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "PurchaseRefNumber", required = "required" } })
-                            @Html.ValidationMessageFor(model => model.PurchaseRefNumber, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                </div>
-
-                <div class="col-5 b-r">
-                    <div class="row" style="margin-top:33px">
-                        <div class="col-3 b-r"></div>
-                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                        <div class="col-2 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Kvk nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Bank:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">IBAN No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BIC No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Telephone:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Cell No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">E-mail:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Website:</div>
-                        <div class="col-7 b-r">@CompanyDatas.Website</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Address:</div>
-                        <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress<br />
-                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+           
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
             <hr />
             <div class="row">
                 <div class="col-12 b-r">
@@ -1197,11 +1064,11 @@
             $('#gtotal').text('');
         }
         var empObj = {
-            PurchaseId: $('#PurchaseID').val(),
-            PurchaseID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-            PurchaseDate: $('.PurchaseDate').val(),
-            PurchaseDueDate: $('.DueDate').val(),
+            PurchaseId: $('#Number_ID').val(),
+            PurchaseID: $('#Number_ID').val(),
+            PurchaseRefNumber: $('#ReferenceNumber').val(),
+            PurchaseDate: $('#FromDate').val(),
+            PurchaseDueDate: $('#DueDate').val(),
             PurchaseSubTotal: $('#SubTotal').text(),
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
@@ -1209,8 +1076,8 @@
             PurchaseVenderNote: $('#PurchaseVenderNote').val(),
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
-            VenderId: $('#VenderId').val(),
-            CompanyId: $('#CompanyId').val(),
+            VenderId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
         };
 
         for (var key in empObj) {
@@ -1339,10 +1206,7 @@
             return Isvalid;
         }
     }
-
-
-
-
+    
 </script>
 
 
@@ -1364,7 +1228,7 @@
     });
 
     $(document).ready(function () {
-        $('.PurchaseDate').datepicker({
+        $('.FromDate').datepicker({
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,

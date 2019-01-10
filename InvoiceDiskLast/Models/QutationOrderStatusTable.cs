@@ -23,7 +23,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> CompanyId { get; set; }
         public Nullable<int> UserId { get; set; }
     
-        public virtual QutationTable QutationTable { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public virtual QutationTable QutationTable { get; set; }
     }
 }

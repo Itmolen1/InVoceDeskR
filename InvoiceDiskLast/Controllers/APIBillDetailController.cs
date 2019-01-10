@@ -73,10 +73,7 @@ namespace InvoiceDiskLast.Controllers
                 return Ok(query);
             }
             else
-            {
-
-
-
+            {               
 
                 var query = (from pd in db.BillDetailTables
                              join p in db.ProductTables on pd.ItemId equals p.ProductId

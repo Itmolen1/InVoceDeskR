@@ -17,7 +17,6 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ComapnyInfo()
         {
-            this.QutationTables = new HashSet<QutationTable>();
             this.PurchaseOrderTables = new HashSet<PurchaseOrderTable>();
             this.AccountTables = new HashSet<AccountTable>();
             this.HeadAccountTables = new HashSet<HeadAccountTable>();
@@ -28,6 +27,7 @@ namespace InvoiceDiskLast.Models
             this.BillTables = new HashSet<BillTable>();
             this.InvoiceTables = new HashSet<InvoiceTable>();
             this.ContactsTables = new HashSet<ContactsTable>();
+            this.QutationTables = new HashSet<QutationTable>();
         }
     
         public int CompanyID { get; set; }
@@ -53,8 +53,6 @@ namespace InvoiceDiskLast.Models
         public string BTW { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QutationTable> QutationTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseOrderTable> PurchaseOrderTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTable> AccountTables { get; set; }
@@ -74,5 +72,7 @@ namespace InvoiceDiskLast.Models
         public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ContactsTable> ContactsTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QutationTable> QutationTables { get; set; }
     }
 }

@@ -101,6 +101,7 @@ namespace InvoiceDiskLast.Controllers
                 Bill_ID = c.Bill_ID,
                 BillDate = c.BillDate,
                 BillDueDate = c.BillDueDate,
+                RefNumber = c.RefNumber,
                 SubTotal = c.SubTotal,
                 TotalVat6 = c.TotalVat6,
                 TotalVat21 = c.TotalVat21,

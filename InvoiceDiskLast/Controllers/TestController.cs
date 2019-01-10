@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,6 +14,24 @@ namespace InvoiceDiskLast.Controllers
        
         public ActionResult Index()
         {
+            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + 53.ToString()).Result;
+            MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + 64.ToString()).Result;
+            MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+
+            CommonModel commonModel = new CommonModel();
+            commonModel.Name = "Invoice";
+            commonModel.ReferenceNumber = "1221";
+            commonModel.FromDate = System.DateTime.Now;
+            commonModel.DueDate = System.DateTime.Now;
+            commonModel.Number_Id = "1110001";
+
+            ViewBag.Contentdata = contectmodel;
+            ViewBag.Companydata = companyModel;
+            ViewBag.commonModel = commonModel;
+
             return View();
         }
 
