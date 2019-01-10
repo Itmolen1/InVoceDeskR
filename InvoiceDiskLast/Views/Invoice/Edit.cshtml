@@ -7,158 +7,23 @@
 
 @{
 
-
-    var Contectdatas = ViewBag.Contentdata;
-    var CompanyDatas = ViewBag.Companydata;
     var InvoiceModel = ViewBag.InvoiceData;
 }
 <script src="~/CustomScript/DateTimeFormate.js"></script>
 
 <link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
-@*<label></label>*@
+
 <div class="row">
     <div class="col-2 b-r">
         @*two*@
     </div>
+    
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
 
-
-            <div class="row" style="margin-top:10px">
-                <div class="col-7 b-r">
-
-                    @Html.HiddenFor(model => model.InvoiceID, new { htmlAttributes = new { id = "InvoiceID" } })
-                    @Html.HiddenFor(model => model.CompanyId, new { htmlAttributes = new { id = "CompanyId" } })
-                    @Html.HiddenFor(model => model.ContactId, new { htmlAttributes = new { id = "ContactId" } })
-
-                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-
-                    <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Invoice</div>
-                    </div>
-                    <div class="row clientInfo" style="margin-top:10px">
-                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 b-r">@Contectdatas.ContactAddress @Contectdatas.StreetNumber <br />@Contectdatas.PostalCode, @Contectdatas.City</div>
-                    </div>
-
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-3 b-r">
-                            Invoice Date:
-                        </div>
-                        <div class="col-6 b-r">
-
-                            @{
-                                DateTime dt1 = new DateTime();
-                                dt1 = Convert.ToDateTime(Model.InvoiceDate);
-                            }
-
-
-                            <input class="InvoiceDate PurchaseDate  Input-height form-control" autocomplete="off" value="@dt1.ToShortDateString()" id="InvoiceDate" />
-                            @*@Html.EditorFor(model => model.   , new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDate" } })
-                                @Html.ValidationMessageFor(model => model.InvoiceDate, "", new { @class = "text-danger" })*@
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Invoice Number:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.Invoice_ID, new { htmlAttributes = new { @class = "form-control Input-height", id = "Invoice_ID", @readonly = "readonly" } })
-                            @Html.ValidationMessageFor(model => model.Invoice_ID, "", new { @class = "text-danger" })
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Due Date:
-                        </div>
-                        <div class="col-6 b-r">
-
-
-                            @{
-                                DateTime InvoiceDate = new DateTime();
-                                InvoiceDate = Convert.ToDateTime(Model.InvoiceDueDate);
-                            }
-                            <input class="InvoiceDueDate  DueDate Input-height form-control" autocomplete="off" value="@InvoiceDate.ToShortDateString()" id="InvoiceDueDate" />
-                            @*@Html.EditorFor(model => model.InvoiceDueDate, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control MAterialDatepicker Input-height", id = "InvoiceDueDate", title = "Due Date" } })
-                                @Html.ValidationMessageFor(model => model.InvoiceDueDate, "", new { @class = "text-danger" })*@
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Reference No:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber" } })
-                            @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                </div>
-
-                <div class="col-5 b-r">
-                    <div class="row" style="margin-top:33px">
-                        <div class="col-3 b-r"></div>
-                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                        <div class="col-2 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Kvk nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Bank:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">IBAN No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BIC No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Telephone:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Cell No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">E-mail:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Website:</div>
-                        <div class="col-7 b-r">@CompanyDatas.Website</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Address:</div>
-                        <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber<br />
-                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
+            @Html.HiddenFor(model => model.InvoiceID, new { htmlAttribute = new { id = "InvoiceID" } })
+            
             <hr />
             <div class="row">
                 <div class="col-12 b-r">
@@ -520,8 +385,6 @@
         @*two*@
     </div>
 </div>
-
-@*<label></label>*@
 
 <div class="row" style="margin-top:5px">
     <div class="col-2 b-r"></div>
@@ -1282,10 +1145,10 @@
         }
 
         var empObj = {
-            Invoice_ID: $('#Invoice_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            InvoiceDate: $('#InvoiceDate').val(),
-            InvoiceDueDate: $('#InvoiceDueDate').val(),
+            Invoice_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            InvoiceDate: $('#FromDate').val(),
+            InvoiceDueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
             InvoiceID: $('#InvoiceID').val(),
@@ -1294,8 +1157,8 @@
             Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ContactId: $('#ContactId').val(),
-            CompanyId: $('#CompanyId').val(),
+            ContactId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
 
@@ -1419,10 +1282,10 @@
         }
 
         var empObj = {
-            Invoice_ID: $('#Invoice_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            InvoiceDate: $('#InvoiceDate').val(),
-            InvoiceDueDate: $('#InvoiceDueDate').val(),
+            Invoice_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            InvoiceDate: $('#FromDate').val(),
+            InvoiceDueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
             InvoiceID: $('#InvoiceID').val(),
@@ -1431,8 +1294,8 @@
             Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ContactId: $('#ContactId').val(),
-            CompanyId: $('#CompanyId').val(),
+            ContactId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
 
@@ -1544,10 +1407,10 @@
         }
 
         var empObj = {
-            Invoice_ID: $('#Invoice_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            InvoiceDate: $('#InvoiceDate').val(),
-            InvoiceDueDate: $('#InvoiceDueDate').val(),
+            Invoice_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            InvoiceDate: $('#FromDate').val(),
+            InvoiceDueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
             InvoiceID: $('#InvoiceID').val(),
@@ -1556,8 +1419,8 @@
             Total: $('#SubTotal').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#CustomerNote').val(),
-            ContactId: $('#ContactId').val(),
-            CompanyId: $('#CompanyId').val(),
+            ContactId: $('#ConatctId').val(),
+            CompanyId: $('#CompanyID').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
 

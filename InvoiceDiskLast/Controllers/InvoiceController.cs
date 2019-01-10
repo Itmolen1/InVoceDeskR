@@ -105,22 +105,35 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-                DateTime qutatioDate = new DateTime();
-                qutatioDate = DateTime.Now.Date;
+                DateTime InvoiceDateDate = new DateTime();
+                InvoiceDateDate = DateTime.Now.Date;
 
                 int paymentTerm = 0;
-                paymentTerm = Convert.ToInt32(contectmodel.PaymentTerm);
+                if (contectmodel.PaymentTerm.ToString() != "")
+                {
+                    paymentTerm = Convert.ToInt32(contectmodel.PaymentTerm);
+                }
+                else
+                {
+                    paymentTerm = 15;
+                }
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Invoice";
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
-                invoioceViewModel.InvoiceDate = qutatioDate;
-                invoioceViewModel.InvoiceDueDate = qutatioDate.AddDays(+paymentTerm);
+                commonModel.FromDate = InvoiceDateDate;
+
+                commonModel.DueDate = InvoiceDateDate.AddDays(+paymentTerm);
 
                 MVCInvoiceModel InvoiceCount = new MVCInvoiceModel();
                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceCount/").Result;
                 InvoiceCount = response1.Content.ReadAsAsync<MVCInvoiceModel>().Result;
                 invoioceViewModel.Invoice_ID = InvoiceCount.Invoice_ID;
 
+                commonModel.Number_Id = InvoiceCount.Invoice_ID;
+
+                ViewBag.commonModel = commonModel;
                 invoioceViewModel.ContactId = id;
                 invoioceViewModel.CompanyId = CompanyID;
                 invoioceViewModel.InvoiceDescription = "Graag betalen voor de uiterste betaaldatum onder vermelding van het factuurnummer";
@@ -342,29 +355,12 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + invoiceViewModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
-
-                invoiceViewModel.InvoiceDueDate = InvoiceModel.InvoiceDueDate;
-                invoiceViewModel.InvoiceDate = InvoiceModel.InvoiceDate;
-
+                
                 HttpResponseMessage responseInvoiceDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceDetails/" + id.ToString()).Result;
                 List<InvoiceViewModel> InvoiceDetailsList = responseInvoiceDetailsList.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
 
-                //foreach (InvoiceViewModel dd in InvoiceDetailsList)
-                //{
-
-
-                //    //// DateTime? dt = dd.ServiceDate;
-                //    var dateTimeNow = dd.ServiceDate; // Return 00/00/0000 00:00:00
-                //    var dateOnlyString = dateTimeNow.ToShortDateString();
-
-                //    DateTime dt = DateTime.Parse(dateOnlyString);
-                //    DateTime dst = Convert.ToDateTime(dateOnlyString);
-                //    //DateTime ds = dt.ToString("yyyy-MM-dd");
-
-                //   dd.ServiceDate = Convert.ToDateTime(dateOnlyString);
-                //    dd.ServiceDate.ToShortDateString();
-                //}
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Invoice";
 
                 HttpResponseMessage GoodResponse = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + invoiceViewModel.CompanyId + "/Good").Result;
                 List<MVCProductModel> GoodModel = GoodResponse.Content.ReadAsAsync<List<MVCProductModel>>().Result;
@@ -383,6 +379,13 @@ namespace InvoiceDiskLast.Controllers
 
                 ViewBag.VatDrop = model;
 
+                commonModel.FromDate = Convert.ToDateTime(InvoiceModel.InvoiceDate);
+                commonModel.DueDate = Convert.ToDateTime(InvoiceModel.InvoiceDueDate);
+
+                commonModel.Number_Id = InvoiceModel.Invoice_ID;
+                commonModel.ReferenceNumber = InvoiceModel.RefNumber;
+
+                ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.InvoiceData = InvoiceModel;

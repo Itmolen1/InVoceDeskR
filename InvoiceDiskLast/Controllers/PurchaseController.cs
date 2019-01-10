@@ -1607,11 +1607,8 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + ob.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
-
-
+                
                 purchaseviewModel.PurchaseOrderID = ob.PurchaseOrderID;
-
 
                 purchaseviewModel.Purchase_ID = ob.PurchaseID;
                 purchaseviewModel.VenderId = Convert.ToInt32(ob.VenderId);
