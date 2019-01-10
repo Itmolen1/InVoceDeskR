@@ -11,9 +11,10 @@ using System.Web.Mvc;
 
 namespace InvoiceDiskLast.Controllers
 {
-    
+
     [SessionExpireAttribute]
-    [RouteNotFoundAttribute]
+    //[RouteNotFoundAttribute]
+
     public class InvoiceController : Controller
     {
         private Ilog _iLog;
@@ -153,7 +154,6 @@ namespace InvoiceDiskLast.Controllers
             MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
             {
-               // return Json("success",JsonRequestBehavior.AllowGet);
                 mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
                 mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
                 mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
@@ -184,7 +184,7 @@ namespace InvoiceDiskLast.Controllers
                     double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
                     mvcInvoiceModel.TotalVat21 = vat21;
                 }
-                
+
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
                 InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
 
@@ -314,11 +314,11 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
 
-                    if (invoiceViewModel.file23[0] != null)
-                    {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
-                    }
-                
+                if (invoiceViewModel.file23[0] != null)
+                {
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+                }
+
             }
             catch (Exception ex)
             {
@@ -334,7 +334,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
         }
-        
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -470,7 +470,7 @@ namespace InvoiceDiskLast.Controllers
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails",InvoiceDetails).Result;
+                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
                             }
                         }
                     }
@@ -484,11 +484,11 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
-    
+
         [HttpGet]
         public ActionResult Print(int id)
         {
-           try
+            try
             {
                 HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + id.ToString()).Result;
                 MVCInvoiceModel invoiceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;
@@ -499,7 +499,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + invoiceModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-             
+
 
                 HttpResponseMessage responseInvoiceDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceDetails/" + id.ToString()).Result;
                 List<InvoiceViewModel> InvoiceModelDetailsList = responseInvoiceDetailsList.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
@@ -547,13 +547,13 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + id.ToString()).Result;
                 MVCInvoiceModel InvoceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;
-                
+
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + InvoceModel.ContactId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + InvoceModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                
+
                 HttpResponseMessage responseInvoiceDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceDetails/" + id.ToString()).Result;
                 List<InvoiceViewModel> InvoiceDetailsList = responseInvoiceDetailsList.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
 
@@ -567,9 +567,9 @@ namespace InvoiceDiskLast.Controllers
             {
                 return null;
             }
-          
+
         }
-        
+
         public string PrintView(int id)
         {
             string pdfname;
@@ -582,10 +582,10 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + InvoiceModel.ContactId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-                
+
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + InvoiceModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-              
+
 
                 DateTime qutationDueDate = Convert.ToDateTime(InvoiceModel.InvoiceDueDate); //mm/dd/yyyy
                 DateTime qutationDate = Convert.ToDateTime(InvoiceModel.InvoiceDate);//mm/dd/yyyy
@@ -605,7 +605,7 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.InvoiceData = InvoiceModel;
                 ViewBag.InvoiceDatailsList = InvoiceModelDetailsList;
                 string companyName = id + "-" + companyModel.CompanyName;
-                
+
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
@@ -660,7 +660,7 @@ namespace InvoiceDiskLast.Controllers
 
             return pdfname;
         }
-        
+
         public static Boolean IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
@@ -708,7 +708,7 @@ namespace InvoiceDiskLast.Controllers
                 email.Attachment = PrintView((int)id);
                 MVCCompanyInfoModel companyModel = TempData["CompanyInfo"] as MVCCompanyInfoModel;
                 MVCContactModel contectmodel = TempData["ContactInfo"] as MVCContactModel;
-             
+
 
                 HttpContext.Items["FilePath"] = email.Attachment;
 
@@ -716,7 +716,7 @@ namespace InvoiceDiskLast.Controllers
                 var companyEmail = companyModel.CompanyEmail;
 
                 var contact = contectmodel.ContactName;
-                
+
                 email.EmailText = @"Geachte heer" + contectmodel.ContactName + "." +
 
                 ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
@@ -724,7 +724,7 @@ namespace InvoiceDiskLast.Controllers
                 "." + "Graag horen we of u hiermee akkoord gaat." +
 
                 "." + "De offerte vindt u als bijlage bij deze email." +
-                
+
                 "..Met vriendelijke groet." +
 
                 contectmodel.ContactName + "." +
@@ -854,7 +854,7 @@ namespace InvoiceDiskLast.Controllers
                     TempData["EmailMessge"] = "Email Send successfully";
                 }
 
-              
+
                 var folderPath = Server.MapPath("/PDF/");
                 EmailController.clearFolder(folderPath);
                 return RedirectToAction("ViewInvoice", new { id = email.invoiceId });
@@ -945,8 +945,8 @@ namespace InvoiceDiskLast.Controllers
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
                             }
                         }
-                     }
-                    
+                    }
+
                 }
                 if (invoiceViewModel.file23[0] != null)
                 {
@@ -961,7 +961,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
-        
+
         [HttpPost]
         public ActionResult UploadFiles(InvoiceViewModel InvoiceViewModel)
         {
@@ -985,7 +985,7 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-        
+
         [HttpPost]
         public ActionResult DeleteFile(int Id, string FileName)
         {
@@ -1016,7 +1016,7 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/"+InvoiceID).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceById/" + InvoiceID).Result;
                 MVCInvoiceModel InvoiceModel = response.Content.ReadAsAsync<MVCInvoiceModel>().Result;
 
                 double ResultVAT = CommonController.CalculateVat(vat, total);
@@ -1034,26 +1034,26 @@ namespace InvoiceDiskLast.Controllers
                 }
 
 
-                HttpResponseMessage ResponseUpdate = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/"+InvoiceModel.InvoiceID,InvoiceModel).Result;
+                HttpResponseMessage ResponseUpdate = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + InvoiceModel.InvoiceID, InvoiceModel).Result;
                 InvoiceTable InvoiceTable = ResponseUpdate.Content.ReadAsAsync<InvoiceTable>().Result;
 
-                if(ResponseUpdate.StatusCode == System.Net.HttpStatusCode.OK)
+                if (ResponseUpdate.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    HttpResponseMessage responseUpdateInvoiceDetails = GlobalVeriables.WebApiClient.DeleteAsync("DeleteInvoiceDetails/"+InvoiceDetailsId).Result;
+                    HttpResponseMessage responseUpdateInvoiceDetails = GlobalVeriables.WebApiClient.DeleteAsync("DeleteInvoiceDetails/" + InvoiceDetailsId).Result;
 
-                    if(responseUpdateInvoiceDetails.StatusCode == System.Net.HttpStatusCode.OK)
+                    if (responseUpdateInvoiceDetails.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         return new JsonResult { Data = new { Status = "Success" } };
                     }
                 }
                 return new JsonResult { Data = new { Status = "Fail" } };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new JsonResult { Data = new { Status = "Fail" } };
             }
         }
-        
+
         [HttpPost]
         public ActionResult SaveEmailEdit(InvoiceViewModel invoiceViewModel)
         {
@@ -1092,7 +1092,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice"+ mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
                 InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -1128,7 +1128,7 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
             }
-           catch (Exception ex)
+            catch (Exception ex)
             {
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
@@ -1136,7 +1136,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", id = mvcInvoiceModel.InvoiceID } };
         }
-        
+
         [HttpPost]
         public ActionResult SavePrintEdit(InvoiceViewModel invoiceViewModel)
         {
@@ -1176,7 +1176,7 @@ namespace InvoiceDiskLast.Controllers
                 }
 
                 mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/"+mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result; ;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result; ;
                 InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -1232,6 +1232,30 @@ namespace InvoiceDiskLast.Controllers
             path = Path.GetFullPath(path);
 
             return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
+        }
+
+        [HttpPost]
+        public JsonResult GetInvoiceId(int Id)
+        {
+            try
+            {
+                HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetId/" + Id).Result;
+                MVCInvoiceModel InvoceModel = responseInvoice.Content.ReadAsAsync<MVCInvoiceModel>().Result;
+                if (responseInvoice.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return new JsonResult { Data = new { Status = "Success", Id = InvoceModel.InvoiceID } };
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail" } };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
     }

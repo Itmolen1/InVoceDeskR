@@ -14,7 +14,6 @@ namespace InvoiceDiskLast.Controllers
     {
         private DBEntities db = new DBEntities();
 
-
         [Route("api/GetbillDetails/{CompanyID:int}")]
         [ResponseType(typeof(MvcBillModel))]
         public IHttpActionResult GetBillDetails(int CompanyID)
@@ -51,7 +50,6 @@ namespace InvoiceDiskLast.Controllers
             return Ok(BillList);
         }
 
-
         [Route("api/GenrateBilNumber")]
         [ResponseType(typeof(MvcBillModel))]
         public IHttpActionResult GetBillNumber()
@@ -70,7 +68,6 @@ namespace InvoiceDiskLast.Controllers
                 return Ok(_billModel);
             }
         }
-
 
         [Route("api/AddBill")]
         [ResponseType(typeof(BillTable))]
@@ -128,7 +125,6 @@ namespace InvoiceDiskLast.Controllers
             return Ok(billModel);
         }
 
-
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPurchaseTable(int id, BillTable billTable)
         {
@@ -157,8 +153,22 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+        [Route("api/GetBillIdbyPurchaseId/{Id:int}")]
+        public IHttpActionResult GetbillIdbyPurchaseId(int Id)
+        {
+            try
+            {
+                MvcBillModel _BillDetailModel = new MvcBillModel();
+                _BillDetailModel.BilID = db.BillTables.Where(I => I.PurchaseId == Id).FirstOrDefault().BilID;
+                return Ok(_BillDetailModel);
 
-
+            }
+            catch (Exception)
+            {
+                NotFound();
+                throw;
+            }
+        }
 
     }
 }

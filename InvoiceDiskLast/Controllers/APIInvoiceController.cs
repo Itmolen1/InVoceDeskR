@@ -42,6 +42,10 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+
+
         [Route("api/GetInvoiceCount")]
         public IHttpActionResult GetInvoiceCount()
         {
@@ -65,25 +69,18 @@ namespace InvoiceDiskLast.Controllers
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult PostInvoice([FromBody] InvoiceTable invoiceTable)
         {
-            
             using (DBEntities entities = new DBEntities())
             {
-                
-
                 try
                 {
-                    
                     invoiceTable = entities.InvoiceTables.Add(invoiceTable);
-
                     entities.SaveChanges();
-
                     return Ok(invoiceTable);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return BadRequest();
                 }
-
             }
         }
 
@@ -124,6 +121,33 @@ namespace InvoiceDiskLast.Controllers
 
             return Ok(invoiceModel);
         }
+
+
+
+
+        [Route("api/GetId/{Id:int}")]
+        public IHttpActionResult GetId12(int Id)
+        {
+            try
+            {
+                MVCInvoiceModel inoiceTabe = new MVCInvoiceModel();
+
+                inoiceTabe.InvoiceID = db.InvoiceTables.Where(I => I.QutationId == Id).FirstOrDefault().InvoiceID;
+
+                return Ok(inoiceTabe);
+
+            }
+            catch (Exception)
+            {
+                NotFound();
+                throw;
+            }
+        }
+
+
+
+
+
 
         [Route("api/UpdateInvoice/{id:int}")]
         [ResponseType(typeof(void))]

@@ -460,7 +460,7 @@
         LoadPurchaseOrderTable("open");
         LoadAssetDropDown();
 
-        loadPayemtTermDropdown();
+        //loadPayemtTermDropdown();
     });
 
     function LoadPurchaseOrderTable(status) {
@@ -570,8 +570,33 @@
     }
 
 
+    function GetInvoiceIdByQuatationId(Id) {
+
+        $.ajax({
+            url: "/Bills/GetPurchaseId",
+            type: "POST",
+            cache: false,
+            data: { 'Id': Id },
+            success: function (Response) {
+                if (Response.Status == "Success") {    
+                    window.location.href = "/Bills/ViewBilDetail/?BillId=" + Response.Id;
+                }
+            },
+            error: function (errormessage) {
+
+            }
+        });
+
+    }
+
+
+
+
+
 
     function ViewInvoice(PurchaseOrderID, Type) {
+        debugger
+
 
         $.ajax({
             url: '/Purchase/AddOrEditPurchase',
@@ -579,15 +604,11 @@
             data: {
                 purchaseId: PurchaseOrderID
             },
-            success: function (data) {
-                if (Type == "Goods") {
-                    href = "/Purchase/ViewAndPrintInvoiceGood?Id=" + PurchaseOrderID;
-                    window.open(href, '_blank');
-                }
-                else if (Type == "Services") {
-                    href = "/Purchase/ViewAndPrintInvoiceService?Id=" + PurchaseOrderID;
-                    window.open(href, '_blank');
-                }
+            success: function (response) {
+              
+                GetInvoiceIdByQuatationId(PurchaseOrderID)
+
+               
             }
         });
     }
@@ -900,6 +921,6 @@
     }
 
 
- 
+
 
 </script>

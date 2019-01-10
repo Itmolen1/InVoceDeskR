@@ -211,33 +211,14 @@
                                             <tr>
                                                 <td>
 
-                                                    @{
-                                                        string Day = "", Month = "";
-
+                                                    @{ 
                                                         DateTime dt = new DateTime();
-                                                        int D, m, y = 0;
+                                                        
                                                         dt = Convert.ToDateTime(item.ServiceDate);
-                                                        D = dt.Day;
-                                                        m = dt.Month;
-                                                        y = dt.Year;
-
-                                                        if (D < 10)
-                                                        {
-                                                            Day = '0' + D.ToString();
-                                                        }
-
-                                                        if (m < 10)
-                                                        {
-                                                            Month = '0' + m.ToString(); ;
-                                                        }
-
-
-                                                        string date = Day.ToString() + "/" + Month.ToString() + "/" + y.ToString();
                                                     }
 
 
-
-                                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@date" />
+                                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" />
 
 
                                                 </td>
@@ -306,7 +287,7 @@
 
                             <tr id="mainrow1">
                                 <td>
-                                    <input  class="ServiceDate ss Input-height form-control"  />
+                                    <input class="ServiceDate ss Input-height form-control" />
                                 </td>
 
                                 <td>
@@ -346,7 +327,7 @@
                     </table>
                 </div>
             </div>
-           
+
             <div class="row">
                 <div class="col-6 b-r">
                     <table class="table table-hover" id="participantTable">
@@ -762,7 +743,7 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        
+
         var price = CurrentRow;
         Total = 0;
         Total = CurrentRow.find('.FTotalG').val();
@@ -794,7 +775,7 @@
 
     $('.VATG').change(function () {
 
-        
+
 
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
@@ -806,7 +787,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        
+
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -816,7 +797,7 @@
     });
 
     $('.quantityG').keyup(function () {
-        
+
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -920,7 +901,7 @@
 
     $(document).ready(function () {
         $('.pClassG').change(function () {
-            
+
             var currentRow1 = $(this).closest('tr');
             var value = currentRow1.find('.pClassG').val();
             GetProductPriceByProductId(value, currentRow1);
@@ -938,7 +919,7 @@
 
     $('#mainrow1 .pClassG').change(function () {
 
-        
+
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -1003,36 +984,26 @@
         var SubTotalGoode = 0, SubTotalService = 0;
         SubTotalGoode = AddSubtotalGoods();
         SubTotalService = AddSubTotalService();
-
         if (isNaN(SubTotalGoode)) {
             SubTotalGoode = 0;
         }
-
         if (isNaN(SubTotalService)) {
             SubTotalService = 0;
         }
         var Total = parseFloat(SubTotalGoode) + parseFloat(SubTotalService);
-
-
         $('#gtotal').text(Total.toFixed(2));
-
     }
 
     function CombineTotal() {
-
         var TotalGoode, Total, TotalService1 = 0;
-
         TotalGoode = totalGoods();
         TotalService1 = TotalService();
-
         if (isNaN(TotalGoode)) {
             TotalGoode = 0;
         }
-
         if (isNaN(TotalService1)) {
             TotalService1 = 0;
         }
-
         Total = parseFloat(TotalGoode) + parseFloat(TotalService1);
         $('#SubTotal').text(Total.toFixed(2));
         $('#TotalBTW').text(Total.toFixed(2));
@@ -1040,11 +1011,8 @@
 
     function AddSubtotalGoods() {
         var SubTotalGood = 0;
-
         $('#orderdetailsitems1 tbody tr').each(function () {
-
             var Value = $(this).find(".RowTotalG").val();
-
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
                 SubTotalGood += parseFloat(Value)
             }
@@ -1066,7 +1034,6 @@
 
     function totalGoods() {
         var TotalGood = 0;
-
         $('#orderdetailsitems1 tbody tr').each(function () {
             var Value = $(this).find(".FTotalG").val();
             if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
@@ -1088,15 +1055,11 @@
     }
 
 
-
-
     $('#Submit').click(function () {
-        
-        CreateQuation();
+        CreateQuation("/Purchase/SaveToDraftEdit","SaveDraft");
     });
 
-
-    function CreateQuation() {
+    function CreateQuation(Route, btnName) {
 
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
@@ -1106,7 +1069,6 @@
         }
 
         $('#orderdetailsitems1 .tbodyGood tr').each(function () {
-
             var CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1193,31 +1155,19 @@
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
         }
 
-
-
         $.ajax({
-            url: "/Purchase/SaveToDraftEdit",
+            url:Route,//"/Purchase/SaveToDraftEdit",
             type: "POST",
             data: formData,
             dataType: 'json',
             contentType: false,
             processData: false,
             success: function (result) {
-                //  QutationIdd = result.QutationId;
                 if (result.Status == "Success") {
-                    swal({
-                        title: 'Purchase!',
-                        text: 'Purchase save successfully!',
-                        type: 'success'
-                    },
-                         function (isconform) {
-                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.purchaseId;
-
-                         });
+                    Response(result,btnName);
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
-
                 }
             },
 
@@ -1228,139 +1178,59 @@
         });
     }
 
-
+    $('#saveprintandsendtoyourselfsave').click(function () {
+        CreateQuation("/Purchase/PrintEmailEdit", "SaveEamilPrint");
+        
+    });
 
     $('#saveEmail').click(function () {
-
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
-        }
-
-        $('#orderdetailsitems1 .tbodyGood tr').each(function () {
-            var CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    PurchaseItemId: parseInt($(this).find('.product').val()),
-                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
-                }
-                list.push(orderItem);
-            }
-        });
-
-
-        $('#QutationServiceDetail .tbodyService tr').each(function () {
-            var CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    PurchaseItemId: parseInt($(this).find('.product').val()),
-                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Service",
-                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    PurchaseDescription: $(this).find('.Discription').val(),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
-
-                }
-                list.push(orderItem);
-            }
-        });
-
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
-        }
-
-        var empObj = {
-            PurchaseId: $('#Number_ID').val(),
-            PurchaseID: $('#PurchaseID').val(),
-            Purchase_ID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#ReferenceNumber').val(),
-            PurchaseDate: $('#FromDate').val(),
-            PurchaseDueDate: $('#DueDate').val(),
-            PurchaseSubTotal: $('#SubTotal').text(),
-            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            PurchaseOrderID: $('#PurchaseOrderID').val(),
-            PurchaseTotoalAmount: $('#gtotal').text(),
-            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-            Vat6: $('#BTW6').text(),
-            Vat21: $('#BTW21').text(),
-            VenderId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
-        };
-
-
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
-        }
-
-        for (var i = 0; i < list.length; i++) {
-
-            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-
-            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
-            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
-            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderID]', list[i].PurchaseOrderID)
-
-            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
-
-        }
-
-        $.ajax({
-            url: "/Purchase/saveEmailEdit",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function (result) {
-
-                if (result.Status == "Success") {
-
-                    swal({
-                        title: 'Purchase!',
-                        text: 'Purchase save successfully!',
-                        type: 'success'
-                    },
-                          function (isconform) {
-                              window.location.href = "/Purchase/InvoiceByEmail?PurchaseOrderId=" + result.PurchaseOrderId;
-                          });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
-            },
-            error: function (errormessage) {
-            }
-        });
+        CreateQuation("/Purchase/saveEmailEdit", "SaveEmail");
+      
     });
 
 
+    function Response(response, btnName) {
+
+        if (response.Status == "Success" && btnName == "SaveDraft") {
+            swal({
+                title: 'Purchase!',
+                text: 'Purchase Order hasbeen modified successfully!',
+                type: 'success'
+            },
+                 function (isconform) {
+                     window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + response.purchaseId;
+                 });
+        }
+
+        if (response.Status == "Success" && btnName == "SaveEmail") {
+            swal({
+                title: 'Purchase!',
+                text: 'Purchase Order hasbeen modified successfully!',
+                type: 'success'
+            },
+                         function (isconform) {
+                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + response.PurchaseOrderId;
+                         });
+        }
+        if (response.Status == "Success" && btnName == "SaveEamilPrint") {
+            localStorage.setItem('path', response.path);
+            swal({
+                title: 'Purchase!',
+                text: 'Purchase Order hasbeen modified successfully!',
+                type: 'success'
+            },
+            function (isconform) {
+                window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + response.PurchaseOrderId;
+            });
+        }
+        else if (response.Status == "Fail") {
+
+        }
+
+        if (response.Status == "Fail") {
+            alert('Fail to Create Bills');
+        }
+    }
 
 
     var currentRow = "";
@@ -1387,7 +1257,6 @@
     });
 
     function Remove(currentRow) {
-
         var PurchaseOrderId = $('#PurchaseOrderID').val();
         var purchaseTotal = currentRow.find('.FTotalG').val();
         var vat = currentRow.find('.VATG ').val();
@@ -1444,142 +1313,7 @@
 
 
 
-    $('#saveprintandsendtoyourselfsave').click(function () {
-        EditPrintEamil();
-    });
-
-
-
-
-    function EditPrintEamil() {
-
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
-        }
-
-        $('#orderdetailsitems1 .tbodyGood tr').each(function () {
-            var CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    PurchaseItemId: parseInt($(this).find('.product').val()),
-                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
-                }
-                list.push(orderItem);
-            }
-        });
-
-
-        $('#QutationServiceDetail .tbodyService tr').each(function () {
-            var CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    PurchaseItemId: parseInt($(this).find('.product').val()),
-                    PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Service",
-                    PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-                    PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    PurchaseDescription: $(this).find('.Discription').val(),
-                    PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
-                    PurchaseOrderID: $('.PurchaseOrderID').val(),
-
-                }
-                list.push(orderItem);
-            }
-        });
-
-
-
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
-        }
-
-        var empObj = {
-            PurchaseId: $('#Number_ID').val(),
-            PurchaseID: $('#PurchaseID').val(),
-            Purchase_ID: $('#PurchaseID').val(),
-            PurchaseRefNumber: $('#ReferenceNumber').val(),
-            PurchaseDate: $('#FromDate').val(),
-            PurchaseDueDate: $('#DueDate').val(),
-            PurchaseSubTotal: $('#SubTotal').text(),
-            PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-            PurchaseOrderID: $('#PurchaseOrderID').val(),
-            PurchaseTotoalAmount: $('#gtotal').text(),
-            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-            Vat6: $('#BTW6').text(),
-            Vat21: $('#BTW21').text(),
-            VenderId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
-        };
-
-        
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
-        }
-
-        for (var i = 0; i < list.length; i++) {
-
-            formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-            formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
-            formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
-            formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
-            formData.append('PurchaseOrderList[' + i + '][PurchaseOrderID]', list[i].PurchaseOrderID)
-            formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
-        }
-
-        $.ajax({
-            url: "/Purchase/PrintEmailEdit",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function (result) {
-                localStorage.setItem('path', result.path);
-                if (result.Status == "Success") {
-                    swal({
-                        title: 'Purchase!',
-                        text: 'Purchase save successfully!',
-                        type: 'success'
-                    },
-                          function (isconform) {
-                              window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.PurchaseOrderId;
-                          });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
-            },
-            error: function (errormessage) {
-            }
-        });
-
-    }
-
+  
 
 
     function ValidateRow(CurrentRow) {
@@ -1611,7 +1345,7 @@
 
     $('#txtUploadFile12').on('change', function (e) {
 
-        
+
 
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
@@ -1823,7 +1557,7 @@
     });
 
     $('body').on('focusout', '.ss', function () {
-        
+
         RemovareDate();
     });
 </script>
