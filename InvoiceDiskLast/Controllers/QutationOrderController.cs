@@ -255,61 +255,6 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        public ActionResult Accepted()
-        {
-            return View();
-        }
-
-        public JsonResult GetAcceptedInvoice()
-        {
-            try
-            {
-               
-
-                IEnumerable<MVCQutationModel> QutationOrderList;
-                try
-                {
-                    var draw = Request.Form.GetValues("draw").FirstOrDefault();
-                    var start = Request.Form.GetValues("start").FirstOrDefault();
-                    var length = Request.Form.GetValues("length").FirstOrDefault();
-                    var sortColumn = Request.Form.GetValues("columns[" +
-                    Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
-                    var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
-                    string search = Request.Form.GetValues("search[value]")[0];
-
-                    int pageSize = length != null ? Convert.ToInt32(length) : 0;
-                    int skip = start != null ? Convert.ToInt32(start) : 0;
-
-                    int CompanyId = Convert.ToInt32(Session["CompayID"]);
-                    GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
-
-                    HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("QutationOrderListByStatus").Result;
-                    QutationOrderList = response.Content.ReadAsAsync<IEnumerable<MVCQutationModel>>().Result;
-
-                    if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
-                    {
-                        QutationOrderList = QutationOrderList.Where(p => p.QutationID.ToString().Contains(search)
-                      || p.RefNumber != null && p.RefNumber.ToLower().Contains(search.ToLower())
-                      || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
-                      || p.DueDate != null && p.DueDate.ToString().ToLower().Contains(search.ToLower())
-                      || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
-                      || p.SubTotal != null && p.SubTotal.ToString().ToLower().Contains(search.ToLower())
-                      || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
-                    }
-
-                    int recordsTotal = recordsTotal = QutationOrderList.Count();
-                    var data = QutationOrderList.Skip(skip).Take(pageSize).ToList();
-                    return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
-                }
-            catch (Exception)
-            {
-
-                throw;
-            }
-         return Json("", JsonRequestBehavior.AllowGet);
-        }
-
-
 
         [HttpPost]
         public JsonResult GetQutationOrderList(string status)

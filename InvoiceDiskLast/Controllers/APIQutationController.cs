@@ -187,7 +187,7 @@ namespace InvoiceDiskLast.Controllers
                     DueDate = p.DueDate,
                     RefNumber = p.RefNumber,
                     SubTotal = p.SubTotal,
-                   
+
                     Status = p.Status,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
@@ -212,41 +212,41 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        [Route("api/GetAcceptedInvoices/{companyId:int}")]
-        public IHttpActionResult GetQutationOrderListByStatus(int companyId)
-        {
-            object ob = new object();
-            try
-            {
+        //[Route("api/GetAcceptedInvoices/{companyId:int}")]
+        //public IHttpActionResult GetQutationOrderListByStatus(int companyId)
+        //{
+        //    object ob = new object();
+        //    try
+        //    {
 
-                ob = db.InvoiceTables.Where(p => p.CompanyId == companyId).Select(p => new InvoiceViewModel
-                {
-                    InvoiceID = p.InvoiceID,
-                    InvoiceDate = p.InvoiceDate,
-                    InvoiceDueDate = p.InvoiceDueDate,
-                    CustomerName = p.ContactsTable.ContactName,
-                    RefNumber = p.RefNumber,
-                    SubTotal = p.SubTotal,
-                   // UserName= (p.UserTable.UserFname &&  p.UserTable.UserLname !=null) ? p.UserTable.UserFname+ " " +p.UserTable.UserLname : p.UserTable.Username ),
-                    Vat = p.TotalVat21 + p.TotalVat6,
-                    Status = p.Status,
-                    TotalAmount=p.TotalAmount,                  
-                    CompanyId = p.CompanyId,
-                    UserId = p.UserId,
-                    Type = p.Type,
+        //        ob = db.InvoiceTables.Where(p => p.CompanyId == companyId).Select(p => new InvoiceViewModel
+        //        {
+        //            InvoiceID = p.InvoiceID,
+        //            InvoiceDate = p.InvoiceDate,
+        //            InvoiceDueDate = p.InvoiceDueDate,
+        //            CustomerName = p.ContactsTable.ContactName,
+        //            RefNumber = p.RefNumber,
+        //            SubTotal = p.SubTotal,
+        //            UserName = (p.UserTable.UserFname != null  && p.UserTable.UserLname != null ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
+        //            Vat = p.TotalVat21 + p.TotalVat6,
+        //            Status = p.Status,
+        //            TotalAmount = p.TotalAmount,
+        //            CompanyId = p.CompanyId,
+        //            UserId = p.UserId,
+        //            Type = p.Type,
 
 
-                }).ToList();
+        //        }).ToList();
 
-                return Ok(ob);
-            }
+        //        return Ok(ob);
+        //    }
 
-            catch (Exception)
-            {
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
 
 

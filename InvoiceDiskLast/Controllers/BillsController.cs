@@ -38,11 +38,11 @@ namespace InvoiceDiskLast.Controllers
 
                 int companyId = Convert.ToInt32(Session["CompayID"]);
 
-               
-                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetbillDetails/"+ companyId).Result;
+
+                HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetbillDetails/" + companyId).Result;
                 BillList = respose.Content.ReadAsAsync<List<BillDetailViewModel>>().Result;
 
-               // List<QutationIndexViewModel> quationList1 = new List<QutationIndexViewModel>();
+                // List<QutationIndexViewModel> quationList1 = new List<QutationIndexViewModel>();
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
@@ -113,7 +113,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult EditSaveDraft(BillDetailViewModel _billDetailViewModel)
         {
@@ -199,7 +199,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-        
+
 
         [HttpPost]
         public ActionResult EditEmailPrint(BillDetailViewModel _billDetailViewModel)
@@ -287,7 +287,7 @@ namespace InvoiceDiskLast.Controllers
             path = Path.GetFullPath(path);
             return new JsonResult { Data = new { Status = "Success", path = path1, id = _billDetailViewModel.BilID } };
         }
-        
+
 
         [HttpPost]
         public ActionResult EditEmail(BillDetailViewModel _billDetailViewModel)
@@ -373,7 +373,7 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        
+
         [HttpPost]
         public ActionResult DeleteInvoice(int billid, int BillDetailId, int vat, float total)
         {
@@ -413,8 +413,8 @@ namespace InvoiceDiskLast.Controllers
                 return new JsonResult { Data = new { Status = "Fail" } };
             }
         }
-        
-        
+
+
 
         [HttpPost]
         public ActionResult SaveEmailPrint(BillDetailViewModel billDetailViewModel)
@@ -484,7 +484,7 @@ namespace InvoiceDiskLast.Controllers
             path = Path.GetFullPath(path);
             return new JsonResult { Data = new { Status = "Success", path = path1, id = billviewModel.BilID } };
         }
-        
+
         #region Bill by samar
 
 
@@ -705,6 +705,36 @@ namespace InvoiceDiskLast.Controllers
             }
 
             return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
+        }
+
+
+
+
+        [HttpPost]
+        public JsonResult GetPurchaseId(int Id)
+        {
+              TempData["PurchaseOrderList"] = "true";
+
+            try
+            {
+                MvcBillModel _BillDetailModel = new MvcBillModel();
+
+                HttpResponseMessage responseInvoice = GlobalVeriables.WebApiClient.GetAsync("GetBillIdbyPurchaseId/" + Id).Result;
+                _BillDetailModel = responseInvoice.Content.ReadAsAsync<MvcBillModel>().Result;
+                if (responseInvoice.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return new JsonResult { Data = new { Status = "Success", Id = _BillDetailModel.BilID } };
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail" } };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
 
@@ -1128,7 +1158,7 @@ namespace InvoiceDiskLast.Controllers
             return pdfname;
         }
         #endregion
-        
+
         [HttpPost]
         public ActionResult save1(MvcPurchaseViewModel purchaseViewModel)
         {

@@ -630,777 +630,792 @@
 
 
 
-    @*<label></label>*@
+@*<label></label>*@
 
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            var stat= '@ViewBag.ststus';
+        var stat = '@ViewBag.ststus';
 
-            if (stat != "" && stat != null)
-            {
-                LoadQutationOrderTable(stat);
-            }
-            else
-            {
-                LoadQutationOrderTable("open");
-            }
-           
-               
-          
-
-            $('#btnqutation').click(function () {
-                if ($('#drppaymentDebitq option:selected').text() == $('#drpAccountCreditq option:selected').text()) {
-                    alert('Account name canot be same');
-                    return;
-                }
-
-
-                if ($('txttransactionDateDebitq').val() == 0) {
-                    alert('txttransactionDateDebit  canot be null');
-                    return;
-                }
-
-
-                if ($('#drpAccountDebitq').val() == 0) {
-                    alert('drpAccountDebit  canot be null');
-                    return;
-                }
-
-
-                if ($('#AmountDebitq').val() == 0 || $('#AmountDebitq').val() == 0.00) {
-                    alert('debit amount canot be zero');
-                    return;
-                }
-
-                if ($('#AmountCreditq').val() == 0 || $('#AmountCreditq').val() == 0.00) {
-                    alert('AmountCredit canot be zero');
-                    return;
-                }
-
-                if ($('#AmountDebitq').val() != $('#AmountCreditq').val()) {
-                    alert('Amonnt are not same please checke');
-                    return;
-                }
-
-                if ($('#tbleAccount tr').length == 2) {
-                    alert("Please save and chhose another transiction");
-                }
-                else {
-
-                    var AccountTable = $('#tbleAccount');
-                    var AcciontName = $('#drppaymentDebitq option:selected').text();
-                    var TID = $('#txttransactionIdq').val();
-                    var ref = $('#txtrefrencenumberq').val();
-                    var Amountdebit = $('#AmountDebitq').val();
-                    var AmountCridit = $('#AmountCreditq').val();
-                    var Tdate = $('#txttransactionDateDebitq').val();
-                    var drpAccountCredit = $('#drpAccountCreditq option:selected').text();
-                    var paymentTer = $('#drpAccountDebit option:selected').text();
-                    AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
-                    AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
-                    $('#tableAccountinfo').css('visibility', 'visible');
-                }
-            });
-        });
-
-        function LoadQutationOrderTable(status) {
-            $("#QutationOrderTable").DataTable({
-                //"processing": true, // for show progress bar
-                "processing": true,
-                "language": {
-                    //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-                },
-                "destroy": true,
-                "searching": true,
-                "autoWidth": false,
-                "serverSide": true, // for process server side
-                "filter": false, // this is for disable filter (search box)
-                "orderMulti": false, // for disable multiple column at once
-                "ajax": {
-                    "url": "/QutationOrder/GetQutationOrderList",
-                    "type": "POST",
-                    data: { status: status },
-                    "datatype": "json"
-                },
-                "columns": [
-                      { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
-                        {
-                            "data": "QutationDate", "type": "date ",
-                            "render": function (value) {
-                                if (value === null) return "";
-                                var pattern = /Date\(([^)]+)\)/;//date format from server side
-                                var results = pattern.exec(value);
-                                var dt = new Date(parseFloat(results[1]));
-                                return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                            }, "autoWidth": true
-                        },
-                       {
-                           "data": "DueDate", "type": "date ",
-                           "render": function (value) {
-                               if (value === null) return "";
-                               var pattern = /Date\(([^)]+)\)/;//date format from server side
-                               var results = pattern.exec(value);
-                               var dt = new Date(parseFloat(results[1]));
-                               return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                           }, "autoWidth": true
-                       },
-
-                      { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
-
-                    { "data": "SubTotal", "name": "SubTotal", "autoWidth": true },
-                    { "data": "Type", "name": "Type", "autoWidth": true },
-
-                    {
-                        render: function (data, type, row) {
-
-                            switch (row.Status) {
-
-                                case "open":
-
-                                    return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
-                                    break;
-
-                                case "pending":
-                                    return "<td><span class='label label-info'>" + row.Status + "</span></td>"
-                                    break;
-
-                                case "rejected":
-                                    return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
-                                    break;
-
-                                case "accepted":
-
-                                    return "<td><span class='label label-success'>" + row.Status + "</span></td>"
-                                    break;
-                            }
-                        }
-                    },
-
-                    {
-                        render: function (data, type, row) {
-                         
-
-                            switch (row.Status) {
-                                case "open":
-                                    return '<button href="" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.SubTotal + ', \'' + row.Type + '\')"><i class="fa fa-check">proceed</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
-
-                                    //return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.PurchaseSubTotal + ')"><i class="fa fa-check"> Record payment</i></button>|<button class="btn btn-danger btn-sm" onclick="Rejected(' + row.PurchaseOrderID + ')"><i class="fa fa-trash"></i> Reject</button>|<button  class="btn btn-success btn-sm" onclick="PendingtOrder(' + row.PurchaseOrderID + ')"><i class="fa fa-clock-o"> Pending</i></button>'
-                                    break
-
-                                case "rejected":
-                                    return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-clock-o"> Re  Open</i></a>'
-                                    break
-
-
-                                case "pending":
-                                    return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re  Open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
-                                    break
-
-
-                                case "accepted":
-                                    return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye"> View Invoice</i></a>'
-                                    break
-                            }
-
-                        }
-                    }
-                ]
-            });
+        if (stat != "" && stat != null) {
+            LoadQutationOrderTable(stat);
         }
-
-        //pending service and qutation
-
-
-
-        function ViewInvoice(qutationId, Type) {
-          
-            $.ajax({
-                url: '/MVCClient/AddOrEditQutation',
-                type: 'GET',
-                data: {
-                    Qutationid: qutationId
-                },
-                success: function (data) {
-                    if (Type == "Goods") {
-                        window.location.href = "/Invoice/ViewInvoice/?id=" + qutationId;
-                      
-                        //window.open(href, '_blank');
-                    }
-                    else if (Type == "Services") {
-                        href = "/MVCQutation/ServiceViewPrint?Id=" + qutationId;
-                        window.open(href, '_blank');
-                    }
-                }
-            });
-        }
-
-
-
-        function ViewDetail1(QutationId, Type1) {
-
-            $.ajax({
-                url: '/MVCClient/AddOrEditQutation',
-                type: 'GET',
-                data: {
-                    Qutationid: QutationId
-                },
-                success: function () {
-
-                    GetPurchaseDetailByPurchaseId(QutationId, Type1)
-                }
-            });
-        }
-
-
-        function loadPayemtTermDropdown() {
-
-            var drppaymentTerm = $('#drpAccountDebit');
-
-            $.ajax({
-                url: "/MvcPaymentTerm/GetPaymentTerm",
-                type: "POST",
-                contentType: "appplication/json",
-                success: function (response) {
-                    $.each(response, function (i, item) {
-                        drppaymentTerm.append("<option value=" + item.PayementTremId + "> " + item.PaymentTerm + " </option>")
-                    });
-                    $("#drpAccountDebit").val($("#drpAccountDebit option:eq(1)").val());
-                },
-                error: function (Error) {
-                    alert(Error)
-                },
-            });
-        }
-
-
-        function GetPurchaseDetailByPurchaseId(QutationId, Type) {
-            if (Type == "Goods") {
-                $('#theadTable').empty();
-                $('#theadTable').append("<tr> <th> PurchaseId</th><th> PurchaseDate</th><th>PurchaseDueDate</th><th> RefrenceNumber</th><th> Puchase Subtotal </th><th>Vat %</th></tr>")
-            }
-            if (Type == "Services") {
-                $('#theadTable').empty();
-                $('#theadTable').append("<tr><th> PurchaseId</th><th> Project</th><th>Number of hour</th><th>Hourly rate</th><th>Total</th><th>Vat %</th></tr>")
-            }
-
-            var Data = JSON.stringify({
-                QutationId: QutationId,
-            })
-            $.ajax({
-                url: '/QutationOrder/GetPendingQutation',
-                type: 'POST',
-                data: Data,
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-                    console.log(response);
-
-                    var html = '';
-                    $.each(response.QutationDat, function (key, item) {
-                        html += '<tr>';
-                        html += '<td>' + item.QutationID + '</td>';
-                        html += '<td>' + item.ItemName + '</td>';
-                        html += '<td>' + item.Quantity + '</td>';
-                        html += '<td>' + item.Rate + '</td>';
-                        html += '<td>' + item.Total + '</td>';
-                        html += '<td>' + item.Vat + '</td>';
-                        html += '</tr>';
-                    });
-
-                    $('#PurchaseTotoalAmount').text(response.purchase.TotalAmount);
-                    $('#Vat21').text(response.purchase.TotalVat21);
-                    $('#vat6').text(response.purchase.TotalVat6);
-                    $('#PurchaseSubTotal').text(response.purchase.SubTotal);
-
-                    $('#CompanyName').text(response.CompanyDta.CompanyName);
-                    $('#Kvk').text(response.CompanyDta.KVK);
-                    $('#BTW').text(response.CompanyDta.BTW);
-                    $('#Bank').text(response.CompanyDta.BankName);
-                    $('#IBN').text(response.CompanyDta.CompanyName);
-                    $('#IBC').text(response.CompanyDta.BIC);
-                    $('#CompanyPhone').text(response.CompanyDta.CompanyName);
-                    $('#Cell').text(response.CompanyDta.CompanyCell);
-                    $('#CompanyEmail').text(response.CompanyDta.CompanyEmail);
-                    $('#website').text(response.CompanyDta.Website);
-                    $('#add').text(response.CompanyDta.CompanyAddress);
-                    $('#pcode').text(response.CompanyDta.CompanyPhone);
-                    $('#companyCity').text(response.CompanyDta.CompanyCity);
-                    $('#companyCountry').text(response.CompanyDta.CompanyCountry);
-                    $('#tbody').html(html);
-
-                    $("#logo1").empty();
-                    $("#logo1").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "'/>");
-
-                    $('#showpendindModelqutation').modal('show');
-                },
-
-                Error: function (error) {
-                    alert(error)
-                },
-            });
-
-            // loadPendingTable(purchaseId);
-            $('#showpendindModelqutation').modal('show');
-        }
-
-        // end of service and qutation
-
-
-        function AcceptOrder(id, Amount, ServiceType) {
-            SerViceGood = "Prceed";        
-            Proceeds(id, "accepted", "the qutation is  prceeds successfully")
-        }
-
-
-        function Reopen(id) {
-            updateStatus(id, "open", "the qutation is  Open successfully");
-        }
-
-        function Rejected(id) {
-            updateStatus(id, "rejected", "the Qutation is rejected successfully");
-        }
-
-        function PendingtOrderq(id) {
-            $('#Pendingq').modal('show');
-            $('#txtpurchaseIdQ').val(id);
-        }
-
-
-        function Proceeds(Id, Status, Message) {
-     
-           var Data = JSON.stringify({
-                QutationId: Id,
-                Status: Status,
-                Type: SerViceGood
-            })
-            $.ajax({
-                url: '/QutationOrder/Proceeds',
-                type: 'POST',
-                data: Data,
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-                    if (response.Status == "Success") {
-
-                        $('#QutationOrderTable').DataTable().ajax.reload();
-                        swal({
-                            title: 'Status!',
-                            text: Message,
-                            type: 'success'
-                        });
-                    }
-                    else if (response.Status == "Fail") {
-                        swal({
-                            title: 'Status!',
-                            text: "fail to process",
-                            type: 'danger'
-                        });
-                    }
-                },
-
-                Error: function (error) {
-                    alert(error)
-                },
-            });
-        }
-
-
-        function updateStatus(Id, Status, Message) {
-
-            $('#Extabletbody').empty();
-
-            var Data = JSON.stringify({
-                QutationId: Id,
-                Status: Status,
-                Type: SerViceGood
-            })
-            $.ajax({
-                url: '/QutationOrder/UpdateOrderStaus',
-                type: 'POST',
-                data: Data,
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-                    //if (response.Status == "Exceeded") {
-                    //    var html = "";
-                    //    $.each(response.Message, function (key, item) {
-
-                    //        html += "<tr>"
-                    //        html += '<td style="text-align:center">' + item.ItemId + '</td>';
-                    //        html += '<td>' + item.ItemName + '</td>';
-                    //        html += '<td style="text-align:right">' + item.Quantity + '</td>';
-                    //        html += '<td style="text-align:right">' + item.SaleQuantity + '</td>';
-                    //        html += '<td  style="color:red;text-align:right">' + item.ExeecdQuantity + '</td>';
-                    //        html += "</tr>"
-                    //    });
-                    //    $('#Extabletbody').append(html);
-
-                    //    $('#ExceedItemModel').modal('show');
-
-                    //}
-
-                    if (response.Status == "Success") {
-
-
-                        $('#QutationOrderTable').DataTable().ajax.reload();
-                        swal({
-                            title: 'Status!',
-                            text: Message,
-                            type: 'success'
-                        });
-                    }
-                    else if (response.Status == "Fail") {
-                        swal({
-                            title: 'Status!',
-                            text: "fail to process",
-                            type: 'danger'
-                        });
-                    }
-                },
-
-                Error: function (error) {
-                    alert(error)
-                },
-            });
-        }
-
-
-        $('#drpstatus').change(function () {
-                      
-            var status = $('#drpstatus option:selected').text();
-            LoadQutationOrderTable(status);
-        });
-
-
-        $('#savePendindq').click(function () {
-            AddPendingQutation();
-        });
-
-
-        function AddPendingQutation() {
-
-            var ddddd = {
-                Purchase_QuataionId: $("#txtpurchaseIdQ").val(),
-                FromDate: $("#txtfromdateq").val(),
-                ToDate: $('#txttodateq').val(),
-                Description: $('#txtdescriptionq').val(),
-                Status: "pending"
-            };
-            $.ajax({
-                url: "/QutationOrder/AddPending",
-                type: 'POST',
-                data: ddddd,
-                success: function (rsponse) {
-                    if (rsponse.Success = "Success") {
-                        $('#QutationOrderTable').DataTable().ajax.reload();
-                        $('#Pendingq').modal('hide');
-                        swal({
-                            title: 'Status!',
-                            text: rsponse.Message,
-                            type: 'success'
-                        });
-                    }
-                    else if (rsponse.Success = "Fail") {
-                        swal({
-                            title: 'Status!',
-                            text: rsponse.Message,
-                            type: 'danger'
-                        });
-                    }
-                },
-                error: function (error) {
-                    alert(error);
-                }
-            });
-        }
-
-        function ViewQutationDetail(QutationId) {
-
-            $.ajax({
-                url: '/MVCClient/AddOrEditQutation',
-                type: 'GET',
-                data: {
-                    Qutationid: QutationId
-                },
-                success: function (data) {
-
-                    GetQutationDetailByQutationId(QutationId)
-                }
-            });
-        }
-
-        function GetQutationDetailByQutationId(QutationId) {
-
-            var Data = JSON.stringify({
-                QutationId: QutationId,
-            })
-            $.ajax({
-                url: '/QutationOrder/GetPendingQutationDetail',
-                type: 'POST',
-                data: Data,
-                contentType: 'application/json; charset=utf-8',
-                success: function (response) {
-                    console.log(response);
-                    var html = '';
-                    $.each(response.QutationList, function (key, item) {
-                        html += '<tr>';
-                        html += '<td>' + item.QutationID + '</td>';
-                        html += '<td>' + item.ItemName + '</td>';
-                        html += '<td>' + item.Quantity + '</td>';
-                        html += '<td>' + item.Rate + '</td>';
-                        html += '<td>' + item.Total + '</td>';
-                        html += '<td>' + item.Vat + '</td>';
-                        html += '</tr>';
-                    });
-                    $('#PurchaseTotoalAmountq').text(response.purchase.TotalAmount);
-                    $('#Vat21q').text(response.purchase.TotalVat21);
-                    $('#vat6q').text(response.purchase.TotalVat6);
-                    $('#PurchaseSubTotalq').text(response.purchase.SubTotal);
-                    $('#CompanyNameq').text(response.CompanyDta.CompanyName);
-                    $('#Kvkq').text(response.CompanyDta.KVK);
-                    $('#BTWq').text(response.CompanyDta.BTW);
-                    $('#Bankq').text(response.CompanyDta.BankName);
-                    $('#IBNq').text(response.CompanyDta.CompanyName);
-                    $('#IBCq').text(response.CompanyDta.BIC);
-                    $('#CompanyPhoneq').text(response.CompanyDta.CompanyName);
-                    $('#Cellq').text(response.CompanyDta.CompanyCell);
-                    $('#CompanyEmailq').text(response.CompanyDta.CompanyEmail);
-                    $('#websiteq').text(response.CompanyDta.Website);
-                    $('#addq').text(response.CompanyDta.CompanyAddress);
-                    $('#pcodeq').text(response.CompanyDta.CompanyPhone);
-                    $('#companyCityq').text(response.CompanyDta.CompanyCity);
-                    $('#companyCountryq').text(response.CompanyDta.CompanyCountry);
-
-                    $("#logo").empty();
-                    $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "' style='width:72%; height:146px' />");
-                    $('#Qdetail').html(html);
-
-
-                    $('#showpendindModelq').modal('show');
-
-
-                },
-
-                Error: function (error) {
-                    alert(error)
-                },
-            });
-            $('#showpendindModel').modal('show');
-        }
-
-
-
-        $(document).ready(function () {
-            loadPayemtDropdownq();            
-            loadPayemtTermDropdown();
-        });
-
-
-        function loadPayemtDropdownq() {
-            var drppayment = $('#drppaymentDebit');
-            $.ajax({
-                url: "/MVCAccounts/GetAssetAccount",
-                type: "GET",
-                data: { HeadAccountId: 0 },
-                contentType: "appplication/json",
-                success: function (response) {
-
-                    $.each(response, function (i, item) {
-                        drppayment.append("<option value=" + item.HeadAccountId + "> " + item.HeadAccountTitle + " </option>")
-
-                    });
-                },
-                error: function (Error) {
-                    alert(Error)
-                },
-            });
+        else {
+            LoadQutationOrderTable("open");
         }
 
 
 
 
-
-        $('#drppaymentDebit').change(function () {
-            $('#drpAccountCredit').empty();
-            var id = $(this).val();
-            var data1 = JSON.stringify({
-                HeadAccountId: id,
-            })
-            var drppayment = $('#drpAccountCredit');
-
-            $.ajax({
-                url: "/MVCAccounts/GetAssetAccount",
-                type: "GET",
-                data: {
-                    HeadAccountId: id,
-                },
-                contentType: "appplication/json",
-                success: function (response) {
-                    $.each(response, function (i, item) {
-                        drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
-                    });
-                },
-                error: function (Error) {
-                    alert(Error)
-                },
-            });
-
-        });
-
-
-        $('#btnAdd').click(function () {
-
-            if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+        $('#btnqutation').click(function () {
+            if ($('#drppaymentDebitq option:selected').text() == $('#drpAccountCreditq option:selected').text()) {
                 alert('Account name canot be same');
                 return;
             }
 
-            if ($('#txttransactionDateDebit').val() == 0) {
+
+            if ($('txttransactionDateDebitq').val() == 0) {
                 alert('txttransactionDateDebit  canot be null');
                 return;
             }
 
-            if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+
+            if ($('#drpAccountDebitq').val() == 0) {
+                alert('drpAccountDebit  canot be null');
+                return;
+            }
+
+
+            if ($('#AmountDebitq').val() == 0 || $('#AmountDebitq').val() == 0.00) {
                 alert('debit amount canot be zero');
                 return;
             }
 
-            if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+            if ($('#AmountCreditq').val() == 0 || $('#AmountCreditq').val() == 0.00) {
                 alert('AmountCredit canot be zero');
                 return;
             }
-            if ($('#DrpTrasctionType').val() == 0) {
-                alert('Select Transaction type');
 
+            if ($('#AmountDebitq').val() != $('#AmountCreditq').val()) {
+                alert('Amonnt are not same please checke');
                 return;
             }
 
-            if ($('#drpAccountCredit').val() == 0) {
-                alert('Select Account type');
-
-                return;
-            }
-
-            var AccountTable = $('#tbleAccount');
-            var AccountName = $('#drpAccountCredit option:selected').text();
-            var TID = $('#txttransactionId').val();
-            var ref = $('#txtrefrencenumber').val();
-            var Amountdebit = $('#AmountDebit').val();
-            var AmountCridit = $('#AmountCredit').val();
-            var Tdate = $('#txttransactionDateDebit').val();
-            var drpAccountCredit = $('#drpAccountCredit option:selected').text();
-            var paymentTer = $('#drpAccountDebit option:selected').text();
-
-            if ($('#DrpTrasctionType option:selected').text().trim() == "Dr") {
-
-                $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + Amountdebit + "</td><td class='AmountCredit'>" + 0.00 + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
-                $('#btnSave').css('visibility', 'visible');
-                $('#drppaymentDebit').val(0);
-                $('#drpAccountCredit').val(0);
-                $('#DrpTrasctionType').val(0);
-            }
-            else if ($('#DrpTrasctionType option:selected').text().trim() == "Cr") {
-
-                $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + 0.0 + "</td><td class='AmountCredit'>" + Amountdebit + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
-                $('#btnSave').css('visibility', 'visible');
-                $('#drppaymentDebit').val(0);
-                $('#drpAccountCredit').val(0);
-                $('#DrpTrasctionType').val(0);
-                $('#tableAccountinfo').css('visibility', 'visible');
-
-            }
-
-
-            $('#tableAccountinfo').css('visibility', 'visible');
-
-        });
-
-
-        $(document).on("click", '.ibtnDel', function () {
-
-
-            $(this).closest("tr").remove();
-
-            if ($('#tableAccountinfo #tbleAccount tr').length == 0) {
-                $('#tableAccountinfo').css('visibility', 'visible');
-                $("#tableAccountinfo #tbleAccount").empty();
-                $('#tableAccountinfo').css('visibility', 'hidden');
-                $('#btnSave').css('visibility', 'hidden');
-            }
-        });
-
-        $('#btnSave').click(function () {
-            if ($('#tableAccountinfo #tbleAccount tr').length > 0) {
-                PayTransaction();
+            if ($('#tbleAccount tr').length == 2) {
+                alert("Please save and chhose another transiction");
             }
             else {
-                swal({
-                    title: 'Message!',
-                    text: "select field and tray again",
-                    type: 'danger'
-                });
 
-                $('#tableAccountinfo').css('visibility', 'hidden');
+                var AccountTable = $('#tbleAccount');
+                var AcciontName = $('#drppaymentDebitq option:selected').text();
+                var TID = $('#txttransactionIdq').val();
+                var ref = $('#txtrefrencenumberq').val();
+                var Amountdebit = $('#AmountDebitq').val();
+                var AmountCridit = $('#AmountCreditq').val();
+                var Tdate = $('#txttransactionDateDebitq').val();
+                var drpAccountCredit = $('#drpAccountCreditq option:selected').text();
+                var paymentTer = $('#drpAccountDebit option:selected').text();
+                AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + Amountdebit + '</td><td>' + 0 + '</td></tr>');
+                AccountTable.append('<tr><td>' + TID + '</td><td>' + ref + '</td><td>' + Tdate + '</td><td>' + AcciontName + '</td><td>' + paymentTer + '</td><td>' + 0 + '</td><td>' + AmountCridit + '</td></tr>');
+                $('#tableAccountinfo').css('visibility', 'visible');
+            }
+        });
+    });
+
+    function LoadQutationOrderTable(status) {
+        $("#QutationOrderTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                //  "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "destroy": true,
+            "searching": true,
+            "autoWidth": false,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/QutationOrder/GetQutationOrderList",
+                "type": "POST",
+                data: { status: status },
+                "datatype": "json"
+            },
+            "columns": [
+                  { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
+                    {
+                        "data": "QutationDate", "type": "date ",
+                        "render": function (value) {
+                            if (value === null) return "";
+                            var pattern = /Date\(([^)]+)\)/;//date format from server side
+                            var results = pattern.exec(value);
+                            var dt = new Date(parseFloat(results[1]));
+                            return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                        }, "autoWidth": true
+                    },
+                   {
+                       "data": "DueDate", "type": "date ",
+                       "render": function (value) {
+                           if (value === null) return "";
+                           var pattern = /Date\(([^)]+)\)/;//date format from server side
+                           var results = pattern.exec(value);
+                           var dt = new Date(parseFloat(results[1]));
+                           return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                       }, "autoWidth": true
+                   },
+
+                  { "data": "RefNumber", "name": "RefNumber", "autoWidth": true },
+
+                { "data": "SubTotal", "name": "SubTotal", "autoWidth": true },
+                { "data": "Type", "name": "Type", "autoWidth": true },
+
+                {
+                    render: function (data, type, row) {
+
+                        switch (row.Status) {
+
+                            case "open":
+
+                                return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                break;
+
+                            case "pending":
+                                return "<td><span class='label label-info'>" + row.Status + "</span></td>"
+                                break;
+
+                            case "rejected":
+                                return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
+                                break;
+
+                            case "accepted":
+
+                                return "<td><span class='label label-success'>" + row.Status + "</span></td>"
+                                break;
+                        }
+                    }
+                },
+
+                {
+                    render: function (data, type, row) {
+
+
+                        switch (row.Status) {
+                            case "open":
+                                return '<button href="" class="btn btn-info btn-sm" data-id="Id" onclick="AcceptOrder(' + row.QutationID + ',' + row.SubTotal + ', \'' + row.Type + '\')"><i class="fa fa-check">proceed</i></button>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>|<a href="#" class="btn btn-success btn-sm" onclick="PendingtOrderq(' + row.QutationID + ')"><i class="fa fa-clock-o"> Pending</i></a>'
+
+                                break
+
+                            case "rejected":
+                                return '<a href="#" class="btn btn-success btn-sm" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-clock-o"> Re  Open</i></a>'
+                                break
+
+
+                            case "pending":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewDetail1(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye">View Detail</i></a>|<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="Reopen(' + row.QutationID + ')"><i class="fa fa-check"> Re  Open</i></a>|<a href="#" class="btn btn-danger btn-sm" onclick="Rejected(' + row.QutationID + ')"><i class="fa fa-trash"></i> Reject</a>'
+                                break
+
+
+                            case "accepted":
+                                return '<a href="#" class="btn btn-info btn-sm" data-id="Id" onclick="ViewInvoice(' + row.QutationID + ', \'' + row.Type + '\')"><i class="fa fa-eye"> View Invoice</i></a>'
+                                break
+                        }
+
+                    }
+                }
+            ]
+        });
+    }
+
+    //pending service and qutation
+
+
+    function GetInvoiceIdByQuatationId(Id) {
+
+        $.ajax({
+            url: "/Invoice/GetInvoiceId",
+            type: "POST",
+            cache: false,
+            data: { 'Id': Id },
+            success: function (Response) {
+
+                if (Response.Status == "Success") {
+
+                    window.location.href = "/Invoice/ViewInvoice/?Id=" + Response.Id;
+                }
+            },
+            error: function (errormessage) {
+
             }
         });
 
+    }
 
-        function PayTransaction() {
-            var TransactionModel = new Array()
 
-            $('#tableAccountinfo  #tbleAccount tr').each(function (index, ele) {
-                var currentRow = $(this).closest("tr");
-                var Trans = {};
-                Trans.TranDate = $('#txttransactionDateDebit').val();
-                Trans.Id = currentRow.find('.drpAccountCredit').html();
-                Trans.paymentTermId = currentRow.find('.paymentTerm1').html(),
-                Trans.PurchaseOrderID = $('#txtrefrencenumber').val(),
-                Trans.AmountCredit = parseFloat(currentRow.find('.AmountCredit').html()),
-                Trans.AmountDebit = parseFloat(currentRow.find('.AmountDebit').html()),
-                TransactionModel.push(Trans);
+
+    function ViewInvoice(qutationId, Type) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: qutationId
+            },
+            success: function (data) {
+                GetInvoiceIdByQuatationId(qutationId)
+                //else if (Type == "Services") {
+                //    href = "/MVCQutation/ServiceViewPrint?Id=" + qutationId;
+                //    window.open(href, '_blank');
+                //}
+            }
+        });
+    }
+
+
+
+    function ViewDetail1(QutationId, Type1) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function () {
+
+                GetPurchaseDetailByPurchaseId(QutationId, Type1)
+            }
+        });
+    }
+
+
+    function loadPayemtTermDropdown() {
+
+        var drppaymentTerm = $('#drpAccountDebit');
+
+        $.ajax({
+            url: "/MvcPaymentTerm/GetPaymentTerm",
+            type: "POST",
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppaymentTerm.append("<option value=" + item.PayementTremId + "> " + item.PaymentTerm + " </option>")
+                });
+                $("#drpAccountDebit").val($("#drpAccountDebit option:eq(1)").val());
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+    }
+
+
+    function GetPurchaseDetailByPurchaseId(QutationId, Type) {
+        if (Type == "Goods") {
+            $('#theadTable').empty();
+            $('#theadTable').append("<tr> <th> PurchaseId</th><th> PurchaseDate</th><th>PurchaseDueDate</th><th> RefrenceNumber</th><th> Puchase Subtotal </th><th>Vat %</th></tr>")
+        }
+        if (Type == "Services") {
+            $('#theadTable').empty();
+            $('#theadTable').append("<tr><th> PurchaseId</th><th> Project</th><th>Number of hour</th><th>Hourly rate</th><th>Total</th><th>Vat %</th></tr>")
+        }
+
+        var Data = JSON.stringify({
+            QutationId: QutationId,
+        })
+        $.ajax({
+            url: '/QutationOrder/GetPendingQutation',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log(response);
+
+                var html = '';
+                $.each(response.QutationDat, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.QutationID + '</td>';
+                    html += '<td>' + item.ItemName + '</td>';
+                    html += '<td>' + item.Quantity + '</td>';
+                    html += '<td>' + item.Rate + '</td>';
+                    html += '<td>' + item.Total + '</td>';
+                    html += '<td>' + item.Vat + '</td>';
+                    html += '</tr>';
+                });
+
+                $('#PurchaseTotoalAmount').text(response.purchase.TotalAmount);
+                $('#Vat21').text(response.purchase.TotalVat21);
+                $('#vat6').text(response.purchase.TotalVat6);
+                $('#PurchaseSubTotal').text(response.purchase.SubTotal);
+
+                $('#CompanyName').text(response.CompanyDta.CompanyName);
+                $('#Kvk').text(response.CompanyDta.KVK);
+                $('#BTW').text(response.CompanyDta.BTW);
+                $('#Bank').text(response.CompanyDta.BankName);
+                $('#IBN').text(response.CompanyDta.CompanyName);
+                $('#IBC').text(response.CompanyDta.BIC);
+                $('#CompanyPhone').text(response.CompanyDta.CompanyName);
+                $('#Cell').text(response.CompanyDta.CompanyCell);
+                $('#CompanyEmail').text(response.CompanyDta.CompanyEmail);
+                $('#website').text(response.CompanyDta.Website);
+                $('#add').text(response.CompanyDta.CompanyAddress);
+                $('#pcode').text(response.CompanyDta.CompanyPhone);
+                $('#companyCity').text(response.CompanyDta.CompanyCity);
+                $('#companyCountry').text(response.CompanyDta.CompanyCountry);
+                $('#tbody').html(html);
+
+                $("#logo1").empty();
+                $("#logo1").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "'/>");
+
+                $('#showpendindModelqutation').modal('show');
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+
+        // loadPendingTable(purchaseId);
+        $('#showpendindModelqutation').modal('show');
+    }
+
+    // end of service and qutation
+
+
+    function AcceptOrder(id, Amount, ServiceType) {
+        SerViceGood = "Prceed";
+        Proceeds(id, "accepted", "the qutation is  prceeds successfully")
+    }
+
+
+    function Reopen(id) {
+        updateStatus(id, "open", "the qutation is  Open successfully");
+    }
+
+    function Rejected(id) {
+        updateStatus(id, "rejected", "the Qutation is rejected successfully");
+    }
+
+    function PendingtOrderq(id) {
+        $('#Pendingq').modal('show');
+        $('#txtpurchaseIdQ').val(id);
+    }
+
+
+    function Proceeds(Id, Status, Message) {
+
+        var Data = JSON.stringify({
+            QutationId: Id,
+            Status: Status,
+            Type: SerViceGood
+        })
+        $.ajax({
+            url: '/QutationOrder/Proceeds',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                if (response.Status == "Success") {
+
+                    $('#QutationOrderTable').DataTable().ajax.reload();
+                    swal({
+                        title: 'Status!',
+                        text: Message,
+                        type: 'success'
+                    });
+                }
+                else if (response.Status == "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: "fail to process",
+                        type: 'danger'
+                    });
+                }
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+    }
+
+
+    function updateStatus(Id, Status, Message) {
+
+        $('#Extabletbody').empty();
+
+        var Data = JSON.stringify({
+            QutationId: Id,
+            Status: Status,
+            Type: SerViceGood
+        })
+        $.ajax({
+            url: '/QutationOrder/UpdateOrderStaus',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                //if (response.Status == "Exceeded") {
+                //    var html = "";
+                //    $.each(response.Message, function (key, item) {
+
+                //        html += "<tr>"
+                //        html += '<td style="text-align:center">' + item.ItemId + '</td>';
+                //        html += '<td>' + item.ItemName + '</td>';
+                //        html += '<td style="text-align:right">' + item.Quantity + '</td>';
+                //        html += '<td style="text-align:right">' + item.SaleQuantity + '</td>';
+                //        html += '<td  style="color:red;text-align:right">' + item.ExeecdQuantity + '</td>';
+                //        html += "</tr>"
+                //    });
+                //    $('#Extabletbody').append(html);
+
+                //    $('#ExceedItemModel').modal('show');
+
+                //}
+
+                if (response.Status == "Success") {
+
+
+                    $('#QutationOrderTable').DataTable().ajax.reload();
+                    swal({
+                        title: 'Status!',
+                        text: Message,
+                        type: 'success'
+                    });
+                }
+                else if (response.Status == "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: "fail to process",
+                        type: 'danger'
+                    });
+                }
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+    }
+
+
+    $('#drpstatus').change(function () {
+
+        var status = $('#drpstatus option:selected').text();
+        LoadQutationOrderTable(status);
+    });
+
+
+    $('#savePendindq').click(function () {
+        AddPendingQutation();
+    });
+
+
+    function AddPendingQutation() {
+
+        var ddddd = {
+            Purchase_QuataionId: $("#txtpurchaseIdQ").val(),
+            FromDate: $("#txtfromdateq").val(),
+            ToDate: $('#txttodateq').val(),
+            Description: $('#txtdescriptionq').val(),
+            Status: "pending"
+        };
+        $.ajax({
+            url: "/QutationOrder/AddPending",
+            type: 'POST',
+            data: ddddd,
+            success: function (rsponse) {
+                if (rsponse.Success = "Success") {
+                    $('#QutationOrderTable').DataTable().ajax.reload();
+                    $('#Pendingq').modal('hide');
+                    swal({
+                        title: 'Status!',
+                        text: rsponse.Message,
+                        type: 'success'
+                    });
+                }
+                else if (rsponse.Success = "Fail") {
+                    swal({
+                        title: 'Status!',
+                        text: rsponse.Message,
+                        type: 'danger'
+                    });
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    function ViewQutationDetail(QutationId) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+
+                GetQutationDetailByQutationId(QutationId)
+            }
+        });
+    }
+
+    function GetQutationDetailByQutationId(QutationId) {
+
+        var Data = JSON.stringify({
+            QutationId: QutationId,
+        })
+        $.ajax({
+            url: '/QutationOrder/GetPendingQutationDetail',
+            type: 'POST',
+            data: Data,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                console.log(response);
+                var html = '';
+                $.each(response.QutationList, function (key, item) {
+                    html += '<tr>';
+                    html += '<td>' + item.QutationID + '</td>';
+                    html += '<td>' + item.ItemName + '</td>';
+                    html += '<td>' + item.Quantity + '</td>';
+                    html += '<td>' + item.Rate + '</td>';
+                    html += '<td>' + item.Total + '</td>';
+                    html += '<td>' + item.Vat + '</td>';
+                    html += '</tr>';
+                });
+                $('#PurchaseTotoalAmountq').text(response.purchase.TotalAmount);
+                $('#Vat21q').text(response.purchase.TotalVat21);
+                $('#vat6q').text(response.purchase.TotalVat6);
+                $('#PurchaseSubTotalq').text(response.purchase.SubTotal);
+                $('#CompanyNameq').text(response.CompanyDta.CompanyName);
+                $('#Kvkq').text(response.CompanyDta.KVK);
+                $('#BTWq').text(response.CompanyDta.BTW);
+                $('#Bankq').text(response.CompanyDta.BankName);
+                $('#IBNq').text(response.CompanyDta.CompanyName);
+                $('#IBCq').text(response.CompanyDta.BIC);
+                $('#CompanyPhoneq').text(response.CompanyDta.CompanyName);
+                $('#Cellq').text(response.CompanyDta.CompanyCell);
+                $('#CompanyEmailq').text(response.CompanyDta.CompanyEmail);
+                $('#websiteq').text(response.CompanyDta.Website);
+                $('#addq').text(response.CompanyDta.CompanyAddress);
+                $('#pcodeq').text(response.CompanyDta.CompanyPhone);
+                $('#companyCityq').text(response.CompanyDta.CompanyCity);
+                $('#companyCountryq').text(response.CompanyDta.CompanyCountry);
+
+                $("#logo").empty();
+                $("#logo").prepend("<img alt='Images' title='Map Image' src='../images/" + response.CompanyDta.CompanyLogo + "' style='width:72%; height:146px' />");
+                $('#Qdetail').html(html);
+
+
+                $('#showpendindModelq').modal('show');
+
+
+            },
+
+            Error: function (error) {
+                alert(error)
+            },
+        });
+        $('#showpendindModel').modal('show');
+    }
+
+
+
+    $(document).ready(function () {
+        loadPayemtDropdownq();
+        loadPayemtTermDropdown();
+    });
+
+
+    function loadPayemtDropdownq() {
+        var drppayment = $('#drppaymentDebit');
+        $.ajax({
+            url: "/MVCAccounts/GetAssetAccount",
+            type: "GET",
+            data: { HeadAccountId: 0 },
+            contentType: "appplication/json",
+            success: function (response) {
+
+                $.each(response, function (i, item) {
+                    drppayment.append("<option value=" + item.HeadAccountId + "> " + item.HeadAccountTitle + " </option>")
+
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+    }
+
+
+
+
+
+    $('#drppaymentDebit').change(function () {
+        $('#drpAccountCredit').empty();
+        var id = $(this).val();
+        var data1 = JSON.stringify({
+            HeadAccountId: id,
+        })
+        var drppayment = $('#drpAccountCredit');
+
+        $.ajax({
+            url: "/MVCAccounts/GetAssetAccount",
+            type: "GET",
+            data: {
+                HeadAccountId: id,
+            },
+            contentType: "appplication/json",
+            success: function (response) {
+                $.each(response, function (i, item) {
+                    drppayment.append("<option value=" + item.AccountId + "> " + item.AccountTitle + " </option>")
+                });
+            },
+            error: function (Error) {
+                alert(Error)
+            },
+        });
+
+    });
+
+
+    $('#btnAdd').click(function () {
+
+        if ($('#drppaymentDebit option:selected').text() == $('#drpAccountCredit option:selected').text()) {
+            alert('Account name canot be same');
+            return;
+        }
+
+        if ($('#txttransactionDateDebit').val() == 0) {
+            alert('txttransactionDateDebit  canot be null');
+            return;
+        }
+
+        if ($('#AmountDebit').val() == 0 || $('#AmountDebit').val() == 0.00) {
+            alert('debit amount canot be zero');
+            return;
+        }
+
+        if ($('#AmountCredit').val() == 0 || $('#AmountCredit').val() == 0.00) {
+            alert('AmountCredit canot be zero');
+            return;
+        }
+        if ($('#DrpTrasctionType').val() == 0) {
+            alert('Select Transaction type');
+
+            return;
+        }
+
+        if ($('#drpAccountCredit').val() == 0) {
+            alert('Select Account type');
+
+            return;
+        }
+
+        var AccountTable = $('#tbleAccount');
+        var AccountName = $('#drpAccountCredit option:selected').text();
+        var TID = $('#txttransactionId').val();
+        var ref = $('#txtrefrencenumber').val();
+        var Amountdebit = $('#AmountDebit').val();
+        var AmountCridit = $('#AmountCredit').val();
+        var Tdate = $('#txttransactionDateDebit').val();
+        var drpAccountCredit = $('#drpAccountCredit option:selected').text();
+        var paymentTer = $('#drpAccountDebit option:selected').text();
+
+        if ($('#DrpTrasctionType option:selected').text().trim() == "Dr") {
+
+            $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + Amountdebit + "</td><td class='AmountCredit'>" + 0.00 + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
+            $('#btnSave').css('visibility', 'visible');
+            $('#drppaymentDebit').val(0);
+            $('#drpAccountCredit').val(0);
+            $('#DrpTrasctionType').val(0);
+        }
+        else if ($('#DrpTrasctionType option:selected').text().trim() == "Cr") {
+
+            $("#tableAccountinfo #tbleAccount").append("<tr><td>" + TID + "</td><td>" + ref + "</td><td>" + Tdate + "</td><td>" + AccountName + "</td><td>" + paymentTer + "</td><td class='AmountDebit'>" + 0.0 + "</td><td class='AmountCredit'>" + Amountdebit + "</td><td><button class='ibtnDel btn waves-effect waves-light btn-rounded btn-danger btn-sm'><i class='fa fa-window-close'></i></button></td><td class='drpAccountCredit' style='visibility:hidden'>" + $('#drpAccountCredit').val() + "</td><td class='paymentTerm1' style='visibility:hidden'>" + $('#drpAccountDebit').val() + "</td></tr>");
+            $('#btnSave').css('visibility', 'visible');
+            $('#drppaymentDebit').val(0);
+            $('#drpAccountCredit').val(0);
+            $('#DrpTrasctionType').val(0);
+            $('#tableAccountinfo').css('visibility', 'visible');
+
+        }
+
+
+        $('#tableAccountinfo').css('visibility', 'visible');
+
+    });
+
+
+    $(document).on("click", '.ibtnDel', function () {
+
+
+        $(this).closest("tr").remove();
+
+        if ($('#tableAccountinfo #tbleAccount tr').length == 0) {
+            $('#tableAccountinfo').css('visibility', 'visible');
+            $("#tableAccountinfo #tbleAccount").empty();
+            $('#tableAccountinfo').css('visibility', 'hidden');
+            $('#btnSave').css('visibility', 'hidden');
+        }
+    });
+
+    $('#btnSave').click(function () {
+        if ($('#tableAccountinfo #tbleAccount tr').length > 0) {
+            PayTransaction();
+        }
+        else {
+            swal({
+                title: 'Message!',
+                text: "select field and tray again",
+                type: 'danger'
             });
-            $.ajax({
-                url: '/QutationOrder/Trasactionpayment',
-                type: 'POST',
-                data: JSON.stringify(TransactionModel),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response == "Success") {
 
-                        $('#tableAccountinfo').css('visibility', 'visible');
-                        $("#tableAccountinfo #tbleAccount").empty();
+            $('#tableAccountinfo').css('visibility', 'hidden');
+        }
+    });
 
 
-                        swal({
-                            title: 'Message!',
-                            text: "Transaction process successfully",
-                            type: 'success'
-                        });
+    function PayTransaction() {
+        var TransactionModel = new Array()
 
-                    }
+        $('#tableAccountinfo  #tbleAccount tr').each(function (index, ele) {
+            var currentRow = $(this).closest("tr");
+            var Trans = {};
+            Trans.TranDate = $('#txttransactionDateDebit').val();
+            Trans.Id = currentRow.find('.drpAccountCredit').html();
+            Trans.paymentTermId = currentRow.find('.paymentTerm1').html(),
+            Trans.PurchaseOrderID = $('#txtrefrencenumber').val(),
+            Trans.AmountCredit = parseFloat(currentRow.find('.AmountCredit').html()),
+            Trans.AmountDebit = parseFloat(currentRow.find('.AmountDebit').html()),
+            TransactionModel.push(Trans);
+        });
+        $.ajax({
+            url: '/QutationOrder/Trasactionpayment',
+            type: 'POST',
+            data: JSON.stringify(TransactionModel),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response == "Success") {
 
-                    else if (response == "Fail") {
-                        swal({
-                            title: 'Message!',
-                            text: "Fail to  process Transaction",
-                            type: 'danger'
-                        });
-                    }
-                },
-                error: function () {
+                    $('#tableAccountinfo').css('visibility', 'visible');
+                    $("#tableAccountinfo #tbleAccount").empty();
+
+
+                    swal({
+                        title: 'Message!',
+                        text: "Transaction process successfully",
+                        type: 'success'
+                    });
+
+                }
+
+                else if (response == "Fail") {
                     swal({
                         title: 'Message!',
                         text: "Fail to  process Transaction",
                         type: 'danger'
                     });
                 }
-            });
+            },
+            error: function () {
+                swal({
+                    title: 'Message!',
+                    text: "Fail to  process Transaction",
+                    type: 'danger'
+                });
+            }
+        });
 
-        }
+    }
 
 
 
 
-    </script>
+</script>

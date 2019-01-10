@@ -294,6 +294,7 @@ namespace InvoiceDiskLast.Controllers
                     billtable.CompanyId = PurchaseModel.CompanyId;
                     billtable.UserId = Convert.ToInt32(Session["LoginUserID"]);
                     billtable.Bill_ID = PurchaseModel.PurchaseID.ToString();
+                    billtable.PurchaseId = PurchaseModel.PurchaseOrderID;
                     billtable.VenderId = PurchaseModel.VenderId;
                     billtable.RefNumber = PurchaseModel.PurchaseRefNumber;
                     billtable.BillDate = Convert.ToDateTime(PurchaseModel.PurchaseDate);

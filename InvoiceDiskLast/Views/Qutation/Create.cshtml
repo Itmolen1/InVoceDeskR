@@ -17,7 +17,7 @@
 
             @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
 
-           <p></p>
+            <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="orderdetailsitems">
@@ -283,7 +283,7 @@
             $('.VATG', $newRow).val($("#mainrow #SelectVATG").val());
             //Replace add button with remove button
             $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
-         
+
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
             $('.tbodyGood').prepend($newRow);
@@ -351,7 +351,7 @@
             $('span.error', $newRow).remove();
 
             $('.tbodyService').prepend($newRow);
-      
+
             $(".FTotalG").prop('disabled', true);
 
             $('#mainrow1 #SelectProductQutationS').val('0');
@@ -413,7 +413,7 @@
         RowSubTalSubtotal(vat, Currentrow);
         var Total = Currentrow.find(".FTotalG").val();
         var Subtotalwt = Currentrow.find('.RowTotalG').val();
-        
+
     });
 
 
@@ -463,7 +463,7 @@
     }
 
     function RowSubTalSubtotal(vat, CurrentRow) {
-       
+
         Total = 0;
         Total = CurrentRow.find('.FTotalG').val();
         if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
@@ -672,7 +672,7 @@
         else if (Id > 0) {
             var ProductId = Id;
             $.ajax({
-                url: "/MVCProduct/ProductPricebyId",
+                url: "/Common/ProductPricebyId",
                 type: "POST",
                 cache: false,
                 data: { 'ProductId': ProductId },
@@ -854,7 +854,6 @@
     }
     //remove
     $('#orderdetailsitems').on('click', '.remove', function () {
-
         $(this).parents('tr').remove();
         var currentRow = $(this).closest("tr");
         var vat = currentRow.find('.VATG').val();
@@ -865,7 +864,6 @@
     });
 
     $('#QutationServiceDetail1').on('click', '.remove', function () {
-        debugger;             
         $(this).parents('tr').remove();
         var currentRow = $(this).closest("tr");
         var vat = currentRow.find('.VATG').val();
@@ -875,30 +873,23 @@
         CalculateVateTotal();
     });
 
+
+
     $('#Submit').click(function () {
-        CreateQuation();
+        CreateQuation("/Qutation/SaveDraft", "SaveDraft")
     });
-    var arraylisr1 = [];
-    function ValidateRow(CurrentRow) {
 
-        var Isvalid = true;
-        var Produectid = 0, quantityG = 0, varrateG = 0;
-        Produectid = CurrentRow.find('.product').val();
-        quantityG = CurrentRow.find('.quantityG ').val();
-        varrateG = CurrentRow.find('.rateG ').val();
-        if (parseInt(Produectid) == 0 || Produectid == "") {
-            Isvalid = false;
-        }
-        if (parseInt(quantityG) == 0 || quantityG == "") {
-            Isvalid = false;
-        }
-        if (parseInt(varrateG) == 0 || varrateG == "") {
-            Isvalid = false;
-        }
-        return Isvalid;
-    }
 
-    function CreateQuation() {
+    $('#saveEmail').click(function () {
+        CreateQuation("/Qutation/SaveEmail", "SaveEmail")
+    });
+
+    $('#saveprintandsendtoyourselfsave').click(function () {
+        CreateQuation("/Qutation/SaveEmailPrint", "SaveEamilPrint")
+    });
+
+
+    function CreateQuation(url, btnName) {
 
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
@@ -925,7 +916,7 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-          
+
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -940,247 +931,10 @@
                     RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
                 }
                 list.push(orderItem);
-               
+
             }
         });
 
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
-        }
-
-        var empObj = {
-            Qutation_ID: $('#Number_ID').val(),
-            RefNumber: $('#ReferenceNumber').val(),
-            QutationDate: $('#FromDate').val(),
-            DueDate: $('#DueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            DiscountAmount: $('#DiscountAmount').val(),
-            //QutationID: $('#Qutation_ID').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            Total: $('#SubTotal').text(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
-        };
-
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
-        }
-
-        for (var i = 0; i < list.length; i++) {
-            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
-            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
-            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
-            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
-            
-
-        }
-        $.ajax({
-            url: "/Qutation/SaveDraft",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-
-            success: function (result) {
-
-                if (result.Status == "Success") {
-                    swal({
-                        title: 'Quotation!',
-                        text: 'Quotation save successfully!',
-                        type: 'success'
-                    },
-                         function (isconform) {
-                             window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-                         });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
-            },
-
-            error: function (errormessage) {
-
-            }
-
-        });
-    }
-
-    $('#saveEmail').click(function () {
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
-        }
-        $('#orderdetailsitems .tbodyGood tr').each(function () {
-            CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
-
-        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-            CurrentRow = $(this).closest("tr");
-
-            if (ValidateRow(CurrentRow)) {
-
-                orderItem = {
-                    ItemId: $(this).find('.product').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Rate: parseFloat($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
-
-
-
-        if (list.length == 0) {
-            $('#BTW6').text('');
-            $('#BTW21').text('');
-            $('#gtotal').text('');
-            $('#gtotal').text('');
-        }
-
-
-        var empObj = {
-            Qutation_ID: $('#Number_ID').val(),
-            RefNumber: $('#ReferenceNumber').val(),
-            QutationDate: $('#FromDate').val(),
-            DueDate: $('#DueDate').val(),
-            SubTotal: $('#SubTotal').text(),
-            DiscountAmount: $('#DiscountAmount').val(),
-            //QutationID: $('#Qutation_ID').val(),
-            TotalVat6: $('#BTW6').text(),
-            TotalVat21: $('#BTW21').text(),
-            Total: $('#SubTotal').text(),
-            TotalAmount: $('#gtotal').text(),
-            CustomerNote: $('#CustomerNote').val(),
-            ConatctId: $('#ConatctId').val(),
-            CompanyId: $('#CompanyID').val(),
-        };
-        for (var key in empObj) {
-            formData.append(key, empObj[key]);
-        }
-        for (var i = 0; i < list.length; i++) {
-            formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
-            formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
-            formData.append('QutationDetailslist1[' + i + '][Rate]', list[i].Rate)
-            formData.append('QutationDetailslist1[' + i + '][Total]', list[i].Total)
-            formData.append('QutationDetailslist1[' + i + '][Vat]', list[i].Vat)
-            formData.append('QutationDetailslist1[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-            formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
-            formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
-            formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
-        }
-        $.ajax({
-            url: "/Qutation/SaveEmail",
-            type: "POST",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-
-            success: function (result) {
-                QutationIdd = result.QutationId;
-                if (result.Status == "Success") {
-                    swal({
-                        title: 'Quotation!',
-                        text: 'Quotation save successfully!',
-                        type: 'success'
-                    },
-                         function (isconform) {
-
-                             window.location.href = "/Qutation/InvoiceByEmail?QutationId=" + result.QutationId;
-                         });
-                }
-                else if (result.Status == "Fail") {
-                    alert(result.Message);
-                }
-            },
-
-            error: function (errormessage) {
-
-            }
-
-        });
-    });
-
-    $('#saveprintandsendtoyourselfsave').click(function () {
-
-        var list = [], orderItem, CurrentRow;
-        var formData = new FormData($('#frmAccount')[0]);
-        var files = $("#uploadfile")[0];
-        if (!validateFileSize()) {
-            return true;
-        }
-
-
-        $('#orderdetailsitems .tbodyGood tr').each(function () {
-            CurrentRow = $(this).closest("tr");
-            if (ValidateRow(CurrentRow)) {
-                orderItem = {
-                    ItemId: parseInt($(this).find('.product').val()),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Type: "Goods",
-                    Rate: parseInt($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                }
-                list.push(orderItem);
-            }
-
-        });
-        $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-            CurrentRow = $(this).closest("tr");
-
-            if (ValidateRow(CurrentRow)) {
-
-                orderItem = {
-                    ItemId: $(this).find('.product').val(),
-                    Quantity: parseInt($(this).find('.quantityG').val()),
-                    Rate: parseFloat($(this).find('.rateG').val()),
-                    Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
-                    Type: "Service",
-                    ServiceDate: $(this).find('.ServiceDate').val(),
-                    Vat: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-                }
-                list.push(orderItem);
-            }
-        });
 
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -1196,7 +950,6 @@
             DueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             DiscountAmount: $('#DiscountAmount').val(),
-            //QutationID: $('#Qutation_ID').val(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             Total: $('#SubTotal').text(),
@@ -1204,11 +957,12 @@
             CustomerNote: $('#CustomerNote').val(),
             ConatctId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
-            QutationDetailslist: list
         };
+
         for (var key in empObj) {
             formData.append(key, empObj[key]);
         }
+
         for (var i = 0; i < list.length; i++) {
             formData.append('QutationDetailslist1[' + i + '][ItemId]', list[i].ItemId)
             formData.append('QutationDetailslist1[' + i + '][Quantity]', list[i].Quantity)
@@ -1219,10 +973,10 @@
             formData.append('QutationDetailslist1[' + i + '][Type]', list[i].Type)
             formData.append('QutationDetailslist1[' + i + '][ServiceDate]', list[i].ServiceDate)
             formData.append('QutationDetailslist1[' + i + '][Description]', list[i].Description)
+
         }
         $.ajax({
-            url: "/Qutation/SaveEmailPrint",
-
+            url: url, //"/Qutation/SaveDraft",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1230,27 +984,72 @@
             processData: false,
 
             success: function (result) {
-                QutationIdd = result.QutationId;
+                //url, btnName
                 if (result.Status == "Success") {
-                    QutationIdd = result.QutationId;
-                    localStorage.setItem('path', result.path);
-                    swal({
-                        title: 'Qutation!',
-                        text: 'Qutation save successfully!',
-                        type: 'success'
-                    },
-                    function (isconform) {
-                        window.location.href = "/Qutation/ViewQuation?quautionId=" + result.QutationId;
-                    });
-                }
-                else if (result.Status == "Fail") {
+
+                    Response(result, btnName)
 
                 }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
             },
+
             error: function (errormessage) {
+
             }
+
         });
-    });
+    }
+
+
+
+    function Response(response, btnName) {
+
+        if (response.Status == "Success" && btnName == "SaveDraft") {
+            swal({
+                title: 'Quatation!',
+                text: 'Quatation hasbeen created successfully!',
+                type: 'success'
+            },
+                 function (isconform) {
+                     window.location.href = "/Qutation/ViewQuation?quautionId=" + response.QutationId;
+                 });
+        }
+
+        if (response.Status == "Success" && btnName == "SaveEmail") {
+            swal({
+                title: 'Quatation!',
+                text: 'Quatation hasbeen created successfully!',
+                type: 'success'
+            },
+                         function (isconform) {
+                             window.location.href = "/Qutation/ViewQuation?quautionId=" + response.QutationId;
+                         });
+        }
+
+        if (response.Status == "Success" && btnName == "SaveEamilPrint") {
+            localStorage.setItem('path', response.path);
+            swal({
+                title: 'Quatation!',
+                text: 'Quatation hasbeen created successfully!',
+                type: 'success'
+            },
+            function (isconform) {
+                window.location.href = "/Qutation/ViewQuation?quautionId=" + response.QutationId;
+            });
+        }
+        else if (response.Status == "Fail") {
+
+        }
+
+        if (response.Status == "Fail") {
+            alert('Fail to Create Bills');
+        }
+    }
+
+
+
 
     function validateFileSize() {
         var Isvalid = true;
@@ -1277,7 +1076,26 @@
         }
     }
 
-   
+    function ValidateRow(CurrentRow) {
+
+        var Isvalid = true;
+        var Produectid = 0, quantityG = 0, varrateG = 0;
+        Produectid = CurrentRow.find('.product').val();
+        quantityG = CurrentRow.find('.quantityG ').val();
+        varrateG = CurrentRow.find('.rateG ').val();
+        if (parseInt(Produectid) == 0 || Produectid == "") {
+            Isvalid = false;
+        }
+        if (parseInt(quantityG) == 0 || quantityG == "") {
+            Isvalid = false;
+        }
+        if (parseInt(varrateG) == 0 || varrateG == "") {
+            Isvalid = false;
+        }
+        return Isvalid;
+    }
+
+
 </script>
 
 <script>
