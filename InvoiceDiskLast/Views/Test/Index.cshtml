@@ -1,136 +1,269 @@
 ﻿
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ViewInvoice";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<html>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
 
-    <title>Editable Invoice</title>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-md-12">
+        @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
 
-   
-    @*<link href="~/CustomClasses/style.css" rel="stylesheet" /> 
-    <link href="~/CustomClasses/print.css" rel="stylesheet" />   
-    <script src="~/CustomScript/example.js"></script>*@
-</head>
-<body>
-
-    @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
-
-    <hr />
-    <div id="page-wrap">
-        <textarea id="header">INVOICE</textarea>
-
-        <div id="identity">
-
-            <textarea id="address">
-                Chris Coyier
-                123 Appleseed Street
-                Appleville, WI 53719
-
-                Phone: (555) 555-5555
-            </textarea>
-            <div id="logo">
-                <div id="logoctr">
-                    <a href="javascript:;" id="change-logo" title="Change logo">Change Logo</a>
-                    <a href="javascript:;" id="save-logo" title="Save changes">Save</a>
-                    |
-                    <a href="javascript:;" id="delete-logo" title="Delete logo">Delete Logo</a>
-                    <a href="javascript:;" id="cancel-logo" title="Cancel changes">Cancel</a>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive" style="clear: both;">
+                    <table class="table table-hover" id="orderdetailsitems">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Goods
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat%
+                                </th>
+                                <th>
+                                    Sub
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbodyGood">
+                            <tr id="mainrow">
+                                <td>
+                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    <input type="text" class="quantityG form-control Input-height" id="QuantityG" style="width: 200px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="rateG form-control Input-height" id="rateG" style="width: 200px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" id="FTotal" style="width: 200px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div id="logohelp">
-                    <input id="imageloc" type="text" size="50" value="" /><br />
-                    (max width: 540px, max height: 100px)
+                <hr />
+                <div class="table-responsive" style="clear: both;">
+                    <table class="table table-hover" id="QutationServiceDetail1">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+
+                                <th>
+                                    Services
+                                </th>
+                                <th>Decription</th>
+                                <th>
+                                    hour
+                                </th>
+                                <th>
+                                    Hourly rate
+                                </th>
+                                <th>
+                                    Total
+                                </th>
+                                <th>
+                                    Vat %
+                                </th>
+                                <th>
+                                    Sub
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody class="tbodyService">
+                            <tr id="mainrow1">
+                                <td>
+                                    <input class="ServiceDate  ss  form-control Input-height" style="width: 100px;font-size:12px"/>
+                                </td>
+
+                                <td>
+                                    <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
+                                </td>
+                                <td>
+                                    <input type="text" class="Discription form-control Input-height" style="width: 200px;font-size:12px"/>
+                                </td>
+                                <td>
+                                    <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 100px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 100px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="width: 100px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                        <option>0</option>
+                                        <option>6</option>
+                                        <option>21</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <img id="image" src="images/logo.png" alt="logo" />
+                <hr />
+
+                <div class="table-responsive" style="clear: both;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>Description</th>
+                                <th class="text-right">Quantity</th>
+                                <th class="text-right">Unit Cost</th>
+                                <th class="text-right">Total</th>
+                                <th class="text-right">Total</th>
+                                <th class="text-right">Total</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>Milk Powder</td>
+                                <td class="text-right">2 </td>
+                                <td class="text-right"> $24 </td>
+                                <td class="text-right"> $48 </td>
+                                <td class="text-right">2 </td>
+                                <td class="text-right"> $24 </td>
+                                <td class="text-right"> $48 </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td>Air Conditioner</td>
+                                <td class="text-right"> 3 </td>
+                                <td class="text-right"> $500 </td>
+                                <td class="text-right"> $1500 </td>
+                                <td class="text-right">2 </td>
+                                <td class="text-right"> $24 </td>
+                                <td class="text-right"> $48 </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>RC Cars</td>
+                                <td class="text-right"> 20 </td>
+                                <td class="text-right"> %600 </td>
+                                <td class="text-right"> $12000 </td>
+                                <td class="text-right">2 </td>
+                                <td class="text-right"> $24 </td>
+                                <td class="text-right"> $48 </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">4</td>
+                                <td>Down Coat</td>
+                                <td class="text-right"> 60 </td>
+                                <td class="text-right">$5 </td>
+                                <td class="text-right"> $300 </td>
+                                <td class="text-right">2 </td>
+                                <td class="text-right"> $24 </td>
+                                <td class="text-right"> $48 </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
+            <div class="col-md-12">
+                <div class="pull-right m-t-30 text-right">
+                    <p>Sub - Total amount: $13,848</p>
+                    <p>vat (10%) : $138 </p>
+                    <hr>
+                    <h3><b>Total :</b> $13,986</h3>
+                </div>
+                <div class="clearfix"></div>
+                <hr>
+                <div class="text-right">
+                    <button class="btn btn-danger" type="submit"> Proceed to payment </button>
+                    <button id="print" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
+                </div>
+            </div>
         </div>
-
-        <div style="clear:both"></div>
-
-        <div id="customer">
-            <textarea id="customer-title">
-                Widget Corp.
-                c/o Steve Widget
-            </textarea>
-            <table id="meta">
-                <tr>
-                    <td class="meta-head">Invoice #</td>
-                    <td><textarea>000123</textarea></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">Date</td>
-                    <td><textarea id="date">December 15, 2009</textarea></td>
-                </tr>
-                <tr>
-                    <td class="meta-head">Amount Due</td>
-                    <td><div class="due">$875.00</div></td>
-                </tr>
-            </table>
-
-        </div>
-
-        <table id="items">
-
-            <tr>
-                <th>Item</th>
-                <th>Description</th>
-                <th>Unit Cost</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-
-            <tr class="item-row">
-                <td class="item-name"><div class="delete-wpr"><textarea>Web Updates</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-                <td class="description"><textarea>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</textarea></td>
-                <td><textarea class="cost">$650.00</textarea></td>
-                <td><textarea class="qty">1</textarea></td>
-                <td><span class="price">$650.00</span></td>
-            </tr>
-
-            <tr class="item-row">
-                <td class="item-name"><div class="delete-wpr"><textarea>SSL Renewals</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-                <td class="description"><textarea>Yearly renewals of SSL certificates on main domain and several subdomains</textarea></td>
-                <td><textarea class="cost">$75.00</textarea></td>
-                <td><textarea class="qty">3</textarea></td>
-                <td><span class="price">$225.00</span></td>
-            </tr>
-
-            <tr id="hiderow">
-                <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
-            </tr>
-
-            <tr>
-                <td colspan="2" class="blank"> </td>
-                <td colspan="2" class="total-line">Subtotal</td>
-                <td class="total-value"><div id="subtotal">$875.00</div></td>
-            </tr>
-            <tr>
-                <td colspan="2" class="blank"> </td>
-                <td colspan="2" class="total-line">Total</td>
-                <td class="total-value"><div id="total">$875.00</div></td>
-            </tr>
-            <tr>
-                <td colspan="2" class="blank"> </td>
-                <td colspan="2" class="total-line">Amount Paid</td>
-                <td class="total-value"><textarea id="paid">$0.00</textarea></td>
-            </tr>
-            <tr>
-                <td colspan="2" class="blank"> </td>
-                <td colspan="2" class="total-line balance">Balance Due</td>
-                <td class="total-value balance"><div class="due">$875.00</div></td>
-            </tr>
-
-        </table>
-
-        <div id="terms">
-            <h5>Terms</h5>
-            <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
-        </div>
-
     </div>
-
+</div>
+                
+<!-- ============================================================== -->
+<!-- End PAge Content -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- Right sidebar -->
+<!-- ============================================================== -->
+<!-- .right-sidebar -->
+@*<script src="~/assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/assets/node_modules/popper/popper.min.js"></script>
+    <script src="~/assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/dist/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="~/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="~/dist/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="~/assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="~/assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="~/dist/js/custom.min.js"></script>
+    <script src="~/dist/js/pages/jquery.PrintArea.js" type="text/JavaScript"></script>*@
+<script>
+    $(document).ready(function () {
+        $("#print").click(function () {
+            var mode = 'iframe'; //popup
+            var close = mode == "popup";
+            var options = {
+                mode: mode,
+                popClose: close
+            };
+            $("div.printableArea").printArea(options);
+        });
+    });
+</script>
 </body>
+
+
+<!-- Mirrored from www.wrappixel.com/demos/admin-templates/elegant-admin/horizontal/pages-invoice.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Sep 2018 18:36:10 GMT -->
 </html>

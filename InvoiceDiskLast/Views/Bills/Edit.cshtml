@@ -21,140 +21,11 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-
-
-            <input type="hidden" value="@Model.VenderId" id="VenderId" />
-            <input type="hidden" value="@CompanyDatas.CompanyID" id="CompanyId" />
-            <input type="hidden" value="@Model.BilID" id="BilID" />
-            <input type="hidden" value="@Model.Bill_ID" id="Bill_ID" />
-
-            <div class="row" style="margin-top:10px">
-                <div class="col-7 b-r">
-
-                    <img src="@Url.Content("~/Images/" + @CompanyDatas.CompanyLogo)" class="image-Size" id="targetImg" style="border:none" />
-
-                    <div class="row clientInfo">
-                        <div class="col-12 b-r HeadText">Bill</div>
-                    </div>
-                    <div class="row clientInfo" style="margin-top:10px">
-                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 b-r">
-                            @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
-                            <br />
-                            @Contectdatas.PostalCode,@Contectdatas.City
-                            <br />
-                            @Contectdatas.Land
-                        </div>
-                    </div>
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-3 b-r">
-                            Bill Date:
-                        </div>
-                        <div class="col-6 b-r">
-                            @{
-                                DateTime BillDate = new DateTime();
-                                BillDate = Convert.ToDateTime(Model.BillDate);
-                            }
-                            <input class="BillDate  Input-height form-control" autocomplete="off" value="@BillDate.ToShortDateString()" id="BillDate" />
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Bill Number:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(model => model.BilID, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "BilID", required = "required", } })
-                            @Html.ValidationMessageFor(model => model.BilID, "", new { @class = "text-danger" })
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Due Date:
-                        </div>
-                        <div class="col-6 b-r">
-                            @{
-                                DateTime BillDueDate = new DateTime();
-                                BillDueDate = Convert.ToDateTime(Model.BillDueDate);
-                            }
-                            <input class="BillDueDate  Input-height form-control" autocomplete="off" value="@BillDueDate.ToShortDateString()" id="BillDueDate" />
-
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 b-r">
-                            Reference No:
-                        </div>
-                        <div class="col-6 b-r">
-                            @Html.EditorFor(Model => Model.RefNumber, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control Input-height", id = "RefNumber", required = "required" } })
-                            @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
-
-                        </div>
-                        <div class="col-3 b-r"></div>
-                    </div>
-                </div>
-
-                <div class="col-5 b-r">
-                    <div class="row" style="margin-top:33px">
-                        <div class="col-3 b-r"></div>
-                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                        <div class="col-2 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Kvk nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Bank:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">IBAN No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BIC No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Telephone:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Cell No:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">E-mail:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Website:</div>
-                        <div class="col-7 b-r">@CompanyDatas.Website</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Address:</div>
-                        <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber<br />
-                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr />
+                      
+            <input type="hidden" value="@Model.BilID" id="BilID" />          
+              
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")         
+          
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="orderdetailsitems1">
@@ -288,8 +159,6 @@
 
             </div>
 
-
-
             <p></p>
             <div class="row">
                 <div class="col-12 b-r">
@@ -410,7 +279,7 @@
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class=" Discription form-control Input-height" />
+                                    <input type="text" class="Discription form-control Input-height" />
                                 </td>
                                 <td>
                                     @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS" } })
@@ -559,10 +428,6 @@
 
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
-
-
-
-
 
 <script type="text/javascript">
     var Currentrow, Total, vat, Price, Quantity = 0;
@@ -785,7 +650,7 @@
 
     function RowSubTalSubtotal(vat, CurrentRow) {
 
-        debugger;
+        
         var price = CurrentRow;
 
         Total = 0;
@@ -875,13 +740,7 @@
 
 
     });
-    //Services
-
-
-
-
-
-
+   
     function CalculateVateTotal() {
 
         var Totalvat211, Totalvat6 = 0;
@@ -940,10 +799,7 @@
             $('#BTW21').text(parseFloat(t).toFixed(2));
         }
     }
-
-
-
-
+        
     $(document).on('change', '.pClassG', function () {
         debugger;
         var currentRow1 = $(this).closest('tr');
@@ -1097,7 +953,6 @@
         return SubTotalGood;
     }
 
-
     function AddSubTotalService() {
         var SubTotalService = 0;
         $('#QutationServiceDetail tr').each(function () {
@@ -1131,9 +986,6 @@
         })
         return TotalService;
     }
-
-
-
 
     function AsignValueT21(NewValue, Vat, InOrOut) {
 
@@ -1210,11 +1062,9 @@
         CalculateVateTotal();
     });
 
-
     $('#Submit').click(function () {
         CreateQuation("/Bills/EditSaveDraft", "SaveDraft");
     });
-
 
     $('#saveEmail').click(function () {
         CreateQuation("/Bills/EditEmail", "SaveEmail");
@@ -1223,7 +1073,6 @@
     $('#saveprintandsendtoyourselfsave').click(function () {
         CreateQuation("/Bills/EditEmailPrint", "SaveEamilPrint");
     });
-
 
     function CreateQuation(Url, btnName) {
 
@@ -1274,8 +1123,7 @@
                 list.push(orderItem);
             }
         });
-
-
+        
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
@@ -1285,22 +1133,19 @@
 
         var empObj = {
             BilID: $('#BilID').val(),
-            Bill_ID: $('#Bill_ID').val(),
-            RefNumber: $('#RefNumber').val(),
-            BillDate: $('#BillDate').val(),
-            BillDueDate: $('.BillDueDate').val(),
+            Bill_ID: $('#Number_ID').val(),
+            RefNumber: $('#ReferenceNumber').val(),
+            BillDate: $('#FromDate').val(),
+            BillDueDate: $('#DueDate').val(),
             SubTotal: $('#SubTotal').text(),
             TotalVat6: $('#BTW6').text(),
             TotalVat21: $('#BTW21').text(),
             TotalAmount: $('#gtotal').text(),
             CustomerNote: $('#PurchaseVenderNote').val(),
-            CompanyId: $('#CompanyId').val(),
-            VenderId: $('#VenderId').val(),
+            CompanyId: $('#CompanyID').val(),
+            VenderId: $('#ConatctId').val(),
 
         };
-
-
-        debugger;
 
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1378,9 +1223,7 @@
             alert('Fail to Create Bills');
         }
     }
-
-
-
+    
     $('#txtUploadFile12').on('change', function (e) {
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
@@ -1415,8 +1258,7 @@
             });
         }
     });
-
-
+    
     $(document).ready(function () {
         $('#participantTable #DeleteFile').click(function (e) {
             var Current = $(this).closest("tr")
@@ -1462,7 +1304,6 @@
         });
     }
 
-
     function ValidateRow(CurrentRow) {
 
         var Isvalid = true;
@@ -1507,19 +1348,6 @@
         }
     }
 
-
-    //$(document).on('click', '#btnRemoveGood', function () {
-    //    var currentRow1 = $(this).closest('tr');
-    //    var row = $(this).closest('tr');
-    //    Remove(row);
-    //    $(this).closest("tr").remove();
-    //    CombineTotalAndSubtotal();
-    //    CombineTotal();
-    //    CalculateVateTotal();
-
-    //});
-
-
     $(document).ready(function () {
 
         $(document).on('click', '#btnRemoveGood', function () {
@@ -1546,9 +1374,7 @@
         });
 
     });
-
-
-
+    
     function Remove(CurrentRow) {
 
         var BillDetailId = CurrentRow.find('.BillDetailId').val();
@@ -1597,10 +1423,7 @@
         });
 
     }
-
-
-
-
+    
 </script>
 
 
@@ -1632,9 +1455,7 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
-
+    
     $(document).ready(function () {
         $('.BillDueDate').datepicker({
             changeMonth: true,
@@ -1648,7 +1469,6 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
 
     $('body').on('focus', ".ss", function () {
 
@@ -1664,7 +1484,5 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
 
 </script>

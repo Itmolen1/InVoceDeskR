@@ -82,7 +82,7 @@ namespace InvoiceDiskLast.Controllers
             BillDetailViewModel _BillDetailView = new BillDetailViewModel();
             try
             {
-                //int  Contectid = Convert.ToInt32(Session["ClientId"]);
+               
                 int CompanyID = Convert.ToInt32(Session["CompayID"]);
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -90,20 +90,28 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Bill";
+
+              
+
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 DateTime InvoiceDate = new DateTime();
                 InvoiceDate = DateTime.Now;
-                _BillDetailView.BillDate = InvoiceDate;
-                _BillDetailView.BillDueDate = InvoiceDate.AddDays(+15);
+                commonModel.FromDate = InvoiceDate;
+                commonModel.DueDate = InvoiceDate.AddDays(+15);
+                
                 MvcBillModel q = new MvcBillModel();
                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateBilNumber/").Result;
                 q = response1.Content.ReadAsAsync<MvcBillModel>().Result;
                 _BillDetailView.BillDate = InvoiceDate;
                 _BillDetailView.VenderId = id;
                 _BillDetailView.BillDueDate = InvoiceDate.AddDays(+15);
-                _BillDetailView.Bill_ID = q.Bill_ID;
+                commonModel.Number_Id = q.Bill_ID;
+               
 
+                ViewBag.commonModel = commonModel;
                 return View(_BillDetailView);
             }
             catch (Exception ex)
@@ -587,7 +595,6 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.VatDrop = GetVatList();
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("GetbillDetail/" + Id.ToString()).Result;
-
                 MvcBillModel ob = res.Content.ReadAsAsync<MvcBillModel>().Result;
 
 
@@ -625,6 +632,17 @@ namespace InvoiceDiskLast.Controllers
                 _BilldetailViewModel.UserId = ob.UserId;
                 HttpResponseMessage billdetailresponse = GlobalVeriables.WebApiClient.GetAsync("GetBillDetailTablebyId/" + Id.ToString()).Result;
                 List<BillDetailViewModel> _billDetailList = billdetailresponse.Content.ReadAsAsync<List<BillDetailViewModel>>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Bill";
+
+                commonModel.FromDate = ob.BillDate;
+                commonModel.DueDate = ob.BillDueDate;
+                commonModel.Number_Id = ob.Bill_ID;
+                commonModel.ReferenceNumber = ob.RefNumber;
+
+
+                ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.BillData = ob;

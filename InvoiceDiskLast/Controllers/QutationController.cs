@@ -104,7 +104,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     PaymentDuration = 15;
                 }
-                PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
+               
 
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Quotation";
