@@ -2,311 +2,237 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@*<script src="~/Scripts/jquery-1.10.2.js"></script>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
-
-@{
-    var Contectdatas = ViewBag.Contentdata;
-    var CompanyDatas = ViewBag.Companydata;
     var purchaseModel = ViewBag.Purchase;
 }
+<input type="hidden" value="@(Model.PurchaseOrderID !=null ? Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
+<div class="container">
+    <div class="row" style="border: 1px solid black">
+        <div class="col-md-12">
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
 
-
-
-<div class="row">
-    <div class="col-2 b-r">
-        @*two*@
-    </div>
-    <input type="hidden" value="@(Model.PurchaseOrderID !=null ? Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
-    <input type="hidden" class="Purchase_ID" value="@Model.Purchase_ID" />
-    <div class="col-8 b-r" style="border:1px solid Silver">
-        <div class="container">
-                                  
-          @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
-            
-            <div class="row">
-                <div class="col-12 b-r">
-                    <table class="table" id="orderdetailsitems1">
+            <div class="card card-body printableArea">
+                <div class="table-responsive" style="clear: both">
+                    <table class="table table-hover" id="orderdetailsitems1">
                         <thead class="thead-dark">
                             <tr>
                                 <th>
-                                    Goods
+                                    Goederen
                                 </th>
                                 <th>
                                     Quantity
                                 </th>
                                 <th>
-                                    Price
+                                    Prijs
                                 </th>
                                 <th>
-                                    Total
+                                    Totaal
                                 </th>
                                 <th>
-                                    Vat%
+                                    BTW%
                                 </th>
                                 <th>
-                                    Sub
+                                    Subtotaal
                                 </th>
                                 <th>
-                                    Action
                                 </th>
-
+                                <th>
+                                    Actie <span class="text-danger pull-right TableClose" title="Verberg deze tabel">x</span>
+                                </th>
                             </tr>
                         </thead>
-
                         <tbody class="tbodyGood">
-
                             @{
                                 if (ViewBag.PurchaseDatailsList != null)
                                 {
                                     foreach (var item in ViewBag.PurchaseDatailsList)
                                     {
-
-
                                         if (item.Type == "Goods")
                                         {
-                                            <tr>
-                                                <td>
-                                                    <select class="product form-control pClassG Input-height" style="width: 300px;font-size:12px">
-                                                        <option value="0">Select Item..</option>
-                                                        @foreach (var product in ViewBag.Good)
+                            <tr>
+                                <td>
+                                    <select class="product form-control pClassG Input-height" style="width: 250px;font-size:12px">
+                                        <option value="AddNewProductSelect">Select Item..</option>
+                                        @foreach (var product in ViewBag.Good)
                                                         {
-                                                            <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                        <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
-                                                </td>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="quantityG form-control Input-height" style="width: 100px;font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="text" class="rateG form-control Input-height" style="width: 100px;font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
+                                </td>
 
-                                                <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.PurchaseTotal" readonly="readonly" />
-                                                </td>
-                                                <td>
-                                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                                        @foreach (var item1 in ViewBag.VatDrop)
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" style="width: 120px;font-size:12px" value="@item.PurchaseTotal" readonly="readonly" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:80px;font-size:12px">
+                                        @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
+                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
-                                                    </select>
+                                    </select>
 
-                                                </td>
+                                </td>
 
-                                                <td>
-                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="button" id="btnRemoveGood" value="x" class="btn-height-Remove" style="width:50px" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="hidden" class="PurchaseOrderID" value="@item.PurchaseOrderID" />
-                                                </td>
-
-                                            </tr>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:100px" value="@item.RowSubTotal" />
+                                </td>
+                                <td>
+                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnRemoveGood" value="x" class="btn-height-Remove pull-right" style="width:50px" />
+                                </td>
+                            </tr>
                                         }
                                     }
-
-
                                 }
                             }
-
-
-
-
                             <tr id="mainrow">
                                 <td>
-                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                    <select id="SelectProductQutationG" class="product form-control pClassG Input-height" style="width: 250px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityG", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                                    <input type="text" class="quantityG form-control Input-height" id="QuantityG" autocomplete="off" style="width: 100px;font-size:12px" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateG", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                                    <input type="text" class="rateG form-control Input-height" id="RateG" autocomplete="off" style="width: 100px;font-size:12px" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotalG", @readonly = "readonly", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                    <input type="text" class="FTotalG form-control Input-height" id="FTotalG" readonly="readonly" autocomplete="off" style="width: 120px; font-size:12px" />
                                 </td>
                                 <td>
-                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                    <select id="SelectVATG" class="VATG form-control Input-height" style="width:80px;font-size:12px">
                                         <option>0</option>
                                         <option>6</option>
                                         <option>21</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:80px" />
+                                    <input type="text" readonly id="RowTotalG" class="RowTotalG  form-control Input-height" style="width:100px" />
                                 </td>
+                                <td></td>
                                 <td>
-
-                                    <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                    <input type="button" id="btnaddGoods" value="+" class="btn-height pull-right" style="width:50px" />
                                 </td>
-
                             </tr>
                         </tbody>
                     </table>
+
                 </div>
-
-            </div>
-
-            <hr />
-            <div class="row">
-                <div class="col-12 b-r">
-                    <table class="table" id="QutationServiceDetail">
+                <hr />
+                <div class="table-responsive" style="clear: both;">
+                    <table class="table table-hover" id="QutationServiceDetail">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Date</th>
-
+                                <th>Datam</th>
                                 <th>
-                                    Services
+                                    Diensten
                                 </th>
-                                <th>Decription</th>
+                                <th>Omschrijving</th>
                                 <th>
-                                    hour
-                                </th>
-                                <th>
-                                    Hourly rate
+                                    uur
                                 </th>
                                 <th>
-                                    Total
+                                    Uurprijs
                                 </th>
                                 <th>
-                                    Vat %
+                                    Totaal
                                 </th>
                                 <th>
-                                    Sub
+                                    BTW %
                                 </th>
                                 <th>
-                                    Action
+                                    Subtotaal
                                 </th>
-
+                                <th></th>
+                                <th>
+                                    Actie<span class="text-danger pull-right TableClose" title="Verberg deze tabel">x</span>
+                                </th>
                             </tr>
-
                         </thead>
-
                         <tbody class="tbodyService">
-
                             @{
                                 if (ViewBag.PurchaseDatailsList != null)
                                 {
                                     foreach (var item in ViewBag.PurchaseDatailsList)
                                     {
-
+                                        DateTime dt = new DateTime();
+                                        dt = Convert.ToDateTime(item.ServiceDate);
 
                                         if (item.Type == "Service")
                                         {
-                                            <tr>
-                                                <td>
-
-                                                    @{ 
-                                                        DateTime dt = new DateTime();
-                                                        
-                                                        dt = Convert.ToDateTime(item.ServiceDate);
-                                                    }
-
-
-                                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" />
-
-
-                                                </td>
-
-                                                <td>
-                                                    <select class="product form-control pClassG Input-height" style="width: 200px;font-size:12px">
-                                                        <option value="0">Select Item..</option>
-                                                        @foreach (var product in ViewBag.Service)
+                            <tr>
+                                <td>
+                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" style="width: 100px;font-size:12px" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <select class="product form-control pClassG Input-height" style="width: 150px;font-size:12px">
+                                        <option value="AddNewServiceSelect">Select Item..</option>
+                                        @foreach (var product in ViewBag.Service)
                                                         {
-                                                            <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                        <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class=" Discription form-control Input-height" value="@item.PurchaseDescription" autocomplete="off" />
-                                                </td>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="Discription form-control Input-height" value="@item.PurchaseDescription" autocomplete="off" style="width: 150px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="quantityG form-control Input-height" style="width: 80px;font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="text" class="rateG form-control Input-height" style="width:80px;font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" style="width: 80px;font-size:12px" value="@item.PurchaseTotal" readonly="readonly" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
 
-                                                <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="font-size:12px" value="@item.PurchaseTotal" readonly="readonly" />
-
-                                                </td>
-
-                                                <td>
-                                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-
-                                                        @foreach (var item1 in ViewBag.VatDrop)
+                                        @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
+                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
-                                                    </select>
+                                    </select>
 
-                                                </td>
-
-                                                <td>
-
-                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
-                                                </td>
-
-                                                <td>
-                                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
-                                                </td>
-                                                <td>
-                                                    <input type="hidden" class="PurchaseOrderID" value="@item.PurchaseOrderID" />
-                                                </td>
-                                            </tr>
-                                                                }
-
-
-                                                            }
-                                                        }
+                                </td>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
+                                </td>
+                            </tr>
+                                        }
+                                    }
+                                }
                             }
-
-
-
                             <tr id="mainrow1">
                                 <td>
-                                    <input class="ServiceDate ss Input-height form-control" />
-                                </td>
-
-                                <td>
-                                    <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 200px;font-size:12px"></select>
+                                    <input class="ServiceDate  ss  form-control Input-height" style="width: 100px;font-size:12px" />
                                 </td>
                                 <td>
-                                    <input type="text" class=" Discription form-control Input-height" autocomplete="off" />
+                                    <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 150px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseQuantity, new { htmlAttributes = new { @style = "font-size:12px", @type = "text", @class = "quantityG form-control Input-height", id = "QuantityS", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseQuantity, "", new { @class = "text-danger" })
+                                    <input type="text" class="Discription form-control Input-height" style="width: 150px;font-size:12px" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseItemRate, new { htmlAttributes = new { @style = "font-size:12px", @class = "rateG form-control Input-height", id = "RateS", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseItemRate, "", new { @class = "text-danger" })
+                                    <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 80px;font-size:12px" />
                                 </td>
                                 <td>
-                                    @Html.EditorFor(model => model.PurchaseTotal, new { htmlAttributes = new { @style = "font-size:12px", @class = "FTotalG form-control Input-height", id = "FTotal", @readonly = "readonly", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.PurchaseTotal, "", new { @class = "text-danger" })
+                                    <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 80px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="width: 80px;font-size:12px" readonly="readonly" />
                                 </td>
                                 <td>
                                     <select id="SelectVATS" class="VATG form-control Input-height" style="width:60px;font-size:12px">
@@ -317,8 +243,8 @@
                                 </td>
                                 <td>
                                     <input type="text" readonly class="RowTotalG form-control Input-height" id="dddd" style="width:80px" />
-
                                 </td>
+                                <td></td>
                                 <td>
                                     <input type="button" id="btnSerVice" value="+" class="btn-height" style="width:50px" />
                                 </td>
@@ -327,119 +253,31 @@
                     </table>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-6 b-r">
-                    <table class="table table-hover" id="participantTable">
-                        <tbody id="upload123">
-                            @if (ViewBag.FILE != null)
-                            {
-                                foreach (var item in ViewBag.FILE)
-                                {
-                                    <tr>
-                                        <td>
-                                            <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
-                                        </td>
-
-                                        <td>
-                                            <input type="hidden" value="@item.DirectoryPath" class="FileName" />
-                                        </td>
-
-
-                                        <td>
-                                            <button class="btn btn-danger btn-sm'  type='button" id="DeleteFile"><i class="fa fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-
-                        </tbody>
-                    </table>
+            <p></p>
+            <div class="col-md-12">
+                <div class="pull-left text-left">
+                    <textarea id="CustomerNote" class="form-control" placeholder="Customer Note" style="font-size:12px"></textarea>
+                    @Html.Partial("~/Views/Shared/PartialViews/UploadPartialFileEdit.cshtml")
                 </div>
-                <div class="col-6 b-r"></div>
-            </div>
-            <div class="row">
-                <div class="col-6 b-r">
-                    <form name='frmAccount' id='frmAccount'>
-                        <input type="file" name="file23" id="txtUploadFile12" class="makethispretty btn btn-success" style="width:500px" />
-                    </form>
+                <div class="pull-right text-right" style="padding-top:10px">
+                    <p>Sub - Total amount: $<label id="SubTotal">@purchaseModel.PurchaseSubTotal</label></p>
+                    <p>Totaal excel btw: $<label id="TotalBTW">@purchaseModel.PurchaseSubTotal</label></p>
+                    <p>BTW (0%) : $<label id="btwo">0.00</label> </p>
+                    <p>BTW (6%) : $<label id="BTW6">@purchaseModel.Vat6</label></p>
+                    <p>BTW (21%) : $<label id="BTW21">@purchaseModel.Vat21</label> </p>
+                    <hr>
+                    <h3><b>Garnd Total :</b> $<label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label></h3>
                 </div>
-                <div class="col-6 b-r"></div>
-            </div>
-
-            <hr />
-            <div class="row">
-                <div class="col-8 b-r">
-                    <div class="row">
-                        <div class="col-3 b-r">Customer Notes:</div>
-                        <div class="col-9 b-r">
-                            @Html.TextAreaFor(model => model.PurchaseVenderNote, new { htmlAttributes = new { @style = "font-size:12px", @class = "form-control", id = "CustomerNote" } })
-                            @Html.ValidationMessageFor(model => model.PurchaseVenderNote, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4 b-r">
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Sub Total:</div>
-                        <div class="col-7 b-r text-right">
-                            <label id="SubTotal">@purchaseModel.PurchaseSubTotal</label>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Totaal excel btw:</div>
-                        <div class="col-7 b-r text-right">
-                            <label id="TotalBTW">@purchaseModel.PurchaseSubTotal</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW0%:</div>
-                        <div class="col-7 b-r text-right">
-                            <label id="btwo">0.00</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW 6%:</div>
-                        <div class="col-7 b-r text-right">
-                            <label id="BTW6">@purchaseModel.Vat6</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW 21%:</div>
-                        <div class="col-7 b-r text-right">
-                            <label id="BTW21">@purchaseModel.Vat21</label>
-                        </div>
-                    </div>
-
-                    <div class="row Grand-color">
-                        <div class="col-5 b-r text-right">Grand Total:</div>
-                        <div class="col-7 b-r text-right">
-                            <span style="margin-top:1px"><b>&euro;</b></span><label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label>
-                        </div>
-                    </div>
+                <div class="clearfix"></div>
+                <hr>
+                <div class="text-right" style="padding-bottom:5px">
+                    <button id="Submit" type="submit" class="btn btn-info btn-sm"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+                    <button id="saveEmail" type="button" value="Save + email" class="btn btn-info btn-sm" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+                    <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-info btn-sm" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + Print & Send it yourself</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-2 b-r">
-        @*two*@
-    </div>
-</div>
-
-@*<label></label>*@
-
-<div class="row" style="margin-top:5px">
-    <div class="col-2 b-r"></div>
-    <div class="col-8 b-r">
-        <div class="pull-right">
-            <div class="btn-group">
-                <button id="Submit" type="button" class="btn btn-success"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
-            </div>
-            <button id="saveEmail" type="button" value="Save + email" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
-            <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-success" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + print and send and send ot yourself</button>
-        </div>
-    </div>
-    <div class="col-2 b-r"></div>
 </div>
 
 
@@ -562,9 +400,6 @@
 
             //Replace add button with remove button
             $("#btnSerVice", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
-
-
-
 
             //Remove id attribute from new clone row
 
@@ -775,8 +610,6 @@
 
     $('.VATG').change(function () {
 
-
-
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find('.VATG').val();
         RowSubTalSubtotal(vat, Currentrow);
@@ -919,7 +752,6 @@
 
     $('#mainrow1 .pClassG').change(function () {
 
-
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
@@ -951,10 +783,9 @@
             $('#CreateNewProductModalGoods').modal('show');
         }
         else if (Id == "0") {
-
             return;
         }
-        else {
+        else if (Id > 0) {            
             var productId = Id;
             $.ajax({
                 url: "/Common/ProductPricebyId",
@@ -1056,7 +887,7 @@
 
 
     $('#Submit').click(function () {
-        CreateQuation("/Purchase/SaveToDraftEdit","SaveDraft");
+        CreateQuation("/Purchase/SaveToDraftEdit", "SaveDraft");
     });
 
     function CreateQuation(Route, btnName) {
@@ -1156,7 +987,7 @@
         }
 
         $.ajax({
-            url:Route,//"/Purchase/SaveToDraftEdit",
+            url: Route,//"/Purchase/SaveToDraftEdit",
             type: "POST",
             data: formData,
             dataType: 'json',
@@ -1164,7 +995,7 @@
             processData: false,
             success: function (result) {
                 if (result.Status == "Success") {
-                    Response(result,btnName);
+                    Response(result, btnName);
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
@@ -1180,12 +1011,12 @@
 
     $('#saveprintandsendtoyourselfsave').click(function () {
         CreateQuation("/Purchase/PrintEmailEdit", "SaveEamilPrint");
-        
+
     });
 
     $('#saveEmail').click(function () {
         CreateQuation("/Purchase/saveEmailEdit", "SaveEmail");
-      
+
     });
 
 
@@ -1209,7 +1040,7 @@
                 type: 'success'
             },
                          function (isconform) {
-                             window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + response.PurchaseOrderId;
+                             window.location.href = "/Purchase/InvoicebyEmail?purchaseOrderId=" + response.PurchaseOrderId;
                          });
         }
         if (response.Status == "Success" && btnName == "SaveEamilPrint") {
@@ -1311,11 +1142,6 @@
 
     }
 
-
-
-  
-
-
     function ValidateRow(CurrentRow) {
 
         var Isvalid = true;
@@ -1335,11 +1161,7 @@
         return Isvalid;
     }
 
-
 </script>
-
-
-
 
 <script type="text/javascript">
 
@@ -1373,7 +1195,7 @@
                 success: function (result) {
 
                     if (result != "") {
-                        $('#upload123').append("<tr><td><input type='text'  class='form-control FileName' value='" + result.FileName + "' name='FileName' readonly></td><td><button class='btn btn-danger col-sm btn-sm remove' type='button'><i class='fa fa-trash'></i></button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td></tr>")
+                        $('#upload123').append("<tr><td><span class='badge badge-info FileName'><i class='icon-minus-sign'></i>" + result.FileName + "</span></td><td><button class='btn btn-danger remove' type='button'>x</button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td>")
                         var fileUpload = $("#txtUploadFile12").val('');
                     }
                 },
@@ -1383,7 +1205,6 @@
             });
         }
     });
-
 
     function validateFileSize() {
         var Isvalid = true;
@@ -1414,8 +1235,6 @@
         var Name = current.find(".FileName").val();
         DeleteFileFromFolder(Name, current);
     });
-
-
 
     $(document).ready(function () {
         $('#participantTable #DeleteFile').click(function (e) {
@@ -1463,14 +1282,6 @@
         });
     }
 
-
-
-
-
-
-
-
-
     $(document).ready(function () {
         $('#mainrow1  .ServiceDate').datepicker({
             changeMonth: true,
@@ -1485,12 +1296,6 @@
         }
     });
 
-
-
-
-
-
-
     $(document).ready(function () {
         $('.FromDate').datepicker({
             changeMonth: true,
@@ -1504,8 +1309,6 @@
             //$(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
-
-
 
     $(document).ready(function () {
         $('.DueDate').datepicker({
@@ -1522,16 +1325,6 @@
     });
 
 </script>
-
-
-
-
-
-
-
-
-
-
 <script>
 
     function RemovareDate() {
