@@ -320,12 +320,17 @@ namespace InvoiceDiskLast.Controllers
                             {
                                 responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
                             }
+
                         }
                         if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             if (Transaction(invoiceViewModel, "Add"))
                             {
                                 return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", id = InvoiceTable.InvoiceID } };
                             }
 
                         }
@@ -350,14 +355,10 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
 
-
-
-
-
-
         [HttpPost]
         public ActionResult SavePrint(InvoiceViewModel invoiceViewModel, HttpPostedFileBase filess)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
             InvoiceTable InvoiceTable;
             MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
@@ -392,22 +393,21 @@ namespace InvoiceDiskLast.Controllers
                     mvcInvoiceModel.TotalVat21 = vat21;
                 }
 
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
                 InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    invoiceViewModel.InvoiceID = InvoiceTable.InvoiceID;
+
                     if (invoiceViewModel.InvoiceDetailsTable != null)
                     {
-
                         foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
                         {
                             InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
                             InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
                             InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
                             InvoiceDetails.Description = InvoiceDetailsList.Description;
-                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
                             InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
                             InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
                             InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
@@ -418,22 +418,35 @@ namespace InvoiceDiskLast.Controllers
 
                             if (InvoiceDetails.InvoiceDetailId == 0)
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                            }
+
+                            if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                if (Transaction(invoiceViewModel, "Add"))
+                                {
+                                }
+                                else
+                                {
+                                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                                }
                             }
                         }
 
+                        if (invoiceViewModel.file23[0] != null)
+                        {
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+                        }
                     }
                 }
-
-                if (invoiceViewModel.file23[0] != null)
+                else
                 {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
                 }
-
             }
             catch (Exception ex)
             {
@@ -449,6 +462,434 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
         }
+
+
+
+        [HttpPost]
+        public ActionResult SaveEmail(InvoiceViewModel invoiceViewModel)
+        {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+            InvoiceTable InvoiceTable;
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
+            try
+            {
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
+                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
+                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
+                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
+                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
+                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
+                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
+                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
+                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
+                mvcInvoiceModel.Status = "accepted";
+
+                if (mvcInvoiceModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat6 = vat61;
+                }
+
+                if (mvcInvoiceModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat21 = vat21;
+                }
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
+                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    invoiceViewModel.InvoiceID = InvoiceTable.InvoiceID;
+
+                    if (invoiceViewModel.InvoiceDetailsTable != null)
+                    {
+
+                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                        {
+                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
+                            InvoiceDetails.Description = InvoiceDetailsList.Description;
+                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                            InvoiceDetails.Type = InvoiceDetailsList.Type;
+
+                            if (InvoiceDetails.InvoiceDetailId == 0)
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                            }
+                            else
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                            }
+                        }
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(invoiceViewModel, "Add"))
+                            {
+                                return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", id = InvoiceTable.InvoiceID } };
+                            }
+
+                        }
+                    }
+
+                }
+                if (invoiceViewModel.file23[0] != null)
+                {
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+            return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+        }
+
+
+        [HttpPost]
+        public ActionResult Edit(InvoiceViewModel invoiceViewModel)
+        {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+            InvoiceTable InvoiceTable;
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
+            try
+            {
+                //return Json("success",JsonRequestBehavior.AllowGet);
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
+                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
+                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
+                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
+                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
+                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
+                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
+                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
+                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
+                mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
+                if (mvcInvoiceModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat6 = vat61;
+                }
+
+                if (mvcInvoiceModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat21 = vat21;
+                }
+
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
+                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
+                InvoiceTable.InvoiceID = Convert.ToInt32(invoiceViewModel.InvoiceID);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    if (invoiceViewModel.InvoiceDetailsTable != null)
+                    {
+                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                        {
+                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
+                            InvoiceDetails.Description = InvoiceDetailsList.Description;
+                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                            InvoiceDetails.Type = InvoiceDetailsList.Type;
+                            InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
+
+                            if (InvoiceDetails.InvoiceDetailId != 0 && InvoiceDetails.InvoiceDetailId.ToString() != "")
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                            }
+                            else
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                            }
+                        }
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(invoiceViewModel, "remove"))
+                            {
+                                return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail" } };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+            return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+        }
+
+        [HttpPost]
+        public ActionResult SaveEmailEdit(InvoiceViewModel invoiceViewModel)
+        {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+            InvoiceTable InvoiceTable;
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
+            try
+            {
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
+                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
+                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
+                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
+                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
+                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
+                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
+                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
+                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
+                mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
+                if (mvcInvoiceModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat6 = vat61;
+                }
+
+                if (mvcInvoiceModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat21 = vat21;
+                }
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
+                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    if (invoiceViewModel.InvoiceDetailsTable != null)
+                    {
+                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                        {
+                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
+                            InvoiceDetails.Description = InvoiceDetailsList.Description;
+                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
+                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                            InvoiceDetails.Type = InvoiceDetailsList.Type;
+                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                            InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
+
+                            if (InvoiceDetails.InvoiceDetailId == 0)
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+
+                                if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                                {
+                                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                                }
+                            }
+
+                            else if (InvoiceDetails.InvoiceDetailId > 0)
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+
+                                if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                                {
+                                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                                }
+                            }
+                        }
+
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(invoiceViewModel, "remove"))
+                            {
+                                return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+
+            return new JsonResult { Data = new { Status = "Success", path = "", id = mvcInvoiceModel.InvoiceID } };
+        }
+
+
+        [HttpPost]
+        public ActionResult SavePrintEdit(InvoiceViewModel invoiceViewModel)
+        {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+            InvoiceTable InvoiceTable;
+            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
+            try
+            {
+                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
+                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
+                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
+                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
+                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
+                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
+                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
+                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
+                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
+                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
+                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
+                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
+                mvcInvoiceModel.Status = "accepted";
+                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
+
+                if (mvcInvoiceModel.TotalVat6 != null)
+                {
+                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat6 = vat61;
+                }
+
+                if (mvcInvoiceModel.TotalVat21 != null)
+                {
+                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                    mvcInvoiceModel.TotalVat21 = vat21;
+                }
+
+                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result; ;
+                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    if (invoiceViewModel.InvoiceDetailsTable != null)
+                    {
+                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                        {
+                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
+                            InvoiceDetails.Description = InvoiceDetailsList.Description;
+                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                            InvoiceDetails.Type = InvoiceDetailsList.Type;
+                            InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
+
+                            if (InvoiceDetails.InvoiceDetailId == 0)
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                                if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                                {
+                                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                                }
+                            }
+                            else if (InvoiceDetails.InvoiceDetailId > 0)
+                            {
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+
+                                if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                                {
+                                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                                }
+                            }
+                        }
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(invoiceViewModel, "remove"))
+                            {
+                                //  return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                            }
+                        }
+                    }
+                }
+
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail", path = "", id = InvoiceTable.InvoiceID } };
+                }
+
+
+                if (invoiceViewModel.file23[0] != null)
+                {
+                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
+            }
+
+            string path1 = PrintView((int)InvoiceTable.InvoiceID);
+            var root = Server.MapPath("/PDF/");
+            var pdfname = String.Format("{0}", path1);
+            var path = Path.Combine(root, pdfname);
+            path = Path.GetFullPath(path);
+
+            return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
+        }
+
+
 
         [HttpGet]
         public ActionResult Edit(int id)
@@ -516,97 +957,7 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult Edit(InvoiceViewModel invoiceViewModel)
-        {
-            HttpResponseMessage responsses = new HttpResponseMessage();
-            InvoiceTable InvoiceTable;
-            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
-            try
-            {
-                //return Json("success",JsonRequestBehavior.AllowGet);
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
-                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
-                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
-                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
-                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
-                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
-                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
-                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
-                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
-                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
-                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
-                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
-                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
-                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
-                mvcInvoiceModel.Status = "accepted";
-                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
-                if (mvcInvoiceModel.TotalVat6 != null)
-                {
-                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat6 = vat61;
-                }
 
-                if (mvcInvoiceModel.TotalVat21 != null)
-                {
-                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat21 = vat21;
-                }
-
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
-                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    if (invoiceViewModel.InvoiceDetailsTable != null)
-                    {
-
-                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
-                        {
-                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
-                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
-                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
-                            InvoiceDetails.Description = InvoiceDetailsList.Description;
-                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
-                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
-                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
-                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
-                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
-                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
-                            InvoiceDetails.Type = InvoiceDetailsList.Type;
-                            InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
-
-                            if (InvoiceDetails.InvoiceDetailId != 0 && InvoiceDetails.InvoiceDetailId.ToString() != "")
-                            {
-                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
-                            }
-                            else
-                            {
-                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
-                            }
-                        }
-                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
-                        {
-                            if (Transaction(invoiceViewModel, "remove"))
-                            {
-
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
-            }
-
-            return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
-        }
 
         [HttpGet]
         public ActionResult Print(int id)
@@ -999,108 +1350,19 @@ namespace InvoiceDiskLast.Controllers
             return View(email);
         }
 
-        [HttpPost]
-        public ActionResult SaveEmail(InvoiceViewModel invoiceViewModel)
-        {
-            InvoiceTable InvoiceTable;
-            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
-            try
-            {
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
-                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
-                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
-                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
-                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
-                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
-                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
-                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
-                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
-                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
-                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
-                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
-                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
-                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
-                mvcInvoiceModel.Status = "accepted";
-
-                if (mvcInvoiceModel.TotalVat6 != null)
-                {
-                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat6 = vat61;
-                }
-
-                if (mvcInvoiceModel.TotalVat21 != null)
-                {
-                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat21 = vat21;
-                }
-
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
-                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    if (invoiceViewModel.InvoiceDetailsTable != null)
-                    {
-
-                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
-                        {
-                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
-                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
-                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
-                            InvoiceDetails.Description = InvoiceDetailsList.Description;
-                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
-                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
-                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
-                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
-                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
-                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
-                            InvoiceDetails.Type = InvoiceDetailsList.Type;
-
-                            if (InvoiceDetails.InvoiceDetailId == 0)
-                            {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
-                            }
-                            else
-                            {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
-                            }
-                        }
-                    }
-
-                }
-                if (invoiceViewModel.file23[0] != null)
-                {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
-            }
-
-            return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
-        }
 
         [HttpPost]
         public ActionResult UploadFiles(InvoiceViewModel InvoiceViewModel)
         {
             try
             {
-
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFileBase file = files[i];
-
-
                     FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceViewModel.InvoiceID, "Invoice", InvoiceViewModel.file23, "Invoice");
                 }
-
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
             }
             catch (Exception)
@@ -1177,185 +1439,8 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult SaveEmailEdit(InvoiceViewModel invoiceViewModel)
-        {
-            InvoiceTable InvoiceTable;
-            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
-            try
-            {
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
-                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
-                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
-                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
-                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
-                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
-                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
-                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
-                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
-                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
-                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
-                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
-                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
-                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
-                mvcInvoiceModel.Status = "accepted";
-                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
-
-                if (mvcInvoiceModel.TotalVat6 != null)
-                {
-                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat6 = vat61;
-                }
-
-                if (mvcInvoiceModel.TotalVat21 != null)
-                {
-                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat21 = vat21;
-                }
-
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result;
-                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    if (invoiceViewModel.InvoiceDetailsTable != null)
-                    {
-
-                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
-                        {
-                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
-                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
-                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
-                            InvoiceDetails.Description = InvoiceDetailsList.Description;
-                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
-                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
-                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
-                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
-                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
-                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
-                            InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
-
-                            if (InvoiceDetails.InvoiceDetailId == 0)
-                            {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
-                            }
-                            else if (InvoiceDetails.InvoiceDetailId > 0)
-                            {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
-                            }
-                        }
-                        return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
-            }
-
-            return new JsonResult { Data = new { Status = "Success", path = "", id = mvcInvoiceModel.InvoiceID } };
-        }
-
-        [HttpPost]
-        public ActionResult SavePrintEdit(InvoiceViewModel invoiceViewModel)
-        {
-            InvoiceTable InvoiceTable;
-            MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
-            try
-            {
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                mvcInvoiceModel.CompanyId = invoiceViewModel.CompanyId;
-                mvcInvoiceModel.UserId = Convert.ToInt32(Session["LoginUserID"]);
-                mvcInvoiceModel.ContactId = invoiceViewModel.ContactId;
-                mvcInvoiceModel.InvoiceID = invoiceViewModel.InvoiceID;
-                mvcInvoiceModel.RefNumber = invoiceViewModel.RefNumber;
-                mvcInvoiceModel.InvoiceDate = invoiceViewModel.InvoiceDate;
-                mvcInvoiceModel.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
-                mvcInvoiceModel.SubTotal = invoiceViewModel.SubTotal;
-                mvcInvoiceModel.DiscountAmount = invoiceViewModel.DiscountAmount;
-                mvcInvoiceModel.TotalAmount = invoiceViewModel.TotalAmount;
-                mvcInvoiceModel.CustomerNote = invoiceViewModel.CustomerNote;
-                mvcInvoiceModel.TotalVat21 = invoiceViewModel.TotalVat21;
-                mvcInvoiceModel.TotalVat6 = invoiceViewModel.TotalVat6;
-                mvcInvoiceModel.Type = StatusEnum.Goods.ToString();
-                mvcInvoiceModel.Status = "accepted";
-                mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
 
 
-                if (mvcInvoiceModel.TotalVat6 != null)
-                {
-                    double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat6 = vat61;
-                }
-
-                if (mvcInvoiceModel.TotalVat21 != null)
-                {
-                    double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
-                    mvcInvoiceModel.TotalVat21 = vat21;
-                }
-
-                mvcInvoiceModel.Invoice_ID = invoiceViewModel.Invoice_ID;
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoice/" + mvcInvoiceModel.InvoiceID, mvcInvoiceModel).Result; ;
-                InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    if (invoiceViewModel.InvoiceDetailsTable != null)
-                    {
-
-                        foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
-                        {
-                            InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
-                            InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
-                            InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
-                            InvoiceDetails.Description = InvoiceDetailsList.Description;
-                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
-                            InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
-                            InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
-                            InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
-                            InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
-                            InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
-                            InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
-                            InvoiceDetails.Type = InvoiceDetailsList.Type;
-                            InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
-
-                            if (InvoiceDetails.InvoiceDetailId == 0)
-                            {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
-                            }
-                            else if (InvoiceDetails.InvoiceDetailId > 0)
-                            {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
-                            }
-                        }
-
-                    }
-                }
-
-                if (invoiceViewModel.file23[0] != null)
-                {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
-            }
-
-            string path1 = PrintView((int)InvoiceTable.InvoiceID);
-            var root = Server.MapPath("/PDF/");
-            var pdfname = String.Format("{0}", path1);
-            var path = Path.Combine(root, pdfname);
-            path = Path.GetFullPath(path);
-
-            return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
-        }
 
         [HttpPost]
         public JsonResult GetInvoiceId(int Id)

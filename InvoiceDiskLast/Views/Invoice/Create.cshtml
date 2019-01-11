@@ -1,7 +1,7 @@
 ﻿@model InvoiceDiskLast.Models.InvoiceViewModel
 @{
     ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";   
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/CustomScript/DateTimeFormate.js"></script>
 <link href="~/CustomClasses/Txt_Area.css" rel="stylesheet" />
@@ -11,8 +11,8 @@
     </div>
     <div class="col-8 b-r" style="border:1px solid Silver">
         <div class="container">
-            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")            
-          <p></p>
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
+            <p></p>
             <div class="row">
                 <div class="col-12 b-r">
                     <table class="table" id="orderdetailsitems">
@@ -852,7 +852,7 @@
     $('#orderdetailsitems').on('click', '.remove', function () {
 
         var CurrentRow = $(this).closest("tr");
-        $(this).parents('tr').remove();  
+        $(this).parents('tr').remove();
         var vat = CurrentRow.find('.VATG').val();
         RowSubTalSubtotal(vat, CurrentRow);
         CombineTotalAndSubtotal();
@@ -1017,7 +1017,6 @@
 
     $('#saveEmail').click(function () {
 
-
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
@@ -1026,8 +1025,6 @@
         }
 
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-
-
 
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
@@ -1045,7 +1042,6 @@
         });
 
         $('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
@@ -1064,8 +1060,6 @@
         });
 
 
-
-
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
@@ -1073,9 +1067,7 @@
             $('#gtotal').text('');
         }
 
-
         var empObj = {
-
             Invoice_ID: $('#Number_ID').val(),
             RefNumber: $('#ReferenceNumber').val(),
             InvoiceDate: $('#FromDate').val(),
@@ -1091,8 +1083,6 @@
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
-
-
         };
         console.log(empObj);
         for (var key in empObj) {
@@ -1115,7 +1105,6 @@
             dataType: 'json',
             contentType: false,
             processData: false,
-
             success: function (result) {
                 if (result.Status == "Success") {
                     swal({
@@ -1146,10 +1135,7 @@
         if (!validateFileSize()) {
             return true;
         }
-
-
         $('#orderdetailsitems .tbodyGood tr').each(function () {
-
             CurrentRow = $(this).closest("tr");
             if (ValidateRow(CurrentRow)) {
                 orderItem = {
