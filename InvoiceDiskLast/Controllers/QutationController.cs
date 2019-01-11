@@ -590,13 +590,13 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (MVCQutationViewModel.file23[0] != null)
                         {
-                            CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quotation", MVCQutationViewModel.file23, "Quotation");
                         }
                     }
 
                     if (MVCQutationViewModel.file23[0] != null)
                     {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(qutationTable.QutationID, "Quotation", MVCQutationViewModel.file23, "Quotation");
                     }
                 }
             }
@@ -793,7 +793,7 @@ namespace InvoiceDiskLast.Controllers
                     HttpPostedFileBase file = files[i];
 
 
-                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quatation", MVCQutationViewModel.file23, "Quotation");
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.QutationID, "Quotation", MVCQutationViewModel.file23, "Quotation");
                 }
 
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };

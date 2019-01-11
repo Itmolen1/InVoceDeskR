@@ -1,0 +1,36 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover" id="participantTable">
+            <tbody id="upload123">
+                @if (ViewBag.FILE != null)
+                {
+                    foreach (var item in ViewBag.FILE)
+                    {
+                        <tr style="width:294px !important">
+                            <td>
+                               <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank" ><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a> 
+                                
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-sm'  type='button" id="DeleteFile">x</button>                              
+                            </td>
+
+                            <td>
+                                <input type="hidden" value="@item.DirectoryPath" class="FileName" />
+                            </td>
+                           
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form name='frmAccount' id='frmAccount'>
+            <input type="file" name="file23" id="txtUploadFile12" class="makethispretty btn btn-success" style="width:294px !important;padding-bottom:10px !important"  />
+        </form>
+    </div>    
+</div>
