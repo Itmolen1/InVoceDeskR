@@ -618,8 +618,8 @@ namespace InvoiceDiskLast.Controllers
                 _BilldetailViewModel.TotalAmount = ob.TotalAmount;
                 _BilldetailViewModel.CustomerNote = ob.CustomerNote;
                 _BilldetailViewModel.Status = ob.Status;
-                _BilldetailViewModel.TotalVat21 = (int)ob.TotalVat21;
-                _BilldetailViewModel.TotalVat6 = (int)ob.TotalVat6;
+                _BilldetailViewModel.TotalVat21 = ob.TotalVat21;
+                _BilldetailViewModel.TotalVat6 = ob.TotalVat6;
                 _BilldetailViewModel.CompanyId = ob.CompanyId;
                 _BilldetailViewModel.UserId = ob.UserId;
                 HttpResponseMessage billdetailresponse = GlobalVeriables.WebApiClient.GetAsync("GetBillDetailTablebyId/" + Id.ToString()).Result;
@@ -649,6 +649,8 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+
+
         public bool AddTransaction(BillDetailViewModel invoiceViewModel)
         {
 
@@ -808,6 +810,10 @@ namespace InvoiceDiskLast.Controllers
                             if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
                             {
                                 return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
+                            }
+                            if (billDetailViewModel.file23[0] != null)
+                            {
+                                CreatDirectoryClass.UploadFileToDirectoryCommon(billviewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
                             }
                         }
                         if (Transaction(billDetailViewModel, "Add"))
