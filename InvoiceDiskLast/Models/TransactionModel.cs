@@ -11,7 +11,7 @@ namespace InvoiceDiskLast.Models
         public int FromAccountId { get; set; }
         public int ToAccountId { get; set; }
         public double TotalAmount { get; set; }
-              
+        public int AccountId { get; set; }      
         public string descrition { get; set; }
         public string TransactionType { get; set; }
         public int CompanyId { get; set; }

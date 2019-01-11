@@ -435,7 +435,6 @@ namespace InvoiceDiskLast.Controllers
         [Route("api/GetUpdateQuatationStatus/{Id:int}")]
         public IHttpActionResult GetUpdateQuatationStatus(int Id)
         {
-
             QutationTable qt = new QutationTable();
 
             try
@@ -447,7 +446,7 @@ namespace InvoiceDiskLast.Controllers
                     qt.Status = "accepted";
                     db.Entry(qt).State = EntityState.Modified;
                     db.SaveChanges();
-                    return Ok(qt);
+                    return Ok();
                 }
                 return NotFound();
             }
