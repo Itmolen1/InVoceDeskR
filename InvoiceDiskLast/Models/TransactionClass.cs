@@ -12,8 +12,7 @@ namespace InvoiceDiskLast.Models
         public static bool PerformTransaction(AccountTransictionTable _TransactionModel)
         {
             try
-            {
-              
+            {              
                  HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIAccountTransiction", _TransactionModel).Result;
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

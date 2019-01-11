@@ -74,24 +74,23 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult AddCustomer(MVCQutationViewModel model)
-        {
-            string fileName;
+        //[HttpPost]
+        //public ActionResult AddCustomer(MVCQutationViewModel model)
+        //{
+        //    string fileName;
 
-            for (int i = 0; i < Request.Files.Count; i++)
-            {
-                HttpPostedFileBase file = Request.Files[i]; //Uploaded file
-                                                            //Use the following properties to get file's name, size and MIMEType
-                int fileSize = file.ContentLength;
-                fileName = file.FileName;
-                string mimeType = file.ContentType;
-                System.IO.Stream fileContent = file.InputStream;
-                //To save file, use SaveAs method
-                file.SaveAs(Server.MapPath("~/") + fileName); //File will be saved in application root
-            }
-            return null;
-        }
+        //    for (int i = 0; i < Request.Files.Count; i++)
+        //    {
+        //        HttpPostedFileBase file = Request.Files[i]; 
+        //        int fileSize = file.ContentLength;
+        //        fileName = file.FileName;
+        //        string mimeType = file.ContentType;
+        //        System.IO.Stream fileContent = file.InputStream;              
+        //        file.SaveAs(Server.MapPath("~/") + fileName); //File will be saved in application root
+        //    }
+        //    return null;
+        //}
+
         public ActionResult Create(int id)
         {
 
@@ -147,9 +146,117 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+        public bool AddTransaction(InvoiceViewModel invoiceViewModel)
+        {
+
+            bool result = false;
+            try
+            {
+                TransactionModel model = new TransactionModel();
+                model.CompanyId = (int)invoiceViewModel.CompanyId;
+                model.AccountTitle = "Accounts receivable";
+                int AccountId = CommonController.GetAcccountId(model);
+                if (AccountId > 0)
+                {
+                    AccountTransictionTable _TransactionTable = new AccountTransictionTable();
+                    _TransactionTable.FK_AccountID = AccountId;
+                    _TransactionTable.Dr = invoiceViewModel.SubTotal;
+                    _TransactionTable.Cr = 0;
+                    _TransactionTable.TransictionNumber = Guid.NewGuid().ToString();
+                    _TransactionTable.TransictionRefrenceId = invoiceViewModel.InvoiceID.ToString();
+                    _TransactionTable.CreationTime = DateTime.Now.TimeOfDay;
+                    _TransactionTable.AddedBy = Convert.ToInt32(Session["LoginUserID"]);
+                    _TransactionTable.FK_CompanyId = invoiceViewModel.CompanyId;
+                    _TransactionTable.TransictionType = "Dr";
+                    _TransactionTable.FKPaymentTerm = null;
+                    _TransactionTable.TransictionDate = DateTime.Now;
+                    _TransactionTable.Description = "invoice Creating Time Transaction";
+
+                    if (TransactionClass.PerformTransaction(_TransactionTable))
+                    {
+                        result = true;
+                        model.AccountTitle = "Input VAT";
+                        int AccountId1 = CommonController.GetAcccountId(model);
+                        _TransactionTable.FK_AccountID = AccountId1;
+                        _TransactionTable.Dr = invoiceViewModel.TotalVat21 + invoiceViewModel.TotalVat6;
+
+                        if (TransactionClass.PerformTransaction(_TransactionTable))
+                        {
+                            result = true;
+                            model.AccountTitle = "Cash on hand";
+                            int AccountId12 = CommonController.GetAcccountId(model);
+                            _TransactionTable.FK_AccountID = AccountId12;
+                            _TransactionTable.Cr = invoiceViewModel.TotalAmount;
+                            _TransactionTable.Dr = 0;
+                            _TransactionTable.TransictionType = "Cr";
+                            if (TransactionClass.PerformTransaction(_TransactionTable))
+                            {
+                                result = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+
+        }
+
+
+        public bool Transaction(InvoiceViewModel invoiceViewModel, string TransType)
+        {
+            bool result = false;
+
+            try
+            {
+                if (TransType == "Add")
+                {
+                    if (AddTransaction(invoiceViewModel))
+                    {
+                        return result = true;
+                    }
+                    else
+                    {
+                        return result = false;
+                    }
+                }
+
+                else
+                {
+                    if (CommonController.DeleteFromTransactionTableByRefrenceId((int)invoiceViewModel.InvoiceID))
+                    {
+                        if (AddTransaction(invoiceViewModel))
+                        {
+                            return result = true;
+                        }
+                        else
+                        {
+                            return result = false;
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+                result = false;
+                throw;
+            }
+            return result;
+
+        }
+
         [HttpPost]
         public ActionResult SaveDraft(InvoiceViewModel invoiceViewModel, HttpPostedFileBase filess)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
             InvoiceTable InvoiceTable;
             MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
@@ -172,34 +279,31 @@ namespace InvoiceDiskLast.Controllers
                 mvcInvoiceModel.Status = "accepted";
                 mvcInvoiceModel.InvoiceDescription = invoiceViewModel.InvoiceDescription;
 
-
                 if (mvcInvoiceModel.TotalVat6 != null)
                 {
                     double vat61 = Math.Round((double)mvcInvoiceModel.TotalVat6, 2, MidpointRounding.AwayFromZero);
                     mvcInvoiceModel.TotalVat6 = vat61;
                 }
-
                 if (mvcInvoiceModel.TotalVat21 != null)
                 {
                     double vat21 = Math.Round((double)mvcInvoiceModel.TotalVat21, 2, MidpointRounding.AwayFromZero);
                     mvcInvoiceModel.TotalVat21 = vat21;
                 }
-
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostInvoice", mvcInvoiceModel).Result;
                 InvoiceTable = response.Content.ReadAsAsync<InvoiceTable>().Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    invoiceViewModel.InvoiceID = InvoiceTable.InvoiceID;
+
                     if (invoiceViewModel.InvoiceDetailsTable != null)
                     {
-
                         foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
                         {
                             InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
                             InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
                             InvoiceDetails.InvoiceId = InvoiceTable.InvoiceID;
                             InvoiceDetails.Description = InvoiceDetailsList.Description;
-                            //QtDetails.QutationDetailId = QDTList.QutationDetailId;
                             InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
                             InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
                             InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
@@ -210,18 +314,24 @@ namespace InvoiceDiskLast.Controllers
 
                             if (InvoiceDetails.InvoiceDetailId == 0)
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("PostinvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
                             }
+                        }
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(invoiceViewModel, "Add"))
+                            {
+                                return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                            }
+
                         }
                         if (invoiceViewModel.file23[0] != null)
                         {
-
                             CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
-
                         }
                     }
 
@@ -239,6 +349,11 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
+
+
+
+
+
 
         [HttpPost]
         public ActionResult SavePrint(InvoiceViewModel invoiceViewModel, HttpPostedFileBase filess)
@@ -355,7 +470,7 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + invoiceViewModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-                
+
                 HttpResponseMessage responseInvoiceDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceDetails/" + id.ToString()).Result;
                 List<InvoiceViewModel> InvoiceDetailsList = responseInvoiceDetailsList.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
 
@@ -404,6 +519,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult Edit(InvoiceViewModel invoiceViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
             InvoiceTable InvoiceTable;
             MVCInvoiceModel mvcInvoiceModel = new MVCInvoiceModel();
             try
@@ -466,11 +582,18 @@ namespace InvoiceDiskLast.Controllers
 
                             if (InvoiceDetails.InvoiceDetailId != 0 && InvoiceDetails.InvoiceDetailId.ToString() != "")
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("UpdateInvoiceDetails/" + InvoiceDetails.InvoiceDetailId, InvoiceDetails).Result;
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                            }
+                        }
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(invoiceViewModel, "remove"))
+                            {
+
                             }
                         }
                     }

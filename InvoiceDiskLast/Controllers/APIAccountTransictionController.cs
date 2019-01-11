@@ -79,18 +79,41 @@ namespace InvoiceDiskLast.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            //accountTransictionTable.CreationTime = null;
             try
             {
                 db.AccountTransictionTables.Add(accountTransictionTable);
                 db.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-              var exx =  ex.ToString();
+                var exx = ex.ToString();
             }
             return Ok(accountTransictionTable);
+        }
+
+
+
+
+        [Route("api/GetDeleteRecordFromTransactionbyrefId/{refenceId:int}")]
+        public IHttpActionResult GetDeleteRecordFromTransactionbyrefId(string refenceId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //accountTransictionTable.CreationTime = null;
+            try
+            {
+                db.AccountTransictionTables.Where(Ac => Ac.TransictionRefrenceId == refenceId)
+               .ToList().ForEach(Ac => db.AccountTransictionTables.Remove(Ac));
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var exx = ex.ToString();
+            }
+            return Ok();
         }
 
         // DELETE: api/APIAccountTransiction/5
@@ -122,5 +145,24 @@ namespace InvoiceDiskLast.Controllers
         {
             return db.AccountTransictionTables.Count(e => e.TransictionId == id) > 0;
         }
+
+
+
+        [Route("api/POSTransactionModel")]
+        public IHttpActionResult PostAccountId(TransactionModel _Model)
+        {
+            try
+            {
+                TransactionModel _Transaction = new TransactionModel();
+                _Transaction.Id = db.AccountTables.Where(A => A.AccountTitle.ToLower() == _Model.AccountTitle.ToLower() && A.FK_CompanyId == _Model.CompanyId).FirstOrDefault().AccountId;
+                return Ok(_Transaction);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+                throw;
+            }
+        }
+
     }
 }

@@ -82,7 +82,7 @@ namespace InvoiceDiskLast.Controllers
             BillDetailViewModel _BillDetailView = new BillDetailViewModel();
             try
             {
-               
+
                 int CompanyID = Convert.ToInt32(Session["CompayID"]);
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
@@ -93,7 +93,7 @@ namespace InvoiceDiskLast.Controllers
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Bill";
 
-              
+
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
@@ -101,7 +101,7 @@ namespace InvoiceDiskLast.Controllers
                 InvoiceDate = DateTime.Now;
                 commonModel.FromDate = InvoiceDate;
                 commonModel.DueDate = InvoiceDate.AddDays(+15);
-                
+
                 MvcBillModel q = new MvcBillModel();
                 HttpResponseMessage response1 = GlobalVeriables.WebApiClient.GetAsync("GenrateBilNumber/").Result;
                 q = response1.Content.ReadAsAsync<MvcBillModel>().Result;
@@ -109,7 +109,7 @@ namespace InvoiceDiskLast.Controllers
                 _BillDetailView.VenderId = id;
                 _BillDetailView.BillDueDate = InvoiceDate.AddDays(+15);
                 commonModel.Number_Id = q.Bill_ID;
-               
+
 
                 ViewBag.commonModel = commonModel;
                 return View(_BillDetailView);
@@ -193,21 +193,13 @@ namespace InvoiceDiskLast.Controllers
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
-
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
-
-
-
             return new JsonResult { Data = new { Status = "Success", BillId = mvcbillMoel.BilID } };
-
-
         }
-
 
         [HttpPost]
         public ActionResult EditEmailPrint(BillDetailViewModel _billDetailViewModel)
@@ -657,12 +649,118 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
+        public bool AddTransaction(BillDetailViewModel invoiceViewModel)
+        {
 
+            bool result = false;
+            try
+            {
+                TransactionModel model = new TransactionModel();
+                model.CompanyId = (int)invoiceViewModel.CompanyId;
+                model.AccountTitle = "Accounts receivable";
+                int AccountId = CommonController.GetAcccountId(model);
+                if (AccountId > 0)
+                {
+                    AccountTransictionTable _TransactionTable = new AccountTransictionTable();
+                    _TransactionTable.FK_AccountID = AccountId;
+                    _TransactionTable.Dr = invoiceViewModel.SubTotal;
+                    _TransactionTable.Cr = 0;
+                    _TransactionTable.TransictionNumber = Guid.NewGuid().ToString();
+                    _TransactionTable.TransictionRefrenceId = invoiceViewModel.BilID.ToString();
+                    _TransactionTable.CreationTime = DateTime.Now.TimeOfDay;
+                    _TransactionTable.AddedBy = Convert.ToInt32(Session["LoginUserID"]);
+                    _TransactionTable.FK_CompanyId = invoiceViewModel.CompanyId;
+                    _TransactionTable.TransictionType = "Dr";
+                    _TransactionTable.FKPaymentTerm = null;
+                    _TransactionTable.TransictionDate = DateTime.Now;
+                    _TransactionTable.Description = "invoice Creating Time Transaction";
+
+                    if (TransactionClass.PerformTransaction(_TransactionTable))
+                    {
+                        result = true;
+                        model.AccountTitle = "Input VAT";
+                        int AccountId1 = CommonController.GetAcccountId(model);
+                        _TransactionTable.FK_AccountID = AccountId1;
+                        _TransactionTable.Dr = invoiceViewModel.TotalVat21 + invoiceViewModel.TotalVat6;
+
+                        if (TransactionClass.PerformTransaction(_TransactionTable))
+                        {
+                            result = true;
+                            model.AccountTitle = "Cash on hand";
+                            int AccountId12 = CommonController.GetAcccountId(model);
+                            _TransactionTable.FK_AccountID = AccountId12;
+                            _TransactionTable.Cr = invoiceViewModel.TotalAmount;
+                            _TransactionTable.Dr = 0;
+                            _TransactionTable.TransictionType = "Cr";
+                            if (TransactionClass.PerformTransaction(_TransactionTable))
+                            {
+                                result = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+
+        }
+
+
+        public bool Transaction(BillDetailViewModel invoiceViewModel, string TransType)
+        {
+            bool result = false;
+
+            try
+            {
+                if (TransType == "Add")
+                {
+                    if (AddTransaction(invoiceViewModel))
+                    {
+                        return result = true;
+                    }
+                    else
+                    {
+                        return result = false;
+                    }
+                }
+
+                else
+                {
+                    if (CommonController.DeleteFromTransactionTableByRefrenceId((int)invoiceViewModel.BilID))
+                    {
+                        if (AddTransaction(invoiceViewModel))
+                        {
+                            return result = true;
+                        }
+                        else
+                        {
+                            return result = false;
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+                result = false;
+                throw;
+            }
+            return result;
+
+        }
 
 
         [HttpPost]
         public ActionResult SaveDraft(BillDetailViewModel billDetailViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+
             BillTable billtable = new BillTable();
             BillDetailViewModel billviewModel = new BillDetailViewModel();
             try
@@ -706,7 +804,20 @@ namespace InvoiceDiskLast.Controllers
                             billdetailtable.Vat = item.Vat;
                             billdetailtable.ServiceDate = item.ServiceDate;
                             // APIBill   
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+                            responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+                            if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
+                            }
+                        }
+                        if (Transaction(billDetailViewModel, "Add"))
+                        {
+                            return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
+                        }
+                        else
+                        {
+                            return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
+
                         }
                     }
                 }
@@ -731,7 +842,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public JsonResult GetPurchaseId(int Id)
         {
-              TempData["PurchaseOrderList"] = "true";
+            TempData["PurchaseOrderList"] = "true";
 
             try
             {

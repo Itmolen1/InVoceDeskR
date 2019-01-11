@@ -26,24 +26,22 @@ namespace InvoiceDiskLast.Controllers
             _iLog = Log.GetInstance;
         }
 
-
         [NonAction]
         public static double CalculateVat(float vat, float Total)
         {
             Double Result = 0;
             try
             {
-                 Result = Convert.ToDouble((Total / 100) * vat);
+                Result = Convert.ToDouble((Total / 100) * vat);
 
                 return Result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Result;
             }
         }
 
-        
         public ActionResult DeleteFile(string FileName)
         {
             try
@@ -66,7 +64,6 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-
 
         [HttpPost]
         public ActionResult UploadFileToPDF()
@@ -156,7 +153,6 @@ namespace InvoiceDiskLast.Controllers
             return View("~/Views/Shared/PartialViews/ViewDirectory.cshtml");
         }
 
-
         [HttpPost]
         public JsonResult ProductPricebyId(int ProductId)
         {
@@ -165,6 +161,43 @@ namespace InvoiceDiskLast.Controllers
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;
             float price = (float)productModel.SalePrice;
             return Json(price, JsonRequestBehavior.AllowGet);
+        }
+
+        public static int GetAcccountId(TransactionModel _Model)
+        {
+            try
+            {
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("POSTransactionModel/", _Model).Result;
+                TransactionModel _Transaction = response.Content.ReadAsAsync<TransactionModel>().Result;
+                return _Transaction.Id;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static bool DeleteFromTransactionTableByRefrenceId(int RefId)
+        {
+            bool Result = true;
+            try
+            {
+                HttpResponseMessage deleteresponse = GlobalVeriables.WebApiClient.GetAsync("GetDeleteRecordFromTransactionbyrefId/" + RefId).Result;
+                if (deleteresponse.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    Result= true;
+                }
+                else
+                {
+                    return Result=false;
+                }              
+            }
+            catch (Exception)
+            {
+                Result = false;
+                throw;
+            }
+            return Result;
         }
     }
 }

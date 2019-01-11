@@ -103,18 +103,137 @@ namespace InvoiceDiskLast.Controllers
 
         public bool UpdateQuatationStation(int QuatationId)
         {
+            try
+            {
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetUpdateQuatationStatus/" + QuatationId).Result;
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    return true;
+                else
+                    return false;
 
-            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetUpdateQuatationStatus/" + QuatationId).Result;
-            QutationTable qtable = response.Content.ReadAsAsync<QutationTable>().Result;
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                return true;
-            else
-                return false;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
+
+
+
+        public bool AddTransaction(MVCQutationModel quatationModel)
+        {
+            bool result = false;
+            try
+            {
+                TransactionModel model = new TransactionModel();
+                model.CompanyId = (int)quatationModel.CompanyId;
+                model.AccountTitle = "Accounts receivable";
+                int AccountId = CommonController.GetAcccountId(model);
+                if (AccountId > 0)
+                {
+                    AccountTransictionTable _TransactionTable = new AccountTransictionTable();
+                    _TransactionTable.FK_AccountID = AccountId;
+                    _TransactionTable.Dr = quatationModel.SubTotal;
+                    _TransactionTable.Cr = 0;
+                    _TransactionTable.TransictionNumber = Guid.NewGuid().ToString();
+                    _TransactionTable.TransictionRefrenceId = quatationModel.QutationID.ToString();
+                    _TransactionTable.CreationTime = DateTime.Now.TimeOfDay;
+                    _TransactionTable.AddedBy = Convert.ToInt32(Session["LoginUserID"]);
+                    _TransactionTable.FK_CompanyId = quatationModel.CompanyId;
+                    _TransactionTable.TransictionType = "Dr";
+                    _TransactionTable.FKPaymentTerm = null;
+                    _TransactionTable.TransictionDate = DateTime.Now;
+                    _TransactionTable.Description = "invoice Creating Time Transaction";
+
+                    if (TransactionClass.PerformTransaction(_TransactionTable))
+                    {
+                        result = true;
+                        model.AccountTitle = "Input VAT";
+                        int AccountId1 = CommonController.GetAcccountId(model);
+                        _TransactionTable.FK_AccountID = AccountId1;
+                        _TransactionTable.Dr = quatationModel.TotalVat21 + quatationModel.TotalVat6;
+
+                        if (TransactionClass.PerformTransaction(_TransactionTable))
+                        {
+                            result = true;
+                            model.AccountTitle = "Cash on hand";
+                            int AccountId12 = CommonController.GetAcccountId(model);
+                            _TransactionTable.FK_AccountID = AccountId12;
+                            _TransactionTable.Cr = quatationModel.TotalAmount;
+                            _TransactionTable.Dr = 0;
+                            _TransactionTable.TransictionType = "Cr";
+                            if (TransactionClass.PerformTransaction(_TransactionTable))
+                            {
+                                result = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+
+        }
+
+
+        public bool Transaction(MVCQutationModel quatationModel, string TransType)
+        {
+            bool result = false;
+
+            try
+            {
+                if (TransType == "Add")
+                {
+                    if (AddTransaction(quatationModel))
+                    {
+                        return result = true;
+                    }
+                    else
+                    {
+                        return result = false;
+                    }
+                }
+
+                else
+                {
+                    if (CommonController.DeleteFromTransactionTableByRefrenceId((int)quatationModel.QutationID))
+                    {
+                        if (AddTransaction(quatationModel))
+                        {
+                            return result = true;
+                        }
+                        else
+                        {
+                            return result = false;
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+                result = false;
+                throw;
+            }
+            return result;
+
+        }
+
+
 
         [HttpPost]
         public JsonResult Proceeds(int QutationId, string Status, string Type)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+
             MVCQutationModel QutationModel = new MVCQutationModel();
             List<MVCQutationViewModel> _QuatationDetailList = new List<MVCQutationViewModel>();
 
@@ -163,18 +282,23 @@ namespace InvoiceDiskLast.Controllers
                                 InvoiceDetails.RowSubTotal = item.RowSubTotal;
                                 InvoiceDetails.Vat = Convert.ToDouble(item.Vat);
                                 InvoiceDetails.Type = item.Type;
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostinvoiceDetails", InvoiceDetails).Result;
 
                                 if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
                                 {
                                     return new JsonResult { Data = new { Status = "Fail", Message = "Fail to Proceed" } };
                                 }
-
                             }
 
                             if (UpdateQuatationStation(QutationId))
                             {
-                                return new JsonResult { Data = new { Status = "Success", Message = "Proceed successfullly" } };
+
+                                if (Transaction(QutationModel, "Add"))
+                                {
+                                    return new JsonResult { Data = new { Status = "Success", Message = "Proceed successfullly" } };
+                                }
+
+
                             }
                         }
                     }
@@ -193,6 +317,59 @@ namespace InvoiceDiskLast.Controllers
             return new JsonResult { Data = new { Status = "Success", Message = "Proceed successfullly" } };
         }
 
+
+        [HttpPost]
+        public JsonResult GetQutationOrderList(string status)
+        {
+
+            if (status == "" || status == null)
+            {
+                status = "open";
+            }
+
+            IEnumerable<MVCQutationModel> QutationOrderList;
+            try
+            {
+                var draw = Request.Form.GetValues("draw").FirstOrDefault();
+                var start = Request.Form.GetValues("start").FirstOrDefault();
+                var length = Request.Form.GetValues("length").FirstOrDefault();
+                var sortColumn = Request.Form.GetValues("columns[" +
+                Request.Form.GetValues("order[0][column]").FirstOrDefault() + "][name]").FirstOrDefault();
+                var sortColumnDir = Request.Form.GetValues("order[0][dir]").FirstOrDefault();
+                string search = Request.Form.GetValues("search[value]")[0];
+
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+
+                int CompanyId = Convert.ToInt32(Session["CompayID"]);
+                GlobalVeriables.WebApiClient.DefaultRequestHeaders.Add("CompayID", CompanyId.ToString());
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("QutationOrderListByStatus/" + status).Result;
+                QutationOrderList = response.Content.ReadAsAsync<IEnumerable<MVCQutationModel>>().Result;
+
+                if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
+                {
+                    QutationOrderList = QutationOrderList.Where(p => p.QutationID.ToString().Contains(search)
+                  || p.RefNumber != null && p.RefNumber.ToLower().Contains(search.ToLower())
+                  || p.QutationDate != null && p.QutationDate.ToString().ToLower().Contains(search.ToLower())
+                  || p.DueDate != null && p.DueDate.ToString().ToLower().Contains(search.ToLower())
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
+                  || p.SubTotal != null && p.SubTotal.ToString().ToLower().Contains(search.ToLower())
+                  || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())).ToList();
+                }
+
+                int recordsTotal = recordsTotal = QutationOrderList.Count();
+                var data = QutationOrderList.Skip(skip).Take(pageSize).ToList();
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+                Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
+
+        }
 
 
         [HttpPost]
