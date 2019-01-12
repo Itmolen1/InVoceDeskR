@@ -38,16 +38,12 @@ namespace InvoiceDiskLast.Controllers
 
                 int companyId = Convert.ToInt32(Session["CompayID"]);
 
-
                 HttpResponseMessage respose = GlobalVeriables.WebApiClient.GetAsync("GetbillDetails/" + companyId).Result;
                 BillList = respose.Content.ReadAsAsync<List<BillDetailViewModel>>().Result;
-
-                // List<QutationIndexViewModel> quationList1 = new List<QutationIndexViewModel>();
                 if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                 {
                     if (!string.IsNullOrEmpty(search) && !string.IsNullOrWhiteSpace(search))
                     {
-
                         BillList = BillList.Where(p => p.BilID.ToString().Contains(search)
                        || p.BillDate != null && p.BillDate.ToString().ToLower().Contains(search.ToLower())
                        || p.BillDueDate != null && p.BillDueDate.ToString().ToLower().Contains(search.ToLower())
@@ -56,12 +52,9 @@ namespace InvoiceDiskLast.Controllers
                        || p.Vat != null && p.Vat.ToString().ToLower().Contains(search.ToLower())
                        || p.TotalAmount != null && p.TotalAmount.ToString().ToLower().Contains(search.ToLower())
                        || p.Status != null && p.Status.ToString().ToLower().Contains(search.ToLower())
-
                       ).ToList();
 
                     }
-
-
                 }
 
                 recordsTotal = recordsTotal = BillList.Count();
@@ -82,18 +75,13 @@ namespace InvoiceDiskLast.Controllers
             BillDetailViewModel _BillDetailView = new BillDetailViewModel();
             try
             {
-
                 int CompanyID = Convert.ToInt32(Session["CompayID"]);
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + id.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Bill";
-
-
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
@@ -109,8 +97,6 @@ namespace InvoiceDiskLast.Controllers
                 _BillDetailView.VenderId = id;
                 _BillDetailView.BillDueDate = InvoiceDate.AddDays(+15);
                 commonModel.Number_Id = q.Bill_ID;
-
-
                 ViewBag.commonModel = commonModel;
                 return View(_BillDetailView);
             }
@@ -125,6 +111,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult EditSaveDraft(BillDetailViewModel _billDetailViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+
             MvcBillModel mvcbillMoel = new MvcBillModel();
             try
             {
@@ -133,7 +121,6 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.CompanyId = _billDetailViewModel.CompanyId;
                 mvcbillMoel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcbillMoel.VenderId = _billDetailViewModel.VenderId;
-
                 mvcbillMoel.RefNumber = _billDetailViewModel.RefNumber;
                 mvcbillMoel.BillDate = _billDetailViewModel.BillDate;
                 mvcbillMoel.BillDueDate = _billDetailViewModel.BillDueDate;
@@ -168,27 +155,36 @@ namespace InvoiceDiskLast.Controllers
                         foreach (BillDetailTable bdetail in _billDetailViewModel.BillDetail)
                         {
                             BillDetailTable billdetailTable = new BillDetailTable();
-
                             billdetailTable.ItemId = Convert.ToInt32(bdetail.ItemId);
                             billdetailTable.BillID = mvcbillMoel.BilID;
                             billdetailTable.Description = bdetail.Description;
                             billdetailTable.BillDetailId = bdetail.BillDetailId;
                             billdetailTable.Quantity = bdetail.Quantity;
-
                             billdetailTable.Rate = Convert.ToDouble(bdetail.Rate);
                             billdetailTable.Total = Convert.ToDouble(bdetail.Total);
                             billdetailTable.ServiceDate = bdetail.ServiceDate;
                             billdetailTable.RowSubTotal = bdetail.RowSubTotal;
                             billdetailTable.Vat = Convert.ToDouble(bdetail.Vat);
                             billdetailTable.Type = bdetail.Type;
-
                             if (billdetailTable.BillDetailId == 0)
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailTable).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailTable).Result;
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBillDetail/" + billdetailTable.BillDetailId, billdetailTable).Result;
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBillDetail/" + billdetailTable.BillDetailId, billdetailTable).Result;
+                            }
+                        }
+
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(_billDetailViewModel, "Remove"))
+                            {
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", path = "", id = _billDetailViewModel.BilID } };
                             }
                         }
                     }
@@ -204,6 +200,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult EditEmailPrint(BillDetailViewModel _billDetailViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
             MvcBillModel mvcbillMoel = new MvcBillModel();
             try
             {
@@ -212,7 +209,6 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.CompanyId = _billDetailViewModel.CompanyId;
                 mvcbillMoel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcbillMoel.VenderId = _billDetailViewModel.VenderId;
-
                 mvcbillMoel.RefNumber = _billDetailViewModel.RefNumber;
                 mvcbillMoel.BillDate = _billDetailViewModel.BillDate;
                 mvcbillMoel.BillDueDate = _billDetailViewModel.BillDueDate;
@@ -247,13 +243,11 @@ namespace InvoiceDiskLast.Controllers
                         foreach (BillDetailTable bdetail in _billDetailViewModel.BillDetail)
                         {
                             BillDetailTable billdetailTable = new BillDetailTable();
-
                             billdetailTable.ItemId = Convert.ToInt32(bdetail.ItemId);
                             billdetailTable.BillID = mvcbillMoel.BilID;
                             billdetailTable.Description = bdetail.Description;
                             billdetailTable.BillDetailId = bdetail.BillDetailId;
                             billdetailTable.Quantity = bdetail.Quantity;
-
                             billdetailTable.Rate = Convert.ToDouble(bdetail.Rate);
                             billdetailTable.Total = Convert.ToDouble(bdetail.Total);
                             billdetailTable.ServiceDate = bdetail.ServiceDate;
@@ -263,11 +257,21 @@ namespace InvoiceDiskLast.Controllers
 
                             if (billdetailTable.BillDetailId == 0)
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailTable).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailTable).Result;
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBillDetail/" + billdetailTable.BillDetailId, billdetailTable).Result;
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBillDetail/" + billdetailTable.BillDetailId, billdetailTable).Result;
+                            }
+                        }
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(_billDetailViewModel, "Remove"))
+                            {
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", path = "", id = _billDetailViewModel.BilID } };
                             }
                         }
                     }
@@ -292,6 +296,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult EditEmail(BillDetailViewModel _billDetailViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+
             MvcBillModel mvcbillMoel = new MvcBillModel();
             try
             {
@@ -300,7 +306,6 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.CompanyId = _billDetailViewModel.CompanyId;
                 mvcbillMoel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 mvcbillMoel.VenderId = _billDetailViewModel.VenderId;
-
                 mvcbillMoel.RefNumber = _billDetailViewModel.RefNumber;
                 mvcbillMoel.BillDate = _billDetailViewModel.BillDate;
                 mvcbillMoel.BillDueDate = _billDetailViewModel.BillDueDate;
@@ -312,7 +317,6 @@ namespace InvoiceDiskLast.Controllers
                 mvcbillMoel.TotalVat21 = _billDetailViewModel.TotalVat21;
                 mvcbillMoel.Type = StatusEnum.Goods.ToString();
                 mvcbillMoel.Status = "accepted";
-
                 if (mvcbillMoel.TotalVat6 != null && mvcbillMoel.TotalVat6 != 0)
                 {
                     double vat61 = Math.Round((double)mvcbillMoel.TotalVat6, 2, MidpointRounding.AwayFromZero);
@@ -341,36 +345,40 @@ namespace InvoiceDiskLast.Controllers
                             billdetailTable.Description = bdetail.Description;
                             billdetailTable.BillDetailId = bdetail.BillDetailId;
                             billdetailTable.Quantity = bdetail.Quantity;
-
                             billdetailTable.Rate = Convert.ToDouble(bdetail.Rate);
                             billdetailTable.Total = Convert.ToDouble(bdetail.Total);
                             billdetailTable.ServiceDate = bdetail.ServiceDate;
                             billdetailTable.RowSubTotal = bdetail.RowSubTotal;
                             billdetailTable.Vat = Convert.ToDouble(bdetail.Vat);
                             billdetailTable.Type = bdetail.Type;
-
                             if (billdetailTable.BillDetailId == 0)
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailTable).Result;
+                                responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailTable).Result;
                             }
                             else
                             {
-                                HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBillDetail/" + billdetailTable.BillDetailId, billdetailTable).Result;
+                                responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBillDetail/" + billdetailTable.BillDetailId, billdetailTable).Result;
+                            }
+                        }
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(_billDetailViewModel, "Remove"))
+                            {
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", path = "", id = _billDetailViewModel.BilID } };
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
-
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
-
             return new JsonResult { Data = new { Status = "Success", BillId = mvcbillMoel.BilID } };
-
-
         }
 
 
@@ -396,7 +404,6 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage ResponseUpdate = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIBill/" + InvoiceModel.BilID, InvoiceModel).Result;
                 BillTable InvoiceTable = ResponseUpdate.Content.ReadAsAsync<BillTable>().Result;
-
                 if (ResponseUpdate.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     HttpResponseMessage responseUpdateInvoiceDetails = GlobalVeriables.WebApiClient.DeleteAsync("DeleteDetails/" + BillDetailId).Result;
@@ -419,6 +426,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult SaveEmailPrint(BillDetailViewModel billDetailViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
             BillTable billtable = new BillTable();
             BillDetailViewModel billviewModel = new BillDetailViewModel();
             try
@@ -445,6 +453,8 @@ namespace InvoiceDiskLast.Controllers
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     billviewModel.BilID = billviewmodel.BilID;
+                    billDetailViewModel.BilID = billviewmodel.BilID;
+
                     if (billDetailViewModel.BillDetail != null)
                     {
                         foreach (BillDetailTable item in billDetailViewModel.BillDetail)
@@ -461,8 +471,24 @@ namespace InvoiceDiskLast.Controllers
                             billdetailtable.Vat = item.Vat;
                             billdetailtable.ServiceDate = item.ServiceDate;
                             // APIBill   
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+                            responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+                            if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                            {
+                                return new JsonResult { Data = new { Status = "Fail" } };
+                            }
                         }
+
+                        if (responsses.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            if (Transaction(billDetailViewModel, "Add"))
+                            {
+                            }
+                            else
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", path = "", id = billDetailViewModel.BilID } };
+                            }
+                        }
+
                     }
                 }
 
@@ -589,7 +615,6 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("GetbillDetail/" + Id.ToString()).Result;
                 MvcBillModel ob = res.Content.ReadAsAsync<MvcBillModel>().Result;
 
-
                 HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ob.CompanyId + "/All").Result;
                 List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                 ViewBag.Product = productModel;
@@ -624,36 +649,28 @@ namespace InvoiceDiskLast.Controllers
                 _BilldetailViewModel.UserId = ob.UserId;
                 HttpResponseMessage billdetailresponse = GlobalVeriables.WebApiClient.GetAsync("GetBillDetailTablebyId/" + Id.ToString()).Result;
                 List<BillDetailViewModel> _billDetailList = billdetailresponse.Content.ReadAsAsync<List<BillDetailViewModel>>().Result;
-
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Bill";
-
                 commonModel.FromDate = ob.BillDate;
                 commonModel.DueDate = ob.BillDueDate;
                 commonModel.Number_Id = ob.Bill_ID;
                 commonModel.ReferenceNumber = ob.RefNumber;
-
-
                 ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.BillData = ob;
                 ViewBag.BillDetil = _billDetailList;
-
                 return View(_BilldetailViewModel);
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
 
 
         public bool AddTransaction(BillDetailViewModel invoiceViewModel)
         {
-
             bool result = false;
             try
             {
@@ -676,7 +693,6 @@ namespace InvoiceDiskLast.Controllers
                     _TransactionTable.FKPaymentTerm = null;
                     _TransactionTable.TransictionDate = DateTime.Now;
                     _TransactionTable.Description = "invoice Creating Time Transaction";
-
                     if (TransactionClass.PerformTransaction(_TransactionTable))
                     {
                         result = true;
@@ -684,7 +700,6 @@ namespace InvoiceDiskLast.Controllers
                         int AccountId1 = CommonController.GetAcccountId(model);
                         _TransactionTable.FK_AccountID = AccountId1;
                         _TransactionTable.Dr = invoiceViewModel.TotalVat21 + invoiceViewModel.TotalVat6;
-
                         if (TransactionClass.PerformTransaction(_TransactionTable))
                         {
                             result = true;
@@ -789,6 +804,8 @@ namespace InvoiceDiskLast.Controllers
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     billviewModel.BilID = billviewmodel.BilID;
+                    billDetailViewModel.BilID = billviewmodel.BilID;
+
                     if (billDetailViewModel.BillDetail != null)
                     {
                         foreach (BillDetailTable item in billDetailViewModel.BillDetail)
@@ -818,27 +835,26 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (Transaction(billDetailViewModel, "Add"))
                         {
-                            return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
-                        }
-                        else
-                        {
-                            return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
 
+                            // return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
                         }
+
+                        if (billDetailViewModel.file23[0] != null)
+                        {
+                            CreatDirectoryClass.UploadFileToDirectoryCommon(billviewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
+                        }
+
                     }
                 }
-
-                if (billDetailViewModel.file23[0] != null)
+                else
                 {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(billviewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
+                    return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
                 }
             }
             catch (Exception ex)
             {
-
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
-
             return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
         }
 
@@ -877,6 +893,8 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult SaveEmail(BillDetailViewModel billDetailViewModel)
         {
+            HttpResponseMessage responsses = new HttpResponseMessage();
+
             BillTable billtable = new BillTable();
             BillDetailViewModel billviewModel = new BillDetailViewModel();
             try
@@ -899,16 +917,15 @@ namespace InvoiceDiskLast.Controllers
                 // bill Api
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBill", billtable).Result;
                 BillTable billviewmodel = response.Content.ReadAsAsync<BillTable>().Result;
-
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     billviewModel.BilID = billviewmodel.BilID;
+                    billDetailViewModel.BilID = billviewmodel.BilID;
                     if (billDetailViewModel.BillDetail != null)
                     {
                         foreach (BillDetailTable item in billDetailViewModel.BillDetail)
                         {
                             BillDetailTable billdetailtable = new BillDetailTable();
-
                             billdetailtable.BillID = billviewmodel.BilID;
                             billdetailtable.ItemId = item.ItemId;
                             billdetailtable.Description = item.Description;
@@ -920,9 +937,27 @@ namespace InvoiceDiskLast.Controllers
                             billdetailtable.Vat = item.Vat;
                             billdetailtable.ServiceDate = item.ServiceDate;
                             // APIBill   
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+                            responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("AddBillDetail", billdetailtable).Result;
+
+                            if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
+                            }
+                        }
+
+                        if (Transaction(billDetailViewModel, "Add"))
+                        {
+
+                        }
+                        else
+                        {
+                            return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
                         }
                     }
+                }
+                else
+                {
+                    return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
                 }
 
                 if (billDetailViewModel.file23[0] != null)
@@ -998,43 +1033,23 @@ namespace InvoiceDiskLast.Controllers
                     mvcContactModel = TempData["ComtactModel"] as MVCContactModel;
                 }
 
-
-
-
-
                 email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
-
-
                 ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
-
                 "." + "Graag horen we of u hiermee akkoord gaat." +
-
                 "." + "De offerte vindt u als bijlage bij deze email." +
-
-
                 "..Met vriendelijke groet." +
-
                 mvcContactModel.ContactName + "." +
-
                 CompanyName.ToString() + "." +
-
                 contact.ToString() + "." +
-
                 companyEmail.ToString();
-
                 string strToProcess = email.EmailText;
                 string result = strToProcess.Replace(".", " \r\n");
-
                 email.EmailText = result;
-
-
                 email.invoiceId = Id;
                 email.From = "infouurtjefactuur@gmail.com";
-
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -1203,8 +1218,6 @@ namespace InvoiceDiskLast.Controllers
                 ob.BilID = id;
 
 
-
-
                 HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ob.CompanyId + "/All").Result;
                 List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
                 ViewBag.Product = productModel;
@@ -1221,10 +1234,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ob.VenderId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-
                 TempData["ComtactModel"] = contectmodel;
-
-
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + ob.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
@@ -1476,7 +1486,7 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult Edit(MvcPurchaseViewModel purchaseViewModel)
         {
-
+            HttpResponseMessage responsses = new HttpResponseMessage();
 
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
@@ -1523,11 +1533,20 @@ namespace InvoiceDiskLast.Controllers
 
                         if (purchadeDetail.PurchaseOrderDetailsId == 0)
                         {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
+                            responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
+                            if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", Message = "Fail Process" } };
+                            }
                         }
                         else
                         {
-                            HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
+                            responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIPurchaseDetail/" + purchadeDetail.PurchaseOrderDetailsId, purchadeDetail).Result;
+
+                            if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
+                            {
+                                return new JsonResult { Data = new { Status = "Fail", Message = "Fail Process" } };
+                            }
                         }
                     }
 
