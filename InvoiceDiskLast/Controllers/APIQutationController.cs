@@ -114,7 +114,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        [ResponseType(typeof(QutationTable))]
+        [ResponseType(typeof(MVCQutationViewModel))]
         public IHttpActionResult PostQutationTable([FromBody] QutationTable qutationtable)
         {
             using (DBEntities entities = new DBEntities())
@@ -133,6 +133,27 @@ namespace InvoiceDiskLast.Controllers
 
             }
         }
+
+
+        //[ResponseType(typeof(QutationTable))]
+        //public IHttpActionResult PostQutationTable([FromBody] QutationTable qutationtable)
+        //{
+        //    using (DBEntities entities = new DBEntities())
+        //    {
+        //        try
+        //        {
+        //            qutationtable = entities.QutationTables.Add(qutationtable);
+        //            entities.SaveChanges();
+
+        //            return Ok(qutationtable);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest();
+        //        }
+
+        //    }
+        //}
 
 
         [ResponseType(typeof(QutationTable))]
