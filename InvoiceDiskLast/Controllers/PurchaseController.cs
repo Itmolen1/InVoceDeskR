@@ -1388,9 +1388,14 @@ namespace InvoiceDiskLast.Controllers
 
 
                     FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(_MvcPurchaseViewModel.PurchaseOrderID, "Purchase", _MvcPurchaseViewModel.file23,"Purchase");
+
+                    if(FileName == "FileNotallowed")
+                    {
+                        return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
+                    }                                 
                 }
 
-                return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
+                return new JsonResult { Data = new { FilePath = FileName, FileName = FileName, } };
             }
             catch (Exception)
             {

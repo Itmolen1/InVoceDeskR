@@ -15,6 +15,9 @@ namespace InvoiceDiskLast.Models
         
         public static string CreateDirecotyFolder(int? refrenceId, string Name,string Discription)
         {
+           // /DirectoryFolder/305Purchase/
+
+               Result = "";
             try
             {
                 if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("/DirectoryFolder/")))
@@ -26,7 +29,7 @@ namespace InvoiceDiskLast.Models
                 var cLIENTfOLDER = HttpContext.Current.Server.MapPath("/DirectoryFolder/");
                 var FOLDERp = refrenceId + Name;
                 string d = HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp);
-
+                Result = "/DirectoryFolder/" + FOLDERp+"/";
                 if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp)))
                 {
                     System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/DirectoryFolder/" + FOLDERp));
@@ -191,7 +194,7 @@ namespace InvoiceDiskLast.Models
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;
@@ -306,27 +309,43 @@ namespace InvoiceDiskLast.Models
             try
             {
                 var allowedExtensions = new string[] { ".doc", ".docx", ".pdf", ".jpg", ".png", ".JPEG", ".JFIF", ".PNG", ".txt" };
+
+               
                 string FilePath = CreatDirectoryClass.CreateDirecotyFolder(Id, FileName, Description);
 
-                string fap = HttpContext.Current.Server.MapPath(FilePath);
-
+              //  string fap = HttpContext.Current.Server.MapPath(FilePath);
+                string FileNameSetting;
                 for (int i = 0; i < file.Count(); i++)
                 {
                     HttpPostedFileBase f = file[i];
                     FileInfo fi = new FileInfo(f.FileName);
                     string ext = fi.Extension;
+                  
                     if (allowedExtensions.Contains(ext))
                     {
                         string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
                         string FileName1 = f.FileName.Replace(ext, "");
-                        string FileNameSetting = FileName1 + dateTime + ext;
-                        f.SaveAs(fap + FileNameSetting);
+                        if (FileName1.Length > 10)
+                        {
+                            string NameReserve = FileName1.Substring(0, 10);
+                            FileNameSetting = NameReserve + dateTime + ext;
+                        }
+                        else
+                        {
+                            FileNameSetting = FileName1 + dateTime + ext;
+                        }
+                        f.SaveAs(HttpContext.Current.Server.MapPath(FilePath) + FileNameSetting);
+                       // f.SaveAs(FileNameSetting+ fap);
                         FilePath12 = FileNameSetting;
+                    }
+                    else
+                    {
+                       return FilePath12 = "FileNotallowed";
                     }
                 }
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;

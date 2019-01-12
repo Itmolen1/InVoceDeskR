@@ -146,11 +146,17 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + QutationModel.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-
-
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIQutationDetails/" + quautionId.ToString()).Result;
                 List<MVCQutationViewModel> QutationModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MVCQutationViewModel>>().Result;
 
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Quotation";
+                commonModel.FromDate = QutationModel.QutationDate;
+                commonModel.DueDate = QutationModel.DueDate;
+                commonModel.ReferenceNumber = QutationModel.RefNumber;
+                commonModel.Number_Id = QutationModel.Qutation_ID;
+
+                ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.QutationDat = QutationModel;
