@@ -1,4 +1,5 @@
-﻿using InvoiceDiskLast.Models;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -96,19 +97,19 @@ namespace InvoiceDiskLast.Controllers
                 DateTime qutatioDate = new DateTime();
                 qutatioDate = DateTime.Now;
                 int PaymentDuration;
-                if (contectmodel.PaymentTerm.ToString() !=  "" && contectmodel.PaymentTerm.ToString() != null)
+                if (contectmodel.PaymentTerm.ToString() != "" && contectmodel.PaymentTerm.ToString() != null)
                 {
-                     PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
+                    PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
                 }
                 else
                 {
                     PaymentDuration = 15;
                 }
-               
+
 
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Quotation";
-                
+
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 commonModel.FromDate = qutatioDate;
@@ -120,7 +121,7 @@ namespace InvoiceDiskLast.Controllers
                 commonModel.Number_Id = q.Qutation_ID;
 
                 ViewBag.commonModel = commonModel;
-                
+
                 return View(quutionviewModel);
             }
             catch (Exception)
@@ -427,7 +428,27 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-      
+
+
+
+        public ActionResult ExportCustomers()
+        {
+            HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + 53.ToString()).Result;
+            MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/CrystalReport"), "Example.rpt"));
+            rd.SetDataSource(companyModel);
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            return File(stream, "application/pdf", "CustomerList.pdf");
+        }
+
+
         [HttpPost]
         public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -614,7 +635,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
         }
-        
+
         [HttpGet]
         public ActionResult EditQutation(int QutationId)
         {
@@ -761,7 +782,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-        
+
         [HttpPost]
         public ActionResult UploadFileToPDF()
         {
@@ -785,7 +806,7 @@ namespace InvoiceDiskLast.Controllers
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         public ActionResult UploadFiles(MVCQutationViewModel MVCQutationViewModel)
         {
