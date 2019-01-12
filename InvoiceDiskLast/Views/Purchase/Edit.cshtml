@@ -260,21 +260,20 @@
                     @Html.Partial("~/Views/Shared/PartialViews/UploadPartialFileEdit.cshtml")
                 </div>
                 <div class="pull-right text-right" style="padding-top:10px">
-                    <p>Sub - Total amount: $<label id="SubTotal">@purchaseModel.PurchaseSubTotal</label></p>
-                    <p>Totaal excel btw: $<label id="TotalBTW">@purchaseModel.PurchaseSubTotal</label></p>
-                    <p>BTW (0%) : $<label id="btwo">0.00</label> </p>
-                    <p>BTW (6%) : $<label id="BTW6">@purchaseModel.Vat6</label></p>
-                    <p>BTW (21%) : $<label id="BTW21">@purchaseModel.Vat21</label> </p>
+                    <p>Sub - Total amount: €<label id="SubTotal">@purchaseModel.PurchaseSubTotal</label></p>
+                    <p>Totaal excel btw: €<label id="TotalBTW">@purchaseModel.PurchaseSubTotal</label></p>
+                    <p>BTW (0%) : €<label id="btwo">0.00</label> </p>
+                    <p>BTW (6%) : €<label id="BTW6">@purchaseModel.Vat6</label></p>
+                    <p>BTW (21%) : €<label id="BTW21">@purchaseModel.Vat21</label> </p>
                     <hr>
-                    <h3><b>Garnd Total :</b> $<label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label></h3>
+                    <h3><b>Garnd Total :</b> €<label id="gtotal">@purchaseModel.PurchaseTotoalAmount</label></h3>
                 </div>
                 <div class="clearfix"></div>
                 <hr>
-                <div class="text-right" style="padding-bottom:5px">
-                    <button id="Submit" type="submit" class="btn btn-info btn-sm"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
-                    <button id="saveEmail" type="button" value="Save + email" class="btn btn-info btn-sm" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
-                    <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-info btn-sm" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + Print & Send it yourself</button>
-                </div>
+             <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px" ><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+             <button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+             <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>
+                
             </div>
         </div>
     </div>
@@ -349,11 +348,6 @@
             $('#mainrow #SelectVATG').val(0);
         }
     });
-
-
-
-    //Services
-
 
     $('#btnSerVice').click(function () {
 
@@ -485,8 +479,6 @@
         });
     }
 
-
-
     $('.quantityG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -503,8 +495,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
-
 
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
 
@@ -539,7 +529,6 @@
         CalculateVateTotal();
     });
 
-
     $(document).on("keyup", "tbody .rateG", function () {
 
         var Currentrow = $(this).closest("tr");
@@ -552,7 +541,6 @@
         CalculateVateTotal();
     });
 
-
     $(document).on("keyup", "tbody .quantityG", function () {
         var Currentrow = $(this).closest("tr");
         var vat = Currentrow.find(".VATG").val();
@@ -563,7 +551,6 @@
         CombineTotal();
         CalculateVateTotal();
     });
-
 
     function calculateTotalGoods(currentRow) {
 
@@ -672,7 +659,6 @@
 
     });
 
-
     function CalculateVateTotal() {
 
         var Totalvat211, Totalvat6 = 0;
@@ -741,7 +727,6 @@
         });
     })
 
-
     $('#mainrow .pClassG').change(function () {
 
         var currentRow = $(this).closest('tr');
@@ -749,14 +734,12 @@
         GetProductPriceByProductId(value, currentRow);
     });
 
-
     $('#mainrow1 .pClassG').change(function () {
 
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
         GetProductPriceByProductId(value, currentRow);
     });
-
 
     function GetProductPriceByProductId(Id, CurrentRow) {
 
@@ -851,7 +834,6 @@
         return SubTotalGood;
     }
 
-
     function AddSubTotalService() {
         var SubTotalService = 0;
         $('#QutationServiceDetail tr').each(function () {
@@ -884,7 +866,6 @@
         })
         return TotalService;
     }
-
 
     $('#Submit').click(function () {
         CreateQuation("/Purchase/SaveToDraftEdit", "SaveDraft");
@@ -1019,7 +1000,6 @@
 
     });
 
-
     function Response(response, btnName) {
 
         if (response.Status == "Success" && btnName == "SaveDraft") {
@@ -1062,7 +1042,6 @@
             alert('Fail to Create Bills');
         }
     }
-
 
     var currentRow = "";
 
@@ -1166,9 +1145,7 @@
 <script type="text/javascript">
 
     $('#txtUploadFile12').on('change', function (e) {
-
-
-
+    
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
         var formData = new FormData($('#frmAccount')[0]);
@@ -1193,6 +1170,19 @@
                 data: formData,
                 async: false,
                 success: function (result) {
+
+                    if (result.FileName == "FileNotallowed")
+                    {
+                        $.toast({
+                            heading: 'Failed to upload',
+                            text: 'File Not Allowed',
+                            icon: 'info',
+                            loader: true,        // Change it to false to disable loader
+                            loaderBg: '#FF0000'  // To change the background
+                        });
+                    }
+                    
+
 
                     if (result != "") {
                         $('#upload123').append("<tr><td><span class='badge badge-info FileName'><i class='icon-minus-sign'></i>" + result.FileName + "</span></td><td><button class='btn btn-danger remove' type='button'>x</button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td>")

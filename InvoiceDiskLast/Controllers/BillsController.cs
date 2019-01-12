@@ -818,7 +818,7 @@ namespace InvoiceDiskLast.Controllers
                         }
                         if (Transaction(billDetailViewModel, "Add"))
                         {
-                            return new JsonResult { Data = new { Status = "Success", BillId = billviewModel.BilID } };
+                            
                         }
                         else
                         {
@@ -826,12 +826,7 @@ namespace InvoiceDiskLast.Controllers
 
                         }
                     }
-                }
-
-                if (billDetailViewModel.file23[0] != null)
-                {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(billviewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
-                }
+                }            
             }
             catch (Exception ex)
             {

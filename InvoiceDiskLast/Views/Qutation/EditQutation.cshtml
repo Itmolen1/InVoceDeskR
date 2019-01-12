@@ -271,21 +271,22 @@
                     @Html.Partial("~/Views/Shared/PartialViews/UploadPartialFileEdit.cshtml")
                 </div>
                 <div class="pull-right text-right" style="padding-top:10px">
-                    <p>Sub - Total amount: $<label id="SubTotal">@QutationModel.SubTotal</label></p>
-                    <p>Totaal excel btw: $<label id="TotalBTW">@QutationModel.SubTotal</label></p>
-                    <p>BTW (0%) : $<label id="btwo">0.00</label> </p>
-                    <p>BTW (6%) : $<label id="BTW6">@QutationModel.TotalVat6</label></p>
-                    <p>BTW (21%) : $<label id="BTW21">@QutationModel.TotalVat21</label> </p>
+                    <p>Sub - Total amount: €<label id="SubTotal">@QutationModel.SubTotal</label></p>
+                    <p>Totaal excel btw: €<label id="TotalBTW">@QutationModel.SubTotal</label></p>
+                    <p>BTW (0%) : €<label id="btwo">0.00</label> </p>
+                    <p>BTW (6%) : €<label id="BTW6">@QutationModel.TotalVat6</label></p>
+                    <p>BTW (21%) : €<label id="BTW21">@QutationModel.TotalVat21</label> </p>
                     <hr>
-                    <h3><b>Garnd Total :</b> $<label id="gtotal">@QutationModel.TotalAmount</label></h3>
+                    <h3><b>Garnd Total :</b> €<label id="gtotal">@QutationModel.TotalAmount</label></h3>
                 </div>
                 <div class="clearfix"></div>
                 <hr>
-                <div class="text-right" style="padding-bottom:5px">
-                    <button id="Submit" type="submit" class="btn btn-info btn-sm"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
-                    <button id="saveEmail" type="button" value="Save + email" class="btn btn-info btn-sm" style="margin:0px 5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
-                    <button id="saveprintandsendtoyourselfsave" type="button" class="btn btn-info btn-sm" style="margin:0px 5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save + Print & Send it yourself</button>
-                </div>
+
+
+                <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+                <button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+                <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>
+               
             </div>
         </div>
     </div>    
@@ -467,6 +468,7 @@
             }
         });
     }
+
     $('.quantityG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -474,6 +476,7 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
     $('.rateG').keyup(function () {
         var Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -482,7 +485,9 @@
         CombineTotal();
         CalculateVateTotal();
     });
+
     var FocuseInTotal, FocusOutTotal, FoucuseInSubTotal, FocusOutSubTotal;
+
     $(document).on("keypress", "tbody .rateG", function () {
         var Currentrow = $(this).closest("tr");
         FoucuseInSubTotal = Currentrow.find(".FTotalG").val();
@@ -1187,7 +1192,7 @@
     }
 
     $(document).on('click', '.remove', function () {
-
+                
         var current = $(this).closest("tr");
 
         var Name = current.find(".FileName").val();

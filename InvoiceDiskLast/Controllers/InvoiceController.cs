@@ -145,8 +145,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
+        
         public bool AddTransaction(InvoiceViewModel invoiceViewModel)
         {
 
@@ -206,8 +205,7 @@ namespace InvoiceDiskLast.Controllers
             return result;
 
         }
-
-
+        
         public bool Transaction(InvoiceViewModel invoiceViewModel, string TransType)
         {
             bool result = false;
@@ -326,7 +324,10 @@ namespace InvoiceDiskLast.Controllers
                         {
                             if (Transaction(invoiceViewModel, "Add"))
                             {
-                                return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                                if (invoiceViewModel.file23[0] != null)
+                                {
+                                    CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
+                                }
                             }
                             else
                             {
@@ -340,10 +341,7 @@ namespace InvoiceDiskLast.Controllers
                         }
                     }
 
-                    if (invoiceViewModel.file23[0] != null)
-                    {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
-                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -462,9 +460,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
         }
-
-
-
+                
         [HttpPost]
         public ActionResult SaveEmail(InvoiceViewModel invoiceViewModel)
         {
@@ -563,8 +559,7 @@ namespace InvoiceDiskLast.Controllers
             }
             return new JsonResult { Data = new { Status = "Success", path = "", id = InvoiceTable.InvoiceID } };
         }
-
-
+        
         [HttpPost]
         public ActionResult Edit(InvoiceViewModel invoiceViewModel)
         {
@@ -888,9 +883,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = path1, id = InvoiceTable.InvoiceID } };
         }
-
-
-
+        
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -956,8 +949,7 @@ namespace InvoiceDiskLast.Controllers
             }
 
         }
-
-
+        
 
         [HttpGet]
         public ActionResult Print(int id)
@@ -1349,8 +1341,7 @@ namespace InvoiceDiskLast.Controllers
 
             return View(email);
         }
-
-
+        
         [HttpPost]
         public ActionResult UploadFiles(InvoiceViewModel InvoiceViewModel)
         {
@@ -1358,11 +1349,10 @@ namespace InvoiceDiskLast.Controllers
             {
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
-                for (int i = 0; i < files.Count; i++)
-                {
-                    HttpPostedFileBase file = files[i];
-                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceViewModel.InvoiceID, "Invoice", InvoiceViewModel.file23, "Invoice");
-                }
+               
+                 HttpPostedFileBase file = files[0];
+                 FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceViewModel.InvoiceID, "Invoice", InvoiceViewModel.file23, "Invoice");
+               
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
             }
             catch (Exception)
@@ -1439,9 +1429,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
-
+        
         [HttpPost]
         public JsonResult GetInvoiceId(int Id)
         {
