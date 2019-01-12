@@ -572,16 +572,15 @@ namespace InvoiceDiskLast.Controllers
                 {
                     CompanyName = "Nocompany";
                 }
-               
-                MVCContactModel mvcContactModel = new MVCContactModel();
+                int VenderId = 0;
+
                 if (TempData["VenderId"] != null)
                 {
-                    mvcContactModel = TempData["VenderId"] as MVCContactModel;
-                    
+                    VenderId = Convert.ToInt32(TempData["VenderId"]);
                 }
 
-                //HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + VenderId.ToString()).Result;
-                //MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + VenderId.ToString()).Result;
+                MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
