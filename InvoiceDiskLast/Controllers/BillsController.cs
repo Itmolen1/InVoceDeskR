@@ -535,6 +535,20 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage billdetailresponse = GlobalVeriables.WebApiClient.GetAsync("GetBillDetailTablebyId/" + BillId.ToString()).Result;
                 List<BillDetailViewModel> _billDetailList = billdetailresponse.Content.ReadAsAsync<List<BillDetailViewModel>>().Result;
 
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Bill";
+                commonModel.FromDate = Convert.ToDateTime(ob.BillDate);
+                commonModel.DueDate = Convert.ToDateTime(ob.BillDueDate);
+                commonModel.ReferenceNumber = ob.RefNumber;
+                commonModel.Number_Id = ob.Bill_ID;
+
+                commonModel.SubTotal = ob.SubTotal.ToString();
+                commonModel.Vat6 = ob.TotalVat6.ToString();
+                commonModel.Vat21 = ob.TotalVat21.ToString();
+                commonModel.grandTotal = ob.TotalAmount.ToString();
+                commonModel.Note = ob.CustomerNote;                
+                ViewBag.commonModel = commonModel;
+
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.BilllData = ob;
@@ -1378,37 +1392,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-        public ActionResult ViewBill(int? id)
-        {
-            try
-            {
-
-                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + id.ToString()).Result;
-                MvcPurchaseModel ob = res.Content.ReadAsAsync<MvcPurchaseModel>().Result;
-
-                int? Contectid = ob.VenderId;
-                int? CompanyID = ob.CompanyId;
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + Contectid.ToString()).Result;
-                MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyID.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
-                HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + id.ToString()).Result;
-                List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
-
-
-                ViewBag.Contentdata = contectmodel;
-                ViewBag.Companydata = companyModel;
-                ViewBag.Purchase = ob;
-                ViewBag.PurchaseDatailsList = PuchaseModelDetailsList;
-            }
-            catch (Exception ex)
-            {
-            }
-            return View();
-        }
+        
 
         public ActionResult Print(int? id)
         {

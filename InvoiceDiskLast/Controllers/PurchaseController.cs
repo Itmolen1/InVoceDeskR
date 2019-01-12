@@ -1408,7 +1408,6 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-
                 ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)purchaseOrderId,"Purchase");
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
@@ -1422,9 +1421,22 @@ namespace InvoiceDiskLast.Controllers
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 
-
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Purchase";
+                commonModel.FromDate = Convert.ToDateTime(ob.PurchaseDate);
+                commonModel.DueDate = Convert.ToDateTime(ob.PurchaseDueDate);
+                commonModel.ReferenceNumber = ob.PurchaseRefNumber;
+                commonModel.Number_Id = ob.PurchaseID;
+
+                commonModel.SubTotal = ob.PurchaseSubTotal.ToString();
+                commonModel.Vat6 = ob.Vat6.ToString();
+                commonModel.Vat21 = ob.Vat21.ToString();
+                commonModel.grandTotal = ob.PurchaseTotoalAmount.ToString();
+                commonModel.Note = ob.PurchaseVenderNote;
+                ViewBag.commonModel = commonModel;
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;

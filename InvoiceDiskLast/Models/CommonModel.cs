@@ -12,5 +12,12 @@ namespace InvoiceDiskLast.Models
         public System.DateTime DueDate { get; set; }
         public string Number_Id { get; set; }
         public string ReferenceNumber { get; set; }
+
+        public string Note { get; set; }
+
+        public string SubTotal { get; set; }
+        public string Vat6 { get; set; }
+        public string Vat21 { get; set; }
+        public string grandTotal { get; set; }
     }
 }

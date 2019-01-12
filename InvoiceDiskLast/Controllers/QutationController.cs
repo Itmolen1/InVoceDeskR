@@ -156,6 +156,12 @@ namespace InvoiceDiskLast.Controllers
                 commonModel.ReferenceNumber = QutationModel.RefNumber;
                 commonModel.Number_Id = QutationModel.Qutation_ID;
 
+                commonModel.SubTotal = QutationModel.SubTotal.ToString();
+                commonModel.Vat6 = QutationModel.TotalVat6.ToString();
+                commonModel.Vat21 = QutationModel.TotalVat21.ToString();
+                commonModel. grandTotal = QutationModel.TotalAmount.ToString();
+                commonModel.Note = QutationModel.CustomerNote;
+               
                 ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
