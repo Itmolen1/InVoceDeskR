@@ -165,7 +165,7 @@
                         <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
                         <button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
                         <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>
-                       
+
                     </div>
                 </div>
             </div>
@@ -990,7 +990,7 @@
             PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
             PurchaseOrderID: $('#PurchaseOrderID').val(),
             PurchaseTotoalAmount: $('#gtotal').text(),
-            PurchaseVenderNote: $('#PurchaseVenderNote').val(),
+            PurchaseVenderNote: $('#CustomerNote').val(),
             Vat6: $('#BTW6').text(),
             Vat21: $('#BTW21').text(),
             VenderId: $('#ConatctId').val(),
@@ -1127,62 +1127,3 @@
 </script>
 
 
-<script>
-
-    $(document).ready(function () {
-        $('#mainrow1 .ServiceDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            datetime: new Date(),
-            dateFormat: 'dd/mm/yy',
-        }).datepicker("setDate", new Date());
-
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    $(document).ready(function () {
-        $('.FromDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy/mm/dd'
-        }).datepicker();
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    $(document).ready(function () {
-        $('.DueDate').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy/mm/dd'
-        }).datepicker();
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-    $('body').on('focus', ".ss", function () {
-
-        $(this).closest('tr').find(':input').removeClass('hasDatepicker');
-        $(this).datepicker({
-            changeMonth: true,
-            changeYear: true,
-            gotoCurrent: true,
-            dateFormat: 'dd/mm/yy',
-        });
-        if ($(this).hasClass('birthdate')) {
-            $(this).datepicker('option', 'yearRange', '1980:c');
-            $(this).datepicker('option', 'defaultDate', '-10y');
-        }
-    });
-
-</script>

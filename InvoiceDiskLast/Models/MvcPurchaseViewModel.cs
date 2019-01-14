@@ -55,7 +55,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<decimal> RowSubTotal { get; set; }
         public HttpPostedFileWrapper[] file23 { get; set; }
         public PurchaseOrderDetailsTable[] PurchaseOrderList { get; set; }
-        public List<PurchaseOrderDetailsTable> PurchaseDetailslist { get; set; }
+        public List<MVCPurchaseDetailsModel> PurchaseDetailslist { get; set; }
 
     }
 }

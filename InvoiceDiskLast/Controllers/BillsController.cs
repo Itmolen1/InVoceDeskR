@@ -841,11 +841,7 @@ namespace InvoiceDiskLast.Controllers
                             if (responsses.StatusCode != System.Net.HttpStatusCode.OK)
                             {
                                 return new JsonResult { Data = new { Status = "Fail", BillId = billviewModel.BilID } };
-                            }
-                            if (billDetailViewModel.file23[0] != null)
-                            {
-                                CreatDirectoryClass.UploadFileToDirectoryCommon(billviewModel.BilID, "Bill", billDetailViewModel.file23, "Bill");
-                            }
+                            }                           
                         }
                         if (Transaction(billDetailViewModel, "Add"))
                         {
@@ -1221,16 +1217,13 @@ namespace InvoiceDiskLast.Controllers
 
         public string PrintView(int id)
         {
-
             string pdfname;
             try
             {
-
                 ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(id, "Bill");
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("GetbillDetail/" + id).Result;
                 MvcBillModel ob = res.Content.ReadAsAsync<MvcBillModel>().Result;
                 ob.BilID = id;
-
 
                 HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProduct/" + ob.CompanyId + "/All").Result;
                 List<MVCProductModel> productModel = responsep.Content.ReadAsAsync<List<MVCProductModel>>().Result;
@@ -1264,14 +1257,12 @@ namespace InvoiceDiskLast.Controllers
                 DateTime BILLDATE = ob.BillDate; //mm/dd/yyyy
                 DateTime DUEDATE = ob.BillDueDate;//mm/dd/yyyy
                 TimeSpan ts = BILLDATE.Subtract(BILLDATE);
-                string diffDate = ts.Days.ToString();
-
+               string diffDate = ts.Days.ToString();
                 string companyName = id + "-" + companyModel.CompanyName;
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
                 path = Path.GetFullPath(path);
-
                 string subPath = "/PDF"; // your code goes here
                 bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
 
@@ -1291,7 +1282,6 @@ namespace InvoiceDiskLast.Controllers
                     }
                     catch (System.IO.IOException e)
                     {
-
                     }
                 }
 
@@ -1310,7 +1300,6 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -1325,7 +1314,6 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-
                 purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.CompanyId = purchaseViewModel.CompanyId;
                 purchasemodel.UserId = 1;
@@ -1339,16 +1327,12 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.PurchaseTotoalAmount = purchaseViewModel.PurchaseTotoalAmount;
                 purchasemodel.PurchaseVenderNote = purchaseViewModel.PurchaseVenderNote;
                 purchasemodel.Vat6 = purchaseViewModel.Vat6;
-
-
                 purchasemodel.Vat21 = purchaseViewModel.Vat21;
                 purchasemodel.Status = "accepted";
                 purchasemodel.Type = StatusEnum.Goods.ToString();
 
-
                 if (purchaseViewModel.PurchaseOrderID == 0 || purchaseViewModel.PurchaseOrderID == null)
                 {
-
                     HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchase", purchasemodel).Result;
                     purchasemodel = response.Content.ReadAsAsync<PurchaseOrderTable>().Result;
 
@@ -1369,11 +1353,10 @@ namespace InvoiceDiskLast.Controllers
                             purchadeDetail.RowSubTotal = item.RowSubTotal;
                             purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                             purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
-                            purchadeDetail.ServiceDate = item.ServiceDate;
+                            purchadeDetail.ServiceDate =item.ServiceDate;
                             purchadeDetail.PurchaseId = purchasemodel.PurchaseOrderID;
                             HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIPurchaseDetail", purchadeDetail).Result;
                         }
-
                         return new JsonResult { Data = new { Status = "Success", purchaseId = purchasemodel.PurchaseOrderID } };
                     }
                     else
@@ -1387,7 +1370,6 @@ namespace InvoiceDiskLast.Controllers
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
-
             return new JsonResult { Data = new { Status = "Success", purchaseId = purchasemodel.PurchaseOrderID } };
         }
 
@@ -1418,9 +1400,7 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ob.VenderId.ToString()).Result;
                 MVCContactModel contectmodel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
-
                 TempData["ComtactModel"] = contectmodel;
-
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + ob.CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
@@ -1432,7 +1412,6 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.Companydata = companyModel;
                 ViewBag.BilllData = ob;
                 ViewBag.BillDetail = _billDetailList;
-
                 string PdfName = id + "-" + companyModel.CompanyName + ".pdf";
 
 
@@ -1440,11 +1419,8 @@ namespace InvoiceDiskLast.Controllers
                 {
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
-
                     FileName = PdfName,
-
                     PageHeight = 40,
-
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
                 };
             }
@@ -1475,15 +1451,12 @@ namespace InvoiceDiskLast.Controllers
             PurchaseOrderTable purchasemodel = new PurchaseOrderTable();
             try
             {
-
                 purchasemodel.CompanyId = purchasemodel.CompanyId;
                 purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.UserId = 1;
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
-
                 purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
-
                 purchasemodel.PurchaseDate = (DateTime)purchaseViewModel.PurchaseDate;
                 purchasemodel.PurchaseDueDate = purchaseViewModel.PurchaseDueDate;
                 purchasemodel.PurchaseSubTotal = purchaseViewModel.PurchaseSubTotal;
@@ -1510,7 +1483,7 @@ namespace InvoiceDiskLast.Controllers
                         purchadeDetail.Type = item.Type;
                         purchadeDetail.RowSubTotal = item.RowSubTotal;
                         purchadeDetail.PurchaseDescription = item.PurchaseDescription;
-                        purchadeDetail.ServiceDate = item.ServiceDate;
+                        purchadeDetail.ServiceDate = Convert.ToDateTime(item.ServiceDate);
                         purchadeDetail.PurchaseTotal = item.PurchaseTotal;
                         purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
                         purchadeDetail.PurchaseId = purchaseViewModel.PurchaseOrderID;
@@ -1544,8 +1517,6 @@ namespace InvoiceDiskLast.Controllers
             }
             return View();
         }
-
-
 
 
         public static Boolean IsFileLocked(FileInfo file)

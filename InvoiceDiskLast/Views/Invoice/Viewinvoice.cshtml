@@ -1,4 +1,4 @@
-﻿ 
+﻿
 @model InvoiceDiskLast.Models.InvoiceViewModel
 @{
     ViewBag.Title = "ViewInvoice";
@@ -7,7 +7,7 @@
 }
 
 @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
- {
+{
     <input type="hidden" name="FilePath" id="FilePath" />
     <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
 }
@@ -41,9 +41,9 @@
                     <a class="dropdown-item" href="#">Separated link</a>
                 </div>
             </div>
-             <a href="/Invoice/Print/@InvoiceData.InvoiceID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Download</a>
-            <a href="/Invoice/Edit/?id=@InvoiceData.InvoiceID"  class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-pencil fa-backgroun" style="margin-right:5px"></i></span>Change</a>
-            <a href ="/Invoice/Index/"  class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-angle-double-left" style="margin-right:5px"></i></span>Back</a>
+            <a href="/Invoice/Print/@InvoiceData.InvoiceID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Download</a>
+            <a href="/Invoice/Edit/?id=@InvoiceData.InvoiceID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-pencil fa-backgroun" style="margin-right:5px"></i></span>Change</a>
+            <a href="/Invoice/Index/" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-angle-double-left" style="margin-right:5px"></i></span>Back</a>
         </div>
     </div>
 </div>
@@ -95,33 +95,33 @@
 
                                 @foreach (var item in ViewBag.InvoiceDetailsList)
                                 {
-                                if (item.Type == "Goods")
-                                {
-                                <tr id="mainrow">
-                                    <td>
-                                        @item.ItemName
-                                    </td>
-                                    <td>
-                                        @item.Quantity
-                                    </td>
-                                    <td>
-                                        @item.Rate
-                                    </td>
+                                    if (item.Type == "Goods")
+                                    {
+                                        <tr id="mainrow">
+                                            <td>
+                                                @item.ItemName
+                                            </td>
+                                            <td>
+                                                @item.Quantity
+                                            </td>
+                                            <td>
+                                                @item.Rate
+                                            </td>
 
-                                    <td>
-                                        @item.Total
-                                    </td>
+                                            <td>
+                                                @item.Total
+                                            </td>
 
-                                    <td>
-                                        @item.Vat
-                                    </td>
-                                    <td>
-                                        @item.RowSubTotal
-                                    </td>
+                                            <td>
+                                                @item.Vat
+                                            </td>
+                                            <td>
+                                                @item.RowSubTotal
+                                            </td>
 
-                                </tr>
+                                        </tr>
+                                    }
                                 }
-                              }
 
                             </tbody>
                         </table>
@@ -167,43 +167,51 @@
                             </thead>
                             <tbody class="tbody"></tbody>
 
-                           @foreach (var item in ViewBag.InvoiceDetailsList)
+                            @foreach (var item in ViewBag.InvoiceDetailsList)
                             {
 
-                            if (item.Type == "Service")
-                            {
-                            <tr id="mainrow">
-                              
-                                <td>
-                                    @item.ItemName
-                                </td>
-                                <td>
-                                    @item.Description
-                                </td>
+                                if (item.Type == "Service")
+                                {
+                                    <tr id="mainrow">
+                                        @{
 
-                                <td>
-                                    @item.Quantity
-                                </td>
-                                <td>
-                                    @item.Rate
-                                </td>
-                                <td>
-                                    @item.Total
-                                </td>
-                                <td>
-                                    @item.Vat
-                                </td>
-                                <td>
-                                    @item.RowSubTotal
-                                </td>
-                            </tr>
-                            }
-                            }
+                                            DateTime dt = new DateTime();
+                                            dt = Convert.ToDateTime(item.ServiceDate);
+                                        }
+
+                                        <td>
+                                            @dt.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @item.ItemName
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
+
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.Rate
+                                        </td>
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            @item.Vat
+                                        </td>
+                                        <td>
+                                            @item.RowSubTotal
+                                        </td>
+                                    </tr>
+                                                }
+                                            }
                         </table>
                     </div>
 
-                }
-            }
+                                                }
+                                            }
 
             @Html.Partial("~/Views/Shared/PartialViews/ViewFilePartialView.cshtml")
         </div>

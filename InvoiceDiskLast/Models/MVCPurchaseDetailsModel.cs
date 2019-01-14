@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -16,6 +17,11 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> PurchaseVatPercentage { get; set; }
         public Nullable<int> PurchaseId { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/mm/yy}")]
+        public Nullable<DateTime> ServiceDate { get; set; }
+
+        public Nullable<decimal> RowSubTotal { get; set; }
+        public string Type { get; set; }
 
     }
 }
