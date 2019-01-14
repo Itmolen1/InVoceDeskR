@@ -1,15 +1,15 @@
 ﻿ 
+@model InvoiceDiskLast.Models.InvoiceViewModel
 @{
     ViewBag.Title = "ViewInvoice";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var InvoiceData = ViewBag.InvoiceData;
 }
 
-@model InvoiceDiskLast.Models.InvoiceViewModel
-
-@{
-    var Contectdatas = ViewBag.Contentdata;
-    var CompanyDatas = ViewBag.Companydata;
-    var InvoiceData = ViewBag.InvoiceData;
+@using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
+ {
+    <input type="hidden" name="FilePath" id="FilePath" />
+    <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
 }
 
 <div class="row">
@@ -23,166 +23,36 @@
         </div>
     }
 </div>
-<div class="row" style="margin-bottom:5px">
-    <div class="col-2 b-r"></div>
-    <div class="col-8 b-r">
-        <div class="btn-group">
-            <div class="btn-group">
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group" style="margin-bottom:5px">
                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:150px">
-                    <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
-                     Send
+                    <i class="fa fa-envelope" style="margin-right:20px;color:yellow"></i>
+                    Send
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="/Invoice/EmailInvoice/?id=@InvoiceData.InvoiceID">Send by Email</a>
                     <a class="dropdown-item" href="/Invoice/Print/?id=@InvoiceData.InvoiceID">Print and send it yourself</a>
-                   
+
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Separated link</a>
                 </div>
             </div>
-            <div style="margin-left:3px">
-                <div class="btn-group">
-                    <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                    @Html.ActionLink("print Invoice", "Print", "Invoice", new { id = InvoiceData.InvoiceID }, new { @class = "btn btn-success" })
-                </div>
-            </div>
-            <div style="margin-left:3px">
-                <a href="/Invoice/Edit/?id=@InvoiceData.InvoiceID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
-                
-            </div>            
+             <a href="/Invoice/Print/@InvoiceData.InvoiceID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Download</a>
+            <a href="/Invoice/Edit/?id=@InvoiceData.InvoiceID"  class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-pencil fa-backgroun" style="margin-right:5px"></i></span>Change</a>
+            <a href ="/Invoice/Index/"  class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-angle-double-left" style="margin-right:5px"></i></span>Back</a>
         </div>
     </div>
-    <div class="col-2 b-r"></div>
 </div>
 
-<div class="row">
-    <div class="col-2 b-r">
-        @*two*@
-    </div>
-    <div class="col-8 b-r" style="border:1px solid Silver">
-        <div class="container">
 
-
-            @using (Html.BeginForm("DownloadFile", "MvcQutation", FormMethod.Post, new { id = "DownloadFile1" }))
-            {
-                <input type="hidden" name="FilePath" id="FilePath" />
-                <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
-            }
-            <div class="row">
-                <div class="col-7 b-r">
-                    <img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size"/>
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-12 b-r HeadText">
-                            <label>Invoice</label>
-                        </div>
-                    </div>
-                    <div class="row clientInfo" style="margin-top:20px">
-                        <div class="col-12 b-r">@Contectdatas.ContactName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 b-r">
-                            @Contectdatas.ContactAddress,@Contectdatas.StreetNumber
-                            <br />
-                            @Contectdatas.PostalCode,@Contectdatas.City
-                            <br />
-                            @Contectdatas.Land
-                            
-                        </div>
-                    </div>
-                    @{
-                        DateTime qdate = new DateTime();
-                        DateTime qddate = new DateTime();
-                        qdate = Convert.ToDateTime(InvoiceData.InvoiceDate);
-                        qddate = Convert.ToDateTime(InvoiceData.InvoiceDueDate);
-                    }
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-4 b-r">
-                            Invoice Date:
-                        </div>
-                        <div class="col-8 b-r">
-                            @qdate.ToShortDateString()
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 b-r">
-                            Invoice Number:
-                        </div>
-                        <div class="col-8 b-r">
-                            @InvoiceData.Invoice_ID
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 b-r">
-                            Due Date:
-                        </div>
-                        <div class="col-8 b-r">
-                            @qddate.ToShortDateString()
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 b-r">
-                            Reference number:
-                        </div>
-                        <div class="col-8 b-r">
-                            @InvoiceData.RefNumber
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-5 b-r" style="margin-top:40px">
-                    <div class="row">
-                        <div class="col-3 b-r"></div>
-                        <div class="col-7 b-r CmpColor">@CompanyDatas.CompanyName</div>
-                        <div class="col-2 b-r"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Kvk nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.KVK</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BTW nr:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BTW</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Bank:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BankName</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">IBAN:</div>
-                        <div class="col-7 b-r">@CompanyDatas.IBANNumber</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">BIC:</div>
-                        <div class="col-7 b-r">@CompanyDatas.BIC</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Telephone:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyPhone</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Cell:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyCell</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">E-mail:</div>
-                        <div class="col-7 b-r">@CompanyDatas.CompanyEmail</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Website:</div>
-                        <div class="col-7 b-r">@CompanyDatas.Website</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5 b-r text-right">Address</div>
-                        <div class="col-7 b-r">
-                            @CompanyDatas.CompanyAddress,@CompanyDatas.StreetNumber<br />
-                            @CompanyDatas.PostalCode,@CompanyDatas.CompanyCity <br />
-                            @CompanyDatas.CompanyCountry
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+<div class="container">
+    <div class="row" style="border:1px solid black">
+        <div class="col-md-12">
+            @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
 
             @{
                 List<InvoiceDiskLast.Models.InvoiceViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.InvoiceViewModel>();
@@ -195,258 +65,148 @@
 
                 if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
                 {
-            <p></p>
-            <div class="row">
-                <div class="col-12 b-r">
-                    <table class="table table-striped" id="orderdetailsitems">
-                        <thead class="thead-dark">
-                            <tr>
+                    <div class="table-responsive" style="clear: both">
+                        <table class="table table-hover" id="orderdetailsitems">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Goederen
+                                    </th>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Prijs
+                                    </th>
+                                    <th>
+                                        Totaal
+                                    </th>
+                                    <th>
+                                        BTW%
+                                    </th>
+                                    <th>
+                                        Subtotaal
+                                    </th>
 
+                                </tr>
+                            </thead>
 
-                                <th width="350px">
-                                    Goods
-                                </th>
-                                <th>
-                                    Quantity
-                                </th>
-                                <th>
-                                    Price
-                                </th>
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Vat%
-                                </th>
-                                <th>
-                                    SubTotal
-                                </th>
+                            <tbody class="tbody">
 
-                            </tr>
-                        </thead>
-
-                        <tbody class="tbody">
-
-                            @if (ViewBag.InvoiceDetailsList != null)
-                            {
-                                foreach (var item in ViewBag.InvoiceDetailsList)
+                                @foreach (var item in ViewBag.InvoiceDetailsList)
                                 {
-                                    if (item.Type == "Goods")
-                                    {
-                                        <tr id="mainrow">
-                                            <td>
-                                                @item.ItemName
-                                            </td>
-                                            <td>
-                                                @item.Quantity
-                                            </td>
-                                            <td>
-                                                @item.Rate
-                                            </td>
-
-                                            <td>
-                                                @item.Total
-                                            </td>
-
-                                            <td>
-                                                @item.Vat
-                                            </td>
-                                            <td>
-                                                @item.RowSubTotal
-                                            </td>
-
-                                        </tr>
-                                    }
-                                }
-                            }
-
-                        </tbody>
-
-                    </table>
-                </div>
-
-            </div>
-                }
-                InvoiceListGoods = ViewBag.InvoiceDetailsList as List<InvoiceDiskLast.Models.InvoiceViewModel>;
-                InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Service").ToList();
-                if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
-                {
-            <div class="row">
-                <div class="col-12 b-r">
-                    
-                      <table class="table table-striped" id="QutationServiceDetail1">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Date</th>
-
-                                <th>
-                                    Services
-                                </th>
-                                <th>Decription</th>
-                                <th>
-                                    hour
-                                </th>
-                                <th>
-                                    Hourly rate
-                                </th>
-                                <th>
-                                    Total
-                                </th>
-                                <th>
-                                    Vat %
-                                </th>
-                                <th>
-                                    SubTotal
-                                </th>
-                            </tr>
-                        </thead>
-                         
-                        <tbody class="tbody"></tbody>
-                          
-                        @if (ViewBag.InvoiceDetailsList != null)
-                        {
-                            foreach (var item in ViewBag.InvoiceDetailsList)
-                            {
-
-                                if (item.Type == "Service")
+                                if (item.Type == "Goods")
                                 {
-                                    <tr id="mainrow">
-                                        <td>
-                                            @{
-                                                DateTime InvoiceDate = new DateTime();
-                                                InvoiceDate = Convert.ToDateTime(item.ServiceDate);
-                                            }
+                                <tr id="mainrow">
+                                    <td>
+                                        @item.ItemName
+                                    </td>
+                                    <td>
+                                        @item.Quantity
+                                    </td>
+                                    <td>
+                                        @item.Rate
+                                    </td>
 
-                                            @InvoiceDate.ToShortDateString()
-                                        </td>
+                                    <td>
+                                        @item.Total
+                                    </td>
 
-                                        <td>
-                                            @item.ItemName
-                                        </td>
-                                        <td>
-                                            @item.Description
-                                        </td>
+                                    <td>
+                                        @item.Vat
+                                    </td>
+                                    <td>
+                                        @item.RowSubTotal
+                                    </td>
 
-                                        <td>
-                                            @item.Quantity
-                                        </td>
-                                        <td>
-                                            @item.Rate
-                                        </td>
-                                        <td>
-                                            @item.Total
-                                        </td>
-                                        <td>
-                                            @item.Vat
-                                        </td>
-                                        <td>
-                                            @item.RowSubTotal
-                                        </td>
-                                    </tr>
+                                </tr>
                                 }
-                            }
-                        }
-                    </table>
-                </div>
-            </div>
+                              }
+
+                            </tbody>
+                        </table>
+                    </div>
                 }
             }
-            <hr />
-            <div class="row">
-                <div class="col-7 b-r">
-                </div>
-                <div class="col-5 b-r">
-                    <div class="row">
-                        <div class="col-4 b-r text-right">Total excl. VAT:€</div>
-                        <div class="col-7 b-r text-right">@InvoiceData.SubTotal</div>
-                        <div class="col-1 b-r">
-                        </div>
-                    </div>
-                    <div class="row">
-                        @if (InvoiceData.TotalVat6 != 0 && InvoiceData.TotalVat6 != null)
-                        {
-                            <div class="col-4 b-r text-right">VAT 6%:€</div>
 
-                            <div class="col-7 b-r text-right">@InvoiceData.TotalVat6</div>
-                            <div class="col-1 b-r">
-                            </div>
-                        }
-                    </div>
+            @if (ViewBag.InvoiceDetailsList != null)
+            {
+                InvoiceListGoods = ViewBag.InvoiceDetailsList as List<InvoiceDiskLast.Models.InvoiceViewModel>;
 
-                    <div class="row">
-                        @if (InvoiceData.TotalVat21 != 0 && InvoiceData.TotalVat21 != null)
-                        {
-                            <div class="col-4 b-r text-right">VAT 21%:€</div>
+                InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Service").ToList();
 
-                            <div class="col-7 b-r text-right">@InvoiceData.TotalVat21</div>
-                            <div class="col-1 b-r">
-                            </div>
-                        }
-                    </div>
-                    <div class="row Grand-color">
-                        <div class="col-4 b-r text-right">Grand Total:</div>
-                        <div class="col-7 b-r text-right">&euro;: @InvoiceData.TotalAmount</div>
-                        <div class="col-1 b-r">
-                        </div>
-                    </div>
-                </div>
-            </div>
-          <p></p>
-            <div class="row">
-                <div class="col-6 b-r">
-                    <table class="table table-hover" id="participantTable">
-                        <tbody id="upload123">
-                            @if (ViewBag.FILE != null)
+                if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
+                {
+
+                    <div class="table-responsive" style="clear: both">
+                        <table class="table table-hover" id="QutationServiceDetail1">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Datam</th>
+                                    <th>
+                                        Diensten
+                                    </th>
+                                    <th>Omschrijving</th>
+                                    <th>
+                                        uur
+                                    </th>
+                                    <th>
+                                        Uurprijs
+                                    </th>
+                                    <th>
+                                        Totaal
+                                    </th>
+                                    <th>
+                                        BTW %
+                                    </th>
+                                    <th>
+                                        Subtotaal
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="tbody"></tbody>
+
+                           @foreach (var item in ViewBag.InvoiceDetailsList)
                             {
-                                foreach (var item in ViewBag.FILE)
-                                {
-                                    <tr>
-                                        <td>
-                                            <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
-                                        </td>
-                                    </tr>
-                                }
+
+                            if (item.Type == "Service")
+                            {
+                            <tr id="mainrow">
+                              
+                                <td>
+                                    @item.ItemName
+                                </td>
+                                <td>
+                                    @item.Description
+                                </td>
+
+                                <td>
+                                    @item.Quantity
+                                </td>
+                                <td>
+                                    @item.Rate
+                                </td>
+                                <td>
+                                    @item.Total
+                                </td>
+                                <td>
+                                    @item.Vat
+                                </td>
+                                <td>
+                                    @item.RowSubTotal
+                                </td>
+                            </tr>
                             }
+                            }
+                        </table>
+                    </div>
 
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-6 b-r"></div>
-            </div>
-            <div class="row">
-                <div class="col-12 b-r">
-                    <span>@InvoiceData.InvoiceDescription</span>
-                </div>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-8 b-r">
-                    We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
-                </div>
-                <div class="col-4 b-r"></div>
-            </div>
-            <div class="row">
-                <div class="col-8 b-r">
-                    Met vriendelijke groet.
-                </div>
-                <div class="col-4 b-r"></div>
-            </div>
+                }
+            }
 
-            <p></p>
-            <div class="row Grand-color-CompanyName">
-                <div class="col-6 b-r">@Contectdatas.ContactName</div>
-                <div class="col-6 b-r"></div>
-            </div>
-            <div class="row Grand-color-CompanyName">
-                <div class="col-6 b-r">@CompanyDatas.CompanyName</div>
-                <div class="col-6 b-r"></div>
-            </div>
-
-
+            @Html.Partial("~/Views/Shared/PartialViews/ViewFilePartialView.cshtml")
         </div>
-    </div>
-    <div class="col-2 b-r">
-        @*two*@
     </div>
 </div>
 

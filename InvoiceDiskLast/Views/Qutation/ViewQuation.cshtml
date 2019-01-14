@@ -4,9 +4,7 @@
 }
 @model InvoiceDiskLast.Models.MVCQutationViewModel
 
-@{
-    var Contectdatas = ViewBag.Contentdata;
-    var CompanyDatas = ViewBag.Companydata;
+@{   
     var QutationModel = ViewBag.QutationDat;
 }
 
@@ -30,14 +28,15 @@
     <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
 }
 
+
+
+
 <div class="container">
-    <div class="row" style="margin-bottom:5px">
-
+    <div class="row">
         <div class="col-md-12">
-            <div class="btn-group">
-
+            <div class="btn-group" style="margin-bottom:5px">
                 <div class="dropdown">
-                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
                         <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
                         Send
                         <span class="caret"></span>
@@ -51,26 +50,14 @@
                     </div>
 
                 </div>
-                <div style="margin-left:3px">
-                    <div class="btn-group">
-                        <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                        @Html.ActionLink("print concept", "Print", "Qutation", new { QutationID = QutationModel.QutationID }, new { @class = "btn btn-success" })
-                    </div>
-                </div>
-                <div style="margin-left:3px">
-                    <a href="/Qutation/EditQutation/?QutationId=@QutationModel.QutationID" class="btn btn-success" style="margin-left:3px"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
-
-
-                </div>
-
-                <div style="margin-left:3px">
-
-                    <a href="/Qutation/Index/" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Go To List</a>
-                </div>
             </div>
+            <a href="/Qutation/Print/?QutationID=@QutationModel.QutationID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Download</a>
+            <a href="/Qutation/EditQutation/?QutationId=@QutationModel.QutationID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-pencil fa-backgroun" style="margin-right:5px"></i></span>Change</a>
+            <a href="/Qutation/Index/" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-angle-double-left fa-backgroun" style="margin-right:5px"></i></span>Back</a>
         </div>
     </div>
 </div>
+
 
 
 
@@ -78,18 +65,11 @@
     <div class="row" style="border:1px solid black">
         <div class="col-md-12">
             @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
-        </div>
-    </div>
-</div>
 
-            
-                       
-                       
-
-        @{
-            List<InvoiceDiskLast.Models.MVCQutationViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.MVCQutationViewModel>();
-         }
-               @if (ViewBag.QutationDatailsList != null)
+            @{
+                List<InvoiceDiskLast.Models.MVCQutationViewModel> InvoiceListGoods = new List<InvoiceDiskLast.Models.MVCQutationViewModel>();
+            }
+            @if (ViewBag.QutationDatailsList != null)
             {
                 InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>;
 
@@ -97,81 +77,79 @@
 
                 if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
                 {
-                                <div class="row">
-                                    <div class="col-12 b-r">
-                                        <table class="table table-striped" id="orderdetailsitems">
-                                            <thead class="thead-dark">
-                                                <tr>
+
+                    <div class="table-responsive" style="clear: both">
+                        <table class="table table-hover" id="orderdetailsitems">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Goederen
+                                    </th>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Prijs
+                                    </th>
+                                    <th>
+                                        Totaal
+                                    </th>
+                                    <th>
+                                        BTW%
+                                    </th>
+                                    <th>
+                                        Subtotaal
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody class="tbody">
 
 
-                                                    <th>
-                                                        Goods
-                                                    </th>
-                                                    <th>
-                                                        Quantity
-                                                    </th>
-                                                    <th>
-                                                        Price
-                                                    </th>
-                                                    <th>
-                                                        Total
-                                                    </th>
-                                                    <th>
-                                                        Vat%
-                                                    </th>
-                                                    <th>
-                                                        SubTotal
-                                                    </th>
+                                @foreach (var item in ViewBag.QutationDatailsList)
+                                {
+                                    if (item.Type == "Goods")
+                                    {
+                                        <tr id="mainrow">
+                                            <td>
+                                                @item.ItemName
+                                            </td>
+                                            <td>
+                                                @item.Quantity
+                                            </td>
+                                            <td>
+                                                @item.Rate
+                                            </td>
 
-                                                </tr>
-                                            </thead>
+                                            <td>
+                                                @item.Total
+                                            </td>
 
-                                            <tbody class="tbody">
+                                            <td>
+                                                @item.Vat
+                                            </td>
+                                            <td>
+                                                @item.RowSubTotal
+                                            </td>
 
-
-                                                @foreach (var item in ViewBag.QutationDatailsList)
-                                                {
-                                                    if (item.Type == "Goods")
-                                                    {
-                                                        <tr id="mainrow">
-                                                            <td>
-                                                                @item.ItemName
-                                                            </td>
-                                                            <td>
-                                                                @item.Quantity
-                                                            </td>
-                                                            <td>
-                                                                @item.Rate
-                                                            </td>
-
-                                                            <td>
-                                                                @item.Total
-                                                            </td>
-
-                                                            <td>
-                                                                @item.Vat
-                                                            </td>
-                                                            <td>
-                                                                @item.RowSubTotal
-                                                            </td>
-
-                                                        </tr>
-                                                    }
-                                                }
+                                        </tr>
+                                    }
+                                }
 
 
-                                            </tbody>
+                            </tbody>
 
-                                        </table>
-                                    </div>
+                        </table>
+                    </div>
 
-                                </div>
+
                 }
 
 
             }
 
-                        @if (ViewBag.QutationDatailsList != null)
+            @if (ViewBag.QutationDatailsList != null)
             {
                 InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>;
 
@@ -180,183 +158,91 @@
                 if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
                 {
 
-                  <div class="row">
-                                    <div class="col-12 b-r">
-                                        <table class="table table-striped" id="QutationServiceDetail1">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th>Date</th>
+                    <div class="table-responsive" style="clear: both">
+                        <table class="table table-hover" id="QutationServiceDetail1">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Datam</th>
+                                    <th>
+                                        Diensten
+                                    </th>
+                                    <th>Omschrijving</th>
+                                    <th>
+                                        uur
+                                    </th>
+                                    <th>
+                                        Uurprijs
+                                    </th>
+                                    <th>
+                                        Totaal
+                                    </th>
+                                    <th>
+                                        BTW %
+                                    </th>
+                                    <th>
+                                        Subtotaal
+                                    </th>
 
-                                                    <th>
-                                                        Services
-                                                    </th>
-                                                    <th>Decription</th>
-                                                    <th>
-                                                        hour
-                                                    </th>
-                                                    <th>
-                                                        Hourly rate
-                                                    </th>
-                                                    <th>
-                                                        Total
-                                                    </th>
-                                                    <th>
-                                                        Vat %
-                                                    </th>
-                                                    <th>
-                                                        SubTotal
-                                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="tbody"></tbody>
 
-
-                                                </tr>
-
-                                            </thead>
-                                            <tbody class="tbody"></tbody>
-
-                                            @foreach (var item in ViewBag.QutationDatailsList)
-                                            {
-                                                if (item.Type == "Service")
-                                                {
+                            @foreach (var item in ViewBag.QutationDatailsList)
+                            {
+                                if (item.Type == "Service")
+                                {
 
 
-                                                    DateTime dt = new DateTime();
+                                    DateTime dt = new DateTime();
 
-                                                    dt = Convert.ToDateTime(item.ServiceDate);
+                                    dt = Convert.ToDateTime(item.ServiceDate);
 
-                                                    <tr id="mainrow">
-                                                        <td>
-                                                            @dt.ToShortDateString()
-                                                        </td>
+                                    <tr id="mainrow">
+                                        <td>
+                                            @dt.ToShortDateString()
+                                        </td>
 
-                                                        <td>
-                                                            @item.ItemName
-                                                        </td>
-                                                        <td>
-                                                            @item.Description
-                                                        </td>
+                                        <td>
+                                            @item.ItemName
+                                        </td>
+                                        <td>
+                                            @item.Description
+                                        </td>
 
-                                                        <td>
-                                                            @item.Quantity
-                                                        </td>
-                                                        <td>
-                                                            @item.Rate
-                                                        </td>
-                                                        <td>
-                                                            @item.Total
-                                                        </td>
-                                                        <td>
-                                                            @item.Vat
-                                                        </td>
-                                                        <td>
-                                                            @item.RowSubTotal
-                                                        </td>
-                                                    </tr>
-                                                }
+                                        <td>
+                                            @item.Quantity
+                                        </td>
+                                        <td>
+                                            @item.Rate
+                                        </td>
+                                        <td>
+                                            @item.Total
+                                        </td>
+                                        <td>
+                                            @item.Vat
+                                        </td>
+                                        <td>
+                                            @item.RowSubTotal
+                                        </td>
+                                    </tr>
+                                }
 
-                                            }
-                                        </table>
-                                    </div>
-                                </div>
+                            }
+                        </table>
+                    </div>
+
                 }
             }
-                        <hr />
+          
+            @Html.Partial("~/Views/Shared/PartialViews/ViewFilePartialView.cshtml")
+        </div>
+    </div>
+</div>
 
-                        <div class="row">
-                            <div class="col-7 b-r">
-                                <table class="table table-hover" id="participantTable">
-                                    <tbody id="upload123">
-                                        @if (ViewBag.FILE != null)
-                                        {
-                                            foreach (var item in ViewBag.FILE)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-
-                            <div class="col-5 b-r">
-                                <div class="row">
-
-                                    @if (QutationModel.SubTotal != null)
-                                    {
-                                        <div class="col-4 b-r text-right">Total excl. VAT:€</div>
-                                        <div class="col-7 b-r text-right">@QutationModel.SubTotal</div>
-                                        <div class="col-1 b-r">
-                                        </div>
-                                    }
-
-                                </div>
-                                <div class="row">
-                                    @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
-                                    {
-                                        <div class="col-4 b-r text-right">VAT 6%:€</div>
-
-                                        <div class="col-7 b-r text-right">@QutationModel.TotalVat6</div>
-                                        <div class="col-1 b-r">
-                                        </div>
-                                    }
-                                </div>
-
-                                <div class="row">
-                                    @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
-                                    {
-                                        <div class="col-4 b-r text-right">VAT 21%:€</div>
-
-                                        <div class="col-7 b-r text-right">@QutationModel.TotalVat21</div>
-                                        <div class="col-1 b-r">
-                                        </div>
-                                    }
-                                </div>
-                                <div class="row Grand-color">
-                                    @if (QutationModel.TotalAmount != null)
-                                    {
-                                        <div class="col-4 b-r text-right">Grand Total:</div>
-                                        <div class="col-7 b-r text-right">&euro;: @QutationModel.TotalAmount</div>
-                                        <div class="col-1 b-r">
-                                        </div>
-                                    }
-
-
-                                </div>
-                            </div>
-                        </div>
-
-                        @*@Html.Partial("~/Views/Shared/UploadFilePartialView.cshtml")*@
-                        <hr />
-                        <div class="row">
-                            <div class="col-8 b-r">
-                                We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.
-                            </div>
-                            <div class="col-4 b-r"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8 b-r">
-                                Met vriendelijke groet.
-                            </div>
-                            <div class="col-4 b-r"></div>
-                        </div>
-
-                        <p></p>
-                        <div class="row Grand-color-CompanyName">
-                            <div class="col-6 b-r">@Contectdatas.ContactName</div>
-                            <div class="col-6 b-r"></div>
-                        </div>
-                        <div class="row Grand-color-CompanyName">
-                            <div class="col-6 b-r">@CompanyDatas.CompanyName</div>
-                            <div class="col-6 b-r"></div>
-                        </div>
-
-
-
-            <script>
+                        
+              
+               
+  <script>
 
                 $(document).ready(function () {
 

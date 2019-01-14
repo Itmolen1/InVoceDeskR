@@ -572,16 +572,15 @@ namespace InvoiceDiskLast.Controllers
                 {
                     CompanyName = "Nocompany";
                 }
-               
-                MVCContactModel mvcContactModel = new MVCContactModel();
+                int VenderId = 0;
+
                 if (TempData["VenderId"] != null)
                 {
-                    mvcContactModel = TempData["VenderId"] as MVCContactModel;
-                    
+                    VenderId = Convert.ToInt32(TempData["VenderId"]);
                 }
 
-                //HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + VenderId.ToString()).Result;
-                //MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + VenderId.ToString()).Result;
+                MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
 
                 email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
@@ -1409,7 +1408,6 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-
                 ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory((int)purchaseOrderId,"Purchase");
 
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIPurchase/" + purchaseOrderId.ToString()).Result;
@@ -1423,9 +1421,22 @@ namespace InvoiceDiskLast.Controllers
 
                 GlobalVeriables.WebApiClient.DefaultRequestHeaders.Clear();
 
-
                 HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("APIPurchaseDetail/" + purchaseOrderId.ToString()).Result;
                 List<MvcPurchaseViewModel> PuchaseModelDetailsList = responseQutationDetailsList.Content.ReadAsAsync<List<MvcPurchaseViewModel>>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Purchase";
+                commonModel.FromDate = Convert.ToDateTime(ob.PurchaseDate);
+                commonModel.DueDate = Convert.ToDateTime(ob.PurchaseDueDate);
+                commonModel.ReferenceNumber = ob.PurchaseRefNumber;
+                commonModel.Number_Id = ob.PurchaseID;
+
+                commonModel.SubTotal = ob.PurchaseSubTotal.ToString();
+                commonModel.Vat6 = ob.Vat6.ToString();
+                commonModel.Vat21 = ob.Vat21.ToString();
+                commonModel.grandTotal = ob.PurchaseTotoalAmount.ToString();
+                commonModel.Note = ob.PurchaseVenderNote;
+                ViewBag.commonModel = commonModel;
 
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;

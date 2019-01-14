@@ -54,9 +54,6 @@
       <HintPath>..\packages\GitHub.Api.1.0.7\lib\CloudrailSI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -255,11 +252,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="CompanyInfo.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CompanyInfo.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\APIAccountsController.cs" />
     <Compile Include="Controllers\APIAccountTransictionController.cs" />
@@ -319,12 +311,6 @@
     <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="CrystalReport\Example.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Example.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="DeleteFileClass.cs" />
     <Compile Include="Facebook\FacebookBackChannelHandler.cs" />
     <Compile Include="Global.asax.cs">
@@ -1155,6 +1141,7 @@
     <Content Include="Global.asax" />
     <Content Include="images\6.jpg" />
     <Content Include="images\8.jpg" />
+    <Content Include="images\download.jpg" />
     <Content Include="Login.html" />
     <Content Include="Models\ApiCompanyInfoModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -1229,17 +1216,6 @@
     <Content Include="fonts\materialdesignicons-webfontb43a.woff" />
     <Content Include="fonts\materialdesignicons-webfontb43a.woff2" />
     <Content Include="fonts\materialdesignicons-webfontd41d.eot" />
-    <Content Include="CompanyInfo.xsc">
-      <DependentUpon>CompanyInfo.xsd</DependentUpon>
-    </Content>
-    <None Include="CompanyInfo.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>CompanyInfo.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="CompanyInfo.xss">
-      <DependentUpon>CompanyInfo.xsd</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\App.pubxml" />
     <None Include="Properties\PublishProfiles\fucctuedesks.pubxml" />
     <None Include="Properties\PublishProfiles\InvoiceDsik.pubxml" />
@@ -1384,6 +1360,7 @@
     <Content Include="Views\QutationOrder\Accepted.cshtml" />
     <Content Include="Views\Shared\PartialViews\MainRow1PartialView.cshtml" />
     <Content Include="Views\Shared\PartialViews\UploadPartialFileEdit.cshtml" />
+    <Content Include="Views\Shared\PartialViews\ViewFilePartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1407,19 +1384,12 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Logger\Logger.csproj">
       <Project>{8520487A-E6E6-427B-A983-79E572F1F819}</Project>
       <Name>Logger</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CrystalReport\Example.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Example.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

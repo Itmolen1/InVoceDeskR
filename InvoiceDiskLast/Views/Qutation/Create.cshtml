@@ -5,9 +5,6 @@
 }
 
 <div class="container">
-
-    <a href="/Qutation/ExportCustomers">Print Qutation</a>
-
     <div class="row" style="border:1px solid black">
         <div class="col-md-12">
             @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
@@ -74,8 +71,8 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <p></p>
+                            </div>
+                         <p></p>
 
                         <div class="table-responsive" style="clear: both;">
                             <table class="table table-hover" id="QutationServiceDetail1">
@@ -118,10 +115,10 @@
                                             <input type="text" class="Discription form-control Input-height" style="width: 150px;font-size:12px" />
                                         </td>
                                         <td>
-                                            <input type="text" class="quantityG form-control Input-height" autocomplete="off" id="QuantityS" style="width: 80px;font-size:12px" />
+                                            <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 80px;font-size:12px" />
                                         </td>
                                         <td>
-                                            <input type="text" class="rateG form-control Input-height" autocomplete="off" id="RateS" style="width: 80px;font-size:12px" />
+                                            <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 80px;font-size:12px" />
                                         </td>
                                         <td>
                                             <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="width: 80px;font-size:12px" />
@@ -144,10 +141,10 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                        </div>
                     <div class="col-md-12">
                         <div class="pull-left text-left">
-                            <textarea id="CustomerNote" class="form-control" placeholder="Customer Note" style="font-size:12px"></textarea>
+                        <textarea id="CustomerNote" class="form-control" placeholder="Customer Note" style="font-size:12px"></textarea>
                             @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
                         </div>
                         <div class="pull-right text-right">
@@ -161,14 +158,14 @@
                         </div>
                         <div class="clearfix"></div>
                         <hr>
-
+                      
                         <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
                         <button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
                         <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>
-
+                       
                     </div>
                 </div>
-            </div>
+            </div>          
         </div>
     </div>
 </div>
@@ -861,7 +858,7 @@
                     Quantity: parseInt($(this).find('.quantityG').val()),
                     Rate: parseFloat($(this).find('.rateG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
-                    Description: $(this).find('.Discription').val(),
+                    Description: $(this).find('#Discription').val(),
                     Type: "Service",
                     ServiceDate: $(this).find('.ServiceDate').val(),
                     Vat: parseFloat($(this).find('.VATG').val()),

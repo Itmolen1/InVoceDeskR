@@ -48,46 +48,46 @@
                                     {
                                         if (item.Type == "Goods")
                                         {
-                                            <tr>
-                                                <td>
-                                                    <select class="product form-control pClassG Input-height" style="width: 250px;font-size:12px">
-                                                        <option value="AddNewProductSelect">Select Item..</option>
-                                                        @foreach (var product in ViewBag.Good)
+                            <tr>
+                                <td>
+                                    <select class="product form-control pClassG Input-height" style="width: 250px;font-size:12px">
+                                        <option value="AddNewProductSelect">Select Item..</option>
+                                        @foreach (var product in ViewBag.Good)
                                                         {
-                                                            <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                        <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="width: 100px;font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="width: 100px;font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
-                                                </td>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="quantityG form-control Input-height" style="width: 100px;font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="text" class="rateG form-control Input-height" style="width: 100px;font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
+                                </td>
 
-                                                <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="width: 120px;font-size:12px" value="@item.PurchaseTotal" readonly="readonly" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:80px;font-size:12px">
-                                                        @foreach (var item1 in ViewBag.VatDrop)
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" style="width: 120px;font-size:12px" value="@item.PurchaseTotal" readonly="readonly" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:80px;font-size:12px">
+                                        @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
+                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
-                                                    </select>
+                                    </select>
 
-                                                </td>
+                                </td>
 
-                                                <td>
-                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:100px" value="@item.RowSubTotal" />
-                                                </td>
-                                                <td>
-                                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
-                                                </td>
-                                                <td>
-                                                    <input type="button" id="btnRemoveGood" value="x" class="btn-height-Remove pull-right" style="width:50px" />
-                                                </td>
-                                            </tr>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:100px" value="@item.RowSubTotal" />
+                                </td>
+                                <td>
+                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnRemoveGood" value="x" class="btn-height-Remove pull-right" style="width:50px" />
+                                </td>
+                            </tr>
                                         }
                                     }
                                 }
@@ -166,51 +166,51 @@
 
                                         if (item.Type == "Service")
                                         {
-                                            <tr>
-                                                <td>
-                                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" style="width: 100px;font-size:12px" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <select class="product form-control pClassG Input-height" style="width: 150px;font-size:12px">
-                                                        <option value="AddNewServiceSelect">Select Item..</option>
-                                                        @foreach (var product in ViewBag.Service)
+                            <tr>
+                                <td>
+                                    <input type="text" class="ServiceDate ss Input-height form-control" value="@dt.ToShortDateString()" style="width: 100px;font-size:12px" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <select class="product form-control pClassG Input-height" style="width: 150px;font-size:12px">
+                                        <option value="AddNewServiceSelect">Select Item..</option>
+                                        @foreach (var product in ViewBag.Service)
                                                         {
-                                                            <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
+                                                        <option value="@product.ProductId" @(product.ProductId == item.PurchaseItemId ? "selected='selected'" : "")>@product.ProductName</option>
                                                         }
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="Discription form-control Input-height" value="@item.PurchaseDescription" autocomplete="off" style="width: 150px;font-size:12px" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="quantityG form-control Input-height" style="width: 80px;font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="rateG form-control Input-height" style="width:80px;font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="FTotalG form-control Input-height" style="width: 80px;font-size:12px" value="@item.PurchaseTotal" readonly="readonly" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="Discription form-control Input-height" value="@item.PurchaseDescription" autocomplete="off" style="width: 150px;font-size:12px" />
+                                </td>
+                                <td>
+                                    <input type="text" class="quantityG form-control Input-height" style="width: 80px;font-size:12px" value="@item.PurchaseQuantity" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="text" class="rateG form-control Input-height" style="width:80px;font-size:12px" value="@item.PurchaseItemRate" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="text" class="FTotalG form-control Input-height" style="width: 80px;font-size:12px" value="@item.PurchaseTotal" readonly="readonly" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <select name="NewsCategoriesID" class="VATG form-control Input-height" style="width:60px;font-size:12px">
 
-                                                        @foreach (var item1 in ViewBag.VatDrop)
+                                        @foreach (var item1 in ViewBag.VatDrop)
                                                         {
-                                                            <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
+                                                        <option value="@item1.Vat1" @(item1.Vat1 == item.PurchaseVatPercentage ? "selected='selected'" : "")>@item1.Name</option>
                                                         }
-                                                    </select>
+                                    </select>
 
-                                                </td>
-                                                <td>
-                                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" autocomplete="off" />
-                                                </td>
-                                                <td>
-                                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
-                                                </td>
-                                                <td>
-                                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
-                                                </td>
-                                            </tr>
+                                </td>
+                                <td>
+                                    <input type="text" readonly class="RowTotalG  form-control Input-height" style="width:80px" value="@item.RowSubTotal" autocomplete="off" />
+                                </td>
+                                <td>
+                                    <input type="hidden" class="PurchaseOrderDetailsId" value="@item.PurchaseOrderDetailsId" />
+                                </td>
+                                <td>
+                                    <input type="button" id="btnRemoveService" value="x" class="btn-height-Remove" style="width:50px" />
+                                </td>
+                            </tr>
                                         }
                                     }
                                 }
@@ -223,13 +223,13 @@
                                     <select id="SelectProductQutationS" class="product form-control pClassG Input-height" style="width: 150px;font-size:12px"></select>
                                 </td>
                                 <td>
-                                    <input type="text" class="Discription form-control Input-height" style="width: 150px;font-size:12px" autocomplete="off" />
+                                    <input type="text" class="Discription form-control Input-height" style="width: 150px;font-size:12px" />
                                 </td>
                                 <td>
-                                    <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 80px;font-size:12px" autocomplete="off" />
+                                    <input type="text" class="quantityG form-control Input-height" id="QuantityS" style="width: 80px;font-size:12px" />
                                 </td>
                                 <td>
-                                    <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 80px;font-size:12px" autocomplete="off" />
+                                    <input type="text" class="rateG form-control Input-height" id="RateS" style="width: 80px;font-size:12px" />
                                 </td>
                                 <td>
                                     <input type="text" class="FTotalG form-control Input-height" id="FTotals" style="width: 80px;font-size:12px" readonly="readonly" />
@@ -270,10 +270,10 @@
                 </div>
                 <div class="clearfix"></div>
                 <hr>
-                <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
-                <button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
-                <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>
-
+             <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px" ><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Save Draft</button>
+             <button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+             <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>
+                
             </div>
         </div>
     </div>
@@ -768,7 +768,7 @@
         else if (Id == "0") {
             return;
         }
-        else if (Id > 0) {
+        else if (Id > 0) {            
             var productId = Id;
             $.ajax({
                 url: "/Common/ProductPricebyId",
@@ -1145,7 +1145,7 @@
 <script type="text/javascript">
 
     $('#txtUploadFile12').on('change', function (e) {
-
+    
         var fileUpload = $("#txtUploadFile12").get(0);
         var files = fileUpload.files;
         var formData = new FormData($('#frmAccount')[0]);
@@ -1171,7 +1171,8 @@
                 async: false,
                 success: function (result) {
 
-                    if (result.FileName == "FileNotallowed") {
+                    if (result.FileName == "FileNotallowed")
+                    {
                         $.toast({
                             heading: 'Failed to upload',
                             text: 'File Not Allowed',
@@ -1180,7 +1181,7 @@
                             loaderBg: '#FF0000'  // To change the background
                         });
                     }
-
+                    
 
 
                     if (result != "") {

@@ -1,0 +1,81 @@
+﻿
+
+
+@{
+    InvoiceDiskLast.Models.CommonModel commonModel = new InvoiceDiskLast.Models.CommonModel();
+
+    if (ViewBag.commonModel != null)
+    {
+        commonModel = ViewBag.commonModel as InvoiceDiskLast.Models.CommonModel;
+    }
+    else
+    {
+        commonModel.SubTotal = "0.00";
+        commonModel.grandTotal = "0.00";
+        commonModel.Vat6 = "0.00";
+        commonModel.Vat21 = "0.00";
+    }
+
+    //   var commonModel = ViewBag.commonModel;
+    var Contectdatas = ViewBag.Contentdata;
+    var CompanyDatas = ViewBag.Companydata;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left text-left">
+            <textarea id="CustomerNote" class="form-control" placeholder="Customer Note" style="font-size:12px">@commonModel.Note</textarea>
+            <table class="table table-hover" id="participantTable">
+                <tbody id="upload123">
+                    @if (ViewBag.FILE != null)
+                    {
+                        foreach (var item in ViewBag.FILE)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="pull-right text-right">
+            <p>Sub - Total amount: €<label id="SubTotal">@commonModel.SubTotal</label></p>
+            <p>Totaal excel btw: €<label id="TotalBTW">@commonModel.SubTotal</label></p>
+            <p>BTW (0%) : €<label id="btwo">0.00</label> </p>
+            @if (commonModel.Vat6 != "")
+            {
+            <p>BTW (6%) : €<label id="BTW6">@commonModel.Vat6</label></p>
+            }
+            @if (commonModel.Vat21 != "")
+            {
+            <p>BTW (21%) : €<label id="BTW21">@commonModel.Vat21</label> </p>
+            }
+            <hr>        
+            <h3><b>Garnd Total :</b> €<label id="gtotal">@commonModel.grandTotal</label></h3>
+        </div>
+    </div>
+</div>
+<p></p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left text-left">
+            <p> We hopen dat alles duidelijk is. Laat het ons weten als u vragen heeft.</p>
+            <p>  Met vriendelijke groet.</p>
+
+            <div class="Grand-color-CompanyName">
+                <p>
+                    <div><b>@Contectdatas.ContactName</b></div>
+                    <div><b>@CompanyDatas.CompanyName</b></div>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

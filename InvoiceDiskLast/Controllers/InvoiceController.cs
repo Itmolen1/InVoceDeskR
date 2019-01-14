@@ -1022,6 +1022,21 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage responseInvoiceDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetInvoiceDetails/" + id.ToString()).Result;
                 List<InvoiceViewModel> InvoiceDetailsList = responseInvoiceDetailsList.Content.ReadAsAsync<List<InvoiceViewModel>>().Result;
 
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Invoice";
+                commonModel.FromDate = Convert.ToDateTime(InvoceModel.InvoiceDate);
+                commonModel.DueDate = Convert.ToDateTime(InvoceModel.InvoiceDueDate);
+                commonModel.ReferenceNumber = InvoceModel.RefNumber;
+                commonModel.Number_Id = InvoceModel.Invoice_ID;
+
+                commonModel.SubTotal = InvoceModel.SubTotal.ToString();
+                commonModel.Vat6 = InvoceModel.TotalVat6.ToString();
+                commonModel.Vat21 = InvoceModel.TotalVat21.ToString();
+                commonModel.grandTotal = InvoceModel.TotalAmount.ToString();
+
+                commonModel.Note = InvoceModel.CustomerNote;
+                ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 ViewBag.InvoiceData = InvoceModel;
