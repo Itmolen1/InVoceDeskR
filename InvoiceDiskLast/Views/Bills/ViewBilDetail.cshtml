@@ -22,38 +22,32 @@
     }
 </div>
 
-<div class="container">
-    <div class="row" style="margin-bottom:5px">
-        <div class="col-md-12">
-            <div class="btn-group">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:150px">
-                        <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
-                        Send
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/Bills/EmailBill/?Id=@BillModel.BilID">Send by Email</a>
-                        <a class="dropdown-item" href="/Bills/Print/?id=@BillModel.BilID">Print and send it yourself</a>
-                        <div class="dropdown-divider"></div>
 
-                    </div>
-                </div>
-                <div style="margin-left:3px">
-                    <div class="btn-group">
-                        <i class="fa fa-print btn btn-success" aria-hidden="true" style="color:yellow"></i>
-                       @Html.ActionLink("print concept", "Print", "Bills", new { id = BillModel.BilID }, new { @class = "btn btn-success" })
-                    </div>
-                </div>
-                <div style="margin-left:3px">
-                    <a href="/Bills/Edit/@BillModel.BilID" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true" style="margin-right:10px;color:yellow"></i>Change</a>
-                </div>
-                <div style="margin-left:3px">
-                    <a href="/Bills/Index" class="btn btn-success" visibility:hidden;" id="BackToHome"><i class="fa fa-angle-double-left" style="margin-right:5px;color:yellow"></i>Back To Home</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group" style="margin-bottom:5px">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:150px">
+                    <i class="fa fa-envelope" style="margin-right:20px;color:yellow"></i>
+                    Send
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/Bills/EmailBill/?Id=@BillModel.BilID">Send by Email</a>
+                    <a class="dropdown-item" href="/Bills/Print/?id=@BillModel.BilID">Print and send it yourself</a>
+
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
                 </div>
             </div>
+            <a href="/Bills/Print/?id=@BillModel.BilID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Download</a>
+            <a href="/Bills/Edit/@BillModel.BilID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-pencil fa-backgroun" style="margin-right:5px"></i></span>Change</a>
+            <a href="/Bills/Index" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-angle-double-left" style="margin-right:5px"></i></span>Back</a>
         </div>
     </div>
 </div>
+
+
+
 
 <div class="container">
     <div class="row" style="border:1px solid black">
