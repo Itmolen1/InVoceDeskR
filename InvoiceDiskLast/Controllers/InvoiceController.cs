@@ -326,7 +326,7 @@ namespace InvoiceDiskLast.Controllers
                         {
                             if (Transaction(invoiceViewModel, "Add"))
                             {
-                                return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                                //return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
                             }
                             else
                             {
@@ -340,10 +340,7 @@ namespace InvoiceDiskLast.Controllers
                         }
                     }
 
-                    if (invoiceViewModel.file23[0] != null)
-                    {
-                        CreatDirectoryClass.UploadFileToDirectoryCommon(InvoiceTable.InvoiceID, "Invoice", invoiceViewModel.file23, "Invoice");
-                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -534,7 +531,7 @@ namespace InvoiceDiskLast.Controllers
                         {
                             if (Transaction(invoiceViewModel, "Add"))
                             {
-                                return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
+                                //return new JsonResult { Data = new { Status = "Success", id = InvoiceTable.InvoiceID } };
                             }
                             else
                             {
