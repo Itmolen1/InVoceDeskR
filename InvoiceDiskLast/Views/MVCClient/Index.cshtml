@@ -13,6 +13,18 @@
         height: 550px;
         overflow-y: auto;
     }
+
+    .table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
 </style>
 <button id="CreateNewContacts" class="btn btn-sm btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Create New</button>
 
@@ -23,41 +35,35 @@
 
 
 
-<table class="table table-striped" id="ContactListTable">
-    <thead style="background-color:black;color:white">
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Bedrijif Naam
-            </th>
+<div class="row">
+    <div class="col-12">
+            <div class="table-responsive m-t-5">
+                <div id="example_wrapper" class="dataTables_wrapper">
+                    <div class="dataTables_length" id="example_length"></div>
+                    <table id="ContactListTable" class="table display table-bordered table-striped dataTable" role="grid" aria-describedby="example_info" style="width: 1502px;">
+                        <thead>
+                            <tr role="row">
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending" > Id</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" >Bedrijif Naam</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending">City</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Postal Code</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" >Mobiel</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" >Status</th>
+                                <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Type</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Action</th>
+                            </tr>
+                        </thead>  
+                    <tbody></tbody>                     
+                    </table>                   
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <th>
-                City
-            </th>
-            <th>
-                PostCode
-            </th>
-            <th>
-                Mobiel
-            </th>
-            <th>
-                Type
-            </th>
 
-            <th>
-                Status
-            </th>
 
-            <th class="text-right">Action</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
 
-</table>
 
-@*<div id="loadingDiv">Please wait while this page loads.</div>*@
 <div class="modal fade bs-example-modal-lg" id="ContactViewModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -165,7 +171,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <div class="row">                             
+                            <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         Type
@@ -173,7 +179,7 @@
                                             <option value="Customerv" selected>Klant</option>
                                             <option value="Venderv">verkoper</option>
                                         </select>
-                                    </div>                                   
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +187,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <div class="row">                               
+                            <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         Payment Duration:
@@ -271,10 +277,10 @@
         $('#CreateNewContactModal1').modal('show');
 
     });
-    
+
     function ViewDirectory(Id) {
         window.location.href = "/Common/ViewDirecory?Id=" + Id + "&DName=" + "Client";
-       
+
     }
 
     $('#UpdateContacts').click(function () {
@@ -310,7 +316,7 @@
                 Remarks: $('#Remarks').text(),
                 Company_Id: $('#Company_Id').val(),
                 PaymentTerm: $('#PaymentTermDurationSelect option:selected').text()
-            }           
+            }
             $.ajax({
                 url: '/MVCClient/AddOrEdit',
                 type: 'POST',
@@ -326,7 +332,7 @@
             });
         }
     });
-    
+
     function validateContact() {
         var isValid = true;
         if ($('#ContactName').val().trim() == "") {
@@ -366,7 +372,7 @@
 
         $('#UpdateContacts').hide();
         $('#SaveNewContacts').show();
-      
+
     }
 
     function EditContact(ContactsId) {
@@ -406,7 +412,7 @@
                 $('#BillingEmail1').val(resultContactData.BillingEmail);
                 $('#Remarks').val(resultContactData.Remarks);
 
-               
+
                 $('select#PaymentTermDurationSelect option').each(function () {
                     if ($(this).text() == resultContactData.PaymentTerm) {
                         this.selected = true;
@@ -493,7 +499,7 @@
                 }
                 else {
                     $('#Statusv').val("0");
-                } 
+                }
                 $('#Company_Idv').val(resultContactData.Company_Id);
                 $('#UserIdv').val(resultContactData.UserId);
                 $('#StreetNumberv').val(resultContactData.StreetNumber);
@@ -504,7 +510,7 @@
                 $('#Mobilev').val(resultContactData.Mobile);
                 $('#Websitev').val(resultContactData.Website);
                 $('#BillingEmailv').val(resultContactData.BillingEmail);
-                $('#BillingEmailv1').val(resultContactData.BillingEmail);               
+                $('#BillingEmailv1').val(resultContactData.BillingEmail);
                 $('#PaymentTermDurationSelectv').val(resultContactData.PaymentTerm);
 
                 $('#Remarksv').val(resultContactData.Remarks);
@@ -555,15 +561,14 @@
         }
     }
 
-    function SuccessUpdate()
-    {
-     $.toast({
-        heading: 'Opration success',
-        text: 'Data updated successfull',
-        icon: 'info',
-        loader: true,        // Change it to false to disable loader
-        loaderBg: '#008000'  // To change the background
-    });
+    function SuccessUpdate() {
+        $.toast({
+            heading: 'Opration success',
+            text: 'Data updated successfull',
+            icon: 'info',
+            loader: true,        // Change it to false to disable loader
+            loaderBg: '#008000'  // To change the background
+        });
     }
 
 </script>
