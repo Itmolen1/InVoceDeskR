@@ -24,6 +24,7 @@ namespace InvoiceDiskLast.Models
         public string KVK { get; set; }
         public string BTW { get; set; }
         public string BankName { get; set; }
+        public string WebSite { get; set; }
         //Contact Model      
         public string ContactName { get; set; }
         public string ContactAddress { get; set; }
