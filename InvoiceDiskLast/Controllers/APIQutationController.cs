@@ -51,6 +51,45 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
+
+
+        [Route("api/GetQuotationReport/{QuotationId:int}")]
+        public IHttpActionResult GetQuotationReport(int QuotationId)
+        {
+            try
+            {
+
+            
+
+
+
+                //var Query = db.SpQuotationReport(QuotationId).ToList();
+                ////{                  
+                ////    Qutation_ID = C.Qutation_ID,
+                ////    RefNumber = C.RefNumber,
+                ////    QutationDate = C.QutationDate,
+                ////    DueDate = C.DueDate,
+                ////    SubTotal = C.SubTotal,
+                ////    TotalVat6 = C.TotalVat6,
+                ////    TotalVat21 = C.TotalVat21,
+                ////    TotalAmount = C.TotalAmount,
+                ////    CustomerNote = C.CustomerNote,
+                  
+                ////    Type = C.Type,
+
+                ////}).ToList();
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                NotFound();
+                throw;
+            }
+        }
+
+
+
         // GET: api/APIQutation/5
         [ResponseType(typeof(QutationTable))]
         public IHttpActionResult GetQutationTable(int id)
@@ -233,41 +272,41 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        //[Route("api/GetAcceptedInvoices/{companyId:int}")]
-        //public IHttpActionResult GetQutationOrderListByStatus(int companyId)
-        //{
-        //    object ob = new object();
-        //    try
-        //    {
+        [Route("api/GetAcceptedInvoices/{companyId:int}")]
+        public IHttpActionResult GetQutationOrderListByStatus(int companyId)
+        {
+            object ob = new object();
+            try
+            {
 
-        //        ob = db.InvoiceTables.Where(p => p.CompanyId == companyId).Select(p => new InvoiceViewModel
-        //        {
-        //            InvoiceID = p.InvoiceID,
-        //            InvoiceDate = p.InvoiceDate,
-        //            InvoiceDueDate = p.InvoiceDueDate,
-        //            CustomerName = p.ContactsTable.ContactName,
-        //            RefNumber = p.RefNumber,
-        //            SubTotal = p.SubTotal,
-        //            UserName = (p.UserTable.UserFname != null  && p.UserTable.UserLname != null ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
-        //            Vat = p.TotalVat21 + p.TotalVat6,
-        //            Status = p.Status,
-        //            TotalAmount = p.TotalAmount,
-        //            CompanyId = p.CompanyId,
-        //            UserId = p.UserId,
-        //            Type = p.Type,
+                ob = db.InvoiceTables.Where(p => p.CompanyId == companyId).Select(p => new InvoiceViewModel
+                {
+                    InvoiceID = p.InvoiceID,
+                    InvoiceDate = p.InvoiceDate,
+                    InvoiceDueDate = p.InvoiceDueDate,
+                    CustomerName = p.ContactsTable.ContactName,
+                    RefNumber = p.RefNumber,
+                    SubTotal = p.SubTotal,
+                    UserName = (p.UserTable.UserFname != null && p.UserTable.UserLname != null ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
+                    Vat = p.TotalVat21 + p.TotalVat6,
+                    Status = p.Status,
+                    TotalAmount = p.TotalAmount,
+                    CompanyId = p.CompanyId,
+                    UserId = p.UserId,
+                    Type = p.Type,
 
 
-        //        }).ToList();
+                }).ToList();
 
-        //        return Ok(ob);
-        //    }
+                return Ok(ob);
+            }
 
-        //    catch (Exception)
-        //    {
+            catch (Exception)
+            {
 
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
 
 
 

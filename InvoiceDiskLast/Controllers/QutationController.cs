@@ -1,6 +1,10 @@
-﻿using InvoiceDiskLast.Models;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -96,19 +100,19 @@ namespace InvoiceDiskLast.Controllers
                 DateTime qutatioDate = new DateTime();
                 qutatioDate = DateTime.Now;
                 int PaymentDuration;
-                if (contectmodel.PaymentTerm.ToString() !=  "" && contectmodel.PaymentTerm.ToString() != null)
+                if (contectmodel.PaymentTerm.ToString() != "" && contectmodel.PaymentTerm.ToString() != null)
                 {
-                     PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
+                    PaymentDuration = Convert.ToInt32(contectmodel.PaymentTerm);
                 }
                 else
                 {
                     PaymentDuration = 15;
                 }
-               
+
 
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Quotation";
-                
+
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
                 commonModel.FromDate = qutatioDate;
@@ -120,7 +124,7 @@ namespace InvoiceDiskLast.Controllers
                 commonModel.Number_Id = q.Qutation_ID;
 
                 ViewBag.commonModel = commonModel;
-                
+
                 return View(quutionviewModel);
             }
             catch (Exception)
@@ -159,9 +163,9 @@ namespace InvoiceDiskLast.Controllers
                 commonModel.SubTotal = QutationModel.SubTotal.ToString();
                 commonModel.Vat6 = QutationModel.TotalVat6.ToString();
                 commonModel.Vat21 = QutationModel.TotalVat21.ToString();
-                commonModel. grandTotal = QutationModel.TotalAmount.ToString();
+                commonModel.grandTotal = QutationModel.TotalAmount.ToString();
                 commonModel.Note = QutationModel.CustomerNote;
-               
+
                 ViewBag.commonModel = commonModel;
                 ViewBag.Contentdata = contectmodel;
                 ViewBag.Companydata = companyModel;
@@ -433,7 +437,91 @@ namespace InvoiceDiskLast.Controllers
 
         }
 
-      
+
+
+
+        public ActionResult CrystalReport()
+        {
+            //HttpResponseMessage responseQutationDetailsList = GlobalVeriables.WebApiClient.GetAsync("GetQuotationReport/" + 43.ToString()).Result;
+            //List<QuatationReportViewModel> QutationDetailslist = responseQutationDetailsList.Content.ReadAsAsync<List<QuatationReportViewModel>>().Result;
+
+            DBEntities _dbentities = new DBEntities();
+
+            List<QuatationReportViewModel> QutationReportViewModel = new List<QuatationReportViewModel>();
+
+            QutationReportViewModel = (from q in _dbentities.QutationTables
+                                       join qt in _dbentities.QutationDetailsTables on q.QutationID equals qt.QutationID
+                                       join c in _dbentities.ContactsTables on q.ContactId equals c.ContactsId
+                                       join comp in _dbentities.ComapnyInfoes on q.CompanyId equals comp.CompanyID
+                                       join p in _dbentities.ProductTables on qt.ItemId equals p.ProductId
+                                       where q.QutationID == 44
+
+                                       select new QuatationReportViewModel
+                                       {
+                                           // Contact Information
+                                           ContactName = c.ContactName,
+                                           ContactAddress = c.ContactAddress,
+                                           City = c.City,
+                                           Land = c.Land,
+                                           PostalCode = c.PostalCode,
+                                           Mobile = c.Mobile,
+                                           telephone = c.telephone,
+                                           ConatctStreetNumber = c.StreetNumber,
+                                           // Company Information                           
+                                           CompanyName = comp.CompanyName,
+                                           CompanyAddress = comp.CompanyAddress,
+                                           CompanyPhone = comp.CompanyPhone,
+                                           CompanyCell = comp.CompanyCell,
+                                           CompanyEmail = comp.CompanyEmail,
+                                           CompanyLogo = comp.CompanyLogo,
+                                           CompanyCity = comp.CompanyCity,
+                                           CompanyCountry = comp.CompanyCountry,
+                                           CompnayStreetNumber = c.StreetNumber,
+                                           CompnayPostalCode = c.PostalCode,
+                                           IBANNumber = comp.IBANNumber,
+                                           BIC = comp.BIC,
+                                           KVK = comp.KVK,
+                                           BTW = comp.BTW,
+                                           BankName = comp.BankName,
+                                           //qutation Tabel
+                                           QutationID = q.QutationID,
+                                           Qutation_ID = q.Qutation_ID,
+                                           RefNumber = q.RefNumber,
+                                           QutationDate = q.QutationDate,
+                                           DueDate = q.DueDate,
+                                           SubTotal = q.SubTotal ?? 0,
+                                           TotalVat6 = q.TotalVat6 ?? 0,
+                                           TotalVat21 = q.TotalVat21 ?? 0,
+
+                                           TotalAmount = q.TotalAmount ?? 0,
+                                           CustomerNote = q.CustomerNote,
+                                           //Qutation Detail table
+                                           Rate = qt.Rate ?? 0,
+                                           Quantity = qt.Quantity ?? 0,
+                                           Vat = qt.Vat ?? 0,
+                                           Type = qt.Type,
+                                           ItemName = p.ProductName,
+                                           Total = qt.Total ?? 0,
+                                           RowSubTotal = qt.RowSubTotal ?? 0,
+                                           Description = qt.Description,
+
+                                       }).ToList();
+
+
+            ReportDocument rd = new ReportDocument();
+            rd.Load(Path.Combine(Server.MapPath("~/CrystalReport/QReport.rpt")));
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            rd.SetDataSource(QutationReportViewModel);
+            Stream stram = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            stram.Seek(0, SeekOrigin.Begin);
+
+
+            return new FileStreamResult(stram, "application/pdf");
+        }
+
+
         [HttpPost]
         public ActionResult SaveEmail(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -620,7 +708,7 @@ namespace InvoiceDiskLast.Controllers
 
             return new JsonResult { Data = new { Status = "Success", path = "", QutationId = qutationTable.QutationID } };
         }
-        
+
         [HttpGet]
         public ActionResult EditQutation(int QutationId)
         {
@@ -767,7 +855,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
-        
+
         [HttpPost]
         public ActionResult UploadFileToPDF()
         {
@@ -791,7 +879,7 @@ namespace InvoiceDiskLast.Controllers
 
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
-        
+
         [HttpPost]
         public ActionResult UploadFiles(MVCQutationViewModel MVCQutationViewModel)
         {
@@ -1132,8 +1220,6 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
                 MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
 
-
-
                 var folderPath = Server.MapPath("/PDF/");
                 EmailController.clearFolder(folderPath);
                 return RedirectToAction("ViewQuation", new { quautionId = email.invoiceId });
@@ -1143,7 +1229,6 @@ namespace InvoiceDiskLast.Controllers
                 TempData["EmailMessge"] = ex.Message.ToString();
                 TempData["Error"] = ex.Message.ToString();
             }
-
             if (TempData["Path"] == null)
             {
                 TempData["Path"] = fileName;
@@ -1162,14 +1247,12 @@ namespace InvoiceDiskLast.Controllers
         [DeleteFileClass]
         public FileResult DownloadFile(string FilePath1)
         {
-
             string filepath = "";
             string FileName = FilePath1;
             try
             {
                 filepath = System.IO.Path.Combine(Server.MapPath("/PDF/"), FilePath1);
                 HttpContext.Items["FilePath"] = filepath;
-
             }
             catch (Exception)
             {
@@ -1181,7 +1264,6 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult SaveEmailPrint(MVCQutationViewModel MVCQutationViewModel)
         {
-
             QutationTable qutationTable;
             MVCQutationModel mvcQutationModel = new MVCQutationModel();
 
@@ -1238,7 +1320,6 @@ namespace InvoiceDiskLast.Controllers
                             QtDetails.Total = Convert.ToDouble(QDTList.Total);
                             QtDetails.ServiceDate = QDTList.ServiceDate;
                             QtDetails.RowSubTotal = QDTList.RowSubTotal;
-
                             QtDetails.Vat = Convert.ToDouble(QDTList.Vat);
                             QtDetails.Type = QDTList.Type;
                             if (QtDetails.QutationDetailId == 0)
@@ -1250,9 +1331,6 @@ namespace InvoiceDiskLast.Controllers
                                 HttpResponseMessage responsses = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIQutationDetails/" + QtDetails.QutationDetailId, QtDetails).Result;
                             }
                         }
-
-
-
                     }
 
                     if (MVCQutationViewModel.file23[0] != null)

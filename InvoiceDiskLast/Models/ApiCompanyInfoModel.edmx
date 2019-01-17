@@ -713,6 +713,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="DB_A415B5_uurtjefactuurDB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="title" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="FK_Id" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="AccountCode" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="GetStockItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ComapniId" Type="int" Mode="In" />
           <ReturnType>
@@ -726,6 +734,57 @@
               </RowType>
             </CollectionType>
           </ReturnType>
+        </Function>
+        <Function Name="InsertIntoAccountTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="title" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="FK_Id" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="AccountCode" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="InsertIntoHeadAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="title" Type="varchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar" Mode="In" />
+          <Parameter Name="FK_Id" Type="int" Mode="In" />
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="OutID" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_GetJournal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SpQuotationReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="QuotationId" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="APIcompanyModelStoreContainer">
           <EntitySet Name="AccountTable" EntityType="Self.AccountTable" Schema="dbo" store:Type="Tables" />
@@ -1044,6 +1103,67 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
+          <FunctionImport Name="SpQuotationReport" ReturnType="Collection(APIcompanyModel.SpQuotationReport_Result)">
+          <Parameter Name="QuotationId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="QuotationReportStoreProcedure" ReturnType="Collection(APIcompanyModel.SpQuotationReport_Result)">
+          <Parameter Name="QuotationId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DB_A415B5_uurtjefactuurDB">
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="FK_Id" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="AccountCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InsertIntoAccountTable">
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="FK_Id" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="AccountCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InsertIntoHeadAccount">
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="Description" Mode="In" Type="String" />
+            <Parameter Name="FK_Id" Mode="In" Type="Int32" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="OutID" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_GetJournal" ReturnType="Collection(APIcompanyModel.Sp_GetJournal_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(APIcompanyModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(APIcompanyModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1829,6 +1949,96 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="SpQuotationReport_Result">
+          <Property Type="String" Name="Qutation_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="RefNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="QutationDate" Nullable="false" />
+          <Property Type="DateTime" Name="DueDate" Nullable="false" />
+          <Property Type="Double" Name="SubTotal" Nullable="true" />
+          <Property Type="Double" Name="TotalVat6" Nullable="true" />
+          <Property Type="Double" Name="TotalVat21" Nullable="true" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="CompanyLogo" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CompanyAddress" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="StreetNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PostalCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CompanyCity" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CompanyCountry" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CompanyPhone" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CompanyCell" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CompanyEmail" Nullable="true" MaxLength="25" />
+          <Property Type="String" Name="Website" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BankName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="IBANNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BIC" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="KVK" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BTW" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ContactAddress" Nullable="true" MaxLength="400" />
+          <Property Type="String" Name="StreetNumber1" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="PostalCode1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Land" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="LandLine" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="telephone" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BillingEmail" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Website1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PersonCompany" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Addeddate" Nullable="true" />
+          <Property Type="Boolean" Name="Status" Nullable="true" />
+          <Property Type="Int32" Name="PaymentTerm" Nullable="true" />
+          <Property Type="Double" Name="TotalAmount" Nullable="true" />
+          <Property Type="String" Name="CustomerNote" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="ItemId" Nullable="true" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="300" />
+          <Property Type="Int32" Name="Quantity" Nullable="true" />
+          <Property Type="Double" Name="Rate" Nullable="true" />
+          <Property Type="Double" Name="Total" Nullable="true" />
+          <Property Type="Double" Name="Vat" Nullable="true" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="100" />
+          <Property Type="Double" Name="RowSubTotal" Nullable="true" />
+          <Property Type="String" Name="Type1" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ServiceDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="SpQuotationReport1_Result">
+          <Property Type="Int32" Name="QutationID" Nullable="false" />
+          <Property Type="String" Name="Qutation_ID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="RefNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="QutationDate" Nullable="false" />
+          <Property Type="DateTime" Name="DueDate" Nullable="false" />
+          <Property Type="Double" Name="SubTotal" Nullable="true" />
+          <Property Type="Double" Name="TotalVat6" Nullable="true" />
+          <Property Type="Double" Name="TotalVat21" Nullable="true" />
+          <Property Type="Double" Name="DiscountAmount" Nullable="true" />
+          <Property Type="Double" Name="TotalAmount" Nullable="true" />
+          <Property Type="String" Name="CustomerNote" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="UserId" Nullable="true" />
+          <Property Type="Int32" Name="CompanyId" Nullable="true" />
+          <Property Type="Int32" Name="ContactId" Nullable="true" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="Sp_GetJournal_Result">
+          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AccountTitle" Nullable="true" MaxLength="40" />
+          <Property Type="DateTime" Name="TranDate" Nullable="true" />
+          <Property Type="Double" Name="AmountCredit" Nullable="true" />
+          <Property Type="Double" Name="AmountDebit" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2281,6 +2491,160 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SpQuotationReport" FunctionName="APIcompanyModel.Store.SpQuotationReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APIcompanyModel.SpQuotationReport_Result">
+                <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
+                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+                <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
+                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
+                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
+                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
+                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
+                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
+                <ScalarProperty Name="BIC" ColumnName="BIC" />
+                <ScalarProperty Name="KVK" ColumnName="KVK" />
+                <ScalarProperty Name="BTW" ColumnName="BTW" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="StreetNumber1" ColumnName="StreetNumber1" />
+                <ScalarProperty Name="PostalCode1" ColumnName="PostalCode1" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Land" ColumnName="Land" />
+                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
+                <ScalarProperty Name="telephone" ColumnName="telephone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
+                <ScalarProperty Name="Website1" ColumnName="Website1" />
+                <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Vat" ColumnName="Vat" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
+                <ScalarProperty Name="Type1" ColumnName="Type1" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="QuotationReportStoreProcedure" FunctionName="APIcompanyModel.Store.SpQuotationReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APIcompanyModel.SpQuotationReport_Result">
+                <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
+                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+                <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
+                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
+                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
+                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
+                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
+                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
+                <ScalarProperty Name="BIC" ColumnName="BIC" />
+                <ScalarProperty Name="KVK" ColumnName="KVK" />
+                <ScalarProperty Name="BTW" ColumnName="BTW" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="StreetNumber1" ColumnName="StreetNumber1" />
+                <ScalarProperty Name="PostalCode1" ColumnName="PostalCode1" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Land" ColumnName="Land" />
+                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
+                <ScalarProperty Name="telephone" ColumnName="telephone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
+                <ScalarProperty Name="Website1" ColumnName="Website1" />
+                <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Vat" ColumnName="Vat" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
+                <ScalarProperty Name="Type1" ColumnName="Type1" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DB_A415B5_uurtjefactuurDB" FunctionName="APIcompanyModel.Store.DB_A415B5_uurtjefactuurDB" />
+          <FunctionImportMapping FunctionImportName="InsertIntoAccountTable" FunctionName="APIcompanyModel.Store.InsertIntoAccountTable" />
+          <FunctionImportMapping FunctionImportName="InsertIntoHeadAccount" FunctionName="APIcompanyModel.Store.InsertIntoHeadAccount" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="APIcompanyModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="APIcompanyModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="APIcompanyModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="Sp_GetJournal" FunctionName="APIcompanyModel.Store.Sp_GetJournal">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APIcompanyModel.Sp_GetJournal_Result">
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="AccountTitle" ColumnName="AccountTitle" />
+                <ScalarProperty Name="TranDate" ColumnName="TranDate" />
+                <ScalarProperty Name="AmountCredit" ColumnName="AmountCredit" />
+                <ScalarProperty Name="AmountDebit" ColumnName="AmountDebit" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="APIcompanyModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APIcompanyModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="APIcompanyModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="APIcompanyModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="APIcompanyModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="APIcompanyModel.Store.sp_upgraddiagrams" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

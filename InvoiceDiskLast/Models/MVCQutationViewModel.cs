@@ -66,6 +66,13 @@ namespace InvoiceDiskLast.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> sdate2 { get; set; }
+
+
+        public  CompanyViewModel ConmpanyInforModel { get; set; }
+
+        public  MVCQutationModel QuatatoionModel { get; set; }
+        public MVCContactModel   ContactModel{ get; set; }
+
         public List<QutationDetailsTable> QutationDetailslist { get; set; }
 
     }
