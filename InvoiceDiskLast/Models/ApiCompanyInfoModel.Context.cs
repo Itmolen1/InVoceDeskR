@@ -54,6 +54,8 @@ namespace InvoiceDiskLast.Models
         public virtual DbSet<ContactsTable> ContactsTables { get; set; }
         public virtual DbSet<QutationTable> QutationTables { get; set; }
         public virtual DbSet<ComapnyInfo> ComapnyInfoes { get; set; }
+        public virtual DbSet<EXPENSE> EXPENSEs { get; set; }
+        public virtual DbSet<ExpenseDetail> ExpenseDetails { get; set; }
     
         [DbFunction("DBEntities", "GetStockItem")]
         public virtual IQueryable<GetStockItem_Result> GetStockItem(Nullable<int> comapniId)

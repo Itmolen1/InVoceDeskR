@@ -14,7 +14,7 @@ namespace InvoiceDiskLast.ReportForms
         protected void Page_Load(int Id)
         {
             CrystalReportViewer1.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
-            CrystalReport2 _ob = new CrystalReport2();
+          //  CrystalReport2 _ob = new CrystalReport2();
             DBEntities entities = new DBEntities();
 
             var Query = entities.QutationTables.Where(Q => Q.QutationID == Id).Select(c => new QuatationReportViewModel

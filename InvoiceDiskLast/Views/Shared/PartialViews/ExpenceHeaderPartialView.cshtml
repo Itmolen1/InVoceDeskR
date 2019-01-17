@@ -1,0 +1,142 @@
+﻿
+@{
+    //  var Contectdatas = ViewBag.Contentdata;
+    var CompanyDatas = ViewBag.Companydata;
+    var commonModel = ViewBag.commonModel;
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body printableArea">
+            <h3><b><img src="@Url.Content("~/Images/"+ @CompanyDatas.CompanyLogo)" class="image-Size" /></b> <span class="pull-right m-t-40">@CompanyDatas.CompanyName</span></h3>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <h3> &nbsp;<b class="text-muted">@commonModel.Name</b></h3>
+
+                        @*<address>
+                                <p class="text-muted m-l-5">
+                                    @Contectdatas.ContactName
+                                    <br />@Contectdatas.ContactAddress, @Contectdatas.StreetNumber
+                                    <br />@Contectdatas.PostalCode, @Contectdatas.City
+                                    <br />@Contectdatas.Land
+                                </p>
+                            </address>*@
+                        <div class="row">
+
+                            <div class="col-md-3">Vender:</div>
+                            <div class="col-md-9">
+                                <select class="form-control" id="venderId"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"> Ref no:</div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="Number_ID" value="" />
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3">Accounts:</div>
+                            <div class="col-md-9">
+                                <select class="form-control" id="drpExpenseAccount"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-3">Date:</div>
+                            <div class="col-md-9">
+                              <input type="text"  class="form-control" id="Expencedate"/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="pull-right text-right">
+
+                        @*<h4 class="font-bold">Company Name</h4>*@
+                        <p class="text-muted m-l-30">
+                            Kvk nr: @CompanyDatas.KVK
+                            <br />BTW nr: @CompanyDatas.BTW
+                            <br />Bank: @CompanyDatas.BankName
+                            <br />IBAN nr: @CompanyDatas.IBANNumber
+                            <br />BIC r: @CompanyDatas.BIC
+                            <br />Telephone: @CompanyDatas.CompanyPhone
+                            <br />Cell nr: @CompanyDatas.CompanyCell
+                            <br />E-mail: @CompanyDatas.CompanyEmail
+                            <br />Website: @CompanyDatas.Website
+                            <br />Address: @CompanyDatas.CompanyAddress, @CompanyDatas.StreetNumber
+                            <br />          @CompanyDatas.PostalCode, @CompanyDatas.CompanyCity
+                            <br />          @CompanyDatas.CompanyCountry
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+
+    $(document).ready(function () {
+        LoadContacts();
+        GetExpenseAccount();
+    });
+
+    function LoadContacts() {
+        $("#venderId").find("option").remove();
+        $("#venderId").append("<option value=0>" + "Select vender" + "</option>");
+        $.ajax({
+            url: "/MVCClient/GetContacts",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#venderId').append($('<option></option>').val(item.ContactsId).html(item.ContactName));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+
+
+
+
+
+    function GetExpenseAccount() {
+        $("#drpExpenseAccount").find("option").remove();
+        $("#drpExpenseAccount").append("<option value=0>" + "Select Account" + "</option>");
+        $.ajax({
+            url: "/MVCAccounts/GetExpenseAccount",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#drpExpenseAccount').append($('<option></option>').val(item.AccountId).html(item.AccountTitle));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+
+        });
+    }
+
+
+</script>

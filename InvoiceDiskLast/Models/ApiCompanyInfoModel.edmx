@@ -181,6 +181,37 @@
           <Property Name="ExceptionStackTrace" Type="nvarchar" MaxLength="500" />
           <Property Name="DateTime" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="EXPENSE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="REFERENCEno" Type="varchar" MaxLength="20" />
+          <Property Name="ACCOUNT_ID" Type="int" />
+          <Property Name="VENDOR_ID" Type="int" />
+          <Property Name="notes" Type="varchar" MaxLength="500" />
+          <Property Name="SUBTOTAL" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="VAT_AMOUNT" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="GRAND_TOTAL" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="comapny_id" Type="int" />
+          <Property Name="AddedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ExpenseDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EXPENSE_ACCOUNT_ID" Type="int" />
+          <Property Name="DESCRIPTION" Type="varchar" MaxLength="500" />
+          <Property Name="AMOUNT" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="TAX_PERCENT" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="TAX_AMOUNT" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="SUBTOTAL" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="expense_id" Type="int" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="comapny_id" Type="int" />
+        </EntityType>
         <EntityType Name="HeadAccountTable">
           <Key>
             <PropertyRef Name="HeadAccountId" />
@@ -482,6 +513,42 @@
             </Principal>
             <Dependent Role="ContactsTable">
               <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPENSE_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="EXPENSE" Type="Self.EXPENSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="EXPENSE">
+              <PropertyRef Name="comapny_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPENSE_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="EXPENSE" Type="Self.EXPENSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="EXPENSE">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpenseDetail_EXPENSE">
+          <End Role="EXPENSE" Type="Self.EXPENSE" Multiplicity="0..1" />
+          <End Role="ExpenseDetail" Type="Self.ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EXPENSE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="expense_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -820,6 +887,8 @@
           <EntitySet Name="ControlAccountTable" EntityType="Self.ControlAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DirectoryTable" EntityType="Self.DirectoryTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLogger" EntityType="Self.ExceptionLogger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EXPENSE" EntityType="Self.EXPENSE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpenseDetail" EntityType="Self.ExpenseDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HeadAccountTable" EntityType="Self.HeadAccountTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceDetailsTable" EntityType="Self.InvoiceDetailsTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvoiceTable" EntityType="Self.InvoiceTable" Schema="dbo" store:Type="Tables" />
@@ -859,6 +928,18 @@
           <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="Self.FK_ContactsTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="ContactsTable" EntitySet="ContactsTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPENSE_ComapnyInfo" Association="Self.FK_EXPENSE_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="EXPENSE" EntitySet="EXPENSE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPENSE_UserTable" Association="Self.FK_EXPENSE_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="EXPENSE" EntitySet="EXPENSE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExpenseDetail_EXPENSE" Association="Self.FK_ExpenseDetail_EXPENSE">
+            <End Role="EXPENSE" EntitySet="EXPENSE" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_HeadAccountTable_ComapnyInfo" Association="Self.FK_HeadAccountTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
@@ -1089,8 +1170,22 @@
             <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
           </AssociationSet>
           <FunctionImport Name="QutationDetails" IsComposable="true" ReturnType="Collection(APIcompanyModel.QutationDetails_Result)">
-            <Parameter Name="QutationID" Mode="In" Type="Int32" />
+          <Parameter Name="QutationID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="EXPENSEs" EntityType="APIcompanyModel.EXPENSE" />
+          <EntitySet Name="ExpenseDetails" EntityType="APIcompanyModel.ExpenseDetail" />
+          <AssociationSet Name="FK_EXPENSE_ComapnyInfo" Association="APIcompanyModel.FK_EXPENSE_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="EXPENSE" EntitySet="EXPENSEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EXPENSE_UserTable" Association="APIcompanyModel.FK_EXPENSE_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="EXPENSE" EntitySet="EXPENSEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExpenseDetail_EXPENSE" Association="APIcompanyModel.FK_ExpenseDetail_EXPENSE">
+            <End Role="EXPENSE" EntitySet="EXPENSEs" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1452,6 +1547,7 @@
           <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="EXPENSEs" Relationship="APIcompanyModel.FK_EXPENSE_UserTable" FromRole="UserTable" ToRole="EXPENSE" />
           </EntityType>
         <EntityType Name="DirectoryTable">
           <Key>
@@ -1778,6 +1874,7 @@
           <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
           <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
+          <NavigationProperty Name="EXPENSEs" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="ComapnyInfo" ToRole="EXPENSE" />
         </EntityType>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -1961,6 +2058,77 @@
           <Property Type="String" Name="UserName" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="PaymentTerm" Nullable="true" />
         </ComplexType>
+        <EntityType Name="EXPENSE">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="REFERENCEno" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ACCOUNT_ID" Type="Int32" />
+          <Property Name="VENDOR_ID" Type="Int32" />
+          <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SUBTOTAL" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="VAT_AMOUNT" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="GRAND_TOTAL" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="comapny_id" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="EXPENSE" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_EXPENSE_UserTable" FromRole="EXPENSE" ToRole="UserTable" />
+          <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="EXPENSE" ToRole="ExpenseDetail" />
+        </EntityType>
+        <EntityType Name="ExpenseDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EXPENSE_ACCOUNT_ID" Type="Int32" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AMOUNT" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="TAX_PERCENT" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TAX_AMOUNT" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="SUBTOTAL" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="expense_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="comapny_id" Type="Int32" />
+          <NavigationProperty Name="EXPENSE" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="ExpenseDetail" ToRole="EXPENSE" />
+        </EntityType>
+        <Association Name="FK_EXPENSE_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.EXPENSE" Role="EXPENSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="EXPENSE">
+              <PropertyRef Name="comapny_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EXPENSE_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.EXPENSE" Role="EXPENSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="EXPENSE">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpenseDetail_EXPENSE">
+          <End Type="APIcompanyModel.EXPENSE" Role="EXPENSE" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EXPENSE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="expense_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2479,6 +2647,39 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="EXPENSEs">
+            <EntityTypeMapping TypeName="APIcompanyModel.EXPENSE">
+              <MappingFragment StoreEntitySet="EXPENSE">
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="comapny_id" ColumnName="comapny_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="GRAND_TOTAL" ColumnName="GRAND_TOTAL" />
+                <ScalarProperty Name="VAT_AMOUNT" ColumnName="VAT_AMOUNT" />
+                <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+                <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
+                <ScalarProperty Name="REFERENCEno" ColumnName="REFERENCEno" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpenseDetails">
+            <EntityTypeMapping TypeName="APIcompanyModel.ExpenseDetail">
+              <MappingFragment StoreEntitySet="ExpenseDetail">
+                <ScalarProperty Name="comapny_id" ColumnName="comapny_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="expense_id" ColumnName="expense_id" />
+                <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
+                <ScalarProperty Name="TAX_AMOUNT" ColumnName="TAX_AMOUNT" />
+                <ScalarProperty Name="TAX_PERCENT" ColumnName="TAX_PERCENT" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="EXPENSE_ACCOUNT_ID" ColumnName="EXPENSE_ACCOUNT_ID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

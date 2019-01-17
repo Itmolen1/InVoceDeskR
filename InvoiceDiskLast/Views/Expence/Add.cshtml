@@ -1,0 +1,488 @@
+﻿@model InvoiceDiskLast.Models.MVCQutationViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<a href="/Qutation/CrystalReport">Exportdedwed</a>
+
+<div class="container">
+    <div class="row" style="border:1px solid black">
+        <div class="col-md-12">
+            @Html.Partial("~/Views/Shared/PartialViews/ExpenceHeaderPartialView.cshtml")
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-body printableArea">
+                        <div id="TableGoodLink" class="GoodsLink">
+
+                        </div>
+                        <div id="TableGood">
+                            <div class="table-responsive" style="clear: both">
+                                <table class="table table-hover" id="tblexpense">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>
+                                                Expense acount
+                                            </th>
+                                            <th>
+                                                Description
+                                            </th>
+                                            <th>
+                                                Amount
+                                            </th>
+                                            <th>
+                                                vat
+                                            </th>
+                                            <th>
+                                                sub total
+                                            </th>
+                                            <th>
+
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="tbbodyExpense">
+
+                                        <tr id="mainrow">
+                                            <td>
+                                                <select id="ExpenseAccount" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="Description form-control" id="Description" autocomplete="off" style="font-size:12px" placeholder="Description" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="Amount form-control Input-height" id="Amount" autocomplete="off" style="font-size:12px" placeholder="Amount" />
+                                            </td>
+
+                                            <td>
+                                                <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
+                                                    <option>0</option>
+                                                    <option>6</option>
+                                                    <option>21</option>
+                                                </select>
+                                            </td>
+
+                                            <td>
+                                                <input type="text" class="SubTotal form-control Input-height" id="SubTotal" readonly="readonly" style="font-size:12px" />
+                                            </td>
+
+                                            <td>
+                                                <input type="hidden" class="taxAmount form-control Input-height" id="taxAmount" readonly="readonly" style="font-size:12px" />
+                                            </td>
+
+                                            <td>
+                                                <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="pull-left text-left">
+                            <textarea id="notes" rows="4" cols="40" placeholder="Customer Note" style="font-size:12px"></textarea>
+                            @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
+                        </div>
+
+                        <div class="pull-right text-right">
+                            <p>Sub - Total amount: €<label id="SubTotalAmont"></label></p>
+                            <p>Totaal excel btw: €<label id="TotalBTW"></label></p>
+                            <p>BTW (0%) : €<label id="btwo">0.00</label> </p>
+                            <p>BTW (6%) : €<label id="BTW6"></label></p>
+                            <p>BTW (21%) : €<label id="BTW21"></label> </p>
+                            <hr>
+                            <h3><b>Garnd Total :</b> €<label id="gtotal"></label></h3>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+
+                        <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Add Expense</button>
+                        @*<button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+                            <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
+
+
+<script type="text/javascript">
+    var Currentrow, Total, vat, Price, Quantity = 0;
+    $(document).ready(function () {
+        GetExpenseAccountMainRow();
+    });
+
+    var VAT21VAlUE, VAT6VAlUE;
+    $('#btnaddGoods').click(function () {
+        var currentRow = $(this).closest("tr");
+        var VAT = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(VAT, currentRow);
+        CalculateVateTotal();
+        GrandTotal();
+        TotalExcudeBtw();
+        CalculateTaxAmount(VAT, currentRow);
+        var isAllValid = true;
+        if ($("#mainrow #ExpenseAccount").val() == "0") {
+            isAllValid = false;
+            alert("Account is required");
+            return;
+        }
+
+        var isAllValid = true;
+        if ($("#mainrow .Description ").val() == 0) {
+            isAllValid = false;
+            alert("Description is required");
+            return;
+        }
+        var isAllValid = true;
+        if ($("#mainrow .Amount").val() == 0) {
+            isAllValid = false;
+            alert("Amount is required");
+            return;
+        }
+
+
+        if (isAllValid) {
+            var $newRow = $("#mainrow").clone().removeAttr('id');
+            $('#ExpenseAccount', $newRow).val($("#ExpenseAccount").val());
+            $('.VATG', $newRow).val($("#mainrow #SelectVATG").val());
+            //Replace add button with remove button
+            $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
+            $("#ExpenseAccount#Description,#Amount,#SubTotal,#VATG", $newRow).removeAttr('id');
+            $('span.error', $newRow).remove();
+            $('.tbbodyExpense').prepend($newRow);
+            $('#mainrow  #ExpenseAccount').val('0');
+            $('#mainrow  #Amount').val('');
+            $('#mainrow  #Description').val('');
+            $('#mainrow  #SubTotal').val('');
+            $('#mainrow  .VATG').val(0);
+            $('#mainrow  .taxAmount').val(0);
+
+
+        }
+        $('#mainrow #Amount').val('');
+    });
+
+
+
+    $('#tblexpense').on('click', '.remove', function () {
+
+        var CurrentRow = $(this).closest("tr");
+        $(this).parents('tr').remove();
+        
+        var currentRow = $(this).closest("tr");
+        var VAT = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(VAT, currentRow);
+        CalculateVateTotal();
+        GrandTotal();
+        TotalExcudeBtw();
+        CalculateTaxAmount(VAT, currentRow);
+    });
+
+
+    function RowSubTalSubtotal(vat, CurrentRow) {
+        Total = 0;
+        Total = CurrentRow.find('.Amount').val();
+        if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
+            if (!isNaN(Total) && typeof (Total) != "undefined") {
+                CurrentRow.find('.SubTotal').val(Total);
+                CurrentRow.find('.SubTotal').val(parseFloat(Total).toFixed(2));
+                return;
+            }
+        }
+        if (!isNaN(Total) && Total != "" && typeof (vat) != "undefined") {
+            var InputVatValue = parseFloat((Total / 100) * vat);
+            var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
+            CurrentRow.find('.SubTotal').val(parseFloat(ValueWTV).toFixed(2));
+        }
+    }
+
+    function SumVatAmount() {
+
+        var VatAmount = 0;
+        var vat6 = $('#BTW6').text();
+        var vat21 = $('#BTW21').text();
+
+        if (!isNaN(vat6) && Total != "" && typeof (vat) != "undefined") {
+            VatAmount += parseFloat(vat6);
+        }
+
+        if (!isNaN(vat21) && Total != "" && typeof (vat21) != "undefined") {
+            {
+                VatAmount += parseFloat(vat21);
+            }
+
+            return VatAmount;
+        }
+    }
+
+
+    function CalculateVateTotal() {
+        var Totalvat211, Totalvat6 = 0;
+        var t = 0;
+        $('#tblexpense .tbbodyExpense tr').each(function () {
+            var Value = 0;
+            Value = $(this).find(".VATG").val();
+            var FTotalG = $(this).find(".Amount").val();
+
+            if (Value == 21) {
+
+                if (!isNaN(parseFloat(Value))) {
+                    var InputVatValue = parseFloat((FTotalG / 100) * 21);
+                    t += parseFloat(InputVatValue)
+                }
+            }
+
+            if (Value == 6) {
+                if (!isNaN(parseFloat(Value))) {
+                    var InputVatValue = parseFloat((FTotalG / 100) * 6);
+                    Totalvat6 += parseFloat(InputVatValue);
+                }
+            }
+        });
+
+
+        if (!isNaN(Totalvat6)) {
+            $('#BTW6').text(Totalvat6.toFixed(2));
+        }
+        if (!isNaN(t)) {
+            $('#BTW21').text(parseFloat(t).toFixed(2));
+        }
+    }
+
+
+    function GrandTotal() {
+        var TotalGood = 0;
+        $('#tblexpense .tbbodyExpense tr').each(function () {
+            var Value = $(this).find(".SubTotal").val();
+            if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
+                TotalGood += parseFloat(Value)
+            }
+        })
+        $('#gtotal').text(TotalGood.toFixed(2));
+        $('#SubTotalAmont').text(TotalGood.toFixed(2));
+    }
+
+    function CalculateTaxAmount(vat, CurrentRow) {
+
+        Total = 0;
+        Total = CurrentRow.find('.Amount').val();
+
+        if (!isNaN(Total) && Total != "" && typeof (vat) != "undefined") {
+            var InputVatValue = parseFloat((Total / 100) * vat);
+            // var ValueWTV = parseFloat(InputVatValue) + parseFloat(Total);
+            CurrentRow.find('.taxAmount').val(parseFloat(InputVatValue).toFixed(2));
+        }
+    }
+
+    $('#Submit').click(function () {
+        CreateExpense();
+    });
+    function CreateExpense() {
+
+        var list = [], ExpernseOrder, CurrentRow;
+        var formData = new FormData($('#frmAccount')[0]);
+        var files = $("#uploadfile")[0];
+        if (!validateFileSize()) {
+            return true;
+        }
+
+        $('#tblexpense .tbbodyExpense tr').each(function () {
+            CurrentRow = $(this).closest("tr");
+            //if (ValidateRow(CurrentRow)) {
+            ExpernseOrder = {
+                EXPENSE_ACCOUNT_ID: parseInt($(this).find('#ExpenseAccount').val()),
+                DESCRIPTION: $(this).find('.Description').val(),
+                AMOUNT: parseFloat($(this).find('.Amount').val()),
+                TAX_PERCENT: parseFloat($(this).find('.VATG').val()),
+                TAX_AMOUNT: parseFloat($(this).find('.taxAmount').val()),
+                SUBTOTAL: parseFloat($(this).find('.SubTotal').val()),
+            }
+            list.push(ExpernseOrder);
+            //}
+        });
+        if (list.length == 0) {
+            $('#BTW6').text('');
+            $('#BTW21').text('');
+            $('#gtotal').text('');
+        }
+        var empObj = {
+            REFERENCEno: $('#Number_ID').val(),
+            ACCOUNT_ID: $('#drpExpenseAccount').val(),
+            VENDOR_ID: $('#venderId').val(),
+            notes: $('#notes').val(),
+            SUBTOTAL: $('#SubTotalAmont').text(),
+            VAT_AMOUNT: SumVatAmount(),
+            AddedDate: $('#Expencedate').val(),
+            GRAND_TOTAL: $('#gtotal').text(),
+        };
+
+        for (var key in empObj) {
+            formData.append(key, empObj[key]);
+        }
+
+        for (var i = 0; i < list.length; i++) {
+            formData.append('ExpensenDetailList[' + i + '][EXPENSE_ACCOUNT_ID]', list[i].EXPENSE_ACCOUNT_ID)
+            formData.append('ExpensenDetailList[' + i + '][DESCRIPTION]', list[i].DESCRIPTION)
+            formData.append('ExpensenDetailList[' + i + '][AMOUNT]', list[i].AMOUNT)
+            formData.append('ExpensenDetailList[' + i + '][TAX_PERCENT]', list[i].TAX_PERCENT)
+            formData.append('ExpensenDetailList[' + i + '][TAX_AMOUNT]', list[i].TAX_AMOUNT)
+            formData.append('ExpensenDetailList[' + i + '][SUBTOTAL]', list[i].SUBTOTAL)
+        }
+
+        $.ajax({
+            url: "/Expence/AddExpence",
+            type: "POST",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (result) {          
+                if (result.Status == "Success") {       
+                    $.toast({
+                        heading: 'Expense',
+                        text: "Expense hasbeen created successfully",
+                        icon: 'info',
+                        loader: true,        // Change it to false to disable loader
+                        loaderBg: '#FF0000'  // To change the background
+                    });     
+                    ClearFiel();
+                }
+                else if (result.Status == "Fail") {
+                    alert(result.Message);
+                }
+            },
+
+            error: function (errormessage) {
+
+            }
+
+        });
+    }
+
+
+
+
+
+    function ClearFiel() {
+        $('.tbbodyExpense tr').not('tr:last').empty();
+        $("#SubTotalAmont").text('0.00');
+        $("#TotalBTW").text('0.00');
+        $("#btwo").text('0.00');
+        ("#BTW6").text('0.00');
+        ("#BTW21").text('0.00');
+        ("#gtotal").text('0.00');
+    }
+
+
+
+    function TotalExcudeBtw() {
+        var TotalGood = 0;
+        $('#tblexpense .tbbodyExpense tr').each(function () {
+            var Value = $(this).find(".Amount").val();
+            if (!isNaN(parseFloat(Value) && typeof (Value) != "undefined")) {
+                TotalGood += parseFloat(Value)
+            }
+        })
+        $('#TotalBTW').text(TotalGood.toFixed(2));
+    }
+
+    function validateFileSize() {
+        var Isvalid = true;
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            if (document.getElementById("uploadfile").files.length != 0) {
+                //get the file size and file type from file input field
+                var fsize = $('#uploadfile')[0].files[0].size;
+                var ftype = $('#uploadfile')[0].files[0].type;
+                var fname = $('#uploadfile')[0].files[0].name;
+
+                if (fsize > 1048576) //do something if file size more than 1 mb (1048576)
+                {
+                    Isvalid = false;
+
+                    alert("Type :" + ftype + " | " + fsize + " bites\n(File: " + fname + ") Too big!");
+                }
+                else {
+                    Isvalid = true;
+                }
+            }
+            return Isvalid;
+        }
+    }
+
+    //function ValidateRow(CurrentRow) {
+    //    var Isvalid = true;
+    //    var Produectid = 0, quantityG = 0, varrateG = 0;
+    //    Produectid = CurrentRow.find('.product').val();
+    //    quantityG = CurrentRow.find('.quantityG ').val();
+    //    varrateG = CurrentRow.find('.rateG ').val();
+    //    if (parseInt(Produectid) == 0 || Produectid == "") {
+    //        Isvalid = false;
+    //    }
+    //    if (parseInt(quantityG) == 0 || quantityG == "") {
+    //        Isvalid = false;
+    //    }
+    //    if (parseInt(varrateG) == 0 || varrateG == "") {
+    //        Isvalid = false;
+    //    }
+    //    return Isvalid;
+    //}
+
+
+
+    function GetExpenseAccountMainRow() {
+
+        $("#mainrow #ExpenseAccount").find("option").remove();
+        $("#mainrow #ExpenseAccount").append("<option value=0>" + "Select Account" + "</option>");
+        $.ajax({
+            url: "/MVCAccounts/GetExpenseAccount",
+            type: "Get",
+            async: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    $('#mainrow #ExpenseAccount').append($('<option></option>').val(item.AccountId).html(item.AccountTitle));
+                });
+            },
+            Error: function (errormessage) {
+                alert(errormessage);
+            }
+        });
+    }
+
+
+
+
+
+
+    $(document).ready(function () {
+
+        $('#Expencedate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            gotoCurrent: true,
+            datetime: new Date(),
+            //dateFormat: 'dd/mm/yy',
+        }).datepicker("setDate", new Date());
+        if ($(this).hasClass('birthdate')) {
+            $(this).datepicker('option', 'yearRange', '1980:c');
+            $(this).datepicker('option', 'defaultDate', '-10y');
+        }
+    });
+</script>

@@ -153,6 +153,18 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
+
+        public ActionResult GetExpenseAccount()
+        {
+
+            int companyid = Convert.ToInt32(Session["CompayID"]);
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + companyid).Result;
+          List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
+            return Json(AccountmodelObj, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         public ActionResult GetAccountByID(int AccountID = 0)
         {
             if (AccountID > 0)
@@ -185,7 +197,7 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        public  ActionResult Account()
+        public ActionResult Account()
         {
 
             return View();
@@ -215,9 +227,9 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception)
             {
-               
 
-                return Json("Fail", JsonRequestBehavior.AllowGet);            
+
+                return Json("Fail", JsonRequestBehavior.AllowGet);
             }
             return Json("", JsonRequestBehavior.AllowGet);
         }
