@@ -17,62 +17,56 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ComapnyInfo()
         {
-            this.PurchaseOrderTables = new HashSet<PurchaseOrderTable>();
             this.AccountTables = new HashSet<AccountTable>();
-            this.HeadAccountTables = new HashSet<HeadAccountTable>();
-            this.OrderStatusTables = new HashSet<OrderStatusTable>();
-            this.QutationOrderStatusTables = new HashSet<QutationOrderStatusTable>();
             this.AccountTransictionTables = new HashSet<AccountTransictionTable>();
-            this.UserTables = new HashSet<UserTable>();
-            this.BillTables = new HashSet<BillTable>();
-            this.InvoiceTables = new HashSet<InvoiceTable>();
             this.ContactsTables = new HashSet<ContactsTable>();
+            this.HeadAccountTables = new HashSet<HeadAccountTable>();
+            this.InvoiceTables = new HashSet<InvoiceTable>();
+            this.OrderStatusTables = new HashSet<OrderStatusTable>();
+            this.PurchaseOrderTables = new HashSet<PurchaseOrderTable>();
             this.QutationTables = new HashSet<QutationTable>();
+            this.UserTables = new HashSet<UserTable>();
         }
     
         public int CompanyID { get; set; }
         public string CompanyName { get; set; }
+        public string CompanyLogo { get; set; }
         public string CompanyAddress { get; set; }
+        public string StreetNumber { get; set; }
+        public string PostalCode { get; set; }
+        public string CompanyCity { get; set; }
+        public string CompanyCountry { get; set; }
         public string CompanyPhone { get; set; }
         public string CompanyCell { get; set; }
         public string CompanyEmail { get; set; }
-        public string CompanyLogo { get; set; }
-        public string CompanyTRN { get; set; }
-        public string CompanyCity { get; set; }
-        public string CompanyCountry { get; set; }
-        public Nullable<int> AddedBy { get; set; }
-        public Nullable<System.DateTime> AddedDate { get; set; }
-        public string UserName { get; set; }
-        public string StreetNumber { get; set; }
-        public string PostalCode { get; set; }
         public string Website { get; set; }
+        public string CompanyTRN { get; set; }
         public string BankName { get; set; }
         public string IBANNumber { get; set; }
         public string BIC { get; set; }
         public string KVK { get; set; }
         public string BTW { get; set; }
+        public Nullable<int> AddedBy { get; set; }
+        public Nullable<System.DateTime> AddedDate { get; set; }
+        public string UserName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PurchaseOrderTable> PurchaseOrderTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTable> AccountTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HeadAccountTable> HeadAccountTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderStatusTable> OrderStatusTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<QutationOrderStatusTable> QutationOrderStatusTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTransictionTable> AccountTransictionTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserTable> UserTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BillTable> BillTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ContactsTable> ContactsTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<HeadAccountTable> HeadAccountTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderStatusTable> OrderStatusTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PurchaseOrderTable> PurchaseOrderTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationTable> QutationTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserTable> UserTables { get; set; }
     }
 }

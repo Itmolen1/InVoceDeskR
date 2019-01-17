@@ -103,12 +103,6 @@ namespace InvoiceDiskLast.Controllers
                             HttpResponseMessage response = GlobalVeriables.WebApiClient.PostAsJsonAsync("APIComapny", compnayViewModel).Result;
                             MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
                             Session["CompayID"] = CompanyModel.CompanyID;
-                            return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
-                        }
-                        else
-                        {
-                            HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny", compnayViewModel).Result;
-                            MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
                             UserInfo userInfo = new UserInfo();
                             userInfo.username = CompanyModel.UserName.ToString();
@@ -120,7 +114,16 @@ namespace InvoiceDiskLast.Controllers
                                 Session["LoginUserID"] = Convert.ToInt32(UserTbale.UserId);
                                 Session["CompayID"] = Convert.ToInt32(UserTbale.CompanyId);
                             }
+                            
 
+                            return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
+
+                        }
+                        else
+                        {
+                            HttpResponseMessage response = GlobalVeriables.WebApiClient.PutAsJsonAsync("APIComapny", compnayViewModel).Result;
+                            MVCCompanyInfoModel CompanyModel = response.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+                            
                             return Json(response.StatusCode, JsonRequestBehavior.AllowGet);
                         }
 

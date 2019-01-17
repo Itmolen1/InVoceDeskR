@@ -29,7 +29,7 @@ namespace InvoiceDiskLast.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTable> AccountTables { get; set; }
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual ControlAccountTable ControlAccountTable { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

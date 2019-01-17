@@ -29,7 +29,7 @@ namespace InvoiceDiskLast.Models
         public string Description { get; set; }
     
         public virtual AccountTable AccountTable { get; set; }
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual PaymentTermTable PaymentTermTable { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

@@ -33,7 +33,6 @@ namespace InvoiceDiskLast.Models
         public string Type { get; set; }
     
         public virtual UserTable UserTable { get; set; }
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual UserTable UserTable1 { get; set; }
     }
 }

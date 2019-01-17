@@ -279,9 +279,8 @@
     </div>
 </div>
 
-
+@Html.Partial("~/Views/Shared/PartialViews/ProductPartialView.cshtml")
 @Html.Partial("~/Views/Shared/PartialViews/UnitPartialView.cshtml")
-
 
 <script type="text/javascript">
 
@@ -426,59 +425,7 @@
 
         }
     });
-
-    function LoadProductG() {
-        PgoodServices = "Good";
-
-        $("#mainrow #SelectProductQutationG").find("option").remove();
-        $("#mainrow #SelectProductQutationG").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow #SelectProductQutationG").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
-
-        $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            data: { ProductStatus: PgoodServices },
-            success: function (data) {
-                $.each(data, function (key, item) {
-                    $('#mainrow #SelectProductQutationG').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-
-        });
-    }
-
-    function LoadProductS() {
-        PgoodServices = "Services";
-
-        $("#mainrow1 #SelectProductQutationS").find("option").remove();
-        $("#mainrow1 #SelectProductQutationS").prepend("<option value=0>" + 'Select Item' + "</option>");
-        $("#mainrow1 #SelectProductQutationS").append("<option value=AddNewProductSelect>" + 'Add New Product' + "</option>");
-
-        $.ajax({
-            url: "/MVCProduct/GetProduct",
-            type: "Get",
-            async: false,
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            data: { ProductStatus: PgoodServices },
-            success: function (data) {
-                $.each(data, function (key, item) {
-
-                    $('#mainrow1 #SelectProductQutationS').append($('<option></option>').val(item.ProductId).html(item.ProductName));
-                });
-            },
-            Error: function (errormessage) {
-                alert(errormessage);
-            }
-        });
-    }
-
+      
     $('.quantityG').keyup(function () {
         Currentrow = $(this).closest("tr");
         calculateTotalGoods(Currentrow);
@@ -738,11 +685,12 @@
 
         var currentRow = $(this).closest('tr');
         var value = currentRow.find('.pClassG').val();
+            
         GetProductPriceByProductId(value, currentRow);
     });
 
     function GetProductPriceByProductId(Id, CurrentRow) {
-
+               
         if (Id == "AddNewProductSelect") {
             GoodsService = "";
             GoodsService = "Good";
