@@ -641,6 +641,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QutationDetailsTable_ProductTable">
+          <End Role="ProductTable" Type="Self.ProductTable" Multiplicity="0..1" />
+          <End Role="QutationDetailsTable" Type="Self.QutationDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="QutationDetailsTable">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_QutationDetailsTable_QutationTable">
           <End Role="QutationTable" Type="Self.QutationTable" Multiplicity="0..1" />
           <End Role="QutationDetailsTable" Type="Self.QutationDetailsTable" Multiplicity="*" />
@@ -713,14 +725,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="DB_A415B5_uurtjefactuurDB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="title" Type="varchar" Mode="In" />
-          <Parameter Name="Description" Type="nvarchar" Mode="In" />
-          <Parameter Name="FK_Id" Type="int" Mode="In" />
-          <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="AccountCode" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="GetStockItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ComapniId" Type="int" Mode="In" />
           <ReturnType>
@@ -735,56 +739,74 @@
             </CollectionType>
           </ReturnType>
         </Function>
-        <Function Name="InsertIntoAccountTable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="title" Type="varchar" Mode="In" />
-          <Parameter Name="Description" Type="nvarchar" Mode="In" />
-          <Parameter Name="FK_Id" Type="int" Mode="In" />
-          <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="AccountCode" Type="varchar" Mode="In" />
-        </Function>
-        <Function Name="InsertIntoHeadAccount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="title" Type="varchar" Mode="In" />
-          <Parameter Name="Description" Type="nvarchar" Mode="In" />
-          <Parameter Name="FK_Id" Type="int" Mode="In" />
-          <Parameter Name="CompanyId" Type="int" Mode="In" />
-          <Parameter Name="OutID" Type="int" Mode="InOut" />
-        </Function>
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="Sp_GetJournal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FromDate" Type="datetime" Mode="In" />
-          <Parameter Name="ToDate" Type="datetime" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="SpQuotationReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="QuotationId" Type="int" Mode="In" />
+        <Function Name="QutationDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="QutationID" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="QutationID" Type="int" Nullable="false" />
+                <Property Name="Qutation_ID" Type="nvarchar" MaxLength="50" />
+                <Property Name="RefNumber" Type="nvarchar" MaxLength="50" />
+                <Property Name="QutationDate" Type="date" Nullable="false" />
+                <Property Name="DueDate" Type="date" Nullable="false" />
+                <Property Name="SubTotal" Type="float" />
+                <Property Name="TotalVat6" Type="float" />
+                <Property Name="TotalVat21" Type="float" />
+                <Property Name="DiscountAmount" Type="float" />
+                <Property Name="TotalAmount" Type="float" />
+                <Property Name="CustomerNote" Type="nvarchar" MaxLength="300" />
+                <Property Name="Status" Type="nvarchar" MaxLength="10" />
+                <Property Name="ContactName" Type="varchar" MaxLength="100" />
+                <Property Name="ContactAddress" Type="nvarchar" MaxLength="400" />
+                <Property Name="Type" Type="varchar" MaxLength="10" />
+                <Property Name="ContactStreet" Type="varchar" MaxLength="70" />
+                <Property Name="ContactPostal" Type="nvarchar" MaxLength="50" />
+                <Property Name="ContactCity" Type="nvarchar" MaxLength="50" />
+                <Property Name="Land" Type="nvarchar" MaxLength="50" />
+                <Property Name="LandLine" Type="nvarchar" MaxLength="50" />
+                <Property Name="telephone" Type="nvarchar" MaxLength="50" />
+                <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+                <Property Name="BillingEmail" Type="nvarchar" MaxLength="50" />
+                <Property Name="ContactWebsite" Type="nvarchar" MaxLength="50" />
+                <Property Name="PersonCompany" Type="varchar" MaxLength="15" />
+                <Property Name="Remarks" Type="nvarchar" MaxLength="50" />
+                <Property Name="QutationDetailId" Type="int" Nullable="false" />
+                <Property Name="Contactdescription" Type="nvarchar" MaxLength="300" />
+                <Property Name="ItemId" Type="int" />
+                <Property Name="Quantity" Type="int" />
+                <Property Name="Rate" Type="float" />
+                <Property Name="Total" Type="float" />
+                <Property Name="Vat" Type="float" />
+                <Property Name="RowSubTotal" Type="float" />
+                <Property Name="ContactType" Type="nvarchar" MaxLength="20" />
+                <Property Name="ServiceDate" Type="datetime" />
+                <Property Name="ProductName" Type="nvarchar" MaxLength="100" />
+                <Property Name="ProductUnit" Type="nvarchar" MaxLength="50" />
+                <Property Name="CompanyID" Type="int" />
+                <Property Name="CompanyName" Type="nvarchar" MaxLength="250" />
+                <Property Name="CompanyLogo" Type="nvarchar" MaxLength="200" />
+                <Property Name="CompanyAddress" Type="nvarchar" MaxLength="250" />
+                <Property Name="StreetNumber" Type="nvarchar" MaxLength="50" />
+                <Property Name="PostalCode" Type="nvarchar" MaxLength="50" />
+                <Property Name="CompanyCity" Type="nvarchar" MaxLength="100" />
+                <Property Name="CompanyCountry" Type="nvarchar" MaxLength="100" />
+                <Property Name="CompanyPhone" Type="nvarchar" MaxLength="20" />
+                <Property Name="CompanyCell" Type="nvarchar" MaxLength="20" />
+                <Property Name="CompanyEmail" Type="nvarchar" MaxLength="25" />
+                <Property Name="Website" Type="nvarchar" MaxLength="50" />
+                <Property Name="CompanyTRN" Type="nvarchar" MaxLength="50" />
+                <Property Name="BankName" Type="nvarchar" MaxLength="100" />
+                <Property Name="IBANNumber" Type="nvarchar" MaxLength="50" />
+                <Property Name="BIC" Type="nvarchar" MaxLength="50" />
+                <Property Name="KVK" Type="nvarchar" MaxLength="50" />
+                <Property Name="BTW" Type="nvarchar" MaxLength="50" />
+                <Property Name="AddedBy" Type="int" />
+                <Property Name="AddedDate" Type="date" />
+                <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+                <Property Name="PaymentTerm" Type="int" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
         </Function>
         <EntityContainer Name="APIcompanyModelStoreContainer">
           <EntitySet Name="AccountTable" EntityType="Self.AccountTable" Schema="dbo" store:Type="Tables" />
@@ -890,6 +912,10 @@
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_QutationDetailsTable_ProductTable" Association="Self.FK_QutationDetailsTable_ProductTable">
+            <End Role="ProductTable" EntitySet="ProductTable" />
+            <End Role="QutationDetailsTable" EntitySet="QutationDetailsTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_QutationDetailsTable_QutationTable" Association="Self.FK_QutationDetailsTable_QutationTable">
             <End Role="QutationTable" EntitySet="QutationTable" />
             <End Role="QutationDetailsTable" EntitySet="QutationDetailsTable" />
@@ -919,51 +945,9 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="APIcompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="ComapnyInfo">
-          <Key>
-            <PropertyRef Name="CompanyID" />
-          </Key>
-          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCell" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyEmail" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyTRN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCountry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
-          <Property Name="StreetNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BankName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IBANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="KVK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BTW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTable" />
-          <NavigationProperty Name="HeadAccountTables" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="HeadAccountTable" />
-          <NavigationProperty Name="OrderStatusTables" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="OrderStatusTable" />
-          <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationOrderStatusTable" />
-          <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTransictionTable" />
-          <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
-          <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="BillTable" />
-          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="InvoiceTable" />
-          <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
-          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
-        </EntityType>
         <EntityContainer Name="DBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ComapnyInfoes" EntityType="Self.ComapnyInfo" />
           <EntitySet Name="QutationDetailsTables" EntityType="APIcompanyModel.QutationDetailsTable" />
           <EntitySet Name="PurchaseOrderTables" EntityType="APIcompanyModel.PurchaseOrderTable" />
-          <AssociationSet Name="FK_PurchaseOrderTable_ComapnyInfo" Association="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
-          </AssociationSet>
           <EntitySet Name="ProductUnitTables" EntityType="APIcompanyModel.ProductUnitTable" />
           <EntitySet Name="AspNetUsers" EntityType="APIcompanyModel.AspNetUser" />
           <EntitySet Name="AccountTables" EntityType="APIcompanyModel.AccountTable" />
@@ -971,21 +955,9 @@
           <EntitySet Name="HeadAccountTables" EntityType="APIcompanyModel.HeadAccountTable" />
           <EntitySet Name="OrderStatusTables" EntityType="APIcompanyModel.OrderStatusTable" />
           <EntitySet Name="PaymentTermTables" EntityType="APIcompanyModel.PaymentTermTable" />
-          <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="AccountTable" EntitySet="AccountTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_AccountTable_HeadAccountTable" Association="APIcompanyModel.FK_AccountTable_HeadAccountTable">
             <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
             <End Role="AccountTable" EntitySet="AccountTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_HeadAccountTable_ComapnyInfo" Association="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderStatusTable_ComapnyInfo" Association="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="OrderStatusTable" EntitySet="OrderStatusTables" />
           </AssociationSet>
           <AssociationSet Name="FK_HeadAccountTable_ControlAccountTable" Association="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable">
             <End Role="ControlAccountTable" EntitySet="ControlAccountTables" />
@@ -997,17 +969,9 @@
           </AssociationSet>
           <EntitySet Name="PendingTables" EntityType="APIcompanyModel.PendingTable" />
           <EntitySet Name="QutationOrderStatusTables" EntityType="APIcompanyModel.QutationOrderStatusTable" />
-          <AssociationSet Name="FK_QutationOrderStatusTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="QutationOrderStatusTable" EntitySet="QutationOrderStatusTables" />
-          </AssociationSet>
           <EntitySet Name="AccountTransictionTables" EntityType="APIcompanyModel.AccountTransictionTable" />
           <AssociationSet Name="FK_AccountTransictionTable_AccountTable" Association="APIcompanyModel.FK_AccountTransictionTable_AccountTable">
             <End Role="AccountTable" EntitySet="AccountTables" />
-            <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AccountTransictionTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
           </AssociationSet>
           <AssociationSet Name="FK_AccountTransictionTable_PaymentTermTable" Association="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable">
@@ -1031,10 +995,6 @@
           <EntitySet Name="UserAuthorityTables" EntityType="APIcompanyModel.UserAuthorityTable" />
           <EntitySet Name="CompanyUsers" EntityType="APIcompanyModel.CompanyUser" />
           <EntitySet Name="UserTables" EntityType="APIcompanyModel.UserTable" />
-          <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="UserTable" EntitySet="UserTables" />
-          </AssociationSet>
           <EntitySet Name="DirectoryTables" EntityType="APIcompanyModel.DirectoryTable" />
           <EntitySet Name="BillDetailTables" EntityType="APIcompanyModel.BillDetailTable" />
           <EntitySet Name="BillTables" EntityType="APIcompanyModel.BillTable" />
@@ -1042,19 +1002,11 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="BillTable" EntitySet="BillTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="APIcompanyModel.FK_BillTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="BillTable" EntitySet="BillTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_BillTable_UserTable" Association="APIcompanyModel.FK_BillTable_UserTable">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="BillTable" EntitySet="BillTables" />
           </AssociationSet>
           <EntitySet Name="InvoiceTables" EntityType="APIcompanyModel.InvoiceTable" />
-          <AssociationSet Name="FK_InvoiceTable_ComapnyInfo" Association="APIcompanyModel.FK_InvoiceTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="InvoiceTable" EntitySet="InvoiceTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_InvoiceTable_UserTable" Association="APIcompanyModel.FK_InvoiceTable_UserTable">
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
@@ -1074,19 +1026,11 @@
           </AssociationSet>
           <EntitySet Name="PaymentTermDurations" EntityType="APIcompanyModel.PaymentTermDuration" />
           <EntitySet Name="ContactsTables" EntityType="APIcompanyModel.ContactsTable" />
-          <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="APIcompanyModel.FK_ContactsTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="ContactsTable" EntitySet="ContactsTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_InvoiceTable_ContactsTable" Association="APIcompanyModel.FK_InvoiceTable_ContactsTable">
             <End Role="ContactsTable" EntitySet="ContactsTables" />
             <End Role="InvoiceTable" EntitySet="InvoiceTables" />
           </AssociationSet>
           <EntitySet Name="QutationTables" EntityType="APIcompanyModel.QutationTable" />
-          <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="QutationTable" EntitySet="QutationTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_QutationTable_ContactsTable" Association="APIcompanyModel.FK_QutationTable_ContactsTable">
             <End Role="ContactsTable" EntitySet="ContactsTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
@@ -1103,67 +1047,50 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
-          <FunctionImport Name="SpQuotationReport" ReturnType="Collection(APIcompanyModel.SpQuotationReport_Result)">
-          <Parameter Name="QuotationId" Mode="In" Type="Int32" />
+          <EntitySet Name="ComapnyInfoes" EntityType="APIcompanyModel.ComapnyInfo" />
+          <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="AccountTable" EntitySet="AccountTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountTransictionTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="APIcompanyModel.FK_ContactsTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HeadAccountTable_ComapnyInfo" Association="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceTable_ComapnyInfo" Association="APIcompanyModel.FK_InvoiceTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="InvoiceTable" EntitySet="InvoiceTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatusTable_ComapnyInfo" Association="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="OrderStatusTable" EntitySet="OrderStatusTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ComapnyInfo" Association="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationTable_ComapnyInfo" Association="APIcompanyModel.FK_QutationTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="QutationTable" EntitySet="QutationTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTable_ComapnyInfo" Association="APIcompanyModel.FK_UserTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="UserTable" EntitySet="UserTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QutationDetailsTable_ProductTable" Association="APIcompanyModel.FK_QutationDetailsTable_ProductTable">
+            <End Role="ProductTable" EntitySet="ProductTables" />
+            <End Role="QutationDetailsTable" EntitySet="QutationDetailsTables" />
+          </AssociationSet>
+          <FunctionImport Name="QutationDetails" IsComposable="true" ReturnType="Collection(APIcompanyModel.QutationDetails_Result)">
+            <Parameter Name="QutationID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="QuotationReportStoreProcedure" ReturnType="Collection(APIcompanyModel.SpQuotationReport_Result)">
-          <Parameter Name="QuotationId" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="DB_A415B5_uurtjefactuurDB">
-            <Parameter Name="title" Mode="In" Type="String" />
-            <Parameter Name="Description" Mode="In" Type="String" />
-            <Parameter Name="FK_Id" Mode="In" Type="Int32" />
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="AccountCode" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="InsertIntoAccountTable">
-            <Parameter Name="title" Mode="In" Type="String" />
-            <Parameter Name="Description" Mode="In" Type="String" />
-            <Parameter Name="FK_Id" Mode="In" Type="Int32" />
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="AccountCode" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="InsertIntoHeadAccount">
-            <Parameter Name="title" Mode="In" Type="String" />
-            <Parameter Name="Description" Mode="In" Type="String" />
-            <Parameter Name="FK_Id" Mode="In" Type="Int32" />
-            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
-            <Parameter Name="OutID" Mode="InOut" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="Sp_GetJournal" ReturnType="Collection(APIcompanyModel.Sp_GetJournal_Result)">
-            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
-            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(APIcompanyModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(APIcompanyModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1181,6 +1108,7 @@
           <Property Name="ServiceDate" Type="DateTime" Precision="3" />
           <Property Name="RowSubTotal" Type="Double" />
           <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationDetailsTable" ToRole="QutationTable" />
+          <NavigationProperty Name="ProductTable" Relationship="APIcompanyModel.FK_QutationDetailsTable_ProductTable" FromRole="QutationDetailsTable" ToRole="ProductTable" />
         </EntityType>
         <EntityType Name="PurchaseOrderTable">
           <Key>
@@ -1201,26 +1129,14 @@
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="PurchaseOrderTable" ToRole="ComapnyInfo" />
           <Property Name="Vat6" Type="Double" />
           <Property Name="Vat21" Type="Double" />
           <Property Name="VenderId" Type="Int32" />
           <NavigationProperty Name="OrderStatusTables" Relationship="APIcompanyModel.FK_OrderStatusTable_PurchaseOrderTable" FromRole="PurchaseOrderTable" ToRole="OrderStatusTable" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PurchaseOrderDetailsTables" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderTable" ToRole="PurchaseOrderDetailsTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="PurchaseOrderTable" ToRole="ComapnyInfo" />
         </EntityType>
-        <Association Name="FK_PurchaseOrderTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="PurchaseOrderTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="ProductUnitTable">
           <Key>
             <PropertyRef Name="ProductUnitID" />
@@ -1259,9 +1175,9 @@
           <Property Name="FK_HeadAccountId" Type="Int32" />
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="FK_CompanyId" Type="Int32" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="AccountTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="HeadAccountTable" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="AccountTable" ToRole="HeadAccountTable" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTable" ToRole="AccountTransictionTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="AccountTable" ToRole="ComapnyInfo" />
         </EntityType>
         <EntityType Name="ControlAccountTable">
           <Key>
@@ -1283,8 +1199,8 @@
           <Property Name="FK_CompanyId" Type="Int32" />
           <Property Name="AddedBy" Type="Int32" />
           <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="HeadAccountTable" ToRole="AccountTable" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="HeadAccountTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="ControlAccountTable" Relationship="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable" FromRole="HeadAccountTable" ToRole="ControlAccountTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="HeadAccountTable" ToRole="ComapnyInfo" />
         </EntityType>
         <EntityType Name="OrderStatusTable">
           <Key>
@@ -1298,8 +1214,8 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="OrderStatusTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_OrderStatusTable_PurchaseOrderTable" FromRole="OrderStatusTable" ToRole="PurchaseOrderTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="OrderStatusTable" ToRole="ComapnyInfo" />
         </EntityType>
         <EntityType Name="PaymentTermTable">
           <Key>
@@ -1312,18 +1228,6 @@
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable" FromRole="PaymentTermTable" ToRole="AccountTransictionTable" />
         </EntityType>
-        <Association Name="FK_AccountTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="AccountTable">
-              <PropertyRef Name="FK_CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AccountTable_HeadAccountTable">
           <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
@@ -1333,30 +1237,6 @@
             </Principal>
             <Dependent Role="AccountTable">
               <PropertyRef Name="FK_HeadAccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_HeadAccountTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="HeadAccountTable">
-              <PropertyRef Name="FK_CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OrderStatusTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.OrderStatusTable" Role="OrderStatusTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="OrderStatusTable">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1407,21 +1287,8 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_ComapnyInfo" FromRole="QutationOrderStatusTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="QutationTable" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationOrderStatusTable" ToRole="QutationTable" />
         </EntityType>
-        <Association Name="FK_QutationOrderStatusTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationOrderStatusTable" Role="QutationOrderStatusTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="QutationOrderStatusTable">
-              <PropertyRef Name="Fk_QutationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="AccountTransictionTable">
           <Key>
             <PropertyRef Name="TransictionId" />
@@ -1440,8 +1307,8 @@
           <Property Name="FKPaymentTerm" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTransictionTable" ToRole="AccountTable" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="AccountTransictionTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="PaymentTermTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable" FromRole="AccountTransictionTable" ToRole="PaymentTermTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="AccountTransictionTable" ToRole="ComapnyInfo" />
         </EntityType>
         <Association Name="FK_AccountTransictionTable_AccountTable">
           <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="0..1" />
@@ -1452,18 +1319,6 @@
             </Principal>
             <Dependent Role="AccountTransictionTable">
               <PropertyRef Name="FK_AccountID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AccountTransictionTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.AccountTransictionTable" Role="AccountTransictionTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="AccountTransictionTable">
-              <PropertyRef Name="FK_CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1532,6 +1387,7 @@
           <Property Name="ProductStatus" Type="Boolean" />
           <NavigationProperty Name="ProductUnitTable" Relationship="APIcompanyModel.FK_ProductTable_ProductUnitTable" FromRole="ProductTable" ToRole="ProductUnitTable" />
           <NavigationProperty Name="InvoiceDetailsTables" Relationship="APIcompanyModel.FK_InvoiceDetailsTable_ProductTable" FromRole="ProductTable" ToRole="InvoiceDetailsTable" />
+          <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_ProductTable" FromRole="ProductTable" ToRole="QutationDetailsTable" />
         </EntityType>
         <Association Name="FK_ProductTable_ProductUnitTable">
           <End Type="APIcompanyModel.ProductUnitTable" Role="ProductUnitTable" Multiplicity="0..1" />
@@ -1590,25 +1446,13 @@
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="UserTable" ToRole="BillTable" />
           <NavigationProperty Name="BillTables1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="UserTable" ToRole="BillTable" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="UserTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="InvoiceTables1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="UserTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
           </EntityType>
-        <Association Name="FK_UserTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="UserTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DirectoryTable">
           <Key>
             <PropertyRef Name="Id" />
@@ -1657,7 +1501,6 @@
           <Property Name="VenderId" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="BillTable" ToRole="UserTable" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="BillTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="BillTable" ToRole="UserTable" />
         </EntityType>
         <Association Name="BillTable_UserTable1">
@@ -1669,18 +1512,6 @@
             </Principal>
             <Dependent Role="BillTable">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BillTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="BillTable">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1718,24 +1549,12 @@
           <Property Name="ContactId" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="InvoiceDescription" Type="String" MaxLength="160" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="InvoiceTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable" FromRole="InvoiceTable" ToRole="UserTable" />
           <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_InvoiceTable_UserTable1" FromRole="InvoiceTable" ToRole="UserTable" />
           <NavigationProperty Name="InvoiceDetailsTables" Relationship="APIcompanyModel.FK_InvoiceDetailsTable_InvoiceTable" FromRole="InvoiceTable" ToRole="InvoiceDetailsTable" />
           <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="InvoiceTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="InvoiceTable" ToRole="ComapnyInfo" />
         </EntityType>
-        <Association Name="FK_InvoiceTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="InvoiceTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_InvoiceTable_UserTable">
           <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
@@ -1835,22 +1654,10 @@
           <Property Name="Addeddate" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="Boolean" />
           <Property Name="PaymentTerm" Type="Int32" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
         </EntityType>
-        <Association Name="FK_ContactsTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="ContactsTable">
-              <PropertyRef Name="Company_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_InvoiceTable_ContactsTable">
           <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
@@ -1883,24 +1690,12 @@
           <Property Name="CompanyId" Type="Int32" />
           <Property Name="ContactId" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="QutationTable" ToRole="ContactsTable" />
           <NavigationProperty Name="QutationDetailsTables" Relationship="APIcompanyModel.FK_QutationDetailsTable_QutationTable" FromRole="QutationTable" ToRole="QutationDetailsTable" />
           <NavigationProperty Name="QutationOrderStatusTables" Relationship="APIcompanyModel.FK_QutationOrderStatusTable_QutationTable" FromRole="QutationTable" ToRole="QutationOrderStatusTable" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="QutationTable" ToRole="UserTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="QutationTable" ToRole="ComapnyInfo" />
         </EntityType>
-        <Association Name="FK_QutationTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="QutationTable">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_QutationTable_ContactsTable">
           <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
@@ -1949,14 +1744,201 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="SpQuotationReport_Result">
+        <EntityType Name="ComapnyInfo">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyLogo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="StreetNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCountry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCell" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyEmail" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyTRN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BankName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IBANNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BIC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KVK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BTW" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="0" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTable" />
+          <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTransictionTable" />
+          <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
+          <NavigationProperty Name="HeadAccountTables" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="HeadAccountTable" />
+          <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="InvoiceTable" />
+          <NavigationProperty Name="OrderStatusTables" Relationship="APIcompanyModel.FK_OrderStatusTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="OrderStatusTable" />
+          <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="PurchaseOrderTable" />
+          <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
+          <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
+        </EntityType>
+        <Association Name="FK_AccountTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="AccountTable">
+              <PropertyRef Name="FK_CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountTransictionTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.AccountTransictionTable" Role="AccountTransictionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="AccountTransictionTable">
+              <PropertyRef Name="FK_CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContactsTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ContactsTable">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HeadAccountTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="HeadAccountTable">
+              <PropertyRef Name="FK_CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.InvoiceTable" Role="InvoiceTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="InvoiceTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatusTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.OrderStatusTable" Role="OrderStatusTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="OrderStatusTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationTable" Role="QutationTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="QutationTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="UserTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QutationDetailsTable_ProductTable">
+          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.QutationDetailsTable" Role="QutationDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="QutationDetailsTable">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="QutationDetails_Result">
+          <Property Type="Int32" Name="QutationID" Nullable="false" />
           <Property Type="String" Name="Qutation_ID" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="RefNumber" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="QutationDate" Nullable="false" />
-          <Property Type="DateTime" Name="DueDate" Nullable="false" />
+          <Property Type="DateTime" Name="QutationDate" Nullable="false" Precision="10" />
+          <Property Type="DateTime" Name="DueDate" Nullable="false" Precision="10" />
           <Property Type="Double" Name="SubTotal" Nullable="true" />
           <Property Type="Double" Name="TotalVat6" Nullable="true" />
           <Property Type="Double" Name="TotalVat21" Nullable="true" />
+          <Property Type="Double" Name="DiscountAmount" Nullable="true" />
+          <Property Type="Double" Name="TotalAmount" Nullable="true" />
+          <Property Type="String" Name="CustomerNote" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ContactAddress" Nullable="true" MaxLength="400" />
+          <Property Type="String" Name="Type" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ContactStreet" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="ContactPostal" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ContactCity" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Land" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="LandLine" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="telephone" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="BillingEmail" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ContactWebsite" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PersonCompany" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="QutationDetailId" Nullable="false" />
+          <Property Type="String" Name="Contactdescription" Nullable="true" MaxLength="300" />
+          <Property Type="Int32" Name="ItemId" Nullable="true" />
+          <Property Type="Int32" Name="Quantity" Nullable="true" />
+          <Property Type="Double" Name="Rate" Nullable="true" />
+          <Property Type="Double" Name="Total" Nullable="true" />
+          <Property Type="Double" Name="Vat" Nullable="true" />
+          <Property Type="Double" Name="RowSubTotal" Nullable="true" />
+          <Property Type="String" Name="ContactType" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ServiceDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ProductUnit" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="CompanyID" Nullable="true" />
           <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="250" />
           <Property Type="String" Name="CompanyLogo" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="CompanyAddress" Nullable="true" MaxLength="250" />
@@ -1968,76 +1950,16 @@
           <Property Type="String" Name="CompanyCell" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="CompanyEmail" Nullable="true" MaxLength="25" />
           <Property Type="String" Name="Website" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CompanyTRN" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="BankName" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="IBANNumber" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="BIC" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="KVK" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="BTW" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="ContactName" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="ContactAddress" Nullable="true" MaxLength="400" />
-          <Property Type="String" Name="StreetNumber1" Nullable="true" MaxLength="70" />
-          <Property Type="String" Name="PostalCode1" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="City" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Land" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="LandLine" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="telephone" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="BillingEmail" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Website1" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="PersonCompany" Nullable="true" MaxLength="15" />
-          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="Addeddate" Nullable="true" />
-          <Property Type="Boolean" Name="Status" Nullable="true" />
+          <Property Type="Int32" Name="AddedBy" Nullable="true" />
+          <Property Type="DateTime" Name="AddedDate" Nullable="true" Precision="10" />
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="100" />
           <Property Type="Int32" Name="PaymentTerm" Nullable="true" />
-          <Property Type="Double" Name="TotalAmount" Nullable="true" />
-          <Property Type="String" Name="CustomerNote" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="Type" Nullable="true" MaxLength="10" />
-          <Property Type="Int32" Name="ItemId" Nullable="true" />
-          <Property Type="String" Name="Description" Nullable="true" MaxLength="300" />
-          <Property Type="Int32" Name="Quantity" Nullable="true" />
-          <Property Type="Double" Name="Rate" Nullable="true" />
-          <Property Type="Double" Name="Total" Nullable="true" />
-          <Property Type="Double" Name="Vat" Nullable="true" />
-          <Property Type="String" Name="ProductName" Nullable="true" MaxLength="100" />
-          <Property Type="Double" Name="RowSubTotal" Nullable="true" />
-          <Property Type="String" Name="Type1" Nullable="true" MaxLength="20" />
-          <Property Type="DateTime" Name="ServiceDate" Nullable="true" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="SpQuotationReport1_Result">
-          <Property Type="Int32" Name="QutationID" Nullable="false" />
-          <Property Type="String" Name="Qutation_ID" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="RefNumber" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="QutationDate" Nullable="false" />
-          <Property Type="DateTime" Name="DueDate" Nullable="false" />
-          <Property Type="Double" Name="SubTotal" Nullable="true" />
-          <Property Type="Double" Name="TotalVat6" Nullable="true" />
-          <Property Type="Double" Name="TotalVat21" Nullable="true" />
-          <Property Type="Double" Name="DiscountAmount" Nullable="true" />
-          <Property Type="Double" Name="TotalAmount" Nullable="true" />
-          <Property Type="String" Name="CustomerNote" Nullable="true" MaxLength="300" />
-          <Property Type="String" Name="Status" Nullable="true" MaxLength="10" />
-          <Property Type="Int32" Name="UserId" Nullable="true" />
-          <Property Type="Int32" Name="CompanyId" Nullable="true" />
-          <Property Type="Int32" Name="ContactId" Nullable="true" />
-          <Property Type="String" Name="Type" Nullable="true" MaxLength="10" />
-        </ComplexType>
-        <ComplexType Name="Sp_GetJournal_Result">
-          <Property Type="String" Name="AccountCode" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="AccountTitle" Nullable="true" MaxLength="40" />
-          <Property Type="DateTime" Name="TranDate" Nullable="true" />
-          <Property Type="Double" Name="AmountCredit" Nullable="true" />
-          <Property Type="Double" Name="AmountDebit" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -2045,33 +1967,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="APIcompanyModelStoreContainer" CdmEntityContainer="DBEntities">
-          <EntitySetMapping Name="ComapnyInfoes">
-            <EntityTypeMapping TypeName="APIcompanyModel.ComapnyInfo">
-              <MappingFragment StoreEntitySet="ComapnyInfo">
-                <ScalarProperty Name="BTW" ColumnName="BTW" />
-                <ScalarProperty Name="KVK" ColumnName="KVK" />
-                <ScalarProperty Name="BIC" ColumnName="BIC" />
-                <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
-                <ScalarProperty Name="BankName" ColumnName="BankName" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
-                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
-                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
-                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
-                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
-                <ScalarProperty Name="CompanyTRN" ColumnName="CompanyTRN" />
-                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
-                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="QutationDetailsTables">
             <EntityTypeMapping TypeName="APIcompanyModel.QutationDetailsTable">
               <MappingFragment StoreEntitySet="QutationDetailsTable">
@@ -2491,9 +2386,37 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SpQuotationReport" FunctionName="APIcompanyModel.Store.SpQuotationReport">
+          <EntitySetMapping Name="ComapnyInfoes">
+            <EntityTypeMapping TypeName="APIcompanyModel.ComapnyInfo">
+              <MappingFragment StoreEntitySet="ComapnyInfo">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="BTW" ColumnName="BTW" />
+                <ScalarProperty Name="KVK" ColumnName="KVK" />
+                <ScalarProperty Name="BIC" ColumnName="BIC" />
+                <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="CompanyTRN" ColumnName="CompanyTRN" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
+                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
+                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
+                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
+                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="QutationDetails" FunctionName="APIcompanyModel.Store.QutationDetails">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="APIcompanyModel.SpQuotationReport_Result">
+              <ComplexTypeMapping TypeName="APIcompanyModel.QutationDetails_Result">
+                <ScalarProperty Name="QutationID" ColumnName="QutationID" />
                 <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
                 <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
                 <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
@@ -2501,6 +2424,37 @@
                 <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
                 <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
                 <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
+                <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ContactStreet" ColumnName="ContactStreet" />
+                <ScalarProperty Name="ContactPostal" ColumnName="ContactPostal" />
+                <ScalarProperty Name="ContactCity" ColumnName="ContactCity" />
+                <ScalarProperty Name="Land" ColumnName="Land" />
+                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
+                <ScalarProperty Name="telephone" ColumnName="telephone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
+                <ScalarProperty Name="ContactWebsite" ColumnName="ContactWebsite" />
+                <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="QutationDetailId" ColumnName="QutationDetailId" />
+                <ScalarProperty Name="Contactdescription" ColumnName="Contactdescription" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Vat" ColumnName="Vat" />
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
+                <ScalarProperty Name="ContactType" ColumnName="ContactType" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductUnit" ColumnName="ProductUnit" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
                 <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
@@ -2512,139 +2466,19 @@
                 <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
                 <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
                 <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="CompanyTRN" ColumnName="CompanyTRN" />
                 <ScalarProperty Name="BankName" ColumnName="BankName" />
                 <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
                 <ScalarProperty Name="BIC" ColumnName="BIC" />
                 <ScalarProperty Name="KVK" ColumnName="KVK" />
                 <ScalarProperty Name="BTW" ColumnName="BTW" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
-                <ScalarProperty Name="StreetNumber1" ColumnName="StreetNumber1" />
-                <ScalarProperty Name="PostalCode1" ColumnName="PostalCode1" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Land" ColumnName="Land" />
-                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
-                <ScalarProperty Name="telephone" ColumnName="telephone" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
-                <ScalarProperty Name="Website1" ColumnName="Website1" />
-                <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Vat" ColumnName="Vat" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
-                <ScalarProperty Name="Type1" ColumnName="Type1" />
-                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="QuotationReportStoreProcedure" FunctionName="APIcompanyModel.Store.SpQuotationReport">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="APIcompanyModel.SpQuotationReport_Result">
-                <ScalarProperty Name="Qutation_ID" ColumnName="Qutation_ID" />
-                <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
-                <ScalarProperty Name="QutationDate" ColumnName="QutationDate" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
-                <ScalarProperty Name="TotalVat6" ColumnName="TotalVat6" />
-                <ScalarProperty Name="TotalVat21" ColumnName="TotalVat21" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyLogo" ColumnName="CompanyLogo" />
-                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
-                <ScalarProperty Name="StreetNumber" ColumnName="StreetNumber" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
-                <ScalarProperty Name="CompanyCountry" ColumnName="CompanyCountry" />
-                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
-                <ScalarProperty Name="CompanyCell" ColumnName="CompanyCell" />
-                <ScalarProperty Name="CompanyEmail" ColumnName="CompanyEmail" />
-                <ScalarProperty Name="Website" ColumnName="Website" />
-                <ScalarProperty Name="BankName" ColumnName="BankName" />
-                <ScalarProperty Name="IBANNumber" ColumnName="IBANNumber" />
-                <ScalarProperty Name="BIC" ColumnName="BIC" />
-                <ScalarProperty Name="KVK" ColumnName="KVK" />
-                <ScalarProperty Name="BTW" ColumnName="BTW" />
-                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-                <ScalarProperty Name="ContactAddress" ColumnName="ContactAddress" />
-                <ScalarProperty Name="StreetNumber1" ColumnName="StreetNumber1" />
-                <ScalarProperty Name="PostalCode1" ColumnName="PostalCode1" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Land" ColumnName="Land" />
-                <ScalarProperty Name="LandLine" ColumnName="LandLine" />
-                <ScalarProperty Name="telephone" ColumnName="telephone" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="BillingEmail" ColumnName="BillingEmail" />
-                <ScalarProperty Name="Website1" ColumnName="Website1" />
-                <ScalarProperty Name="PersonCompany" ColumnName="PersonCompany" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Addeddate" ColumnName="Addeddate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
-                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-                <ScalarProperty Name="CustomerNote" ColumnName="CustomerNote" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Rate" ColumnName="Rate" />
-                <ScalarProperty Name="Total" ColumnName="Total" />
-                <ScalarProperty Name="Vat" ColumnName="Vat" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
-                <ScalarProperty Name="Type1" ColumnName="Type1" />
-                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="DB_A415B5_uurtjefactuurDB" FunctionName="APIcompanyModel.Store.DB_A415B5_uurtjefactuurDB" />
-          <FunctionImportMapping FunctionImportName="InsertIntoAccountTable" FunctionName="APIcompanyModel.Store.InsertIntoAccountTable" />
-          <FunctionImportMapping FunctionImportName="InsertIntoHeadAccount" FunctionName="APIcompanyModel.Store.InsertIntoHeadAccount" />
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="APIcompanyModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="APIcompanyModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="APIcompanyModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="Sp_GetJournal" FunctionName="APIcompanyModel.Store.Sp_GetJournal">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="APIcompanyModel.Sp_GetJournal_Result">
-                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
-                <ScalarProperty Name="AccountTitle" ColumnName="AccountTitle" />
-                <ScalarProperty Name="TranDate" ColumnName="TranDate" />
-                <ScalarProperty Name="AmountCredit" ColumnName="AmountCredit" />
-                <ScalarProperty Name="AmountDebit" ColumnName="AmountDebit" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="APIcompanyModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="APIcompanyModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="APIcompanyModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="APIcompanyModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="APIcompanyModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="APIcompanyModel.Store.sp_upgraddiagrams" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

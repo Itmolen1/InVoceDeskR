@@ -266,7 +266,6 @@
     <Compile Include="Controllers\ApiConatactsController.cs" />
     <Compile Include="Controllers\APIControlAccountController.cs" />
     <Compile Include="Controllers\APIErrorLogController.cs" />
-    <Compile Include="Controllers\APIExpenseController.cs" />
     <Compile Include="Controllers\APIInvoiceController.cs" />
     <Compile Include="Controllers\APIInvoiceDetailsController.cs" />
     <Compile Include="Controllers\APIOrderStatusController.cs" />
@@ -287,7 +286,6 @@
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExceptionController.cs" />
-    <Compile Include="Controllers\ExpenceController.cs" />
     <Compile Include="Controllers\GenrateInvoiceController.cs" />
     <Compile Include="Controllers\GetQuationCountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -329,6 +327,12 @@
       <DependentUpon>Example.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CrystalReport\qt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>qt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CrystalReport\Quotation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -361,13 +365,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CompanyDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="DataSet\QuotationDataSet.cs">
-      <DependentUpon>QuotationDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DataSet\QuotationDataSet.Designer.cs">
-      <DependentUpon>QuotationDataSet.xsd</DependentUpon>
+    <Compile Include="DataSets\QutationDeta.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>QutationDeta.xsd</DependentUpon>
     </Compile>
     <Compile Include="DeleteFileClass.cs" />
     <Compile Include="Facebook\FacebookBackChannelHandler.cs" />
@@ -507,6 +508,9 @@
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QutationDetailsTable.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QutationDetails_Result.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QutationIndexViewModel.cs" />
@@ -2440,16 +2444,16 @@
     <Content Include="DataSets\CompanyDataSet.xss">
       <DependentUpon>CompanyDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="DataSet\QuotationDataSet.xsc">
-      <DependentUpon>QuotationDataSet.xsd</DependentUpon>
+    <Content Include="DataSets\QutationDeta.xsc">
+      <DependentUpon>QutationDeta.xsd</DependentUpon>
     </Content>
-    <None Include="DataSet\QuotationDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>QuotationDataSet.Designer.cs</LastGenOutput>
+    <None Include="DataSets\QutationDeta.xsd">
       <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>QutationDeta.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="DataSet\QuotationDataSet.xss">
-      <DependentUpon>QuotationDataSet.xsd</DependentUpon>
+    <Content Include="DataSets\QutationDeta.xss">
+      <DependentUpon>QutationDeta.xsd</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\App.pubxml" />
     <None Include="Properties\PublishProfiles\fucctuedesks.pubxml" />
@@ -2611,7 +2615,6 @@
     <Folder Include="Views\Common\" />
     <Folder Include="Views\Email\" />
     <Folder Include="Views\Error\" />
-    <Folder Include="Views\Expence\" />
     <Folder Include="Views\GenrateInvoice\" />
     <Folder Include="Views\MVCCompany\" />
     <Folder Include="Views\MvcPaymentTerm\" />
@@ -2642,6 +2645,10 @@
     <EmbeddedResource Include="CrystalReport\Example.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>Example.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CrystalReport\qt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>qt.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CrystalReport\Quotation.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
