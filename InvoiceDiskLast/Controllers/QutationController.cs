@@ -455,7 +455,6 @@ namespace InvoiceDiskLast.Controllers
                                        join comp in _dbentities.ComapnyInfoes on q.CompanyId equals comp.CompanyID
                                        join p in _dbentities.ProductTables on qt.ItemId equals p.ProductId
                                        where q.QutationID == 44
-
                                        select new QuatationReportViewModel
                                        {
                                            // Contact Information
@@ -492,7 +491,6 @@ namespace InvoiceDiskLast.Controllers
                                            SubTotal = q.SubTotal ?? 0,
                                            TotalVat6 = q.TotalVat6 ?? 0,
                                            TotalVat21 = q.TotalVat21 ?? 0,
-
                                            TotalAmount = q.TotalAmount ?? 0,
                                            CustomerNote = q.CustomerNote,
                                            //Qutation Detail table

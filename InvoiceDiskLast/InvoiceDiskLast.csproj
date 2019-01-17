@@ -266,6 +266,7 @@
     <Compile Include="Controllers\ApiConatactsController.cs" />
     <Compile Include="Controllers\APIControlAccountController.cs" />
     <Compile Include="Controllers\APIErrorLogController.cs" />
+    <Compile Include="Controllers\APIExpenseController.cs" />
     <Compile Include="Controllers\APIInvoiceController.cs" />
     <Compile Include="Controllers\APIInvoiceDetailsController.cs" />
     <Compile Include="Controllers\APIOrderStatusController.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ExceptionController.cs" />
+    <Compile Include="Controllers\ExpenceController.cs" />
     <Compile Include="Controllers\GenrateInvoiceController.cs" />
     <Compile Include="Controllers\GetQuationCountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -319,12 +321,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CustomerReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CrystalReport\Example.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Example.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CrystalReport\qt.cs">
@@ -388,17 +384,17 @@
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ApiCompanyInfoModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ApiCompanyInfoModel.Context.tt</DependentUpon>
+    <Compile Include="Models\ApiCompanyInfoModel.Context.cs" />
+    <Compile Include="Models\ApiCompanyInfoModel.cs" />
+    <Compile Include="Models\ApiCompanyInfoModel.Designer.cs">
+      <DependentUpon>ApiCompanyInfoModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApiCompanyInfoModel.cs">
+    <Compile Include="Models\ApiCompanyInfoModel1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ApiCompanyInfoModel.Designer.cs">
+    <Compile Include="Models\ApiCompanyInfoModel1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ApiCompanyInfoModel.edmx</DependentUpon>
@@ -439,6 +435,13 @@
     <Compile Include="Models\ExceptionLogger.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EXPENSE.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ExpenseDetail.cs">
+      <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ExpenseViewModel.cs" />
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\GetStockItem_Result.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
@@ -450,6 +453,7 @@
     <Compile Include="Models\InvoiceDetailsTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\InvoiceTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
@@ -507,6 +511,7 @@
     <Compile Include="Models\PurchaseOrderTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuatationReportViewModel.cs" />
     <Compile Include="Models\QutationDetailsTable.cs">
       <DependentUpon>ApiCompanyInfoModel.tt</DependentUpon>
     </Compile>
@@ -525,6 +530,11 @@
     <Compile Include="Models\RestPasswordModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\SessionExpireAttribute.cs" />
+    <Compile Include="Models\SpQuotationReport1_Result.cs" />
+    <Compile Include="Models\SpQuotationReport_Result.cs" />
+    <Compile Include="Models\Sp_GetJournal_Result.cs" />
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs" />
+    <Compile Include="Models\sp_helpdiagrams_Result.cs" />
     <Compile Include="Models\StatusEnum.cs" />
     <Compile Include="Models\StockViewModel.cs" />
     <Compile Include="Models\Token.cs" />
@@ -546,6 +556,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="ReportForms\QuotationReportForm.aspx.cs">
+      <DependentUpon>QuotationReportForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReportForms\QuotationReportForm.aspx.designer.cs">
+      <DependentUpon>QuotationReportForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="WebForms\QuotationForm.aspx.cs">
@@ -2285,6 +2302,33 @@
     <Content Include="CustomScript\DateTimeFormate.js" />
     <Content Include="CustomScript\example.js" />
     <Content Include="CustomScript\NumberValidation.js" />
+    <Content Include="DirectoryFolder\204Invoice\logo-light141616.png" />
+    <Content Include="DirectoryFolder\205Invoice\logo-light14193.png" />
+    <Content Include="DirectoryFolder\205Invoice\logo-text141935.png" />
+    <Content Include="DirectoryFolder\206Invoice\LOGO-WHITE14142123.png" />
+    <Content Include="DirectoryFolder\311Purchase\logo-text1323472.png" />
+    <Content Include="DirectoryFolder\312Purchase\logo-icon13235339.png" />
+    <Content Include="DirectoryFolder\312Purchase\logo-text13231527.png" />
+    <Content Include="DirectoryFolder\313Purchase\logo-light13231728.png" />
+    <Content Include="DirectoryFolder\313Purchase\logo-light13235618.png" />
+    <Content Include="DirectoryFolder\314Purchase\logo-light1323191.png" />
+    <Content Include="DirectoryFolder\314Purchase\logo-text13235754.png" />
+    <Content Include="DirectoryFolder\316Purchase\logo-icon13232134.png" />
+    <Content Include="DirectoryFolder\316Purchase\logo-light140457.png" />
+    <Content Include="DirectoryFolder\317Purchase\logo-text13232641.png" />
+    <Content Include="DirectoryFolder\323Purchase\logo-icon1411051.png" />
+    <Content Include="DirectoryFolder\323Purchase\logo-light1411023.png" />
+    <Content Include="DirectoryFolder\324Purchase\download %281416503.jpg" />
+    <Content Include="DirectoryFolder\35Bill\logo-text140737.png" />
+    <Content Include="DirectoryFolder\36Bill\logo-light1411155.png" />
+    <Content Include="DirectoryFolder\36Bill\logo-text1323632.png" />
+    <Content Include="DirectoryFolder\36Bill\logo-text1323633.png" />
+    <Content Include="DirectoryFolder\36Bill\logo-text1323635.png" />
+    <Content Include="DirectoryFolder\37Bill\logo-light141124.png" />
+    <Content Include="DirectoryFolder\38Bill\logo-light13231156.png" />
+    <Content Include="DirectoryFolder\40Bill\logo-light13231428.png" />
+    <Content Include="DirectoryFolder\44Quotation\logo-light141458.png" />
+    <Content Include="DirectoryFolder\44Quotation\logo-text141436.png" />
     <Content Include="dist\css\pages\bootstrap-switch.css" />
     <Content Include="dist\css\pages\breadcrumb-page.css" />
     <Content Include="dist\css\pages\chat-app-page.css" />
@@ -2348,17 +2392,12 @@
     <Content Include="images\8.jpg" />
     <Content Include="images\download.jpg" />
     <Content Include="Login.html" />
-    <Content Include="Models\ApiCompanyInfoModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ApiCompanyInfoModel.edmx</DependentUpon>
-      <LastGenOutput>ApiCompanyInfoModel.Context.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\ApiCompanyInfoModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ApiCompanyInfoModel.edmx</DependentUpon>
-      <LastGenOutput>ApiCompanyInfoModel.cs</LastGenOutput>
+      <LastGenOutput>ApiCompanyInfoModel1.cs</LastGenOutput>
     </Content>
     <Content Include="Register.html" />
+    <Content Include="ReportForms\QuotationReportForm.aspx" />
     <Content Include="Rotativa\help-wkhtmltoimage.txt" />
     <Content Include="Rotativa\help-wkhtmltopdf.txt" />
     <Content Include="Rotativa\wkhtmltoimage.exe" />
@@ -2386,13 +2425,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="WebForms\QuotationForm.aspx" />
-    <EntityDeploy Include="Models\ApiCompanyInfoModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ApiCompanyInfoModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ApiCompanyInfoModel.edmx.diagram">
-      <DependentUpon>ApiCompanyInfoModel.edmx</DependentUpon>
-    </Content>
     <Content Include="App_Browsers\qt.browser" />
     <Content Include="assets\icons\crypto-icons\cryptocoins.ttf" />
     <Content Include="assets\icons\crypto-icons\cryptocoins.woff" />
@@ -2454,6 +2486,26 @@
     </None>
     <Content Include="DataSets\QutationDeta.xss">
       <DependentUpon>QutationDeta.xsd</DependentUpon>
+    </Content>
+    <Content Include="DirectoryFolder\208Invoice\14-IT MOLE1322544.pdf" />
+    <Content Include="DirectoryFolder\209Invoice\14-IT MOLE13225645.pdf" />
+    <Content Include="DirectoryFolder\209Invoice\14-IT MOLE13225747.pdf" />
+    <Content Include="DirectoryFolder\209Invoice\27-IT MOLE13225749.pdf" />
+    <Content Include="DirectoryFolder\311Purchase\14-IT MOLE13225958.pdf" />
+    <Content Include="DirectoryFolder\311Purchase\27-IT MOLE1323130.pdf" />
+    <Content Include="DirectoryFolder\311Purchase\31-IT MOLE1323132.pdf" />
+    <Content Include="DirectoryFolder\35Bill\14-IT MOLE1323357.pdf" />
+    <Content Include="DirectoryFolder\35Bill\14-IT MOLE132340.pdf" />
+    <Content Include="DirectoryFolder\35Bill\30-IT MOLE1323412.pdf" />
+    <Content Include="DirectoryFolder\49Quotation\16-IT MOLE13224942.pdf" />
+    <Content Include="DirectoryFolder\49Quotation\27-IT MOLE13224959.pdf" />
+    <Content Include="DirectoryFolder\49Quotation\29-IT MOLE1322500.pdf" />
+    <EntityDeploy Include="Models\ApiCompanyInfoModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ApiCompanyInfoModel1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ApiCompanyInfoModel.edmx.diagram">
+      <DependentUpon>ApiCompanyInfoModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\App.pubxml" />
     <None Include="Properties\PublishProfiles\fucctuedesks.pubxml" />
@@ -2606,9 +2658,21 @@
     <Content Include="Views\Shared\PartialViews\ViewFilePartialView.cshtml" />
     <Content Include="Views\Test\ReportView.cshtml" />
     <Content Include="Views\Test\TestCrystal.cshtml" />
+    <Content Include="Views\Expence\List.cshtml" />
+    <Content Include="Views\Expence\Add.cshtml" />
+    <Content Include="Views\Shared\PartialViews\ExpenceHeaderPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DataSet\" />
+    <Folder Include="DirectoryFolder\154purchase\" />
+    <Folder Include="DirectoryFolder\157Qutation\" />
+    <Folder Include="DirectoryFolder\160purchase\" />
+    <Folder Include="DirectoryFolder\162purchase\" />
+    <Folder Include="DirectoryFolder\200Quatation\" />
+    <Folder Include="DirectoryFolder\207Qutation\" />
+    <Folder Include="DirectoryFolder\61Arif vender\" />
+    <Folder Include="DirectoryFolder\66qwesd\" />
     <Folder Include="ErrorLog\" />
     <Folder Include="PDF\" />
     <Folder Include="Views\APIPaymentTerm\" />
@@ -2641,10 +2705,6 @@
     <EmbeddedResource Include="CrystalReport\CustomerReport.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CustomerReport.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CrystalReport\Example.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>Example.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="CrystalReport\qt.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

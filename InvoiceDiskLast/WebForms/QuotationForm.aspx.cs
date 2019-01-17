@@ -31,14 +31,14 @@ namespace InvoiceDiskLast.WebForms
 
            da.SelectCommand.Parameters.AddWithValue("@QuatationID",44);
 
-            DataSet ds = new DataSet();
-            da.Fill(ds);
+         //   DataSet ds = new DataSet();
+            //da.Fill(ds);
 
             //cmd.ExecuteNonQuery();
 
 
 
-            Report.SetDataSource(ds);
+           // Report.SetDataSource(ds);
 
 
 
