@@ -1,0 +1,37 @@
+﻿@model IEnumerable <InvoiceDiskLast.Models.ComapnyInfo>
+@{
+    ViewBag.Title = "TestCrystal";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Company Info</title>
+</head>
+<body>
+    <h4>Customers</h4>
+    <hr />
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <th>CompanyID</th>
+            <th>CompanyName</th>
+            <th>City</th>
+            <th>Country</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CompanyID</td>
+                <td>@item.CompanyName</td>
+                <td>@item.CompanyCity</td>
+                <td>@item.CompanyCountry</td>
+            </tr>
+        }
+    </table>
+    <br />
+    <a href="~/CrystalReport/WebForm1.aspx">Click to View Report</a>
+</body>
+</html>

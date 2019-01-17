@@ -11,7 +11,7 @@ namespace InvoiceDiskLast.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class AccountTransictionTable
     {
         public int TransictionId { get; set; }
@@ -27,9 +27,9 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> FK_CompanyId { get; set; }
         public Nullable<int> FKPaymentTerm { get; set; }
         public string Description { get; set; }
-        public string FlageAddEdit { get; set; }
+    
         public virtual AccountTable AccountTable { get; set; }
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual PaymentTermTable PaymentTermTable { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

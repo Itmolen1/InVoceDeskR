@@ -35,7 +35,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> CompanyId { get; set; }
         public string Username { get; set; }
     
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillTable> BillTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -46,5 +45,6 @@ namespace InvoiceDiskLast.Models
         public virtual ICollection<InvoiceTable> InvoiceTables1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationTable> QutationTables { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

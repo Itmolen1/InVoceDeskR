@@ -38,12 +38,12 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> ContactId { get; set; }
         public string Type { get; set; }
     
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual ContactsTable ContactsTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationDetailsTable> QutationDetailsTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationOrderStatusTable> QutationOrderStatusTables { get; set; }
         public virtual UserTable UserTable { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

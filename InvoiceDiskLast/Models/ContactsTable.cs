@@ -42,10 +42,10 @@ namespace InvoiceDiskLast.Models
         public Nullable<bool> Status { get; set; }
         public Nullable<int> PaymentTerm { get; set; }
     
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceTable> InvoiceTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QutationTable> QutationTables { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
     }
 }

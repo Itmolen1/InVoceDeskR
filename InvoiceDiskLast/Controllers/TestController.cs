@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace InvoiceDiskLast.Controllers
 {
     public class TestController : Controller
@@ -35,6 +36,11 @@ namespace InvoiceDiskLast.Controllers
             return View();
         }
 
+
+        public ActionResult ReportView()
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult DeleteFile(int Id, string Description,string FileName)
@@ -86,6 +92,16 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult QuotationViewTest()
         {
             return View();
+        }
+
+
+        public  ActionResult TestCrystal()
+        {
+          
+
+            DBEntities entities = new DBEntities();
+            return View(from ComapnyInfo in entities.ComapnyInfoes.Take(10)
+                        select ComapnyInfo);
         }
 
     }
