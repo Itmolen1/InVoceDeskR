@@ -1675,7 +1675,6 @@ namespace InvoiceDiskLast.Controllers
                 purchasemodel.UserId = Convert.ToInt32(Session["LoginUserID"]);
                 purchasemodel.PurchaseID = purchaseViewModel.PurchaseId.ToString();
                 //purchasemodel.pur = purchaseViewModel.PurchaseId.ToString();
-
                 purchasemodel.VenderId = purchaseViewModel.VenderId;
                 purchasemodel.PurchaseOrderID = (Convert.ToInt32(purchaseViewModel.PurchaseOrderID != null ? purchaseViewModel.PurchaseOrderID : 0));
                 purchasemodel.PurchaseRefNumber = purchaseViewModel.PurchaseRefNumber;
