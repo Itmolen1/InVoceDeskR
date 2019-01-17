@@ -64,5 +64,15 @@ namespace InvoiceDiskLast.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetStockItem_Result>("[DBEntities].[GetStockItem](@ComapniId)", comapniIdParameter);
         }
+    
+        [DbFunction("DBEntities", "QutationDetails")]
+        public virtual IQueryable<QutationDetails_Result> QutationDetails(Nullable<int> qutationID)
+        {
+            var qutationIDParameter = qutationID.HasValue ?
+                new ObjectParameter("QutationID", qutationID) :
+                new ObjectParameter("QutationID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<QutationDetails_Result>("[DBEntities].[QutationDetails](@QutationID)", qutationIDParameter);
+        }
     }
 }

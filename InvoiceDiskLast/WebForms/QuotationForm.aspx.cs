@@ -3,6 +3,9 @@ using InvoiceDiskLast.CrystalReport;
 using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -18,34 +21,53 @@ namespace InvoiceDiskLast.WebForms
             CrystalReportViewer1.ToolPanelView = CrystalDecisions.Web.ToolPanelViewType.None;
             Quotation Report = new Quotation();
             DBEntities entities = new DBEntities();
-            
+
+
+            string str = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            SqlConnection con = new SqlConnection(str);
+            SqlDataAdapter da = new SqlDataAdapter("SP_GetQutationDetails",con);
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+
+           da.SelectCommand.Parameters.AddWithValue("@QuatationID",44);
+
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+
+            //cmd.ExecuteNonQuery();
 
 
 
+            Report.SetDataSource(ds);
 
 
-            Report.SetDataSource(entities.ComapnyInfoes.Select(c => new
-            {
-                CompanyID = c.CompanyID,
-                CompanyName = c.CompanyName,
-                CompanyPhone = c.CompanyPhone,
-                CompanyCell = c.CompanyCell,
-                CompanyEmail = c.CompanyEmail,
-                Website = c.Website,
-                CompanyTRN = c.CompanyTRN,
-                BankName = c.BankName,
-                IBANNumber = c.IBANNumber,
-                BIC = c.BIC,
-                KVK = c.KVK,
-                BTW = c.BTW,
-                CompanyAddress = c.CompanyAddress,
-                StreetNumber = c.StreetNumber,
-                PostalCode = c.PostalCode,
-                CompanyCity = c.CompanyCity,
-                CompanyCountry = c.CompanyCountry,
-                CompanyLogo = c.CompanyLogo,
 
-            }).ToList());
+         //   entities.QutationDetails(45).ToList();
+
+
+
+            //Report.SetDataSource(entities.ComapnyInfoes.Select(c => new
+            //{
+            //    CompanyID = c.CompanyID,
+            //    CompanyName = c.CompanyName,
+            //    CompanyPhone = c.CompanyPhone,
+            //    CompanyCell = c.CompanyCell,
+            //    CompanyEmail = c.CompanyEmail,
+            //    Website = c.Website,
+            //    CompanyTRN = c.CompanyTRN,
+            //    BankName = c.BankName,
+            //    IBANNumber = c.IBANNumber,
+            //    BIC = c.BIC,
+            //    KVK = c.KVK,
+            //    BTW = c.BTW,
+            //    CompanyAddress = c.CompanyAddress,
+            //    StreetNumber = c.StreetNumber,
+            //    PostalCode = c.PostalCode,
+            //    CompanyCity = c.CompanyCity,
+            //    CompanyCountry = c.CompanyCountry,
+            //    CompanyLogo = c.CompanyLogo,
+
+            //}).ToList());
 
 
             //Report.SetDataSource(entities.ContactsTables.Select(c => new 

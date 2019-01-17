@@ -27,5 +27,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> RowSubTotal { get; set; }
     
         public virtual QutationTable QutationTable { get; set; }
+        public virtual ProductTable ProductTable { get; set; }
     }
 }
