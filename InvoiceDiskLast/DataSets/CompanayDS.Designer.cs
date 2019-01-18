@@ -20,9 +20,9 @@ namespace InvoiceDiskLast.DataSets {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("Company")]
+    [global::System.Xml.Serialization.XmlRootAttribute("CompanayDS")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class Company : global::System.Data.DataSet {
+    public partial class CompanayDS : global::System.Data.DataSet {
         
         private SP_GetAllCompanyInfoDataTable tableSP_GetAllCompanyInfo;
         
@@ -30,7 +30,7 @@ namespace InvoiceDiskLast.DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public Company() {
+        public CompanayDS() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace InvoiceDiskLast.DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected Company(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected CompanayDS(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -127,7 +127,7 @@ namespace InvoiceDiskLast.DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            Company cln = ((Company)(base.Clone()));
+            CompanayDS cln = ((CompanayDS)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -199,9 +199,9 @@ namespace InvoiceDiskLast.DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "Company";
+            this.DataSetName = "CompanayDS";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/Company.xsd";
+            this.Namespace = "http://tempuri.org/CompanayDS.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableSP_GetAllCompanyInfo = new SP_GetAllCompanyInfoDataTable();
@@ -225,7 +225,7 @@ namespace InvoiceDiskLast.DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            Company ds = new Company();
+            CompanayDS ds = new CompanayDS();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -794,7 +794,7 @@ namespace InvoiceDiskLast.DataSets {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                Company ds = new Company();
+                CompanayDS ds = new CompanayDS();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1457,7 +1457,7 @@ namespace InvoiceDiskLast.DataSets {
         }
     }
 }
-namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
+namespace InvoiceDiskLast.DataSets.CompanayDSTableAdapters {
     
     
     /// <summary>
@@ -1628,7 +1628,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(Company.SP_GetAllCompanyInfoDataTable dataTable, global::System.Nullable<int> CompanyID) {
+        public virtual int Fill(CompanayDS.SP_GetAllCompanyInfoDataTable dataTable, global::System.Nullable<int> CompanyID) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((CompanyID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(CompanyID.Value));
@@ -1647,7 +1647,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual Company.SP_GetAllCompanyInfoDataTable GetData(global::System.Nullable<int> CompanyID) {
+        public virtual CompanayDS.SP_GetAllCompanyInfoDataTable GetData(global::System.Nullable<int> CompanyID) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((CompanyID.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(CompanyID.Value));
@@ -1655,7 +1655,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
             else {
                 this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
-            Company.SP_GetAllCompanyInfoDataTable dataTable = new Company.SP_GetAllCompanyInfoDataTable();
+            CompanayDS.SP_GetAllCompanyInfoDataTable dataTable = new CompanayDS.SP_GetAllCompanyInfoDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1729,7 +1729,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(Company dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(CompanayDS dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -1739,7 +1739,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(Company dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(CompanayDS dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -1749,7 +1749,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(Company dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(CompanayDS dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
             return result;
         }
@@ -1783,7 +1783,7 @@ namespace InvoiceDiskLast.DataSets.CompanyTableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(Company dataSet) {
+        public virtual int UpdateAll(CompanayDS dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }
