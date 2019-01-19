@@ -45,7 +45,7 @@ namespace InvoiceDiskLast.Controllers
 
                 if (search == "")
                 {
-                    search = "dwedew";
+                    search = "NoSearch";
                 }
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailList122/" + companyId + "/" + search + "/" + skip + "/" + pageSize).Result;
                 List<ExpenseViewModel> ExpenseList = response.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;

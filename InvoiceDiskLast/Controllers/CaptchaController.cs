@@ -114,13 +114,12 @@ namespace InvoiceDiskLast.Controllers
                         token = response.Content.ReadAsAsync<BearerToken>().Result;
 
                         #region
-
-
                         if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                         {
                             ViewBag.ErrorMessage = "username or password incorrect!";
                             return View(user);
                         }
+
                         #endregion
                         // Store token in ASP.NET Session State for later use
                         Session["ApiAccessToken"] = token.AccessToken;
