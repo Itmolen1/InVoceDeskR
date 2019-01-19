@@ -196,6 +196,8 @@
           <Property Name="user_id" Type="int" />
           <Property Name="comapny_id" Type="int" />
           <Property Name="AddedDate" Type="datetime" />
+          <Property Name="Vat6" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="Vat21" Type="decimal" Precision="12" Scale="2" />
         </EntityType>
         <EntityType Name="ExpenseDetail">
           <Key>
@@ -537,6 +539,18 @@
             </Principal>
             <Dependent Role="EXPENSE">
               <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpenseDetail_AccountTable">
+          <End Role="AccountTable" Type="Self.AccountTable" Multiplicity="0..1" />
+          <End Role="ExpenseDetail" Type="Self.ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountTable">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="EXPENSE_ACCOUNT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -937,6 +951,10 @@
             <End Role="UserTable" EntitySet="UserTable" />
             <End Role="EXPENSE" EntitySet="EXPENSE" />
           </AssociationSet>
+          <AssociationSet Name="FK_ExpenseDetail_AccountTable" Association="Self.FK_ExpenseDetail_AccountTable">
+            <End Role="AccountTable" EntitySet="AccountTable" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetail" />
+          </AssociationSet>
           <AssociationSet Name="FK_ExpenseDetail_EXPENSE" Association="Self.FK_ExpenseDetail_EXPENSE">
             <End Role="EXPENSE" EntitySet="EXPENSE" />
             <End Role="ExpenseDetail" EntitySet="ExpenseDetail" />
@@ -1186,6 +1204,10 @@
             <End Role="EXPENSE" EntitySet="EXPENSEs" />
             <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_ExpenseDetail_AccountTable" Association="APIcompanyModel.FK_ExpenseDetail_AccountTable">
+            <End Role="AccountTable" EntitySet="AccountTables" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1273,6 +1295,7 @@
           <NavigationProperty Name="HeadAccountTable" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="AccountTable" ToRole="HeadAccountTable" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTable" ToRole="AccountTransictionTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="AccountTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="AccountTable" ToRole="ExpenseDetail" />
         </EntityType>
         <EntityType Name="ControlAccountTable">
           <Key>
@@ -2076,6 +2099,8 @@
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="EXPENSE" ToRole="ComapnyInfo" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_EXPENSE_UserTable" FromRole="EXPENSE" ToRole="UserTable" />
           <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="EXPENSE" ToRole="ExpenseDetail" />
+          <Property Name="Vat6" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="Vat21" Type="Decimal" Precision="12" Scale="2" />
         </EntityType>
         <EntityType Name="ExpenseDetail">
           <Key>
@@ -2092,6 +2117,7 @@
           <Property Name="user_id" Type="Int32" />
           <Property Name="comapny_id" Type="Int32" />
           <NavigationProperty Name="EXPENSE" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="ExpenseDetail" ToRole="EXPENSE" />
+          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="ExpenseDetail" ToRole="AccountTable" />
         </EntityType>
         <Association Name="FK_EXPENSE_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -2126,6 +2152,18 @@
             </Principal>
             <Dependent Role="ExpenseDetail">
               <PropertyRef Name="expense_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpenseDetail_AccountTable">
+          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountTable">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="EXPENSE_ACCOUNT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2650,6 +2688,8 @@
           <EntitySetMapping Name="EXPENSEs">
             <EntityTypeMapping TypeName="APIcompanyModel.EXPENSE">
               <MappingFragment StoreEntitySet="EXPENSE">
+                <ScalarProperty Name="Vat21" ColumnName="Vat21" />
+                <ScalarProperty Name="Vat6" ColumnName="Vat6" />
                 <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
                 <ScalarProperty Name="comapny_id" ColumnName="comapny_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />

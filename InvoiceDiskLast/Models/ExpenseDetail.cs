@@ -26,5 +26,6 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> comapny_id { get; set; }
     
         public virtual EXPENSE EXPENSE { get; set; }
+        public virtual AccountTable AccountTable { get; set; }
     }
 }

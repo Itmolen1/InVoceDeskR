@@ -1,12 +1,108 @@
 ﻿
+
+
 @{
-    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Index";
 }
 
-<h2>List</h2>
+<a href="/Expence/Add" class="btn btn-info"><i class="fa fa-plus-circle" style="padding-right:10px"></i>Creat New Expense</a>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="ExpenseDetailTable">
+                <thead style="background-color:black;color:white">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+
+                        <th>
+                            Expense Date
+                        </th>
+                        <th>
+                            ref #
+                        </th>
+                        <th>
+                            Paid Through
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                        <th>
+                            tex amount
+                        </th>
+                        <th>Sub total</th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ExpenseDetailTable").DataTable({
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                "processing": $('#loaderQuationList').append("<img src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/Expence/GetExpenseList",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                   { "data": "Id", "name": "Id", "autoWidth": true },// key for edit delete
+                     {
+                         "data": "AddedDate", "type": "date ",
+                         "render": function (value) {
+                             if (value === null) return "";
+                             var pattern = /Date\(([^)]+)\)/;//date format from server side
+                             var results = pattern.exec(value);
+                             var dt = new Date(parseFloat(results[1]));
+                             return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                         }, "autoWidth": true
+                     },
+
+                    { "data": "REFERENCEno", "name": "REFERENCEno", "autoWidth": true },
+                    { "data": "PaidThrougAccount", "name": "PaidThrougAccount", "autoWidth": true },
+                    { "data": "SUBTOTAL", "name": "SUBTOTAL", "autoWidth": true },
+
+                    { "data": "VAT_AMOUNT", "name": "VAT_AMOUNT", "autoWidth": true },
+
+                      { "data": "GRAND_TOTAL", "name": "GRAND_TOTAL", "autoWidth": true },
+                     {
+                         render: function (data, type, row) {
+                             return '<a   href="/Expence/Edit/' + row.Id + '"   class="btn btn-info btn-sm" data-id="Id"><i class="fa fa-pencil">Edit</i></a>|<a href="/Expence/ViewExpense/' + row.Id + '"  class="btn btn-success btn-sm"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.Id + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
+                         }
+                     },
+              ]
+        });
 
 
 
+        function ViewDirectory1(Id) {
+            window.location.href = "/Common/ViewDirecory?Id=" + Id + "&DName=" + "Expense";
+            //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
+        }
 
 
+        function EditExpense(ExpenseId) {
+            window.location.href = "/Expence/Edit/" + ExpenseId;
+        }
 
+    });
+</script>

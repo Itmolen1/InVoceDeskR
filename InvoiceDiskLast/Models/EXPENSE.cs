@@ -31,6 +31,8 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> user_id { get; set; }
         public Nullable<int> comapny_id { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
+        public Nullable<decimal> Vat6 { get; set; }
+        public Nullable<decimal> Vat21 { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual UserTable UserTable { get; set; }
