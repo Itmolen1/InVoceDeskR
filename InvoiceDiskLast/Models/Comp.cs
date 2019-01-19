@@ -39,5 +39,8 @@ namespace InvoiceDiskLast.Models
         public string contactMobile { get; set; }
         public string Contacttelephone { get; set; }
         public string ContactStreetNumber { get; set; }
+
+       
+
     }
 }

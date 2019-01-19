@@ -19,7 +19,7 @@ namespace InvoiceDiskLast.Models
 
     public class ServicesTables
     {
-        public string Date { get; set; }
+        public String Date { get; set; }
         public string ProductNames { get; set; }
 
         public string Descriptions { get; set; }
@@ -28,5 +28,8 @@ namespace InvoiceDiskLast.Models
         public double Totals { get; set; }
         public double Vats { get; set; }
         public double RowSubTotals { get; set; }
+
+
+      
     }
 }
