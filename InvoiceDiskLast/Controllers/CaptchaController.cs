@@ -109,9 +109,12 @@ namespace InvoiceDiskLast.Controllers
                         //werdferf
                         //HttpResponseMessage response = httpClient.PostAsync(url+"/Token", encodedRequest).Result;
 
-                        HttpResponseMessage response = httpClient.PostAsync(url + "Token", encodedRequest).Result;
+                        try
+                        {
+                            HttpResponseMessage response = httpClient.PostAsync(url + "Token", encodedRequest).Result;
 
-                        token = response.Content.ReadAsAsync<BearerToken>().Result;
+                            token = response.Content.ReadAsAsync<BearerToken>().Result;
+                       
 
                         #region
                         if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
@@ -123,6 +126,11 @@ namespace InvoiceDiskLast.Controllers
                         #endregion
                         // Store token in ASP.NET Session State for later use
                         Session["ApiAccessToken"] = token.AccessToken;
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
 
                     if (user.Rememberme)

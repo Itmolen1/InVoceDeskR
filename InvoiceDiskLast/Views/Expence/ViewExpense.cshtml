@@ -26,21 +26,19 @@
 }*@
 
 
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="btn-group" style="margin-bottom:5px">
                 <div class="dropdown">
-                    @*<button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
                         <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
                         Send
                         <span class="caret"></span>
-                    </button>*@
+                    </button>
                     <div class="dropdown-menu">
-                        @*<a class="dropdown-item" href="/Qutation/InvoicebyEmail/?QutationId=@QutationModel.QutationID">Send by Email</a>
-                        <a class="dropdown-item" href="/Qutation/Print/?QutationID=@QutationModel.QutationID">Print and send it yourself</a>*@
+                        <a class="dropdown-item" href="/Expence/ExpenseByEmail/?Id=@Model.Id">Send by Email</a>
+                       
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Separated link</a>
                     </div>
@@ -119,9 +117,23 @@
             <div class="col-md-12">
                 <div class="pull-left text-left">
                     <textarea id="notes" rows="4" cols="40" placeholder="Customer Note" style="font-size:12px"></textarea>
-                    @Html.Partial("~/Views/Shared/PartialViews/UploadPartialFileEdit.cshtml")
+                    
                 </div>
-
+                <table class="table table-hover" id="participantTable">
+                    <tbody id="upload123">
+                        @if (ViewBag.FILE != null)
+                        {
+                            foreach (var item in ViewBag.FILE)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@item.FileFolderPathe/@item.DirectoryPath" target="_blank"><span class="badge badge-success"><i class="icon-minus-sign"></i> @item.DirectoryPath</span></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
                 <div class="pull-right text-right">
                     <p>Sub - Total amount: €<label id="SubTotalAmont">@Model.SUBTOTAL</label></p>
                     <p>Totaal excel btw: €<label id="TotalBTW">@Model.SUBTOTAL</label></p>

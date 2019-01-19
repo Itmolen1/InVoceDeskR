@@ -86,7 +86,7 @@
                       { "data": "GRAND_TOTAL", "name": "GRAND_TOTAL", "autoWidth": true },
                      {
                          render: function (data, type, row) {
-                             return '<a   href="/Expence/Edit/' + row.Id + '"   class="btn btn-info btn-sm" data-id="Id"><i class="fa fa-pencil">Edit</i></a>|<a href="/Expence/ViewExpense/' + row.Id + '"  class="btn btn-success btn-sm"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.Id + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
+                             return '<a   href="/Expence/Edit/' + row.Id + '"   class="btn btn-info btn-sm" data-id="Id"><i class="fa fa-pencil">Edit</i></a>|<a href="/Expence/ViewExpense/' + row.Id + '"  class="btn btn-success btn-sm"><i class="fa fa-eye">View</i></a>|<button href="#" class="btn btn-success btn-sm" onclick="ViewDirectory(' + row.Id + ')"><i class="fa fa-paperclip">Attachment</button></a>'
                          }
                      },
               ]
@@ -94,15 +94,18 @@
 
 
 
-        function ViewDirectory1(Id) {
-            window.location.href = "/Common/ViewDirecory?Id=" + Id + "&DName=" + "Expense";
-            //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
-        }
-
 
         function EditExpense(ExpenseId) {
             window.location.href = "/Expence/Edit/" + ExpenseId;
         }
 
     });
+
+
+    function ViewDirectory(Id) {
+        alert(Id);
+        window.location.href = "/Common/ViewDirecory?Id=" + Id + "&DName=" + "Expense";
+        //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
+    }
+
 </script>

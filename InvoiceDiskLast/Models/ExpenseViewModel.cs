@@ -37,7 +37,7 @@ namespace InvoiceDiskLast.Models
         public List<ExpenseDetail> ExpensenDetailList { get; set; }
 
 
-
+        public int TotalRecord { get; set; }
 
     }
 }

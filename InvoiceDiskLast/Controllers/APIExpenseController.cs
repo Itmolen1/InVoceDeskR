@@ -123,6 +123,7 @@ namespace InvoiceDiskLast.Controllers
                                       ACCOUNT_ID = Ex.ACCOUNT_ID,
                                       VENDOR_ID = Ex.ACCOUNT_ID,
                                       notes = Ex.notes,
+                                      TotalRecord= db.EXPENSEs.ToList().Count(),
                                       PaidThrougAccount = Acc.AccountTitle,
                                       VenderName = con.ContactName,
                                       SUBTOTAL = Ex.SUBTOTAL,

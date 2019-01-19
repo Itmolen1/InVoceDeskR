@@ -37,7 +37,7 @@
                                                 Sub total
                                             </th>
                                             <th>
-
+                                                Tax Amount
                                             </th>
                                             <th>
                                                 Action
@@ -55,7 +55,7 @@
                                                 <input type="text" class="Description form-control" id="Description" autocomplete="off" style="font-size:12px" placeholder="Description" />
                                             </td>
                                             <td>
-                                                <input type="text" class="Amount form-control Input-height" id="Amount" autocomplete="off" style="font-size:12px" placeholder="Amount" />
+                                                <input type="text" class="Amount AmountValidaion form-control Input-height" id="Amount" autocomplete="off" style="font-size:12px" placeholder="Amount" />
                                             </td>
 
                                             <td>
@@ -296,6 +296,8 @@
 
 
     $('.Amount').keyup(function () {
+
+      
         var currentRow = $(this).closest("tr");
         var VAT = currentRow.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow);
@@ -305,6 +307,7 @@
         CalculateTaxAmount(VAT, currentRow);
     });
 
+  
 
     $('.VATG').change(function () {
         var currentRow = $(this).closest("tr");
@@ -406,13 +409,13 @@
             processData: false,
             success: function (result) {
                 if (result.Status == "Success") {
-                    $.toast({
-                        heading: 'Expense',
-                        text: "Expense hasbeen created successfully",
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#FF0000'  // To change the background
+
+                    swal({
+                        title: 'Expense!',
+                        text: 'Expense hasbeen created successfully!',
+                        type: 'success'
                     });
+
                     ClearFiel();
                 }
                 else if (result.Status == "Fail") {
@@ -478,6 +481,11 @@
     }
 
 
+ 
+
+
+    
+
 
 
     function ClearFiel() {
@@ -527,23 +535,7 @@
         }
     }
 
-    //function ValidateRow(CurrentRow) {
-    //    var Isvalid = true;
-    //    var Produectid = 0, quantityG = 0, varrateG = 0;
-    //    Produectid = CurrentRow.find('.product').val();
-    //    quantityG = CurrentRow.find('.quantityG ').val();
-    //    varrateG = CurrentRow.find('.rateG ').val();
-    //    if (parseInt(Produectid) == 0 || Produectid == "") {
-    //        Isvalid = false;
-    //    }
-    //    if (parseInt(quantityG) == 0 || quantityG == "") {
-    //        Isvalid = false;
-    //    }
-    //    if (parseInt(varrateG) == 0 || varrateG == "") {
-    //        Isvalid = false;
-    //    }
-    //    return Isvalid;
-    //}
+  
 
 
 
@@ -587,4 +579,12 @@
             $(this).datepicker('option', 'defaultDate', '-10y');
         }
     });
+
+
+
+
+
+ 
+
+
 </script>
