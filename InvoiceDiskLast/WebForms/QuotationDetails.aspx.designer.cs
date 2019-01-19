@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InvoiceDiskLast.CrystalReport {
+namespace InvoiceDiskLast.WebForms {
     
     
-    public partial class WebForm1 {
+    public partial class QuotationDetails {
         
         /// <summary>
         /// form1 control.

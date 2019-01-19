@@ -447,6 +447,7 @@ namespace InvoiceDiskLast.Controllers
 
             DBEntities _dbentities = new DBEntities();
 
+         
             List<QuatationReportViewModel> QutationReportViewModel = new List<QuatationReportViewModel>();
 
             QutationReportViewModel = (from q in _dbentities.QutationTables
