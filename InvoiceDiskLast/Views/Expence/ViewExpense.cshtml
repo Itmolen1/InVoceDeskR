@@ -1,0 +1,162 @@
+﻿
+@model InvoiceDiskLast.Models.ExpenseViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    @if (TempData["EmailMessge"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong>@TempData["EmailMessge"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+</div>
+
+
+@*@using (Html.BeginForm("DownloadFile", "Qutation", FormMethod.Post, new { id = "DownloadFile1" }))
+{
+    <input type="hidden" name="FilePath1" id="FilePath" />
+    <button type="submit" id="downloadf" class="hidden" style="visibility:hidden;"></button>
+}*@
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group" style="margin-bottom:5px">
+                <div class="dropdown">
+                    @*<button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" style="width:150px;">
+                        <i class="fa fa-envelope" style="margin-right:40px;color:yellow"></i>
+                        Send
+                        <span class="caret"></span>
+                    </button>*@
+                    <div class="dropdown-menu">
+                        @*<a class="dropdown-item" href="/Qutation/InvoicebyEmail/?QutationId=@QutationModel.QutationID">Send by Email</a>
+                        <a class="dropdown-item" href="/Qutation/Print/?QutationID=@QutationModel.QutationID">Print and send it yourself</a>*@
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
+            @*<a href="/Qutation/Print/?QutationID=@QutationModel.QutationID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Download</a>
+            <a href="/Qutation/EditQutation/?QutationId=@QutationModel.QutationID" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-pencil fa-backgroun" style="margin-right:5px"></i></span>Change</a>*@
+            <a href="/Expence/List" class="btn btn-info btn-md" style="margin-bottom:5px"><span><i class="fa fa-angle-double-left fa-backgroun" style="margin-right:5px"></i></span>Back</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container">
+    <div class="row" style="border:1px solid black">
+        <div class="col-md-12">
+            @Html.Partial("~/Views/Shared/PartialViews/ExpenceHeaderPartialView.cshtml")
+            <div class="table-responsive" style="clear: both">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                  
+                        <tr>
+                            <th>
+                                Expense acount
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                vat
+                            </th>
+                            <th>
+                                Tax Amount
+                            </th>
+                            <th>
+                                Sub total
+                            </th>                                                       
+                        </tr>
+                    </thead>
+
+                    <tbody class="tbody">
+                        @if (ViewBag.ExpenseDetail != null)
+                        {
+                            foreach (var item in ViewBag.ExpenseDetail)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.AccountTitle
+                                    </td>
+                                    <td>
+                                        @item.DESCRIPTION
+                                    </td>
+                                    <td>
+                                        @item.AMOUNT
+                                    </td>
+                                    <td>                                       
+                                      @item.TAX_PERCENT                                           
+                                    </td>
+                                    <td>
+                                        @item.TAX_AMOUNT
+                                    </td>
+                                    <td>
+                                       @item.SUBTOTAL
+                                    </td>                                   
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <div class="pull-left text-left">
+                    <textarea id="notes" rows="4" cols="40" placeholder="Customer Note" style="font-size:12px"></textarea>
+                    @Html.Partial("~/Views/Shared/PartialViews/UploadPartialFileEdit.cshtml")
+                </div>
+
+                <div class="pull-right text-right">
+                    <p>Sub - Total amount: €<label id="SubTotalAmont">@Model.SUBTOTAL</label></p>
+                    <p>Totaal excel btw: €<label id="TotalBTW">@Model.SUBTOTAL</label></p>
+                    <p>BTW (0%) : €<label id="btwo">0.00</label></p>
+                    <p>BTW (6%) : €<label id="BTW6">@Model.Vat6</label></p>
+                    <p>BTW (21%) : €<label id="BTW21">@Model.Vat21</label></p>
+                    <hr>
+                    <h3><b>Garnd Total :</b> €<label id="gtotal">@Model.GRAND_TOTAL</label></h3>
+                </div>
+                <div class="clearfix"></div>
+                <hr>
+
+                <button id="Submit" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-save fa-backgroun" style="margin-right:5px"></i></span>Add Expense</button>
+                @*<button id="saveEmail" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-envelope fa-backgroun" style="margin-right:5px"></i></span>Save + E-mail</button>
+            <button id="saveprintandsendtoyourselfsave" class="btn btn-info btn-lg" style="margin-bottom:5px"><span><i class="fa fa-download fa-backgroun" style="margin-right:5px"></i></span>Save + Download</button>*@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        var patth = localStorage.getItem('path');
+        $("#FilePath").val(patth);
+
+        if ($("#FilePath").val().length > 0) {
+            $('#DownloadFile1').submit();
+        }
+        $("#FilePath").val('');
+        localStorage.removeItem('path');
+    })
+</script>

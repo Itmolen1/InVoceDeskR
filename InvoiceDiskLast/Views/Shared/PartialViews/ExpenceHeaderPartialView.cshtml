@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-md-3"> Ref no:</div>
                             <div class="col-md-9">
-                                <input type="text" class="form-control" id="Number_ID" value="" />
+                                <input type="text" class="form-control" id="Number_ID" value="@ViewBag.Ref" />
                             </div>
                         </div>
                         <div class="row">
@@ -50,7 +50,19 @@
 
                             <div class="col-md-3">Date:</div>
                             <div class="col-md-9">
-                              <input type="text"  class="form-control" id="Expencedate"/>
+                                @if (ViewBag.Date != null)
+                                        {
+                                            DateTime dt = new DateTime();
+                                            dt = Convert.ToDateTime(ViewBag.Date);
+
+                                            <input type="text" class="form-control" id="Expencedate"  value="@dt.ToShortDateString()"/>
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" id="Expencedate" />
+                                }
+
+                               
                             </div>
                         </div>
 
@@ -88,6 +100,19 @@
     $(document).ready(function () {
         LoadContacts();
         GetExpenseAccount();
+
+        var venderid = '@ViewBag.VenderId'
+        var AccountId = '@ViewBag.AccountId'
+     
+        if (AccountId != "") {
+         
+            $("#drpExpenseAccount").val(AccountId);
+        }
+        if (venderid != "") {
+          
+            $("#venderId").val(venderid);
+        }
+
     });
 
     function LoadContacts() {
@@ -111,9 +136,7 @@
         });
     }
 
-
-
-
+    debugger;
 
 
 
@@ -137,6 +160,11 @@
 
         });
     }
+
+  
+
+   
+
 
 
 </script>
