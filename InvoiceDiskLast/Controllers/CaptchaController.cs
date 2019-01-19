@@ -106,7 +106,7 @@ namespace InvoiceDiskLast.Controllers
 
                         HttpContent encodedRequest = new FormUrlEncodedContent(tokenRequest);
 
-
+                        //werdferf
                         //HttpResponseMessage response = httpClient.PostAsync(url+"/Token", encodedRequest).Result;
 
                         HttpResponseMessage response = httpClient.PostAsync(url + "Token", encodedRequest).Result;
