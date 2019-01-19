@@ -105,32 +105,64 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                List<ExpenseViewModel> ExpensList = new List<ExpenseViewModel>();
-                ExpensList = (from Ex in db.EXPENSEs
-                              join u in db.UserTables on Ex.user_id equals u.UserId
-                              join con in db.ContactsTables on Ex.VENDOR_ID equals con.ContactsId
-                              join Acc in db.AccountTables on Ex.ACCOUNT_ID equals Acc.AccountId
-                              //where (Ex.comapny_id == CompanyId || Ex.REFERENCEno != null && Ex.REFERENCEno.ToLower().Contains(Search.ToLower()) ||
-                              // Ex.AddedDate != null && Ex.AddedDate.ToString().ToLower().Contains(Search.ToLower()) ||
-                              //u.Username != null && u.Username.ToLower().Contains(Search.ToLower()))
-                              select new ExpenseViewModel()
-                              {
-                                  Id = Ex.Id,
-                                  REFERENCEno = Ex.REFERENCEno,
-                                  ACCOUNT_ID = Ex.ACCOUNT_ID,
-                                  VENDOR_ID = Ex.ACCOUNT_ID,
-                                  notes = Ex.notes,
-                                  PaidThrougAccount = Acc.AccountTitle,
-                                  VenderName = con.ContactName,
-                                  SUBTOTAL = Ex.SUBTOTAL,
-                                  VAT_AMOUNT = Ex.VAT_AMOUNT,
-                                  GRAND_TOTAL = Ex.GRAND_TOTAL,
-                                  AddedDate = Ex.AddedDate,
-                              }).OrderByDescending(x => x.Id).ToList().Skip(skip).Take(pageSize).ToList();
+
+                if (Search == "NoSearch")
+                {
+                    List<ExpenseViewModel> ExpensList = new List<ExpenseViewModel>();
+                    ExpensList = (from Ex in db.EXPENSEs
+                                  join u in db.UserTables on Ex.user_id equals u.UserId
+                                  join con in db.ContactsTables on Ex.VENDOR_ID equals con.ContactsId
+                                  join Acc in db.AccountTables on Ex.ACCOUNT_ID equals Acc.AccountId
+                                  //where (Ex.comapny_id == CompanyId || Ex.REFERENCEno != null && Ex.REFERENCEno.ToLower().Contains(Search.ToLower()) ||
+                                  // Ex.AddedDate != null && Ex.AddedDate.ToString().ToLower().Contains(Search.ToLower()) ||
+                                  //u.Username != null && u.Username.ToLower().Contains(Search.ToLower()))
+                                  select new ExpenseViewModel()
+                                  {
+                                      Id = Ex.Id,
+                                      REFERENCEno = Ex.REFERENCEno,
+                                      ACCOUNT_ID = Ex.ACCOUNT_ID,
+                                      VENDOR_ID = Ex.ACCOUNT_ID,
+                                      notes = Ex.notes,
+                                      PaidThrougAccount = Acc.AccountTitle,
+                                      VenderName = con.ContactName,
+                                      SUBTOTAL = Ex.SUBTOTAL,
+                                      VAT_AMOUNT = Ex.VAT_AMOUNT,
+                                      GRAND_TOTAL = Ex.GRAND_TOTAL,
+                                      AddedDate = Ex.AddedDate,
+                                  }).OrderByDescending(x => x.Id).ToList().Skip(skip).Take(pageSize).ToList();
 
 
-                return Ok(ExpensList);
+                    return Ok(ExpensList);
 
+                }
+                else
+                {
+                    List<ExpenseViewModel> ExpensList = new List<ExpenseViewModel>();
+                    ExpensList = (from Ex in db.EXPENSEs
+                                  join u in db.UserTables on Ex.user_id equals u.UserId
+                                  join con in db.ContactsTables on Ex.VENDOR_ID equals con.ContactsId
+                                  join Acc in db.AccountTables on Ex.ACCOUNT_ID equals Acc.AccountId
+                                  //where (Ex.comapny_id == CompanyId || Ex.REFERENCEno != null && Ex.REFERENCEno.ToLower().Contains(Search.ToLower()) ||
+                                  // Ex.AddedDate != null && Ex.AddedDate.ToString().ToLower().Contains(Search.ToLower()) ||
+                                  //u.Username != null && u.Username.ToLower().Contains(Search.ToLower()))
+                                  select new ExpenseViewModel()
+                                  {
+                                      Id = Ex.Id,
+                                      REFERENCEno = Ex.REFERENCEno,
+                                      ACCOUNT_ID = Ex.ACCOUNT_ID,
+                                      VENDOR_ID = Ex.ACCOUNT_ID,
+                                      notes = Ex.notes,
+                                      PaidThrougAccount = Acc.AccountTitle,
+                                      VenderName = con.ContactName,
+                                      SUBTOTAL = Ex.SUBTOTAL,
+                                      VAT_AMOUNT = Ex.VAT_AMOUNT,
+                                      GRAND_TOTAL = Ex.GRAND_TOTAL,
+                                      AddedDate = Ex.AddedDate,
+                                  }).OrderByDescending(x => x.Id).ToList().Skip(skip).Take(pageSize).ToList();
+
+
+                    return Ok(ExpensList);
+                }
             }
             catch (Exception)
             {
