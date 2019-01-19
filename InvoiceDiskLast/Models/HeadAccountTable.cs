@@ -27,9 +27,9 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> FK_CompanyId { get; set; }
         public Nullable<int> AddedBy { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AccountTable> AccountTables { get; set; }
         public virtual ControlAccountTable ControlAccountTable { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccountTable> AccountTables { get; set; }
     }
 }

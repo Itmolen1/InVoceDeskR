@@ -17,7 +17,6 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ComapnyInfo()
         {
-            this.AccountTables = new HashSet<AccountTable>();
             this.AccountTransictionTables = new HashSet<AccountTransictionTable>();
             this.ContactsTables = new HashSet<ContactsTable>();
             this.HeadAccountTables = new HashSet<HeadAccountTable>();
@@ -27,6 +26,7 @@ namespace InvoiceDiskLast.Models
             this.QutationTables = new HashSet<QutationTable>();
             this.UserTables = new HashSet<UserTable>();
             this.EXPENSEs = new HashSet<EXPENSE>();
+            this.AccountTables = new HashSet<AccountTable>();
         }
     
         public int CompanyID { get; set; }
@@ -52,8 +52,6 @@ namespace InvoiceDiskLast.Models
         public string UserName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AccountTable> AccountTables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTransictionTable> AccountTransictionTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ContactsTable> ContactsTables { get; set; }
@@ -71,5 +69,7 @@ namespace InvoiceDiskLast.Models
         public virtual ICollection<UserTable> UserTables { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EXPENSE> EXPENSEs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AccountTable> AccountTables { get; set; }
     }
 }

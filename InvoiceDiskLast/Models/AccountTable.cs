@@ -29,10 +29,10 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> AddedBy { get; set; }
         public Nullable<int> FK_CompanyId { get; set; }
     
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual HeadAccountTable HeadAccountTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTransictionTable> AccountTransictionTables { get; set; }
-        public virtual ComapnyInfo ComapnyInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpenseDetail> ExpenseDetails { get; set; }
     }

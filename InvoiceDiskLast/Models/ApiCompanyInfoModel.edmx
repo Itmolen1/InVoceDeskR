@@ -1049,15 +1049,10 @@
           <EntitySet Name="PurchaseOrderTables" EntityType="APIcompanyModel.PurchaseOrderTable" />
           <EntitySet Name="ProductUnitTables" EntityType="APIcompanyModel.ProductUnitTable" />
           <EntitySet Name="AspNetUsers" EntityType="APIcompanyModel.AspNetUser" />
-          <EntitySet Name="AccountTables" EntityType="APIcompanyModel.AccountTable" />
           <EntitySet Name="ControlAccountTables" EntityType="APIcompanyModel.ControlAccountTable" />
           <EntitySet Name="HeadAccountTables" EntityType="APIcompanyModel.HeadAccountTable" />
           <EntitySet Name="OrderStatusTables" EntityType="APIcompanyModel.OrderStatusTable" />
           <EntitySet Name="PaymentTermTables" EntityType="APIcompanyModel.PaymentTermTable" />
-          <AssociationSet Name="FK_AccountTable_HeadAccountTable" Association="APIcompanyModel.FK_AccountTable_HeadAccountTable">
-            <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
-            <End Role="AccountTable" EntitySet="AccountTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_HeadAccountTable_ControlAccountTable" Association="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable">
             <End Role="ControlAccountTable" EntitySet="ControlAccountTables" />
             <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
@@ -1069,10 +1064,6 @@
           <EntitySet Name="PendingTables" EntityType="APIcompanyModel.PendingTable" />
           <EntitySet Name="QutationOrderStatusTables" EntityType="APIcompanyModel.QutationOrderStatusTable" />
           <EntitySet Name="AccountTransictionTables" EntityType="APIcompanyModel.AccountTransictionTable" />
-          <AssociationSet Name="FK_AccountTransictionTable_AccountTable" Association="APIcompanyModel.FK_AccountTransictionTable_AccountTable">
-            <End Role="AccountTable" EntitySet="AccountTables" />
-            <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_AccountTransictionTable_PaymentTermTable" Association="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable">
             <End Role="PaymentTermTable" EntitySet="PaymentTermTables" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
@@ -1147,10 +1138,6 @@
             <End Role="QutationTable" EntitySet="QutationTables" />
           </AssociationSet>
           <EntitySet Name="ComapnyInfoes" EntityType="APIcompanyModel.ComapnyInfo" />
-          <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTable_ComapnyInfo">
-            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
-            <End Role="AccountTable" EntitySet="AccountTables" />
-          </AssociationSet>
           <AssociationSet Name="FK_AccountTransictionTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
@@ -1191,7 +1178,6 @@
           <Parameter Name="QutationID" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="EXPENSEs" EntityType="APIcompanyModel.EXPENSE" />
-          <EntitySet Name="ExpenseDetails" EntityType="APIcompanyModel.ExpenseDetail" />
           <AssociationSet Name="FK_EXPENSE_ComapnyInfo" Association="APIcompanyModel.FK_EXPENSE_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="EXPENSE" EntitySet="EXPENSEs" />
@@ -1200,12 +1186,26 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="EXPENSE" EntitySet="EXPENSEs" />
           </AssociationSet>
-          <AssociationSet Name="FK_ExpenseDetail_EXPENSE" Association="APIcompanyModel.FK_ExpenseDetail_EXPENSE">
-            <End Role="EXPENSE" EntitySet="EXPENSEs" />
-            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
+          <EntitySet Name="AccountTables" EntityType="APIcompanyModel.AccountTable" />
+          <EntitySet Name="ExpenseDetails" EntityType="APIcompanyModel.ExpenseDetail" />
+          <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="AccountTable" EntitySet="AccountTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountTable_HeadAccountTable" Association="APIcompanyModel.FK_AccountTable_HeadAccountTable">
+            <End Role="HeadAccountTable" EntitySet="HeadAccountTables" />
+            <End Role="AccountTable" EntitySet="AccountTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountTransictionTable_AccountTable" Association="APIcompanyModel.FK_AccountTransictionTable_AccountTable">
+            <End Role="AccountTable" EntitySet="AccountTables" />
+            <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
           </AssociationSet>
           <AssociationSet Name="FK_ExpenseDetail_AccountTable" Association="APIcompanyModel.FK_ExpenseDetail_AccountTable">
             <End Role="AccountTable" EntitySet="AccountTables" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExpenseDetail_EXPENSE" Association="APIcompanyModel.FK_ExpenseDetail_EXPENSE">
+            <End Role="EXPENSE" EntitySet="EXPENSEs" />
             <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
           </AssociationSet>
           </EntityContainer>
@@ -1281,22 +1281,6 @@
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="AccountTable">
-          <Key>
-            <PropertyRef Name="AccountId" />
-          </Key>
-          <Property Name="AccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountTitle" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="AccountDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FK_HeadAccountId" Type="Int32" />
-          <Property Name="AddedBy" Type="Int32" />
-          <Property Name="FK_CompanyId" Type="Int32" />
-          <NavigationProperty Name="HeadAccountTable" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="AccountTable" ToRole="HeadAccountTable" />
-          <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTable" ToRole="AccountTransictionTable" />
-          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="AccountTable" ToRole="ComapnyInfo" />
-          <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="AccountTable" ToRole="ExpenseDetail" />
-        </EntityType>
         <EntityType Name="ControlAccountTable">
           <Key>
             <PropertyRef Name="ControlAccountId" />
@@ -1316,9 +1300,9 @@
           <Property Name="FK_ControlAccountID" Type="Int32" />
           <Property Name="FK_CompanyId" Type="Int32" />
           <Property Name="AddedBy" Type="Int32" />
-          <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="HeadAccountTable" ToRole="AccountTable" />
           <NavigationProperty Name="ControlAccountTable" Relationship="APIcompanyModel.FK_HeadAccountTable_ControlAccountTable" FromRole="HeadAccountTable" ToRole="ControlAccountTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="HeadAccountTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="HeadAccountTable" ToRole="AccountTable" />
         </EntityType>
         <EntityType Name="OrderStatusTable">
           <Key>
@@ -1346,18 +1330,6 @@
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable" FromRole="PaymentTermTable" ToRole="AccountTransictionTable" />
         </EntityType>
-        <Association Name="FK_AccountTable_HeadAccountTable">
-          <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="HeadAccountTable">
-              <PropertyRef Name="HeadAccountId" />
-            </Principal>
-            <Dependent Role="AccountTable">
-              <PropertyRef Name="FK_HeadAccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_HeadAccountTable_ControlAccountTable">
           <End Type="APIcompanyModel.ControlAccountTable" Role="ControlAccountTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="*" />
@@ -1424,22 +1396,10 @@
           <Property Name="FK_CompanyId" Type="Int32" />
           <Property Name="FKPaymentTerm" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTransictionTable" ToRole="AccountTable" />
           <NavigationProperty Name="PaymentTermTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_PaymentTermTable" FromRole="AccountTransictionTable" ToRole="PaymentTermTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="AccountTransictionTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTransictionTable" ToRole="AccountTable" />
         </EntityType>
-        <Association Name="FK_AccountTransictionTable_AccountTable">
-          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.AccountTransictionTable" Role="AccountTransictionTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AccountTable">
-              <PropertyRef Name="AccountId" />
-            </Principal>
-            <Dependent Role="AccountTransictionTable">
-              <PropertyRef Name="FK_AccountID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AccountTransictionTable_PaymentTermTable">
           <End Type="APIcompanyModel.PaymentTermTable" Role="PaymentTermTable" Multiplicity="0..1" />
           <End Type="APIcompanyModel.AccountTransictionTable" Role="AccountTransictionTable" Multiplicity="*" />
@@ -1888,7 +1848,6 @@
           <Property Name="AddedBy" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="0" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTable" />
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTransictionTable" />
           <NavigationProperty Name="ContactsTables" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="ContactsTable" />
           <NavigationProperty Name="HeadAccountTables" Relationship="APIcompanyModel.FK_HeadAccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="HeadAccountTable" />
@@ -1898,19 +1857,8 @@
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="QutationTable" />
           <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
           <NavigationProperty Name="EXPENSEs" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="ComapnyInfo" ToRole="EXPENSE" />
+          <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTable" />
         </EntityType>
-        <Association Name="FK_AccountTable_ComapnyInfo">
-          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ComapnyInfo">
-              <PropertyRef Name="CompanyID" />
-            </Principal>
-            <Dependent Role="AccountTable">
-              <PropertyRef Name="FK_CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AccountTransictionTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
           <End Type="APIcompanyModel.AccountTransictionTable" Role="AccountTransictionTable" Multiplicity="*" />
@@ -2098,26 +2046,9 @@
           <Property Name="AddedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="EXPENSE" ToRole="ComapnyInfo" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_EXPENSE_UserTable" FromRole="EXPENSE" ToRole="UserTable" />
-          <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="EXPENSE" ToRole="ExpenseDetail" />
           <Property Name="Vat6" Type="Decimal" Precision="12" Scale="2" />
           <Property Name="Vat21" Type="Decimal" Precision="12" Scale="2" />
-        </EntityType>
-        <EntityType Name="ExpenseDetail">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EXPENSE_ACCOUNT_ID" Type="Int32" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="AMOUNT" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="TAX_PERCENT" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="TAX_AMOUNT" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="SUBTOTAL" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="expense_id" Type="Int32" />
-          <Property Name="user_id" Type="Int32" />
-          <Property Name="comapny_id" Type="Int32" />
-          <NavigationProperty Name="EXPENSE" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="ExpenseDetail" ToRole="EXPENSE" />
-          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="ExpenseDetail" ToRole="AccountTable" />
+          <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="EXPENSE" ToRole="ExpenseDetail" />
         </EntityType>
         <Association Name="FK_EXPENSE_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -2143,15 +2074,72 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ExpenseDetail_EXPENSE">
-          <End Type="APIcompanyModel.EXPENSE" Role="EXPENSE" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
+        <EntityType Name="AccountTable">
+          <Key>
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="AccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountTitle" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="AccountDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FK_HeadAccountId" Type="Int32" />
+          <Property Name="AddedBy" Type="Int32" />
+          <Property Name="FK_CompanyId" Type="Int32" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="AccountTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="HeadAccountTable" Relationship="APIcompanyModel.FK_AccountTable_HeadAccountTable" FromRole="AccountTable" ToRole="HeadAccountTable" />
+          <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTable" ToRole="AccountTransictionTable" />
+          <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="AccountTable" ToRole="ExpenseDetail" />
+        </EntityType>
+        <EntityType Name="ExpenseDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EXPENSE_ACCOUNT_ID" Type="Int32" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AMOUNT" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="TAX_PERCENT" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TAX_AMOUNT" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="SUBTOTAL" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="expense_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="comapny_id" Type="Int32" />
+          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="ExpenseDetail" ToRole="AccountTable" />
+          <NavigationProperty Name="EXPENSE" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="ExpenseDetail" ToRole="EXPENSE" />
+        </EntityType>
+        <Association Name="FK_AccountTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="EXPENSE">
-              <PropertyRef Name="Id" />
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
             </Principal>
-            <Dependent Role="ExpenseDetail">
-              <PropertyRef Name="expense_id" />
+            <Dependent Role="AccountTable">
+              <PropertyRef Name="FK_CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountTable_HeadAccountTable">
+          <End Type="APIcompanyModel.HeadAccountTable" Role="HeadAccountTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HeadAccountTable">
+              <PropertyRef Name="HeadAccountId" />
+            </Principal>
+            <Dependent Role="AccountTable">
+              <PropertyRef Name="FK_HeadAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountTransictionTable_AccountTable">
+          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.AccountTransictionTable" Role="AccountTransictionTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountTable">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="AccountTransictionTable">
+              <PropertyRef Name="FK_AccountID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2164,6 +2152,18 @@
             </Principal>
             <Dependent Role="ExpenseDetail">
               <PropertyRef Name="EXPENSE_ACCOUNT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExpenseDetail_EXPENSE">
+          <End Type="APIcompanyModel.EXPENSE" Role="EXPENSE" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EXPENSE">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="expense_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2240,19 +2240,6 @@
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AccountTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.AccountTable">
-              <MappingFragment StoreEntitySet="AccountTable">
-                <ScalarProperty Name="FK_CompanyId" ColumnName="FK_CompanyId" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="FK_HeadAccountId" ColumnName="FK_HeadAccountId" />
-                <ScalarProperty Name="AccountDescription" ColumnName="AccountDescription" />
-                <ScalarProperty Name="AccountTitle" ColumnName="AccountTitle" />
-                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2701,6 +2688,19 @@
                 <ScalarProperty Name="ACCOUNT_ID" ColumnName="ACCOUNT_ID" />
                 <ScalarProperty Name="REFERENCEno" ColumnName="REFERENCEno" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.AccountTable">
+              <MappingFragment StoreEntitySet="AccountTable">
+                <ScalarProperty Name="FK_CompanyId" ColumnName="FK_CompanyId" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="FK_HeadAccountId" ColumnName="FK_HeadAccountId" />
+                <ScalarProperty Name="AccountDescription" ColumnName="AccountDescription" />
+                <ScalarProperty Name="AccountTitle" ColumnName="AccountTitle" />
+                <ScalarProperty Name="AccountCode" ColumnName="AccountCode" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
