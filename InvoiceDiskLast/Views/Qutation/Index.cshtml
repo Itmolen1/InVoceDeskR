@@ -5,284 +5,248 @@
 }
 
 
+<div class="row">
+    <div class="col-2 b-r">
+        <button class="btn btn-info" id="AddNewQutationFromQutaion"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button>
+    </div>
+    <div class="col-2 b-r">
+
+        <div id="five_day_table">
+            <div class="r-cl"><span></span>5 Day Remaining</div>
+        </div>
+    </div>
+    <div class="col-2 b-r">
+        <div id="five_day_table">
+            <div class="m-cl"><span></span>1 day Remaining</div>
+        </div>
+    </div>
+    <div class="col-6 b-r">
+
+    </div>
+</div>
+
 
 <div class="row">
-    <div class="col-md-12">
-        <button class="btn btn-info" id="AddNewQutationFromQutaion"><i class="fa fa-plus-circle" style="padding-right:10px"></i>New Qutation</button>
-        <div class="pull-right">
-            <div id="five_day_table">
-                <div class="r-cl"><span></span>5 Day Remaining</div>
-            </div>
-            <div id="five_day_table">
-                <div class="m-cl"><span></span>1 day Remaining</div>
+    <div class="col-12">
+        <div class="table-responsive">
+            <div class="dataTables_wrapper">
+                <table id="QutationListTable" class="table display table-bordered table-striped dataTable">
+                    <thead style="background-color:black;color:white">
+                        <tr role="row">
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending"> Quotation number</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">  Date </th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending"> DueDate </th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending">Customer</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Sale Person</th>
+
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Vat</th>
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Total Amount</th>
+                            
+                            <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Status</th>
+                            <th align="center" class="sorting" style="text-align-last: center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
-    </div>
-
-        
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <div class="dataTables_wrapper">
-                        <table id="QutationListTable" class="table display table-bordered table-striped dataTable">
-                            <thead>
-                                <tr role="row">
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending"> Quotation ID</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">Date</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending">Due date</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">costumer</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Sales Person</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">vat amount</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Total amount</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Status</th>
-                                    <th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Action</th>
-
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+</div>
 
 
-        @*<div class="row">
-                <div class="col-md-12">
-                        <table class="display nowrap table table-hover table-striped table-bordered dataTable" id="QutationListTable">
-                            <thead style="background-color:black;color:white">
-                                <tr>
-                                    <th>
-                                        Quotation number
-                                    </th>
-                                    <th>
-                                        Date
-                                    </th>
-                                    <th>
-                                        Due date
-                                    </th>
-                                    <th>
-                                        costumer
-                                    </th>
-                                    <th>
-                                        sales person
-                                    </th>
-                                    <th>
-                                        vat amount
-                                    </th>
-                                    <th>
-                                        Total amount
-                                    </th>
-                                    <th>
-                                        Status
-                                    </th>
+@Html.Partial("~/Views/Shared/PartialViews/QutationPartialView.cshtml")
+@Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")
 
-                                    <th>
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+<script type="text/javascript">
+    $(document).ready(function () {
 
-                </div>
-            </div>*@
+        var Diff;
+        var statusoption;
+        $("#QutationListTable").DataTable({
 
+            "createdRow": function (row, data, dataIndex) {
 
-        @Html.Partial("~/Views/Shared/PartialViews/QutationPartialView.cshtml")
-        @Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")
+                if (parseInt(Diff) < 2) {
 
-        <script type="text/javascript">
-            $(document).ready(function () {
+                    $(row).addClass('RowRed');
+                }
+                else if (parseInt(Diff) < 5) {
 
-                var Diff;
-                var statusoption;
-                $("#QutationListTable").DataTable({
+                    $(row).addClass('RowYello');
+                }
 
-                    "createdRow": function (row, data, dataIndex) {
+            },
+            //"processing": true, // for show progress bar
+            "processing": true,
+            "language": {
+                "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
+            },
+            "searching": true,
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "ajax": {
+                "url": "/Qutation/IndexQutation",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columns": [
+                     { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
+                      {
+                          "data": "QutationDate", "type": "date ",
 
-                        if (parseInt(Diff) < 2) {
+                          "render": function (value) {
+                              if (value === null) return "";
+                              var pattern = /Date\(([^)]+)\)/;//date format from server side
+                              var results = pattern.exec(value);
+                              var dt = new Date(parseFloat(results[1]));
 
-                            $(row).addClass('RowRed');
-                        }
-                        else if (parseInt(Diff) < 5) {
+                              return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                          }, "autoWidth": true
+                      },
+                     {
+                         "data": "DueDate", "type": "date ",
 
-                            $(row).addClass('RowYello');
-                        }
+                         "render": function (value) {
+                             if (value === null) return "";
+                             var pattern = /Date\(([^)]+)\)/;//date format from server side
+                             var results = pattern.exec(value);
+                             var dt = new Date(parseFloat(results[1]));
 
-                    },
-                    //"processing": true, // for show progress bar
-                    "processing": true,
-                    "language": {
-                        "processing": $('#loaderQuationList').append("<img  src='../images/XtaS.gif' width='100px' height='60px' />"),  //add a loading image,simply putting tag.
-                    },
-                    "searching": true,
-                    "serverSide": true, // for process server side
-                    "filter": false, // this is for disable filter (search box)
-                    "orderMulti": false, // for disable multiple column at once
-                    "ajax": {
-                        "url": "/Qutation/IndexQutation",
-                        "type": "POST",
-                        "datatype": "json"
-                    },
-                    "columns": [
-                             { "data": "QutationID", "name": "QutationID", "autoWidth": true },// key for edit delete
-                              {
-                                  "data": "QutationDate", "type": "date ",
+                             Diff = parseInt(DateDiff((dt.getMonth() + 1) + "/" + (dt.getDate()) + "/" + (dt.getFullYear())));
 
-                                  "render": function (value) {
-                                      if (value === null) return "";
-                                      var pattern = /Date\(([^)]+)\)/;//date format from server side
-                                      var results = pattern.exec(value);
-                                      var dt = new Date(parseFloat(results[1]));
+                             return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+                         }, "autoWidth": true
+                     },
 
-                                      return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                                  }, "autoWidth": true
-                              },
-                             {
-                                 "data": "DueDate", "type": "date ",
-
-                                 "render": function (value) {
-                                     if (value === null) return "";
-                                     var pattern = /Date\(([^)]+)\)/;//date format from server side
-                                     var results = pattern.exec(value);
-                                     var dt = new Date(parseFloat(results[1]));
-
-                                     Diff = parseInt(DateDiff((dt.getMonth() + 1) + "/" + (dt.getDate()) + "/" + (dt.getFullYear())));
-
-                                     return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
-                                 }, "autoWidth": true
-                             },
-
-                              { "data": "CustomerName", "name": "CustomerName", "autoWidth": true },
-                               { "data": "UserName", "name": "UserName", "autoWidth": true },
-                                 { "data": "Vat", "name": "Vat", "autoWidth": true },
-                                    { "data": "TotalAmount", "name": "TotalAmount", "autoWidth": true },
-                              {
-                                  render: function (data, type, row) {
-                                      switch (row.Status) {
-                                          case "open":
-                                              if (parseInt(Diff) < 5) {
-                                                  return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
-                                                  break;
-                                              }
-                                              else {
-                                                  return "<td class='dd'><span class='label label-primary'>" + row.Status + "</span></td>"
-                                                  break;
-                                              }
-                                          case "pending":
-                                              return "<td><span class='label label-info'>" + row.Status + "</span></td>"
-                                              break;
-
-                                          case "rejected":
-                                              return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
-                                              break;
-
-                                          case "accepted":
-                                              return "<td><span class='label label-success'>" + row.Status + "</span></td>"
-                                              break;
+                      { "data": "CustomerName", "name": "CustomerName", "autoWidth": true },
+                       { "data": "UserName", "name": "UserName", "autoWidth": true },
+                         { "data": "Vat", "name": "Vat", "autoWidth": true },
+                            { "data": "TotalAmount", "name": "TotalAmount", "autoWidth": true },
+                      {
+                          render: function (data, type, row) {
+                              switch (row.Status) {
+                                  case "open":
+                                      if (parseInt(Diff) < 5) {
+                                          return "<td><span class='label label-primary'>" + row.Status + "</span></td>"
+                                          break;
                                       }
-                                  }
-                              },
-                             {
-                                 render: function (data, type, row) {
+                                      else {
+                                          return "<td class='dd'><span class='label label-primary'>" + row.Status + "</span></td>"
+                                          break;
+                                      }
+                                  case "pending":
+                                      return "<td><span class='label label-info'>" + row.Status + "</span></td>"
+                                      break;
 
-                                     return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQutation(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.QutationID + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
+                                  case "rejected":
+                                      return "<td><span class='label label-danger'>" + row.Status + "</span></td>"
+                                      break;
 
-                                 }
-                             }
-                    ]
+                                  case "accepted":
+                                      return "<td><span class='label label-success'>" + row.Status + "</span></td>"
+                                      break;
+                              }
+                          }
+                      },
+                     {
+                         render: function (data, type, row) {
 
-                });
+                             return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditQutation(' + row.QutationID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewQutationDetail(' + row.QutationID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.QutationID + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
 
+                         }
+                     }
+            ]
 
-
-                $('#AddNewQutationFromQutaion').click(function () {
-
-                    GoToVendCustrClient = "";
-                    GoToVendCustrClient = "Customer";
-                    LoadContacts();
-
-                    $('#quotation').show();
-                    $('#Invoice').hide();
-                    $('#QutationContactModel').modal('show');
-                });
-
-            });
-            var diffDay;
-
-
+        });
 
 
-            function DateDiff(todate) {
 
-                var d = new Date();
-                var curr_date = d.getDate();
-                var curr_month = d.getMonth() + 1;
-                var curr_year = d.getFullYear();
-                // alert(todate);
-                var start = new Date();
-                var end = todate;
+        $('#AddNewQutationFromQutaion').click(function () {
 
-                var diff = new Date(end - start);
-                var gg = curr_month + "/" + curr_date + "/" + curr_year
+            GoToVendCustrClient = "";
+            GoToVendCustrClient = "Customer";
+            LoadContacts();
+
+            $('#quotation').show();
+            $('#Invoice').hide();
+            $('#QutationContactModel').modal('show');
+        });
+
+    });
+    var diffDay;
 
 
-                var todates = new Date(todate);
-                var FromDate = new Date(gg);
-                var timeDiff = Math.abs(todates.getTime() - FromDate.getTime());
-                diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-                return diffDays;
+
+    function DateDiff(todate) {
+
+        var d = new Date();
+        var curr_date = d.getDate();
+        var curr_month = d.getMonth() + 1;
+        var curr_year = d.getFullYear();
+        // alert(todate);
+        var start = new Date();
+        var end = todate;
+
+        var diff = new Date(end - start);
+        var gg = curr_month + "/" + curr_date + "/" + curr_year
+
+
+        var todates = new Date(todate);
+        var FromDate = new Date(gg);
+        var timeDiff = Math.abs(todates.getTime() - FromDate.getTime());
+        diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        return diffDays;
+
+    }
+
+    function EditQutation(QutationId) {
+        if (QutationId > 0) {
+            window.location.href = "/Qutation/EditQutation/?QutationId=" + QutationId;
+        }
+    }
+
+
+    function ViewQutationDetail(QutationId) {
+        if (QutationId > 0) {
+            window.location.href = "/Qutation/ViewQuation?quautionId=" + QutationId;
+        }
+    }
+
+    function EditService(QutationId) {
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/QutationService/AddOrEdit/" + QutationId;
+            }
+        });
+    }
+
+
+
+    function ViewServiceDetail(QutationId) {
+
+        $.ajax({
+            url: '/MVCClient/AddOrEditQutation',
+            type: 'GET',
+            data: {
+                Qutationid: QutationId
+            },
+            success: function (data) {
+                window.location.href = "/QutationService/ViewServiceQutation?quautionId=" + QutationId;
 
             }
+        });
+    }
 
-            function EditQutation(QutationId) {
-                if (QutationId > 0) {
-                    window.location.href = "/Qutation/EditQutation/?QutationId=" + QutationId;
-                }
-            }
-
-
-            function ViewQutationDetail(QutationId) {
-                if (QutationId > 0) {
-                    window.location.href = "/Qutation/ViewQuation?quautionId=" + QutationId;
-                }
-            }
-
-            function EditService(QutationId) {
-                $.ajax({
-                    url: '/MVCClient/AddOrEditQutation',
-                    type: 'GET',
-                    data: {
-                        Qutationid: QutationId
-                    },
-                    success: function (data) {
-                        window.location.href = "/QutationService/AddOrEdit/" + QutationId;
-                    }
-                });
-            }
-
-
-
-            function ViewServiceDetail(QutationId) {
-
-                $.ajax({
-                    url: '/MVCClient/AddOrEditQutation',
-                    type: 'GET',
-                    data: {
-                        Qutationid: QutationId
-                    },
-                    success: function (data) {
-                        window.location.href = "/QutationService/ViewServiceQutation?quautionId=" + QutationId;
-
-                    }
-                });
-            }
-
-            function ViewDirectory1(Id) {
-                window.location.href = "/Common/ViewDirecory?Id=" + Id + "&DName=" + "Quotation";
-                //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
-            }
-        </script>
+    function ViewDirectory1(Id) {
+        window.location.href = "/Common/ViewDirecory?Id=" + Id + "&DName=" + "Quotation";
+        //window.location.href = "/MVCClient/ViewDirecory/" + Id + '$$DName'= ++;
+    }
+</script>

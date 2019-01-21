@@ -95,7 +95,8 @@ namespace InvoiceDiskLast.Controllers
                     Status = p.Status,
                     VatAmount = p.Vat21 + p.Vat6,
                     CustomerName = p.ContactsTable.ContactName,
-                    SalePerson = p.UserTable.Username,
+                    SalePerson = (p.UserTable.UserFname + " " + p.UserTable.UserLname != "" ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
+                   
                     TotalAmount = p.PurchaseTotoalAmount,
 
 
@@ -157,17 +158,14 @@ namespace InvoiceDiskLast.Controllers
                     PurchaseVenderNote = p.PurchaseVenderNote,
                     Status = p.Status,
                     CustomerName = p.ContactsTable.ContactName,
-                    SalePerson = p.UserTable.Username,
-
+                    SalePerson = (p.UserTable.UserFname + " " + p.UserTable.UserLname != "" ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
                     VatAmount = p.Vat21 + p.Vat6,
                     TotalAmount = p.PurchaseTotoalAmount,
                     Type = p.Type,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
-
                     AddedDate = p.AddedDate,
                 }).ToList();
-
             }
             catch (Exception ex)
             {

@@ -16,14 +16,14 @@ namespace InvoiceDiskLast.CrystalReport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class CustomerReport : ReportClass {
+    public class CrystalReport1 : ReportClass {
         
-        public CustomerReport() {
+        public CrystalReport1() {
         }
         
         public override string ResourceName {
             get {
-                return "CustomerReport.rpt";
+                return "CrystalReport1.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         public override string FullResourceName {
             get {
-                return "InvoiceDiskLast.CrystalReport.CustomerReport.rpt";
+                return "InvoiceDiskLast.CrystalReport.CrystalReport1.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace InvoiceDiskLast.CrystalReport {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedCustomerReport : Component, ICachedReport {
+    public class CachedCrystalReport1 : Component, ICachedReport {
         
-        public CachedCustomerReport() {
+        public CachedCrystalReport1() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace InvoiceDiskLast.CrystalReport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            CustomerReport rpt = new CustomerReport();
+            CrystalReport1 rpt = new CrystalReport1();
             rpt.Site = this.Site;
             return rpt;
         }
