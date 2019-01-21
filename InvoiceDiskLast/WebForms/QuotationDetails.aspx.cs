@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,6 +15,24 @@ namespace InvoiceDiskLast.WebForms
 {
     public partial class QuotationDetails : System.Web.UI.Page
     {
+        public Byte[] GetImageBytes(string image_name)
+        {
+            Byte[] bytes = null;
+            if (!string.IsNullOrEmpty(image_name))
+            {
+              
+              
+                //
+                if (System.IO.File.Exists(image_name))
+                {
+                    FileStream fs = new FileStream(image_name, FileMode.Open, FileAccess.Read);
+                    BinaryReader br = new BinaryReader(fs);
+                    bytes = br.ReadBytes(Convert.ToInt32(br.BaseStream.Length));
+                }
+            }
+            return bytes;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -51,7 +70,7 @@ namespace InvoiceDiskLast.WebForms
 
             string Pag = HttpContext.Current.Server.MapPath("/images/" + info[0].CompanyLogo);
 
-            Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
+            Model.Add(new ImageModel { imgdata = GetImageBytes(Pag)});
 
 
 

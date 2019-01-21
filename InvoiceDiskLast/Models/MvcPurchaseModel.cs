@@ -35,5 +35,14 @@ namespace InvoiceDiskLast.Models
         public string Type { get; set; }
 
 
+        public string  UserName{ get; set; }
+
+        public string SalePerson { get; set; }
+
+        public  Nullable<double> VatAmount { get; set; }
+
+        public Nullable<double> TotalAmount { get; set; }
+
+
     }
 }

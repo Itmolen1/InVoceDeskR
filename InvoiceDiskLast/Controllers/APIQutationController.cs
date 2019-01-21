@@ -59,7 +59,7 @@ namespace InvoiceDiskLast.Controllers
             try
             {
 
-            
+
 
 
 
@@ -74,7 +74,7 @@ namespace InvoiceDiskLast.Controllers
                 ////    TotalVat21 = C.TotalVat21,
                 ////    TotalAmount = C.TotalAmount,
                 ////    CustomerNote = C.CustomerNote,
-                  
+
                 ////    Type = C.Type,
 
                 ////}).ToList();
@@ -247,8 +247,11 @@ namespace InvoiceDiskLast.Controllers
                     DueDate = p.DueDate,
                     RefNumber = p.RefNumber,
                     SubTotal = p.SubTotal,
-
+                    UserName = p.UserTable.Username,
+                    SalePerson = p.ContactsTable.ContactName,
+                    TotalVat = p.TotalVat21 + p.TotalVat6,
                     Status = p.Status,
+                    TotalAmount=p.TotalAmount,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
                     Type = p.Type,

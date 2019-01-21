@@ -25,7 +25,8 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> ContactId { get; set; }
         public string Type { get; set; }
 
-      
-
+        public string UserName { get; set; }
+        public string SalePerson { get; set; }
+        public Nullable<double> TotalVat { get; set; }
     }
 }
