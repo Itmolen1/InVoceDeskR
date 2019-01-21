@@ -43,6 +43,8 @@ namespace InvoiceDiskLast.Models
 
         public Nullable<double> TotalAmount { get; set; }
 
+        public string CustomerName { get; set; }
+        public string  ConatctName { get; set; }
 
     }
 }

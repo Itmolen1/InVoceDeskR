@@ -52,5 +52,9 @@ namespace InvoiceDiskLast.Models
         public HttpPostedFileWrapper[] file23 { get; set; }
         public BillDetailTable[] BillDetail { get; set; }
 
+        public string ContactName { get; set; }
+        public string SalePerson { get; set; }
+
+        public Nullable<double> VatAmount { get; set; }
     }
 }

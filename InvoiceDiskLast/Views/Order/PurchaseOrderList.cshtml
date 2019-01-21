@@ -50,7 +50,7 @@
                     PurchaseDueDate
                 </th>
                 <th>
-                    Cuestomer
+                    Customer
                 </th>
                 <th>
                     Sale Person
@@ -63,7 +63,7 @@
                 </th>
                 <th>
                     Total Amount
-                </th>                            
+                </th>
                 <th>
                     Status
                 </th>
@@ -437,7 +437,7 @@
                                 <tbody id="tbleAccount"></tbody>
                             </table>
                         </div>
-                    </div>                   
+                    </div>
                 </div>
 
             </div>
@@ -512,14 +512,17 @@
                        }, "autoWidth": true
                    },
 
-                  { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
+                    { "data": "CustomerName", "name": "CustomerName", "autoWidth": true },
+                   { "data": "SalePerson", "name": "SalePerson", "autoWidth": true },
 
-                { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                  { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+                 
 
-                 {
-                     "data": "Type", "name": "Type", "autoWidth": true
-                 },
+                  { "data": "Type", "name": "Type", "autoWidth": true },
+                  { "data": "VatAmount", "name": "VatAmount", "autoWidth": true },
+                 
+                //{ "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
+                  { "data": "TotalAmount", "name": "TotalAmount", "autoWidth": true },
+
 
                   {
                       render: function (data, type, row) {
@@ -585,7 +588,7 @@
             cache: false,
             data: { 'Id': Id },
             success: function (Response) {
-                if (Response.Status == "Success") {    
+                if (Response.Status == "Success") {
                     window.location.href = "/Bills/ViewBilDetail/?BillId=" + Response.Id;
                 }
             },
@@ -612,10 +615,10 @@
                 purchaseId: PurchaseOrderID
             },
             success: function (response) {
-              
+
                 GetInvoiceIdByQuatationId(PurchaseOrderID)
 
-               
+
             }
         });
     }

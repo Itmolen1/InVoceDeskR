@@ -20,8 +20,8 @@ namespace InvoiceDiskLast.WebForms
             Byte[] bytes = null;
             if (!string.IsNullOrEmpty(image_name))
             {
-              
-              
+
+
                 //
                 if (System.IO.File.Exists(image_name))
                 {
@@ -37,7 +37,7 @@ namespace InvoiceDiskLast.WebForms
         {
 
 
-            string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
+            string d = HttpContext.Current.Server.MapPath("/images/" + "8.jpg");
 
             DBEntities entity = new DBEntities();
 
@@ -51,7 +51,7 @@ namespace InvoiceDiskLast.WebForms
                 CompanyPhone = c.CompanyPhone,
                 CompanyCell = c.CompanyCell,
                 CompanyEmail = c.CompanyEmail,
-                CompanyLogo = c.CompanyLogo,
+                CompanyLogo = d.ToString(),
                 CompanyCity = c.CompanyCity,
                 CompanyCountry = c.CompanyCountry,
                 StreetNumber = c.StreetNumber,
@@ -68,9 +68,9 @@ namespace InvoiceDiskLast.WebForms
 
             List<ImageModel> Model = new List<ImageModel>();
 
-            string Pag = HttpContext.Current.Server.MapPath("/images/" + info[0].CompanyLogo);
+            //string Pag = HttpContext.Current.Server.MapPath("/images/" + info[0].CompanyLogo);
 
-            Model.Add(new ImageModel { imgdata = GetImageBytes(Pag)});
+            //Model.Add(new ImageModel { imgdata = GetImageBytes(Pag) });
 
 
 
@@ -122,7 +122,7 @@ namespace InvoiceDiskLast.WebForms
                 ServicesTables Serv = new ServicesTables();
 
                 DateTime dtt = Convert.ToDateTime(x.Date);
-                
+
                 Serv.Date = dtt.ToShortDateString();
                 Serv.ProductNames = x.ProductNames;
                 Serv.Descriptions = x.Descriptions;
@@ -158,19 +158,19 @@ namespace InvoiceDiskLast.WebForms
 
             List<QuotationReportModel> quotationReportModel = new List<QuotationReportModel>();
 
-            foreach(var x in quotationReportModels)
+            foreach (var x in quotationReportModels)
             {
                 QuotationReportModel qut = new QuotationReportModel();
 
 
-                DateTime QT = Convert.ToDateTime(x.QutationDate);
-                DateTime DQT = Convert.ToDateTime(x.DueDate);
-                
+                //DateTime QT = Convert.ToDateTime(x.QutationDate);
+              //  DateTime DQT = Convert.ToDateTime(x.DueDate);
+
                 qut.QutationID = x.QutationID;
                 qut.Qutation_ID = x.Qutation_ID;
                 qut.RefNumber = x.RefNumber;
-                qut.QutationDate = QT.ToShortDateString();
-                qut.DueDate = DQT.ToShortDateString();
+                //qut.QutationDate = QT.ToShortDateString();
+                //qut.DueDate = DQT.ToShortDateString();
                 qut.SubTotal = x.SubTotal;
                 qut.TotalVat6 = x.TotalVat6;
                 qut.TotalVat21 = x.TotalVat21;
@@ -178,7 +178,7 @@ namespace InvoiceDiskLast.WebForms
                 qut.TotalAmount = x.TotalAmount;
                 qut.CustomerNote = x.CustomerNote;
                 qut.Status = x.Status;
-               quotationReportModel.Add(qut);
+                quotationReportModel.Add(qut);
             }
 
 

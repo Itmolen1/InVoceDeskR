@@ -11,7 +11,9 @@
 <body>
     <form id="form1" runat="server">
     <div>
+
         <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="true" />
+        <img width="320" height="76" alt="Imagem" src="CrystalImageHandler.aspx?dynamicimage=cr_tmp_image_e47fba99-96fc-471b-ab11-06fd2212bbdd.png" border="0"/>
     </div>
     </form>
 </body>
