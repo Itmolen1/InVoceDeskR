@@ -46,5 +46,9 @@ namespace InvoiceDiskLast.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PurchaseOrderDetailsTable> PurchaseOrderDetailsTables { get; set; }
         public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public virtual ContactsTable ContactsTable { get; set; }
+        public virtual ContactsTable ContactsTable1 { get; set; }
+        public virtual UserTable UserTable { get; set; }
+        public virtual UserTable UserTable1 { get; set; }
     }
 }
