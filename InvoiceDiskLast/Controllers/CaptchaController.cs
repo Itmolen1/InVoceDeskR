@@ -113,7 +113,7 @@ namespace InvoiceDiskLast.Controllers
                         {
                             HttpResponseMessage response = httpClient.PostAsync(url + "Token", encodedRequest).Result;
 
-                            token = response.Content.ReadAsAsync<BearerToken>().Result;
+                                token = response.Content.ReadAsAsync<BearerToken>().Result;
                        
 
                         #region
