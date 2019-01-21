@@ -247,8 +247,9 @@ namespace InvoiceDiskLast.Controllers
                     DueDate = p.DueDate,
                     RefNumber = p.RefNumber,
                     SubTotal = p.SubTotal,
-                    UserName = p.UserTable.Username,
-                    SalePerson = p.ContactsTable.ContactName,
+                    ContactName = p.ContactsTable.ContactName,
+                    SalePerson = (p.UserTable.UserFname + " " + p.UserTable.UserLname != "" ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
+
                     TotalVat = p.TotalVat21 + p.TotalVat6,
                     Status = p.Status,
                     TotalAmount=p.TotalAmount,
