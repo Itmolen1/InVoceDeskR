@@ -16,13 +16,19 @@ namespace InvoiceDiskLast.WebForms
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            int Qut = Convert.ToInt32(Request.QueryString["id"]);
 
 
-            string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
+                
+
+        
+            //string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
 
             DBEntities entity = new DBEntities();
 
-            List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == 54).Select(c => new Comp
+            QutationTable table = entity.QutationTables.Where(x => x.QutationID == Qut).FirstOrDefault();
+
+            List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == table.CompanyId).Select(c => new Comp
             {
                 // Company Information   
                 CompanyID = c.CompanyID,
@@ -55,7 +61,7 @@ namespace InvoiceDiskLast.WebForms
 
 
 
-            List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == 66).Select(c => new Contacts
+            List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == table.ContactId).Select(c => new Contacts
             {
                 ContactName = c.ContactName,
                 ContactAddress = c.ContactAddress,
@@ -67,7 +73,7 @@ namespace InvoiceDiskLast.WebForms
                 ContactStreetNumber = c.StreetNumber,
             }).ToList();
 
-            List<GoodsTable> goodsTable = entity.QutationDetailsTables.Where(x => x.QutationID == 46 && x.Type == "Goods").Select(x => new GoodsTable
+            List<GoodsTable> goodsTable = entity.QutationDetailsTables.Where(x => x.QutationID == Qut && x.Type == "Goods").Select(x => new GoodsTable
             {
                 ProductName = x.ProductTable.ProductName,
                 Quantity = x.Quantity ?? 0,
@@ -81,7 +87,7 @@ namespace InvoiceDiskLast.WebForms
             DateTime dt = DateTime.Today;
 
 
-            List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == 46 && x.Type == "Service").Select(x => new ServicesTables
+            List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == Qut && x.Type == "Service").Select(x => new ServicesTables
             {
 
                 Date = x.ServiceDate.ToString(),
@@ -118,7 +124,7 @@ namespace InvoiceDiskLast.WebForms
             }
 
 
-            List<QuotationReportModel> quotationReportModels = entity.QutationTables.Where(x => x.QutationID == 46).Select(x => new QuotationReportModel
+            List<QuotationReportModel> quotationReportModels = entity.QutationTables.Where(x => x.QutationID == Qut).Select(x => new QuotationReportModel
             {
 
                 QutationID = x.QutationID,

@@ -159,7 +159,7 @@ namespace InvoiceDiskLast.Controllers
 
             HttpResponseMessage responsep = GlobalVeriables.WebApiClient.GetAsync("APIProductByProductID/" + ProductId.ToString()).Result;
             MVCProductModel productModel = responsep.Content.ReadAsAsync<MVCProductModel>().Result;
-            float price = (float)productModel.SalePrice;
+            decimal price = Convert.ToDecimal(productModel.SalePrice);
             return Json(price, JsonRequestBehavior.AllowGet);
         }
 
