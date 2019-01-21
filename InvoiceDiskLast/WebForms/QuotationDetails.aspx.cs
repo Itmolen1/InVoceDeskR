@@ -15,6 +15,8 @@ namespace InvoiceDiskLast.WebForms
 {
     public partial class QuotationDetails : System.Web.UI.Page
     {
+
+
         public Byte[] GetImageBytes(string image_name)
         {
             Byte[] bytes = null;
@@ -36,9 +38,42 @@ namespace InvoiceDiskLast.WebForms
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
+            DataSet Ds = new DataSet();
+            DataTable dt = new DataTable();
+            // object of data row 
+            DataRow drow;
+            // add the column in table to store the image of Byte array type 
+            dt.Columns.Add("Id", typeof(int));
+            dt.Columns.Add("CompanyLogo", typeof(byte[]));
+            
+            drow = dt.NewRow();
+            // define the filestream object to read the image 
+            FileStream fs;
+            // define te binary reader to read the bytes of image 
+            BinaryReader br;
+            // check the existance of image 
 
-            string d = HttpContext.Current.Server.MapPath("/images/" + "8.jpg");
+            // open image in file stream 
+            fs = new FileStream(d, FileMode.Open);
 
+            // initialise the binary reader from file streamobject 
+            br = new BinaryReader(fs);
+            // define the byte array of filelength 
+            byte[] imgbyte = new byte[fs.Length + 1];
+            // read the bytes from the binary reader 
+            imgbyte = br.ReadBytes(Convert.ToInt32((fs.Length)));
+            drow[0] = 122;
+            drow[1] = imgbyte;
+            // add the image in bytearray 
+            dt.Rows.Add(drow);
+            // add row into the datatable 
+            br.Close();
+            // close the binary reader 
+            fs.Close();
+            // close the file stream 
+           
+           
             DBEntities entity = new DBEntities();
 
             List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == 54).Select(c => new Comp
@@ -68,9 +103,9 @@ namespace InvoiceDiskLast.WebForms
 
             List<ImageModel> Model = new List<ImageModel>();
 
-            //string Pag = HttpContext.Current.Server.MapPath("/images/" + info[0].CompanyLogo);
+            string Pag = HttpContext.Current.Server.MapPath("/images/" + "8.jpg");
 
-            //Model.Add(new ImageModel { imgdata = GetImageBytes(Pag) });
+            Model.Add(new ImageModel { imgdata = GetImageBytes(Pag) });
 
 
 
@@ -97,7 +132,7 @@ namespace InvoiceDiskLast.WebForms
 
             }).ToList();
 
-            DateTime dt = DateTime.Today;
+            DateTime dt22 = DateTime.Today;
 
 
             List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == 46 && x.Type == "Service").Select(x => new ServicesTables
@@ -164,7 +199,7 @@ namespace InvoiceDiskLast.WebForms
 
 
                 //DateTime QT = Convert.ToDateTime(x.QutationDate);
-              //  DateTime DQT = Convert.ToDateTime(x.DueDate);
+                //  DateTime DQT = Convert.ToDateTime(x.DueDate);
 
                 qut.QutationID = x.QutationID;
                 qut.Qutation_ID = x.Qutation_ID;
@@ -183,15 +218,19 @@ namespace InvoiceDiskLast.WebForms
 
 
             ReportDocument Report = new ReportDocument();
-            Report.Load(Server.MapPath("~/CrystalReport/QuotationDetails.rpt"));
+            Report.Load(Server.MapPath("~/CrystalReport/CrystalReport1.rpt"));
 
+            //   Report.Database.Tables[0].SetDataSource(Model);
 
-            Report.Database.Tables[0].SetDataSource(info);
-            Report.Database.Tables[1].SetDataSource(Contact);
-            Report.Database.Tables[2].SetDataSource(goodsTable);
-            Report.Database.Tables[3].SetDataSource(servicesTables);
-            Report.Database.Tables[4].SetDataSource(quotationReportModel);
-            Report.Database.Tables[5].SetDataSource(Model);
+            Report.SetDataSource(dt);
+            // set the datasource of crystalreport object 
+            CrystalReportViewer1.ReportSource = Report;
+            //set the report source 
+            //Report.Database.Tables[1].SetDataSource(Contact);
+            //Report.Database.Tables[2].SetDataSource(goodsTable);
+            //Report.Database.Tables[3].SetDataSource(servicesTables);
+            //Report.Database.Tables[4].SetDataSource(quotationReportModel);
+            // Report.Database.Tables[5].SetDataSource(Model);
             CrystalReportViewer1.ReportSource = Report;
             CrystalReportViewer1.RefreshReport();
         }
