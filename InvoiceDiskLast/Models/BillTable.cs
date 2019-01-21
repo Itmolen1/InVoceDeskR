@@ -14,6 +14,12 @@ namespace InvoiceDiskLast.Models
     
     public partial class BillTable
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public BillTable()
+        {
+            this.BillDetailTables = new HashSet<BillDetailTable>();
+        }
+    
         public int BilID { get; set; }
         public string Bill_ID { get; set; }
         public string RefNumber { get; set; }
@@ -34,5 +40,9 @@ namespace InvoiceDiskLast.Models
     
         public virtual UserTable UserTable { get; set; }
         public virtual UserTable UserTable1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BillDetailTable> BillDetailTables { get; set; }
+        public virtual ComapnyInfo ComapnyInfo { get; set; }
+        public virtual ContactsTable ContactsTable { get; set; }
     }
 }

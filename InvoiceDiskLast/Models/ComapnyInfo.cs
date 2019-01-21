@@ -27,6 +27,7 @@ namespace InvoiceDiskLast.Models
             this.UserTables = new HashSet<UserTable>();
             this.EXPENSEs = new HashSet<EXPENSE>();
             this.AccountTables = new HashSet<AccountTable>();
+            this.BillTables = new HashSet<BillTable>();
         }
     
         public int CompanyID { get; set; }
@@ -71,5 +72,7 @@ namespace InvoiceDiskLast.Models
         public virtual ICollection<EXPENSE> EXPENSEs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AccountTable> AccountTables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BillTable> BillTables { get; set; }
     }
 }

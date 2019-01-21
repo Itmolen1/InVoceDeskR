@@ -506,6 +506,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BillDetailTable_BillTable">
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="0..1" />
+          <End Role="BillDetailTable" Type="Self.BillDetailTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BillTable">
+              <PropertyRef Name="BilID" />
+            </Principal>
+            <Dependent Role="BillDetailTable">
+              <PropertyRef Name="BillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ComapnyInfo">
+          <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ContactsTable">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="VenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="BillTable" Type="Self.BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ContactsTable_ComapnyInfo">
           <End Role="ComapnyInfo" Type="Self.ComapnyInfo" Multiplicity="0..1" />
           <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="*" />
@@ -719,6 +767,54 @@
             </Principal>
             <Dependent Role="PurchaseOrderTable">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ContactsTable">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="VenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ContactsTable1">
+          <End Role="ContactsTable" Type="Self.ContactsTable" Multiplicity="0..1" />
+          <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="VenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_UserTable">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_UserTable1">
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="0..1" />
+          <End Role="PurchaseOrderTable" Type="Self.PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -939,6 +1035,22 @@
             <End Role="PaymentTermTable" EntitySet="PaymentTermTable" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTable" />
           </AssociationSet>
+          <AssociationSet Name="FK_BillDetailTable_BillTable" Association="Self.FK_BillDetailTable_BillTable">
+            <End Role="BillTable" EntitySet="BillTable" />
+            <End Role="BillDetailTable" EntitySet="BillDetailTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="Self.FK_BillTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="BillTable" EntitySet="BillTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ContactsTable" Association="Self.FK_BillTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+            <End Role="BillTable" EntitySet="BillTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_UserTable" Association="Self.FK_BillTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="BillTable" EntitySet="BillTable" />
+          </AssociationSet>
           <AssociationSet Name="FK_ContactsTable_ComapnyInfo" Association="Self.FK_ContactsTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
             <End Role="ContactsTable" EntitySet="ContactsTable" />
@@ -1009,6 +1121,22 @@
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseOrderTable_ComapnyInfo" Association="Self.FK_PurchaseOrderTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfo" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ContactsTable" Association="Self.FK_PurchaseOrderTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ContactsTable1" Association="Self.FK_PurchaseOrderTable_ContactsTable1">
+            <End Role="ContactsTable" EntitySet="ContactsTable" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_UserTable" Association="Self.FK_PurchaseOrderTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTable" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_UserTable1" Association="Self.FK_PurchaseOrderTable_UserTable1">
+            <End Role="UserTable" EntitySet="UserTable" />
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTable" />
           </AssociationSet>
           <AssociationSet Name="FK_QutationDetailsTable_ProductTable" Association="Self.FK_QutationDetailsTable_ProductTable">
@@ -1208,6 +1336,34 @@
             <End Role="EXPENSE" EntitySet="EXPENSEs" />
             <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_BillDetailTable_BillTable" Association="APIcompanyModel.FK_BillDetailTable_BillTable">
+            <End Role="BillTable" EntitySet="BillTables" />
+            <End Role="BillDetailTable" EntitySet="BillDetailTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ComapnyInfo" Association="APIcompanyModel.FK_BillTable_ComapnyInfo">
+            <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillTable_ContactsTable" Association="APIcompanyModel.FK_BillTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="BillTable" EntitySet="BillTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ContactsTable" Association="APIcompanyModel.FK_PurchaseOrderTable_ContactsTable">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_ContactsTable1" Association="APIcompanyModel.FK_PurchaseOrderTable_ContactsTable1">
+            <End Role="ContactsTable" EntitySet="ContactsTables" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_UserTable" Association="APIcompanyModel.FK_PurchaseOrderTable_UserTable">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderTable_UserTable1" Association="APIcompanyModel.FK_PurchaseOrderTable_UserTable1">
+            <End Role="UserTable" EntitySet="UserTables" />
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
           <Key>
@@ -1253,6 +1409,10 @@
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PurchaseOrderDetailsTables" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderTable" ToRole="PurchaseOrderDetailsTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ComapnyInfo" FromRole="PurchaseOrderTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ContactsTable" FromRole="PurchaseOrderTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="ContactsTable1" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ContactsTable1" FromRole="PurchaseOrderTable" ToRole="ContactsTable" />
+          <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_PurchaseOrderTable_UserTable" FromRole="PurchaseOrderTable" ToRole="UserTable" />
+          <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_PurchaseOrderTable_UserTable1" FromRole="PurchaseOrderTable" ToRole="UserTable" />
         </EntityType>
         <EntityType Name="ProductUnitTable">
           <Key>
@@ -1531,6 +1691,8 @@
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_UserTable" FromRole="UserTable" ToRole="QutationTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="UserTable" ToRole="ComapnyInfo" />
           <NavigationProperty Name="EXPENSEs" Relationship="APIcompanyModel.FK_EXPENSE_UserTable" FromRole="UserTable" ToRole="EXPENSE" />
+          <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_UserTable" FromRole="UserTable" ToRole="PurchaseOrderTable" />
+          <NavigationProperty Name="PurchaseOrderTables1" Relationship="APIcompanyModel.FK_PurchaseOrderTable_UserTable1" FromRole="UserTable" ToRole="PurchaseOrderTable" />
           </EntityType>
         <EntityType Name="DirectoryTable">
           <Key>
@@ -1557,6 +1719,7 @@
           <Property Name="BillID" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ServiceDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="BillTable" Relationship="APIcompanyModel.FK_BillDetailTable_BillTable" FromRole="BillDetailTable" ToRole="BillTable" />
         </EntityType>
         <EntityType Name="BillTable">
           <Key>
@@ -1581,6 +1744,9 @@
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.BillTable_UserTable1" FromRole="BillTable" ToRole="UserTable" />
           <NavigationProperty Name="UserTable1" Relationship="APIcompanyModel.FK_BillTable_UserTable" FromRole="BillTable" ToRole="UserTable" />
+          <NavigationProperty Name="BillDetailTables" Relationship="APIcompanyModel.FK_BillDetailTable_BillTable" FromRole="BillTable" ToRole="BillDetailTable" />
+          <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="BillTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="BillTable" ToRole="ContactsTable" />
         </EntityType>
         <Association Name="BillTable_UserTable1">
           <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
@@ -1736,6 +1902,9 @@
           <NavigationProperty Name="InvoiceTables" Relationship="APIcompanyModel.FK_InvoiceTable_ContactsTable" FromRole="ContactsTable" ToRole="InvoiceTable" />
           <NavigationProperty Name="QutationTables" Relationship="APIcompanyModel.FK_QutationTable_ContactsTable" FromRole="ContactsTable" ToRole="QutationTable" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_ContactsTable_ComapnyInfo" FromRole="ContactsTable" ToRole="ComapnyInfo" />
+          <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ContactsTable" FromRole="ContactsTable" ToRole="BillTable" />
+          <NavigationProperty Name="PurchaseOrderTables" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ContactsTable" FromRole="ContactsTable" ToRole="PurchaseOrderTable" />
+          <NavigationProperty Name="PurchaseOrderTables1" Relationship="APIcompanyModel.FK_PurchaseOrderTable_ContactsTable1" FromRole="ContactsTable" ToRole="PurchaseOrderTable" />
         </EntityType>
         <Association Name="FK_InvoiceTable_ContactsTable">
           <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
@@ -1858,6 +2027,7 @@
           <NavigationProperty Name="UserTables" Relationship="APIcompanyModel.FK_UserTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="UserTable" />
           <NavigationProperty Name="EXPENSEs" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="ComapnyInfo" ToRole="EXPENSE" />
           <NavigationProperty Name="AccountTables" Relationship="APIcompanyModel.FK_AccountTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="AccountTable" />
+          <NavigationProperty Name="BillTables" Relationship="APIcompanyModel.FK_BillTable_ComapnyInfo" FromRole="ComapnyInfo" ToRole="BillTable" />
         </EntityType>
         <Association Name="FK_AccountTransictionTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
@@ -2164,6 +2334,90 @@
             </Principal>
             <Dependent Role="ExpenseDetail">
               <PropertyRef Name="expense_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillDetailTable_BillTable">
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillDetailTable" Role="BillDetailTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BillTable">
+              <PropertyRef Name="BilID" />
+            </Principal>
+            <Dependent Role="BillDetailTable">
+              <PropertyRef Name="BillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ComapnyInfo">
+          <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ComapnyInfo">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.BillTable" Role="BillTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="BillTable">
+              <PropertyRef Name="VenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ContactsTable">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="VenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_ContactsTable1">
+          <End Type="APIcompanyModel.ContactsTable" Role="ContactsTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactsTable">
+              <PropertyRef Name="ContactsId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="VenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_UserTable">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderTable_UserTable1">
+          <End Type="APIcompanyModel.UserTable" Role="UserTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderTable">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

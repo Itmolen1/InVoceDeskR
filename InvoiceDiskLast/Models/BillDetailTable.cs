@@ -25,5 +25,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> BillID { get; set; }
         public string Type { get; set; }
         public Nullable<System.DateTime> ServiceDate { get; set; }
+    
+        public virtual BillTable BillTable { get; set; }
     }
 }
