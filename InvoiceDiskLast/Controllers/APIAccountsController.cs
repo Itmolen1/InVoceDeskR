@@ -130,7 +130,33 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        
 
+        [Route("api/GetAllAccountControl/{companyId:int}")]
+        public IHttpActionResult GetAllAccountControl(int companyId)
+        {
+
+            try
+            {
+                List<MVCAccountTableModel> AccountObj = new List<MVCAccountTableModel>();
+
+                AccountObj = db.AccountTables.Where(x => x.FK_CompanyId == companyId).Select(c => new MVCAccountTableModel
+                {
+                    AccountId = c.AccountId,
+                    AccountTitle = c.AccountTitle,
+                    AccountCode = c.AccountCode
+
+                }).ToList();
+
+                return Ok(AccountObj);
+
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
+        }
 
 
         [Route("api/GetExpense/{companyId:int}")]

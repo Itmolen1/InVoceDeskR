@@ -1,6 +1,7 @@
 ﻿using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
@@ -50,9 +51,9 @@ namespace InvoiceDiskLast.Controllers
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailList122/" + companyId + "/" + search + "/" + skip + "/" + pageSize).Result;
                 List<ExpenseViewModel> ExpenseList = response.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
 
-                int recordsTotal = recordsTotal = ExpenseList.Count();
-                var data = ExpenseList.Skip(skip).Take(pageSize).ToList();
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
+
+
+                return Json(new { draw = draw, recordsFiltered = ExpenseList[0].TotalRecord, recordsTotal = ExpenseList[0].TotalRecord, data = ExpenseList }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -60,6 +61,350 @@ namespace InvoiceDiskLast.Controllers
                 return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public static Boolean IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = file.Open
+                (
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.None
+                );
+            }
+            catch (IOException ex)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
+
+        public string PrintView(int Id)
+        {
+            string pdfname;
+            try
+            {
+                int CompanyId = 0;
+
+                ExpenseViewModel experviewModel = new ExpenseViewModel();           
+
+                if (Session["CompayID"] != null)
+                {
+                    CompanyId = Convert.ToInt32(Session["CompayID"]);
+                }
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Expense";
+                ViewBag.commonModel = commonModel;
+                ViewBag.Companydata = companyModel;
+
+                HttpResponseMessage Expense = GlobalVeriables.WebApiClient.GetAsync("GetExpenseById/" + Id).Result;
+                experviewModel = Expense.Content.ReadAsAsync<ExpenseViewModel>().Result;
+
+                HttpResponseMessage expenseDetail = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailById/" + Id).Result;
+                List<ExpenseDetailModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseDetailModel>>().Result;
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + CompanyId).Result;
+                List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
+
+                ViewBag.Accounts = AccountmodelObj;
+                ViewBag.ExpenseDetail = ExpenseDetailList;
+
+                ViewBag.AccountId = experviewModel.ACCOUNT_ID;
+                ViewBag.Ref = experviewModel.REFERENCEno;
+                ViewBag.Date = experviewModel.AddedDate;
+                ViewBag.VenderId = experviewModel.VENDOR_ID;
+
+                TempData["CompanyId"] = companyModel.CompanyID;
+                TempData["ConatctId"] = experviewModel.VENDOR_ID;
+
+
+              
+                string companyName = Id + "-" + companyModel.CompanyName;
+
+                var root = Server.MapPath("/PDF/");
+                pdfname = String.Format("{0}.pdf", companyName);
+                var path = Path.Combine(root, pdfname);
+                path = Path.GetFullPath(path);
+
+                string subPath = "/PDF"; // your code goes here
+                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
+
+                if (!exists)
+                {
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    try
+                    {
+                        if (System.IO.File.Exists(path))
+                        {
+                            FileInfo info = new FileInfo(path);
+
+                            if (!IsFileLocked(info)) info.Delete();
+
+                        }
+                    }
+                    catch (System.IO.IOException)
+                    {
+
+                    }
+                }
+
+
+                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Qutation/PrintQutationPartialView.cshtml")
+                {
+
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
+                    PageHeight = 40,
+
+                    SaveOnServerPath = path, // Save your place
+
+                    //  CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer.  (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + "  Printed date: " +
+                    // DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
+                    //" --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
+
+                };
+
+                pdfResult.BuildPdf(this.ControllerContext);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return pdfname;
+        }
+
+
+        public ActionResult ExpenseByEmail(int Id)
+        {
+            var List = CreatDirectoryClass.GetFileDirectiory((int)Id, "Expense");
+
+            EmailModel email = new EmailModel();
+
+            List<Selected> _list = new List<Selected>();
+
+            foreach (var Item in List)
+            {
+                _list.Add(new Selected { IsSelected = true, FileName = Item.DirectoryPath, Directory = Item.FileFolderPathe + "/" + Item.DirectoryPath });
+            }
+
+            email.SelectList = _list;
+
+            try
+            {
+
+                email.Attachment = PrintView((int)Id);
+
+                HttpContext.Items["FilePath"] = email.Attachment;
+
+                if (Session["CompayID"] == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+                var CompanyName = Session["CompanyName"];
+
+                if (CompanyName == null)
+                {
+                    CompanyName = "Nocompany";
+                }
+
+                var contact = Session["CompanyContact"];
+                var companyEmail = Session["CompanyEmail"];
+                if (contact == null)
+                {
+                    contact = "Company Contact";
+                }
+                if (companyEmail == null)
+                {
+                    companyEmail = "Company Email";
+                }
+
+                int ClientId = Convert.ToInt32(TempData["ConatctId"]);
+                int ConmpanyId = Convert.ToInt32(TempData["CompanyId"]);
+
+                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ClientId.ToString()).Result;
+                MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
+
+                email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
+
+                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
+
+                "." + "Graag horen we of u hiermee akkoord gaat." +
+
+                "." + "De offerte vindt u als bijlage bij deze email." +
+
+
+                "..Met vriendelijke groet." +
+
+                mvcContactModel.ContactName + "." +
+
+                CompanyName.ToString() + "." +
+
+                contact.ToString() + "." +
+
+                companyEmail.ToString();
+
+                string strToProcess = email.EmailText;
+                string result = strToProcess.Replace(".", " \r");
+
+                email.EmailText = result;
+
+                email.invoiceId = (int)Id;
+                email.From = "infouurtjefactuur@gmail.com";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return View(email);
+
+        }
+
+        [HttpPost]
+        public ActionResult ExpenseByEmail(EmailModel email, string[] Files, FormCollection formCollection)
+        {
+            var root = Server.MapPath("/PDF/");
+
+            List<AttakmentList> _attackmentList = new List<AttakmentList>();
+            var allowedExtensions = new string[] { "doc", "docx", "pdf", ".jpg", "png", "JPEG", "JFIF", "PNG" };
+
+            if (email.SelectList != null)
+            {
+
+                foreach (var item in email.SelectList)
+                {
+
+                    if (item.IsSelected)
+                    {
+
+                        if (item.Directory.EndsWith("doc") || item.Directory.EndsWith("pdf") || item.Directory.EndsWith("docx") || item.Directory.EndsWith("jpg") || item.Directory.EndsWith("png") || item.Directory.EndsWith("txt"))
+                        {
+                            if (System.IO.File.Exists(Server.MapPath(item.Directory)))
+                            {
+                                _attackmentList.Add(new AttakmentList { Attckment = Server.MapPath(item.Directory) });
+                            }
+
+                            var filwe = Server.MapPath("/PDF/" + item.FileName);
+
+                            if (System.IO.File.Exists(filwe))
+                            {
+                                _attackmentList.Add(new AttakmentList { Attckment = filwe });
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if (Request.Form["FileName"] != null)
+            {
+                var fileName2 = Request.Form["FileName"];
+                string[] valueArray = fileName2.Split(',');
+
+                foreach (var item in valueArray)
+                {
+                    if (item.EndsWith("doc") || item.EndsWith("pdf") || item.EndsWith("docx") || item.EndsWith("jpg") || item.EndsWith("png") || item.EndsWith("txt"))
+                    {
+                        var filwe = Server.MapPath("/PDF/" + item);
+                        if (System.IO.File.Exists(filwe))
+                        {
+                            _attackmentList.Add(new AttakmentList { Attckment = filwe });
+                        }
+                    }
+                }
+            }
+
+
+            TempData["EmailMessge"] = "";
+            EmailModel emailModel = new EmailModel();
+
+
+            var fileName = email.Attachment;
+            try
+            {
+                if (email.Attachment.Contains(".pdf"))
+                {
+                    email.Attachment = email.Attachment.Replace(".pdf", "");
+                }
+                if (email.ToEmail.Contains(','))
+                {
+                    var p = email.Attachment.Split('.');
+
+                    var pdfname = String.Format("{0}.pdf", p);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    _attackmentList.Add(new AttakmentList { Attckment = email.Attachment });
+                    string[] EmailArray = email.ToEmail.Split(',');
+                    if (EmailArray.Count() > 0)
+                    {
+                        foreach (var item in EmailArray)
+                        {
+                            emailModel.From = email.From;
+                            emailModel.ToEmail = item;
+                            emailModel.Attachment = email.Attachment;
+                            emailModel.EmailBody = email.EmailText;
+                            bool result = EmailController.email(emailModel, _attackmentList);
+                        }
+                    }
+                }
+                else
+                {
+                    var pdfname = String.Format("{0}.pdf", email.Attachment);
+                    var path = Path.Combine(root, pdfname);
+                    email.Attachment = path;
+                    emailModel.From = email.From;
+                    emailModel.ToEmail = email.ToEmail;
+                    emailModel.Attachment = email.Attachment;
+                    emailModel.EmailBody = email.EmailText;
+                    _attackmentList.Add(new AttakmentList { Attckment = emailModel.Attachment });
+                    bool result = EmailController.email(emailModel, _attackmentList);
+                    TempData["EmailMessge"] = "Email Send successfully";
+                }
+
+                HttpResponseMessage res = GlobalVeriables.WebApiClient.GetAsync("APIQutation/" + email.invoiceId.ToString()).Result;
+                MVCQutationModel ob = res.Content.ReadAsAsync<MVCQutationModel>().Result;
+
+                var folderPath = Server.MapPath("/PDF/");
+                EmailController.clearFolder(folderPath);
+                return RedirectToAction("ViewExpense", new { Id = email.invoiceId });
+            }
+            catch (Exception ex)
+            {
+                TempData["EmailMessge"] = ex.Message.ToString();
+                TempData["Error"] = ex.Message.ToString();
+            }
+            if (TempData["Path"] == null)
+            {
+                TempData["Path"] = fileName;
+            }
+
+            TempData["Message"] = "Email Send Succssfully";
+            email.Attachment = fileName;
+
+            return View(email);
+
+        }
+
 
 
         public ActionResult Add()
@@ -234,7 +579,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult DeleteFile(int Id, string FileName)
         {
             try
-            { 
+            {
                 if (CreatDirectoryClass.Delete(Id, FileName, "Expense"))
                 {
 
@@ -264,7 +609,7 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-               
+
 
                 EXPENSE expense = new EXPENSE();
                 expense.REFERENCEno = _ExpeseViewModel.REFERENCEno;
@@ -380,9 +725,6 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + CompanyId).Result;
                 List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
-
-
-
 
 
                 ViewBag.Accounts = AccountmodelObj;

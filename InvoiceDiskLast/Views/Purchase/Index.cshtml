@@ -23,21 +23,27 @@
                             PurchaseDueDate
                         </th>
                         <th>
-                            RefrenceNumber
+                            Customer
                         </th>
                         <th>
-                            Puchase Subtotal
+                            Sale Person
                         </th>
                         <th>
-                            Purchase Amount
+                            Type
                         </th>
-                        <th>Type</th>
+                        <th>
+                            Vat Amount
+                        </th>
+                        <th>
+                            Total Amount
+                        </th>
                         <th>
                             Status
                         </th>
                         <th>
                             Action
                         </th>
+
 
                     </tr>
                 </thead>
@@ -49,7 +55,7 @@
 
 
 @Html.Partial("~/Views/Shared/PartialViews/ParchasePartialView.cshtml")
-@Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")  
+@Html.Partial("~/Views/Shared/PartialViews/ContatcPartialView.cshtml")
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -71,8 +77,8 @@
             },
             "columns": [
                    { "data": "PurchaseOrderID", "name": "PurchaseOrderID", "autoWidth": true },// key for edit delete
-                     {                        
-                         "data": "PurchaseDate", "type": "date ",                         
+                     {
+                         "data": "PurchaseDate", "type": "date ",
                          "render": function (value) {
 
                              if (value === null) return "";
@@ -93,11 +99,17 @@
                         }, "autoWidth": true
                     },
 
-                    { "data": "PurchaseRefNumber", "name": "PurchaseRefNumber", "autoWidth": true },
-                    { "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
-                    { "data": "PurchaseTotoalAmount", "name": "PurchaseTotoalAmount", "autoWidth": true },
+                   { "data": "CustomerName", "name": "CustomerName", "autoWidth": true },
 
-                    { "data": "Type", "name": "Type", "autoWidth": true }, {
+                  { "data": "SalePerson", "name": "SalePerson", "autoWidth": true },
+
+                  { "data": "Type", "name": "Type", "autoWidth": true },
+                  { "data": "VatAmount", "name": "VatAmount", "autoWidth": true },
+
+                //{ "data": "PurchaseSubTotal", "name": "PurchaseSubTotal", "autoWidth": true },
+                  { "data": "TotalAmount", "name": "TotalAmount", "autoWidth": true },
+
+                     {
                         render: function (data, type, row) {
 
 
@@ -122,18 +134,18 @@
                             }
                         }
                     },
-                 
+
 
                         {
                             render: function (data, type, row) {
-                                                           
-                             return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewInvoiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.PurchaseOrderID + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
-                                     
+
+                                return '<button  class="btn btn-info btn-sm" data-id="Id" onclick="EditPurchase(' + row.PurchaseOrderID + ')"><i class="fa fa-pencil"> Edit</i></button>|<a href="#" class="btn btn-success btn-sm" onclick="ViewInvoiceDetail(' + row.PurchaseOrderID + ')"><i class="fa fa-eye">View</i></a>|<a href="#" class="btn btn-success btn-sm" onclick="ViewDirectory1(' + row.PurchaseOrderID + ')"><i class="fa fa-paperclip" >Attachment</i></a>'
+
                             }
 
                         },
 
-          
+
             ]
         });
 
@@ -174,7 +186,7 @@
 
     }
 
-   
+
 
 
     function ViewInvoiceDetail(PurchaseId) {

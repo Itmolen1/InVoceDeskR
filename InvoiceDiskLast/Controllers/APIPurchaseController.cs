@@ -17,7 +17,7 @@ namespace InvoiceDiskLast.Controllers
 
     public class APIPurchaseController : ApiController
     {
-        
+
         private DBEntities db = new DBEntities();
 
         [ResponseType(typeof(MvcPurchaseModel))]
@@ -93,6 +93,12 @@ namespace InvoiceDiskLast.Controllers
                     PurchaseTotoalAmount = p.PurchaseTotoalAmount,
                     PurchaseVenderNote = p.PurchaseVenderNote,
                     Status = p.Status,
+                    VatAmount = p.Vat21 + p.Vat6,
+                    CustomerName = p.ContactsTable.ContactName,
+                    SalePerson = p.UserTable.Username,
+                    TotalAmount = p.PurchaseTotoalAmount,
+
+
                     CompanyId = p.CompanyId,
                     Type = p.Type,
                     Vat21 = p.Vat21,
@@ -150,6 +156,11 @@ namespace InvoiceDiskLast.Controllers
                     PurchaseTotoalAmount = p.PurchaseTotoalAmount,
                     PurchaseVenderNote = p.PurchaseVenderNote,
                     Status = p.Status,
+                    CustomerName = p.ContactsTable.ContactName,
+                    SalePerson = p.UserTable.Username,
+
+                    VatAmount = p.Vat21 + p.Vat6,
+                    TotalAmount = p.PurchaseTotoalAmount,
                     Type = p.Type,
                     CompanyId = p.CompanyId,
                     UserId = p.UserId,
@@ -160,6 +171,7 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception ex)
             {
+                throw ex;
 
             }
 
@@ -214,7 +226,7 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-                 db.SaveChanges();
+                db.SaveChanges();
                 return Ok(PurchaseTable);
             }
             catch (Exception ex)
@@ -239,7 +251,7 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-     
+
         [ResponseType(typeof(PurchaseOrderTable))]
         public IHttpActionResult PostPurchase([FromBody] PurchaseOrderTable Purchasetable)
         {
@@ -449,7 +461,7 @@ namespace InvoiceDiskLast.Controllers
                          join pd in db.PurchaseOrderDetailsTables on p.PurchaseOrderID equals pd.PurchaseId
                          where p.Status == "accepted" && pd.PurchaseItemId == id && p.CompanyId == companyid
                          select pd).Sum(i => i.PurchaseQuantity);
-              
+
                 _MvcPurchaseDetailsModel.PurchaseQuantity = q;
 
                 return Ok(_MvcPurchaseDetailsModel);

@@ -163,7 +163,14 @@ namespace InvoiceDiskLast.Controllers
             return Json(AccountmodelObj, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetAllAccountControl()
+        {
 
+            int companyid = Convert.ToInt32(Session["CompayID"]);
+            HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetAllAccountControl/" + companyid).Result;
+            List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
+            return Json(AccountmodelObj, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult GetAccountByID(int AccountID = 0)
         {
