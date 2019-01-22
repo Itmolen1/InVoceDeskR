@@ -13,17 +13,17 @@ namespace InvoiceDiskLast
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-
-          
+            
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
             routes.IgnoreRoute("{*allaspx}", new { allaspx = @".*(CrystalImageHandler).*" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "landing", action = "Index", id = UrlParameter.Optional }
             );
-           
-         
+
             //routes.MapRoute(
             //  name: "Bill",
             //  url: "{controller}/{action}/{id}",
