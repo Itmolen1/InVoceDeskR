@@ -10,8 +10,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="true" />
+        <div>  
+            <CR:CrystalReportViewer ID="CrystalReportViewer1" runat="server" AutoDataBind="true" />                              
         </div>
     </form>
 </body>
