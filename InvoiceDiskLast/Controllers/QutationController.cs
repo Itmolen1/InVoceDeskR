@@ -1785,11 +1785,11 @@ namespace InvoiceDiskLast.Controllers
 
             }).ToList();
 
-            List<ImageModel> Model = new List<ImageModel>();
+           List<ImageModel> Model = new List<ImageModel>();
 
             string Pag = Server.MapPath("/images/" + info[0].CompanyLogo);
 
-            Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
+          //  Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
 
 
 
