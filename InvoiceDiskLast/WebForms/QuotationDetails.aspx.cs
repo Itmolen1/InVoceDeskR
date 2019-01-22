@@ -153,18 +153,13 @@ namespace InvoiceDiskLast.WebForms
             //Report.ReportSource = Report;
 
 
-            ReportDocument rpt = new ReportDocument();
-            //rpt.Load(Server.MapPath("~/CrystalReport/CrystalReport2.rpt"));
-            //rpt.DataDefinition.FormulaFields["PicturePath"].Text = @"'E:\invoiceDiskNew\InvoiceDiskLast\images\6.jpg'";
-            //CrystalReportViewer1.ReportSource = rpt;
-
-
-
-            rpt.Load(Server.MapPath("~/CrystalReport/CrystalReport2.rpt"));
-
+            ReportDocument rd = new ReportDocument();
+            //  string rptPath = Server.MapPath("CrystalReport.rpt");
+            rd.Load(Server.MapPath("~/CrystalReport/CrystalReport.rpt"));
             String ImageUrl = d.ToString();
-            rpt.SetParameterValue("Image11", ImageUrl);
-            CrystalReportViewer1.ReportSource = rpt;
+            rd.SetParameterValue("Image11", ImageUrl);
+            CrystalReportViewer1.ReportSource = rd;
+            CrystalReportViewer1.RefreshReport();
 
             // Report.Database.Tables[0].SetDataSource(Model);
 
@@ -173,8 +168,7 @@ namespace InvoiceDiskLast.WebForms
             //Report.Database.Tables[3].SetDataSource(servicesTables);
             //Report.Database.Tables[4].SetDataSource(quotationReportModel);
             //Report.Database.Tables[5].SetDataSource(Model);
-            //CrystalReportViewer1.ReportSource = rpt;
-            //CrystalReportViewer1.RefreshReport();
+
         }
     }
 }

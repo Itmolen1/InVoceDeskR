@@ -16,14 +16,14 @@ namespace InvoiceDiskLast.CrystalReport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class CrystalReport1 : ReportClass {
+    public class CrystalReport : ReportClass {
         
-        public CrystalReport1() {
+        public CrystalReport() {
         }
         
         public override string ResourceName {
             get {
-                return "CrystalReport1.rpt";
+                return "CrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         public override string FullResourceName {
             get {
-                return "InvoiceDiskLast.CrystalReport.CrystalReport1.rpt";
+                return "InvoiceDiskLast.CrystalReport.CrystalReport.rpt";
             }
             set {
                 // Do nothing
@@ -87,12 +87,20 @@ namespace InvoiceDiskLast.CrystalReport {
                 return this.ReportDefinition.Sections[4];
             }
         }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public CrystalDecisions.Shared.IParameterField Parameter_Image11 {
+            get {
+                return this.DataDefinition.ParameterFields[0];
+            }
+        }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedCrystalReport1 : Component, ICachedReport {
+    public class CachedCrystalReport : Component, ICachedReport {
         
-        public CachedCrystalReport1() {
+        public CachedCrystalReport() {
         }
         
         [Browsable(false)]
@@ -129,7 +137,7 @@ namespace InvoiceDiskLast.CrystalReport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            CrystalReport1 rpt = new CrystalReport1();
+            CrystalReport rpt = new CrystalReport();
             rpt.Site = this.Site;
             return rpt;
         }
