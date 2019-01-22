@@ -15,7 +15,9 @@ namespace InvoiceDiskLast
         {
             
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-                       
+
+            routes.IgnoreRoute("{*allaspx}", new { allaspx = @".*(CrystalImageHandler).*" });
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
