@@ -90,7 +90,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.Shared.IParameterField Parameter_Image11 {
+        public CrystalDecisions.Shared.IParameterField Parameter_IMAGEURL {
             get {
                 return this.DataDefinition.ParameterFields[0];
             }

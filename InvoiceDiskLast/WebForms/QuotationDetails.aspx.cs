@@ -1,4 +1,5 @@
 ﻿using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
 using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
@@ -152,12 +153,22 @@ namespace InvoiceDiskLast.WebForms
             //Report.DataDefinition.FormulaFields["picPath"].Text = @"'C:\MyImage.jpg'";
             //Report.ReportSource = Report;
 
+           
 
             ReportDocument rd = new ReportDocument();
+            ParameterField Param = new ParameterField();
+            ParameterFields Params = new ParameterFields();
+            ParameterDiscreteValue pmdv = new ParameterDiscreteValue();
             //  string rptPath = Server.MapPath("CrystalReport.rpt");
-            rd.Load(Server.MapPath("~/CrystalReport/CrystalReport.rpt"));
+            rd.Load(Server.MapPath("~/CrystalReport/CrystalReport2.rpt"));
             String ImageUrl = d.ToString();
-            rd.SetParameterValue("Image11", ImageUrl);
+            Param.Name = "@IMAGEURL";
+            pmdv.Value = "E:\\invoiceDiskNew\\InvoiceDiskLast\\images\\logo.png192009139";
+            Param.CurrentValues.Add(pmdv);
+            Params.Add(Param);
+          //  rd.SetParameterValue("IMAGEURL", "E:\\invoiceDiskNew\\InvoiceDiskLast\\images\\logo.png192009139");
+            CrystalReportViewer1.ParameterFieldInfo = Params;
+            rd.Load(Server.MapPath("~/CrystalReport/CrystalReport2.rpt"));
             CrystalReportViewer1.ReportSource = rd;
             CrystalReportViewer1.RefreshReport();
 
