@@ -9,6 +9,7 @@ namespace InvoiceDiskLast.Models
     {
         public byte[] imgdata { get; set; }
 
-      
+        public string ImagePath { get; set; }
+
     }
 }

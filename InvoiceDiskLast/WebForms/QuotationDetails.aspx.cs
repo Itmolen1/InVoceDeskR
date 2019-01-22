@@ -19,10 +19,10 @@ namespace InvoiceDiskLast.WebForms
             int Qut = Convert.ToInt32(Request.QueryString["id"]);
 
 
-                
 
-        
-            //string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
+
+
+            string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
 
             DBEntities entity = new DBEntities();
 
@@ -58,7 +58,7 @@ namespace InvoiceDiskLast.WebForms
             string Pag = HttpContext.Current.Server.MapPath("/images/" + info[0].CompanyLogo);
 
             Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
-
+            Model.Add(new ImageModel { ImagePath = Pag });
 
 
             List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == table.ContactId).Select(c => new Contacts
@@ -109,7 +109,7 @@ namespace InvoiceDiskLast.WebForms
                 ServicesTables Serv = new ServicesTables();
 
                 DateTime dtt = Convert.ToDateTime(x.Date);
-                
+
                 Serv.Date = dtt.ToShortDateString();
                 Serv.ProductNames = x.ProductNames;
                 Serv.Descriptions = x.Descriptions;
@@ -145,14 +145,14 @@ namespace InvoiceDiskLast.WebForms
 
             List<QuotationReportModel> quotationReportModel = new List<QuotationReportModel>();
 
-            foreach(var x in quotationReportModels)
+            foreach (var x in quotationReportModels)
             {
                 QuotationReportModel qut = new QuotationReportModel();
 
 
                 DateTime QT = Convert.ToDateTime(x.QutationDate);
                 DateTime DQT = Convert.ToDateTime(x.DueDate);
-                
+
                 qut.QutationID = x.QutationID;
                 qut.Qutation_ID = x.Qutation_ID;
                 qut.RefNumber = x.RefNumber;
@@ -165,20 +165,17 @@ namespace InvoiceDiskLast.WebForms
                 qut.TotalAmount = x.TotalAmount;
                 qut.CustomerNote = x.CustomerNote;
                 qut.Status = x.Status;
-               quotationReportModel.Add(qut);
+                quotationReportModel.Add(qut);
             }
 
-
             ReportDocument Report = new ReportDocument();
-            Report.Load(Server.MapPath("~/CrystalReport/QuotationDetails.rpt"));
-
-
-            Report.Database.Tables[0].SetDataSource(info);
-            Report.Database.Tables[1].SetDataSource(Contact);
-            Report.Database.Tables[2].SetDataSource(goodsTable);
-            Report.Database.Tables[3].SetDataSource(servicesTables);
-            Report.Database.Tables[4].SetDataSource(quotationReportModel);
-            Report.Database.Tables[5].SetDataSource(Model);
+            Report.Load(Server.MapPath("~/CrystalReport/CrystalReport1.rpt"));
+            Report.Database.Tables[0].SetDataSource(Model);
+            //Report.Database.Tables[1].SetDataSource(Contact);
+            //Report.Database.Tables[2].SetDataSource(goodsTable);
+            //Report.Database.Tables[3].SetDataSource(servicesTables);
+            //Report.Database.Tables[4].SetDataSource(quotationReportModel);
+            //Report.Database.Tables[5].SetDataSource(Model);
             CrystalReportViewer1.ReportSource = Report;
             CrystalReportViewer1.RefreshReport();
         }
