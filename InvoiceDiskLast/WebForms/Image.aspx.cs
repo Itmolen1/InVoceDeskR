@@ -26,7 +26,7 @@ namespace InvoiceDiskLast.WebForms
             ParameterDiscreteValue paramDiscreteValue = new ParameterDiscreteValue();
 
             paramField.Name = "ImageURL";
-            var s =  Server.MapPath("~/images/8.jpg");
+            var s =  Server.MapPath("~/images/6.jpg");
             paramDiscreteValue.Value = s;
             paramField.CurrentValues.Add(paramDiscreteValue);
             paramFields.Add(paramField);
