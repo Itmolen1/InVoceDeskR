@@ -67,6 +67,8 @@ namespace InvoiceDiskLast.Controllers
                       ).ToList();
 
                     }
+
+
                 }
 
                 recordsTotal = recordsTotal = quationList.Count();
@@ -74,7 +76,7 @@ namespace InvoiceDiskLast.Controllers
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
                 #endregion
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
             }
@@ -931,7 +933,7 @@ namespace InvoiceDiskLast.Controllers
 
         public string PrintView(int quttationId)
         {
-            string pdfname="";
+            string pdfname = "";
             try
             {
                 DBEntities entity = new DBEntities();
@@ -1044,6 +1046,13 @@ namespace InvoiceDiskLast.Controllers
 
                 }).ToList();
 
+                List<ImageModel> Model = new List<ImageModel>();
+
+                string Pag = Server.MapPath("/images/" + info[0].CompanyLogo);
+
+                Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
+
+
 
                 List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == qt.ContactId).Select(c => new Contacts
                 {
@@ -1069,8 +1078,11 @@ namespace InvoiceDiskLast.Controllers
                 }).ToList();
 
                 DateTime dt = DateTime.Today;
+
+
                 List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == quttationId && x.Type == "Service").Select(x => new ServicesTables
                 {
+
                     Date = x.ServiceDate.ToString(),
                     ProductNames = x.ProductTable.ProductName,
                     Descriptions = x.Description,
@@ -1090,6 +1102,7 @@ namespace InvoiceDiskLast.Controllers
                     ServicesTables Serv = new ServicesTables();
 
                     DateTime dtt = Convert.ToDateTime(x.Date);
+
                     Serv.Date = dtt.ToShortDateString();
                     Serv.ProductNames = x.ProductNames;
                     Serv.Descriptions = x.Descriptions;
@@ -1112,11 +1125,11 @@ namespace InvoiceDiskLast.Controllers
                 Report.Database.Tables[2].SetDataSource(goodsTable);
                 Report.Database.Tables[3].SetDataSource(servicesTables);
                 Report.Database.Tables[4].SetDataSource(quotationReportModel);
-             
+                Report.Database.Tables[5].SetDataSource(Model);
                 Stream stram = Report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                 stram.Seek(0, SeekOrigin.Begin);
                 //   Report.ExportToDisk(ExportFormatType.PortableDocFormat, Path.Combine(Application.StartupPath, "MyReport.pdf")
-                
+
 
                 string companyName = quttationId + "-" + info[0].CompanyName;
 
@@ -1152,7 +1165,7 @@ namespace InvoiceDiskLast.Controllers
                     }
                 }
                 Report.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path + pdfname);
-             //   Report.ExportToDisk(ExportFormatType.PortableDocFormat, "", "MyReport.pdf");
+                //   Report.ExportToDisk(ExportFormatType.PortableDocFormat, "", "MyReport.pdf");
                 //var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Qutation/PrintQutationPartialView.cshtml")
                 //{
 
@@ -1693,167 +1706,189 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult PrintReport(int ID)
         {
 
-            DBEntities entity = new DBEntities();
-
-            int QuotationID = ID;
-            List<QuotationReportModel> quotationReportModels = entity.QutationTables.Where(x => x.QutationID == QuotationID).Select(x => new QuotationReportModel
+            try
             {
 
-                QutationID = x.QutationID,
-                Qutation_ID = x.Qutation_ID,
-                RefNumber = x.RefNumber,
-                QutationDate = x.QutationDate.ToString(),
-                DueDate = x.DueDate.ToString(),
-                SubTotal = x.SubTotal ?? 0,
-                TotalVat6 = x.TotalVat6 ?? 0,
-                TotalVat21 = x.TotalVat21 ?? 0,
-                DiscountAmount = x.DiscountAmount ?? 0,
-                TotalAmount = x.TotalAmount ?? 0,
-                CustomerNote = x.CustomerNote,
-                Status = x.Status
+                DBEntities entity = new DBEntities();
 
-            }).ToList();
+                int QuotationID = ID;
+                List<QuotationReportModel> quotationReportModels = entity.QutationTables.Where(x => x.QutationID == QuotationID).Select(x => new QuotationReportModel
+                {
 
-            List<QuotationReportModel> quotationReportModel = new List<QuotationReportModel>();
+                    QutationID = x.QutationID,
+                    Qutation_ID = x.Qutation_ID,
+                    RefNumber = x.RefNumber,
+                    QutationDate = x.QutationDate.ToString(),
+                    DueDate = x.DueDate.ToString(),
+                    SubTotal = x.SubTotal ?? 0,
+                    TotalVat6 = x.TotalVat6 ?? 0,
+                    TotalVat21 = x.TotalVat21 ?? 0,
+                    DiscountAmount = x.DiscountAmount ?? 0,
+                    TotalAmount = x.TotalAmount ?? 0,
+                    CustomerNote = x.CustomerNote,
+                    Status = x.Status
+
+                }).ToList();
+
+                List<QuotationReportModel> quotationReportModel = new List<QuotationReportModel>();
 
 
-            foreach (var x in quotationReportModels)
-            {
-                QuotationReportModel qut = new QuotationReportModel();
+
+                foreach (var x in quotationReportModels)
+                {
+                    QuotationReportModel qut = new QuotationReportModel();
 
 
-                DateTime QT = Convert.ToDateTime(x.QutationDate);
-                DateTime DQT = Convert.ToDateTime(x.DueDate);
+                    DateTime QT = Convert.ToDateTime(x.QutationDate);
+                    DateTime DQT = Convert.ToDateTime(x.DueDate);
 
-                qut.QutationID = x.QutationID;
-                qut.Qutation_ID = x.Qutation_ID;
-                qut.RefNumber = x.RefNumber;
-                qut.QutationDate = QT.ToShortDateString();
-                qut.DueDate = DQT.ToShortDateString();
-                qut.SubTotal = x.SubTotal;
-                qut.TotalVat6 = x.TotalVat6;
-                qut.TotalVat21 = x.TotalVat21;
-                qut.DiscountAmount = x.DiscountAmount;
-                qut.TotalAmount = x.TotalAmount;
-                qut.CustomerNote = x.CustomerNote;
-                qut.Status = x.Status;
-                quotationReportModel.Add(qut);
+                    qut.QutationID = x.QutationID;
+                    qut.Qutation_ID = x.Qutation_ID;
+                    qut.RefNumber = x.RefNumber;
+                    qut.QutationDate = QT.ToShortDateString();
+                    qut.DueDate = DQT.ToShortDateString();
+                    qut.SubTotal = x.SubTotal;
+                    qut.TotalVat6 = x.TotalVat6;
+                    qut.TotalVat21 = x.TotalVat21;
+                    qut.DiscountAmount = x.DiscountAmount;
+                    qut.TotalAmount = x.TotalAmount;
+                    qut.CustomerNote = x.CustomerNote;
+                    qut.Status = x.Status;
+                    quotationReportModel.Add(qut);
+                }
+
+                QutationTable qt = entity.QutationTables.Where(x => x.QutationID == QuotationID).FirstOrDefault();
+
+
+                List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == qt.CompanyId).Select(c => new Comp
+                {
+                    // Company Information   
+                    CompanyID = c.CompanyID,
+                    CompanyTRN = c.CompanyTRN,
+                    CompanyName = c.CompanyName,
+                    CompanyAddress = c.CompanyAddress,
+                    CompanyPhone = c.CompanyPhone,
+                    CompanyCell = c.CompanyCell,
+                    CompanyEmail = c.CompanyEmail,
+                    CompanyLogo = c.CompanyLogo,
+                    CompanyCity = c.CompanyCity,
+                    CompanyCountry = c.CompanyCountry,
+                    StreetNumber = c.StreetNumber,
+                    PostalCode = c.PostalCode,
+                    IBANNumber = c.IBANNumber,
+                    Website = c.Website,
+                    BIC = c.BIC,
+                    KVK = c.KVK,
+                    BTW = c.BTW,
+                    BankName = c.BankName,
+                    UserName = c.UserName,
+
+                }).ToList();
+
+                string Name = info[0].CompanyLogo;
+
+                //info.Remove(info.Single(X => X.CompanyLogo == info[0].CompanyLogo));
+
+                info[0].CompanyLogo = Server.MapPath("~/images/" + Name);
+
+                //  info.Add(new Comp { CompanyLogo = Server.MapPath("~/images/"+ Name) });
+
+
+                List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == qt.ContactId).Select(c => new Contacts
+                {
+                    ContactName = c.ContactName,
+                    ContactAddress = c.ContactAddress,
+                    ContactCity = c.City,
+                    ContactLand = c.Land,
+                    ContactPostalCode = c.PostalCode,
+                    contactMobile = c.Mobile,
+                    Contacttelephone = c.telephone,
+                    ContactStreetNumber = c.StreetNumber,
+                }).ToList();
+
+                List<GoodsTable> goodsTable = entity.QutationDetailsTables.Where(x => x.QutationID == QuotationID && x.Type == "Goods").Select(x => new GoodsTable
+                {
+                    ProductName = x.ProductTable.ProductName,
+                    Quantity = x.Quantity ?? 0,
+                    Rate = x.Rate ?? 0,
+                    Total = x.Total ?? 0,
+                    Vat = x.Vat ?? 0,
+                    RowSubTotal = x.RowSubTotal ?? 0,
+
+                }).ToList();
+
+                DateTime dt = DateTime.Today;
+
+
+                List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == QuotationID && x.Type == "Service").Select(x => new ServicesTables
+                {
+
+                    Date = x.ServiceDate.ToString(),
+                    ProductNames = x.ProductTable.ProductName,
+                    Descriptions = x.Description,
+                    Quantitys = x.Quantity ?? 0,
+                    Rates = x.Rate ?? 0,
+                    Totals = x.Total ?? 0,
+                    Vats = x.Vat ?? 0,
+                    RowSubTotals = x.RowSubTotal ?? 0,
+
+                }).ToList();
+
+
+                List<ServicesTables> servicesTables = new List<ServicesTables>();
+
+                foreach (var x in servicesTabless)
+                {
+                    ServicesTables Serv = new ServicesTables();
+
+                    DateTime dtt = Convert.ToDateTime(x.Date);
+
+                    Serv.Date = dtt.ToShortDateString();
+                    Serv.ProductNames = x.ProductNames;
+                    Serv.Descriptions = x.Descriptions;
+                    Serv.Quantitys = x.Quantitys;
+                    Serv.Rates = x.Rates;
+                    Serv.Totals = x.Totals;
+                    Serv.Vats = x.Vats;
+                    Serv.RowSubTotals = x.RowSubTotals;
+
+                    servicesTables.Add(Serv);
+
+                }
+
+
+                ReportDocument Report = new ReportDocument();
+
+                //ParameterField paramField = new ParameterField();
+                //ParameterFields paramFields = new ParameterFields();
+                //ParameterDiscreteValue paramDiscreteValue = new ParameterDiscreteValue();
+
+                //paramField.Name = "ImageURL";
+                //var s = Server.MapPath("~/images/" + info[0].CompanyLogo);
+                //paramDiscreteValue.Value = s;
+                //paramField.CurrentValues.Add(paramDiscreteValue);
+                //paramFields.Add(paramField);
+
+                //Report.ParameterFieldInfo = paramFields;
+                Report.Load(Server.MapPath("~/CrystalReport/QuotationDetails.rpt"));
+
+
+                Report.Database.Tables[0].SetDataSource(info);
+                Report.Database.Tables[1].SetDataSource(Contact);
+                Report.Database.Tables[2].SetDataSource(goodsTable);
+                Report.Database.Tables[3].SetDataSource(servicesTables);
+                Report.Database.Tables[4].SetDataSource(quotationReportModel);
+
+
+                Stream stram = Report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stram.Seek(0, SeekOrigin.Begin);
+
+                return new FileStreamResult(stram, "application/pdf");
             }
-
-            QutationTable qt = entity.QutationTables.Where(x => x.QutationID == QuotationID).FirstOrDefault();
-
-            string d = Server.MapPath("/images/" + "6.jpg");
-
-
-            List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == qt.CompanyId).Select(c => new Comp
+            catch(Exception ex)
             {
-                // Company Information   
-                CompanyID = c.CompanyID,
-                CompanyTRN = c.CompanyTRN,
-                CompanyName = c.CompanyName,
-                CompanyAddress = c.CompanyAddress,
-                CompanyPhone = c.CompanyPhone,
-                CompanyCell = c.CompanyCell,
-                CompanyEmail = c.CompanyEmail,
-                CompanyLogo = c.CompanyLogo,
-                CompanyCity = c.CompanyCity,
-                CompanyCountry = c.CompanyCountry,
-                StreetNumber = c.StreetNumber,
-                PostalCode = c.PostalCode,
-                IBANNumber = c.IBANNumber,
-                Website = c.Website,
-                BIC = c.BIC,
-                KVK = c.KVK,
-                BTW = c.BTW,
-                BankName = c.BankName,
-                UserName = c.UserName,
-
-            }).ToList();
-
-           List<ImageModel> Model = new List<ImageModel>();
-
-            string Pag = Server.MapPath("/images/" + info[0].CompanyLogo);
-
-          //  Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
-
-
-            List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == qt.ContactId).Select(c => new Contacts
-            {
-                ContactName = c.ContactName,
-                ContactAddress = c.ContactAddress,
-                ContactCity = c.City,
-                ContactLand = c.Land,
-                ContactPostalCode = c.PostalCode,
-                contactMobile = c.Mobile,
-                Contacttelephone = c.telephone,
-                ContactStreetNumber = c.StreetNumber,
-            }).ToList();
-
-            List<GoodsTable> goodsTable = entity.QutationDetailsTables.Where(x => x.QutationID == QuotationID && x.Type == "Goods").Select(x => new GoodsTable
-            {
-                ProductName = x.ProductTable.ProductName,
-                Quantity = x.Quantity ?? 0,
-                Rate = x.Rate ?? 0,
-                Total = x.Total ?? 0,
-                Vat = x.Vat ?? 0,
-                RowSubTotal = x.RowSubTotal ?? 0,
-
-            }).ToList();
-
-            DateTime dt = DateTime.Today;
-
-
-            List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == QuotationID && x.Type == "Service").Select(x => new ServicesTables
-            {
-
-                Date = x.ServiceDate.ToString(),
-                ProductNames = x.ProductTable.ProductName,
-                Descriptions = x.Description,
-                Quantitys = x.Quantity ?? 0,
-                Rates = x.Rate ?? 0,
-                Totals = x.Total ?? 0,
-                Vats = x.Vat ?? 0,
-                RowSubTotals = x.RowSubTotal ?? 0,
-
-            }).ToList();
-
-
-            List<ServicesTables> servicesTables = new List<ServicesTables>();
-
-            foreach (var x in servicesTabless)
-            {
-                ServicesTables Serv = new ServicesTables();
-
-                DateTime dtt = Convert.ToDateTime(x.Date);
-
-                Serv.Date = dtt.ToShortDateString();
-                Serv.ProductNames = x.ProductNames;
-                Serv.Descriptions = x.Descriptions;
-                Serv.Quantitys = x.Quantitys;
-                Serv.Rates = x.Rates;
-                Serv.Totals = x.Totals;
-                Serv.Vats = x.Vats;
-                Serv.RowSubTotals = x.RowSubTotals;
-
-                servicesTables.Add(Serv);
-
+                throw ex;
             }
-
-
-            ReportDocument Report = new ReportDocument();
-            Report.Load(Server.MapPath("~/CrystalReport/QuotationDetails.rpt"));
-
-
-            Report.Database.Tables[0].SetDataSource(info);
-            Report.Database.Tables[1].SetDataSource(Contact);
-            Report.Database.Tables[2].SetDataSource(goodsTable);
-            Report.Database.Tables[3].SetDataSource(servicesTables);
-            Report.Database.Tables[4].SetDataSource(quotationReportModel);
-            Report.Database.Tables[5].SetDataSource(Model);
-            Stream stram = Report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
-            stram.Seek(0, SeekOrigin.Begin);
-
-            return new FileStreamResult(stram, "application/pdf");
         }
 
     }

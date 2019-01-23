@@ -73,7 +73,7 @@ bobj.crv.ReportAlbum = {
         {
             /* IE supports table-row since IE8. */
             var displayStyle;
-            if (_ie && !_ie8Up)
+            if (_ie && !_ie8)
                 displayStyle = "block";
             else
                 displayStyle = "table-row";

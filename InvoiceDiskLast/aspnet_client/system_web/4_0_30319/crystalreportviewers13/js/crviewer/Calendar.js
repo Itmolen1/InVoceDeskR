@@ -77,6 +77,11 @@ bobj.crv.Calendar._createHeaderButtons = function() {
     this._prevYearBtn = newIconWidget(this.id+"_py",_skin+'../lov.gif',bind(this._onPrevYearClick, this),"",_calendarPrevYearLab,w,h,dx,dyDown);
     this._nextMonthBtn = newIconWidget(this.id+"_nm",_skin+'../lov.gif',bind(this._onNextMonthClick, this),"",_calendarNextMonthLab,w,h,dx,dyUp);
     this._nextYearBtn = newIconWidget(this.id+"_ny",_skin+'../lov.gif',bind(this._onNextYearClick, this),"",_calendarNextYearLab,w,h,dx,dyUp);
+    
+    this._prevMonthBtn.allowDblClick = true;
+    this._prevYearBtn.allowDblClick = true;
+    this._nextMonthBtn.allowDblClick = true;
+    this._nextYearBtn.allowDblClick = true;
 };
 
 bobj.crv.Calendar._createTimeTextField = function() {
