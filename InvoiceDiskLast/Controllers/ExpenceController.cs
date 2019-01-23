@@ -10,9 +10,13 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
 
+
+
     [SessionExpireAttribute]
     public class ExpenceController : Controller
     {
+        DBEntities db = new DBEntities();
+
         // GET: Expence
         public ActionResult Index()
         {
@@ -50,8 +54,6 @@ namespace InvoiceDiskLast.Controllers
                 }
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailList122/" + companyId + "/" + search + "/" + skip + "/" + pageSize).Result;
                 List<ExpenseViewModel> ExpenseList = response.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
-
-
 
                 return Json(new { draw = draw, recordsFiltered = ExpenseList[0].TotalRecord, recordsTotal = ExpenseList[0].TotalRecord, data = ExpenseList }, JsonRequestBehavior.AllowGet);
             }
@@ -95,7 +97,7 @@ namespace InvoiceDiskLast.Controllers
             {
                 int CompanyId = 0;
 
-                ExpenseViewModel experviewModel = new ExpenseViewModel();           
+                ExpenseViewModel experviewModel = new ExpenseViewModel();
 
                 if (Session["CompayID"] != null)
                 {
@@ -131,7 +133,7 @@ namespace InvoiceDiskLast.Controllers
                 TempData["ConatctId"] = experviewModel.VENDOR_ID;
 
 
-              
+
                 string companyName = Id + "-" + companyModel.CompanyName;
 
                 var root = Server.MapPath("/PDF/");
@@ -499,11 +501,6 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-
-
-
-
-
         [HttpPost]
         public ActionResult DeleteInvoice(int Id, int ExpenseDetailId, int vat, float total)
         {
@@ -557,7 +554,6 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-
                 string FileName = "";
                 HttpFileCollectionBase files = Request.Files;
                 for (int i = 0; i < files.Count; i++)
@@ -566,7 +562,6 @@ namespace InvoiceDiskLast.Controllers
 
                     FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.Id, "Expense", MVCQutationViewModel.file23, "Expense");
                 }
-
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
             }
             catch (Exception)
@@ -582,7 +577,6 @@ namespace InvoiceDiskLast.Controllers
             {
                 if (CreatDirectoryClass.Delete(Id, FileName, "Expense"))
                 {
-
                     return Json("Success", JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -595,8 +589,6 @@ namespace InvoiceDiskLast.Controllers
                 return Json("Fail", JsonRequestBehavior.AllowGet);
                 throw;
             }
-
-
         }
 
 
@@ -609,8 +601,6 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-
-
                 EXPENSE expense = new EXPENSE();
                 expense.REFERENCEno = _ExpeseViewModel.REFERENCEno;
                 expense.ACCOUNT_ID = _ExpeseViewModel.ACCOUNT_ID;
@@ -687,13 +677,96 @@ namespace InvoiceDiskLast.Controllers
 
 
 
+        public ActionResult ExportPdf(int Id)
+        {
+            DBEntities db2 = new DBEntities();
+
+            int CompanyId = 0;
+            ExpenseViewModel experviewModel = new ExpenseViewModel();
+
+            try
+            {
+              
+            
+                List<ExpenseModel> _ExpenseList = new List<ExpenseModel>();
+                List<ExpenseDetailModel> _ExpenseDetailList = new List<ExpenseDetailModel>();
+
+                _ExpenseList = db2.EXPENSEs.Where(Ex => Ex.Id == Id).Select(c => new ExpenseModel
+                {
+                    Id = c.Id,
+                    REFERENCEno = c.REFERENCEno,
+                    ACCOUNT_ID = Convert.ToInt32(c.ACCOUNT_ID),
+                    VENDOR_ID = Convert.ToInt32(c.VENDOR_ID),
+                    notes = c.notes,
+                    VenderAccount = c.ContactsTable.ContactName,
+                    SUBTOTAL = Convert.ToDecimal(c.SUBTOTAL),
+                    VAT_AMOUNT = Convert.ToDecimal(c.VAT_AMOUNT),
+                    GRAND_TOTAL = Convert.ToDecimal(c.GRAND_TOTAL),
+                    AddedDate = Convert.ToDateTime(c.AddedDate),
+                }).ToList();
+
+
+                _ExpenseDetailList = db2.ExpenseDetails.Where(C => C.expense_id == Id).Select(C => new ExpenseDetailModel
+                {
+                    Id = C.Id,
+                    EXPENSE_ACCOUNT_ID = C.EXPENSE_ACCOUNT_ID,
+                    DESCRIPTION = C.DESCRIPTION,
+                    AMOUNT = C.AMOUNT,
+                    TAX_PERCENT = C.TAX_PERCENT,
+                    TAX_AMOUNT = C.TAX_AMOUNT,
+                    SUBTOTAL = C.SUBTOTAL,
+                    AccountTitle = C.AccountTable.AccountTitle,
+                }).ToList();
+
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                List<MVCCompanyInfoModel> Companyinfo = new List<MVCCompanyInfoModel>();
+
+                Companyinfo = db2.ComapnyInfoes.Where(c => c.CompanyID == _ExpenseList[0].comapny_id).Select(c => new MVCCompanyInfoModel {
+
+                    CompanyID = c.CompanyID,
+                    CompanyTRN = c.CompanyTRN,
+                    CompanyName = c.CompanyName,
+                    CompanyAddress = c.CompanyAddress,
+                    CompanyPhone = c.CompanyPhone,
+                    CompanyCell = c.CompanyCell,
+                    CompanyEmail = c.CompanyEmail,
+                    CompanyLogo = c.CompanyLogo,
+                    CompanyCity = c.CompanyCity,
+                    CompanyCountry = c.CompanyCountry,
+                    StreetNumber = c.StreetNumber,
+                    PostalCode = c.PostalCode,
+                    IBANNumber = c.IBANNumber,
+                    Website = c.Website,
+                    BIC = c.BIC,
+                    KVK = c.KVK,
+                    BTW = c.BTW,
+                    BankName = c.BankName,
+                    UserName = c.UserName,
+
+                }).ToList();
+
+
+
+
+                return View(experviewModel);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
 
         public ActionResult ViewExpense(int Id)
         {
 
-
             ViewBag.FILE = CreatDirectoryClass.GetFileDirectiory(Id, "Expense");
-
 
             int CompanyId = 0;
             ExpenseViewModel experviewModel = new ExpenseViewModel();
@@ -710,7 +783,6 @@ namespace InvoiceDiskLast.Controllers
 
                 HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
                 MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
 
                 CommonModel commonModel = new CommonModel();
                 commonModel.Name = "Expense";
@@ -734,6 +806,7 @@ namespace InvoiceDiskLast.Controllers
                 ViewBag.Ref = experviewModel.REFERENCEno;
                 ViewBag.Date = experviewModel.AddedDate;
                 ViewBag.VenderId = experviewModel.VENDOR_ID;
+
                 return View(experviewModel);
             }
             catch (Exception)

@@ -13,9 +13,7 @@ namespace InvoiceDiskLast.Controllers
     public class APIExpenseController : ApiController
     {
 
-
         private DBEntities db = new DBEntities();
-
 
         [Route("api/PostExpense")]
         public IHttpActionResult PostExpense(EXPENSE _ExpsenseMaster)
@@ -33,8 +31,6 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-
-
         [Route("api/GetExpenseById/{ExpenseId:int}")]
         public IHttpActionResult GetExpenseById(int ExpenseId)
         {
@@ -44,8 +40,8 @@ namespace InvoiceDiskLast.Controllers
                 {
                     Id = Ex.Id,
                     REFERENCEno = Ex.REFERENCEno,
-                    ACCOUNT_ID = Ex.ACCOUNT_ID,
-                    VENDOR_ID = Ex.VENDOR_ID,
+                    ACCOUNT_ID =Convert.ToInt32(Ex.ACCOUNT_ID),
+                    VENDOR_ID = Convert.ToInt32(Ex.VENDOR_ID),
                     notes = Ex.notes,
                     Vat21 = Ex.Vat21,
                     Vat6 = Ex.Vat6,
@@ -65,8 +61,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
 
         [Route("api/GetExpenseDetailById/{ExpenseId:int}")]
         public IHttpActionResult GetExpenseDetailById(int ExpenseId)
@@ -99,7 +93,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
         [Route("Api/GetExpenseDetailList122/{CompanyId:int}/{Search:alpha}/{skip:int}/{pageSize:int}")]
         public IHttpActionResult GetExpenselist(int CompanyId, string Search, int skip, int pageSize)
         {
@@ -119,9 +112,9 @@ namespace InvoiceDiskLast.Controllers
                                   select new ExpenseViewModel()
                                   {
                                       Id = Ex.Id,
-                                      REFERENCEno = Ex.REFERENCEno,
-                                      ACCOUNT_ID = Ex.ACCOUNT_ID,
-                                      VENDOR_ID = Ex.ACCOUNT_ID,
+                                      REFERENCEno =Ex.REFERENCEno,
+                                      ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
+                                      VENDOR_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
                                       notes = Ex.notes,
                                       TotalRecord= db.EXPENSEs.ToList().Count(),
                                       PaidThrougAccount = Acc.AccountTitle,
@@ -150,8 +143,8 @@ namespace InvoiceDiskLast.Controllers
                                   {
                                       Id = Ex.Id,
                                       REFERENCEno = Ex.REFERENCEno,
-                                      ACCOUNT_ID = Ex.ACCOUNT_ID,
-                                      VENDOR_ID = Ex.ACCOUNT_ID,
+                                      ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
+                                      VENDOR_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
                                       notes = Ex.notes,
                                       PaidThrougAccount = Acc.AccountTitle,
                                       VenderName = con.ContactName,
@@ -170,8 +163,6 @@ namespace InvoiceDiskLast.Controllers
                 throw;
             }
         }
-
-
 
         [Route("api/PutExpense/{id:int}")]
         public IHttpActionResult PutExpense(int id, EXPENSE ExpenseTable)
@@ -213,7 +204,6 @@ namespace InvoiceDiskLast.Controllers
             return Ok(expensedetail);
         }
 
-
         [Route("api/PutExpenseDetail/{id:int}")]
         public IHttpActionResult PutExpenseDetailTable(int id, ExpenseDetail expensedetail)
         {
@@ -240,8 +230,6 @@ namespace InvoiceDiskLast.Controllers
                 return NotFound();
             }
         }
-
-
 
         [Route("api/PostExpenseDetail")]
         public IHttpActionResult PostEpenseDetail([FromBody] ExpenseDetail ExpenseDetail)

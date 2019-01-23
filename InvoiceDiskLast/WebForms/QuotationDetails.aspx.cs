@@ -50,9 +50,7 @@ namespace InvoiceDiskLast.WebForms
 
             }).ToList();
            
-
-          
-
+         
             List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == 66).Select(c => new Contacts
             {
                 ContactName = c.ContactName,
@@ -146,11 +144,9 @@ namespace InvoiceDiskLast.WebForms
                 quotationReportModel.Add(qut);
             }
 
-
           
             //ReportDocument Report = new ReportDocument();
             ////  string rptPath = Server.MapPath("CrystalReport.rpt");
-
 
 
             ReportDocument reportDocument = new ReportDocument();
@@ -164,11 +160,8 @@ namespace InvoiceDiskLast.WebForms
             paramField.CurrentValues.Add(paramDiscreteValue);
             paramFields.Add(paramField);
 
-
-
             CrystalReportViewer1.ParameterFieldInfo = paramFields;
             reportDocument.Load(Server.MapPath("~/CrystalReport/QuotationDetails.rpt"));
-
 
             reportDocument.Database.Tables[0].SetDataSource(info);
             reportDocument.Database.Tables[1].SetDataSource(Contact);
