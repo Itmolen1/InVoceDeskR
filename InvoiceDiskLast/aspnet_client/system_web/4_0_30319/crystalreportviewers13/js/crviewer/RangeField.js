@@ -63,25 +63,13 @@ bobj.crv.params.RangeField.prototype = {
     getValueHTML : function(value, isRightAligned) {
         value = value ? value : '&nbsp;';
         var style = {
-            'text-align' : isRightAligned ? (bobj.crv.config.isRTL? 'left':'right') : (bobj.crv.config.isRTL? 'right':'left')
+            'text-align' : isRightAligned ? 'right' : 'left'
         };
 
-        var SPAN = "";
-        
-        //[ADAPT01680961] In IE we should force the span to show the value in one line
-        if (MochiKit.Base.isIE ()) {
-            SPAN = bobj.html.SPAN( {
-                style : {"white-space" : 'nowrap'}
-            }, value);
-        }
-        else {
-            SPAN = bobj.html.SPAN(null, value);
-        }
-        
         return bobj.html.TD( {
             style : style,
-            role : 'presentation'
-        }, SPAN);
+            tabIndex : 0
+        }, bobj.html.SPAN(null, value));
 
     },
     
@@ -104,49 +92,9 @@ bobj.crv.params.RangeField.prototype = {
         return h.TABLE( {
             id : this.id,
             'class' : 'iactRangeFieldTable',
-            role : 'group',
-            'title' : this.tooltip + " " + this._getRangeValueToolTip(),
+            title: this.tooltip,
             style : {color : this.foreColor, "font-style" : this.isTextItalic ? 'italic' :''}
-        },  TR);
-    },
-    
-    _getRangeValueToolTip : function () {
-        var str = "";
-        
-        if(this.isValueValidRange()) {
-            var RangeBoundTypes = bobj.crv.params.RangeBoundTypes;
-            
-            switch (this.getValue().lowerBound.type) {
-            case RangeBoundTypes.EXCLUSIVE:
-                str += "(" + this.getValue().lowerBound.value;
-                break;
-            case RangeBoundTypes.INCLUSIVE:
-                str += "[" + this.getValue().lowerBound.value;
-                break;
-            case RangeBoundTypes.UNBOUNDED:
-                str += "( " ;
-                break;
-            }
-            
-            str += "..";
-    
-            switch (this.getValue().upperBound.type) {
-            case RangeBoundTypes.EXCLUSIVE:
-                str +=  this.getValue().upperBound.value + ")" ;
-                break;
-            case RangeBoundTypes.INCLUSIVE:
-                str += this.getValue().upperBound.value + "]";
-                break;
-            case RangeBoundTypes.UNBOUNDED:
-                str += " )" ;
-                break;
-            }
-        }
-        else {
-            str += this.getValue();
-        }
-
-        return str;
+        }, TR);
     },
     
     /**
@@ -166,11 +114,7 @@ bobj.crv.params.RangeField.prototype = {
             lowerImageSrc = "images/filledCircle.gif";
             break;
         case bobj.crv.params.RangeBoundTypes.UNBOUNDED:
-        	if(bobj.crv.config.isRTL){
-        		lowerImageSrc = "images/rightTriangle.gif";
-        	} else {
-        		lowerImageSrc = "images/leftTriangle.gif";
-            }
+            lowerImageSrc = "images/leftTriangle.gif";
             break;
         }
 
@@ -182,11 +126,7 @@ bobj.crv.params.RangeField.prototype = {
             upperImageSrc = "images/filledCircle.gif";
             break;
         case bobj.crv.params.RangeBoundTypes.UNBOUNDED:
-        	if(bobj.crv.config.isRTL){
-        		upperImageSrc = "images/leftTriangle.gif";
-        	} else {
-            	upperImageSrc = "images/rightTriangle.gif";
-            }
+            upperImageSrc = "images/rightTriangle.gif";
             break;
         }
 
@@ -244,7 +184,7 @@ bobj.crv.params.RangeField.prototype = {
 
     setLowerBoundValueWidth : function(w) {
         if (this.getLowerBoundTD())
-            this.getLowerBoundTD().style.width = w+"px";
+            this.getLowerBoundTD().style.width = w + "px";
     },
 
     reset : function(value) {

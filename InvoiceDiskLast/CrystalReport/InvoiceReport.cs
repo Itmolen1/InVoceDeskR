@@ -16,14 +16,14 @@ namespace InvoiceDiskLast.CrystalReport {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class QuotationDetails : ReportClass {
+    public class InvoiceReport : ReportClass {
         
-        public QuotationDetails() {
+        public InvoiceReport() {
         }
         
         public override string ResourceName {
             get {
-                return "QuotationDetails.rpt";
+                return "InvoiceReport.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         public override string FullResourceName {
             get {
-                return "InvoiceDiskLast.CrystalReport.QuotationDetails.rpt";
+                return "InvoiceDiskLast.CrystalReport.InvoiceReport.rpt";
             }
             set {
                 // Do nothing
@@ -58,7 +58,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section ReportHeaderSection2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
             get {
                 return this.ReportDefinition.Sections[1];
             }
@@ -66,7 +66,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section2 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
             get {
                 return this.ReportDefinition.Sections[2];
             }
@@ -74,7 +74,7 @@ namespace InvoiceDiskLast.CrystalReport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section3 {
+        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
             get {
                 return this.ReportDefinition.Sections[3];
             }
@@ -82,25 +82,17 @@ namespace InvoiceDiskLast.CrystalReport {
         
         [Browsable(false)]
         [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public CrystalDecisions.CrystalReports.Engine.Section Section4 {
-            get {
-                return this.ReportDefinition.Sections[4];
-            }
-        }
-        
-        [Browsable(false)]
-        [DesignerSerializationVisibilityAttribute(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public CrystalDecisions.CrystalReports.Engine.Section Section5 {
             get {
-                return this.ReportDefinition.Sections[5];
+                return this.ReportDefinition.Sections[4];
             }
         }
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedQuotationDetails : Component, ICachedReport {
+    public class CachedInvoiceReport : Component, ICachedReport {
         
-        public CachedQuotationDetails() {
+        public CachedInvoiceReport() {
         }
         
         [Browsable(false)]
@@ -137,7 +129,7 @@ namespace InvoiceDiskLast.CrystalReport {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            QuotationDetails rpt = new QuotationDetails();
+            InvoiceReport rpt = new InvoiceReport();
             rpt.Site = this.Site;
             return rpt;
         }

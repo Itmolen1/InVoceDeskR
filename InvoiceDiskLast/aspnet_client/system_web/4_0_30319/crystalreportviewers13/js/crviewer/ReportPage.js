@@ -11,7 +11,6 @@
  * @param kwArgs.rightMargin  [Int] Right margin of report page in pixels
  * @param kwArgs.bottomMargin [Int] Bottom margin of report page in pixels
  * @param kwArgs.leftMargin   [Int] Left margin of report page in pixels
- * @param kwArgs.extraCssFileUrl   [String] The path of an extra CSS file used in report page
  */
  
 bobj.crv.newReportPage = function(kwArgs) {
@@ -20,7 +19,6 @@ bobj.crv.newReportPage = function(kwArgs) {
         bgColor: '#FFFFFF',
         width: 720,
         height: 984,
-        extraCssFileUrl: "",
         documentView: bobj.crv.ReportPage.DocumentView.PRINT_LAYOUT
     }, kwArgs);
     
@@ -118,15 +116,9 @@ bobj.crv.ReportPage = {
     },
     
     getIFrameHTML : function (content) {
-        var extraCssFileLink = "";
-        if (this.extraCssFileUrl != "") {
-            extraCssFileLink = "<link href=\"" + this.extraCssFileUrl + "\" rel=\"stylesheet\" type=\"text/css\" />\r\n";
-        }
-
         return  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
         "<html>\r\n" +
             "<head>\r\n" +
-                extraCssFileLink +
                 "<style> body { overflow :hidden; margin : 0px;}</style>\r\n" +
             "</head>\r\n" +
             "<body>\r\n" +

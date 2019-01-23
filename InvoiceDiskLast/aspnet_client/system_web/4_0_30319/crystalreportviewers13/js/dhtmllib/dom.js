@@ -5,6 +5,7 @@ _ie=(document.all!=null)?true:false
 _dom=(document.getElementById!=null)?true:false
 _isQuirksMode = (document.compatMode != 'CSS1Compat');
 _dtd4=!_ie||(document.compatMode!='BackCompat') // Browser is compatible HTML 4.0 Strict
+_moz=_dom&&!_ie
 _show='visible'
 _hide='hidden'
 _hand=_ie?"hand":"pointer"
@@ -13,18 +14,14 @@ _webKit=(_userAgent.indexOf("safari")>=0)||(_userAgent.indexOf("applewebkit")>=0
 _mac=(_appVer.indexOf('macintosh')>=0)||(_appVer.indexOf('macos')>=0);
 _opera = (_userAgent.indexOf('opera') != -1);     // Browser is opera
 _userAgent=navigator.userAgent?navigator.userAgent.toLowerCase():null
+_saf=_moz&&(_userAgent.indexOf("safari")>=0)
 _ctrl=0
 _shift=1
 _alt=2
 //_def_shortcut=_mac?"&#8984;":
-
-var docMode = document.documentMode;
-var _ie6Up=(docMode>=6)
-var _ie8Up=(docMode>=8)
-var _ie10Up=(docMode>=10)
-var _ie11Up=(docMode>=11)
-_moz=_dom&&!_ie&&!_ie11Up
-_saf=_moz&&(_userAgent.indexOf("safari")>=0)
+_ie6 = _ie&&(_appVer.indexOf("msie 5")<0)
+_ie7 = _ie6&&(_appVer.indexOf("msie 6")<0)
+_ie8 = _ie7&&(_appVer.indexOf("msie 7")<0)
 _small=(screen.height<=600)
 _curDoc=document
 _curWin=self
@@ -35,8 +32,8 @@ _codeWinName="_CW"
 _leftBtn=(_ie||_saf)?1:0
 _preloadArr=new Array
 _widgets=new Array
-_resizeW=_ie6Up?"col-resize":"E-resize"
-_resizeH=_ie6Up?"row-resize":"S-resize"
+_resizeW=_ie6?"col-resize":"E-resize"
+_resizeH=_ie6?"row-resize":"S-resize"
 _ddData=new Array
 _dontNeedEncoding=null;
 _thex=null;
@@ -3261,12 +3258,7 @@ function getLayer(id)
 // Get a layer from its ID
 // id [String] the id
 {
-   var doc = null;
-   if(typeof id == 'object')
-        doc = _curDoc.getElementById(id.id);
-   else
-        doc = _curDoc.getElementById(id);	
-   return doc;
+	return _curDoc.getElementById(id)
 }
 
 // ================================================================================

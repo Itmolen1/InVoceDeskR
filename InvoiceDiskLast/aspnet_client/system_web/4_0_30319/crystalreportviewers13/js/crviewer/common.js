@@ -756,7 +756,15 @@ bobj.getHiddenElementDimensions = function (element) {
  * Currently, it checks for Adobe Acrobat Reader version >= 7 on IE and Version >= 8 on other browsers.
  */
 bobj.hasPDFReaderWithJSFunctionality = function() {
-    if (navigator.plugins) {
+    if (window.ActiveXObject) {
+        try {
+            var pdfReader = new ActiveXObject('AcroPDF.PDF.1');
+            if (pdfReader) {
+                return true;
+            }
+        } catch (e) {}
+    }
+    else if (navigator.plugins) {
         var plugins = navigator.plugins;
         for (var i=0, len=plugins.length; i < len; i++) {
             if (plugins[i].description.indexOf('Adobe PDF Plug-In') != -1) {
@@ -764,13 +772,6 @@ bobj.hasPDFReaderWithJSFunctionality = function() {
             }
         }
     }
-
-    try {
-        var pdfReader = new ActiveXObject('AcroPDF.PDF.1');
-        if (pdfReader) {
-            return true;
-        }
-    } catch (e) {}
     
     return false;
 };
