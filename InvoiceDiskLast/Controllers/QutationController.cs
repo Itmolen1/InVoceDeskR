@@ -67,8 +67,6 @@ namespace InvoiceDiskLast.Controllers
                       ).ToList();
 
                     }
-
-
                 }
 
                 recordsTotal = recordsTotal = quationList.Count();
@@ -76,7 +74,7 @@ namespace InvoiceDiskLast.Controllers
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data }, JsonRequestBehavior.AllowGet);
                 #endregion
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return Json(new { draw = 0, recordsFiltered = 0, recordsTotal = 0, data = 0 }, JsonRequestBehavior.AllowGet);
             }
@@ -1046,13 +1044,6 @@ namespace InvoiceDiskLast.Controllers
 
                 }).ToList();
 
-                List<ImageModel> Model = new List<ImageModel>();
-
-                string Pag = Server.MapPath("/images/" + info[0].CompanyLogo);
-
-                Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
-
-
 
                 List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == qt.ContactId).Select(c => new Contacts
                 {
@@ -1078,11 +1069,8 @@ namespace InvoiceDiskLast.Controllers
                 }).ToList();
 
                 DateTime dt = DateTime.Today;
-
-
                 List<ServicesTables> servicesTabless = entity.QutationDetailsTables.Where(x => x.QutationID == quttationId && x.Type == "Service").Select(x => new ServicesTables
                 {
-
                     Date = x.ServiceDate.ToString(),
                     ProductNames = x.ProductTable.ProductName,
                     Descriptions = x.Description,
@@ -1102,7 +1090,6 @@ namespace InvoiceDiskLast.Controllers
                     ServicesTables Serv = new ServicesTables();
 
                     DateTime dtt = Convert.ToDateTime(x.Date);
-
                     Serv.Date = dtt.ToShortDateString();
                     Serv.ProductNames = x.ProductNames;
                     Serv.Descriptions = x.Descriptions;
@@ -1125,7 +1112,7 @@ namespace InvoiceDiskLast.Controllers
                 Report.Database.Tables[2].SetDataSource(goodsTable);
                 Report.Database.Tables[3].SetDataSource(servicesTables);
                 Report.Database.Tables[4].SetDataSource(quotationReportModel);
-                Report.Database.Tables[5].SetDataSource(Model);
+             
                 Stream stram = Report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                 stram.Seek(0, SeekOrigin.Begin);
                 //   Report.ExportToDisk(ExportFormatType.PortableDocFormat, Path.Combine(Application.StartupPath, "MyReport.pdf")
@@ -1759,7 +1746,6 @@ namespace InvoiceDiskLast.Controllers
             string d = Server.MapPath("/images/" + "6.jpg");
 
 
-
             List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == qt.CompanyId).Select(c => new Comp
             {
                 // Company Information   
@@ -1790,7 +1776,6 @@ namespace InvoiceDiskLast.Controllers
             string Pag = Server.MapPath("/images/" + info[0].CompanyLogo);
 
           //  Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
-
 
 
             List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == qt.ContactId).Select(c => new Contacts
