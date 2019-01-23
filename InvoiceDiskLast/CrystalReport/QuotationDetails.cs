@@ -14,9 +14,8 @@ namespace InvoiceDiskLast.CrystalReport {
     using CrystalDecisions.Shared;
     using CrystalDecisions.ReportSource;
     using CrystalDecisions.CrystalReports.Engine;
-
-  
-
+    
+    
     public class QuotationDetails : ReportClass {
         
         public QuotationDetails() {
