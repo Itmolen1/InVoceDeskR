@@ -724,8 +724,9 @@ namespace InvoiceDiskLast.Controllers
 
                 List<MVCCompanyInfoModel> Companyinfo = new List<MVCCompanyInfoModel>();
 
-                Companyinfo = db2.ComapnyInfoes.Where(c => c.CompanyID == _ExpenseList[0].comapny_id).Select(c => new MVCCompanyInfoModel {
-
+                List<Comp> info = db2.ComapnyInfoes.Where(x => x.CompanyID == 54).Select(c => new Comp
+                {
+                    // Company Information   
                     CompanyID = c.CompanyID,
                     CompanyTRN = c.CompanyTRN,
                     CompanyName = c.CompanyName,
@@ -747,6 +748,8 @@ namespace InvoiceDiskLast.Controllers
                     UserName = c.UserName,
 
                 }).ToList();
+
+
 
 
 

@@ -40,7 +40,7 @@ namespace InvoiceDiskLast.Controllers
                 {
                     Id = Ex.Id,
                     REFERENCEno = Ex.REFERENCEno,
-                    ACCOUNT_ID =Convert.ToInt32(Ex.ACCOUNT_ID),
+                    ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
                     VENDOR_ID = Convert.ToInt32(Ex.VENDOR_ID),
                     notes = Ex.notes,
                     Vat21 = Ex.Vat21,
@@ -95,10 +95,10 @@ namespace InvoiceDiskLast.Controllers
 
         [Route("Api/GetExpenseDetailList122/{CompanyId:int}/{Search:alpha}/{skip:int}/{pageSize:int}")]
         public IHttpActionResult GetExpenselist(int CompanyId, string Search, int skip, int pageSize)
+
         {
             try
             {
-
                 if (Search == "NoSearch")
                 {
                     List<ExpenseViewModel> ExpensList = new List<ExpenseViewModel>();
@@ -112,11 +112,11 @@ namespace InvoiceDiskLast.Controllers
                                   select new ExpenseViewModel()
                                   {
                                       Id = Ex.Id,
-                                      REFERENCEno =Ex.REFERENCEno,
+                                      REFERENCEno = Ex.REFERENCEno,
                                       ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
                                       VENDOR_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
                                       notes = Ex.notes,
-                                      TotalRecord= db.EXPENSEs.ToList().Count(),
+                                      TotalRecord = db.EXPENSEs.ToList().Count(),
                                       PaidThrougAccount = Acc.AccountTitle,
                                       VenderName = con.ContactName,
                                       SUBTOTAL = Ex.SUBTOTAL,
@@ -124,7 +124,6 @@ namespace InvoiceDiskLast.Controllers
                                       GRAND_TOTAL = Ex.GRAND_TOTAL,
                                       AddedDate = Ex.AddedDate,
                                   }).OrderByDescending(x => x.Id).ToList().Skip(skip).Take(pageSize).ToList();
-
 
                     return Ok(ExpensList);
 
@@ -143,8 +142,8 @@ namespace InvoiceDiskLast.Controllers
                                   {
                                       Id = Ex.Id,
                                       REFERENCEno = Ex.REFERENCEno,
-                                      ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
-                                      VENDOR_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
+                                      ACCOUNT_ID = Ex.ACCOUNT_ID,
+                                      VENDOR_ID = Ex.ACCOUNT_ID,
                                       notes = Ex.notes,
                                       PaidThrougAccount = Acc.AccountTitle,
                                       VenderName = con.ContactName,

@@ -10,8 +10,8 @@ namespace InvoiceDiskLast.Models
     {
         public int Id { get; set; }
         public string REFERENCEno { get; set; }
-        public int ACCOUNT_ID { get; set; }
-        public int VENDOR_ID { get; set; }
+        public int ? ACCOUNT_ID { get; set; }
+        public int ? VENDOR_ID { get; set; }
         public string notes { get; set; }
         public Nullable<decimal> SUBTOTAL { get; set; }
         public Nullable<decimal> VAT_AMOUNT { get; set; }

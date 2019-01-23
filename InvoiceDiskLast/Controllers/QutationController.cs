@@ -1717,7 +1717,6 @@ namespace InvoiceDiskLast.Controllers
             List<QuotationReportModel> quotationReportModel = new List<QuotationReportModel>();
 
 
-
             foreach (var x in quotationReportModels)
             {
                 QuotationReportModel qut = new QuotationReportModel();
