@@ -8,14 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace InvoiceDiskLast.CrystalReport {
+namespace InvoiceDiskLast.CrystalReport
+{
     using System;
     using System.ComponentModel;
     using CrystalDecisions.Shared;
-    using CrystalDecisions.ReportSource;
     using CrystalDecisions.CrystalReports.Engine;
-    
-    
+    using CrystalDecisions.ReportSource;
+
     public class Image : ReportClass {
         
         public Image() {

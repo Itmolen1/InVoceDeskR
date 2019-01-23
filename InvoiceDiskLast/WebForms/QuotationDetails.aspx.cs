@@ -19,7 +19,7 @@ namespace InvoiceDiskLast.WebForms
         {
             int Qut = Convert.ToInt32(Request.QueryString["id"]);
 
-            string d = HttpContext.Current.Server.MapPath("/images/" + "6.jpg");
+            string d = HttpContext.Current.Server.MapPath("/images/" + "8.jpg");
 
             DBEntities entity = new DBEntities();
 
@@ -162,8 +162,8 @@ namespace InvoiceDiskLast.WebForms
             //  string rptPath = Server.MapPath("CrystalReport.rpt");
             rd.Load(Server.MapPath("~/CrystalReport/CrystalReport2.rpt"));
             String ImageUrl = d.ToString();
-            Param.Name = "@IMAGEURL";
-            pmdv.Value = "E:\\invoiceDiskNew\\InvoiceDiskLast\\images\\logo.png192009139";
+            Param.Name = "IMAGEURL";
+            pmdv.Value = d.ToString();
             Param.CurrentValues.Add(pmdv);
             Params.Add(Param);
           //  rd.SetParameterValue("IMAGEURL", "E:\\invoiceDiskNew\\InvoiceDiskLast\\images\\logo.png192009139");
