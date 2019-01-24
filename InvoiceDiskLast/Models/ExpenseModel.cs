@@ -17,7 +17,7 @@ namespace InvoiceDiskLast.Models
         public decimal GRAND_TOTAL { get; set; }
         public int user_id { get; set; }
         public int comapny_id { get; set; }
-        public System.DateTime AddedDate { get; set; }
+        public string AddedDate { get; set; }
         public decimal Vat6 { get; set; }
         public decimal Vat21 { get; set; }
         public string AccountName { get; set; }

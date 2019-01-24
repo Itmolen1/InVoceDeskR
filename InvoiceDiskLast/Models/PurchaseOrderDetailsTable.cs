@@ -22,10 +22,11 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> PurchaseTotal { get; set; }
         public Nullable<double> PurchaseVatPercentage { get; set; }
         public Nullable<int> PurchaseId { get; set; }
-        public Nullable<decimal> RowSubTotal { get; set; }
+        public Nullable<double> RowSubTotal { get; set; }
         public string Type { get; set; }
         public Nullable<System.DateTime> ServiceDate { get; set; }
     
+        public virtual ProductTable ProductTable { get; set; }
         public virtual PurchaseOrderTable PurchaseOrderTable { get; set; }
     }
 }

@@ -40,8 +40,8 @@ namespace InvoiceDiskLast.Controllers
                 {
                     Id = Ex.Id,
                     REFERENCEno = Ex.REFERENCEno,
-                    ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
-                    VENDOR_ID = Convert.ToInt32(Ex.VENDOR_ID),
+                    ACCOUNT_ID = Ex.ACCOUNT_ID,
+                    VENDOR_ID = Ex.VENDOR_ID,
                     notes = Ex.notes,
                     Vat21 = Ex.Vat21,
                     Vat6 = Ex.Vat6,
@@ -67,13 +67,13 @@ namespace InvoiceDiskLast.Controllers
         {
             try
             {
-                List<ExpenseDetailModel> ExpenseDetail = new List<ExpenseDetailModel>();
-                ExpenseDetail = db.ExpenseDetails.Where(C => C.expense_id == ExpenseId).Select(Ex => new ExpenseDetailModel
+                List<ExpenseViewModel> ExpenseDetail = new List<ExpenseViewModel>();
+                ExpenseDetail = db.ExpenseDetails.Where(C => C.expense_id == ExpenseId).Select(Ex => new ExpenseViewModel
                 {
                     Id = Ex.Id,
-                    EXPENSE_ACCOUNT_ID = Ex.EXPENSE_ACCOUNT_ID,
+                    EXPENSE_ACCOUNT_ID =(int) Ex.EXPENSE_ACCOUNT_ID,
                     DESCRIPTION = Ex.DESCRIPTION,
-                    AMOUNT = Ex.AMOUNT,
+                    AMOUNT =Ex.AMOUNT,
                     TAX_PERCENT = Ex.TAX_PERCENT,
                     TAX_AMOUNT = Ex.TAX_AMOUNT,
                     SUBTOTAL = Ex.SUBTOTAL,
@@ -113,8 +113,8 @@ namespace InvoiceDiskLast.Controllers
                                   {
                                       Id = Ex.Id,
                                       REFERENCEno = Ex.REFERENCEno,
-                                      ACCOUNT_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
-                                      VENDOR_ID = Convert.ToInt32(Ex.ACCOUNT_ID),
+                                      ACCOUNT_ID =Ex.ACCOUNT_ID,
+                                      VENDOR_ID = Ex.VENDOR_ID,
                                       notes = Ex.notes,
                                       TotalRecord = db.EXPENSEs.ToList().Count(),
                                       PaidThrougAccount = Acc.AccountTitle,

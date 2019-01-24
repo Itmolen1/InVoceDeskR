@@ -1,4 +1,5 @@
-﻿using InvoiceDiskLast.Models;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using InvoiceDiskLast.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -116,7 +117,7 @@ namespace InvoiceDiskLast.Controllers
                 experviewModel = Expense.Content.ReadAsAsync<ExpenseViewModel>().Result;
 
                 HttpResponseMessage expenseDetail = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailById/" + Id).Result;
-                List<ExpenseDetailModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseDetailModel>>().Result;
+                List<ExpenseViewModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + CompanyId).Result;
                 List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
@@ -197,7 +198,7 @@ namespace InvoiceDiskLast.Controllers
 
         public ActionResult ExpenseByEmail(int Id)
         {
-            var List = CreatDirectoryClass.GetFileDirectiory((int)Id, "Expense");
+            var List = CreatDirectoryClass.GetFileDirectiory(Id, "Expense");
 
             EmailModel email = new EmailModel();
 
@@ -212,64 +213,19 @@ namespace InvoiceDiskLast.Controllers
 
             try
             {
-
-                email.Attachment = PrintView((int)Id);
-
+                email.Attachment = ExportPdf((int)Id);
                 HttpContext.Items["FilePath"] = email.Attachment;
-
-                if (Session["CompayID"] == null)
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-
-                var CompanyName = Session["CompanyName"];
-
-                if (CompanyName == null)
-                {
-                    CompanyName = "Nocompany";
-                }
-
-                var contact = Session["CompanyContact"];
-                var companyEmail = Session["CompanyEmail"];
-                if (contact == null)
-                {
-                    contact = "Company Contact";
-                }
-                if (companyEmail == null)
-                {
-                    companyEmail = "Company Email";
-                }
-
-                int ClientId = Convert.ToInt32(TempData["ConatctId"]);
-                int ConmpanyId = Convert.ToInt32(TempData["CompanyId"]);
-
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("ApiConatacts/" + ClientId.ToString()).Result;
-                MVCContactModel mvcContactModel = response.Content.ReadAsAsync<MVCContactModel>().Result;
-
-                email.EmailText = @"Geachte heer" + mvcContactModel.ContactName + "." +
-
-                ".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
-
+                List<Comp> comlist = new List<Comp>();
+                comlist = TempData["CompanyId"] as List<Comp>;
+                email.EmailText = @".Hierbij ontvangt u onze offerte 10 zoals besproken,." +
                 "." + "Graag horen we of u hiermee akkoord gaat." +
-
                 "." + "De offerte vindt u als bijlage bij deze email." +
-
-
                 "..Met vriendelijke groet." +
-
-                mvcContactModel.ContactName + "." +
-
-                CompanyName.ToString() + "." +
-
-                contact.ToString() + "." +
-
-                companyEmail.ToString();
-
+                 comlist[0].CompanyName.ToString() + "." +
+                 comlist[0].CompanyEmail.ToString();
                 string strToProcess = email.EmailText;
                 string result = strToProcess.Replace(".", " \r");
-
                 email.EmailText = result;
-
                 email.invoiceId = (int)Id;
                 email.From = "infouurtjefactuur@gmail.com";
             }
@@ -461,7 +417,7 @@ namespace InvoiceDiskLast.Controllers
                 experviewModel = Expense.Content.ReadAsAsync<ExpenseViewModel>().Result;
 
                 HttpResponseMessage expenseDetail = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailById/" + Id).Result;
-                List<ExpenseDetailModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseDetailModel>>().Result;
+                List<ExpenseViewModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + CompanyId).Result;
                 List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
@@ -677,56 +633,63 @@ namespace InvoiceDiskLast.Controllers
 
 
 
-        public ActionResult ExportPdf(int Id)
+        public string ExportPdf(int Id)
         {
+            string pdfname = "";
+
             DBEntities db2 = new DBEntities();
-
-            int CompanyId = 0;
-            ExpenseViewModel experviewModel = new ExpenseViewModel();
-
             try
             {
-              
-            
                 List<ExpenseModel> _ExpenseList = new List<ExpenseModel>();
                 List<ExpenseDetailModel> _ExpenseDetailList = new List<ExpenseDetailModel>();
+
 
                 _ExpenseList = db2.EXPENSEs.Where(Ex => Ex.Id == Id).Select(c => new ExpenseModel
                 {
                     Id = c.Id,
                     REFERENCEno = c.REFERENCEno,
-                    ACCOUNT_ID = Convert.ToInt32(c.ACCOUNT_ID),
-                    VENDOR_ID = Convert.ToInt32(c.VENDOR_ID),
+                    ACCOUNT_ID = c.ACCOUNT_ID ?? 0,
+                    VENDOR_ID = c.VENDOR_ID ?? 0,
                     notes = c.notes,
                     VenderAccount = c.ContactsTable.ContactName,
-                    SUBTOTAL = Convert.ToDecimal(c.SUBTOTAL),
-                    VAT_AMOUNT = Convert.ToDecimal(c.VAT_AMOUNT),
-                    GRAND_TOTAL = Convert.ToDecimal(c.GRAND_TOTAL),
-                    AddedDate = Convert.ToDateTime(c.AddedDate),
+                    SUBTOTAL = c.SUBTOTAL ?? 0,
+                    VAT_AMOUNT = c.VAT_AMOUNT ?? 0,
+                    GRAND_TOTAL = c.GRAND_TOTAL ?? 0,
+                    comapny_id = c.comapny_id ?? 0,
+                    user_id = 1,
+                    AccountName = "ferferfg",
+                    AddedDate = c.AddedDate.ToString(),
+
                 }).ToList();
+
+
+
+                //TempData["ConatctId"] = QutationModel.ContactId;
+
+
 
 
                 _ExpenseDetailList = db2.ExpenseDetails.Where(C => C.expense_id == Id).Select(C => new ExpenseDetailModel
                 {
                     Id = C.Id,
-                    EXPENSE_ACCOUNT_ID = C.EXPENSE_ACCOUNT_ID,
+                    EXPENSE_ACCOUNT_ID = C.EXPENSE_ACCOUNT_ID ?? 0,
                     DESCRIPTION = C.DESCRIPTION,
-                    AMOUNT = C.AMOUNT,
-                    TAX_PERCENT = C.TAX_PERCENT,
-                    TAX_AMOUNT = C.TAX_AMOUNT,
-                    SUBTOTAL = C.SUBTOTAL,
+                    AMOUNT = C.AMOUNT ?? 0,
+                    TAX_PERCENT = C.TAX_PERCENT ?? 0,
+                    TAX_AMOUNT = C.TAX_AMOUNT ?? 0,
+                    SUBTOTAL = C.SUBTOTAL ?? 0,
+                    user_id = C.user_id ?? 0,
+                    comapny_id = C.comapny_id ?? 0,
+                    expense_id = C.expense_id ?? 0,
+
                     AccountTitle = C.AccountTable.AccountTitle,
                 }).ToList();
 
 
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
 
-                List<MVCCompanyInfoModel> Companyinfo = new List<MVCCompanyInfoModel>();
 
                 List<Comp> info = db2.ComapnyInfoes.Where(x => x.CompanyID == 54).Select(c => new Comp
                 {
-                    // Company Information   
                     CompanyID = c.CompanyID,
                     CompanyTRN = c.CompanyTRN,
                     CompanyName = c.CompanyName,
@@ -746,21 +709,61 @@ namespace InvoiceDiskLast.Controllers
                     BTW = c.BTW,
                     BankName = c.BankName,
                     UserName = c.UserName,
-
                 }).ToList();
 
 
+                TempData["CompanyId"] = info;
 
+                string Name = info[0].CompanyLogo;
+                info[0].CompanyLogo = Server.MapPath("~/images/" + Name);
 
+                ReportDocument Report = new ReportDocument();
 
+                Report.Load(Server.MapPath("~/CrystalReport/ExpenceReport.rpt"));
 
-                return View(experviewModel);
+                Report.Database.Tables[0].SetDataSource(info);
+                Report.Database.Tables[1].SetDataSource(_ExpenseList);
+                Report.Database.Tables[2].SetDataSource(_ExpenseDetailList);
+                string companyName = Id + "-" + info[0].CompanyName;
+
+                var root = Server.MapPath("/PDF/");
+                pdfname = String.Format("{0}.pdf", companyName);
+                var path = Path.Combine(root, pdfname);
+                path = Path.GetFullPath(path);
+
+                string subPath = "/PDF"; // your code goes here
+                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
+
+                if (!exists)
+                {
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    try
+                    {
+                        if (System.IO.File.Exists(path))
+                        {
+                            FileInfo inf = new FileInfo(path);
+
+                            if (!IsFileLocked(inf)) inf.Delete();
+
+                        }
+                    }
+                    catch (System.IO.IOException)
+                    {
+
+                    }
+                }
+                Report.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
+
+            return pdfname;
         }
 
 
@@ -796,7 +799,7 @@ namespace InvoiceDiskLast.Controllers
                 experviewModel = Expense.Content.ReadAsAsync<ExpenseViewModel>().Result;
 
                 HttpResponseMessage expenseDetail = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailById/" + Id).Result;
-                List<ExpenseDetailModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseDetailModel>>().Result;
+                List<ExpenseViewModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
 
                 HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + CompanyId).Result;
                 List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;

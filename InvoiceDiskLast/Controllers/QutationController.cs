@@ -1883,6 +1883,8 @@ namespace InvoiceDiskLast.Controllers
                 Stream stram = Report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                 stram.Seek(0, SeekOrigin.Begin);
 
+
+
                 return new FileStreamResult(stram, "application/pdf");
             }
             catch(Exception ex)

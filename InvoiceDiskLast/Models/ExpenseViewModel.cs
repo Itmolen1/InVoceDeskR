@@ -10,8 +10,8 @@ namespace InvoiceDiskLast.Models
     {
         public int Id { get; set; }
         public string REFERENCEno { get; set; }
-        public int ? ACCOUNT_ID { get; set; }
-        public int ? VENDOR_ID { get; set; }
+        public Nullable<int> ACCOUNT_ID { get; set; }
+        public Nullable<int> VENDOR_ID { get; set; }
         public string notes { get; set; }
         public Nullable<decimal> SUBTOTAL { get; set; }
         public Nullable<decimal> VAT_AMOUNT { get; set; }
@@ -28,11 +28,25 @@ namespace InvoiceDiskLast.Models
 
         public string CompanyName { get; set; }
 
+
+
+        public int EXPENSE_ACCOUNT_ID { get; set; }
+        public string DESCRIPTION { get; set; }
+        public Nullable<decimal> AMOUNT { get; set; }
+        public Nullable<decimal> TAX_PERCENT { get; set; }
+        public Nullable<decimal> TAX_AMOUNT { get; set; }
+
+        public Nullable<int> expense_id { get; set; }
+
+        public Nullable<int> comapny_id { get; set; }
+        public string AccountTitle { get; set; }
+
+
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/mm/yyyy}")]
         [DataType(DataType.Date)]
         public Nullable<DateTime> AddedDate { get; set; }
 
-        public Nullable<int> comapny_id { get; set; }
+
         public HttpPostedFileWrapper[] file23 { get; set; }
         public List<ExpenseDetail> ExpensenDetailList { get; set; }
 

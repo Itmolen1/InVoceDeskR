@@ -20,7 +20,7 @@ namespace InvoiceDiskLast.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/mm/yy}")]
         public Nullable<DateTime> ServiceDate { get; set; }
 
-        public Nullable<decimal> RowSubTotal { get; set; }
+        public Nullable<double> RowSubTotal { get; set; }
         public string Type { get; set; }
 
     }
