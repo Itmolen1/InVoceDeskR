@@ -1017,8 +1017,7 @@ namespace InvoiceDiskLast.Controllers
 
                 QutationTable qt = entity.QutationTables.Where(x => x.QutationID == quttationId).FirstOrDefault();
 
-                string d = Server.MapPath("/images/" + "6.jpg");
-
+               
 
 
                 List<Comp> info = entity.ComapnyInfoes.Where(x => x.CompanyID == qt.CompanyId).Select(c => new Comp
@@ -1046,12 +1045,9 @@ namespace InvoiceDiskLast.Controllers
 
                 }).ToList();
 
-                List<ImageModel> Model = new List<ImageModel>();
+                string Name = info[0].CompanyLogo;
 
-                string Pag = Server.MapPath("/images/" + info[0].CompanyLogo);
-
-                Model.Add(new ImageModel { imgdata = System.IO.File.ReadAllBytes(Pag) });
-
+                info[0].CompanyLogo = Server.MapPath("~/images/" + Name);
 
 
                 List<Contacts> Contact = entity.ContactsTables.Where(x => x.ContactsId == qt.ContactId).Select(c => new Contacts
@@ -1125,7 +1121,7 @@ namespace InvoiceDiskLast.Controllers
                 Report.Database.Tables[2].SetDataSource(goodsTable);
                 Report.Database.Tables[3].SetDataSource(servicesTables);
                 Report.Database.Tables[4].SetDataSource(quotationReportModel);
-                Report.Database.Tables[5].SetDataSource(Model);
+         
                 Stream stram = Report.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
                 stram.Seek(0, SeekOrigin.Begin);
                 //   Report.ExportToDisk(ExportFormatType.PortableDocFormat, Path.Combine(Application.StartupPath, "MyReport.pdf")
@@ -1135,10 +1131,8 @@ namespace InvoiceDiskLast.Controllers
 
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
-                var path = Path.Combine(root);
+                var path = Path.Combine(root, pdfname);
                 path = Path.GetFullPath(path);
-
-                string s = "";
 
                 string subPath = "/PDF"; // your code goes here
                 bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
@@ -1164,7 +1158,7 @@ namespace InvoiceDiskLast.Controllers
 
                     }
                 }
-                Report.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path + pdfname);
+                Report.ExportToDisk(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat, path);
                 //   Report.ExportToDisk(ExportFormatType.PortableDocFormat, "", "MyReport.pdf");
                 //var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Qutation/PrintQutationPartialView.cshtml")
                 //{
