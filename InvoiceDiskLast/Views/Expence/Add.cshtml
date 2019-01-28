@@ -140,12 +140,6 @@
             return;
         }
 
-        //var isAllValid = true;
-        //if ($("#mainrow .Description ").val() == 0) {
-        //    isAllValid = false;
-        //    alert("Description is required");
-        //    return;
-        //}
         var isAllValid = true;
         if ($("#mainrow .Amount").val() == 0) {
             isAllValid = false;
@@ -179,7 +173,6 @@
 
         var CurrentRow = $(this).closest("tr");
         $(this).parents('tr').remove();
-
         var currentRow = $(this).closest("tr");
         var VAT = currentRow.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow);
@@ -195,7 +188,6 @@
         Total = CurrentRow.find('.Amount').val();
         if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
             if (!isNaN(Total) && typeof (Total) != "undefined") {
-                CurrentRow.find('.SubTotal').val(Total);
                 CurrentRow.find('.SubTotal').val(parseFloat(Total).toFixed(2));
                 return;
             }
@@ -208,6 +200,8 @@
     }
 
     function SumVatAmount() {
+
+        debugger;
 
         var VatAmount = 0;
         var vat6 = $('#BTW6').text();
@@ -295,31 +289,92 @@
     });
 
 
-    $('.Amount').keyup(function () {
+    //$('.Amount').keyup(function () {
+    //    var currentRow = $(this).closest("tr");
+    //    var VAT = currentRow.find('.VATG').val();
+    //    RowSubTalSubtotal(VAT, currentRow);
+    //    CalculateVateTotal();
+    //    GrandTotal();
+    //    TotalExcudeBtw();
+    //    CalculateTaxAmount(VAT, currentRow);
+    //});
 
-      
-        var currentRow = $(this).closest("tr");
-        var VAT = currentRow.find('.VATG').val();
-        RowSubTalSubtotal(VAT, currentRow);
-        CalculateVateTotal();
-        GrandTotal();
-        TotalExcudeBtw();
-        CalculateTaxAmount(VAT, currentRow);
-    });
 
-  
 
-    $('.VATG').change(function () {
-        var currentRow = $(this).closest("tr");
-        var VAT = currentRow.find('.VATG').val();
-        RowSubTalSubtotal(VAT, currentRow);
-        CalculateVateTotal();
-        GrandTotal();
-        TotalExcudeBtw();
-        CalculateTaxAmount(VAT, currentRow);
+    //$('.VATG').change(function () {
+    //    var currentRow = $(this).closest("tr");
+    //    var VAT = currentRow.find('.VATG').val();
+    //    RowSubTalSubtotal(VAT, currentRow);
+    //    CalculateVateTotal();
+    //    GrandTotal();
+    //    TotalExcudeBtw();
+    //    CalculateTaxAmount(VAT, currentRow);
 
-    });
+    //});
 
+
+    function ValidateRow(currentRow) {
+        var Isvalid = true;
+
+        debugger;
+        var RowLenth = $('#tblexpense .tbbodyExpense tr').length;
+        if (RowLenth == 1) {
+            Isvalid = false;
+            var Account = currentRow.find('#ExpenseAccount option:selected').val();
+            var Amount = currentRow.find('.Amount').val();
+            if (Account == "0") {
+                $.toast({
+                    heading: 'Account',
+                    text: "Account Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+
+            }
+
+            if (Amount == "" || Amount == null) {
+                $.toast({
+                    heading: 'Amount',
+                    text: "Amount Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+
+            }
+        }
+        else {
+          
+            var Account = currentRow.find('#ExpenseAccount option:selected').val();
+            var Amount = currentRow.find('.Amount').val();
+            if (Account == "0") {
+                $.toast({
+                    heading: 'Account',
+                    text: "Account Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+
+            }
+
+            if (Amount == "" || Amount == null) {
+                $.toast({
+                    heading: 'Amount',
+                    text: "Amount Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+            }
+            return Isvalid;
+        }
+    }
 
     function CalculateTaxAmount(vat, CurrentRow) {
 
@@ -354,19 +409,27 @@
             return true;
         }
 
-        $('#tblexpense .tbbodyExpense tr').not('tr:last').each(function () {
+        $('#tblexpense .tbbodyExpense tr').each(function () {
+            debugger;
             CurrentRow = $(this).closest("tr");
-            //if (ValidateRow(CurrentRow)) {
-            ExpernseOrder = {
-                EXPENSE_ACCOUNT_ID: parseInt($(this).find('#ExpenseAccount').val()),
-                DESCRIPTION: $(this).find('.Description').val(),
-                AMOUNT: parseFloat($(this).find('.Amount').val()),
-                TAX_PERCENT: parseFloat($(this).find('.VATG').val()),
-                TAX_AMOUNT: parseFloat($(this).find('.taxAmount').val()),
-                SUBTOTAL: parseFloat($(this).find('.SubTotal').val()),
+            var Isvalid = ValidateRow(CurrentRow);
+            if (Isvalid == false) {
+
+                return true;
             }
-            list.push(ExpernseOrder);
-            //}
+            else {
+                ExpernseOrder = {
+                    EXPENSE_ACCOUNT_ID: parseInt($(this).find('#ExpenseAccount').val()),
+                    DESCRIPTION: $(this).find('.Description').val(),
+                    AMOUNT: parseFloat($(this).find('.Amount').val()),
+                    TAX_PERCENT: parseFloat($(this).find('.VATG').val()),
+                    TAX_AMOUNT: parseFloat($(this).find('.taxAmount').val()),
+                    SUBTOTAL: parseFloat($(this).find('.SubTotal').val()),
+                }
+                list.push(ExpernseOrder);
+            }
+
+            return true;
         });
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -377,6 +440,7 @@
             REFERENCEno: $('#Number_ID').val(),
             ACCOUNT_ID: $('#drpExpenseAccount').val(),
             VENDOR_ID: $('#venderId').val(),
+            comapny_id: $('#CompanyId').val(),
             notes: $('#notes').val(),
             SUBTOTAL: $('#SubTotalAmont').text(),
             VAT_AMOUNT: SumVatAmount(),
@@ -414,8 +478,12 @@
                         title: 'Expense!',
                         text: 'Expense hasbeen created successfully!',
                         type: 'success'
-                    });
+                    },
+                     function (isconform) {
 
+                         window.location.href = "/Expence/ViewExpense?Id=" + result.Id;
+
+                     });
                     ClearFiel();
                 }
                 else if (result.Status == "Fail") {
@@ -467,24 +535,26 @@
             });
             Isvalid = false;
         }
-        if ($('.tbbodyExpense tr').not('tr:last').length == 0) {
-            Isvalid = false;
-            $.toast({
-                heading: 'Expense',
-                text: "Enter at least one Expense",
-                icon: 'info',
-                loader: true,        // Change it to false to disable loader
-                loaderBg: '#FF0000'  // To change the background
-            });
-        }
+        //if ($('.tbbodyExpense tr').not('tr:last').length == 0) {
+
+
+        //    Isvalid = false;
+        //    $.toast({
+        //        heading: 'Expense',
+        //        text: "Enter at least one Expense",
+        //        icon: 'info',
+        //        loader: true,        // Change it to false to disable loader
+        //        loaderBg: '#FF0000'  // To change the background
+        //    });
+        //}
         return Isvalid;
     }
 
 
- 
 
 
-    
+
+
 
 
 
@@ -535,7 +605,7 @@
         }
     }
 
-  
+
 
 
 
@@ -584,7 +654,7 @@
 
 
 
- 
+
 
 
 </script>

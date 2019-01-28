@@ -76,8 +76,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                         </div>
-                            <p></p>
+                        </div>
+                        <p></p>
                         <div class="table-responsive" style="clear: both">
                             <div id="TableServiceLink" class="ServicesLink">
                                 <label>Show Service Table</label>
@@ -150,9 +150,9 @@
                                 </table>
                             </div>
                         </div>
-                        </div>
-                   
-                     <div class="col-md-12">
+                    </div>
+
+                    <div class="col-md-12">
                         <div class="pull-left text-left">
                             <textarea id="CustomerNote" rows="4" cols="40" placeholder="Customer Note" style="font-size:12px"></textarea>
                             @Html.Partial("~/Views/Shared/UploadPartialFile.cshtml")
@@ -520,15 +520,42 @@
     });
 
     $('#mainrow .pClassG').change(function () {
-        var currentRow = $(this).closest('tr');
-        var value = currentRow.find('.pClassG').val();
-        GetProductPriceByProductId(value, currentRow);
+
+        var currentRow = $(this).closest("tr");
+        var v = $(this).val();
+        if (v == 0) {
+            var vat = currentRow.find('.VATG').val(0);
+            currentRow.find('.rateG').val(0);
+            currentRow.find('.FTotalG').val(0);
+            currentRow.find('.RowTotalG').val(0);
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
+        }
+        else {
+
+            var value = currentRow.find('.pClassG').val();
+            GetProductPriceByProductId(value, currentRow);
+        }
     });
 
     $('#mainrow1 .pClassG').change(function () {
-        var currentRow = $(this).closest('tr');
-        var value = currentRow.find('.pClassG').val();
-        GetProductPriceByProductId(value, currentRow);
+        var currentRow = $(this).closest("tr");
+        var v = $(this).val();
+        if (v == 0) {
+            var vat = currentRow.find('.VATG').val(0);
+            currentRow.find('.rateG').val(0);
+            currentRow.find('.FTotalG').val(0);
+            currentRow.find('.RowTotalG').val(0);
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
+        }
+        else {
+            var currentRow = $(this).closest('tr');
+            var value = currentRow.find('.pClassG').val();
+            GetProductPriceByProductId(value, currentRow);
+        }
     });
 
     function GetProductPriceByProductId(Id, CurrentRow) {
@@ -698,245 +725,14 @@
         CalculateVateTotal();
     });
     $('#Submit').click(function () {
-
-        // CreateQuation("/Purchase/SaveDraft", "SaveDraft");
         CreateQuation("/Purchase/SaveDraft", "SaveDraft");
     });
     $('#saveEmail').click(function () {
-
         CreateQuation("/Purchase/SaveEmail", "SaveEmail");
-        //var list = [], orderItem, CurrentRow;
-        //var formData = new FormData($('#frmAccount')[0]);
-        //var files = $("#uploadfile")[0];
-        //if (!validateFileSize()) {
-        //    return true;
-        //}
-
-        //$('#orderdetailsitems .tbodyGood tr').each(function () {
-
-        //    CurrentRow = $(this).closest("tr");
-        //    if (ValidateRow(CurrentRow)) {
-        //        orderItem = {
-        //            PurchaseItemId: parseInt($(this).find('.product').val()),
-        //            PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-        //            Type: "Goods",
-        //            ServiceDate: $(this).find('.ServiceDate').val(),
-        //            PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-        //            PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-        //            Total: parseFloat($(this).find('.FTotalG').val()),
-        //            PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-        //            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-        //        }
-        //        list.push(orderItem);
-        //    }
-        //});
-
-        //$('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-        //    CurrentRow = $(this).closest("tr");
-        //    if (ValidateRow(CurrentRow)) {
-        //        orderItem = {
-        //            PurchaseItemId: parseInt($(this).find('.product').val()),
-        //            PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-        //            Type: "Service",
-        //            PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-        //            ServiceDate: $(this).find('.ServiceDate').val(),
-        //            PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-        //            PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-        //            Total: parseFloat($(this).find('.FTotalG').val()),
-        //            PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-        //            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-        //        }
-        //        list.push(orderItem);
-        //    }
-        //});
-
-        //if (list.length == 0) {
-        //    $('#BTW6').text('');
-        //    $('#BTW21').text('');
-        //    $('#gtotal').text('');
-        //    $('#gtotal').text('');
-        //}
-
-        //var empObj = {
-        //    PurchaseId: $('#PurchaseID').val(),
-        //    PurchaseID: $('#PurchaseID').val(),
-        //    PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-        //    PurchaseDate: $('.PurchaseDate').val(),
-        //    PurchaseDueDate: $('.DueDate').val(),
-        //    PurchaseSubTotal: $('#SubTotal').text(),
-        //    PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-        //    PurchaseOrderID: $('#PurchaseOrderID').val(),
-        //    PurchaseTotoalAmount: $('#gtotal').text(),
-        //    PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-        //    Vat6: $('#BTW6').text(),
-        //    Vat21: $('#BTW21').text(),
-        //    VenderId: $('#VenderId').val(),
-        //    CompanyId: $('#CompanyId').val(),
-        //};
-        //for (var key in empObj) {
-        //    formData.append(key, empObj[key]);
-        //}
-        //for (var i = 0; i < list.length; i++) {
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-        //    formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-        //    formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
-        //    formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
-        //    formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-
-        //}
-        //$.ajax({
-        //    url: "/Purchase/SaveEmail",
-        //    type: "POST",
-        //    data: formData,
-        //    dataType: 'json',
-        //    contentType: false,
-        //    processData: false,
-
-        //    success: function (result) {
-
-        //        if (result.Status == "Success") {
-        //            swal({
-        //                title: 'Invoice!',
-        //                text: 'Invoice save successfully!',
-        //                type: 'success'
-        //            },
-        //                 function (isconform) {
-        //                     window.location.href = "/Purchase/InvoiceByEmail?purchaseOrderId=" + result.purchaseId;
-
-        //                 });
-        //        }
-        //        else if (result.Status == "Fail") {
-        //            alert(result.Message);
-        //        }
-        //    },
-
-        //    error: function (errormessage) {
-
-        //    }
-
-        //});
     });
 
     $('#saveprintandsendtoyourselfsave').click(function () {
-
         CreateQuation("/Purchase/SaveEmailPrint1", "SaveEamilPrint");
-        //var list = [], orderItem, CurrentRow;
-        //var formData = new FormData($('#frmAccount')[0]);
-        //var files = $("#uploadfile")[0];
-        //if (!validateFileSize()) {
-        //    return true;
-        //}
-
-
-        //$('#orderdetailsitems .tbodyGood tr').each(function () {
-        //    var CurrentRow = $(this).closest("tr");
-        //    if (ValidateRow(CurrentRow)) {
-        //        orderItem = {
-        //            PurchaseItemId: parseInt($(this).find('.product').val()),
-        //            PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-        //            Type: "Goods",
-        //            PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-        //            PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-        //            Total: parseFloat($(this).find('.FTotalG').val()),
-        //            PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-        //            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-        //        }
-        //        list.push(orderItem);
-        //    }
-
-        //});
-        //$('#QutationServiceDetail1 .tbodyService tr').each(function () {
-
-        //    var CurrentRow = $(this).closest("tr");
-
-        //    if (ValidateRow(CurrentRow)) {
-
-        //        orderItem = {
-        //            PurchaseItemId: parseInt($(this).find('.product').val()),
-        //            PurchaseQuantity: parseInt($(this).find('.quantityG').val()),
-        //            Type: "Service",
-        //            PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-        //            ServiceDate: $(this).find('.ServiceDate').val(),
-        //            PurchaseItemRate: parseInt($(this).find('.rateG').val()),
-        //            PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
-        //            Total: parseFloat($(this).find('.FTotalG').val()),
-        //            PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-        //            RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
-        //        }
-        //        list.push(orderItem);
-        //    }
-        //});
-
-        //if (list.length == 0) {
-        //    $('#BTW6').text('');
-        //    $('#BTW21').text('');
-        //    $('#gtotal').text('');
-        //    $('#gtotal').text('');
-        //}
-
-
-        //var empObj = {
-        //    PurchaseId: $('#PurchaseID').val(),
-        //    PurchaseID: $('#PurchaseID').val(),
-        //    PurchaseRefNumber: $('#PurchaseRefNumber').val(),
-        //    PurchaseDate: $('.PurchaseDate').val(),
-        //    PurchaseDueDate: $('.DueDate').val(),
-        //    PurchaseSubTotal: $('#SubTotal').text(),
-        //    PurchaseDiscountAmount: $('#PurchaseDiscountAmount').val(),
-        //    PurchaseOrderID: $('#PurchaseOrderID').val(),
-        //    PurchaseTotoalAmount: $('#gtotal').text(),
-        //    PurchaseVenderNote: $('#PurchaseVenderNote').val(),
-        //    Vat6: $('#BTW6').text(),
-        //    Vat21: $('#BTW21').text(),
-        //    VenderId: $('#VenderId').val(),
-        //    CompanyId: $('#CompanyId').val(),
-        //};
-        //for (var key in empObj) {
-        //    formData.append(key, empObj[key]);
-        //}
-        //for (var i = 0; i < list.length; i++) {
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseItemId]', list[i].PurchaseItemId)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseQuantity]', list[i].PurchaseQuantity)
-        //    formData.append('PurchaseOrderList[' + i + '][Type]', list[i].Type)
-        //    formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseItemRate]', list[i].PurchaseItemRate)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseTotal]', list[i].PurchaseTotal)
-        //    formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
-        //    formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
-        //    formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
-        //}
-        //$.ajax({
-        //    url: "/Purchase/SaveEmailPrint1",
-        //    type: "POST",
-        //    data: formData,
-        //    dataType: 'json',
-        //    contentType: false,
-        //    processData: false,
-
-        //    success: function (result) {
-        //        if (result.Status == "Success") {
-        //            localStorage.setItem('path', result.path);
-        //            swal({
-        //                title: 'Qutation!',
-        //                text: 'Qutation save successfully!',
-        //                type: 'success'
-        //            },
-        //            function (isconform) {
-        //                window.location.href = "/Purchase/Viewinvoice1?purchaseOrderId=" + result.PurchaseOrderId;
-        //            });
-        //        }
-        //        else if (result.Status == "Fail") {
-
-        //        }
-        //    },
-        //    error: function (errormessage) {
-        //    }
-        //});
     });
 
 
@@ -1091,6 +887,7 @@
 
 
     function ValidateRow(CurrentRow) {
+
         var Isvalid = true;
         var Produectid = 0, quantityG = 0, varrateG = 0;
         Produectid = CurrentRow.find('.product').val();

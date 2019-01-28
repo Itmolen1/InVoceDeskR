@@ -42,10 +42,10 @@ namespace InvoiceDiskLast.Models
         public string Type { get; set; }
         public Nullable<System.DateTime> ServiceDate { get; set; }
 
-        public HttpPostedFileWrapper[] file23 { get; set; }
-        public HttpPostedFileBase[] Files { get; set; }
+        //public HttpPostedFileWrapper[] file23 { get; set; }
+       // public HttpPostedFileBase[] Files { get; set; }
 
         public List<InvoiceDetailsTable> InvoiceDetailsTable { get; set; }
-
+   
     }
 }

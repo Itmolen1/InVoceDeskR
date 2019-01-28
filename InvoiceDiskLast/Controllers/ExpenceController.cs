@@ -466,21 +466,21 @@ namespace InvoiceDiskLast.Controllers
                 ExpenseViewModel ExpenseMosel = response.Content.ReadAsAsync<ExpenseViewModel>().Result;
                 double ResultVAT = CommonController.CalculateVat(vat, total);
 
-                ExpenseMosel.GRAND_TOTAL = Convert.ToDecimal(ExpenseMosel.GRAND_TOTAL) - Convert.ToDecimal(ResultVAT);
+                ExpenseMosel.GRAND_TOTAL = Convert.ToDouble(ExpenseMosel.GRAND_TOTAL) - Convert.ToDouble(ResultVAT);
 
-                ExpenseMosel.GRAND_TOTAL = Convert.ToDecimal(ExpenseMosel.GRAND_TOTAL) - Convert.ToDecimal(total);
+                ExpenseMosel.GRAND_TOTAL = Convert.ToDouble(ExpenseMosel.GRAND_TOTAL) - Convert.ToDouble(total);
 
-                ExpenseMosel.VAT_AMOUNT = ExpenseMosel.VAT_AMOUNT - Convert.ToDecimal(vat);
-                ExpenseMosel.SUBTOTAL = ExpenseMosel.SUBTOTAL - Convert.ToDecimal(total);
+                ExpenseMosel.VAT_AMOUNT = ExpenseMosel.VAT_AMOUNT - Convert.ToDouble(vat);
+                ExpenseMosel.SUBTOTAL = ExpenseMosel.SUBTOTAL - Convert.ToDouble(total);
 
                 if (vat == 6)
                 {
-                    ExpenseMosel.Vat6 = (ExpenseMosel.Vat6) - Convert.ToDecimal(ResultVAT);
+                    ExpenseMosel.Vat6 = (ExpenseMosel.Vat6) - Convert.ToDouble(ResultVAT);
                 }
 
                 if (vat == 21)
                 {
-                    ExpenseMosel.Vat21 = (ExpenseMosel.Vat21) - Convert.ToDecimal(ResultVAT);
+                    ExpenseMosel.Vat21 = (ExpenseMosel.Vat21) - Convert.ToDouble(ResultVAT);
                 }
 
                 response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutExpense/" + ExpenseMosel.Id, ExpenseMosel).Result;
@@ -506,7 +506,7 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult UploadFiles(ExpenseViewModel MVCQutationViewModel)
+        public ActionResult UploadFiles(ExpenseViewModel MVCQutationViewModel, HttpPostedFileWrapper[] file23)
         {
             try
             {
@@ -515,8 +515,7 @@ namespace InvoiceDiskLast.Controllers
                 for (int i = 0; i < files.Count; i++)
                 {
                     HttpPostedFileBase file = files[i];
-
-                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.Id, "Expense", MVCQutationViewModel.file23, "Expense");
+                    FileName = CreatDirectoryClass.UploadFileToDirectoryCommon(MVCQutationViewModel.Id, "Expense", file23, "Expense");
                 }
                 return new JsonResult { Data = new { FilePath = FileName, FileName = FileName } };
             }
@@ -824,71 +823,29 @@ namespace InvoiceDiskLast.Controllers
 
 
         [HttpPost]
-        public ActionResult AddExpence(ExpenseViewModel ExpenseViewModel)
+        public ActionResult AddExpence(ExpenseViewModel ExpenseViewModel, HttpPostedFileWrapper[] file23)
         {
             HttpResponseMessage response = new HttpResponseMessage();
-            int CompanyId = 0;
-            int UserId = 0;
+         
+            int ExpenseId = 0;
             EXPENSE expense = new EXPENSE();
             try
             {
-                if (Session["CompayID"] != null)
-                {
-                    CompanyId = Convert.ToInt32(Session["CompayID"]);
-                }
-
                 if (Session["LoginUserID"] != null)
                 {
-                    UserId = Convert.ToInt32(Session["LoginUserID"]);
+                    ExpenseViewModel.user_id = Convert.ToInt32(Session["LoginUserID"]);
                 }
 
-                expense.REFERENCEno = ExpenseViewModel.REFERENCEno;
-                expense.ACCOUNT_ID = ExpenseViewModel.ACCOUNT_ID;
-                expense.VENDOR_ID = ExpenseViewModel.VENDOR_ID;
-                expense.notes = ExpenseViewModel.notes;
-                expense.user_id = UserId;
-                expense.SUBTOTAL = ExpenseViewModel.SUBTOTAL;
-                expense.VAT_AMOUNT = ExpenseViewModel.VAT_AMOUNT;
-                expense.GRAND_TOTAL = ExpenseViewModel.GRAND_TOTAL;
-                expense.AddedDate = ExpenseViewModel.AddedDate;
-                expense.comapny_id = CompanyId;
-                expense.Vat6 = ExpenseViewModel.Vat6;
-                expense.Vat21 = ExpenseViewModel.Vat21;
-
-                response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostExpense", expense).Result;
-                EXPENSE Purchasetable = response.Content.ReadAsAsync<EXPENSE>().Result;
-
+              
+                response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostExpense", ExpenseViewModel).Result;
+                ExpenseModel Purchasetable = response.Content.ReadAsAsync<ExpenseModel>().Result;
+                ExpenseId = Purchasetable.Id;
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    ExpenseViewModel.Id = Purchasetable.Id;
-
-                    if (ExpenseViewModel.ExpensenDetailList != null)
+                    if (file23[0] != null)
                     {
-                        foreach (ExpenseDetail item in ExpenseViewModel.ExpensenDetailList)
-                        {
-                            ExpenseDetail expenseDetailModel = new ExpenseDetail();
-                            expenseDetailModel.expense_id = ExpenseViewModel.Id;
-                            expenseDetailModel.EXPENSE_ACCOUNT_ID = item.EXPENSE_ACCOUNT_ID;
-                            expenseDetailModel.DESCRIPTION = item.DESCRIPTION;
-                            expenseDetailModel.AMOUNT = item.AMOUNT;
-                            expenseDetailModel.TAX_PERCENT = item.TAX_PERCENT;
-                            expenseDetailModel.TAX_AMOUNT = item.TAX_AMOUNT;
-                            expenseDetailModel.SUBTOTAL = item.SUBTOTAL;
-                            expenseDetailModel.user_id = UserId;
-                            expenseDetailModel.comapny_id = CompanyId;
-                            response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostExpenseDetail", expenseDetailModel).Result;
-
-                            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                            {
-                                return new JsonResult { Data = new { Status = "Fail" } };
-                            }
-                        }
+                        CreatDirectoryClass.UploadFileToDirectoryCommon(ExpenseViewModel.Id, "Expense", file23, "Expense");
                     }
-                }
-
-                if (ExpenseViewModel.file23[0] != null)
-                {
-                    CreatDirectoryClass.UploadFileToDirectoryCommon(ExpenseViewModel.Id, "Expense", ExpenseViewModel.file23, "Expense");
                 }
             }
             catch (Exception ex)
@@ -896,14 +853,9 @@ namespace InvoiceDiskLast.Controllers
 
                 return new JsonResult { Data = new { Status = "Fail", Message = ex.Message.ToString() } };
             }
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return new JsonResult { Data = new { Status = "Success" } };
-            }
-            else
-            {
-                return new JsonResult { Data = new { Status = "Fail" } };
-            }
+            return new JsonResult { Data = new { Status = "Success", Id = ExpenseId } };
+
+
 
         }
 

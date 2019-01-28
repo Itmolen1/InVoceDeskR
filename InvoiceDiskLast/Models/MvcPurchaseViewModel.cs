@@ -53,7 +53,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<double> Vat6 { get; set; }
         public Nullable<double> Vat21 { get; set; }
         public Nullable<double> RowSubTotal { get; set; }
-        public HttpPostedFileWrapper[] file23 { get; set; }
+       
         public PurchaseOrderDetailsTable[] PurchaseOrderList { get; set; }
         public List<MVCPurchaseDetailsModel> PurchaseDetailslist { get; set; }
 

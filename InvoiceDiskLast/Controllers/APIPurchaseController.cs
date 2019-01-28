@@ -18,6 +18,8 @@ namespace InvoiceDiskLast.Controllers
     public class APIPurchaseController : ApiController
     {
 
+        string base64Guid = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
         private DBEntities db = new DBEntities();
 
         [ResponseType(typeof(MvcPurchaseModel))]
@@ -96,7 +98,7 @@ namespace InvoiceDiskLast.Controllers
                     VatAmount = p.Vat21 + p.Vat6,
                     CustomerName = p.ContactsTable.ContactName,
                     SalePerson = (p.UserTable.UserFname + " " + p.UserTable.UserLname != "" ? p.UserTable.UserFname + " " + p.UserTable.UserLname : p.UserTable.Username),
-                   
+
                     TotalAmount = p.PurchaseTotoalAmount,
 
 
@@ -119,6 +121,9 @@ namespace InvoiceDiskLast.Controllers
 
 
         }
+
+
+
 
 
         //get list
@@ -208,38 +213,139 @@ namespace InvoiceDiskLast.Controllers
 
         // PUT: api/APIQutation/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutPurchaseTable(int id, PurchaseOrderTable PurchaseTable)
+        public IHttpActionResult PutPurchaseTable(int id, MvcPurchaseViewModel PViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            string Ref = PViewModel.PurchaseOrderID.ToString();
+            //accountTransictionTable.CreationTime = null;
 
-            if (id != PurchaseTable.PurchaseOrderID)
-            {
-                return BadRequest();
-            }
+            PurchaseOrderTable PTable = new PurchaseOrderTable();
 
-            db.Entry(PurchaseTable).State = EntityState.Modified;
-
-            try
+            using (DBEntities _dbcotext = new DBEntities())
             {
-                db.SaveChanges();
-                return Ok(PurchaseTable);
-            }
-            catch (Exception ex)
-            {
-                if (!PurchaseTableExists(id))
+                using (DbContextTransaction transaction = _dbcotext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+                    try
+                    {
+
+                        PTable.PurchaseID = PViewModel.PurchaseId.ToString();
+                        PTable.PurchaseOrderID = Convert.ToInt32(PViewModel.PurchaseOrderID);
+                        PTable.PurchaseRefNumber = PViewModel.PurchaseRefNumber;
+                        PTable.CompanyId = PViewModel.CompanyId;
+                        PTable.VenderId = PViewModel.VenderId;
+                        PTable.UserId = PViewModel.UserId;
+                        PTable.PurchaseDate = PViewModel.PurchaseDate;
+                        PTable.PurchaseDueDate = PViewModel.PurchaseDueDate;
+                        PTable.PurchaseSubTotal = PViewModel.PurchaseSubTotal;
+                        PTable.PurchaseDiscountAmount = PViewModel.PurchaseDiscountAmount;
+                        PTable.PurchaseTotoalAmount = PViewModel.PurchaseTotoalAmount;
+                        PTable.PurchaseVenderNote = PViewModel.PurchaseVenderNote;
+                        PTable.Vat6 = PViewModel.Vat6;
+                        PTable.Vat21 = PViewModel.Vat21;
+                        PTable.Status = "open";
+                        PTable.Type = StatusEnum.Goods.ToString();
+
+                        _dbcotext.Entry(PTable).State = EntityState.Modified;
+                        _dbcotext.SaveChanges();
+
+                        if (PViewModel.PurchaseOrderList != null)
+                        {
+                            foreach (PurchaseOrderDetailsTable item in PViewModel.PurchaseOrderList)
+                            {
+                                PurchaseOrderDetailsTable DTable = new PurchaseOrderDetailsTable();
+                                DTable.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
+                                DTable.PurchaseItemId = item.PurchaseItemId;
+                                DTable.PurchaseDescription = item.PurchaseDescription;
+                                DTable.PurchaseQuantity = item.PurchaseQuantity;
+                                DTable.PurchaseItemRate = item.PurchaseItemRate;
+                                DTable.Type = item.Type;
+                                DTable.RowSubTotal = item.RowSubTotal;
+                                DTable.PurchaseDescription = item.PurchaseDescription;
+                                PTable.VenderId = PViewModel.VenderId;
+                                DTable.ServiceDate = item.ServiceDate;
+                                PTable.CompanyId = PViewModel.CompanyId;
+                                DTable.PurchaseTotal = item.PurchaseTotal;
+                                DTable.PurchaseVatPercentage = item.PurchaseVatPercentage;
+                                DTable.PurchaseId = PViewModel.PurchaseOrderID;
+
+                                if (DTable.PurchaseOrderDetailsId == 0)
+                                {
+                                    _dbcotext.PurchaseOrderDetailsTables.Add(DTable);
+                                    _dbcotext.SaveChanges();
+                                }
+                                else
+                                {
+                                    _dbcotext.Entry(DTable).State = EntityState.Modified;
+                                    _dbcotext.SaveChanges();
+                                }
+                            }
+
+                            AccountTransictionTable Account = new AccountTransictionTable();
+                            Account.TransictionDate = DateTime.Now;
+                            Account.TransictionNumber = base64Guid;
+                            Account.TransictionType = "Purchase";
+                            Account.CreationTime = DateTime.Now.TimeOfDay;
+                            Account.AddedBy = PViewModel.UserId;
+                            Account.FK_CompanyId = PViewModel.CompanyId;
+                            Account.FKPaymentTerm = 1;
+                            Account.TransictionRefrenceId = PTable.PurchaseOrderID.ToString();
+
+                            //Accounts payable  Transaction
+                            List<AccountTransictionTable> List = new List<AccountTransictionTable>();
+                            List = _dbcotext.AccountTransictionTables.Where(t => t.TransictionRefrenceId == Ref.ToString()).ToList();
+                            _dbcotext.AccountTransictionTables.RemoveRange(_dbcotext.AccountTransictionTables.Where(F => F.TransictionRefrenceId == Ref.ToString()));
+                            _dbcotext.SaveChanges();
+
+                            int Accountpayble = AccountIdByName("Accounts payable", (int)PViewModel.CompanyId);
+
+                            if (Accountpayble != 0)
+                            {
+                                Account.Dr = 0.00;
+                                Account.Cr = PViewModel.PurchaseTotoalAmount;
+                                Account.FK_AccountID = Accountpayble;
+                                _dbcotext.AccountTransictionTables.Add(Account);
+                                _dbcotext.SaveChanges();
+                            }
+
+                            // Cost Of Goods Transaction
+                            int CostOfGood = AccountIdByName("Cost Of Goods", (int)PViewModel.CompanyId);
+                            if (CostOfGood != 0)
+                            {
+                                Account.Cr = 0.00;
+                                Account.Dr = PViewModel.PurchaseSubTotal;
+                                Account.FK_AccountID = CostOfGood;
+                                _dbcotext.AccountTransictionTables.Add(Account);
+                                _dbcotext.SaveChanges();
+                            }
+
+                            // Input VAT Trnsaction
+                            int VatAccountId = AccountIdByName("Input VAT", (int)PViewModel.CompanyId);
+
+                            if (VatAccountId != 0)
+                            {
+                                Account.Cr = 0.00;
+                                Account.Dr = PViewModel.Vat21 + PViewModel.Vat6;
+                                Account.FK_AccountID = VatAccountId;
+                                _dbcotext.AccountTransictionTables.Add(Account);
+                                int Id = _dbcotext.SaveChanges();
+                            }
+
+                            MvcPurchaseModel pModel = new MvcPurchaseModel();
+                            pModel.PurchaseOrderID = PViewModel.PurchaseOrderID;
+                            transaction.Commit();
+                            return Ok(pModel);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return BadRequest();
+                    }
+                    return BadRequest();
                 }
             }
-
-
+            /////db.Entry(PurchaseTable).State = EntityState.Modified;          
+            //db.SaveChanges();
+            //        return Ok(PurchaseTable);
         }
 
 
@@ -249,23 +355,132 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
+        public int AccountIdByName(string Title, int CompanyId)
+        {
+            int AccountId = 0;
+            try
+            {
+                AccountTable Act = db.AccountTables.Where(Ac => Ac.AccountTitle.ToLower() == Title.ToLower() && Ac.FK_CompanyId == CompanyId).FirstOrDefault();
+                if (Act != null)
+                {
+                    AccountId = Act.AccountId;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return AccountId;
+        }
+
+
 
         [ResponseType(typeof(PurchaseOrderTable))]
-        public IHttpActionResult PostPurchase([FromBody] PurchaseOrderTable Purchasetable)
+        public IHttpActionResult PostPurchase([FromBody] MvcPurchaseViewModel PurchaseViewModel)
         {
             using (DBEntities entities = new DBEntities())
             {
-                Purchasetable = entities.PurchaseOrderTables.Add(Purchasetable);
-                entities.SaveChanges();
+                using (DbContextTransaction transaction = entities.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+                {
+                    try
+                    {
+                        PurchaseOrderTable _PTable = new PurchaseOrderTable();
 
-                //var massage = Request.CreateResponse(HttpStatusCode.Created, Purchasetable);
-                //massage.Headers.Location = new Uri(Request.RequestUri + Purchasetable.PurchaseOrderID.ToString());
-                //massage.Content.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
-                //massage.RequestMessage.Headers.Add("idd", Purchasetable.PurchaseOrderID.ToString());
-                //return massage;
+                        _PTable.CompanyId = PurchaseViewModel.CompanyId;
+                        _PTable.UserId = PurchaseViewModel.UserId;
+                        _PTable.PurchaseID = PurchaseViewModel.PurchaseId.ToString();
+                        _PTable.VenderId = PurchaseViewModel.VenderId;
+                        _PTable.PurchaseRefNumber = PurchaseViewModel.PurchaseRefNumber;
+                        _PTable.PurchaseDate = Convert.ToDateTime(PurchaseViewModel.PurchaseDate);
+                        _PTable.PurchaseDueDate = PurchaseViewModel.PurchaseDueDate;
+                        _PTable.PurchaseSubTotal = PurchaseViewModel.PurchaseSubTotal;
+                        _PTable.PurchaseDiscountAmount = PurchaseViewModel.PurchaseDiscountAmount;
+                        _PTable.PurchaseTotoalAmount = PurchaseViewModel.PurchaseTotoalAmount;
+                        _PTable.PurchaseVenderNote = PurchaseViewModel.PurchaseVenderNote;
+                        _PTable.Vat6 = PurchaseViewModel.Vat6;
+                        _PTable.Vat21 = PurchaseViewModel.Vat21;
+                        _PTable.Status = "open";
+                        _PTable.Type = StatusEnum.Goods.ToString();
 
-                return Ok(Purchasetable);
+                        _PTable = entities.PurchaseOrderTables.Add(_PTable);
+                        entities.SaveChanges();
 
+                        if (PurchaseViewModel.PurchaseOrderList != null)
+                        {
+                            foreach (PurchaseOrderDetailsTable item in PurchaseViewModel.PurchaseOrderList)
+                            {
+                                PurchaseOrderDetailsTable purchadeDetail = new PurchaseOrderDetailsTable();
+                                purchadeDetail.PurchaseOrderDetailsId = item.PurchaseOrderDetailsId;
+                                purchadeDetail.PurchaseItemId = item.PurchaseItemId;
+                                purchadeDetail.PurchaseDescription = item.PurchaseDescription;
+                                purchadeDetail.PurchaseQuantity = item.PurchaseQuantity;
+                                purchadeDetail.PurchaseItemRate = item.PurchaseItemRate;
+                                purchadeDetail.PurchaseTotal = item.PurchaseTotal;
+                                purchadeDetail.Type = item.Type;
+                                purchadeDetail.RowSubTotal = item.RowSubTotal;
+                                purchadeDetail.PurchaseVatPercentage = item.PurchaseVatPercentage;
+                                purchadeDetail.PurchaseId = _PTable.PurchaseOrderID;
+                                purchadeDetail.ServiceDate = item.ServiceDate;
+                                entities.PurchaseOrderDetailsTables.Add(purchadeDetail);
+                                entities.SaveChanges();
+                            }
+                        }
+
+                        AccountTransictionTable Account = new AccountTransictionTable();
+                        Account.TransictionDate = DateTime.Now;
+                        Account.TransictionNumber = base64Guid;
+                        Account.TransictionType = "Purchase";
+                        Account.CreationTime = DateTime.Now.TimeOfDay;
+                        Account.AddedBy = 1;
+                        Account.FK_CompanyId = PurchaseViewModel.CompanyId;
+                        Account.FKPaymentTerm = 1;
+                        Account.TransictionRefrenceId = _PTable.PurchaseOrderID.ToString();
+                        //Accounts payable  Transaction
+                        int Accountpayble = AccountIdByName("Accounts payable", (int)PurchaseViewModel.CompanyId);
+
+                        if (Accountpayble != 0)
+                        {
+                            Account.Dr = 0.00;
+                            Account.Cr = PurchaseViewModel.PurchaseTotoalAmount;
+                            Account.FK_AccountID = Accountpayble;
+                            entities.AccountTransictionTables.Add(Account);
+                            entities.SaveChanges();
+                        }
+                        // Cost Of Goods Transaction
+                        int CostOfGood = AccountIdByName("Cost Of Goods", (int)PurchaseViewModel.CompanyId);
+                        if (CostOfGood != 0)
+                        {
+                            Account.Cr = 0.00;
+                            Account.Dr = PurchaseViewModel.PurchaseSubTotal;
+                            Account.FK_AccountID = CostOfGood;
+                            entities.AccountTransictionTables.Add(Account);
+                            entities.SaveChanges();
+                        }
+
+                        // Input VAT Trnsaction
+                        int VatAccountId = AccountIdByName("Input VAT", (int)PurchaseViewModel.CompanyId);
+
+                        if (VatAccountId != 0)
+                        {
+                            Account.Cr = 0.00;
+                            Account.Dr = PurchaseViewModel.Vat21 + PurchaseViewModel.Vat6;
+                            Account.FK_AccountID = VatAccountId;
+                            entities.AccountTransictionTables.Add(Account);
+                            int Id = entities.SaveChanges();
+                        }
+
+                        MvcPurchaseModel pModel = new MvcPurchaseModel();
+                        pModel.PurchaseOrderID = _PTable.PurchaseOrderID;
+                        transaction.Commit();
+                        return Ok(pModel);
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return BadRequest();
+                    }
+                }
             }
         }
 

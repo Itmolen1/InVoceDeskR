@@ -5,6 +5,7 @@
     var purchaseModel = ViewBag.Purchase;
 }
 <input type="hidden" value="@(Model.PurchaseOrderID !=null ? Model.PurchaseOrderID:0)" id="PurchaseOrderID" />
+<input type="hidden" value="@(Model.UserId !=null ? Model.UserId:0)" id="UserId" />
 <div class="container">
     <div class="row" style="border: 1px solid black">
         <div class="col-md-12">
@@ -665,28 +666,52 @@
         }
     }
 
-    $(document).ready(function () {
-        $('.pClassG').change(function () {
+    //$(document).ready(function () {
+    //    $('.pClassG').change(function () {
 
-            var currentRow1 = $(this).closest('tr');
-            var value = currentRow1.find('.pClassG').val();
-            GetProductPriceByProductId(value, currentRow1);
-        });
-    })
+    //        var currentRow1 = $(this).closest('tr');
+    //        var value = currentRow1.find('.pClassG').val();
+    //        GetProductPriceByProductId(value, currentRow1);
+    //    });
+    //})
 
     $('#mainrow .pClassG').change(function () {
 
-        var currentRow = $(this).closest('tr');
-        var value = currentRow.find('.pClassG').val();
-        GetProductPriceByProductId(value, currentRow);
+        var currentRow = $(this).closest("tr");
+        var v = $(this).val();
+        if (v == 0) {
+
+            var vat = currentRow.find('.VATG').val(0);
+            currentRow.find('.rateG').val(0);
+            currentRow.find('.FTotalG').val(0);
+            currentRow.find('.RowTotalG').val(0);
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
+        }
+        else {
+            var value = currentRow.find('.pClassG').val();
+            GetProductPriceByProductId(value, currentRow);
+        }
     });
 
     $('#mainrow1 .pClassG').change(function () {
-
-        var currentRow = $(this).closest('tr');
-        var value = currentRow.find('.pClassG').val();
-
-        GetProductPriceByProductId(value, currentRow);
+        debugger;
+        var currentRow = $(this).closest("tr");
+        var v = $(this).val();
+        if (v == 0) {
+            var vat = currentRow.find('.VATG').val(0);
+            currentRow.find('.rateG').val(0);
+            currentRow.find('.FTotalG').val(0);
+            currentRow.find('.RowTotalG').val(0);
+            CombineTotalAndSubtotal();
+            CombineTotal();
+            CalculateVateTotal();
+        }
+        else {
+            var value = currentRow.find('.pClassG').val();
+            GetProductPriceByProductId(value, currentRow);
+        }
     });
 
     function GetProductPriceByProductId(Id, CurrentRow) {
@@ -733,10 +758,8 @@
                     vat = CurrentRow.find('.VATG').val();
                     var it = CurrentRow.find('.RowTotalG').val();
                     RowSubTalSubtotal(vat, CurrentRow);
-
                 },
                 error: function (errormessage) {
-
                 }
             });
         }
@@ -821,6 +844,9 @@
 
     function CreateQuation(Route, btnName) {
 
+        debugger;
+
+
         var list = [], orderItem, CurrentRow;
         var formData = new FormData($('#frmAccount')[0]);
         var files = $("#uploadfile")[0];
@@ -871,8 +897,6 @@
             }
         });
 
-
-
         if (list.length == 0) {
             $('#BTW6').text('');
             $('#BTW21').text('');
@@ -895,8 +919,8 @@
             Vat21: $('#BTW21').text(),
             VenderId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
+            UserId: $('#UserId').val(),
         };
-
 
         for (var key in empObj) {
             formData.append(key, empObj[key]);
@@ -1027,8 +1051,6 @@
             total: purchaseTotal
         })
 
-
-
         $.ajax({
             url: "/Purchase/DeleteInvoice",
             type: "POST",
@@ -1128,8 +1150,6 @@
                             loaderBg: '#FF0000'  // To change the background
                         });
                     }
-
-
 
                     if (result != "") {
                         $('#upload123').append("<tr><td><span class='badge badge-info FileName'><i class='icon-minus-sign'></i>" + result.FileName + "</span></td><td><button class='btn btn-danger remove' type='button'>x</button></td><td><input type='hidden' class='form-control filepath' value='" + result.FilePath + "' name='FilePath'></td>")

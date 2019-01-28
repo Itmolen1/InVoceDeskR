@@ -13,13 +13,13 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> ACCOUNT_ID { get; set; }
         public Nullable<int> VENDOR_ID { get; set; }
         public string notes { get; set; }
-        public Nullable<decimal> SUBTOTAL { get; set; }
-        public Nullable<decimal> VAT_AMOUNT { get; set; }
-        public Nullable<decimal> GRAND_TOTAL { get; set; }
+        public Nullable<double> SUBTOTAL { get; set; }
+        public Nullable<double> VAT_AMOUNT { get; set; }
+        public Nullable<double> GRAND_TOTAL { get; set; }
         public Nullable<int> user_id { get; set; }
 
-        public Nullable<decimal> Vat6 { get; set; }
-        public Nullable<decimal> Vat21 { get; set; }
+        public Nullable<double> Vat6 { get; set; }
+        public Nullable<double> Vat21 { get; set; }
 
         public string PaidThrougAccount { get; set; }
         public string VenderName { get; set; }
@@ -32,9 +32,9 @@ namespace InvoiceDiskLast.Models
 
         public int EXPENSE_ACCOUNT_ID { get; set; }
         public string DESCRIPTION { get; set; }
-        public Nullable<decimal> AMOUNT { get; set; }
-        public Nullable<decimal> TAX_PERCENT { get; set; }
-        public Nullable<decimal> TAX_AMOUNT { get; set; }
+        public Nullable<double> AMOUNT { get; set; }
+        public Nullable<double> TAX_PERCENT { get; set; }
+        public Nullable<double> TAX_AMOUNT { get; set; }
 
         public Nullable<int> expense_id { get; set; }
 
@@ -47,7 +47,7 @@ namespace InvoiceDiskLast.Models
         public Nullable<DateTime> AddedDate { get; set; }
 
 
-        public HttpPostedFileWrapper[] file23 { get; set; }
+        
         public List<ExpenseDetail> ExpensenDetailList { get; set; }
 
 

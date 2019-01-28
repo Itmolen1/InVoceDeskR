@@ -25,14 +25,14 @@ namespace InvoiceDiskLast.Models
         public Nullable<int> ACCOUNT_ID { get; set; }
         public Nullable<int> VENDOR_ID { get; set; }
         public string notes { get; set; }
-        public Nullable<decimal> SUBTOTAL { get; set; }
-        public Nullable<decimal> VAT_AMOUNT { get; set; }
-        public Nullable<decimal> GRAND_TOTAL { get; set; }
+        public Nullable<double> SUBTOTAL { get; set; }
+        public Nullable<double> VAT_AMOUNT { get; set; }
+        public Nullable<double> GRAND_TOTAL { get; set; }
         public Nullable<int> user_id { get; set; }
         public Nullable<int> comapny_id { get; set; }
         public Nullable<System.DateTime> AddedDate { get; set; }
-        public Nullable<decimal> Vat6 { get; set; }
-        public Nullable<decimal> Vat21 { get; set; }
+        public Nullable<double> Vat6 { get; set; }
+        public Nullable<double> Vat21 { get; set; }
     
         public virtual ComapnyInfo ComapnyInfo { get; set; }
         public virtual ContactsTable ContactsTable { get; set; }

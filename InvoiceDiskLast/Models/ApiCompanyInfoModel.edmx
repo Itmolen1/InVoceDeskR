@@ -190,14 +190,14 @@
           <Property Name="ACCOUNT_ID" Type="int" />
           <Property Name="VENDOR_ID" Type="int" />
           <Property Name="notes" Type="varchar" MaxLength="500" />
-          <Property Name="SUBTOTAL" Type="decimal" Precision="12" Scale="2" />
-          <Property Name="VAT_AMOUNT" Type="decimal" Precision="12" Scale="2" />
-          <Property Name="GRAND_TOTAL" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="SUBTOTAL" Type="float" />
+          <Property Name="VAT_AMOUNT" Type="float" />
+          <Property Name="GRAND_TOTAL" Type="float" />
           <Property Name="user_id" Type="int" />
           <Property Name="comapny_id" Type="int" />
           <Property Name="AddedDate" Type="datetime" />
-          <Property Name="Vat6" Type="decimal" Precision="12" Scale="2" />
-          <Property Name="Vat21" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="Vat6" Type="float" />
+          <Property Name="Vat21" Type="float" />
         </EntityType>
         <EntityType Name="ExpenseDetail">
           <Key>
@@ -206,10 +206,10 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EXPENSE_ACCOUNT_ID" Type="int" />
           <Property Name="DESCRIPTION" Type="varchar" MaxLength="500" />
-          <Property Name="AMOUNT" Type="decimal" Precision="12" Scale="2" />
-          <Property Name="TAX_PERCENT" Type="decimal" Precision="5" Scale="2" />
-          <Property Name="TAX_AMOUNT" Type="decimal" Precision="12" Scale="2" />
-          <Property Name="SUBTOTAL" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="AMOUNT" Type="float" />
+          <Property Name="TAX_PERCENT" Type="float" />
+          <Property Name="TAX_AMOUNT" Type="float" />
+          <Property Name="SUBTOTAL" Type="float" />
           <Property Name="expense_id" Type="int" />
           <Property Name="user_id" Type="int" />
           <Property Name="comapny_id" Type="int" />
@@ -1333,7 +1333,6 @@
           <Parameter Name="QutationID" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="AccountTables" EntityType="APIcompanyModel.AccountTable" />
-          <EntitySet Name="ExpenseDetails" EntityType="APIcompanyModel.ExpenseDetail" />
           <AssociationSet Name="FK_AccountTable_ComapnyInfo" Association="APIcompanyModel.FK_AccountTable_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="AccountTable" EntitySet="AccountTables" />
@@ -1345,10 +1344,6 @@
           <AssociationSet Name="FK_AccountTransictionTable_AccountTable" Association="APIcompanyModel.FK_AccountTransictionTable_AccountTable">
             <End Role="AccountTable" EntitySet="AccountTables" />
             <End Role="AccountTransictionTable" EntitySet="AccountTransictionTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExpenseDetail_AccountTable" Association="APIcompanyModel.FK_ExpenseDetail_AccountTable">
-            <End Role="AccountTable" EntitySet="AccountTables" />
-            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_BillDetailTable_BillTable" Association="APIcompanyModel.FK_BillDetailTable_BillTable">
             <End Role="BillTable" EntitySet="BillTables" />
@@ -1378,7 +1373,21 @@
             <End Role="UserTable" EntitySet="UserTables" />
             <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
           </AssociationSet>
+          <EntitySet Name="PurchaseOrderDetailsTables" EntityType="APIcompanyModel.PurchaseOrderDetailsTable" />
+          <AssociationSet Name="FK_PurchaseOrderDetailsTable_ProductTable" Association="APIcompanyModel.FK_PurchaseOrderDetailsTable_ProductTable">
+            <End Role="ProductTable" EntitySet="ProductTables" />
+            <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
+            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
+            <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
+          </AssociationSet>
           <EntitySet Name="EXPENSEs" EntityType="APIcompanyModel.EXPENSE" />
+          <EntitySet Name="ExpenseDetails" EntityType="APIcompanyModel.ExpenseDetail" />
+          <AssociationSet Name="FK_ExpenseDetail_AccountTable" Association="APIcompanyModel.FK_ExpenseDetail_AccountTable">
+            <End Role="AccountTable" EntitySet="AccountTables" />
+            <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_EXPENSE_ComapnyInfo" Association="APIcompanyModel.FK_EXPENSE_ComapnyInfo">
             <End Role="ComapnyInfo" EntitySet="ComapnyInfoes" />
             <End Role="EXPENSE" EntitySet="EXPENSEs" />
@@ -1394,15 +1403,6 @@
           <AssociationSet Name="FK_ExpenseDetail_EXPENSE" Association="APIcompanyModel.FK_ExpenseDetail_EXPENSE">
             <End Role="EXPENSE" EntitySet="EXPENSEs" />
             <End Role="ExpenseDetail" EntitySet="ExpenseDetails" />
-          </AssociationSet>
-          <EntitySet Name="PurchaseOrderDetailsTables" EntityType="APIcompanyModel.PurchaseOrderDetailsTable" />
-          <AssociationSet Name="FK_PurchaseOrderDetailsTable_ProductTable" Association="APIcompanyModel.FK_PurchaseOrderDetailsTable_ProductTable">
-            <End Role="ProductTable" EntitySet="ProductTables" />
-            <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable" Association="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
-            <End Role="PurchaseOrderTable" EntitySet="PurchaseOrderTables" />
-            <End Role="PurchaseOrderDetailsTable" EntitySet="PurchaseOrderDetailsTables" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="QutationDetailsTable">
@@ -2228,23 +2228,6 @@
           <NavigationProperty Name="AccountTransictionTables" Relationship="APIcompanyModel.FK_AccountTransictionTable_AccountTable" FromRole="AccountTable" ToRole="AccountTransictionTable" />
           <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="AccountTable" ToRole="ExpenseDetail" />
         </EntityType>
-        <EntityType Name="ExpenseDetail">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EXPENSE_ACCOUNT_ID" Type="Int32" />
-          <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="AMOUNT" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="TAX_PERCENT" Type="Decimal" Precision="5" Scale="2" />
-          <Property Name="TAX_AMOUNT" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="SUBTOTAL" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="expense_id" Type="Int32" />
-          <Property Name="user_id" Type="Int32" />
-          <Property Name="comapny_id" Type="Int32" />
-          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="ExpenseDetail" ToRole="AccountTable" />
-          <NavigationProperty Name="EXPENSE" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="ExpenseDetail" ToRole="EXPENSE" />
-        </EntityType>
         <Association Name="FK_AccountTable_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
           <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="*" />
@@ -2278,18 +2261,6 @@
             </Principal>
             <Dependent Role="AccountTransictionTable">
               <PropertyRef Name="FK_AccountID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExpenseDetail_AccountTable">
-          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AccountTable">
-              <PropertyRef Name="AccountId" />
-            </Principal>
-            <Dependent Role="ExpenseDetail">
-              <PropertyRef Name="EXPENSE_ACCOUNT_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2377,6 +2348,48 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="PurchaseOrderDetailsTable">
+          <Key>
+            <PropertyRef Name="PurchaseOrderDetailsId" />
+          </Key>
+          <Property Name="PurchaseOrderDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseItemId" Type="Int32" />
+          <Property Name="PurchaseDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseQuantity" Type="Int32" />
+          <Property Name="PurchaseItemRate" Type="Double" />
+          <Property Name="PurchaseTotal" Type="Double" />
+          <Property Name="PurchaseVatPercentage" Type="Double" />
+          <Property Name="PurchaseId" Type="Int32" />
+          <Property Name="RowSubTotal" Type="Double" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ProductTable" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_ProductTable" FromRole="PurchaseOrderDetailsTable" ToRole="ProductTable" />
+          <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderDetailsTable" ToRole="PurchaseOrderTable" />
+        </EntityType>
+        <Association Name="FK_PurchaseOrderDetailsTable_ProductTable">
+          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderDetailsTable" Role="PurchaseOrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTable">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="PurchaseOrderDetailsTable">
+              <PropertyRef Name="PurchaseItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
+          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.PurchaseOrderDetailsTable" Role="PurchaseOrderDetailsTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PurchaseOrderTable">
+              <PropertyRef Name="PurchaseOrderID" />
+            </Principal>
+            <Dependent Role="PurchaseOrderDetailsTable">
+              <PropertyRef Name="PurchaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="EXPENSE">
           <Key>
             <PropertyRef Name="Id" />
@@ -2386,19 +2399,48 @@
           <Property Name="ACCOUNT_ID" Type="Int32" />
           <Property Name="VENDOR_ID" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SUBTOTAL" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="VAT_AMOUNT" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="GRAND_TOTAL" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="SUBTOTAL" Type="Double" />
+          <Property Name="VAT_AMOUNT" Type="Double" />
+          <Property Name="GRAND_TOTAL" Type="Double" />
           <Property Name="user_id" Type="Int32" />
           <Property Name="comapny_id" Type="Int32" />
           <Property Name="AddedDate" Type="DateTime" Precision="3" />
-          <Property Name="Vat6" Type="Decimal" Precision="12" Scale="2" />
-          <Property Name="Vat21" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="Vat6" Type="Double" />
+          <Property Name="Vat21" Type="Double" />
           <NavigationProperty Name="ComapnyInfo" Relationship="APIcompanyModel.FK_EXPENSE_ComapnyInfo" FromRole="EXPENSE" ToRole="ComapnyInfo" />
           <NavigationProperty Name="ContactsTable" Relationship="APIcompanyModel.FK_EXPENSE_ContactsTable" FromRole="EXPENSE" ToRole="ContactsTable" />
           <NavigationProperty Name="UserTable" Relationship="APIcompanyModel.FK_EXPENSE_UserTable" FromRole="EXPENSE" ToRole="UserTable" />
           <NavigationProperty Name="ExpenseDetails" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="EXPENSE" ToRole="ExpenseDetail" />
         </EntityType>
+        <EntityType Name="ExpenseDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EXPENSE_ACCOUNT_ID" Type="Int32" />
+          <Property Name="DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="AMOUNT" Type="Double" />
+          <Property Name="TAX_PERCENT" Type="Double" />
+          <Property Name="TAX_AMOUNT" Type="Double" />
+          <Property Name="SUBTOTAL" Type="Double" />
+          <Property Name="expense_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="comapny_id" Type="Int32" />
+          <NavigationProperty Name="AccountTable" Relationship="APIcompanyModel.FK_ExpenseDetail_AccountTable" FromRole="ExpenseDetail" ToRole="AccountTable" />
+          <NavigationProperty Name="EXPENSE" Relationship="APIcompanyModel.FK_ExpenseDetail_EXPENSE" FromRole="ExpenseDetail" ToRole="EXPENSE" />
+        </EntityType>
+        <Association Name="FK_ExpenseDetail_AccountTable">
+          <End Type="APIcompanyModel.AccountTable" Role="AccountTable" Multiplicity="0..1" />
+          <End Type="APIcompanyModel.ExpenseDetail" Role="ExpenseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountTable">
+              <PropertyRef Name="AccountId" />
+            </Principal>
+            <Dependent Role="ExpenseDetail">
+              <PropertyRef Name="EXPENSE_ACCOUNT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EXPENSE_ComapnyInfo">
           <End Type="APIcompanyModel.ComapnyInfo" Role="ComapnyInfo" Multiplicity="0..1" />
           <End Type="APIcompanyModel.EXPENSE" Role="EXPENSE" Multiplicity="*" />
@@ -2444,48 +2486,6 @@
             </Principal>
             <Dependent Role="ExpenseDetail">
               <PropertyRef Name="expense_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="PurchaseOrderDetailsTable">
-          <Key>
-            <PropertyRef Name="PurchaseOrderDetailsId" />
-          </Key>
-          <Property Name="PurchaseOrderDetailsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PurchaseItemId" Type="Int32" />
-          <Property Name="PurchaseDescription" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="PurchaseQuantity" Type="Int32" />
-          <Property Name="PurchaseItemRate" Type="Double" />
-          <Property Name="PurchaseTotal" Type="Double" />
-          <Property Name="PurchaseVatPercentage" Type="Double" />
-          <Property Name="PurchaseId" Type="Int32" />
-          <Property Name="RowSubTotal" Type="Double" />
-          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="ServiceDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ProductTable" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_ProductTable" FromRole="PurchaseOrderDetailsTable" ToRole="ProductTable" />
-          <NavigationProperty Name="PurchaseOrderTable" Relationship="APIcompanyModel.FK_PurchaseOrderDetailsTable_PurchaseOrderTable" FromRole="PurchaseOrderDetailsTable" ToRole="PurchaseOrderTable" />
-        </EntityType>
-        <Association Name="FK_PurchaseOrderDetailsTable_ProductTable">
-          <End Type="APIcompanyModel.ProductTable" Role="ProductTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.PurchaseOrderDetailsTable" Role="PurchaseOrderDetailsTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProductTable">
-              <PropertyRef Name="ProductId" />
-            </Principal>
-            <Dependent Role="PurchaseOrderDetailsTable">
-              <PropertyRef Name="PurchaseItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PurchaseOrderDetailsTable_PurchaseOrderTable">
-          <End Type="APIcompanyModel.PurchaseOrderTable" Role="PurchaseOrderTable" Multiplicity="0..1" />
-          <End Type="APIcompanyModel.PurchaseOrderDetailsTable" Role="PurchaseOrderDetailsTable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PurchaseOrderTable">
-              <PropertyRef Name="PurchaseOrderID" />
-            </Principal>
-            <Dependent Role="PurchaseOrderDetailsTable">
-              <PropertyRef Name="PurchaseId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2990,19 +2990,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ExpenseDetails">
-            <EntityTypeMapping TypeName="APIcompanyModel.ExpenseDetail">
-              <MappingFragment StoreEntitySet="ExpenseDetail">
-                <ScalarProperty Name="comapny_id" ColumnName="comapny_id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="expense_id" ColumnName="expense_id" />
-                <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
-                <ScalarProperty Name="TAX_AMOUNT" ColumnName="TAX_AMOUNT" />
-                <ScalarProperty Name="TAX_PERCENT" ColumnName="TAX_PERCENT" />
-                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
-                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
-                <ScalarProperty Name="EXPENSE_ACCOUNT_ID" ColumnName="EXPENSE_ACCOUNT_ID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+          <EntitySetMapping Name="PurchaseOrderDetailsTables">
+            <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderDetailsTable">
+              <MappingFragment StoreEntitySet="PurchaseOrderDetailsTable">
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+                <ScalarProperty Name="PurchaseVatPercentage" ColumnName="PurchaseVatPercentage" />
+                <ScalarProperty Name="PurchaseTotal" ColumnName="PurchaseTotal" />
+                <ScalarProperty Name="PurchaseItemRate" ColumnName="PurchaseItemRate" />
+                <ScalarProperty Name="PurchaseQuantity" ColumnName="PurchaseQuantity" />
+                <ScalarProperty Name="PurchaseDescription" ColumnName="PurchaseDescription" />
+                <ScalarProperty Name="PurchaseItemId" ColumnName="PurchaseItemId" />
+                <ScalarProperty Name="PurchaseOrderDetailsId" ColumnName="PurchaseOrderDetailsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3025,20 +3026,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="PurchaseOrderDetailsTables">
-            <EntityTypeMapping TypeName="APIcompanyModel.PurchaseOrderDetailsTable">
-              <MappingFragment StoreEntitySet="PurchaseOrderDetailsTable">
-                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="RowSubTotal" ColumnName="RowSubTotal" />
-                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-                <ScalarProperty Name="PurchaseVatPercentage" ColumnName="PurchaseVatPercentage" />
-                <ScalarProperty Name="PurchaseTotal" ColumnName="PurchaseTotal" />
-                <ScalarProperty Name="PurchaseItemRate" ColumnName="PurchaseItemRate" />
-                <ScalarProperty Name="PurchaseQuantity" ColumnName="PurchaseQuantity" />
-                <ScalarProperty Name="PurchaseDescription" ColumnName="PurchaseDescription" />
-                <ScalarProperty Name="PurchaseItemId" ColumnName="PurchaseItemId" />
-                <ScalarProperty Name="PurchaseOrderDetailsId" ColumnName="PurchaseOrderDetailsId" />
+          <EntitySetMapping Name="ExpenseDetails">
+            <EntityTypeMapping TypeName="APIcompanyModel.ExpenseDetail">
+              <MappingFragment StoreEntitySet="ExpenseDetail">
+                <ScalarProperty Name="comapny_id" ColumnName="comapny_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="expense_id" ColumnName="expense_id" />
+                <ScalarProperty Name="SUBTOTAL" ColumnName="SUBTOTAL" />
+                <ScalarProperty Name="TAX_AMOUNT" ColumnName="TAX_AMOUNT" />
+                <ScalarProperty Name="TAX_PERCENT" ColumnName="TAX_PERCENT" />
+                <ScalarProperty Name="AMOUNT" ColumnName="AMOUNT" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="EXPENSE_ACCOUNT_ID" ColumnName="EXPENSE_ACCOUNT_ID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
