@@ -157,6 +157,7 @@ namespace InvoiceDiskLast.Controllers
                         Account.TransictionDate = DateTime.Now;
                         Account.TransictionNumber = base64Guid;
                         Account.TransictionType = "Invoice";
+                        Account.TransictionRefrenceId = Table.InvoiceID.ToString();
                         Account.CreationTime = DateTime.Now.TimeOfDay;
                         Account.AddedBy = 1;
                         Account.FK_CompanyId = invoiceViewModel.CompanyId;
@@ -213,7 +214,6 @@ namespace InvoiceDiskLast.Controllers
         public IHttpActionResult GetInvoiceTable(int id)
         {
             MVCInvoiceModel invoiceModel = new MVCInvoiceModel();
-
             invoiceModel = db.InvoiceTables.Where(q => q.InvoiceID == id).Select(c => new MVCInvoiceModel
             {
                 InvoiceID = c.InvoiceID,
@@ -246,8 +246,6 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
         [Route("api/GetId/{Id:int}")]
         public IHttpActionResult GetId12(int Id)
         {
@@ -268,38 +266,146 @@ namespace InvoiceDiskLast.Controllers
         }
 
 
-
-
-
-
         [Route("api/UpdateInvoice/{id:int}")]
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutInvoiceTable(int id, InvoiceTable invoiceTable)
+        public IHttpActionResult PutInvoiceTable(int id, InvoiceViewModel invoiceViewModel)
         {
-            if (!ModelState.IsValid)
+
+            string Ref = invoiceViewModel.InvoiceID.ToString();
+
+            InvoiceTable Table = new InvoiceTable();
+
+            using (DBEntities _dbcotext = new DBEntities())
             {
-                return BadRequest(ModelState);
+                using (DbContextTransaction transaction = _dbcotext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+                {
+                    try
+                    {
+                        Table.Invoice_ID = invoiceViewModel.Invoice_ID;
+                        Table.CompanyId = invoiceViewModel.CompanyId;
+                        Table.UserId = invoiceViewModel.UserId;
+                        Table.ContactId = invoiceViewModel.ContactId;
+                        Table.RefNumber = invoiceViewModel.RefNumber;
+                        Table.InvoiceDate = invoiceViewModel.InvoiceDate;
+                        Table.InvoiceDueDate = invoiceViewModel.InvoiceDueDate;
+                        Table.SubTotal = invoiceViewModel.SubTotal;
+                        Table.InvoiceID = Convert.ToInt32(invoiceViewModel.InvoiceID);
+                        Table.DiscountAmount = invoiceViewModel.DiscountAmount;
+                        Table.TotalAmount = invoiceViewModel.TotalAmount;
+                        Table.CustomerNote = invoiceViewModel.CustomerNote;
+                        Table.TotalVat21 = invoiceViewModel.TotalVat21;
+                        Table.TotalVat6 = invoiceViewModel.TotalVat6;
+                        Table.Type = StatusEnum.Goods.ToString();
+                        Table.Status = "accepted";
+                        Table.InvoiceDescription = invoiceViewModel.InvoiceDescription;
+
+                        if (Table.TotalVat6 != null)
+                        {
+                            double vat61 = Math.Round((double)Table.TotalVat6, 2, MidpointRounding.AwayFromZero);
+                            Table.TotalVat6 = vat61;
+                        }
+                        if (Table.TotalVat21 != null)
+                        {
+                            double vat21 = Math.Round((double)Table.TotalVat21, 2, MidpointRounding.AwayFromZero);
+                            Table.TotalVat21 = vat21;
+                        }
+
+
+                        _dbcotext.Entry(Table).State = EntityState.Modified;
+                        _dbcotext.SaveChanges();
+
+                        if (invoiceViewModel.InvoiceDetailsTable != null)
+                        {
+                            foreach (InvoiceDetailsTable InvoiceDetailsList in invoiceViewModel.InvoiceDetailsTable)
+                            {
+                                InvoiceDetailsTable InvoiceDetails = new InvoiceDetailsTable();
+                                InvoiceDetails.ItemId = Convert.ToInt32(InvoiceDetailsList.ItemId);
+                                InvoiceDetails.InvoiceId = Table.InvoiceID;
+                                InvoiceDetails.InvoiceDetailId = InvoiceDetailsList.InvoiceDetailId;
+                                InvoiceDetails.Description = InvoiceDetailsList.Description;
+                                InvoiceDetails.Quantity = InvoiceDetailsList.Quantity;
+                                InvoiceDetails.Rate = Convert.ToDouble(InvoiceDetailsList.Rate);
+                                InvoiceDetails.Total = Convert.ToDouble(InvoiceDetailsList.Total);
+                                InvoiceDetails.ServiceDate = InvoiceDetailsList.ServiceDate;
+                                InvoiceDetails.RowSubTotal = InvoiceDetailsList.RowSubTotal;
+                                InvoiceDetails.Vat = Convert.ToDouble(InvoiceDetailsList.Vat);
+                                InvoiceDetails.Type = InvoiceDetailsList.Type;
+
+                                if (InvoiceDetailsList.InvoiceDetailId == 0)
+                                {
+                                    _dbcotext.InvoiceDetailsTables.Add(InvoiceDetails);
+                                    _dbcotext.SaveChanges();
+                                }
+                                else
+                                {
+                                    _dbcotext.Entry(InvoiceDetails).State = EntityState.Modified;
+                                    _dbcotext.SaveChanges();
+                                }
+                            }
+
+                            //Accounts payable  Transaction
+                            List<AccountTransictionTable> List = new List<AccountTransictionTable>();
+                            List = _dbcotext.AccountTransictionTables.Where(t => t.TransictionRefrenceId == Ref.ToString()).ToList();
+                            _dbcotext.AccountTransictionTables.RemoveRange(_dbcotext.AccountTransictionTables.Where(F => F.TransictionRefrenceId == Ref.ToString()));
+                            _dbcotext.SaveChanges();
+
+                            AccountTransictionTable Account = new AccountTransictionTable();
+                            Account.TransictionDate = DateTime.Now;
+                            Account.TransictionNumber = base64Guid;
+                            Account.TransictionType = "Invoice";
+                            Account.CreationTime = DateTime.Now.TimeOfDay;
+                            Account.AddedBy = 1;
+                            Account.TransictionRefrenceId = invoiceViewModel.InvoiceID.ToString();
+                            Account.FK_CompanyId = invoiceViewModel.CompanyId;
+                            Account.FKPaymentTerm = 1;
+
+                            //Cash Account Transaction
+                            int CashtAccountId = AccountIdByName("Cash on hand", (int)invoiceViewModel.CompanyId);
+                            if (CashtAccountId != 0)
+                            {
+                                Account.Dr = invoiceViewModel.TotalAmount;
+                                Account.Cr = 0.00;
+                                Account.FK_AccountID = CashtAccountId;
+                                _dbcotext.AccountTransictionTables.Add(Account);
+                                _dbcotext.SaveChanges();
+                            }
+                            // Sale Account Transaction
+                            int SaleAccount = AccountIdByName("Seles", (int)invoiceViewModel.CompanyId);
+                            if (SaleAccount != 0)
+                            {
+                                Account.Cr = invoiceViewModel.SubTotal;
+                                Account.Dr = 0.00;
+                                Account.FK_AccountID = SaleAccount;
+                                _dbcotext.AccountTransictionTables.Add(Account);
+                                _dbcotext.SaveChanges();
+                            }
+                            // vat Out Put Trnsaction
+                            int VatAccountId = AccountIdByName("VAT Payable", (int)invoiceViewModel.CompanyId);
+                            if (VatAccountId != 0)
+                            {
+                                Account.Cr = invoiceViewModel.TotalVat6 + invoiceViewModel.TotalVat21;
+                                Account.Dr = 0.00;
+                                Account.FK_AccountID = VatAccountId;
+                                _dbcotext.AccountTransictionTables.Add(Account);
+                                int Id = _dbcotext.SaveChanges();
+                            }
+
+                            InvoiceModel inc = new InvoiceModel();
+                            inc.InvoiceID = Table.InvoiceID;
+                            transaction.Commit();
+                            return Ok(inc);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                        //return BadRequest();
+                    }
+                    return BadRequest();
+                }
+
             }
-
-            if (id != invoiceTable.InvoiceID)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(invoiceTable).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-                return Ok(invoiceTable);
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest();
-            }
-
-
         }
     }
 }

@@ -329,10 +329,9 @@ namespace InvoiceDiskLast.Controllers
                                 int Id = _dbcotext.SaveChanges();
                             }
 
-                            MvcPurchaseModel pModel = new MvcPurchaseModel();
-                            pModel.PurchaseOrderID = PViewModel.PurchaseOrderID;
+                           
                             transaction.Commit();
-                            return Ok(pModel);
+                            return Ok();
                         }
                     }
                     catch (Exception)

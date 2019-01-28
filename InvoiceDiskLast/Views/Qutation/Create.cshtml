@@ -234,7 +234,9 @@
 
                 $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
                 $('span.error', $newRow).remove();
-                $('.tbodyGood').prepend($newRow);
+                $('.tbodyGood tr:last').before($newRow);
+
+               
                 $(".FTotalG").prop('disabled', true);
                 $('#mainrow #SelectProductQutationG').val('0');
                 $('#mainrow .quantityG').val('');
@@ -298,7 +300,10 @@
 
                 $('span.error', $newRow).remove();
 
-                $('.tbodyService').prepend($newRow);
+               
+
+                $('.tbodyService tr:last').before($newRow);
+
 
                 $(".FTotalG").prop('disabled', true);
 
@@ -872,7 +877,7 @@
                         Quantity: parseInt($(this).find('.quantityG').val()),
                         Rate: parseFloat($(this).find('.rateG').val()),
                         Total: parseFloat($(this).find('.FTotalG').val()),
-                        Description: $(this).find('#Discription').val(),
+                        Description: $(this).find('.Discription').val(),
                         Type: "Service",
                         ServiceDate: $(this).find('.ServiceDate').val(),
                         Vat: parseFloat($(this).find('.VATG').val()),

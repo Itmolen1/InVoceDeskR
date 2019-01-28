@@ -13,7 +13,7 @@
     @Html.HiddenFor(model => model.InvoiceID, new { htmlAttribute = new { id = "InvoiceID" } })
 
 
-
+    @Html.HiddenFor(model => model.InvoiceDetailId, new { htmlAttribute = new { id = "InvoiceDetailId" } })
     <div class="row" style="border:1px solid black">
         <div class="col-md-12">
             @Html.Partial("~/Views/Shared/PartialViews/HeaderPartial.cshtml")
@@ -926,7 +926,7 @@
         CalculateVateTotal();
     });
 
-    $('#SavePrint').click(function () {
+    $('#saveprintandsendtoyourselfsave').click(function () {
 
         $(this).val("please wait...");
 
@@ -984,8 +984,10 @@
             $('#gtotal').text('');
         }
 
+
         var empObj = {
             Invoice_ID: $('#Number_ID').val(),
+            InvoiceID: $('#InvoiceID').val(),
             RefNumber: $('#ReferenceNumber').val(),
             InvoiceDate: $('#FromDate').val(),
             InvoiceDueDate: $('#DueDate').val(),
@@ -999,6 +1001,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
+            InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
 
@@ -1112,6 +1115,7 @@
         }
         var empObj = {
             Invoice_ID: $('#Number_ID').val(),
+            InvoiceID: $('#InvoiceID').val(),
             RefNumber: $('#ReferenceNumber').val(),
             InvoiceDate: $('#FromDate').val(),
             InvoiceDueDate: $('#DueDate').val(),
@@ -1125,6 +1129,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
+            InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
 
@@ -1231,6 +1236,7 @@
 
         var empObj = {
             Invoice_ID: $('#Number_ID').val(),
+            InvoiceID: $('#InvoiceID').val(),
             RefNumber: $('#ReferenceNumber').val(),
             InvoiceDate: $('#FromDate').val(),
             InvoiceDueDate: $('#DueDate').val(),
@@ -1244,6 +1250,7 @@
             CustomerNote: $('#CustomerNote').val(),
             ContactId: $('#ConatctId').val(),
             CompanyId: $('#CompanyID').val(),
+            InvoiceDetailId: $(this).find('#InvoiceDetailId').val(),
             InvoiceDescription: $('#InvoiceDescription').val(),
         };
 

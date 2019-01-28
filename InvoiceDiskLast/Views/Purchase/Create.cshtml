@@ -233,7 +233,9 @@
 
             $("#SelectProductQutationG,#QuantityG,#RateG,#FTotalG,#RowTotalG,#SelectVATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('.tbodyGood').prepend($newRow);
+
+            $('.tbodyGood tr:last').before($newRow);
+           
             $(".FTotalG").prop('disabled', true);
             $('#mainrow #SelectProductQutationG').val('0');
             $('#mainrow .quantityG').val('');
@@ -285,7 +287,10 @@
             currentRow1.find('.ServiceDate ').remove('id');
             $("#SelectProductQutationS,#QuantityS,#RateS,#FTotalS,#SelectVATS", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('.tbodyService').prepend($newRow);
+
+            $('.tbodyService tr:last').before($newRow);
+
+           
             $(".FTotalG").prop('disabled', true);
             $('#mainrow1 #SelectProductQutationS').val('0');
             $('#mainrow1 .quantityG').val('');
@@ -293,6 +298,8 @@
             $('#mainrow1 #FTotalG').val('');
             $('#mainrow1 .quantityG').val('');
             $('#mainrow1 #FTotal').val('');
+            $('#mainrow1 .Discription ').val('');
+
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
@@ -773,7 +780,8 @@
                     PurchaseTotal: parseFloat($(this).find('.FTotalG').val()),
                     Total: parseFloat($(this).find('.FTotalG').val()),
                     PurchaseVatPercentage: parseFloat($(this).find('.VATG').val()),
-                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),
+                    RowSubTotal: parseFloat($(this).find('.RowTotalG').val()),                    
+                    PurchaseDescription: $(this).find('.Discription').val(),
                 }
                 list.push(orderItem);
             }
@@ -815,6 +823,7 @@
             formData.append('PurchaseOrderList[' + i + '][Total]', list[i].Total)
             formData.append('PurchaseOrderList[' + i + '][PurchaseVatPercentage]', list[i].PurchaseVatPercentage)
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseDescription]', list[i].PurchaseDescription)
         }
 
         $.ajax({

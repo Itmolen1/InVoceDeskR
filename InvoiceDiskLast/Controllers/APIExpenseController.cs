@@ -36,6 +36,166 @@ namespace InvoiceDiskLast.Controllers
             return AccountId;
         }
 
+
+
+
+
+
+        [Route("api/PutExpense/{id:int}")]
+        public IHttpActionResult PutExpense(int id, ExpenseViewModel ExpenseViewModel)
+        {
+
+            string refId = ExpenseViewModel.Id.ToString();
+
+            EXPENSE expenseTable = new EXPENSE();
+            ExpenseModel _ExpeseModel = new ExpenseModel();
+
+            AccountTransictionTable AccountTable = new AccountTransictionTable();
+            AccountTable.TransictionDate = DateTime.Now;
+            AccountTable.TransictionNumber = base64Guid;
+            AccountTable.TransictionType = "Expence";
+            AccountTable.CreationTime = DateTime.Now.TimeOfDay;
+            AccountTable.FK_CompanyId = ExpenseViewModel.comapny_id;
+            AccountTable.FKPaymentTerm = 1;
+            AccountTable.TransictionRefrenceId = ExpenseViewModel.Id.ToString();
+            AccountTable.AddedBy = ExpenseViewModel.user_id;
+
+            using (DBEntities context = new DBEntities())
+            {
+                using (DbContextTransaction transaction = context.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted))
+                {
+                    try
+                    {
+                        List<AccountTransictionTable> List = new List<AccountTransictionTable>();
+                        List = context.AccountTransictionTables.Where(t => t.TransictionRefrenceId == refId.ToString()).ToList();
+                        context.AccountTransictionTables.RemoveRange(context.AccountTransictionTables.Where(F => F.TransictionRefrenceId == refId.ToString()));
+                        context.SaveChanges();
+
+                        EXPENSE expense = new EXPENSE();
+
+                        expense.REFERENCEno = ExpenseViewModel.REFERENCEno;
+                        expense.ACCOUNT_ID = ExpenseViewModel.ACCOUNT_ID;
+                        expense.Id = ExpenseViewModel.Id;
+                        expense.VENDOR_ID = ExpenseViewModel.VENDOR_ID;
+                        expense.notes = ExpenseViewModel.notes;
+                        expense.user_id = ExpenseViewModel.user_id;
+                        expense.SUBTOTAL = ExpenseViewModel.SUBTOTAL;
+                        expense.VAT_AMOUNT = ExpenseViewModel.VAT_AMOUNT;
+                        expense.GRAND_TOTAL = ExpenseViewModel.GRAND_TOTAL;
+                        expense.AddedDate = ExpenseViewModel.AddedDate;
+                        expense.comapny_id = ExpenseViewModel.comapny_id;
+                        expense.Vat6 = ExpenseViewModel.Vat6;
+                        expense.Vat21 = ExpenseViewModel.Vat21;
+                        context.Entry(expense).State = EntityState.Modified;
+                        context.SaveChanges();
+
+                        if (ExpenseViewModel.ExpensenDetailList != null)
+                        {
+                            foreach (ExpenseDetail item in ExpenseViewModel.ExpensenDetailList)
+                            {
+
+                                ExpenseDetail expenseDetailModel = new ExpenseDetail();
+                                expenseDetailModel.expense_id = ExpenseViewModel.Id;
+                                expenseDetailModel.EXPENSE_ACCOUNT_ID = item.EXPENSE_ACCOUNT_ID;
+                                expenseDetailModel.DESCRIPTION = item.DESCRIPTION;
+                                expenseDetailModel.AMOUNT = item.AMOUNT;
+                                expenseDetailModel.TAX_PERCENT = item.TAX_PERCENT;
+                                expenseDetailModel.TAX_AMOUNT = item.TAX_AMOUNT;
+                                expenseDetailModel.SUBTOTAL = item.SUBTOTAL;
+                                expenseDetailModel.Id = item.Id;
+                                expenseDetailModel.user_id = ExpenseViewModel.user_id;
+                                expenseDetailModel.comapny_id = ExpenseViewModel.comapny_id;
+                                AccountTable.Cr = 0.00;
+                                AccountTable.Dr = item.AMOUNT;
+                                AccountTable.FK_AccountID = item.EXPENSE_ACCOUNT_ID;
+
+
+                                context.AccountTransictionTables.Add(AccountTable);
+                                context.SaveChanges();
+
+
+                                if (item.Id == 0)
+                                {
+                                    context.ExpenseDetails.Add(expenseDetailModel);
+                                    context.SaveChanges();
+                                }
+                                else
+                                {
+                                    context.Entry(expenseDetailModel).State = EntityState.Modified;
+                                    context.SaveChanges();
+                                }
+
+                            }
+                        }
+
+
+                        //Accounts Petty Cash  Transaction
+                        int Accountpayble = AccountIdByName("Petty Cash", (int)ExpenseViewModel.comapny_id);
+
+                        if (Accountpayble != 0)
+                        {
+                            AccountTable.Dr = 0.00;
+                            AccountTable.Cr = ExpenseViewModel.GRAND_TOTAL;
+                            AccountTable.FK_AccountID = Accountpayble;
+                            context.AccountTransictionTables.Add(AccountTable);
+                            context.SaveChanges();
+                        }
+                        // Cost Of Goods Transaction
+                        int CostOfGood = AccountIdByName("Input VAT", (int)ExpenseViewModel.comapny_id);
+                        if (CostOfGood != 0)
+                        {
+                            AccountTable.Cr = 0.00;
+                            AccountTable.Dr = ExpenseViewModel.Vat21 + ExpenseViewModel.Vat6; ;
+                            AccountTable.FK_AccountID = CostOfGood;
+                            context.AccountTransictionTables.Add(AccountTable);
+                            context.SaveChanges();
+                        }
+                        _ExpeseModel.Id = expenseTable.Id;
+                        transaction.Commit();
+                        return Ok(_ExpeseModel);
+
+                    }
+
+                    catch (Exception ex)
+                    {
+                        transaction.Commit();
+
+                        return BadRequest();
+                    }
+
+                }
+            }
+
+
+
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            //if (id != ExpenseTable.Id)
+            //{
+            //    return BadRequest();
+            //}
+            //db.Entry(ExpenseTable).State = EntityState.Modified;
+
+            //try
+            //{
+            //    db.SaveChanges();
+            //    return Ok(ExpenseTable);
+            //}
+            //catch (Exception ex)
+            //{
+            //    BadRequest();
+            //    throw;
+            //}
+        }
+
+
+
+
+
+
         [Route("api/PostExpense")]
         public IHttpActionResult PostExpense(ExpenseViewModel ExpenseViewModel)
         {
@@ -75,6 +235,7 @@ namespace InvoiceDiskLast.Controllers
                         expenseTable = context.EXPENSEs.Add(expense);
                         context.SaveChanges();
 
+                        AccountTable.TransictionRefrenceId = expenseTable.Id.ToString();
                         if (ExpenseViewModel.ExpensenDetailList != null)
                         {
                             foreach (ExpenseDetail item in ExpenseViewModel.ExpensenDetailList)
@@ -98,6 +259,7 @@ namespace InvoiceDiskLast.Controllers
                                 context.SaveChanges();
                             }
                         }
+
 
                         //Accounts Petty Cash  Transaction
                         int Accountpayble = AccountIdByName("Petty Cash", (int)ExpenseViewModel.comapny_id);
@@ -129,7 +291,7 @@ namespace InvoiceDiskLast.Controllers
                     catch (Exception ex)
                     {
                         transaction.Commit();
-                              
+
                         return BadRequest();
                     }
 
@@ -180,7 +342,7 @@ namespace InvoiceDiskLast.Controllers
                 ExpenseDetail = db.ExpenseDetails.Where(C => C.expense_id == ExpenseId).Select(Ex => new ExpenseViewModel
                 {
                     Id = Ex.Id,
-                    EXPENSE_ACCOUNT_ID = (int)Ex.EXPENSE_ACCOUNT_ID,
+                    EXPENSE_ACCOUNT_ID = Ex.EXPENSE_ACCOUNT_ID ?? 0,
                     DESCRIPTION = Ex.DESCRIPTION,
                     AMOUNT = Ex.AMOUNT,
                     TAX_PERCENT = Ex.TAX_PERCENT,
@@ -272,30 +434,7 @@ namespace InvoiceDiskLast.Controllers
             }
         }
 
-        [Route("api/PutExpense/{id:int}")]
-        public IHttpActionResult PutExpense(int id, EXPENSE ExpenseTable)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (id != ExpenseTable.Id)
-            {
-                return BadRequest();
-            }
-            db.Entry(ExpenseTable).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-                return Ok(ExpenseTable);
-            }
-            catch (Exception ex)
-            {
-                BadRequest();
-                throw;
-            }
-        }
 
         [Route("api/DeleteExpenseDetails/{id:int}")]
         [ResponseType(typeof(ExpenseDetail))]
