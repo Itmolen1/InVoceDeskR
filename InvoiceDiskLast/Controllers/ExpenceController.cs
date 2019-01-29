@@ -91,57 +91,37 @@ namespace InvoiceDiskLast.Controllers
             return false;
         }
 
-        public string PrintView(int Id)
+
+        public ActionResult PrintView(int? Id)
         {
             string pdfname;
             try
             {
-                int CompanyId = 0;
-
                 ExpenseViewModel experviewModel = new ExpenseViewModel();
-
-                if (Session["CompayID"] != null)
-                {
-                    CompanyId = Convert.ToInt32(Session["CompayID"]);
-                }
-
-                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + CompanyId.ToString()).Result;
-                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
-
-                CommonModel commonModel = new CommonModel();
-                commonModel.Name = "Expense";
-                ViewBag.commonModel = commonModel;
-                ViewBag.Companydata = companyModel;
 
                 HttpResponseMessage Expense = GlobalVeriables.WebApiClient.GetAsync("GetExpenseById/" + Id).Result;
                 experviewModel = Expense.Content.ReadAsAsync<ExpenseViewModel>().Result;
 
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + experviewModel.comapny_id.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Expense";
+
                 HttpResponseMessage expenseDetail = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailById/" + Id).Result;
                 List<ExpenseViewModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
 
-                HttpResponseMessage response = GlobalVeriables.WebApiClient.GetAsync("GetExpense/" + CompanyId).Result;
-                List<MVCAccountTableModel> AccountmodelObj = response.Content.ReadAsAsync<List<MVCAccountTableModel>>().Result;
-
-                ViewBag.Accounts = AccountmodelObj;
+                ViewBag.CompanyName = companyModel.CompanyName;
+                ViewBag.ExpenceModel = experviewModel;
+                ViewBag.commonModel = commonModel;
+                ViewBag.CompanyLogo = companyModel.CompanyLogo;
                 ViewBag.ExpenseDetail = ExpenseDetailList;
 
-                ViewBag.AccountId = experviewModel.ACCOUNT_ID;
-                ViewBag.Ref = experviewModel.REFERENCEno;
-                ViewBag.Date = experviewModel.AddedDate;
-                ViewBag.VenderId = experviewModel.VENDOR_ID;
-
-                TempData["CompanyId"] = companyModel.CompanyID;
-                TempData["ConatctId"] = experviewModel.VENDOR_ID;
-
-
-
                 string companyName = Id + "-" + companyModel.CompanyName;
-
                 var root = Server.MapPath("/PDF/");
                 pdfname = String.Format("{0}.pdf", companyName);
                 var path = Path.Combine(root, pdfname);
                 path = Path.GetFullPath(path);
-
                 string subPath = "/PDF"; // your code goes here
                 bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
 
@@ -156,9 +136,79 @@ namespace InvoiceDiskLast.Controllers
                         if (System.IO.File.Exists(path))
                         {
                             FileInfo info = new FileInfo(path);
-
                             if (!IsFileLocked(info)) info.Delete();
+                        }
+                    }
+                    catch (System.IO.IOException)
+                    {
+                    }
+                }
+                return new Rotativa.PartialViewAsPdf("~/Views/Expence/ExpensePrint.cshtml")
+                {
+                    PageSize = Rotativa.Options.Size.A4,
+                    MinimumFontSize = 16,
+                    FileName = pdfname,
+                    PageHeight = 40,
+                    PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3)
+                };
 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+
+
+        public string PrintViewsdwede(int? Id)
+        {
+            string pdfname;
+            try
+            {
+                ExpenseViewModel experviewModel = new ExpenseViewModel();
+
+                HttpResponseMessage Expense = GlobalVeriables.WebApiClient.GetAsync("GetExpenseById/" + Id).Result;
+                experviewModel = Expense.Content.ReadAsAsync<ExpenseViewModel>().Result;
+
+                HttpResponseMessage responseCompany = GlobalVeriables.WebApiClient.GetAsync("APIComapny/" + experviewModel.comapny_id.ToString()).Result;
+                MVCCompanyInfoModel companyModel = responseCompany.Content.ReadAsAsync<MVCCompanyInfoModel>().Result;
+
+                CommonModel commonModel = new CommonModel();
+                commonModel.Name = "Expense";
+
+                HttpResponseMessage expenseDetail = GlobalVeriables.WebApiClient.GetAsync("GetExpenseDetailById/" + Id).Result;
+                List<ExpenseViewModel> ExpenseDetailList = expenseDetail.Content.ReadAsAsync<List<ExpenseViewModel>>().Result;
+
+                ViewBag.CompanyName = companyModel.CompanyName;
+                ViewBag.ExpenceModel = experviewModel;
+                ViewBag.commonModel = commonModel;
+                ViewBag.CompanyLogo = companyModel.CompanyLogo;
+                ViewBag.ExpenseDetail = ExpenseDetailList;
+
+
+
+                string companyName = Id + "-" + companyModel.CompanyName;
+                var root = Server.MapPath("/PDF/");
+                pdfname = String.Format("{0}.pdf", companyName);
+                var path = Path.Combine(root, pdfname);
+                path = Path.GetFullPath(path);
+                string subPath = "/PDF"; // your code goes here
+                bool exists = System.IO.Directory.Exists(Server.MapPath(subPath));
+
+                if (!exists)
+                {
+                    System.IO.Directory.CreateDirectory(Server.MapPath(subPath));
+                }
+                if (System.IO.File.Exists(path))
+                {
+                    try
+                    {
+                        if (System.IO.File.Exists(path))
+                        {
+                            FileInfo info = new FileInfo(path);
+                            if (!IsFileLocked(info)) info.Delete();
                         }
                     }
                     catch (System.IO.IOException)
@@ -166,35 +216,26 @@ namespace InvoiceDiskLast.Controllers
 
                     }
                 }
-
-
-                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Qutation/PrintQutationPartialView.cshtml")
+                var pdfResult = new Rotativa.PartialViewAsPdf("~/Views/Expence/ExpensePrint.cshtml")
                 {
-
                     PageSize = Rotativa.Options.Size.A4,
                     MinimumFontSize = 16,
                     PageMargins = new Rotativa.Options.Margins(10, 12, 20, 3),
                     PageHeight = 40,
-
                     SaveOnServerPath = path, // Save your place
 
                     //  CustomSwitches = "--footer-center \"" + "Wilt u zo vriendelijk zijn om het verschuldigde bedrag binnen " + diffDate + " dagen over te maken naar IBAN:  " + companyModel.IBANNumber + " ten name van IT Molen o.v.v.bovenstaande factuurnummer.  (Op al onze diensten en producten zijn onze algemene voorwaarden van toepassing.Deze kunt u downloaden van onze website.)" + "  Printed date: " +
                     // DateTime.Now.Date.ToString("MM/dd/yyyy") + "  Page: [page]/[toPage]\"" +
                     //" --footer-line --footer-font-size \"10\" --footer-spacing 6 --footer-font-name \"calibri light\"",
-
                 };
-
                 pdfResult.BuildPdf(this.ControllerContext);
             }
             catch (Exception)
             {
-
                 throw;
             }
-
             return pdfname;
         }
-
 
         public ActionResult ExpenseByEmail(int Id)
         {
@@ -551,71 +592,14 @@ namespace InvoiceDiskLast.Controllers
         [HttpPost]
         public ActionResult Edit(ExpenseViewModel _ExpeseViewModel)
         {
-
             HttpResponseMessage response = new HttpResponseMessage();
-
             try
             {
-                EXPENSE expense = new EXPENSE();
-                expense.REFERENCEno = _ExpeseViewModel.REFERENCEno;
-                expense.ACCOUNT_ID = _ExpeseViewModel.ACCOUNT_ID;
-                expense.VENDOR_ID = _ExpeseViewModel.VENDOR_ID;
-                expense.Id = _ExpeseViewModel.Id;
-                expense.notes = _ExpeseViewModel.notes;
-                expense.user_id = _ExpeseViewModel.user_id;
-                expense.SUBTOTAL = _ExpeseViewModel.SUBTOTAL;
-                expense.VAT_AMOUNT = _ExpeseViewModel.VAT_AMOUNT;
-                expense.GRAND_TOTAL = _ExpeseViewModel.GRAND_TOTAL;
-                expense.AddedDate = _ExpeseViewModel.AddedDate;
-                expense.comapny_id = _ExpeseViewModel.comapny_id;
-                expense.Vat6 = _ExpeseViewModel.Vat6;
-                expense.Vat21 = _ExpeseViewModel.Vat21;
-
-                response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutExpense/" + _ExpeseViewModel.Id, expense).Result;
+                response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutExpense/" + _ExpeseViewModel.Id, _ExpeseViewModel).Result;
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    if (_ExpeseViewModel.ExpensenDetailList != null)
-                    {
-                        foreach (ExpenseDetail item in _ExpeseViewModel.ExpensenDetailList)
-                        {
-                            ExpenseDetail expenseDetailModel = new ExpenseDetail();
-                            expenseDetailModel.Id = item.Id;
-                            expenseDetailModel.expense_id = _ExpeseViewModel.Id;
-                            expenseDetailModel.EXPENSE_ACCOUNT_ID = item.EXPENSE_ACCOUNT_ID;
-                            expenseDetailModel.DESCRIPTION = item.DESCRIPTION;
-                            expenseDetailModel.AMOUNT = item.AMOUNT;
-                            expenseDetailModel.TAX_PERCENT = item.TAX_PERCENT;
-                            expenseDetailModel.TAX_AMOUNT = item.TAX_AMOUNT;
-                            expenseDetailModel.SUBTOTAL = item.SUBTOTAL;
-                            expenseDetailModel.user_id = _ExpeseViewModel.user_id;
-                            expenseDetailModel.comapny_id = _ExpeseViewModel.comapny_id;
-
-                            if (item.Id == 0)
-                            {
-                                response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostExpenseDetail", expenseDetailModel).Result;
-
-                                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                                {
-                                    return new JsonResult { Data = new { Status = "Fail" } };
-                                }
-                            }
-                            else
-                            {
-                                response = GlobalVeriables.WebApiClient.PutAsJsonAsync("PutExpenseDetail/" + _ExpeseViewModel.Id, expenseDetailModel).Result;
-
-                                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                                {
-                                    return new JsonResult { Data = new { Status = "Fail" } };
-                                }
-                            }
-                        }
-
-                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                        {
-                            return new JsonResult { Data = new { Status = "Success" } };
-                        }
-                    }
+                    return new JsonResult { Data = new { Status = "Success", Id = _ExpeseViewModel.Id } };
                 }
                 else
                 {
@@ -624,9 +608,8 @@ namespace InvoiceDiskLast.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return Json("Fail", JsonRequestBehavior.AllowGet);
             }
-            return Json("", JsonRequestBehavior.AllowGet);
 
         }
 
@@ -826,7 +809,7 @@ namespace InvoiceDiskLast.Controllers
         public ActionResult AddExpence(ExpenseViewModel ExpenseViewModel, HttpPostedFileWrapper[] file23)
         {
             HttpResponseMessage response = new HttpResponseMessage();
-         
+
             int ExpenseId = 0;
             EXPENSE expense = new EXPENSE();
             try
@@ -836,7 +819,7 @@ namespace InvoiceDiskLast.Controllers
                     ExpenseViewModel.user_id = Convert.ToInt32(Session["LoginUserID"]);
                 }
 
-              
+
                 response = GlobalVeriables.WebApiClient.PostAsJsonAsync("PostExpense", ExpenseViewModel).Result;
                 ExpenseModel Purchasetable = response.Content.ReadAsAsync<ExpenseModel>().Result;
                 ExpenseId = Purchasetable.Id;

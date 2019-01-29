@@ -1,0 +1,165 @@
+﻿
+
+@{
+    var ExpensModel = ViewBag.ExpenceModel;
+
+}
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
+
+
+<html>
+<head>
+    <title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="border:1px solid black">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="card card-body printableArea">
+                            <h3><b><img src="@Url.Content("~/Images/"+ ViewBag.CompanyLogo)" class="image-Size" /></b> <span class="pull-right m-t-40">@ViewBag.CompanyName</span></h3>
+                            <hr />
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="pull-left">
+                                        <h3> &nbsp;<b class="text-muted">@ViewBag.Name</b></h3>
+
+                                        <div class="row">
+
+                                            <div class="col-xs-4">Vender:</div>
+                                            <div class="col-xs-8">
+                                                <label></label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-4"> Ref no:</div>
+                                            <div class="col-xs-8">
+                                                @if (ExpensModel.REFERENCEno != null)
+                                                {
+                                                    <label>@ExpensModel.REFERENCEno</label>
+                                                }
+                                                else
+                                                {
+                                                    <label></label>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-4">Accounts:</div>
+                                            <div class="col-xs-8">
+                                                <label>Account Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-3">Date:</div>
+                                            <div class="col-xs-9">
+                                                @if (ExpensModel.AddedDate != null)
+                                                {
+                                                    DateTime dt = new DateTime();
+                                                    dt = Convert.ToDateTime(ExpensModel.AddedDate);
+                                                    <label>@dt.ToShortDateString()</label>
+                                                }
+                                                else
+                                                {
+                                                    <label></label>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="pull-right text-right">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div  style="clear: both">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+
+                            <tr>
+                                <th>
+                                    Expense acount
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    vat
+                                </th>
+                                <th>
+                                    Tax Amount
+                                </th>
+                                <th>
+                                    Sub total
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="tbody">
+                            @if (ViewBag.ExpenseDetail != null)
+                            {
+                                foreach (var item in ViewBag.ExpenseDetail)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.AccountTitle
+                                        </td>
+                                        <td>
+                                            @item.DESCRIPTION
+                                        </td>
+                                        <td>
+                                            @item.AMOUNT
+                                        </td>
+                                        <td>
+                                            @item.TAX_PERCENT
+                                        </td>
+                                        <td>
+                                            @item.TAX_AMOUNT
+                                        </td>
+                                        <td>
+                                            @item.SUBTOTAL
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-12">
+                   
+
+                    <div class="pull-right text-right">
+                        <p>Sub - Total amount: €<label id="SubTotalAmont">@ExpensModel.SUBTOTAL</label></p>
+                        <p>Totaal excel btw: €<label id="TotalBTW">@ExpensModel.SUBTOTAL</label></p>
+                        <p>BTW (0%) : €<label id="btwo">0.00</label></p>
+                        <p>BTW (6%) : €<label id="BTW6">@ExpensModel.Vat6</label></p>
+                        <p>BTW (21%) : €<label id="BTW21">@ExpensModel.Vat21</label></p>
+                        <hr>
+                        <h3><b>Garnd Total :</b> €<label id="gtotal">@ExpensModel.GRAND_TOTAL</label></h3>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

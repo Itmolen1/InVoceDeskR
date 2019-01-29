@@ -340,7 +340,8 @@
             $('#mainrow #RateG').val('');
             $('#mainrow .FTotalG').val('');
             $('#mainrow .quantityG').val('');
-
+            $('#mainrow .Discription').val('');
+            
 
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
@@ -415,6 +416,7 @@
             $('#mainrow1 #FTotalG').val('');
             $('#mainrow1 .quantityG').val('');
             $('#mainrow1 #FTotal').val('');
+            $('#mainrow1 .Discription').val('');
             if ($('#orderItemError').text != '') {
                 $('#orderItemError').text('');
             }
@@ -891,6 +893,7 @@
                     PurchaseDescription: $(this).find('.Discription').val(),
                     PurchaseOrderDetailsId: $('.PurchaseOrderDetailsId', this).val(),
                     PurchaseOrderID: $('.PurchaseOrderID').val(),
+                    PurchaseDescription: $(this).find('.Discription').val(),
 
                 }
                 list.push(orderItem);
@@ -937,6 +940,7 @@
             formData.append('PurchaseOrderList[' + i + '][RowSubTotal]', list[i].RowSubTotal)
             formData.append('PurchaseOrderList[' + i + '][ServiceDate]', list[i].ServiceDate)
             formData.append('PurchaseOrderList[' + i + '][PurchaseOrderDetailsId]', list[i].PurchaseOrderDetailsId)
+            formData.append('PurchaseOrderList[' + i + '][PurchaseDescription]', list[i].PurchaseDescription)
         }
 
         $.ajax({

@@ -56,7 +56,7 @@
                                             <th>
                                                 Action
                                             </th>
-                                            
+
                                         </tr>
                                     </thead>
 
@@ -103,7 +103,7 @@
                                                     <td>
                                                         <input type="button" id="removeExpense" value="x" class="removeExpense  btn-height btn-height-Remove" style="width:50px" />
                                                     </td>
-                                                    
+
                                                 </tr>
 
                                             }
@@ -136,9 +136,7 @@
                                             <td>
                                                 <input type="text" class="taxAmount form-control Input-height" id="taxAmount" readonly="readonly" style="font-size:12px" />
                                             </td>
-                                            <td>
-                                               
-                                            </td>
+                                            <td></td>
                                             <td>
                                                 <input type="button" id="btnaddGoods" value="+" class="btn-height" style="width:50px" />
                                             </td>
@@ -226,7 +224,9 @@
             $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
             $("#ExpenseAccount#Description,#Amount,#SubTotal,#VATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('.tbbodyExpense').prepend($newRow);
+            
+            $('.tbbodyExpense tr:last').before($newRow);
+
             $('#mainrow  #ExpenseAccount').val('0');
             $('#mainrow  #Amount').val('');
             $('#mainrow  #Description').val('');
@@ -402,13 +402,12 @@
         var Isvalid = Validate();
         if (Isvalid == false) {
             return true;
-
         }
         else {
-
             CreateExpense();
         }
     });
+
     function CreateExpense() {
 
         var list = [], ExpernseOrder, CurrentRow;
@@ -418,20 +417,27 @@
             return true;
         }
 
-        $('#tblexpense .tbbodyExpense tr').not("tr:last").each(function () {
+        $('#tblexpense .tbbodyExpense tr').each(function () {
+
+            debugger;
             CurrentRow = $(this).closest("tr");
-            //if (ValidateRow(CurrentRow)) {
-            ExpernseOrder = {
-                EXPENSE_ACCOUNT_ID: parseInt($(this).find('.ExpenseAccount').val()),
-                DESCRIPTION: $(this).find('.Description').val(),
-                AMOUNT: parseFloat($(this).find('.Amount').val()),
-                TAX_PERCENT: parseFloat($(this).find('.VATG').val()),
-                TAX_AMOUNT: parseFloat($(this).find('.taxAmount').val()),
-                SUBTOTAL: parseFloat($(this).find('.SubTotal').val()),
-                Id: parseInt($(this).find('.ExpenseDetailId').val()),
+            var Isvalid = ValidateRow(CurrentRow);
+            if (Isvalid == false) {
+
+                return true;
             }
-            list.push(ExpernseOrder);
-            //}
+            else {
+                ExpernseOrder = {
+                    EXPENSE_ACCOUNT_ID: parseInt($(this).find('.ExpenseAccount').val()),
+                    DESCRIPTION: $(this).find('.Description').val(),
+                    AMOUNT: parseFloat($(this).find('.Amount').val()),
+                    TAX_PERCENT: parseFloat($(this).find('.VATG').val()),
+                    TAX_AMOUNT: parseFloat($(this).find('.taxAmount').val()),
+                    SUBTOTAL: parseFloat($(this).find('.SubTotal').val()),
+                    Id: parseInt($(this).find('.ExpenseDetailId').val()),
+                }
+                list.push(ExpernseOrder);
+            }
         });
         if (list.length == 0) {
             $('#BTW6').text('');
@@ -451,8 +457,6 @@
             Vat21: $('#BTW21').text(),
             comapny_id: $('#comapny_id').val(),
             user_id: $('#user_id').val(),
-
-
             Id: $('#Expenseid').val(),
         };
 
@@ -481,14 +485,17 @@
             processData: false,
             success: function (result) {
                 if (result.Status == "Success") {
-                    $.toast({
-                        heading: 'Expense',
-                        text: "Expense hasbeen created successfully",
-                        icon: 'info',
-                        loader: true,        // Change it to false to disable loader
-                        loaderBg: '#FF0000'  // To change the background
-                    });
 
+                    swal({
+                        title: 'Expense!',
+                        text: 'Expense hasbeen created successfully!',
+                        type: 'success'
+                    },
+                    function (isconform) {
+
+                        window.location.href = "/Expence/ViewExpense?Id=" + result.Id;
+
+                    });
                 }
                 else if (result.Status == "Fail") {
                     alert(result.Message);
@@ -501,6 +508,71 @@
 
         });
     }
+
+
+    function ValidateRow(currentRow) {
+        var Isvalid = true;
+
+        debugger;
+        var RowLenth = $('#tblexpense .tbbodyExpense tr').length;
+        if (RowLenth == 1) {
+            Isvalid = false;
+            var Account = currentRow.find('.ExpenseAccount option:selected').val();
+            var Amount = currentRow.find('.Amount').val();
+            if (Account == "0") {
+                $.toast({
+                    heading: 'Account',
+                    text: "Account Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+
+            }
+
+            if (Amount == "" || Amount == null) {
+                $.toast({
+                    heading: 'Amount',
+                    text: "Amount Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+
+            }
+        }
+        else {
+
+            var Account = currentRow.find('#ExpenseAccount option:selected').val();
+            var Amount = currentRow.find('.Amount').val();
+            if (Account == "0") {
+                $.toast({
+                    heading: 'Account',
+                    text: "Account Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+
+            }
+
+            if (Amount == "" || Amount == null) {
+                $.toast({
+                    heading: 'Amount',
+                    text: "Amount Field is required",
+                    icon: 'info',
+                    loader: true,        // Change it to false to disable loader
+                    loaderBg: '#FF0000'  // To change the background
+                });
+                return Isvalid = false;
+            }
+            return Isvalid;
+        }
+    }
+
 
     $(document).ready(function () {
         $('.removeExpense').click(function () {
@@ -874,7 +946,3 @@
     });
 
 </script>
-
-
-
-
