@@ -17,6 +17,30 @@
     <link href="~/CustomClasses/QutationPurchaseCustomStyle.css" rel="stylesheet" />
 
 
+    <style>
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-row-group;
+        }
+
+
+
+
+
+        thead, tfoot {
+            display: table-row-group;
+        }
+
+        .custom-page-start {
+            padding-top: 200px;
+        }
+    </style>
+
+
+
 </head>
 
 <body>
@@ -27,7 +51,7 @@
 
                 <div class="row">
                     <div class="col-xs-7 ">
-                        <img src="@Url.Content("~/Images/"+@CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" />
+                        <img src="@Url.Content(" ~/Images/"+@CompanyDatas.CompanyLogo)" id="targetImg" class="image-Size" style="margin-top:35px;" />
 
                         <div class="row" style="margin-top:20px">
                             <div class="col-xs-12  HeadText">
@@ -45,7 +69,7 @@
                                 @Contectdatas.PostalCode,@Contectdatas.City
                                 <br />
                                 @Contectdatas.Land
-                                
+
                             </div>
                         </div>
                         @{
@@ -143,14 +167,15 @@
 
                 <hr />
                 @{
+                    int serrialnumber = 0;
                     List<InvoiceDiskLast.Models.MVCQutationViewModel>
-                        InvoiceListGoods = new List<InvoiceDiskLast.Models.MVCQutationViewModel>
-                            ();
+                        InvoiceListGoods = new List<InvoiceDiskLast.Models.MVCQutationViewModel>();
                 }
 
                 @if (ViewBag.QutationDatailsList != null)
                 {
-                    InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>;
+                    InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>
+                        ;
 
                     InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Goods").ToList();
 
@@ -163,8 +188,6 @@
                                 <table class="table" id="orderdetailsitems">
                                     <thead class="thead-dark">
                                         <tr>
-
-
                                             <th width="300px">
                                                 Goods
                                             </th>
@@ -195,6 +218,20 @@
                                             if (item.Type == "Goods")
                                             {
                                                 <tr id="mainrow">
+
+                                                    @if (serrialnumber == 20)
+                                                    {
+                                                        <div style="page-break-inside:always; page-policy:last; margin-top:20px; clear:both">&nbsp;&nbsp;</div>
+                                                    }
+
+
+                                                    @{ serrialnumber++; }
+
+
+
+                                                    <td>
+                                                        @serrialnumber
+                                                    </td>
                                                     <td>
                                                         @item.ItemName
                                                     </td>
@@ -218,31 +255,29 @@
                                                     </td>
 
                                                 </tr>
-                                            }
-                                        }
-
-
+                                                            }
+                                                        }
                                     </tbody>
 
                                 </table>
                             </div>
-
-                        </div>
-                    }
-                }
+                        </div>                                                           }
+                                                        }
                 @if (ViewBag.QutationDatailsList != null)
                 {
-
                     InvoiceListGoods = ViewBag.QutationDatailsList as List<InvoiceDiskLast.Models.MVCQutationViewModel>
                         ;
                     InvoiceListGoods = InvoiceListGoods.Where(G => G.Type == "Service").ToList();
                     if (InvoiceListGoods != null && InvoiceListGoods.Count > 0)
                     {
-                        <div class="row">
+                        <div class="row" style="margin-top:-30px;">
                             <div class="col-xs-12 ">
                                 <table class="table" id="QutationServiceDetail1">
                                     <thead class="thead-dark">
                                         <tr>
+
+
+
                                             <th>Date</th>
 
                                             <th>
@@ -273,7 +308,24 @@
                                         {
                                             if (item.Type == "Service")
                                             {
+
                                                 <tr id="mainrow">
+
+                                                    @if (serrialnumber == 20)
+                                                    {
+
+                                                        @*<tr style="page-break-before:always; page-policy:unset; padding-top:20px; clear:both"></tr>*@
+
+                                                        <div style="page-break-inside:always; page-policy:last; margin-top:20px; clear:both">&nbsp;&nbsp;</div>
+
+                                                    }
+
+                                                    @{ serrialnumber++; }
+
+
+                                                    <td>
+                                                        @serrialnumber
+                                                    </td>
                                                     <td>
                                                         @item.ServiceDate
                                                     </td>
@@ -300,59 +352,73 @@
                                                     <td>
                                                         @item.RowSubTotal
                                                     </td>
-                                                </tr>
-                                            }
 
-                                        }
+
+                                                </tr>
+
+                                                            }
+
+                                                        }
                                     </tbody>
+
+
+
                                 </table>
                             </div>
                         </div>
-                    }
-                }
+                                                            }
+                                                        }
                 <hr />
 
-                <div class="row">
-                    <div class="col-xs-7 ">
-                    </div>
-                    <div class="col-xs-5 ">
-                        <div class="row">
-                            @if (QutationModel.SubTotal != null)
-                            {
-                                <div class="col-xs-5  text-right">Total excl. VAT:€</div>
-                                            <div class="col-xs-6  text-right">@QutationModel.SubTotal</div>
-                                            <div class="col-xs-1"></div>
-                            }
-                        </div>
-                        <div class="row">
-                            @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
-                            {
-                                <div class="col-xs-5  text-right">VAT 6%:€</div>
 
-                                            <div class="col-xs-6  text-right">@QutationModel.TotalVat6</div>
-                                            <div class="col-xs-1"></div>
-                            }
-                        </div>
-
+                <table>
+                    <tbody></tbody>
+                    <tfoot>
                         <div class="row">
-                            @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
-                            {
-                                <div class="col-xs-5  text-right">VAT 21%:€</div>
+                            <div class="col-xs-7 ">
+                            </div>
+                            <div class="col-xs-5 ">
+                                <div class="row">
+                                    @if (QutationModel.SubTotal != null)
+                                    {
+                                        <div class="col-xs-5  text-right">Total excl. VAT:€</div>
+                                        <div class="col-xs-6  text-right">@QutationModel.SubTotal</div>
+                                        <div class="col-xs-1"></div>
+                                    }
+                                </div>
+                                <div class="row">
+                                    @if (QutationModel.TotalVat6 != 0 && QutationModel.TotalVat6 != null)
+                                    {
+                                        <div class="col-xs-5  text-right">VAT 6%:€</div>
 
-                                            <div class="col-xs-6  text-right">@QutationModel.TotalVat21</div>
-                                            <div class="col-xs-1"></div>
-                            }
+                                        <div class="col-xs-6  text-right">@QutationModel.TotalVat6</div>
+                                        <div class="col-xs-1"></div>
+                                    }
+                                </div>
+
+                                <div class="row">
+                                    @if (QutationModel.TotalVat21 != 0 && QutationModel.TotalVat21 != null)
+                                    {
+                                        <div class="col-xs-5  text-right">VAT 21%:€</div>
+
+                                        <div class="col-xs-6  text-right">@QutationModel.TotalVat21</div>
+                                        <div class="col-xs-1"></div>
+                                    }
+                                </div>
+                                <div class="row Grand-color">
+                                    @if (QutationModel.TotalAmount != null)
+                                    {
+                                        <div class="col-xs-5  text-right">Grand Total:</div>
+                                        <div class="col-xs-6  text-right">&euro;: @QutationModel.TotalAmount</div>
+                                        <div class="col-xs-1"></div>
+                                    }
+                                </div>
+                            </div>
                         </div>
-                        <div class="row Grand-color">
-                            @if (QutationModel.TotalAmount != null)
-                            {
-                                <div class="col-xs-5  text-right">Grand Total:</div>
-                                            <div class="col-xs-6  text-right">&euro;: @QutationModel.TotalAmount</div>
-                                            <div class="col-xs-1"></div>
-                            }
-                        </div>
-                    </div>
-                </div>
+                    </tfoot>
+                </table>
+
+
 
 
                 <div class="row">

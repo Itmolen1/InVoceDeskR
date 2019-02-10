@@ -52,7 +52,7 @@
                                                 <select id="ExpenseAccount" class="product form-control pClassG Input-height" style="width: 300px;font-size:12px"></select>
                                             </td>
                                             <td>
-                                                <input type="text" class="Description form-control" id="Description" autocomplete="off" style="font-size:12px" placeholder="Description" />
+                                                <input type="text" class="Description form-control Input-height" id="Description" autocomplete="off" style="font-size:12px" placeholder="Description" />
                                             </td>
                                             <td>
                                                 <input type="text" class="Amount AmountValidaion form-control Input-height" id="Amount" autocomplete="off" style="font-size:12px" placeholder="Amount" />
@@ -156,7 +156,7 @@
             $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
             $("#ExpenseAccount#Description,#Amount,#SubTotal,#VATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            $('.tbbodyExpense tr:last').before($newRow);          
+            $('.tbbodyExpense tr:last').before($newRow);
             $('#mainrow  #ExpenseAccount').val('0');
             $('#mainrow  #Amount').val('');
             $('#mainrow  #Description').val('');
@@ -184,6 +184,9 @@
 
 
     function RowSubTalSubtotal(vat, CurrentRow) {
+
+        debugger;
+
         Total = 0;
         Total = CurrentRow.find('.Amount').val();
         if (parseInt(vat) == 0 && typeof (vat) != "undefined" && vat != "") {
@@ -267,26 +270,6 @@
 
     }
 
-    $(document).on("keyup", '.Amount', function () {
-
-        var currentRow = $(this).closest("tr");
-        var VAT = currentRow.find('.VATG').val();
-        RowSubTalSubtotal(VAT, currentRow);
-        CalculateVateTotal();
-        GrandTotal();
-        TotalExcudeBtw();
-        CalculateTaxAmount(VAT, currentRow);
-    });
-
-    $(document).on("change", '.VATG', function () {
-        var currentRow = $(this).closest("tr");
-        var VAT = currentRow.find('.VATG').val();
-        RowSubTalSubtotal(VAT, currentRow);
-        CalculateVateTotal();
-        GrandTotal();
-        TotalExcudeBtw();
-        CalculateTaxAmount(VAT, currentRow);
-    });
 
 
     //$('.Amount').keyup(function () {
@@ -347,7 +330,7 @@
             }
         }
         else {
-          
+
             var Account = currentRow.find('#ExpenseAccount option:selected').val();
             var Amount = currentRow.find('.Amount').val();
             if (Account == "0") {
@@ -633,8 +616,6 @@
 
 
 
-
-
     $(document).ready(function () {
 
         $('#Expencedate').datepicker({
@@ -654,7 +635,70 @@
 
 
 
+    $('#mainrow .Amount').keyup(function () {
+
+        var currentRow = $(this).closest("tr");
+        var VAT = currentRow.find('.VATG').val();
+        RowSubTalSubtotal(VAT, currentRow);
+        CalculateVateTotal();
+        GrandTotal();
+        TotalExcudeBtw();
+        CalculateTaxAmount(VAT, currentRow);
+    });
+
+
+
+    $('#mainrow .VATG').change(function () {
+        debugger;
+        var currentRow = $(this).closest("tr");
+        if ($('#ExpenseAccount option:selected').val() == "0") {
+
+            currentRow.find('.Amount').val('');
+            currentRow.find('.VATG').val(0);
+            currentRow.find('.taxAmount').val('');
+            currentRow.find('.SubTotal').val('');
+            
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+        else {
+
+            var currentRow = $(this).closest("tr");
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+    });
 
 
 
 </script>
+<script>
+        $(document).on("keyup", '.Amount', function () {
+
+            var currentRow = $(this).closest("tr");
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        });
+
+        $(document).on("change", '.VATG', function () {
+            var currentRow = $(this).closest("tr");
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        });
+    </script>

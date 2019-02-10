@@ -254,8 +254,8 @@
         });
         $('#btnSerVice').click(function () {
 
-            var currentRow1 = $(this).closest("tr");
-            vat = currentRow1.find('.VATG').val();
+            var currentrow = $(this).closest("tr");
+            var vat = currentrow.find('.VATG').val();
             RowSubTalSubtotal(vat, currentRow1);
             CombineTotalAndSubtotal();
             CombineTotal();
@@ -300,7 +300,6 @@
 
                 $('span.error', $newRow).remove();
 
-               
 
                 $('.tbodyService tr:last').before($newRow);
 
@@ -562,7 +561,7 @@
             var value = currentRow1.find('.pClassG').val();
             GetProductPriceByProductId(value, currentRow1);
         });
-
+        
         $('#mainrow .pClassG').change(function () {
 
             var currentRow = $(this).closest('tr');
@@ -1003,7 +1002,7 @@
 
 
 
-
+     
         function validateFileSize() {
             var Isvalid = true;
             if (window.File && window.FileReader && window.FileList && window.Blob) {

@@ -123,9 +123,9 @@
 
                                             <td>
                                                 <select id="SelectVATG" class="VATG form-control Input-height" style="width:60px;font-size:12px">
-                                                    <option>0</option>
-                                                    <option>6</option>
-                                                    <option>21</option>
+                                                    <option value="0">0</option>
+                                                    <option value="2">6</option>
+                                                    <option value="3">21</option>
                                                 </select>
                                             </td>
 
@@ -224,7 +224,7 @@
             $("#btnaddGoods", $newRow).addClass('remove').val('x').removeClass('btn-success').addClass('btn-height-Remove');
             $("#ExpenseAccount#Description,#Amount,#SubTotal,#VATG", $newRow).removeAttr('id');
             $('span.error', $newRow).remove();
-            
+
             $('.tbbodyExpense tr:last').before($newRow);
 
             $('#mainrow  #ExpenseAccount').val('0');
@@ -340,6 +340,10 @@
 
     }
 
+
+
+
+
     $(document).on("keyup", '.Amount', function () {
 
         var currentRow = $(this).closest("tr");
@@ -363,18 +367,83 @@
 
 
     $('.Amount').keyup(function () {
+
         var currentRow = $(this).closest("tr");
-        var VAT = currentRow.find('.VATG').val();
-        RowSubTalSubtotal(VAT, currentRow);
-        CalculateVateTotal();
-        GrandTotal();
-        TotalExcudeBtw();
-        CalculateTaxAmount(VAT, currentRow);
+
+        if ($('#ExpenseAccount option:selected').val() == "0" || $('.Amount').val() == "0") {
+
+            currentRow.find('.Amount').val('');
+            currentRow.find('.VATG').val('');
+            currentRow.find('.taxAmount').val('');
+            currentRow.find('.SubTotal').val('');
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+        else {
+
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+    });
+
+
+
+
+    $('#ExpenseAccount').change(function () {
+        var currentRow = $(this).closest("tr");
+
+        if ($('#ExpenseAccount option:selected').val() == "0") {
+            currentRow.find('.Amount').val('');
+            currentRow.find('.VATG').val('');
+            currentRow.find('.taxAmount').val('');
+            currentRow.find('.SubTotal').val('');
+            var VAT = currentRow.find('.VATG').val(0);
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
     });
 
 
     $('.VATG').change(function () {
         var currentRow = $(this).closest("tr");
+        if ($('#ExpenseAccount option:selected').val() == "0") {
+            currentRow.find('.Amount').val('');
+            currentRow.find('.VATG').val(0);
+            currentRow.find('.taxAmount').val('');
+            currentRow.find('.SubTotal').val('');
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+        else {
+            var VAT = currentRow.find('.VATG').val();
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+    });
+
+
+
+    $(document).on('keyup', '.Amount', function () {
+
+
         var VAT = currentRow.find('.VATG').val();
         RowSubTalSubtotal(VAT, currentRow);
         CalculateVateTotal();
@@ -383,6 +452,41 @@
         CalculateTaxAmount(VAT, currentRow);
 
     });
+
+
+
+    $(document).on('keyup', '.VATG', function () {
+
+        var currentRow = $(this).closest("tr");
+
+        if (currentRow.find('.ExpenseAccount option:select').val() == "0") {
+
+            var currentRow = $(this).closest("tr");
+            currentRow.find('.Amount').val('');
+            currentRow.find('.VATG').val(0);
+            currentRow.find('.taxAmount').val('');
+            currentRow.find('.SubTotal').val('');
+            var VAT = currentRow.find('.VATG').val(0);
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+        else {
+
+            currentRow.find('.SubTotal').val('');
+            var VAT = currentRow.find('.VATG').val(0);
+            RowSubTalSubtotal(VAT, currentRow);
+            CalculateVateTotal();
+            GrandTotal();
+            TotalExcudeBtw();
+            CalculateTaxAmount(VAT, currentRow);
+        }
+    });
+
+
+
 
 
     function CalculateTaxAmount(vat, CurrentRow) {
