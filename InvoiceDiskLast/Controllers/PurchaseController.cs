@@ -14,9 +14,6 @@ using System.Web.Mvc;
 namespace InvoiceDiskLast.Controllers
 {
 
-
-
-
     [SessionExpireAttribute]
     public class PurchaseController : Controller
     {
